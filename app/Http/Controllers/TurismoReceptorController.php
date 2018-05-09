@@ -556,7 +556,8 @@ class TurismoReceptorController extends Controller
                 default:
                     Actividad_Realizada_Por_Visitante::create([
                         'actividades_realizadas_id' => $actividad,
-                        'visitante_id' => $visitante->id
+                        'visitante_id' => $visitante->id,
+                        'estado' => 1
                     ]);
                     break;
 		    }

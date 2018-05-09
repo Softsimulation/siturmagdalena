@@ -24,7 +24,7 @@ class Actividad_Realizada_Por_Visitante extends Model
     /**
      * @var array
      */
-    protected $fillable = ['estado'];
+    protected $fillable = ['estado',''];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
