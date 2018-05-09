@@ -1,0 +1,282 @@
+{
+	
+   "nombre":"emisor",
+
+   "indicadores":[
+      {
+         "id":1,
+        "nombre": "Duración media de la estancia en establecimientos comerciales",
+        "tipoGrafica" :  { "tipo": "ColumnChart", "name": "Columnas", "clase": "fa fa-bar-chart" },
+         "unidad": "Número de noches",
+         "periodos":[
+              {
+                 "nombre": "Diciembre 2015 - Enero 2016",
+                 "descripcion": "La duración media de la estancia fuera del departamento del Magdalena para los integrantes de los hogares encuestados que realizaron viajes en Diciembre del 2015 y Enero del 2016 fue de seis (6) noches.",
+                 "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								          {"label":"Duración media de la estancia de establecimiento comercial","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 noche"},{"v":29} ]},
+									  {"c": [{ "v": "2 noches"},{"v":8} ]},
+									  {"c": [{ "v": "3 noches"},{"v":7} ]},
+									  {"c": [{ "v": "4 noches"},{"v":7} ]},
+									  {"c": [{ "v": "5 noches"},{"v":14} ]},
+									  {"c": [{ "v": "6 noches"},{"v":21} ]},
+						        {"c": [{ "v": "7 noches"},{"v":14} ]}
+									]
+						} 
+              },
+              {
+                "nombre": "Semana Santa : 2016",
+                "descripcion": "La duración media de la estancia fuera del departamento del Magdalena para los integrantes de los hogares encuestados que realizaron viajes en la temporada de Semana Santa 2016 fue de 5 noches.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Duración media de la estancia de establecimiento comercial","type":"number"}
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 noche"},{"v":5} ]},
+									  {"c": [{ "v": "2 noches"},{"v":0} ]},
+									  {"c": [{ "v": "3 noches"},{"v":20} ]},
+									  {"c": [{ "v": "4 noches"},{"v":20} ]},
+									  {"c": [{ "v": "5 noches"},{"v":15} ]},
+									  {"c": [{ "v": "6 noches"},{"v":35} ]},
+						        {"c": [{ "v": "7 noches"},{"v":5} ]}
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":2,
+         "nombre":"Medio de transporte utilizado para salir del departamento",
+         "unidad": "Porcentaje (%)",
+         "tipoGrafica" :  { "tipo": "PieChart", "name": "Torta", "clase": "fa fa-pie-chart" },
+         "periodos":[
+              {
+                 "nombre": "Diciembre 2015 - Enero 2016",
+                 "descripcion": "El medio de transporte empleado por los viajeros en la temporada de Diciembre del 2015 y Enero del 2016 para desplazarse fuera del departamento de Magdalena  fue:  Tansporte aéreo, con un 19%",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Medio de transporte","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "Transporte aéreo"},{"v":19} ]},
+									  {"c": [{ "v": "Vehículo propio"},{"v":16} ]},
+									  {"c": [{ "v": "Vehículo de amigos o familiares"},{"v":9} ]},
+									  {"c": [{ "v": "transporte terrestre de excursiones y/o planes turísticos"},{"v":3} ]},
+									  {"c": [{ "v": "Alquiler de vehículo"},{"v":2} ]},
+									  {"c": [{ "v": "Transporte terrestre intermunicipal"},{"v":1} ]},
+						        {"c": [{ "v": "Transporte acuático marítimo o flota"},{"v":1} ]},
+						        {"c": [{ "v": "Trasporte terrestre de pasajeros (bus, buseta, taxi, automóviles)"},{"v":1} ]},
+						        {"c": [{ "v": "Motocicletas/otros"},{"v":2} ]}
+									]
+						} 
+              },
+              {
+                "nombre": "Semana Santa : 2016",
+                "descripcion": "El medio de transporte empleado por los viajeros en la temporada de Semana Santa 2016 para desplazarse fuera del departamento de Magdalena  fue:  Tansporte aéreo, con un 26%.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Medio de transporte","type":"number"}
+								   ],
+							"rows":[
+									  {"c": [{ "v": "Transporte aéreo"},{"v":26} ]},
+									  {"c": [{ "v": "Vehículo propio"},{"v":24} ]},
+									  {"c": [{ "v": "Vehículo de amigos o familiares"},{"v":24} ]},
+									  {"c": [{ "v": "transporte terrestre de excursiones y/o planes turísticos"},{"v":17} ]},
+									  {"c": [{ "v": "Alquiler de vehículo"},{"v":6} ]},
+									  {"c": [{ "v": "Transporte terrestre intermunicipal"},{"v":6} ]},
+						              {"c": [{ "v": "Transporte acuático marítimo o flota"},{"v":3} ]},
+						              {"c": [{ "v": "Trasporte terrestre de pasajeros (bus, buseta, taxi, automóviles)"},{"v":1} ]},
+						              {"c": [{ "v": "Motocicletas/otros"},{"v":1} ]}
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":3,
+         "nombre":"Motivo principal del viaje",
+         "unidad": "Porcentaje (%)",
+         "tipoGrafica" :  { "tipo": "PieChart", "name": "Torta", "clase": "fa fa-pie-chart" },
+         "periodos":[
+              {
+                "nombre": "Diciembre 2015 - Enero 2016",
+                 "descripcion": "El motivo principal de los viajes realizados fuera del departamento del Magdalena durante la temporada de Diciembre del 2015 y Enero del 2016, fue la visita a familiares y amigos, con un 55%.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Motivo de viaje/Motivos personales","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "Visitar a familiares y/o amigos"},{"v":55} ]},
+									  {"c": [{ "v": "Vacaciones, recreo y ocio"},{"v":37} ]},
+									  {"c": [{ "v": "Asistir a eventos religiosos/peregrinaciones"},{"v":4} ]},
+									  {"c": [{ "v": "Salud y atención médica (incluye la cirugía estética)"},{"v":2} ]},
+									  {"c": [{ "v": "Educación/Formación"},{"v":2} ]},
+									  {"c": [{ "v": "Compras para uso personal o para regalo"},{"v":1} ]}
+									]
+						} 
+              },
+              {
+                "nombre": "Semana Santa : 2016",
+                "descripcion": "El motivo principal de los viajes realizados fuera del departamento del Magdalena durante  la temporada de Semana Santa 2016, fue Vacaciones, Recreo y Ocio con el 60%.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Motivo de viaje/Motivos personales","type":"number"} 	
+
+								   ],
+							"rows":[
+									  {"c": [{ "v": "Visitar a familiares y/o amigos"},{"v":60} ]},
+									  {"c": [{ "v": "Vacaciones, recreo y ocio"},{"v":32} ]},
+									  {"c": [{ "v": "Asistir a eventos religiosos/peregrinaciones"},{"v":3} ]},
+									  {"c": [{ "v": "Salud y atención médica (incluye la cirugía estética)"},{"v":2} ]},
+									  {"c": [{ "v": "Educación/Formación"},{"v":2} ]},
+									  {"c": [{ "v": "Compras para uso personal o para regalo"},{"v":2} ]}
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":4,
+        "nombre": "Tamaño medio de los grupos de viaje",
+        "tipoGrafica" :  { "tipo": "LineChart", "name": "Líneas", "clase": "fa fa-line-chart" },
+         "unidad": "Porcentaje (%)",
+         "periodos":[
+              {
+                "nombre": "Diciembre 2015 - Enero 2016",
+                "descripcion": "En esta temporada el número de viajeros por grupo fue de dos (2) personas, integrantes del hogar encuestado.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Tamaño medio de los grupos de viaje","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 persona"},{"v":43} ]},
+									  {"c": [{ "v": "2 personas"},{"v":14} ]},
+									  {"c": [{ "v": "3 personas"},{"v":15} ]},
+									  {"c": [{ "v": "4 personas"},{"v":14} ]},
+									  {"c": [{ "v": "5 personas o más"},{"v":14} ]}
+									]
+						} 
+              },
+              {
+                "nombre": "Semana Santa : 2016",
+                 "descripcion": "En la temporada de Semana Santa 2016 el número de viajeros por grupo fue de dos (2) personas, integrantes del hogar encuestado.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Tamaño medio de los grupos de viaje","type":"number"} 	
+
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 persona"},{"v":54} ]},
+									  {"c": [{ "v": "2 personas"},{"v":17} ]},
+									  {"c": [{ "v": "3 personas"},{"v":14} ]},
+									  {"c": [{ "v": "4 personas"},{"v":3} ]},
+									  {"c": [{ "v": "5 personas o más"},{"v":9} ]}
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":5,
+         "nombre":"Tipo de alojamiento",
+        "unidad": "Porcentaje (%)",
+        "tipoGrafica" :  { "tipo": "ColumnChart", "name": "Columnas", "clase": "fa fa-bar-chart" },
+         "periodos":[
+                {
+		          "nombre": "Diciembre 2015 - Enero 2016",
+		          "descripcion": "Para los viajes realizados en la temporada Diciembre del 2015 y Enero del 2016, fuera del departamento del Magdalena el tipo de alojamiento utilizado por los viajeros fueron las casas de familiares y amigos, con un 78%.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Tipo de alojamiento","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Casa de familiares o amigos"},{"v":78}]},
+					        {"c":[{"v":"Hotel"},{"v":15}]},
+					        {"c":[{"v":"Apartamento arrendado"},{"v":2}]},
+					        {"c":[{"v":"Casa/Cabaña de vacaciones arrendada"},{"v":2}]},
+					        {"c":[{"v":"Apartahotel"},{"v":1}]},
+					        {"c":[{"v":"Hostal/Albergue/Refugio"},{"v":2}]}
+					      ]
+				   }
+				},
+				{
+		          "nombre": "Semana Santa : 2016",
+		          "descripcion": "Para los viajes realizados en la temporada de Semana Santa 2016, fuera del departamento del Magdalena el tipo de alojamiento utilizado por los viajeros fueron las casas de familiares y amigos, con un 63%.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Tipo de alojamiento","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Casa de familiares o amigos"},{"v":63}]},
+					        {"c":[{"v":"Hotel"},{"v":25}]},
+					        {"c":[{"v":"Apartamento arrendado"},{"v":4}]},
+					        {"c":[{"v":"Casa/Cabaña de vacaciones arrendada"},{"v":3}]},
+					        {"c":[{"v":"Apartahotel"},{"v":3}]},
+					        {"c":[{"v":"Hostal/Albergue/Refugio"},{"v":3}]}
+					      ]
+				   }
+				}
+         ]
+     
+      },
+
+      {
+         "id":6,
+         "nombre":"Total viajes turísticos internos",
+        "unidad": "Porcentaje (%)",
+        "tipoGrafica" :  { "tipo": "PieChart", "name": "Torta", "clase": "fa fa-pie-chart" },
+         "periodos":[
+                {
+		          "nombre": "Diciembre 2015 - Enero 2016",
+		          "descripcion": "Del total de viajes realizados en la temporada Diciembre del 2015 y Enero del 2016  dentro del departamento del Magdalena, el 99% fueron viajes turísticos.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Total viajes turísticos internos","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Viajes turísticos"},{"v":99}]},
+					        {"c":[{"v":"Viajes no turísticos"},{"v":1}]}
+					      ]
+				   }
+				},
+				{
+		          "nombre": "Semana Santa : 2016",
+		          "descripcion": "Del total de viajes realizados en la temporada de Semana Santa 2016 dentro del departamento del Magdalena, el 94% fueron viajes turísticos.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Total viajes turísticos internos","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Viajes turísticos"},{"v":94}]},
+					        {"c":[{"v":"Viajes no turísticos"},{"v":6}]}
+					      ]
+				   }
+				}
+         ]
+     
+      }
+
+  
+    ]
+
+ }
+      

@@ -1,0 +1,47 @@
+﻿.content-login{
+	position: absolute;
+	width: 300px;
+	height: 0;
+	top: 0;
+	right: 2%;
+	background-color: rgba(0,0,0,0.75);
+	border-bottom-left-radius: 2px;
+	overflow: hidden;
+	padding: 0;
+	-webkit-transition: all 1.5s ease-in-out;
+	transition: all 1.5s ease-in-out;
+}
+.expand-content-login{
+	height: 230px;
+	padding: 2%;
+}
+.relocate-button-login{
+	top:230px !important;
+}
+.button-login{
+	position:absolute;
+	top: 0;
+	right: 2%;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.75);
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	cursor:pointer;
+	color:white;
+	-webkit-transition: all 1.5s ease-in-out;
+	transition: all 1.5s ease-in-out;
+
+}
+.div{
+	width: 100%;
+	padding: 2%;
+	background-color: dodgerblue;
+}
+.btn{
+	border: 0;border-bottom: 3px solid rgba(0,0,0,0.65);margin-bottom: 1em;
+	font-weight: bold;
+}
+.btn:hover{
+	border: 0;
+	border-bottom: 3px solid transparent;
+}

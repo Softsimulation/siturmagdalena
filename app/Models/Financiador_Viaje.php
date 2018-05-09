@@ -1,0 +1,55 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @property Viaje[] $viajes
+ * @property Visitante[] $visitantes
+ * @property FinanciadoresViajesConIdioma[] $financiadoresViajesConIdiomas
+ * @property int $id
+ * @property string $user_create
+ * @property string $user_update
+ * @property string $created_at
+ * @property string $updated_at
+ * @property boolean $estado
+ */
+class Financiador_Viaje extends Model
+{
+    /**
+     * The table associated with the model.
+     * 
+     * @var string
+     */
+    protected $table = 'financiadores_viajes';
+
+    /**
+     * @var array
+     */
+    protected $fillable = ['user_create', 'user_update', 'created_at', 'updated_at', 'estado'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function viajes()
+    {
+        return $this->belongsToMany('App\Viaje', 'viajes_financiadores', 'financiadores_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function visitantes()
+    {
+        return $this->belongsToMany('App\Visitante', 'visitante_gastos_pagados', 'financiadores_viajes_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function financiadoresViajesConIdiomas()
+    {
+        return $this->hasMany('App\FinanciadoresViajesConIdioma');
+    }
+}

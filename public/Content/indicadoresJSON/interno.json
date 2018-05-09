@@ -1,0 +1,266 @@
+{
+	
+   "nombre":"interno",
+
+   "indicadores":[
+      {
+         "id":1,
+         "nombre": "Duración media de la estancia de establecimiento comercial",
+         "tipoGrafica" :  { "tipo": "ColumnChart", "name": "Columnas", "clase": "fa fa-bar-chart" },
+         "unidad": "Número de noches",
+         "periodos":[
+              {
+                 "nombre": "Diciembre 2015 - Enero 2016",
+                 "descripcion": "La duración media de la estancia para los integrantes de los hogares encuestados que realizaron viajes en Diciembre del 2015 y Enero del 2016 fue de 7 noches.",
+                 "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								          {"label":"Duración media de la estancia de establecimiento comercial","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 noche"},{"v":12} ]},
+									  {"c": [{ "v": "2 noches"},{"v":3} ]},
+									  {"c": [{ "v": "3 noches"},{"v":21} ]},
+									  {"c": [{ "v": "4 noches"},{"v":5} ]},
+									  {"c": [{ "v": "5 noches"},{"v":6} ]},
+									  {"c": [{ "v": "6 noches"},{"v":3} ]},
+						              {"c": [{ "v": "7 noches"},{"v":33} ]}
+									]
+						} 
+              },
+              {
+                  "nombre": "Semana Santa : 2016",
+                  "descripcion": "La duración media de la estancia para los integrantes de los hogares encuestados que realizaron viajes en la temporada de Semana Santa 2016 fue de 4 noches.",
+                  "datos": {
+						      "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Duración media de la estancia de establecimiento comercial","type":"number"}
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 noche"},{"v":0} ]},
+									  {"c": [{ "v": "2 noches"},{"v":12.5} ]},
+									  {"c": [{ "v": "3 noches"},{"v":62.5} ]},
+									  {"c": [{ "v": "4 noches"},{"v":12.5} ]},
+									  {"c": [{ "v": "5 noches o más"},{"v":12.5} ]}
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":2,
+         "nombre":"Medio de transporte utilizado para desplazarse por el departamento",
+         "unidad": "Porcentaje (%)",
+         "tipoGrafica" :  { "tipo": "PieChart", "name": "Torta", "clase": "fa fa-pie-chart" },
+         "periodos":[
+              {
+                "nombre": "Diciembre 2015 - Enero 2016",
+                "descripcion": "El medio de transporte empleado por los viajeros en la temporada de Diciembre del 2015 y Enero del 2016 fue: transporte terrestre de pasajeros (bus, buseta, taxi, automóvil), con un 50%.",
+                 "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Medio de transporte","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "Transporte terrestre de pasajeros (bus, buseta, taxi, automóvil)"},{"v":50} ]},
+									  {"c": [{ "v": "Transporte terrestre intermunicipal"},{"v":23} ]},
+									  {"c": [{ "v": "Vehículo propio"},{"v":10} ]},
+									  {"c": [{ "v": "Vehículo de amigos o familiares"},{"v":10} ]},
+									  {"c": [{ "v": "Transporte terrestre de excursiones y/o planes turísticos"},{"v":3} ]},
+									  {"c": [{ "v": "Trasporte aéreo"},{"v":3} ]},
+						              {"c": [{ "v": "Motocicletas/otros"},{"v":3} ]}
+									]
+						} 
+              },
+              {
+                "nombre": "Semana Santa : 2016",
+                "descripcion": "El medio de transporte empleado por los viajeros en la temporada de Semana Santa 2016 fue: transporte terrestre intermunicipal, con un 37%.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Medio de transporte","type":"number"}
+								   ],
+							"rows":[
+									  {"c": [{ "v": "Transporte terrestre intermunicipal"},{"v":37} ]},
+									  {"c": [{ "v": "Transporte terrestre de pasajeros (bus, buseta, taxi, automóvil)"},{"v":33} ]},
+									  {"c": [{ "v": "Vehículo propio"},{"v":20} ]},
+									  {"c": [{ "v": "Transporte terrestre de excursiones y/o planes turísticos"},{"v":7} ]},
+									  {"c": [{ "v": "Vehículo de amigos o familiares"},{"v":3} ]}
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":3,
+         "nombre": "Motivo principal del viaje",
+         "tipoGrafica" :  { "tipo": "PieChart", "name": "Torta", "clase": "fa fa-pie-chart" },
+         "unidad": "Porcentaje (%)",
+         "periodos":[
+              {
+                  "nombre": "Diciembre 2015 - Enero 2016",
+                  "descripcion": "El motivo principal de los viajes realizados durante la temporada de Diciembre del 2015 y Enero del 2016, fue la visita a familiares y amigos, con un 59%.",
+                  "datos": {
+						      "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Motivo principal del viaje","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "Compras para uso personal o para regalo"},{"v":3} ]},
+									  {"c": [{ "v": "Vacaciones, recreo y ocio"},{"v":38} ]},
+									  {"c": [{ "v": "Asistir a eventos religiosos/peregrinaciones"},{"v":59} ]}
+									]
+						} 
+              },
+              {
+                 "nombre": "Semana Santa : 2016",
+                 "descripcion": "El motivo principal de los viajes realizados durante la temporada de Semana Santa 2016, fue la visita a familiares y amigos, con un 45%.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Motivo principal del viaje","type":"number"} 	
+
+								   ],
+							"rows":[
+							      {"c": [{ "v": "Asistir a eventos religiosos/peregrinaciones"},{"v":38} ]},
+									  {"c": [{ "v": "Vacaciones, recreo y ocio"},{"v":18} ]},
+									  {"c": [{ "v": "Visitar a familiares y/o amigos"},{"v":45} ]}									  
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":4,
+         "nombre":"Tamaño medio de los grupos de viaje",
+         "unidad": "Porcentaje (%)",
+         "tipoGrafica" :  { "tipo": "LineChart", "name": "Líneas", "clase": "fa fa-line-chart" },
+         "periodos":[
+              {
+                "nombre": "Diciembre 2015 - Enero 2016",
+                "descripcion": "En esta temporada, se impusieron los viajes integrados por una y dos personas. El número de viajeros por grupo fue de dos (2) personas, integrantes del hogar encuestado.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Tamaño medio de los grupos de viaje","type":"number"} 
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 persona"},{"v":48} ]},
+									  {"c": [{ "v": "2 personas"},{"v":23} ]},
+									  {"c": [{ "v": "3 personas"},{"v":10} ]},
+									  {"c": [{ "v": "4 personas"},{"v":17} ]},
+									  {"c": [{ "v": "5 personas  o más"},{"v":2} ]}
+									]
+						} 
+              },
+              {
+                "nombre": "Semana Santa : 2016",
+                "descripcion": "En esta temporada, se impusieron los viajes integrados por una y dos personas. El número de viajeros por grupo fue de dos (2) personas, integrantes del hogar encuestado.",
+                  "datos": {
+						     "cols":[ {"label":"Series","type":"string"},
+								      {"label":"Tamaño medio de los grupos de viaje","type":"number"} 	
+
+								   ],
+							"rows":[
+									  {"c": [{ "v": "1 persona"},{"v":55} ]},
+									  {"c": [{ "v": "2 personas"},{"v":21} ]},
+									  {"c": [{ "v": "3 personas"},{"v":7} ]},
+									  {"c": [{ "v": "4 personas"},{"v":14} ]},
+									  {"c": [{ "v": "5 personas  o más"},{"v":3} ]}
+									] 
+						} 
+              }
+
+         ]
+     
+      },
+
+      {
+         "id":5,
+         "nombre":"Tipo de alojamiento",
+         "unidad": "Porcentaje (%)",
+         "tipoGrafica" :  { "tipo": "ColumnChart", "name": "Columnas", "clase": "fa fa-bar-chart" },
+         "periodos":[
+                {
+		          "nombre": "Diciembre 2015 - Enero 2016",
+		          "descripcion": "Para los viajes realizados en la temporada Diciembre del 2015 y Enero del 2016, el tipo de alojamiento utilizado por los viajeron fueron las casas de familiares y amigos, con un 79%.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Tipo de alojamiento","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Casa de familiares o amigos"},{"v":79}]},
+					        {"c":[{"v":"Casa/Apartamento propio"},{"v":5}]},
+					        {"c":[{"v":"Casa/Cabaña de vacaciones arrendada"},{"v":3}]},
+					        {"c":[{"v":"Hotel"},{"v":3}]},
+					        {"c":[{"v":"Finca agroturistica/Alojamiento rural"},{"v":3}]}
+					      ]
+				   }
+				},
+				{
+		          "nombre": "Semana Santa : 2016",
+		          "descripcion": "Para los viajes realizados en la temporada de Semana Santa 2016, el tipo de alojamiento utilizado por los viajeron fueron las casas de familiares y amigos, con un 79%.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Tipo de alojamiento","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Casa de familiares o amigos"},{"v":79}]},
+					        {"c":[{"v":"Casa/Apartamento propio"},{"v":5}]},
+					        {"c":[{"v":"Casa/Cabaña de vacaciones arrendada"},{"v":3}]},
+					        {"c":[{"v":"Hotel"},{"v":3}]},
+					        {"c":[{"v":"Finca agroturistica/Alojamiento rural"},{"v":3}]}
+					      ]
+				   }
+				}
+         ]
+     
+      },
+
+      {
+         "id":6,
+         "nombre":"Total viajes turísticos internos",
+        "unidad": "Porcentaje (%)",
+        "tipoGrafica" :  { "tipo": "PieChart", "name": "Torta", "clase": "fa fa-pie-chart" },
+         "periodos":[
+                {
+		          "nombre": "Diciembre 2015 - Enero 2016",
+		          "descripcion": "Del total de viajes realizados en la temporada Diciembre del de 2015 y Enero del 2016 dentro del departamento del Magdalena, el 95% fueron viajes turísticos.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Total viajes turísticos internos","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Viajes turísticos"},{"v":95}]},
+					        {"c":[{"v":"Viajes no turísticos"},{"v":5}]}
+					      ]
+				   }
+				},
+				{
+		          "nombre": "Semana Santa : 2016",
+		          "descripcion": "Del total de viajes realizados en la temporada de Semana Santa 2016 dentro del departamento del Magdalena, el 100% fueron viajes turísticos.",
+		          "datos": {
+					  "cols": [
+					        {"label":"Topping","type":"string"},
+					        {"label":"Total viajes turísticos internos","type":"number"}
+					      ],
+					  "rows": [
+					        {"c":[{"v":"Viajes turísticos"},{"v":100}]},
+					        {"c":[{"v":"Viajes no turísticos"},{"v":0}]}
+					      ]
+				   }
+				}
+         ]
+     
+      }
+
+  
+    ]
+
+ }
+      

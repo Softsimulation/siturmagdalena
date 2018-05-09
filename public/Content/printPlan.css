@@ -1,0 +1,12 @@
+﻿nav,.hide-print {
+    display: none;
+}
+
+.show-print {
+    display: block;
+}
+.collapse {
+    display:block!important;
+    height: auto!important;
+} 
+
