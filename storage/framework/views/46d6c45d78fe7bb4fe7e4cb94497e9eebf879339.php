@@ -17,6 +17,7 @@
         <link href="<?php echo e(asset('/Content/bootstrap_material/dist/css/bootstrap-material-design.min.css')); ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo e(asset('/Content/bootstrap_material/dist/css/ripples.min.css')); ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo e(asset('/Content/sweetalert.css')); ?>" rel='stylesheet' type='text/css' />
+        <link href="<?php echo e(asset('/css/select.min.css')); ?>" rel='stylesheet' type='text/css' />
         <link href="<?php echo e(asset('/Content/ionicons/css/ionicons.min.css')); ?>" rel='stylesheet' type='text/css' />
         <link href="<?php echo e(asset('/Content/styleLoading.css')); ?>" rel='stylesheet' type='text/css' />
         <?php echo $__env->yieldContent('estilos'); ?>
@@ -181,7 +182,8 @@
             $.material.init();
         </script>
         <script src="<?php echo e(asset('/js/plugins/checklist-model.js')); ?>"></script>
-        <script src="<?php echo e(asset('js/plugins/angular-filter.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/plugins/select.min.js')); ?>" type="text/javascript"></script>
+        <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/encuesta.js')); ?>"></script>

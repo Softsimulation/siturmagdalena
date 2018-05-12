@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,26 +26,31 @@ class Gasto_Visitante extends Model
      * @var string
      */
     protected $table = 'gastos_visitante';
-
+    public $incrementing = false;
+    public $timestamps = false;
+    protected $casts = [
+       'cantidad_pagada_fuera' => 'float',
+       'cantidad_pagada_magdalena' => 'float',
+   ];
     /**
      * @var array
      */
-    protected $fillable = ['divisas_fuera', 'divisas_magdalena', 'cantidad_pagada_fuera', 'cantidad_pagada_magdalena', 'personas_cubiertas', 'gastos_asumidos_otros'];
+    protected $fillable = ['divisas_fuera', 'divisas_magdalena', 'cantidad_pagada_fuera', 'cantidad_pagada_magdalena', 'personas_cubiertas', 'gastos_asumidos_otros','visitante_id','rubros_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function divisa()
+    public function divisaFue()
     {
-        return $this->belongsTo('App\Divisa', 'divisas_fuera');
+        return $this->belongsTo('App\Models\Divisa', 'divisas_fuera');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function divisa()
+    public function divisaMag()
     {
-        return $this->belongsTo('App\Divisa', 'divisas_magdalena');
+        return $this->belongsTo('App\Models\Divisa', 'divisas_magdalena');
     }
 
     /**
@@ -53,7 +58,7 @@ class Gasto_Visitante extends Model
      */
     public function rubro()
     {
-        return $this->belongsTo('App\Rubro', 'rubros_id');
+        return $this->belongsTo('App\Models\Rubro', 'rubros_id');
     }
 
     /**
@@ -61,6 +66,6 @@ class Gasto_Visitante extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante');
     }
 }

@@ -1,4 +1,4 @@
-var app = angular.module('encuesta', ['checklist-model','encuestas.datos_encuestado','recpetorService','receptor.estanciayvisitados','receptor.transporte','admin.grupo_viaje','receptor.gasto','receptor.percepcion_viaje','receptor.enteran'])
+var app = angular.module('encuesta', ['checklist-model','ui.select','encuestas.datos_encuestado','recpetorService','receptor.estanciayvisitados','receptor.transporte','admin.grupo_viaje','receptor.gasto','receptor.percepcion_viaje','receptor.enteran'])
 
 app.controller('seccionCtrl', ['$http', '$scope', function ($http, $scope) {
     $scope.seccionMax = 0;

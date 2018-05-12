@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,8 +38,11 @@ class Visitante_Paquete_Turistico extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
-
+    public $incrementing = false;
+    public $timestamps = false;
+    protected $casts = [
+       'costo_paquete' => 'float',
+   ];
     /**
      * @var array
      */
@@ -50,7 +53,7 @@ class Visitante_Paquete_Turistico extends Model
      */
     public function divisa()
     {
-        return $this->belongsTo('App\Divisa', 'divisas_id');
+        return $this->belongsTo('App\Models\Divisa', 'divisas_id');
     }
 
     /**
@@ -58,7 +61,7 @@ class Visitante_Paquete_Turistico extends Model
      */
     public function tipoProveedorPaquete()
     {
-        return $this->belongsTo('App\TipoProveedorPaquete');
+        return $this->belongsTo('App\Models\TipoProveedorPaquete');
     }
 
     /**
@@ -66,7 +69,7 @@ class Visitante_Paquete_Turistico extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante');
     }
 
     /**
@@ -74,7 +77,7 @@ class Visitante_Paquete_Turistico extends Model
      */
     public function opcionesLugares()
     {
-        return $this->belongsToMany('App\OpcionesLugare', 'localizacion_agencia_viaje', 'visitante_id', 'opcion_lugar_id');
+        return $this->belongsToMany('App\Models\Opcion_Lugar', 'localizacion_agencia_viaje', 'visitante_id', 'opcion_lugar_id');
     }
 
     /**
@@ -82,7 +85,7 @@ class Visitante_Paquete_Turistico extends Model
      */
     public function municipios()
     {
-        return $this->belongsToMany('App\Municipio', 'municipios_paquete_turistico', 'visitante_id', 'municipios_id');
+        return $this->belongsToMany('App\Models\Municipio', 'municipios_paquete_turistico', 'visitante_id', 'municipios_id');
     }
 
     /**
@@ -90,6 +93,6 @@ class Visitante_Paquete_Turistico extends Model
      */
     public function serviciosPaquetes()
     {
-        return $this->belongsToMany('App\ServiciosPaquete', 'servicios_incluidos_paquete', 'visitante_id');
+        return $this->belongsToMany('App\Models\Servicio_Paquete', 'servicios_incluidos_paquete', 'visitante_id','servicios_paquete_id');
     }
 }

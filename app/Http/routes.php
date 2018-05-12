@@ -20,4 +20,4 @@ Route::controller('/turismointerno','TurismoInternoController');
 
 Route::controller('/turismoreceptor','TurismoReceptorController');
 
-Route::get('/actividades', 'TurismoReceptorController@actividades');
+//Route::get('/turismoreceptor/Secciongastos/{id}', 'TurismoReceptorController@getSecciongastos');

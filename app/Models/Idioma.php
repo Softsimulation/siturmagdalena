@@ -211,7 +211,7 @@ class Idioma extends Model
      */
     public function serviciosPaqueteConIdiomas()
     {
-        return $this->hasMany('App\ServiciosPaqueteConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\ServiciosPaqueteConIdioma', 'idiomas_id');
     }
 
     /**
@@ -307,7 +307,7 @@ class Idioma extends Model
      */
     public function divisasConIdiomas()
     {
-        return $this->hasMany('App\DivisasConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\DivisasConIdioma', 'idiomas_id');
     }
 
     /**
@@ -339,7 +339,7 @@ class Idioma extends Model
      */
     public function opcionesLugaresConIdiomas()
     {
-        return $this->hasMany('App\OpcionesLugaresConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\OpcionesLugaresConIdioma', 'idiomas_id');
     }
 
     /**
@@ -347,7 +347,7 @@ class Idioma extends Model
      */
     public function financiadoresViajesConIdiomas()
     {
-        return $this->hasMany('App\FinanciadoresViajesConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\FinanciadoresViajesConIdioma', 'idiomas_id');
     }
 
     /**
