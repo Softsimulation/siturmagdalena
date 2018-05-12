@@ -308,7 +308,7 @@ class TurismoReceptorController extends Controller
                 array_push($actividadesRelizadas,8);
             }
             
-            $encuesta['Favorito'] = count($visitante->atracciones) == 0 ? null : $visitante->atracciones->first()->id;
+   
             $encuesta['Estancias'] = $estancias;
             $encuesta['ActividadesRelizadas'] = $actividadesRelizadas;
             $encuesta['Principal'] = $principal;

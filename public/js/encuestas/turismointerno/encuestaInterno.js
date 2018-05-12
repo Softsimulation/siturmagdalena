@@ -1,4 +1,4 @@
-﻿var app = angular.module('encuestaInterno', ['checklist-model', 'interno.transporte', 'interno.gasto', 'interno.hogares', 'interno.Actividades', 'interno.viajesrealizados'])
+﻿var app = angular.module('encuestaInterno', ['checklist-model', 'interno.transporte', 'interno.gasto', 'interno.hogares', 'interno.Actividades', 'interno.viajesrealizados','internoService'])
 
 app.controller('seccionCtrl', ['$http', '$scope', function ($http, $scope) {
     $scope.seccionMax = 0;

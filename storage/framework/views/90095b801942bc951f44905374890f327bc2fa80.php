@@ -225,6 +225,7 @@
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/Hogares.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/ActividadesRealizadas.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/ViajesRealizados.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/encuestas/turismointerno/services.js')); ?>"></script>
     <script>
         $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>
