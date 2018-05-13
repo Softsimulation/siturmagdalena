@@ -7,29 +7,6 @@ angular.module('receptor.estanciayvisitados', [])
     };
     $scope.MensajeAlojamiento = false;
 
-    // $scope.$watch('id', function () {
-    //     $("body").attr("class", "cbp-spmenu-push charging")
-    //     $http.get("/EncuestaReceptor/GetSeccionEstanciayvisitados/"+$scope.id)
-    //       .success(function (data) {
-    //           $("body").attr("class", "cbp-spmenu-push")
-    //         if (data.success) {
-    //             $scope.Datos = data.Enlaces;
-    //             $scope.encuesta = data.encuesta;
-    //             $scope.encuesta.Id = $scope.id;
-    //             if (data.encuesta.Estancias == null) {
-    //                 $scope.agregar();
-    //             }
-          
-    //         } else {
-    //             swal("Error", "Error en la carga, por favor recarga la pagina", "error");
-                
-    //         }
-    //       }).error(function () {
-    //           $("body").attr("class", "cbp-spmenu-push");
-    //           swal("Error", "Error en la carga, por favor recarga la página", "error");
-          
-    //     })
-    // })
     
     $scope.$watch('id', function () {
         receptorServi.getDatosEstancia($scope.id).then(function (data) {
@@ -410,7 +387,7 @@ angular.module('receptor.estanciayvisitados', [])
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    //window.location.href = "/EncuestaReceptor/SeccionTransporte/" + $scope.id;
+                    window.location.href = "/turismoreceptor/secciontransporte/" + $scope.id;
                 }, 1000);
 
 

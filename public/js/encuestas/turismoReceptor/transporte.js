@@ -1,30 +1,30 @@
 angular.module('receptor.transporte', ["checklist-model"])
 
-.controller('transporte', ['$scope', '$http',function ($scope, $http) {
+.controller('transporte', ['$scope', 'receptorServi',function ($scope, receptorServi) {
     $scope.transporte = {};
-
+    
     $scope.$watch('id', function () {
         $("body").attr("class", "cbp-spmenu-push charging");
-        $http.get('/EncuestaReceptor/CargarTransporte/' + $scope.id)
-        .success(function (data) {
-            $("body").attr("class", "cbp-spmenu-push");
-            if (data.success) {
+        receptorServi.getDatosTransporte($scope.id).then(function (data) {
+            if(data.success){
+                $("body").attr("class", "cbp-spmenu-push");
                 $scope.transportes = data.transporte_llegar;
                 $scope.lugares = data.lugares;
                 $scope.transporte.Id = $scope.id;
-
+                
                 if (data.mover != null && data.llegar != null) {
                     $scope.transporte.Llegar = data.llegar;
                     $scope.transporte.Mover = data.mover;
                     $scope.transporte.Alquiler = data.opcion_lugar;
                     $scope.transporte.Empresa = data.empresa;
-                }
-            } else {
+                }    
+            }else{
+                $("body").attr("class", "cbp-spmenu-push");
                 swal("Error", "Error en la carga, por favor recarga la pagina", "error");
             }
-        }).error(function () {
-            $("body").attr("class", "cbp-spmenu-push")
-            swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     })
 
@@ -35,50 +35,52 @@ angular.module('receptor.transporte', ["checklist-model"])
         }
 
         $("body").attr("class", "cbp-spmenu-push charging");
-        $http.post('/EncuestaReceptor/GuardarTransporte', $scope.transporte)
-            .success(function (data) {
-                if (data.success) {
-                    $("body").attr("class", "cbp-spmenu-push");
-                    var msj;
-                    if (data.sw == 0) {
-                        msj = "guardado";
-                    }else{
-                        msj = "editado";
-                    }
-
-                    swal({
-                        title: "Realizado",
-                        text: "Se ha " + msj + " satisfactoriamente la sección.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-                    setTimeout(function () {
-                        window.location.href = "/EncuestaReceptor/SeccionViajeGrupo/" + $scope.id;
-                    }, 1000);
-                    
-                } else {
-                    swal("Error", "Por favor corrija los errores", "error");
-                    $scope.errores = data.errores;
-                }
-            }).error(function () {
+        
+        receptorServi.guardarSeccionTransporte($scope.transporte).then(function (data) {
+            if (data.success) {
                 $("body").attr("class", "cbp-spmenu-push");
-                swal("Error", "Error en la carga, por favor recarga la pagina", "error");
-            })
+                var msj;
+                if (data.sw == 0) {
+                    msj = "guardado";
+                }else{
+                    msj = "editado";
+                }
+
+                swal({
+                    title: "Realizado",
+                    text: "Se ha " + msj + " satisfactoriamente la sección.",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    window.location.href = "/turismoreceptor/secciongrupoviaje/" + $scope.id;
+                }, 1000);
+                
+            } else {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Por favor corrija los errores", "error");
+                $scope.errores = data.errores;
+            }
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
+        
     }
 }])
 
-.controller('viaje_grupo', ['$scope', '$http',function ($scope, $http) {
+.controller('viaje_grupo', ['$scope', 'receptorServi',function ($scope, receptorServi) {
     $scope.grupo = {
         Personas: []
     }
 
     $scope.$watch('id', function () {
         $("body").attr("class", "cbp-spmenu-push charging");
-        $http.get('/EncuestaReceptor/CargarViajeGrupo/'+$scope.id)
-        .success(function (data) {
-            $("body").attr("class", "cbp-spmenu-push");
-            if (data.success) {
+        
+        receptorServi.getDatosSeccionViajeGrupo($scope.id).then(function (data) {
+            if(data.success){
+                $("body").attr("class", "cbp-spmenu-push");
                 $scope.viaje_grupos = data.viaje_grupos;
                 $scope.grupo.Id = $scope.id;
 
@@ -86,14 +88,15 @@ angular.module('receptor.transporte', ["checklist-model"])
                     $scope.grupo.Numero = data.tam_grupo;
                     $scope.grupo.Personas = data.personas;
                     $scope.grupo.Otro = data.otro;
-                    $scope.grupo.Numero_otros = data.acompañantes;
-                }
-            } else {
+                    $scope.grupo.Numero_otros = data.acompaniantes;
+                }  
+            }else{
+                $("body").attr("class", "cbp-spmenu-push");
                 swal("Error", "Error en la carga, por favor recarga la pagina", "error");
             }
-        }).error(function () {
+        }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
-            swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     })
 
@@ -147,37 +150,35 @@ angular.module('receptor.transporte', ["checklist-model"])
         }
 
         $("body").attr("class", "cbp-spmenu-push charging");
-
-        $http.post('/EncuestaReceptor/GuardarViajeGrupo', $scope.grupo)
-            .success(function (data) {
+        
+        receptorServi.guardarSeccionViajeGrupo($scope.grupo).then(function (data) {
+            if(data.success){
                 $("body").attr("class", "cbp-spmenu-push");
-                if (data.success) {
-                    var msj;
-                    if (data.sw == 0) {
-                        msj = "guardado";
-                    } else {
-                        msj = "editado";
-                    }
-                    swal({
-                        title: "Realizado",
-                        type: "success",
-                        text: "Se ha " + msj + " satisfactoriamente la sección.",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-                    setTimeout(function () {
-                        window.location.href = "/EncuestaReceptor/Gastos/" + $scope.id;
-                    }, 1000);
-
+                var msj;
+                if (data.sw == 0) {
+                    msj = "guardado";
                 } else {
-                    swal("Error", "Por favor corrija los errores", "error");
-                    $scope.errores = data.errores;
+                    msj = "editado";
                 }
-            }).error(function () {
+                swal({
+                    title: "Realizado",
+                    type: "success",
+                    text: "Se ha " + msj + " satisfactoriamente la sección.",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    window.location.href = "/turismoreceptor/gastos/" + $scope.id;
+                }, 1000);
+            }else{
                 $("body").attr("class", "cbp-spmenu-push");
-                swal("Error", "Error en la carga, por favor recarga la pagina", "error");
-            })
+                swal("Error", "Por favor corrija los errores", "error");
+            }
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
     }
 }])
 

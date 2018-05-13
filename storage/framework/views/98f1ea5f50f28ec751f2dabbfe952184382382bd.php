@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Encuesta turismo receptor'); ?>
 
 <?php $__env->startSection('estilos'); ?>
@@ -41,7 +39,6 @@
 
 <?php $__env->startSection('content'); ?>
     
-
 <div class="container">
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>

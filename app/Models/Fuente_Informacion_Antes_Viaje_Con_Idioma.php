@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,5 +31,10 @@ class Fuente_Informacion_Antes_Viaje_Con_Idioma extends Model
     public function fuentesInformacionAntesViaje()
     {
         return $this->belongsTo('App\FuentesInformacionAntesViaje');
+    }
+    
+    public function idioma()
+    {
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }

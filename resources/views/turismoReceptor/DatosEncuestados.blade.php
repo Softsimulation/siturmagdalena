@@ -41,7 +41,6 @@
 
 @section('content')
     
-
 <div class="container">
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>

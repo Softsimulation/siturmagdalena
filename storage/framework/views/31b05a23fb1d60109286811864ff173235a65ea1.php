@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Encuesta turismo receptor'); ?>
 
 <?php $__env->startSection('estilos'); ?>
@@ -396,7 +394,7 @@
 
 
         <div class="row" style="text-align:center">
-            <a href="/turismoreceptor/Editardatos/{{id}}" class="btn btn-raised btn-default">Anterior</a>
+            <a href="/turismoreceptor/editardatos/{{id}}" class="btn btn-raised btn-default">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" value="Siguiente" ng-click="guardar()">
         </div>
         <br />

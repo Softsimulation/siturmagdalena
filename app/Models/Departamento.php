@@ -28,7 +28,7 @@ class Departamento extends Model
      */
     public function paise()
     {
-        return $this->belongsTo('App\Models\Paise', 'pais_id');
+        return $this->belongsTo('App\Models\Paise', 'Pais');
     }
 
     /**

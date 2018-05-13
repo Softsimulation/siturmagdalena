@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,7 +32,7 @@ class Volveria_Visitar extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function valoracionGenerals()
+    public function valoracionGeneralsRecomendaria()
     {
         return $this->hasMany('App\ValoracionGeneral', 'recomendaria');
     }
@@ -40,7 +40,7 @@ class Volveria_Visitar extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function valoracionGenerals()
+    public function valoracionGeneralsVolveria()
     {
         return $this->hasMany('App\ValoracionGeneral', 'volveria');
     }
@@ -50,6 +50,6 @@ class Volveria_Visitar extends Model
      */
     public function volveriaVisitarConIdiomas()
     {
-        return $this->hasMany('App\VolveriaVisitarConIdioma');
+        return $this->hasMany('App\Models\Volveria_Visitar_Con_Idioma','volveria_visitar_id');
     }
 }
