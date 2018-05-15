@@ -24,6 +24,49 @@ angular.module('receptor.gasto', [])
             });
         }
     })
+     $scope.limpiarGasto = function(){
+        if($scope.encuestaReceptor.RealizoGasto == 0){
+            var aux = [];
+            aux = $scope.encuestaReceptor.Financiadores;
+            $scope.encuestaReceptor = {}
+            $scope.encuestaReceptor.Financiadores = aux;
+            $scope.encuestaReceptor.RealizoGasto = 0;
+            for(var i= 0; i<$scope.rubros.length;i++){
+                $scope.rubros[i].gastos_visitantes = [];
+            }
+        }
+    }
+    
+    $scope.limpiarPaquete = function(){
+        if($scope.encuestaReceptor.ViajoDepartamento == 0){
+            var aux = [];
+            aux = $scope.encuestaReceptor.Financiadores;
+            $scope.encuestaReceptor = {}
+            $scope.encuestaReceptor.Financiadores = aux;
+            $scope.encuestaReceptor.RealizoGasto = 1;
+            $scope.encuestaReceptor.ViajoDepartamento = 0
+        }
+    }
+    
+    $scope.limpiarRubros = function(){
+        if($scope.encuestaReceptor.GastosAparte == 0){
+            for(var i= 0; i<$scope.rubros.length;i++){
+                $scope.rubros[i].gastos_visitantes = [];
+            }
+        }
+    }
+    
+    $scope.limpiarLocalizacion = function(){
+        if($scope.encuestaReceptor.Proveedor != 1 && $scope.encuestaReceptor.LugarAgencia != undefined ){
+            $scope.encuestaReceptor.LugarAgencia = undefined;
+        }
+    }
+    
+    $scope.limpiarMunicipios = function(){
+        if($scope.encuestaReceptor.IncluyoOtros == 0 ){
+            $scope.encuestaReceptor.Municipios = [];
+        }
+    }
     
     $scope.guardar = function(){
         
@@ -119,7 +162,10 @@ angular.module('receptor.gasto', [])
 
         return false;
     }
-
+    
+    
+   
+    
     $scope.guardar = function () {
 
         if (!$scope.GastoForm.$valid) {
