@@ -1,32 +1,24 @@
 ﻿angular.module('interno.viajesrealizados', [])
 
-.controller('viajes', function ($scope, $http) {
+.controller('viajes', function ($scope, internoServi) {
 
 
     $scope.encuesta = {}
     $scope.PrincipalViaje = {};
 
     $scope.$watch('id', function () {
-        $("body").attr("class", "cbp-spmenu-push charging")
-        $http.get("/EncuestaInterno/GetViajesRealizados/"+$scope.id)
-           .success(function (data) {
-               $("body").attr("class", "cbp-spmenu-push")
-               if (data.success) {
+          if($scope.id){
+                internoServi.getDatosViajes($scope.id).then(function (data) {
                    $scope.Datos = data.Enlaces;
                    $scope.Viajes = data.Viajes;
                    $scope.PrincipalViaje.Id = data.PrincipalViaje;
-                 
-               } else {
-                   swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-               }
-           }).error(function () {
-               $("body").attr("class", "cbp-spmenu-push")
-               swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-           })
-
+                      
+            }).catch(function () {
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
+          }
     })
+
 
     $scope.editar = function (es) {
         $scope.errores = null;
@@ -72,13 +64,7 @@
     }
 
     $scope.agregar = function () {
-        $scope.estancia = new Object()
-        $scope.estancia.ide = $scope.ide
-        $scope.estancia.Municipio = null;
-        $scope.estancia.Pais = null;
-        $scope.estancia.Departamento = null;
-        $scope.estancia.Noches = null;
-        $scope.estancia.Alojamiento = null;
+        $scope.estancia ={};
        
         if ($scope.encuesta.Estancias != null) {
             $scope.encuesta.Estancias.push($scope.estancia)
@@ -88,10 +74,7 @@
             $scope.encuesta.Estancias = []
             $scope.encuesta.Principal = -1;
             $scope.encuesta.Estancias.push($scope.estancia)
-
-
-
-        }
+      }
 
         $scope.EstanciaForm.$setUntouched();
         $scope.EstanciaForm.$setPristine();

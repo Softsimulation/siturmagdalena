@@ -39,6 +39,6 @@ class Motivo_Viaje_Con_Idioma extends Model
      */
     public function motivosViaje()
     {
-        return $this->belongsTo('App\MotivosViaje', 'motivo_viaje_id');
+        return $this->belongsTo('App\Models\MotivosViaje', 'motivo_viaje_id');
     }
 }

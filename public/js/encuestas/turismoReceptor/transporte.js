@@ -169,7 +169,7 @@ angular.module('receptor.transporte', ["checklist-model"])
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    window.location.href = "/turismoreceptor/gastos/" + $scope.id;
+                    window.location.href = "/turismoreceptor/secciongastos/" + $scope.id;
                 }, 1000);
             }else{
                 $("body").attr("class", "cbp-spmenu-push");

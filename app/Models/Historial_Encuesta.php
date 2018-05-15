@@ -34,7 +34,7 @@ class Historial_Encuesta extends Model
      */
     public function digitadore()
     {
-        return $this->belongsTo('App\Digitadore', 'usuario_id');
+        return $this->belongsTo('App\Models\Digitadore', 'usuario_id');
     }
 
     /**
@@ -42,7 +42,7 @@ class Historial_Encuesta extends Model
      */
     public function estadosEncuestum()
     {
-        return $this->belongsTo('App\EstadosEncuestum', 'estado_id');
+        return $this->belongsTo('App\Models\EstadosEncuestum', 'estado_id');
     }
 
     /**
@@ -50,6 +50,6 @@ class Historial_Encuesta extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante');
     }
 }

@@ -47,6 +47,14 @@ use App\Models\Volveria_Visitar;
 use App\Models\Calificacion;
 use App\Models\Valoracion_General;
 use App\Models\Otro_Elemento_Representativo;
+use App\Models\Divisa_Con_Idioma;
+use App\Models\Financiador_Viaje_Con_Idioma;
+use App\Models\Opcion_Lugar_Con_Idioma;
+use App\Models\Servicio_Paquete_Con_Idioma;
+use App\Models\Tipo_Proveedor_Paquete_Con_Idioma;
+use App\Models\Rubro;
+use App\Models\Visitante_Paquete_Turistico;
+use App\Models\Gasto_Visitante;
 
 class TurismoReceptorController extends Controller
 {
@@ -973,8 +981,234 @@ class TurismoReceptorController extends Controller
 		return ["success" => true, 'sw' => $sw];
     }
     
-    public function getSecciongastos(){
-        return view('turismoReceptor.Gastos');
+    public function getSecciongastos($id){
+        /*if(Visitante::find($id) == null || Visitante::find($id)->ultima_sesion<4){
+            redirect("/");
+        }*/
+        $data = ["id"=>$id];
+        return view('turismoReceptor.Gastos',$data);
+    }
+    
+    public function getInfogasto($id){
+        $divisas = Divisa_Con_Idioma::whereHas('idioma',function($q){
+            $q->where('culture','es');
+        })->select('divisas_id as id','nombre')->get();
+        
+        $financiadores = Financiador_Viaje_Con_Idioma::whereHas('idioma',function($q){
+            $q->where('culture','es');
+        })->select('financiadores_viaje_id as id','nombre')->get();
+        
+        $municipios = Municipio::select('id','nombre')->get();
+        
+        $opciones = Opcion_Lugar_Con_Idioma::whereHas('idioma', function($p){
+                $p->where('culture','es');
+            })->select('opciones_lugares_id as id','nombre')->get();
+        
+        $servicios =  Servicio_Paquete_Con_Idioma::whereHas('idioma',function($q){
+             $q->where('culture','es');
+        })->select('servicios_paquete_id as id','nombre')->get();
+        
+        $tipos = Tipo_Proveedor_Paquete_Con_Idioma ::whereHas('idioma',function($q){
+            $q->where('culture','es');
+        })->select('tipo_proveedor_paquete_id as id','nombre')->get();
+        
+        $rubros =  Rubro::with(["rubrosConIdiomas"=>function($q){
+            $q->where('idiomas_id',1);
+        },"gastosVisitantes"=>function($r) use($id){
+            $r->where('visitante_id',$id);
+        }])->get();
+        
+        $paquete = Visitante_Paquete_Turistico::find($id);
+        $encuesta["id"]= $id;
+        $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
+        
+        $encuesta["ViajoDepartamento"] = $paquete != null ? 1 :0;
+        
+        if( $encuesta["ViajoDepartamento"] == 1){
+            $encuesta["CostoPaquete"] = $paquete->costo_paquete;
+            $encuesta["DivisaPaquete"] = $paquete->divisas_id;
+            $encuesta["PersonasCubrio"] = $paquete->personas_cubrio;
+            $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
+            $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
+            $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
+            $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+            $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
+        }
+        
+        $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
+        $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
+         
+
+        return ["divisas"=>$divisas ,"financiadores"=>$financiadores ,"municipios"=>$municipios,"opciones"=>$opciones,"servicios"=>$servicios,"rubros"=>$rubros,"tipos"=>$tipos,"encuesta"=>$encuesta];
+        
+    }
+    
+    public function postGuardargastos(Request $request){
+        
+         $validator = \Validator::make($request->all(), [
+             
+			'id' => 'required|exists:visitantes,id',
+			'RealizoGasto' => 'required|between:0,1',
+			'ViajoDepartamento' => 'required|between:0,1',
+			'CostoPaquete' => 'required_if:ViajoDepartamento,1',
+			'DivisaPaquete' => 'required_if:ViajeDepartamento,1|exists:divisas,id',
+			'PersonasCubrio' => 'required_if:ViajeDepartamento,1|integer|min:1',
+			'IncluyoOtros' => 'required_if:ViajoDepartamento,1|between:0,1',
+			'Municipios' => 'required_if:IncluyoOtros,1|array',
+			'Municipios.*' => 'required|exists:municipios,id',
+			'Proveedor' => 'required_if:ViajoDepartamento,1|exists:tipo_proveedor_paquete,id',
+			'LugarAgencia' => 'required_if:ViajoDepartamento,1|exists:opciones_lugares,id',
+			'ServiciosIncluidos' => 'required_if:ViajoDepartamento,1|array',
+			'ServiciosIncluidos.*' => 'required|exists:servicios_paquete,id',
+			'GastosAparte' => 'required|between:0,1',
+			'Financiadores' => 'required|array',
+			'Financiadores.*' => 'required|exists:financiadores_viajes,id',
+			'Rubros'=>'required_if:GastosAparte,1|array',
+			
+    	],[
+       		'RealizoGasto.required' => 'Debe seleccionar la opción de realizar los gastos.',
+       		'RealizoGasto.between' => 'No es un valor válido para el campo.',
+       		'CostoPaquete.required_if' => 'Debe seleccionar el costo del paquete.',
+       		'DivisaPaquete.required_if' => 'Debe seleccionar la divisa del paquete.',
+       		'DivisaPaquete.exists' => 'Esta divisa no se encuentra almacenada en el sistema.',
+       		'PersonasCubrio.required_if' => 'Debe ingresar el número de personas que cubre el paquete.',
+       		'PersonasCubrio.min' => 'El número de personas debe ser mayor o igual a 1.',
+       		'IncluyoOtros.required' => 'Debe seleccionar la opción de realizar los gastos.',
+       		'IncluyoOtros.between' => 'No es un valor válido para el campo.',
+       		'Municipios.required_if' => 'El campo municipio es requerido.',
+       		'Municipios.*.exists' => 'El municipio no está registrado en el sistema.',
+       		'Proveedor.required_if' => 'El campo proveedor del paquete es requerido.',
+       		'Proveedor.exists' => 'El proveedor no existe en el sistema.',
+       		'LugarAgencia.required_if' => 'El lugar de la agencia es requerido.',
+       		'LugarAgencia.exists' => 'El lugar de la ubicación de la agencia no está registrada en el sistema.',
+       		'ServiciosIncluidos.required_if' => 'Los servicios incluidos son requeridos.',
+       		'ServiciosIncluidos.*.exists' => 'El servicio incluido no existe en el sistema.',
+       		'GastosAparte.required' => 'El campo de proporcionar gastos adicionales es requerido.',
+       		'Financiadores.required' => 'El campo de financiadores de viaje es requerido.',
+       		'Financiadores.*.exists' => 'El financiador de viaje no existe.',
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+    	
+    	foreach($request->Rubros as $rub){
+    	    
+    	    if(isset($rub["gastos_visitantes"][0]["cantidad_pagada_fuera"]) && isset($rub["gastos_visitantes"][0]["divisas_fuera"]) && isset($rub["gastos_visitantes"][0]["personas_cubiertas"])){ 
+        	    if($rub["gastos_visitantes"][0]["cantidad_pagada_fuera"] != null && ($rub["gastos_visitantes"][0]["divisas_fuera"] == null || $rub["gastos_visitantes"][0]["personas_cubiertas"] == null ) ){
+        	        return ["success"=>false,"errores"=> [ ["La divisa es requerida en el rubro fuera del magdalena."] ] ];
+        	    }
+    	    }
+    	    
+    	    if(isset($rub["gastos_visitantes"][0]["cantidad_pagada_magdalena"]) && isset($rub["gastos_visitantes"][0]["divisas_magdalena"]) && isset($rub["gastos_visitantes"][0]["personas_cubiertas"])){
+    	        if($rub["gastos_visitantes"][0]["cantidad_pagada_magdalena"] != null && ($rub["gastos_visitantes"][0]["divisas_magdalena"] == null || $rub["gastos_visitantes"][0]["personas_cubiertas"] == null ) ){
+        	        return ["success"=>false,"errores"=> [ ["La divisa es requerida en el rubro dentro del magdalena."] ] ];
+        	     }
+    	    }
+        	     
+    	  
+    	}
+    	
+    	$visitante = Visitante::find($request->id);
+    	if($request["RealizoGasto"] == 1){
+    	    // Paquete
+    	    $paquete = Visitante_Paquete_Turistico::find($request->id);
+    	    if($request["ViajoDepartamento"] == 1){
+    	        if($paquete == null){
+    	            $paquete = new Visitante_Paquete_Turistico;
+    	            $paquete->visitante_id = $request->id;
+    	            $paquete->costo_paquete = $request->CostoPaquete;
+    	            $paquete->personas_cubrio = $request->PersonasCubrio;
+    	            $paquete->divisas_id = $request->DivisaPaquete;
+    	            $paquete->tipo_proveedor_paquete_id = $request->Proveedor;
+    	            $paquete->save();
+    	        }else{
+    	            $paquete->personas_cubrio = $request->PersonasCubrio;
+    	            $paquete->divisas_id = $request->DivisaPaquete;
+    	            $paquete->tipo_proveedor_paquete_id = $request->Proveedor;
+    	        }
+    	        $paquete->municipios()->detach();
+    	        if($request["IncluyoOtros"]==1){
+    	            $paquete->municipios()->attach($request->Municipios);
+    	        }
+    	        $paquete->opcionesLugares()->detach();
+    	        if($paquete->tipo_proveedor_paquete_id == 1){
+    	            $paquete->opcionesLugares()->attach($request->LugarAgencia);
+    	        }
+    	        $paquete->serviciosPaquetes()->detach();
+    	        $paquete->serviciosPaquetes()->attach($request->ServiciosIncluidos);
+    	        $paquete->save();
+    	    }else{
+    	        if($paquete != null){
+    	            $paquete->municipios()->detach();
+    	            $paquete->opcionesLugares()->detach();
+    	            $paquete->serviciosPaquetes()->detach();
+    	            $paquete->delete();
+    	        }
+    	    }
+    	    
+    	    // Rubros
+    	    $rubros = Gasto_Visitante::where('visitante_id',$request->id)->delete();
+    	    if($request["GastosAparte"] == 1){
+    	        foreach($request["Rubros"] as $rub){
+    	            
+    	            $gasto = new Gasto_Visitante;
+    	            $gasto->visitante_id = $request->id;
+    	            $gasto->rubros_id = $rub["id"];
+    	            
+    	            if(isset($rub["gastos_visitantes"][0]["divisas_fuera"]) && isset($rub["gastos_visitantes"][0]["cantidad_pagada_fuera"])){
+    	                
+    	                if($rub["gastos_visitantes"][0]["divisas_fuera"] != null && $rub["gastos_visitantes"][0]["cantidad_pagada_fuera"] != null){
+        	                $gasto->divisas_fuera = $rub["gastos_visitantes"][0]["divisas_fuera"];
+        	                $gasto->cantidad_pagada_fuera = $rub["gastos_visitantes"][0]["cantidad_pagada_fuera"];
+    	                }
+    	            }
+    	            
+    	            if(isset($rub["gastos_visitantes"][0]["divisas_magdalena"]) && isset($rub["gastos_visitantes"][0]["cantidad_pagada_magdalena"])){
+    	                if($rub["gastos_visitantes"][0]["divisas_magdalena"] != null && $rub["gastos_visitantes"][0]["cantidad_pagada_magdalena"] != null){
+        	                $gasto->divisas_magdalena = $rub["gastos_visitantes"][0]["divisas_magdalena"];
+        	                $gasto->cantidad_pagada_magdalena = $rub["gastos_visitantes"][0]["cantidad_pagada_magdalena"];
+    	                }
+    	            }
+    	            
+    	            
+    	            if($rub["gastos_visitantes"][0]["personas_cubiertas"] != null){
+    	                $gasto->personas_cubiertas = $rub["gastos_visitantes"][0]["personas_cubiertas"];
+    	            }
+    	            
+    	            if(isset($rub["gastos_visitantes"][0]["gastos_asumidos_otros"])){
+    	                $gasto->gastos_asumidos_otros = $rub["gastos_visitantes"][0]["gastos_asumidos_otros"];
+    	            }
+    	            $gasto->save();
+    	        }   
+    	        
+    	    }
+    	    
+    	}else{
+    	   $paquete = Visitante_Paquete_Turistico::find($request->id);
+    	   if($paquete != null){
+    	            $paquete->municipios()->detach();
+    	            $paquete->opcionesLugares()->detach();
+    	            $paquete->serviciosPaquetes()->detach();
+    	            $paquete->delete();
+    	   }
+    	   $rubros = Gasto_Visitante::where('visitante_id',$request->id)->delete();
+    	        
+    	}
+        $visitante->financiadoresViajes()->detach();
+        $visitante->financiadoresViajes()->attach($request["Financiadores"]);
+        if($visitante->ultima_sesion<5){
+            $visitante->ultima_sesion =5;
+        }
+        
+        $visitante->historialEncuestas()->save(new Historial_Encuesta([
+            'estado_id' => 1,
+            'fecha_cambio' => date('Y-m-d H:i:s'), 
+            'mensaje' => $visitante->ultima_sesion ==5?"Se ha creado la sección de gastos":"Se ha editado la sección de gastos",
+            'usuario_id' => 1
+        ]));
+        $visitante->save();
+        return ["success"=>true];
     }
     
     public function getSeccionpercepcionviaje($id){

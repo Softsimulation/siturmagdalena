@@ -495,7 +495,7 @@
         </div>
 
         <div class="row" style="text-align:center">
-            <a href="/turismoreceptor/Gastos/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
+            <a href="/turismoreceptor/secciongastos/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,20 +16,22 @@ class Actividad_Realizada_Viajero extends Model
     /**
      * The table associated with the model.
      * 
+     * 
      * @var string
      */
     protected $table = 'actividades_realizadas_viajero';
-
+    public $timestamps = false;
+    public $incrementing = false;
     /**
      * @var array
      */
-    protected $fillable = ['estado'];
+   protected $fillable = ['actividad_id', 'actividades_realizadas_id', 'viajes_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }

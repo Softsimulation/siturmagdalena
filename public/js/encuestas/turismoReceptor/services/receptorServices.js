@@ -179,5 +179,27 @@ app.factory("receptorServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        getInfoGasto: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/turismoreceptor/infogasto/'+id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        postGuardarGasto: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/turismoreceptor/guardargastos',data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

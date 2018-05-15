@@ -36,6 +36,6 @@ class Departamento extends Model
      */
     public function municipios()
     {
-        return $this->hasMany('App\Municipio');
+        return $this->hasMany('App\Models\Municipio');
     }
 }
