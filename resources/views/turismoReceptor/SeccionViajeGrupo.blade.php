@@ -5,7 +5,7 @@
 @section('estilos')
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
          .carga {
             display: none;
@@ -51,7 +51,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Cuántas personas incluyéndose usted, realizaron juntos el viaje desde la llegada hasta la salida del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuántas personas incluyéndose usted, realizaron juntos el viaje desde la llegada hasta la salida del Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuántas personas incluyéndose usted, realizaron juntos el viaje desde la llegada hasta la salida del Atlántico?</b></h3>
             </div>
             <div class="panel-footer"><b>Sólo se pueden introducir números en este campo</b></div>
             <div class="panel-body">

@@ -5,7 +5,7 @@
 @section('estilos')
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
         .table > thead > tr > th {
             background-color: rgba(0,0,0,.1);
@@ -106,7 +106,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P1. Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Magdalena) y durante su viaje al Magdalena-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Magdalena) y durante su viaje al Magdalena</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Atlántico) y durante su viaje al Atlántico</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -225,7 +225,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <!-- P3. ¿El paquete/plan turístico incluyó municipios fuera del Magdalena?-->
-                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿El paquete/plan turístico incluyó municipios fuera del Magdalena?</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿El paquete/plan turístico incluyó municipios fuera del Atlántico?</b></h3>
                     </div>
                     <div class="panel-footer"><b>Pregunta con selección única</b></div>
                     <div class="panel-body">
@@ -254,7 +254,7 @@
                 <div class="panel panel-success" ng-show="encuestaReceptor.IncluyoOtros==1">
                     <div class="panel-heading">
                         <!-- ¿Qué otras ciudades/municipios fuera del Magdalena incluyó el paquete/plan turístico?-->
-                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué otras ciudades/municipios fuera del Magdalena incluyó el paquete/plan turístico?</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué otras ciudades/municipios fuera del Atlántico incluyó el paquete/plan turístico?</b></h3>
                     </div>
                     <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
                     <div class="panel-body">
@@ -409,7 +409,7 @@
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-6">
                                                         <!--P9Col2Title1. Fuera del Magdalena-->
-                                                        <h5 style="margin-bottom: 0;"><b>Fuera del Magdalena</b></h5>
+                                                        <h5 style="margin-bottom: 0;"><b>Fuera del Atlántico</b></h5>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
@@ -447,7 +447,7 @@
                                                     </div>
                                                     <div class="col-xs-12 col-md-6">
                                                         <!--P9Col2Title2. En el Magdalena-->
-                                                        <h5 style="margin-bottom: 0;"><b>En el Magdalena</b></h5>
+                                                        <h5 style="margin-bottom: 0;"><b>En el Atlántico</b></h5>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
@@ -531,7 +531,7 @@
             </div>
         </div>
         <div class="row" style="text-align:center">
-            <a href="/EncuestaReceptor/SeccionViajeGrupo/@ViewBag.id" class="btn btn-raised btn-default">Anterior</a>
+            <a href="/turismoreceptor/secciongrupoviaje/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />

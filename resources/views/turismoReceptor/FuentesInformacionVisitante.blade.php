@@ -5,7 +5,7 @@
 @section('estilos')
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
          .carga {
             display: none;
@@ -30,7 +30,7 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Como se enteran los visitantes sobre el departamento del Magdalena')
+@section('TitleSection', 'Como se enteran los visitantes sobre el departamento del Atlántico')
 
 @section('Progreso', '100%')
 
@@ -53,7 +53,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿ Antes de venir al departamento del Magdalena, de qué forma usted se enteró de los destinos turísticos visitados?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Antes de venir al departamento del Magdalena, de qué forma usted se enteró de los destinos turísticos visitados?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Antes de venir al departamento del Atlántico, de qué forma usted se enteró de los destinos turísticos visitados?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -76,7 +76,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Durante la permanencia en el Magdalena, de qué forma usted buscó más información sobre destinos turísticos?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Durante la permanencia en el Magdalena, de qué forma usted buscó más información sobre destinos turísticos?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Durante la permanencia en el Atlántico, de qué forma usted buscó más información sobre destinos turísticos?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -99,7 +99,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Después del viaje al Magdalena en qué redes sociales compartió su experiencia de viaje (Comentarios, fotos, etc)?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Después del viaje al Magdalena en qué redes sociales compartió su experiencia de viaje (Comentarios, fotos, etc)?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Después del viaje al Atlántico en qué redes sociales compartió su experiencia de viaje (Comentarios, fotos, etc)?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -121,7 +121,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Le gustaría que le enviáramos información sobre el Magdalena a su correo electrónico?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Le gustaría que le enviáramos información sobre el Magdalena a su correo electrónico?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Le gustaría que le enviáramos información sobre el Atlántico a su correo electrónico?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -149,7 +149,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Le gustaría que le enviáramos una invitación por redes sociales para seguir al Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Le gustaría que le enviáramos una invitación por redes sociales para seguir al Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Le gustaría que le enviáramos una invitación por redes sociales para seguir al Atlántico?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
