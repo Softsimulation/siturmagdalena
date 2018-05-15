@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class Otra_Fuente_Informacion_Durante_Viaje extends Model
      * @var string
      */
     protected $table = 'otras_fuente_informacion_durante_viaje';
-
+    public $timestamps = false;
     /**
      * The primary key for the model.
      * 
@@ -30,7 +30,7 @@ class Otra_Fuente_Informacion_Durante_Viaje extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array

@@ -4,16 +4,18 @@ angular.module('encuestas.datos_encuestado', [])
     $scope.encuesta = {};
     $scope.departamentod = {};
     
-    receptorServi.informacionCrear().then(function (data) {
-        $scope.grupos = data.grupos;
-        $scope.encuestadores = data.encuestadores;
-        $scope.lugares = data.lugar_nacimiento;
-        $scope.paises = data.paises;
-        $scope.motivos = data.motivos;
-        $scope.medicos = data.medicos;
-        $scope.departamentos_colombia = data.departamentos;
-    }).catch(function () {
-        swal("Error", "No se realizo la solicitud, reinicie la página");
+    $scope.$watch('id', function () {
+        receptorServi.informacionCrear().then(function (data) {
+            $scope.grupos = data.grupos;
+            $scope.encuestadores = data.encuestadores;
+            $scope.lugares = data.lugar_nacimiento;
+            $scope.paises = data.paises;
+            $scope.motivos = data.motivos;
+            $scope.medicos = data.medicos;
+            $scope.departamentos_colombia = data.departamentos;
+        }).catch(function () {
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        });
     })
 
     $scope.otro = function () {
@@ -88,6 +90,7 @@ angular.module('encuestas.datos_encuestado', [])
                         showConfirmButton: false
                     });
                     setTimeout(function () {
+                        window.location = "/turismoreceptor/seccionestancia/"+data.id;
                         if (JSON.parse(data.actor)) {
                             //window.location = "/EncuestaReceptor/Encuestas";
                         } else {
@@ -110,7 +113,7 @@ angular.module('encuestas.datos_encuestado', [])
 
 }])
 
-.controller("editar", ['$scope', '$http',function ($scope, $http) {
+.controller("editar", ['$scope', 'receptorServi',function ($scope, receptorServi) {
 
     $scope.encuesta = {};
     $scope.departamentod = {};
@@ -119,36 +122,34 @@ angular.module('encuestas.datos_encuestado', [])
         if ($scope.id != null) {
 
             $("body").attr("class", "charging");
-            $http.post('/EncuestaReceptor/Getvisitante/'+ $scope.id)
-                .success(function (data) {
-                    $("body").attr("class", "");
-                    data.datos = JSON.parse(data.datos);
-                    $scope.departamentos = data.departamentosr;
-                    $scope.municipios = data.municipiosr;
-                    $scope.municipios_colombia = data.municipiosd;
-                    $scope.grupos = data.datos.grupos;
-                    $scope.encuestadores = data.datos.encuestadores;
-                    $scope.lugares = data.datos.lugar_nacimiento;
-                    $scope.paises = data.datos.paises;
-                    $scope.motivos = data.datos.motivos;
-                    $scope.medicos = data.datos.medicos;
-                    $scope.departamentos_colombia = data.datos.departamentos;
-                    $scope.encuesta = data.visitante;
-                    $scope.pais_residencia = data.visitante.Pais;
-                    $scope.departamento = data.visitante.Departamento;
-                    $scope.departamentod.id = data.visitante.DepartamentoDestino;
-                    fechal = data.visitante.Llegada.split('-');
-                    fechas = data.visitante.Salida.split('-');
-                    $scope.encuesta.Llegada = new Date(fechal[0], (parseInt(fechal[1]) - 1), fechal[2]);
-                    $scope.encuesta.Salida = new Date(fechas[0], (parseInt(fechas[1]) - 1), fechas[2]);
-                    
-
-                    
-                })
-                .error(function () {
-                    $("body").attr("class", "");
-                    swal("Error", "No se realizo la solicitud, reinicie la página");
-                })
+            
+            receptorServi.getDatosEditarDatos($scope.id).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                data.datos = data.datos;
+                $scope.departamentos = data.departamentosr;
+                $scope.municipios = data.municipiosr;
+                $scope.municipios_colombia = data.municipiosd;
+                $scope.grupos = data.datos.grupos;
+                $scope.encuestadores = data.datos.encuestadores;
+                $scope.lugares = data.datos.lugar_nacimiento;
+                $scope.paises = data.datos.paises;
+                $scope.motivos = data.datos.motivos;
+                $scope.medicos = data.datos.medicos;
+                $scope.departamentos_colombia = data.datos.departamentos;
+                $scope.encuesta = data.visitante;
+                $scope.pais_residencia = data.visitante.Pais;
+                $scope.departamento = data.visitante.Departamento;
+                $scope.departamentod.id = data.visitante.DepartamentoDestino;
+                fechal = data.visitante.Llegada.split('-');
+                fechas = data.visitante.Salida.split('-');
+                $scope.encuesta.Llegada = new Date(fechal[0], (parseInt(fechal[1]) - 1), fechal[2]);
+                $scope.encuesta.Salida = new Date(fechas[0], (parseInt(fechas[1]) - 1), fechas[2]);
+                
+                
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            });
         }
     })
 
@@ -170,11 +171,10 @@ angular.module('encuestas.datos_encuestado', [])
         $scope.departamento = "";
         $scope.departamentos = [];
         if ($scope.pais_residencia != null) {
-            $http.get('/EncuestaReceptor/GetDepartamento/' + $scope.pais_residencia)
-            .success(function (data) {
+            
+            receptorServi.getDepartamento($scope.pais_residencia).then(function (data) {
                 $scope.departamentos = data;
-            })
-            .error(function () {
+            }).catch(function () {
                 swal("Error", "No se realizo la solicitud, reinicie la página", "error");
             })
         }
@@ -184,13 +184,13 @@ angular.module('encuestas.datos_encuestado', [])
         $scope.encuesta.Municipio = "";
         $scope.municipios = [];
         if ($scope.departamento != null) {
-            $http.get('/EncuestaReceptor/GetMunicipio/' + $scope.departamento)
-            .success(function (data) {
+            
+            receptorServi.getMunicipio($scope.departamento).then(function (data) {
                 $scope.municipios = data;
-            })
-            .error(function () {
+            }).catch(function () {
                 swal("Error", "No se realizo la solicitud, reinicie la página", "error");
             })
+            
         }
     }
 
@@ -198,11 +198,10 @@ angular.module('encuestas.datos_encuestado', [])
         $scope.encuesta.Destino = "";
         $scope.municipios_colombia = [];
         if ($scope.departamentod.id != null) {
-            $http.get('/EncuestaReceptor/GetMunicipio/' + $scope.departamentod.id)
-            .success(function (data) {
+            
+            receptorServi.getMunicipio($scope.departamentod.id).then(function (data) {
                 $scope.municipios_colombia = data;
-            })
-            .error(function () {
+            }).catch(function () {
                 swal("Error", "No se realizo la solicitud, reinicie la página", "error");
             })
         }
@@ -212,38 +211,31 @@ angular.module('encuestas.datos_encuestado', [])
 
         if ($scope.DatosForm.$valid) {
             $("body").attr("class", "charging");
-            $http.post('/EncuestaReceptor/EditarDatos', $scope.encuesta)
-                .success(function (data) {
-
-                    $("body").attr("class", "");
-                    if (data.success) {
-
-                        swal({
-                            title: "Realizado",
-                            text: "Sección guardada exitosamente",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        setTimeout(function () {
-                            window.location = "/EncuestaReceptor/SeccionEstanciayvisitados/" + $scope.encuesta.Id;
-                        }, 1000);
-
-
-                    } else {
-                        swal("Error", "Hay errores en el formulario corrigelos", "error");
-                        $scope.errores = data.errores;
-
-                    }
-
-                })
-                .error(function () {
-
-                    $("body").attr("class", "");
-                    swal("Error", "No se pudo realizar la petición, intentalo nuevamente", 'error');
-
-                })
-
+            
+            $("body").attr("class", "charging");
+            
+            receptorServi.guardarEditarDatos($scope.encuesta).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success) {
+                    swal({
+                        title: "Realizado",
+                        text: "Sección guardada exitosamente",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function () {
+                        window.location = "/turismoreceptor/seccionestancia/"+ $scope.encuesta.Id;
+                        //window.location = "/EncuestaReceptor/SeccionEstanciayvisitados/" + $scope.encuesta.Id;
+                    }, 1000);
+                } else {
+                    swal("Error", "Hay errores en el formulario corrigelos", "error");
+                    $scope.errores = data.errores;
+                }  
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            });
         } else {
             swal("Error", "Formulario incompleto corrige los errores", "error");
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,8 +30,8 @@ class Otro_Turista extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
-
+    public $incrementing = false;
+    public $timestamps = false;
     /**
      * @var array
      */

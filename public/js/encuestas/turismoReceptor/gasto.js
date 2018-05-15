@@ -105,7 +105,7 @@ angular.module('receptor.gasto', [])
                      showConfirmButton: false
                    });
                   setTimeout(function () {
-                      window.location.href = "/EncuestaReceptorVisitante/percepcionviaje/" + $scope.id;
+                      window.location.href = "/turismoreceptor/seccionpercepcionviaje/" + $scope.id;
                     }, 1000);
              }else{
                  $scope.errores = data.errores;
@@ -211,7 +211,7 @@ angular.module('receptor.gasto', [])
                      showConfirmButton: false
                    });
                   setTimeout(function () {
-                      window.location.href = "/EncuestaReceptorVisitante/percepcionviaje/" + $scope.id;
+                      window.location.href = "/turismoreceptor/seccionpercepcionviaje/" + $scope.id;
                     }, 1000);
              } else {
                  $("body").attr("class", "cbp-spmenu-push");

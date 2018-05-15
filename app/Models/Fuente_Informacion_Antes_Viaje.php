@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,6 +50,6 @@ class Fuente_Informacion_Antes_Viaje extends Model
      */
     public function fuenteInformacionAntesViajeConIdiomas()
     {
-        return $this->hasMany('App\FuenteInformacionAntesViajeConIdioma');
+        return $this->hasMany('App\Models\Fuente_Informacion_Antes_Viaje_Con_Idioma','fuentes_informacion_antes_viaje_id');
     }
 }

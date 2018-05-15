@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,7 +42,7 @@ class Fuente_Informacion_Durante_Viaje extends Model
      */
     public function fuentesInformacionDuranteViajeConIdiomas()
     {
-        return $this->hasMany('App\FuentesInformacionDuranteViajeConIdioma', 'fuente_informacion_durante_viaje_id');
+        return $this->hasMany('App\Models\Fuente_Informacion_Durante_Viaje_Con_Idioma', 'fuente_informacion_durante_viaje_id');
     }
 
     /**

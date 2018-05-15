@@ -5,7 +5,7 @@
 @section('estilos')
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
          .carga {
             display: none;
@@ -39,25 +39,25 @@
 
 @section('content')
 <div class="main-page">
-    <input type="hidden" ng-model="id" ng-init="" />
+    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>@Resource.EncuestaMsgError:</b></label>
+        <label><b>Errores:</b></label>
         <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
-            -@{{error.errores[0].ErrorMessage}}
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
         </div>
     </div>
     <form role="form" name="grupoForm" novalidate>
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Cuántas personas incluyéndose usted, realizaron juntos el viaje desde la llegada hasta la salida del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> @Resource.EncuestaViajeGrupoP1</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuántas personas incluyéndose usted, realizaron juntos el viaje desde la llegada hasta la salida del Atlántico?</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCampoNumero</b></div>
+            <div class="panel-footer"><b>Sólo se pueden introducir números en este campo</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="number" name="numero" class="form-control" min="1"  ng-model="grupo.Numero" ng-change="verifica()" placeholder="@Resource.EncuestaViajeGrupoP1Input1" ng-required="true"/>
+                        <input type="number" name="numero" class="form-control" min="1"  ng-model="grupo.Numero" ng-change="verifica()" placeholder="Presione aquí para ingresarel número de personas" ng-required="true"/>
                     </div>
                 </div>
                 <span ng-show="grupoForm.$submitted || grupoForm.numero.$touched">
@@ -70,17 +70,17 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Quiénes eran esas personas?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> @Resource.EncuestaViajeGrupoP2</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quiénes eran esas personas?</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgSeleccionMultiple</b></div>
+            <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="item in viaje_grupos">
                             <label>
-                                <input type="checkbox" name="personas" checklist-model="grupo.Personas" checklist-value="item.Id"  ng-disabled="(grupo.Numero == 1 && item.Id != 1) || (grupo.Numero > 1 && item.Id == 1) || grupo.Numero == null || grupo.Numero < 1" ng-change="vchek(item.Id)" /> @{{item.Nombre}}
+                                <input type="checkbox" name="personas" checklist-model="grupo.Personas" checklist-value="item.id"  ng-disabled="(grupo.Numero == 1 && item.id != 1) || (grupo.Numero > 1 && item.id == 1) || grupo.Numero == null || grupo.Numero < 1" ng-change="vchek(item.id)" /> @{{item.tipos_acompaniante_con_idiomas[0].nombre}}
                             </label>
-                             <input type="text" name="otro" class="form-control" ng-if="item.Id == 12" ng-model="grupo.Otro" ng-disabled="grupo.Numero == null || grupo.Numero <= 1" ng-change="verificarOtro()"  ng-required="grupo.Personas.indexOf(12) != -1" />
+                             <input type="text" name="otro" class="form-control" ng-if="item.id == 12" ng-model="grupo.Otro" ng-disabled="grupo.Numero == null || grupo.Numero <= 1" ng-change="verificarOtro()"  ng-required="grupo.Personas.indexOf(12) != -1" />
                         </div>
                     </div>
                 </div>
@@ -93,9 +93,9 @@
         <div class="panel panel-success" ng-if="buscar(grupo.Personas, 9)">
             <div class="panel-heading">
                 <!-- ¿Cuántos eran los otros turístas?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> @Resource.EncuestaViajeGrupoP3</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuántos eran los otros turístas?</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCampoNumero</b></div>
+            <div class="panel-footer"><b>Sólo se pueden introducir números en este campo</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -110,8 +110,8 @@
             </div>
         </div>
         <div class="row" style="text-align:center">
-            <a href="/EncuestaReceptor/SeccionTransporte/@ViewBag.id" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" value="@Resource.EncuestaBtnSiguiente" ng-click="guardar()">
+            <a href="/turismoreceptor/secciontransporte/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
+            <input type="submit" class="btn btn-raised btn-success" value="Siguiente" ng-click="guardar()">
         </div>
         <br />
     </form>

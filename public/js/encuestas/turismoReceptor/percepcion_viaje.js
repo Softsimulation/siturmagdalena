@@ -1,6 +1,6 @@
 angular.module('receptor.percepcion_viaje', [])
 
-.controller('percepcion-crear', ['$scope', '$http', function ($scope, $http) {
+.controller('percepcion-crear', ['$scope', 'receptorServi', function ($scope, receptorServi) {
 
     $scope.bandera = false;
     $scope.estadoEncuesta = null;
@@ -20,48 +20,70 @@ angular.module('receptor.percepcion_viaje', [])
 
         if ($scope.Id != null) {
             $("body").attr("class", "cbp-spmenu-push charging");
-            $http.get('/EncuestaReceptor/cargarDatosPercepcion/'+$scope.Id)
-            .success(function (data) {
-                $("body").attr("class", "cbp-spmenu-push");
-                $scope.aspectos = data.percepcion;
-                $scope.elementos = data.elementos;
-                $scope.veces = data.veces;
-
-                if (data.respuestaElementos == null && data.valoracion == null || data.respuestaElementos.length==0) {
-                    $scope.estadoEncuesta = 0;
-                } else {
-                    $scope.calificacion.Alojamiento = data.alojamiento;
-                    $scope.calificacion.Restaurante = data.restaurante;
-                    $scope.calificacion.Elementos = data.respuestaElementos;
-                    $scope.calificacion.Recomendaciones = data.valoracion.Recomendacion;
-                    $scope.calificacion.Calificacion = data.valoracion.Calificacion;
-                    $scope.calificacion.Volveria = data.valoracion.Volveria;
-                    $scope.calificacion.Recomienda = data.valoracion.Recomienda;
-                    $scope.calificacion.VecesVisitadas = data.valoracion.Veces;
-                    $scope.calificacion.OtroElementos = data.otroElemento;
-                    $scope.estadoEncuesta = 1;
-                    if (data.restaurante == -1) {
-                        $scope.calificacion.Restaurante = 0;
+            
+            receptorServi.getDatosSeccionPercepcion($scope.Id).then(function (data) {
+                if(data.success){
+                    $("body").attr("class", "cbp-spmenu-push");
+                    
+                    $scope.aspectos = $scope.convertirObjeto(data.percepcion);
+                    $scope.elementos = data.elementos;
+                    $scope.veces = data.veces;
+    
+                    if (data.respuestaElementos == null && data.valoracion == null || data.respuestaElementos.length==0) {
+                        $scope.estadoEncuesta = 0;
+                    } else {
+                        $scope.calificacion.Alojamiento = data.alojamiento;
+                        $scope.calificacion.Restaurante = data.restaurante;
+                        $scope.calificacion.Elementos = data.respuestaElementos;
+                        $scope.calificacion.Recomendaciones = data.valoracion.Recomendacion;
+                        $scope.calificacion.Calificacion = data.valoracion.Calificacion;
+                        $scope.calificacion.Volveria = data.valoracion.Volveria;
+                        $scope.calificacion.Recomienda = data.valoracion.Recomienda;
+                        $scope.calificacion.VecesVisitadas = data.valoracion.Veces;
+                        $scope.calificacion.OtroElementos = data.otroElemento;
+                        $scope.estadoEncuesta = 1;
+                        if (data.restaurante == -1) {
+                            $scope.calificacion.Restaurante = 0;
+                        }
+                        if (data.alojamiento == -1) {
+                            $scope.calificacion.Alojamiento = 0;
+                        }
+                        if (data.OtroElemento != null) {
+                            $scope.calificacion.OtroElementos = data.OtroElemento;
+                        }
                     }
-                    if (data.alojamiento == -1) {
-                        $scope.calificacion.Alojamiento = 0;
-                    }
-                    if (data.OtroElemento != null) {
-                        $scope.calificacion.OtroElementos = data.OtroElemento;
-                    }
+                }else{
+                    $("body").attr("class", "cbp-spmenu-push");
+                    $scope.errores = data.errores;
+                    swal("Error", "Error en la carga, por favor recarga la pagina", "error");
                 }
-            }).error(function () {
+            }).catch(function () {
                 $("body").attr("class", "cbp-spmenu-push");
-                swal("Error", "Error en la carga, por favor recarga la página", "error");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
             })
         }
-
     });
+    
+    $scope.convertirObjeto = function(arreglo){
+        if(arreglo != undefined){
+            for(var i = 0; i < arreglo.length; i++){
+                for(var j = 0; j < arreglo[i].items_evaluars.length; j++){
+                    if(arreglo[i].items_evaluars[j].calificacions.length > 0){
+                        arreglo[i].items_evaluars[j].radios = {
+                            Id : arreglo[i].items_evaluars[j].calificacions[0].item_evaluar_id,
+                            Valor : arreglo[i].items_evaluars[j].calificacions[0].calificacion
+                        };    
+                    }
+                }
+            }    
+        }
+        return arreglo;
+    }
 
     $scope.chequeado = function (id) {
         for (var i = 0; i < $scope.aspectos.length; i++) {
-            for (var j = 0; j < $scope.aspectos[i].Items.length; j++) {
-                if ($scope.aspectos[i].Items[j].radios.Id = id) {
+            for (var j = 0; j < $scope.aspectos[i].items_evaluars.length; j++) {
+                if ($scope.aspectos[i].items_evaluars[j].radios.Id = id) {
                     return true;
                 }
             }
@@ -71,10 +93,10 @@ angular.module('receptor.percepcion_viaje', [])
 
     $scope.limpiarFila = function(it){
         for (var i = 0; i < $scope.aspectos.length; i++) {
-            for (var j = 0; j < $scope.aspectos[i].Items.length; j++) {
-                if ($scope.aspectos[i].Items[j].radios != null) {
-                    if ($scope.aspectos[i].Items[j].radios.Id == it) {
-                        $scope.aspectos[i].Items[j].radios = null;
+            for (var j = 0; j < $scope.aspectos[i].items_evaluars.length; j++) {
+                if ($scope.aspectos[i].items_evaluars[j].radios != null) {
+                    if ($scope.aspectos[i].items_evaluars[j].radios.Id == it) {
+                        $scope.aspectos[i].items_evaluars[j].radios = null;
                         break;
                     }
 
@@ -88,11 +110,11 @@ angular.module('receptor.percepcion_viaje', [])
 
        if (control == 0) {
             for (var i = 0; i < $scope.aspectos.length; i++) {
-                for (var j = 0; j < $scope.aspectos[i].Items.length; j++) {    
-                    if ($scope.aspectos[i].Items[j].radios!=null) {
+                for (var j = 0; j < $scope.aspectos[i].items_evaluars.length; j++) {    
+                    if ($scope.aspectos[i].items_evaluars[j].radios!=null) {
                         for (var k = inicio; k <= fin; k++) {
-                            if ($scope.aspectos[i].Items[j].radios.Id == k) {
-                                $scope.aspectos[i].Items[j].radios = null;
+                            if ($scope.aspectos[i].items_evaluars[j].radios.Id == k) {
+                                $scope.aspectos[i].items_evaluars[j].radios = null;
                                 break;
                             }
                           
@@ -124,33 +146,27 @@ angular.module('receptor.percepcion_viaje', [])
             return;
         }
 
-
+        $scope.calificacion.Evaluacion = [];
         for (var i = 0; i < $scope.aspectos.length; i++) {
-            for (var j = 0; j < $scope.aspectos[i].Items.length; j++) {
+            for (var j = 0; j < $scope.aspectos[i].items_evaluars.length; j++) {
 
-                if ($scope.aspectos[i].Items[j].radios!=null) {
-                    $scope.calificacion.Evaluacion.push($scope.aspectos[i].Items[j].radios);
+                if ($scope.aspectos[i].items_evaluars[j].radios!=null) {
+                    $scope.calificacion.Evaluacion.push($scope.aspectos[i].items_evaluars[j].radios);
                     //console.log($scope.aspectos[i].Items[j].radios)
                 }
             }
         }
-        $scope.calificacion.visitante = $scope.Id;
-        $scope.mandar =null
-        if ($scope.estadoEncuesta == 0) {
-            $scope.mandar = "guardarSeccionF";
-        } else {
-            $scope.mandar = "EditarSeccionF";
-        }
+        $scope.calificacion.Id = $scope.Id;
 
         $("body").attr("class", "cbp-spmenu-push charging");
-        $http.post('/EncuestaReceptor/' + $scope.mandar + '', $scope.calificacion)
-         .success(function (data) {
-             $("body").attr("class", "cbp-spmenu-push");
-             if (data.success == true) {
-                 //swal("Exitoso", "Se ha guardado", "success")
-                 $("body").attr("class", "cbp-spmenu-push");
-                 var msj;
-                 if ($scope.estadoEncuesta == 0) {
+        
+        
+        receptorServi.guardarSeccionPercepcion($scope.calificacion).then(function (data) {
+            if(data.success){
+                $("body").attr("class", "cbp-spmenu-push");
+                
+                var msj;
+                 if (data.sw == 0) {
                      msj = "guardado";
                  } else {
                      msj = "editado";
@@ -163,21 +179,16 @@ angular.module('receptor.percepcion_viaje', [])
                      showConfirmButton: false
                    });
                     setTimeout(function () {
-                        window.location.href = "/EncuestaReceptor/FuentesInformacionVisitante/" + $scope.Id;
+                        window.location.href = "/turismoreceptor/seccionfuentesinformacion/" + $scope.Id;
                      }, 1000);
-                
-             } else {
-                 $("body").attr("class", "cbp-spmenu-push");
-                 $scope.errores = data.errores;
-                 swal("Error", "Error en la carga, por favor recarga la página", "error");
-             }
-
-         }).error(function () {
-
-             swal("Error", "Error en la carga, por favor recarga la página", "error");
-         })
-        //console.log($scope.calificacion.Evaluacion)
-
+            }else{
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+            }
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
     }
 
     $scope.verificarOtro = function () {

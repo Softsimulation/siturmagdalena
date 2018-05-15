@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +33,7 @@ class Aspectos_Evaluado extends Model
      */
     public function aspectosEvaluadosConIdiomas()
     {
-        return $this->hasMany('App\AspectosEvaluadosConIdioma', 'aspectos_evaluados_id');
+        return $this->hasMany('App\Models\Aspecto_Evaluado_Con_Idioma', 'aspectos_evaluados_id');
     }
 
     /**
@@ -41,6 +41,6 @@ class Aspectos_Evaluado extends Model
      */
     public function itemsEvaluars()
     {
-        return $this->hasMany('App\ItemsEvaluar', 'aspectos_evaluar_id');
+        return $this->hasMany('App\Models\Item_Evaluar', 'aspectos_evaluar_id');
     }
 }

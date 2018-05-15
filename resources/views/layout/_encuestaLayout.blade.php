@@ -8,7 +8,7 @@
         <meta name="description" content="Sistema de Información Turistica del Magdalena">
         <meta name="author" content="SITUR Magdalena">
         <title>@yield('title')</title>
-        <link rel="icon" type="image/ico" href="~/Content/icons/favicon-96x96.png" />
+        <link rel="icon" type="image/ico" href="{{asset('/Content/icons/favicon-96x96.png')}}" />
         <!--<link href="@Url.Content("/Content/mdl/bootstrap_mdl/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />-->
         <!--<link href="@Url.Content("~/Content/mdl/material.min.css")" rel="stylesheet" type="text/css" />-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
