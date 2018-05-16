@@ -186,6 +186,7 @@
         <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/encuesta.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/datos_encuestado.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/estanciayvisitados.js')); ?>"></script>
