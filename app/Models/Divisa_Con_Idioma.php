@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,7 @@ class Divisa_Con_Idioma extends Model
      */
     public function divisa()
     {
-        return $this->belongsTo('App\Divisa', 'divisas_id');
+        return $this->belongsTo('App\Models\Divisa', 'divisas_id');
     }
 
     /**
@@ -39,6 +39,6 @@ class Divisa_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }

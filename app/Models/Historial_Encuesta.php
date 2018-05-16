@@ -50,6 +50,6 @@ class Historial_Encuesta extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante');
     }
 }

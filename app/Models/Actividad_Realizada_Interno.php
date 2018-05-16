@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,18 +19,20 @@ class Actividad_Realizada_Interno extends Model
      * @var string
      */
     protected $table = 'actividades_realizadas_interno';
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['estado'];
+    protected $fillable = ['estado','viajes_id','actividades_realizadas_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function actividadesRealizada()
     {
-        return $this->belongsTo('App\ActividadesRealizada', 'actividades_realizadas_id');
+        return $this->belongsTo('App\Models\Actividades_Realizada', 'actividades_realizadas_id');
     }
 
     /**
@@ -38,6 +40,6 @@ class Actividad_Realizada_Interno extends Model
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }

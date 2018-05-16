@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,17 +27,17 @@ class Divisa extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function gastosVisitantes()
+    public function gastosVisitantesFue()
     {
-        return $this->hasMany('App\GastosVisitante', 'divisas_fuera');
+        return $this->hasMany('App\Models\Gasto_Visitante', 'divisas_fuera');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function gastosVisitantes()
+    public function gastosVisitantesMag()
     {
-        return $this->hasMany('App\GastosVisitante', 'divisas_magdalena');
+        return $this->hasMany('App\Models\Gasto_Visitante', 'divisas_magdalena');
     }
 
     /**
@@ -45,7 +45,7 @@ class Divisa extends Model
      */
     public function viajeExcursions()
     {
-        return $this->hasMany('App\ViajeExcursion', 'divisas_id');
+        return $this->hasMany('App\Models\ViajeExcursion', 'divisas_id');
     }
 
     /**
@@ -53,7 +53,7 @@ class Divisa extends Model
      */
     public function visitantePaqueteTuristicos()
     {
-        return $this->hasMany('App\VisitantePaqueteTuristico', 'divisas_id');
+        return $this->hasMany('App\Models\VisitantePaqueteTuristico', 'divisas_id');
     }
 
     /**
@@ -61,6 +61,6 @@ class Divisa extends Model
      */
     public function divisasConIdiomas()
     {
-        return $this->hasMany('App\DivisasConIdioma', 'divisas_id');
+        return $this->hasMany('App\Model\DivisasConIdioma', 'divisas_id');
     }
 }

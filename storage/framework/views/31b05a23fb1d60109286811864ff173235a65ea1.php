@@ -1,11 +1,9 @@
-
-
 <?php $__env->startSection('title', 'Encuesta turismo receptor'); ?>
 
 <?php $__env->startSection('estilos'); ?>
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
          
          .carga {
@@ -185,7 +183,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P2. ¿Que actividades realizó en el Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que actividades realizó en el Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que actividades realizó en el Atlántico?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -209,7 +207,7 @@
         <div class="panel panel-success" ng-if="existe(1)">
             <div class="panel-heading">
                 <!-- P3. ¿Que playas visitó en el Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que playas visitó en el Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que playas visitó en el Atlántico?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -396,7 +394,7 @@
 
 
         <div class="row" style="text-align:center">
-            <a href="/turismoreceptor/Editardatos/{{id}}" class="btn btn-raised btn-default">Anterior</a>
+            <a href="/turismoreceptor/editardatos/{{id}}" class="btn btn-raised btn-default">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" value="Siguiente" ng-click="guardar()">
         </div>
         <br />

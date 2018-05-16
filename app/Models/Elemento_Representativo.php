@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,6 +41,6 @@ class Elemento_Representativo extends Model
      */
     public function elementosRepresentativosConIdiomas()
     {
-        return $this->hasMany('App\ElementosRepresentativosConIdioma', 'elementos_representativos_id');
+        return $this->hasMany('App\Models\Elemento_Representativo_Con_Idioma', 'elementos_representativos_id');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +25,7 @@ class Valoracion_General extends Model
      * @var string
      */
     protected $table = 'valoracion_general';
+    public $timestamps = false;
 
     /**
      * The primary key for the model.
@@ -38,7 +39,7 @@ class Valoracion_General extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
@@ -50,13 +51,13 @@ class Valoracion_General extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function volveriaVisitar()
+    public function volveriaVisitarRecomendaria()
     {
         return $this->belongsTo('App\VolveriaVisitar', 'recomendaria');
     }
@@ -64,7 +65,7 @@ class Valoracion_General extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function volveriaVisitar()
+    public function volveriaVisitarVolveria()
     {
         return $this->belongsTo('App\VolveriaVisitar', 'volveria');
     }

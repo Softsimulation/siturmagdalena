@@ -1,4 +1,6 @@
+
 var app = angular.module('encuesta', ['checklist-model','angularUtils.directives.dirPagination','encuestas.datos_encuestado','recpetorService','grupoViajeService','receptor.estanciayvisitados','receptor.transporte','receptor.grupo_viaje','receptor.gasto','receptor.percepcion_viaje','receptor.enteran'])
+
 
 app.controller('seccionCtrl', ['$http', '$scope', function ($http, $scope) {
     $scope.seccionMax = 0;
@@ -7,9 +9,9 @@ app.controller('seccionCtrl', ['$http', '$scope', function ($http, $scope) {
         { id: 2, url: 'SeccionEstanciayvisitados', nombre: 'Duración de la estancia y lugares visitados' },
         { id: 3, url: 'SeccionTransporte', nombre: 'Transporte utilizado' },
         { id: 4, url: 'SeccionViajeGrupo', nombre: 'Viaje en grupo' },
-        { id: 5, url: 'Gastos', nombre: 'Gastos de viaje antes y durante el viaje al departamento del Magdalena' },
-        { id: 6, url: 'percepcionviaje', nombre: 'Percepción del viaje al departamento del Magdalena' },
-        { id: 7, url: 'FuentesInformacionVisitante', nombre: 'Como se enteran los visitantes sobre el departamento del Magdalena' }
+        { id: 5, url: 'Gastos', nombre: 'Gastos de viaje antes y durante el viaje al departamento del Atlántico' },
+        { id: 6, url: 'percepcionviaje', nombre: 'Percepción del viaje al departamento del Atlántico' },
+        { id: 7, url: 'FuentesInformacionVisitante', nombre: 'Como se enteran los visitantes sobre el departamento del Atlántico' }
     ];
     var idSeccion = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
     if (idSeccion != "DatosEncuestados") {

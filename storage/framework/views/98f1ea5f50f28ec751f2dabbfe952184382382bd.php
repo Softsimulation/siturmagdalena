@@ -3,7 +3,7 @@
 <?php $__env->startSection('estilos'); ?>
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
     </style>
     <style>
@@ -39,7 +39,6 @@
 
 <?php $__env->startSection('content'); ?>
     
-
 <div class="container">
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>
