@@ -1,7 +1,7 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Crear grupo de viaje')
+@section('title', 'Listado grupo de viaje')
 
 @section('estilos')
     <style>

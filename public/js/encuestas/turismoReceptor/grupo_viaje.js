@@ -28,6 +28,7 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
         }
 
         $scope.grupo.Fecha = $('#date_apli').val().toString();
+        $("body").attr("class", "charging");
         grupoViajeServi.GuardarGrupo($scope.grupo).then(function (data) {
             if (data.success) {
                 swal({
@@ -45,9 +46,9 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
                 swal("Error", "Por favor corrija los errores", "error");
                 $scope.errores = data.errores;
             }
-            $('#processing').removeClass('process-in');
+            $("body").attr("class", "cbp-spmenu-push");
         }).catch(function () {
-            $('#processing').removeClass('process-in');
+            $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "Error en la carga, por favor recarga la página.", "error");
         })
     }
@@ -111,6 +112,7 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
 .controller('ver_grupo', ['$scope', 'grupoViajeServi',function ($scope, grupoViajeServi) {
     $scope.total = 0;
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         grupoViajeServi.VerGrupo($scope.id).then(function (data) {
             $scope.grupo = data
             if(data != null){
@@ -124,9 +126,9 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
                 m = "0" + m;
             }
             $scope.grupo.fecha_aplicacion = cadena[1] + "/" + m + "/" + cadena[2] + " " + cadena[3];
-            $('#processing').removeClass('process-in');
+            $("body").attr("class", "cbp-spmenu-push");
         }).catch(function () {
-            $('#processing').removeClass('process-in');
+            $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "Error en la carga, por favor recarga la página.", "error");
         })
     })
@@ -134,6 +136,7 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
 
 .controller('editar_grupo', ['$scope', 'grupoViajeServi','$filter',function ($scope, grupoViajeServi, $filter) {
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         grupoViajeServi.InformacionEditar($scope.id).then(function (data) {
             $scope.grupo = data.grupo;
             $scope.lugares_aplicacion = data.lugares_aplicacion;
@@ -149,9 +152,9 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
                 m = "0" + m;
             }
             $scope.grupo.fecha_aplicacion = cadena[1] + "/" + m + "/" + cadena[2] + " " + cadena[3];
-            $('#processing').removeClass('process-in');
+            $("body").attr("class", "cbp-spmenu-push");
         }).catch(function () {
-            $('#processing').removeClass('process-in');
+            $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "Error en la carga, por favor recarga la página.", "error");
         })
 
@@ -178,6 +181,7 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
             closeOnCancel: false
         }, function (isConfirm) {
             if (isConfirm) {
+                $("body").attr("class", "charging");
                 grupoViajeServi.EditarGrupo($scope.grupo).then(function (data) {
                     if (data.success) {
                         swal({
@@ -195,9 +199,9 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
                         swal("Error", "Por favor corrija los errores", "error");
                         $scope.errores = data.errores;
                     }
-                    $('#processing').removeClass('process-in');
+                    $("body").attr("class", "cbp-spmenu-push");
                 }).catch(function () {
-                    $('#processing').removeClass('process-in');
+                    $("body").attr("class", "cbp-spmenu-push");
                     swal("Error", "Error en la carga, por favor recarga la página.", "error");
                 })
             } else {

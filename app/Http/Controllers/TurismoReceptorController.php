@@ -57,7 +57,6 @@ use App\Models\Tipo_Proveedor_Paquete_Con_Idioma;
 use App\Models\Rubro;
 use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
->>>>>>> refs/remotes/origin/release
 
 class TurismoReceptorController extends Controller
 {
@@ -767,11 +766,9 @@ class TurismoReceptorController extends Controller
 		$visitante->save();
         return ["success" => true];
     }
-    
-<<<<<<< HEAD
     public function getEncuestas(){
         
-        $encuestas = Visitante_estado::get();
+        $encuestas = Visitante_estado::where('digitador',6)->orWhere('creador',6)->get();
         
         return $encuestas;
         
@@ -789,9 +786,6 @@ class TurismoReceptorController extends Controller
         return view('turismoReceptor.Encuestas');
     }
     
-    public function getSecciontransporte(){
-        return view('turismoReceptor.SeccionTransporte');
-=======
     public function getSecciontransporte($id){
         if(Visitante::find($id) == null){
             return \Redirect::to('/turismoReceptor/encuestas')
@@ -1006,7 +1000,6 @@ class TurismoReceptorController extends Controller
 		
 		$visitante->save();
 		return ["success" => true, 'sw' => $sw];
->>>>>>> refs/remotes/origin/release
     }
     
     public function getSecciongastos($id){
