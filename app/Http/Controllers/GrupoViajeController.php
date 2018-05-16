@@ -50,7 +50,7 @@ class GrupoViajeController extends Controller
         return $result;
     }
     public function postGuardargrupo(Request $request) {
-        return $request->all();
+        //return $request->all();
         $validator=\Validator::make($request->all(),[
             
             'Fecha'=>'required|date',
