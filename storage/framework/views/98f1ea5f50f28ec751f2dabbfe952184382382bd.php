@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Encuesta turismo receptor'); ?>
 
 <?php $__env->startSection('estilos'); ?>

@@ -34,15 +34,15 @@ class Historial_Encuesta extends Model
      */
     public function digitadore()
     {
-        return $this->belongsTo('App\Digitadore', 'usuario_id');
+        return $this->belongsTo('App\Models\Digitador', 'usuario_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function estadosEncuestum()
+    public function estadosEncuesta()
     {
-        return $this->belongsTo('App\EstadosEncuestum', 'estado_id');
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_id');
     }
 
     /**

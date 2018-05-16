@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +33,7 @@ class Tipo_Viaje extends Model
      */
     public function gruposViajes()
     {
-        return $this->hasMany('App\GruposViaje', 'tipo_viaje_id');
+        return $this->hasMany('App\Models\GruposViaje', 'tipo_viaje_id');
     }
 
     /**
@@ -41,6 +41,6 @@ class Tipo_Viaje extends Model
      */
     public function tiposViajeConIdiomas()
     {
-        return $this->hasMany('App\TiposViajeConIdioma', 'tipo_viaje_id');
+        return $this->hasMany('App\Models\Tipo_Viaje_Con_Idioma', 'tipo_viaje_id');
     }
 }

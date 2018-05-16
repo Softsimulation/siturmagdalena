@@ -194,6 +194,7 @@
         <script src="{{asset('/js/encuestas/turismoReceptor/enteran.js')}}"></script>
         
         <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
+        <script src="{{asset('/js/encuestas/turismoReceptor/services/grupoViajeServices.js')}}"></script>
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });

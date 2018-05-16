@@ -20,4 +20,10 @@ Route::controller('/turismointerno','TurismoInternoController');
 
 Route::controller('/turismoreceptor','TurismoReceptorController');
 
+Route::controller('/grupoviaje','GrupoViajeController');
+
 Route::get('/actividades', 'TurismoReceptorController@actividades');
+
+Route::get('/CrearGrupoViaje', function () {
+    return view('CrearGrupoViaje');
+});
