@@ -106,7 +106,7 @@
                             <td>@{{item.grupo}}</td>
                             <td>@{{item.lugar}}</td>
                             <td>@{{item.fecha}}</td>
-                            <td>@{{item.fechallegada}}</td>
+                            <td>@{{item.fechallegada | date:'dd-MM-yyyy'}}</td>
                             <td>@{{item.UserName}}</td>
                             <td>@{{item.estado}}</td>
                             <td style="text-align: right;">@{{item.ultima}}</td>
