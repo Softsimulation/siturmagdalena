@@ -120,7 +120,7 @@
                         </div>
                         <div class="radio radio-primary">
                             <label>
-                                <input type="radio" value="0" name="opt1" ng-model="encuestaReceptor.RealizoGasto" ng-required="true">
+                                <input type="radio" value="0" name="opt1" ng-change="limpiarGasto()" ng-model="encuestaReceptor.RealizoGasto" ng-required="true">
                                 No realicé ningún tipo de gasto
                             </label>
                         </div>
@@ -150,7 +150,7 @@
                             </div>
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" value="0" name="opt2" ng-model="encuestaReceptor.ViajoDepartamento" ng-required="encuestaReceptor.RealizoGasto==1">
+                                    <input type="radio" value="0" name="opt2" ng-change="limpiarPaquete()" ng-model="encuestaReceptor.ViajoDepartamento" ng-required="encuestaReceptor.RealizoGasto==1">
                                     No
                                 </label>
                             </div>
@@ -239,7 +239,7 @@
                                 </div>
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" value="0" name="opt5" ng-model="encuestaReceptor.IncluyoOtros" ng-required="encuestaReceptor.ViajoDepartamento==1">
+                                        <input type="radio" value="0" name="opt5" ng-change="limpiarMunicipios()" ng-model="encuestaReceptor.IncluyoOtros" ng-required="encuestaReceptor.ViajoDepartamento==1">
                                         No
                                     </label>
                                 </div>
@@ -287,7 +287,7 @@
                             <div class="col-md-12">
                                 <div class="radio radio-primary" ng-repeat="prov in tipos">
                                     <label>
-                                        <input type="radio" id="radio-@{{prov.id}}" value="@{{prov.id}}" name="proveedor" ng-model="encuestaReceptor.Proveedor" ng-required="encuestaReceptor.ViajoDepartamento==1" >
+                                        <input type="radio" id="radio-@{{prov.id}}" value="@{{prov.id}}" ng-change="limpiarLocalizacion()" name="proveedor" ng-model="encuestaReceptor.Proveedor" ng-required="encuestaReceptor.ViajoDepartamento==1" >
                                         @{{prov.nombre}}
                                     </label>
                                 </div>

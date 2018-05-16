@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -49,7 +49,7 @@ class Encuesta extends Model
      */
     public function sitiosParaEncuesta()
     {
-        return $this->belongsTo('App\SitiosParaEncuesta', 'sitios_para_encuestas_id');
+        return $this->belongsTo('App\Models\Sitio_Para_Encuesta', 'sitios_para_encuestas_id');
     }
 
     /**

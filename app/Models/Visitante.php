@@ -103,7 +103,7 @@ class Visitante extends Model
      */
     public function gruposViaje()
     {
-        return $this->belongsTo('App\GruposViaje', 'grupo_viaje_id');
+        return $this->belongsTo('App\Models\Grupo_Viaje', 'grupo_viaje_id');
     }
 
     /**

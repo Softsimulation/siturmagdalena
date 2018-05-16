@@ -69,6 +69,18 @@ app.factory("receptorServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+
+        getEncuestas: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/turismoreceptor/encuestas',data).success(function (data) {
+             defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            
+        },
         getDatosTransporte: function (id) {
             var defered = $q.defer();
             var promise = defered.promise;
@@ -195,6 +207,7 @@ app.factory("receptorServi", ["$http", "$q", function ($http, $q) {
             var promise = defered.promise;
 
             $http.post('/turismoreceptor/guardargastos',data).success(function (data) {
+
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

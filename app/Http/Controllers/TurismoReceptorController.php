@@ -30,6 +30,8 @@ use App\Models\Atraccion_Visitada;
 use App\Models\Lugar_Visitado;
 use App\Models\Actividad_Hecha_Visitante;
 use App\Models\Actividad_Realizada_Por_Visitante;
+use App\Models\Encuesta;
+use App\Models\Visitante_estado;
 use App\Models\Tipo_Transporte;
 use App\Models\Visitante_Transporte_Terrestre;
 use App\Models\Tipo_Acompaniante_Visitante;
@@ -763,6 +765,25 @@ class TurismoReceptorController extends Controller
 		
 		$visitante->save();
         return ["success" => true];
+    }
+    public function getEncuestas(){
+        
+        $encuestas = Visitante_estado::where('digitador',6)->orWhere('creador',6)->get();
+        
+        return $encuestas;
+        
+        /*
+        string id = User.Identity.GetUserId();
+            int digitador = (from u in conexion.digitadores
+                             where u.user_id == id
+                             select u.id).FirstOrDefault();
+            var encuestas = from encuesta in conexion.Visitantes_estados where encuesta.Digitador == digitador || encuesta.Creador == digitador orderby encuesta.id select encuesta;
+            json.MaxJsonLength = 500000000;
+            return json.Serialize(encuestas);*/
+    }
+    
+    public function getListadoencuestas(){
+        return view('turismoReceptor.Encuestas');
     }
     
     public function getSecciontransporte($id){
