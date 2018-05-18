@@ -185,6 +185,7 @@
         <script src="{{asset('/js/plugins/select.min.js')}}" type="text/javascript"></script>
         <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
         <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
+        
         <script src="{{asset('/js/sweetalert.min.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/encuesta.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/datos_encuestado.js')}}"></script>
