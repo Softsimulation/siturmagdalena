@@ -190,9 +190,9 @@ class GrupoViajeController extends Controller
             }]);
         },'visitantes'=>function($q){
             $q->with(['historialEncuestas'=>function($r){
-                $r->where('fecha_cambio',$r->max('fecha_cambio'))->with(['estadosEncuesta'=>function($s){
+                $r->with(['estadosEncuesta'=>function($s){
                     $s->select("id","nombre");
-                }]);
+                }])->orderby('fecha_cambio','desc');
             }]);
         }])->first();
         
