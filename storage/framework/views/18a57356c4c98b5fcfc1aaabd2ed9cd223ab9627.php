@@ -1,6 +1,3 @@
-
-
-
 <?php $__env->startSection('Title','Caracterización del hogar - Turísmo interno y emisor :: SITUR'); ?>
 
 <?php $__env->startSection('estilos'); ?>
@@ -52,7 +49,7 @@
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Corrige los errores:</b></label>
         <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
+        <div ng-repeat="error in errores" ng-if="error.length>0">
             -{{error[0]}}
         </div>
 
@@ -63,7 +60,7 @@
                 <!-- P4. Información del encuestado-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Información de la vivienda</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b><?php echo e(trans('resources.EncuestaMsgCompleteInformacion')); ?></b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
@@ -181,7 +178,7 @@
             <div class="panel-heading p1">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Información del hogar</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b><?php echo e(trans('resources.EncuestaMsgCompleteInformacion')); ?></b></div>
             <div class="panel-body">
                 <a class="btn btn-raised btn-info" style="background-color:#337ab7;" ng-click="nuevo()">Agregar integrante</a>
                 <table class="table table-hover table-striped" ng-show="encuesta.integrantes.length>0">
@@ -204,7 +201,7 @@
                                 </div>
                             </td>
                             <td style="text-align: right">
-                                <a href="/EncuestaInterno/ViajesRealizados/{{i.id}}" class="btn btn-success btn-sm" style="margin: 0;padding: 5px 10px;" ng-if="i.id != null && i.Viaje=='1'" title="Diligenciar encuesta"><i class="material-icons">content_paste</i></a>
+                                <a href="/turismointerno/viajesrealizados/{{i.id}}" class="btn btn-success btn-sm" style="margin: 0;padding: 5px 10px;" ng-if="i.id != null && i.Viaje=='1'" title="Diligenciar encuesta"><i class="material-icons">content_paste</i></a>
                                 <button type="button" class="btn btn-warning btn-sm" style="margin: 0;padding: 5px 10px;" ng-click="nuevo($index)" title="Editar información de integrante"><i class="material-icons">mode_edit</i></button>
                                 <button type="button" class="btn btn-danger btn-sm" style="margin: 0;padding: 5px 10px;" ng-click="Eliminar($index)" title="Eliminar integrante"><i class="material-icons">delete</i></button>
 
@@ -221,7 +218,7 @@
                 <!-- P4. Información del encuestado-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Datos del entrevistado</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b><?php echo e(trans('resources.EncuestaMsgCompleteInformacion')); ?></b></div>
             <div class="panel-body">
 
                 <div class="row">
@@ -340,14 +337,16 @@
                                             <label style="color: grey">
                                                 <!--P4P4Radio1. Hombre-->
                                                 <input type="radio" name="sexo" ng-model="integrante.Sexo" value="true" ng-required="true">
-                                                @Resource.EncuestaGeneralP4P4Radio1
+                                                <?php echo e(trans('resources.EncuestaGeneralP4P4Radio1')); ?>
+
                                             </label>
                                         </div>
                                         <div class="radio radio-primary" style="display: inline-block;">
                                             <label style="color: grey;">
                                                 <!--P4P4Radio2. Mujer-->
                                                 <input type="radio" name="sexo" ng-model="integrante.Sexo" value="false" ng-required="true">
-                                                @Resource.EncuestaGeneralP4P4Radio2
+                                                <?php echo e(trans('resources.EncuestaGeneralP4P4Radio2')); ?>
+
                                             </label>
                                         </div>
                                     </div>

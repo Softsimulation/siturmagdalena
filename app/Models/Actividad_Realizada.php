@@ -51,7 +51,7 @@ class Actividad_Realizada extends Model
      */
     public function actividadesRealizadasInternos()
     {
-        return $this->hasMany('App\ActividadesRealizadasInterno', 'actividades_realizadas_id');
+        return $this->hasMany('App\Models\ActividadesRealizadasInterno', 'actividades_realizadas_id');
     }
 
     /**

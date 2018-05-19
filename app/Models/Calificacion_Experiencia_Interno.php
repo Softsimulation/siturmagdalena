@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +20,8 @@ class Calificacion_Experiencia_Interno extends Model
      * @var string
      */
     protected $table = 'calificacion_experiencia_interno';
+    public $timestamps=false;
+    protected $primaryKey = 'viajes_id';
 
     /**
      * @var array

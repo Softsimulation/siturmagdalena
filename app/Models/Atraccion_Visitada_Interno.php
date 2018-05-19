@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,23 +14,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Atraccion_Visitada_Interno extends Model
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
+    
     protected $table = 'atracciones_visitadas_interno';
+    public $timestamps = false;
 
-    /**
-     * @var array
-     */
+ 
     protected $fillable = ['actividades_realizadas_id', 'atraccion_id', 'tipo_atraccion_id', 'viajes_id'];
 
-    /**
+    /*
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }

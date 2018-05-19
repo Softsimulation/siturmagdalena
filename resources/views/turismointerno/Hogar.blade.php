@@ -65,7 +65,7 @@
                 <!-- P4. Información del encuestado-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Información de la vivienda</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>{{trans('resources.EncuestaMsgCompleteInformacion')}}</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
@@ -182,7 +182,7 @@
             <div class="panel-heading p1">                
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Información del hogar</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>{{trans('resources.EncuestaMsgCompleteInformacion')}}</b></div>
             <div class="panel-body">
                 <a class="btn btn-raised btn-info" style="background-color:#337ab7;" ng-click="nuevo()">Agregar integrante</a>
                 <table class="table table-hover table-striped" ng-show="encuesta.integrantes.length>0">
@@ -204,7 +204,6 @@
                                 </div>
                             </td>
                             <td>
-                                @{{i.jefe_hogar}}
                                 <button type="button" class="btn btn-warning btn-sm" style="margin: 0;padding: 5px 10px;" ng-click="nuevo($index)" title="Editar"><i class="material-icons">mode_edit</i></button>
                                 <button type="button" class="btn btn-danger btn-sm" style="margin: 0;padding: 5px 10px;" ng-click="Eliminar($index)" title="Eliminar"><i class="material-icons">delete</i></button>
                                 <!--   <i class="material-icons"  style="cursor:pointer;">content_paste</i>-->
@@ -221,7 +220,7 @@
                 <!-- P4. Información del encuestado-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Datos del entrevistado</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>{{trans('resources.EncuestaMsgCompleteInformacion')}}</b></div>
             <div class="panel-body">
 
                 <div class="row">
@@ -340,14 +339,14 @@
                                             <label>
                                                 <!--P4P4Radio1. Hombre-->
                                                 <input type="radio" name="sexo" ng-model="integrante.Sexo" value="true" ng-required="true">
-                                                @Resource.EncuestaGeneralP4P4Radio1
+                                                {{trans('resources.EncuestaGeneralP4P4Radio1')}}
                                             </label>
                                         </div>
                                         <div class="radio radio-primary" style="display: inline-block;">
                                             <label>
                                                 <!--P4P4Radio2. Mujer-->
                                                 <input type="radio" name="sexo" ng-model="integrante.Sexo" value="false" ng-required="true">
-                                                @Resource.EncuestaGeneralP4P4Radio2
+                                                {{trans('resources.EncuestaGeneralP4P4Radio2')}}
                                             </label>
                                         </div>
                                     </div>

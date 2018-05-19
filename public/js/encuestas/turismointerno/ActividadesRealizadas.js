@@ -1,38 +1,79 @@
-﻿angular.module('interno.Actividades', [])
-.controller('estancia', function ($scope, $http) {
+angular.module('interno.Actividades', [])
+.controller('estancia', ['$scope', 'serviInterno',function ($scope, serviInterno)  {
 
 
     $scope.encuesta = {}
     $scope.MensajeAlojamiento = false
 
 
-
-    $scope.$watch('id', function () {
-        $("body").attr("class", "cbp-spmenu-push charging")
-        $http.get("/EncuestaInterno/GetActividadesRealizadas/" + $scope.id)
-           .success(function (data) {
-               $("body").attr("class", "cbp-spmenu-push")
-               if (data.success) {
-                   $scope.Datos = data.Enlaces;
-                   $scope.encuesta = data.encuesta;
-                   $scope.encuesta.Id = $scope.id;
-                  
-
-
-               } else {
-                   swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-               }
-           }).error(function () {
-               $("body").attr("class", "cbp-spmenu-push")
-               swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-           })
+  $scope.$watch('id', function () {
+        if($scope.id != null){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            serviInterno.getDatosEstancia($scope.id).then(function (data) {
+                       $scope.Datos = data.Enlaces;
+                       $scope.transformarObjeto($scope.Datos);
+                       $scope.encuesta = data.encuesta;
+                       $scope.encuesta.Id = $scope.id;
+                       $("body").attr("class", "cbp-spmenu-push");
+                      
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
+        }
+        
     })
-
-
-
-
+    
+      $scope.transformarObjeto = function(Datos){
+        //atracciones
+        var atracciones = [];
+        for(var i = 0; i < Datos.Atracciones.length; i++){
+            var objeto = {
+                Nombre : Datos.Atracciones[i].atraccione.sitio.sitios_con_idiomas[0].nombre,
+                Id : Datos.Atracciones[i].atraccion_id,
+                IdT : Datos.Atracciones[i].tipo_atraccion_id,
+            }
+            atracciones.push(objeto);
+        }
+        $scope.Datos.Atracciones = atracciones;
+        
+        //tipoAtracciones
+        var arreglo = [];
+        for(var i = 0; i < Datos.TipoAtracciones.length; i++){
+            var objeto = {
+                Nombre : Datos.TipoAtracciones[i].tipo_atracciones_con_idiomas[0].nombre,
+                Id : Datos.TipoAtracciones[i].id,
+                IdA : Datos.TipoAtracciones[i].actividades_realizadas[0].id,
+            }
+            arreglo.push(objeto);
+        }
+        $scope.Datos.TipoAtracciones = arreglo;
+        
+        //actividades
+        var arreglo = [];
+        for(var i = 0; i < Datos.Actividades.length; i++){
+            var objeto = {
+                Nombre : Datos.Actividades[i].actividade.actividades_con_idiomas[0].nombre,
+                Id : Datos.Actividades[i].actividad_id,
+                IdA : Datos.Actividades[i].actividades_realizadas_id,
+            }
+            arreglo.push(objeto);
+        }
+        $scope.Datos.Actividades = arreglo;
+        
+        //atraccionesportal
+        var arreglo = [];
+        for(var i = 0; i < Datos.AtraccionesPortal.length; i++){
+            var objeto = {
+                Nombre : Datos.AtraccionesPortal[i].sitio.sitios_con_idiomas[0].nombre,
+                Id : Datos.AtraccionesPortal[i].id,
+            }
+            arreglo.push(objeto);
+        }
+        $scope.Datos.AtraccionesPortal = arreglo;
+        
+    }
 
     $scope.cambioActividadesRealizadas = function () {
         $scope.sw = $scope.encuesta.ActividadesRelizadas.indexOf(23)
@@ -146,10 +187,6 @@
         }
 
     }
-
-
-
-
 
 
 
@@ -273,38 +310,32 @@
         $scope.errores = null
         $("body").attr("class", "cbp-spmenu-push charging");
 
-        $http.post('/EncuestaInterno/CreateActividades', $scope.encuesta)
-                       .success(function (data) {
-                           if (data.success == true) {
-                               swal({
-                                   title: "Realizado",
-                                   text: "Se ha guardado satisfactoriamente la sección.",
-                                   type: "success",
-                                   timer: 1000,
-                                   showConfirmButton: false
-                               });
-                               setTimeout(function () {
-                                   window.location.href = "/EncuestaInterno/Transporte/" + $scope.id;
-                                   
-                             
 
-
-
-
-                               }, 1000);
-
-
-                           } else {
-                               swal("Error", "Por favor corrija los errores", "error")
-                               $scope.errores = data.errores;
-                           }
-                       }).error(function () {
-                           $("body").attr("class", "cbp-spmenu-push")
-                           swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-                       })
+       serviInterno.guardarSeccionEstancia($scope.encuesta).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success == true) {
+                    swal({
+                        title: "Realizado",
+                        text: "Se ha guardado satisfactoriamente la sección.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function () {
+                        window.location.href = "/turismointerno/transporte/" + $scope.id;
+                    }, 1000);
+    
+    
+                } else {
+                    swal("Error", "Por favor corrija los errores", "error");
+                    $scope.errores = data.errores;
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
     }
 
 
 
-})
-
+}])

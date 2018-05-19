@@ -1,32 +1,28 @@
-﻿angular.module('interno.viajesrealizados', [])
+angular.module('interno.viajesrealizados', [])
 
-.controller('viajes', function ($scope, $http) {
+.controller('viajes', function ($scope, serviInterno) {
 
 
     $scope.encuesta = {}
     $scope.PrincipalViaje = {};
 
     $scope.$watch('id', function () {
-        $("body").attr("class", "cbp-spmenu-push charging")
-        $http.get("/EncuestaInterno/GetViajesRealizados/"+$scope.id)
-           .success(function (data) {
-               $("body").attr("class", "cbp-spmenu-push")
-               if (data.success) {
+          if($scope.id){
+              $("body").attr("class", "cbp-spmenu-push charging");
+                serviInterno.getDatosViajes($scope.id).then(function (data) {
                    $scope.Datos = data.Enlaces;
                    $scope.Viajes = data.Viajes;
-                   $scope.PrincipalViaje.Id = data.PrincipalViaje;
-                 
-               } else {
-                   swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-               }
-           }).error(function () {
-               $("body").attr("class", "cbp-spmenu-push")
-               swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-           })
-
+                   $scope.PrincipalViaje.id = data.Principal;
+                   $("body").attr("class", "cbp-spmenu-push");
+                      
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+                
+        })
+          }
     })
+
 
     $scope.editar = function (es) {
         $scope.errores = null;
@@ -34,22 +30,22 @@
         $scope.EstanciaForm.$setUntouched();
 
         $("body").attr("class", "cbp-spmenu-push charging")
-        $http.get("/EncuestaInterno/GetViaje/" + es.Id)
-           .success(function (data) {
-               $("body").attr("class", "cbp-spmenu-push")
-               if (data.success) {
+        
+        serviInterno.getDatoViaje(es.id).then(function (data) {
+              $("body").attr("class", "cbp-spmenu-push");
                    $scope.edit = es;
                    $scope.encuesta = data.encuesta;
                    $scope.encuesta.Id = $scope.id;
                    $scope.encuesta.Crear = false;
+                   $scope.encuesta.Idv = es.id;
                    if (data.encuesta.Numero != null) {
                        $scope.Total = data.encuesta.Numero - 1
                    }
-                   if (data.inicio != null && data.fin != null) {
-                       fechal = data.inicio.split('/')
-                       fechas = data.fin.split('/')
-                       $scope.encuesta.Inicio = new Date(fechal[2], (parseInt(fechal[1]) - 1), fechal[0])
-                       $scope.encuesta.Fin = new Date(fechas[2], (parseInt(fechas[1]) - 1), fechas[0])
+                   if (data.encuesta.Inicio != null && data.encuesta.Fin != null) {
+                       fechal = data.encuesta.Inicio.split('-')
+                       fechas = data.encuesta.Fin.split('-')
+                       $scope.encuesta.Inicio = new Date(fechal[0], (parseInt(fechal[1]) - 1), fechal[2])
+                       $scope.encuesta.Fin = new Date(fechas[0], (parseInt(fechas[1]) - 1), fechas[2])
 
                    }
                    if (data.encuesta.Estancias == null) {
@@ -57,28 +53,19 @@
                    }
 
                    $scope.ver = true;
-                  
-               } else {
-                   swal("Error", "Error en la carga, por favor recarga la pagina", "error")
+                      
+            }).catch(function () {
+                  $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
+        
 
-               }
-           }).error(function () {
-               $("body").attr("class", "cbp-spmenu-push")
-               swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-           })
 
 
     }
 
     $scope.agregar = function () {
-        $scope.estancia = new Object()
-        $scope.estancia.ide = $scope.ide
-        $scope.estancia.Municipio = null;
-        $scope.estancia.Pais = null;
-        $scope.estancia.Departamento = null;
-        $scope.estancia.Noches = null;
-        $scope.estancia.Alojamiento = null;
+        $scope.estancia ={};
        
         if ($scope.encuesta.Estancias != null) {
             $scope.encuesta.Estancias.push($scope.estancia)
@@ -88,17 +75,13 @@
             $scope.encuesta.Estancias = []
             $scope.encuesta.Principal = -1;
             $scope.encuesta.Estancias.push($scope.estancia)
-
-
-
-        }
+      }
 
         $scope.EstanciaForm.$setUntouched();
         $scope.EstanciaForm.$setPristine();
         $scope.EstanciaForm.$submitted = false;
 
     }
-
 
 
     $scope.quitar = function (es) {
@@ -119,7 +102,6 @@
 
         es.Departamento = null;
         es.Municipio = null;
-
 
 
     }
@@ -231,8 +213,6 @@
 
     }
 
-
-
     $scope.verificaT = function () {
         if ($scope.encuesta.Numerohogar != null) {
             $scope.TotalF = $scope.Total - $scope.encuesta.Numerohogar
@@ -253,9 +233,6 @@
 
     }
 
-
-
-
     $scope.guardar = function () {
 
 
@@ -270,50 +247,46 @@
              $scope.encuesta.Id = $scope.id;
              $scope.encuesta.Crear = true;
          }
-
-        $http.post('/EncuestaInterno/CreateViaje', $scope.encuesta)
-                       .success(function (data) {
-                           if (data.success == true) {
-                               if ($scope.encuesta.Crear == true) {
-                                   $scope.Viajes.push(data.Dat);
-
+          serviInterno.guardarviaje($scope.encuesta).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success == true) {
+                    $scope.ver = false;
+                    swal({
+                        title: "Realizado",
+                        text: "Se ha guardado satisfactoriamente el viaje.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function () {
+                        if ($scope.encuesta.Crear == true) {
+                            
+                                   $scope.$apply(function() {
+                                    $scope.Viajes.push(data.viaje);
+                                  });
+                                   
                                } else {
-                                   $scope.edit.FechaInicio = data.Dat.FechaInicio;
-                                   $scope.edit.FechaFin = data.Dat.FechaFin;
+                                   $scope.edit.fecha_inicio = data.viaje.fecha_inicio;
+                                   $scope.edit.fecha_final = data.viaje.fecha_final;
 
                                }
-                               swal({
-                                   title: "Realizado",
-                                   text: "Se ha guardado satisfactoriamente la sección.",
-                                   type: "success",
-                                   timer: 1000,
-                                   showConfirmButton: false
-                               });
-                               setTimeout(function () {
-                             
+                       
+                    }, 1000);
+    
+    
+                } else {
+                    swal("Error", "Por favor corrija los errores", "error");
+                    $scope.errores = data.errores;
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
 
 
 
-
-                                   $("body").attr("class", "cbp-spmenu-push")
-                               }, 1000);
-                               $scope.ver = false;
-                               $scope.encuesta = {};
-                               $scope.clearForm();
-
-
-                           } else {
-                               $("body").attr("class", "cbp-spmenu-push")
-                               swal("Error", "Por favor corrija los errores", "error")
-                               $scope.errores = data.errores;
-                           }
-                       }).error(function () {
-                           $("body").attr("class", "cbp-spmenu-push")
-                           swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-                       })
+ 
     }
-
-
 
 
     $scope.eliminar = function (es) {
@@ -331,30 +304,21 @@
         }, function (isConfirm) {
             if (isConfirm) {
 
+          serviInterno.eliminarviaje(es).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success == true) {
+                $scope.Viajes.splice($scope.Viajes.indexOf(es), 1);
+                 swal("Exito", "Se realizó la operación exitosamente", "success");
+                } else {
+                    swal("Error", "Por favor corrija los errores", "error");
+                    $scope.errores = data.errores;
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
 
-
-                $http.post('/EncuestaInterno/eliminarviaje',{Id : es.Id}).success(function (data) {
-
-                    if (data.success == true) {
-
-                        for (j = 0; j < $scope.Viajes.length; j++) {
-                            if ($scope.Viajes[j].Id == es.Id) {
-
-                                $scope.Viajes.splice(j, 1);
-                            }
-
-                        }
-
-
-
-
-
-                        swal("¡Éxito!", "Se elimino satisfactoriamente el viaje", "success")
-
-                    } else {
-                        swal("Error", "Error al tratar de eliminar", "error");
-                    }
-                })
+               
 
 
             } else {
@@ -363,9 +327,6 @@
         });
 
     }
-
-
-
 
 
     $scope.cancelar = function () {
@@ -389,12 +350,10 @@
 
     }
 
-
-
-    $scope.siguiente = function () {
+  $scope.siguiente = function () {
 
         $scope.error = null
-        if ($scope.PrincipalViaje.Id == null) {
+        if ($scope.PrincipalViaje.id == null) {
             swal("Error", "corrija los errores", "error")
             $scope.error = "Debe seleccionar un viaje como principal";
             return
@@ -406,14 +365,17 @@
             $scope.encuesta.Id = $scope.id;
             $scope.encuesta.Crear = true;
         }
+        
+        $scope.env = {};
+        $scope.env.id = $scope.id; 
+        $scope.env.principal = $scope.PrincipalViaje.id;
 
 
 
-        $http.post('/EncuestaInterno/guardarviaje', { Id: $scope.id, Principal: $scope.PrincipalViaje.Id })
-                       .success(function (data) {
-                           if (data.success == true) {
-                            
-                               swal({
+          serviInterno.siguienteviaje($scope.env).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success == true) {
+                                          swal({
                                    title: "Realizado",
                                    text: "Se ha guardado satisfactoriamente la sección.",
                                    type: "success",
@@ -423,27 +385,28 @@
                                setTimeout(function () {
 
                                    if (data.Sw == 1) {
-                                       window.location.href = "/EncuestaInterno/ActividadesRealizadas/" + $scope.PrincipalViaje.Id;
+                                       window.location.href = "/turismointerno/actividadesrealizadas/" + $scope.PrincipalViaje.id;
                                    } else {
-                                       window.location.href = "/EncuestaInterno/Transporte/" + $scope.PrincipalViaje.Id;
-
+                                       window.location.href = "/turismointerno/transporte/" + $scope.PrincipalViaje.id;
                                    }
 
 
 
                                    $("body").attr("class", "cbp-spmenu-push")
                                }, 1000);
-                       
+              
+                } else {
+                    swal("Error", "Por favor corrija los errores", "error");
+                    $scope.errores = data.errores;
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
 
-                           } else {
-                               $("body").attr("class", "cbp-spmenu-push")
-                               swal("Error", "Por favor corrija los errores", "error")
-                               $scope.error = data.error;
-                           }
-                       }).error(function () {
-                           $("body").attr("class", "cbp-spmenu-push")
-                           swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-                       })
+
+
+
     }
 
 

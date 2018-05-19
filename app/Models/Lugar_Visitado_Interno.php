@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,18 +20,20 @@ class Lugar_Visitado_Interno extends Model
      * @var string
      */
     protected $table = 'lugares_visitados_interno';
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['estado'];
+       protected $fillable = ['estado','actividad_realizadas_id','tipo_atraccion_id','viajes_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function tipoAtraccione()
     {
-        return $this->belongsTo('App\TipoAtraccione', 'tipo_atraccion_id');
+        return $this->belongsTo('App\Models\Tipo_Atraccione', 'tipo_atraccion_id');
     }
 
     /**
@@ -39,6 +41,6 @@ class Lugar_Visitado_Interno extends Model
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }

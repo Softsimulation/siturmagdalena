@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,7 @@ class Tipo_Transporte extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
@@ -48,7 +48,7 @@ class Tipo_Transporte extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function visitantes()
+    public function visitantesllegada()
     {
         return $this->hasMany('App\Visitante', 'transporte_llegada');
     }

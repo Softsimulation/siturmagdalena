@@ -11,11 +11,13 @@
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
 
 Route::controller('/turismoreceptor','TurismoReceptorController');

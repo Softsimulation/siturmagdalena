@@ -58,7 +58,7 @@ class Edificacion extends Model
      */
     public function temporada()
     {
-        return $this->belongsTo('App\Temporada');
+        return $this->belongsTo('App\Models\Temporada');
     }
 
     /**
@@ -66,6 +66,6 @@ class Edificacion extends Model
      */
     public function hogares()
     {
-        return $this->hasMany('App\Hogare', 'edificaciones_id');
+        return $this->hasMany('App\Models\Hogar', 'edificaciones_id');
     }
 }

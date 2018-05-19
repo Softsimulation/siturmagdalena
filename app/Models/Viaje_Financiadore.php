@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +18,8 @@ class Viaje_Financiadore extends Model
      * @var string
      */
     protected $table = 'viajes_financiadores';
-
+    
+    protected $primaryKey = 'viaje_id';
     /**
      * @var array
      */
@@ -29,7 +30,7 @@ class Viaje_Financiadore extends Model
      */
     public function financiadoresViaje()
     {
-        return $this->belongsTo('App\FinanciadoresViaje', 'financiadores_id');
+        return $this->belongsTo('App\Models\FinanciadoresViaje', 'financiadores_id');
     }
 
     /**
@@ -37,6 +38,6 @@ class Viaje_Financiadore extends Model
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje');
+        return $this->belongsTo('App\Models\Viaje');
     }
 }
