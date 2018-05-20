@@ -37,7 +37,8 @@ app.controller('seccionCtrl', ['$http', '$scope', function ($http, $scope) {
         
     })
 }])
-app.controller('listadoEncuestasCtrl', ['receptorServi', '$scope', function (receptorServi, $scope) {
+
+app.controller('listadoEncuestasCtrl', ['$scope','receptorServi', function ($scope,receptorServi) {
     $scope.prop = {
         search:''
     }

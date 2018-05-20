@@ -77,4 +77,10 @@ class Actividad_Realizada extends Model
     {
         return $this->belongsToMany('App\Actividade', 'actividades_realizadas_con_actividades', 'actividades_realizadas_id', 'actividad_id');
     }
+    
+    public function opciones()
+    {
+        return $this->hasMany('App\Models\Opcion_Actividad_Realizada', 'actividad_realizada_id');
+    }
+    
 }
