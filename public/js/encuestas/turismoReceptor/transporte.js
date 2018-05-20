@@ -17,6 +17,7 @@ angular.module('receptor.transporte', ["checklist-model"])
                     $scope.transporte.Mover = data.mover;
                     $scope.transporte.Alquiler = data.opcion_lugar;
                     $scope.transporte.Empresa = data.empresa;
+                    $scope.transporte.Calificacion = data.calificacion;
                 }    
             }else{
                 $("body").attr("class", "cbp-spmenu-push");

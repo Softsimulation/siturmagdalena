@@ -167,7 +167,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <!-- Información del paquete turístico-->
-                        <h3 class="panel-title"><b>Información del paquete turístico</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Información del paquete turístico</b></h3>
                     </div>
                     <div class="panel-footer"><b>Complete la siguiente información</b></div>
                     <div class="panel-body">
@@ -190,7 +190,7 @@
                             <div class="col-xs-12 col-md-4">
                                 <div class="form-group">
                                     <!-- P5P2. Moneda de compra del paquete turístico o excursión-->
-                                    <label for="selectDivisa" class="col-md-12 control-label" style="color:dimgray;"><span class="asterik glyphicon glyphicon-asterisk" style="font-size: .9em;"></span> Moneda de compra del paquete turístico o excursión</label>
+                                    <label for="selectDivisa" class="col-md-12 control-label" style="color:dimgray;">Moneda de compra del paquete turístico o excursión</label>
 
                                     <div class="col-md-12">
                                         <select id="selectDivisa" class="form-control" ng-model="encuestaReceptor.DivisaPaquete" name="Divisa" ng-options="item.id as item.nombre for item in divisas" ng-required="encuestaReceptor.ViajoDepartamento==1">
@@ -265,7 +265,7 @@
                                     <ui-select multiple  id="municipios"  name="municipios" ng-model="encuestaReceptor.Municipios"  ng-required="encuestaReceptor.IncluyoOtros == 1">
                                        <ui-select-match placeholder="Seleccione municipios (multiple)">@{{$item.nombre}}</ui-select-match>
                                        <ui-select-choices repeat="item.id as item in municipios | filter:$select.search">
-                                           <div ng-bind-html="item.nombre | highlight: $select.search"></div>
+                                           @{{item.nombre}}
                                        </ui-select-choices>
                                    </ui-select>
                             </div>
@@ -407,13 +407,13 @@
                                             <td style="width:20%;">@{{rub.rubros_con_idiomas[0].nombre}}</td>
                                             <td style="width:55%;">
                                                 <div class="row">
-                                                    <div class="col-xs-12 col-md-6">
-                                                        <!--P9Col2Title1. Fuera del Magdalena-->
+                                                    <!--<div class="col-xs-12 col-md-6">
+                                                        
                                                         <h5 style="margin-bottom: 0;"><b>Fuera del Atlántico</b></h5>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
-                                                                    <!--P9Col2Cantidad. Cantidad-->
+                                                                   
                                                                     <label for="gastoFuera" class="col-md-12 control-label" style="color:dimgray;">Cantidad</label>
 
                                                                     <div class="col-md-12">
@@ -428,12 +428,12 @@
                                                             </div>
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
-                                                                    <!--P9Col2Divisa. Divisa-->
+                                                                    
                                                                     <label for="selecDivisa2" class="col-md-2 control-label" style="color:dimgray;">Divisa</label>
 
                                                                     <div class="col-md-10">
                                                                         <select id="selectDivisa2" class="form-control" name="divisaFuera@{{$index}}" ng-options ="item.id as item.nombre for item in divisas" ng-required="rub.gastos_visitantes[0].cantidad_pagada_fuera != null || rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].cantidad_pagada_magdalena == null" ng-model="rub.gastos_visitantes[0].divisas_fuera">
-                                                                            <!-- EncuestaMsgSelecionarDivisa. Seleccionar divisa-->
+                                                                           
                                                                             <option value="">Seleccionar divisa</option>
                                                                           
                                                                         </select>
@@ -444,37 +444,31 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-md-6">
+                                                    </div>-->
+                                                    <div class="col-xs-12 col-md-12">
                                                         <!--P9Col2Title2. En el Magdalena-->
-                                                        <h5 style="margin-bottom: 0;"><b>En el Atlántico</b></h5>
+                                                        
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="gastoFuera" class="col-md-12 control-label" style="color:dimgray;">Cantidad</label>
-
-                                                                    <div class="col-md-12">
-                                                                        <input type="number" class="form-control" name="cantDentro@{{$index}}" min="1" placeholder="Cantidad" ng-model="rub.gastos_visitantes[0].cantidad_pagada_magdalena" ng-required ="rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].cantidad_pagada_fuera == null" >
-                                                                        <span ng-show="GastoForm.$submitted || GastoForm.cantDentro@{{$index}}.$touched">
-                                                                            <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.min">*El valor debe ser mayor a 0</span>
-                                                                            <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.number">* Solo números.</span>
-                                                                            <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.required">* Campo requerido.</span>
-                                                                        </span>
-                                                                    </div>
+                                                                    <label for="gastoFuera" class="control-label" style="color:dimgray;">Cantidad</label>
+                                                                    <input type="number" class="form-control" name="cantDentro@{{$index}}" min="1" placeholder="Cantidad" ng-blur="cambiarAlquiler(rub)" ng-model="rub.gastos_visitantes[0].cantidad_pagada_magdalena" ng-required ="rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null" >
+                                                                    <span ng-show="GastoForm.$submitted || GastoForm.cantDentro@{{$index}}.$touched">
+                                                                        <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.min">*El valor debe ser mayor a 0</span>
+                                                                        <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.number">* Solo números.</span>
+                                                                        <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.required">* Campo requerido.</span>
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="selectDivisa" class="col-md-2 control-label" style="color:dimgray;">Divisa</label>
-
-                                                                    <div class="col-md-10">
-                                                                        <select id="selectDivisa3" class="form-control" name="divisaDentro@{{$index}}" ng-options ="item.id as item.nombre for item in divisas" ng-model="rub.gastos_visitantes[0].divisas_magdalena" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].cantidad_pagada_fuera == null">
-                                                                            <option value="">Seleccionar divisa</option>
-                                                                        </select>
-                                                                        <span ng-show="GastoForm.$submitted || GastoForm.divisaDentro@{{$index}}.$touched">
-                                                                           <span class="label label-danger" ng-show="GastoForm.divisaDentro@{{$index}}.$error.required">* Campo requerido.</span>
-                                                                        </span>
-                                                                    </div>
+                                                                    <label for="selectDivisa" class="control-label" style="color:dimgray;">Divisa</label>
+                                                                    <select id="selectDivisa3" class="form-control" name="divisaDentro@{{$index}}" ng-blur="cambiarAlquiler(rub)" ng-options ="item.id as item.nombre for item in divisas" ng-model="rub.gastos_visitantes[0].divisas_magdalena" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null">
+                                                                        <option value="">Seleccionar divisa</option>
+                                                                    </select>
+                                                                    <span ng-show="GastoForm.$submitted || GastoForm.divisaDentro@{{$index}}.$touched">
+                                                                       <span class="label label-danger" ng-show="GastoForm.divisaDentro@{{$index}}.$error.required">* Campo requerido.</span>
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -482,7 +476,8 @@
                                                 </div>
                                             </td>
                                             <td style="width:10%;">
-                                                <input type="number" min="1" class="form-control" name="personas@{{$index}}" ng-model="rub.gastos_visitantes[0].personas_cubiertas" placeholder="0" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].cantidad_pagada_fuera != null || rub.gastos_visitantes[0].divisas_fuera != null  "/>
+                                                <label class="control-label">&nbsp;</label>
+                                                <input type="number" min="1" class="form-control" name="personas@{{$index}}" ng-model="rub.gastos_visitantes[0].personas_cubiertas" ng-blur="cambiarAlquiler(rub)" placeholder="0" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].divisas_magdalena != null"/>
                                                 <span ng-show="GastoForm.$submitted || GastoForm.personas@{{$index}}.$touched">
                                                     <span class="label label-danger" ng-show="GastoForm.personas@{{$index}}.$error.number">* Solo números.</span>
                                                     <span class="label label-danger" ng-show="GastoForm.personas@{{$index}}.$error.min">* El valor debe ser mayor a 0.</span>
@@ -507,6 +502,68 @@
                 </div>
             </div>
         
+        </div>
+        
+        <div class="panel panel-success" ng-show="abrirTerrestre">
+            <div class="panel-heading">
+                <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Atlántico?</b></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="encuestaReceptor.Empresa" ng-required="abrirTerrestre" placeholder="Presione aquí para ingresar la empresa de transporte"/>
+                    </div>
+                </div>
+                <span  ng-show="GastoForm.$submitted || GastoForm.empresa.$touched">
+                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>
+                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success" ng-show="abrirAlquiler">
+            <div class="panel-heading">
+                <!-- >El alquiler de vehículo fue realizado en:-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> El alquiler de vehículo fue realizado en</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in opciones">
+                            <label ng-show="item.id != 3">
+                                <input type="radio" name="alquiler" ng-value="item.id" ng-model="encuestaReceptor.Alquiler" ng-required="abrirAlquiler"> @{{item.nombre}}
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <span  ng-show="GastoForm.$submitted || GastoForm.alquiler.$touched">
+                    <span class="label label-danger" ng-show="GastoForm.alquiler.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        <div class="panel panel-success" ng-show="abrirRopa">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> En dónde fue realizado el mayor gasto de productos como ropa, calzado,  artesanías etc. (bienes duraderos) antes y durante el viaje a Atlántico : Respuesta única</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in opciones">
+                            <label>
+                                <input type="radio" name="ropa" ng-value="item.id" ng-model="encuestaReceptor.Ropa" ng-required="abrirRopa"> @{{item.nombre}}
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <span  ng-show="GastoForm.$submitted || GastoForm.ropa.$touched">
+                    <span class="label label-danger" ng-show="GastoForm.ropa.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
         </div>
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -544,36 +601,36 @@
 @endsection
 
 @section('javascript')
-    <script>
-        $(window).on('scroll', function () {
+    // <script>
+    //     $(window).on('scroll', function () {
             
-            if ($('#tgastos').length && $(this).width() > 992) {
-                if ($(this).scrollTop() > $('#tgastos').offset().top && $(this).scrollTop() < ($('#tgastos').offset().top + $('#tgastos').height())) {
-                    $('#head-tgastos').width($('#tgastos').width());
-                    $('#head-tgastos').addClass('thead-fixed');
-                } else {
-                    $('#head-tgastos').removeClass('thead-fixed');
-                }
-            } else {
-                $('#head-tgastos').css('width', 'auto');
-                $('#head-tgastos').removeClass('thead-fixed');
-            }
+    //         if ($('#tgastos').length && $(this).width() > 992) {
+    //             if ($(this).scrollTop() > $('#tgastos').offset().top && $(this).scrollTop() < ($('#tgastos').offset().top + $('#tgastos').height())) {
+    //                 $('#head-tgastos').width($('#tgastos').width());
+    //                 $('#head-tgastos').addClass('thead-fixed');
+    //             } else {
+    //                 $('#head-tgastos').removeClass('thead-fixed');
+    //             }
+    //         } else {
+    //             $('#head-tgastos').css('width', 'auto');
+    //             $('#head-tgastos').removeClass('thead-fixed');
+    //         }
             
 
-        });
-        $(window).on('resize', function () {
-            if ($('#tgastos').length && $(this).width() > 992) {
-                if ($(this).scrollTop() > $('#tgastos').offset().top && $(this).scrollTop() < ($('#tgastos').offset().top + $('#tgastos').height())) {
-                    $('#head-tgastos').width($('#tgastos').width());
+    //     });
+    //     $(window).on('resize', function () {
+    //         if ($('#tgastos').length && $(this).width() > 992) {
+    //             if ($(this).scrollTop() > $('#tgastos').offset().top && $(this).scrollTop() < ($('#tgastos').offset().top + $('#tgastos').height())) {
+    //                 $('#head-tgastos').width($('#tgastos').width());
 
-                }
-            } else {
-                $('#head-tgastos').css('width', 'auto');
-                $('#head-tgastos').removeClass('thead-fixed');
-            }
+    //             }
+    //         } else {
+    //             $('#head-tgastos').css('width', 'auto');
+    //             $('#head-tgastos').removeClass('thead-fixed');
+    //         }
             
-        })
-    </script>
+    //     })
+    // </script>
 @endsection
 
 

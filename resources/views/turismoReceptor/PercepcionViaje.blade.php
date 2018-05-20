@@ -192,8 +192,36 @@
             </div>
             
         </div>
-
+        
         <div class="panel panel-success">
+            <div class="panel-heading p1">
+                <!-- ¿Durante su viaje utilizó servicio de alojamiento?-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Desea calificar el aspecto de factores ambientales durante sus estancia?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="factoresSi" value="1" name="factores"  ng-required="true" ng-model="calificacion.Factores">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="factoresNo" name="factores" ng-required="true" ng-change="limpiar(calificacion.Factores,13,15)" value="0" ng-model="calificacion.Factores" >
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="PercepcionForm.$submitted || PercepcionForm.factores.$touched">
+                    <span class="label label-danger" ng-show="PercepcionForm.factores.$error.required">*El campo Durante su viaje utilizó servicio de factores ambientales es requerido.</span>
+                </span>
+            </div>
+        </div>
+        <div class="panel panel-success" ng-if="calificacion.Factores==1">
             <div class="panel-heading">
                 <h3 class="panel-title"><b>@{{aspectos[2].aspectos_evaluados_con_idiomas[0].nombre}}</b></h3>
             </div>
@@ -243,8 +271,36 @@
             </div>
 
         </div>
-
+        
         <div class="panel panel-success">
+            <div class="panel-heading p1">
+                <!-- ¿Durante su viaje utilizó servicio de alojamiento?-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Desea calificar el aspecto de ocio y recreación durante sus estancia?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="ocioSi" value="1" name="ocio"  ng-required="true" ng-model="calificacion.Ocio">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="ocioNo" name="ocio" ng-required="true" ng-change="limpiar(calificacion.Ocio,17,20)" value="0" ng-model="calificacion.Ocio" >
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="PercepcionForm.$submitted || PercepcionForm.ocio.$touched">
+                    <span class="label label-danger" ng-show="PercepcionForm.ocio.$error.required">*El campo Durante su viaje utilizó servicio de ocio y recreación es requerido.</span>
+                </span>
+            </div>
+        </div>
+        <div class="panel panel-success" ng-if="calificacion.Ocio == 1">
             <div class="panel-heading">
                 <h3 class="panel-title"><b>@{{aspectos[3].aspectos_evaluados_con_idiomas[0].nombre}}</b></h3>
             </div>
@@ -293,8 +349,36 @@
             </div>
 
         </div>
-
-        <div class="panel panel-success">
+        
+         <div class="panel panel-success">
+            <div class="panel-heading p1">
+                <!-- ¿Durante su viaje utilizó servicio de alojamiento?-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Desea calificar el aspecto de infraestructura durante sus estancia?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="infraestructuraSi" value="1" name="infraestructura"  ng-required="true" ng-model="calificacion.Infraestructura">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="infraestructuraNo" name="infraestructura" ng-required="true" ng-change="limpiar(calificacion.Infraestructura,21,23)" value="0" ng-model="calificacion.Infraestructura" >
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="PercepcionForm.$submitted || PercepcionForm.infraestructura.$touched">
+                    <span class="label label-danger" ng-show="PercepcionForm.infraestructura.$error.required">*El campo Durante su viaje utilizó servicio de infraestructura es requerido.</span>
+                </span>
+            </div>
+        </div>
+        <div class="panel panel-success" ng-if="calificacion.Infraestructura == 1">
             <div class="panel-heading">
                 <h3 class="panel-title"><b>@{{aspectos[4].aspectos_evaluados_con_idiomas[0].nombre}}</b></h3>
             </div>
@@ -345,38 +429,61 @@
 
         </div>
 
-        <div class="panel panel-success">
+      <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Cuál fue el  atractivo y/o el elemento de la ciudad que más llamó su atención?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue el  atractivo y/o el elemento de la ciudad que más llamó su atención?</b></h3>
+                <h3 class="panel-title"><b> Sostenibilidad ¿Realizó alguna de las siguientes actividades para ayudar a la conservación del medio ambiente en Atlántico?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="item in elementos" >
+                        <div class="checkbox" ng-repeat="item in actividades" >
                             <label>
-                                <input type="checkbox" ng-disabled="bandera==false && item.id==11" checklist-model="calificacion.Elementos"  checklist-value="item.id"> @{{item.elementos_representativos_con_idiomas[0].nombre}}
+                                <input type="checkbox" ng-disabled="bandera==false && item.id==12" checklist-model="calificacion.Elementos"  checklist-value="item.id"> @{{item.nombre}}
                             </label>
-                            <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_atrativo" placeholder="Escriba su otra opción" ng-model="calificacion.OtroElementos" ng-change="verificarOtro()" ng-if="item.id==11" />
+                            <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_atrativo" placeholder="Escriba su otra opción" ng-model="calificacion.OtroElementos" ng-change="verificarOtro()" ng-if="item.id==12" />
                             
                         </div>
                     </div>
                 </div>
 
-                <span ng-show="PercepcionForm.$submitted">
-                    <span class="label label-danger" ng-show="calificacion.Elementos.length == 0">* Debe seleccionar alguno de los valores.</span>
-                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading p1">
+                <!-- ¿Durante su viaje utilizó servicio de alojamiento?-->
+                <h3 class="panel-title"><b> ¿Fue informado sobre las normas y cuidados que debe tener el visitante con la flora y fauna de Atlántico?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="infraestructuraSi" value="1" name="infraestructura"  ng-model="calificacion.Flora">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" id="infraestructuraNo" name="infraestructura"  value="0" ng-model="calificacion.Flora" >
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Qué recomendaría para lograr atraer más visitantes al Magdalena?-->
-                <h3 class="panel-title"><b>¿Qué recomendaría para lograr atraer más visitantes al Atlántico?</b></h3>
+                <h3 class="panel-title"><b>Qué aspectos no le gustaron de Atlántico?</b></h3>
             </div>
             <!-- Resalte en detalle aspectos que realmente le disgustaron-->
-            <div class="panel-footer"><b>Resalte en detalle aspectos que realmente le disgustaron</b></div>
+            <div class="panel-footer"><b>Respuesta abierta</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -384,6 +491,40 @@
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <!-- Experiencia de viaje-->
+                <h3 class="panel-title"><b>Sostenibilidad</b></h3>
+            </div>
+            <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Mal trato y 10 Trato excelente. ¿Cómo califica el trato que reciben los turistas en Barranquilla? Respuesta única.</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12" style="overflow-x: auto;">
+                        <table  align="center" name="tabla_calificacion" class="table table-striped" ng-required="true">
+                            
+                            <tbody>
+                                <tr>
+                                    
+                                    @for ($i = 1; $i <= 10; $i++)
+                                        <td>
+                                            <div class="radio radio-primary">
+                                                <label>
+                                                    <input type="radio" name="sotenibilidada_@{{it.Id}}" ng-model="calificacion.Sostenibilidad" value="{{$i}}">
+                                                    {{$i}}
+                                                </label>
+                                            </div>
+                                        </td>
+                                    @endfor
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
         <div class="panel panel-success">
@@ -423,6 +564,9 @@
             </div>
 
         </div>
+        
+        
+        
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Volvería a visitar el departamento del Magdalena?-->

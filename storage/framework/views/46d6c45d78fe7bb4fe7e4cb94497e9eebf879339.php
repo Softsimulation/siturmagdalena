@@ -73,9 +73,9 @@
             .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
                 vertical-align: middle;
             }
-            .dropdown-menu {
-                left: -85%;
-            }
+            /*.dropdown-menu {*/
+            /*    left: -85%;*/
+            /*}*/
             .fixed {
                 position: fixed;
                 top: 0;
@@ -185,8 +185,9 @@
         <script src="<?php echo e(asset('/js/plugins/select.min.js')); ?>" type="text/javascript"></script>
         <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
+        
         <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/encuesta.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/datos_encuestado.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/estanciayvisitados.js')); ?>"></script>

@@ -135,9 +135,9 @@
                         <td>
                             @{{g.id}}
                         </td>
-                        <td>@{{g.fecha_aplicacion}}</td>
+                        <td>@{{g.fecha_aplicacion | date:'dd-MM-yyyy'}}</td>
                         <td>@{{g.lugares_aplicacion_encuestum.nombre}}</td>
-                        <td>@{{g.digitadore.asp_net_user.UserName}}</td>
+                        <td>@{{g.digitadore.asp_net_user.username}}</td>
                         <td>@{{g.visitantes.length}}/@{{g.personas_encuestadas}}</td>
                         <td><td style="text-align: center;"><a href="/grupoviaje/vergrupo/@{{g.id}}"><span class="glyphicon glyphicon-eye-open" title="Ver información del grupo"></span></a></td></td>
                     </tr>

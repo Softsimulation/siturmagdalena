@@ -57,6 +57,8 @@ use App\Models\Tipo_Proveedor_Paquete_Con_Idioma;
 use App\Models\Rubro;
 use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
+use App\Models\Sostenibilidad_Visitante;
+use App\Models\Actividades_Sostenibilidad_Idiomas;
 
 class TurismoReceptorController extends Controller
 {
@@ -68,7 +70,7 @@ class TurismoReceptorController extends Controller
         
         $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
         
-        $encuestadores = Digitador::where('id','<>',2)->with([ 'aspNetUser'=>function($q){$q->select('Id','UserName');} ])->get();
+        $encuestadores = Digitador::with([ 'aspNetUser'=>function($q){$q->select('id','username');} ])->get();
         
         $lugar_nacimiento = Opcion_Lugar::with(["opcionesLugaresConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -250,7 +252,7 @@ class TurismoReceptorController extends Controller
             $visitante['Id'] = $visitanteCargar->id;
             $visitante['Grupo'] = $visitanteCargar->grupo_viaje_id;
             $visitante['Encuestador'] = $visitanteCargar->encuestador_creada;
-            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->aspNetUser->UserName;
+            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->aspNetUser->username;
             $visitante['Llegada'] = $visitanteCargar->fecha_llegada;
             $visitante['Salida'] = $visitanteCargar->fecha_salida;
             $visitante['Nombre'] = $visitanteCargar->nombre;
@@ -422,7 +424,7 @@ class TurismoReceptorController extends Controller
     }
     
     public function getCargardatosseccionestancia($id = null){
-        $municipios = Municipio::where('departamento_id', 1411)->select('id','nombre')->get();
+        $municipios = Municipio::where('departamento_id', 1396)->select('id','nombre')->get();
         
         $alojamientos = Tipo_Alojamiento::with(["tiposAlojamientoConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -766,9 +768,10 @@ class TurismoReceptorController extends Controller
 		$visitante->save();
         return ["success" => true];
     }
+    
     public function getEncuestas(){
         
-        $encuestas = Visitante_estado::where('digitador',6)->orWhere('creador',6)->get();
+        $encuestas = Visitante_estado::all();
         
         return $encuestas;
         
@@ -814,10 +817,13 @@ class TurismoReceptorController extends Controller
             })->select('opciones_lugares_id','nombre');
         }])->get();
         
+        $sostenibilidad = Sostenibilidad_Visitante::find($id);
+        
         $retorno = [
             'success' => true,
             'transporte_llegar' => $transporte_llegar,
             'lugares' => $lugares,
+            'calificacion'=>$sostenibilidad == null?null:$sostenibilidad->facil_llegar,
             'mover' => $visitante->transporte_interno,
             'llegar' => $visitante->transporte_llegada,
             'empresa' => ($visitante->transporte_llegada == 6) ? $visitante->visitanteTransporteTerrestre->nombre_empresa : null,
@@ -831,20 +837,16 @@ class TurismoReceptorController extends Controller
         $validator = \Validator::make($request->all(), [
 			'Id' => 'required|exists:visitantes,id',
 			'Llegar' => 'required|exists:tipos_transporte,id',
-			'Empresa' => 'required_if:Llegar,6|max:100',
 			'Mover' => 'required|exists:tipos_transporte,id',
-			'Alquiler' => 'required_if:Mover,5|exists:opciones_lugares,id'
+			'Calificacion'=>'integer'
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
        		'Id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',
        		'Llegar.required' => 'Debe seleccionar el transporte de llegada.',
        		'Llegar.exists' => 'El transporte de llegada seleccionado no se encuentra registrado en el sistema.',
-       		'Empresa.required_if' => 'Debe ingresar un valor en el campo de la empresa de transporte de llegada.',
-       		'Empresa.max' => 'EL campo de empresa de transporte de llegada no debe superar los 100 caracteres.',
        		'Mover.required' => 'Debe seleccionar el transporte para moverse dentro del departamento.',
        		'Mover.exists' => 'El campo de transporte dentro del departamento no se encuentra registrado en el sistema.',
-       		'Alquiler.required_if' => 'Debe seleccionar el lugar de alquiler.',
-       		'Alquiler.exists' => 'El lugar de alquiler no se encuentra registrado en el sistema.'
+       		
     	]);
        
     	if($validator->fails()){
@@ -856,12 +858,7 @@ class TurismoReceptorController extends Controller
 		$sw = 0;
 		if($visitante->ultima_sesion >= 3){
 		    $sw =1;
-		    if(count($visitante->opcionesLugares) > 0){
-		        $visitante->opcionesLugares()->detach();
-		    }
-		    if(isset($visitante->visitanteTransporteTerrestre)){
-		        $visitante->visitanteTransporteTerrestre()->delete();
-		    }
+		   
 		}else{
 		    $visitante->ultima_sesion = 3;
 		}
@@ -869,18 +866,19 @@ class TurismoReceptorController extends Controller
 		$visitante->transporte_llegada = $request->Llegar;
 		$visitante->transporte_interno = $request->Mover;
 		
-		if($visitante->transporte_llegada == 6){
-		    if(isset($request->Empresa)){
-		        $visitante->visitanteTransporteTerrestre()->save(new Visitante_Transporte_Terrestre([
-    	            'nombre_empresa' =>  $request->Empresa
-    	        ]) );    
-		    }
-		}
+	
 		
-		if($visitante->transporte_interno == 5){
-		    if(isset($request->Alquiler)){
-		        $visitante->opcionesLugares()->attach($request->Alquiler);
+		if(isset($request->Calificacion)){
+		    $sostenibilidad = Sostenibilidad_Visitante::find($request->Id);
+		    if($sostenibilidad == null){
+		        $sostenibilidad = new Sostenibilidad_Visitante;
+		        $sostenibilidad->visitante_id = $request->Id;
+		        $sostenibilidad->estado = true;
+		        $sostenibilidad->user_update = "Jhon";
+		        $sostenibilidad->user_create = "Jhon";
 		    }
+		    $sostenibilidad->facil_llegar = $request->Calificacion;
+		    $sostenibilidad->save();
 		}
 		
 		$visitante->historialEncuestas()->save(new Historial_Encuesta([
@@ -1003,14 +1001,18 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSecciongastos($id){
-        /*if(Visitante::find($id) == null || Visitante::find($id)->ultima_sesion<4){
-            redirect("/");
-        }*/
+       if(Visitante::find($id) == null){
+            return \Redirect::to('/turismoreceptor/encuestas')
+                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
+                    ->withInput();
+        }
         $data = ["id"=>$id];
         return view('turismoReceptor.Gastos',$data);
     }
     
     public function getInfogasto($id){
+        
+        
         $divisas = Divisa_Con_Idioma::whereHas('idioma',function($q){
             $q->where('culture','es');
         })->select('divisas_id as id','nombre')->get();
@@ -1052,11 +1054,28 @@ class TurismoReceptorController extends Controller
             $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
             $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
             $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
-            $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+            if($paquete->opcionesLugares()->first() != null){
+                
+                $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+            }
             $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
         }
         
+        $visitante = Visitante::find($id);
+        
+        if($visitante->visitanteTransporteTerrestre!= null){
+            $encuesta["Empresa"] = $visitante->visitanteTransporteTerrestre->nombre_empresa;
+        }
+        if(count($visitante->opcionesLugares) > 0){
+            $encuesta["Alquiler"] = $visitante->opcionesLugares()->first()->id;
+        }
+        
+        if(count($visitante->opcionesLugaresG) > 0){
+            $encuesta["Ropa"] = $visitante->opcionesLugaresG()->first()->id;
+        }
+        
         $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
+        
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
          
 
@@ -1078,7 +1097,7 @@ class TurismoReceptorController extends Controller
 			'Municipios' => 'required_if:IncluyoOtros,1|array',
 			'Municipios.*' => 'required|exists:municipios,id',
 			'Proveedor' => 'required_if:ViajoDepartamento,1|exists:tipo_proveedor_paquete,id',
-			'LugarAgencia' => 'required_if:ViajoDepartamento,1|exists:opciones_lugares,id',
+			'LugarAgencia' => 'required_if:Proveedor,1|exists:opciones_lugares,id',
 			'ServiciosIncluidos' => 'required_if:ViajoDepartamento,1|array',
 			'ServiciosIncluidos.*' => 'required|exists:servicios_paquete,id',
 			'GastosAparte' => 'required|between:0,1',
@@ -1115,18 +1134,39 @@ class TurismoReceptorController extends Controller
     	
     	foreach($request->Rubros as $rub){
     	    
-    	    if(isset($rub["gastos_visitantes"][0]["cantidad_pagada_fuera"]) && isset($rub["gastos_visitantes"][0]["divisas_fuera"]) && isset($rub["gastos_visitantes"][0]["personas_cubiertas"])){ 
-        	    if($rub["gastos_visitantes"][0]["cantidad_pagada_fuera"] != null && ($rub["gastos_visitantes"][0]["divisas_fuera"] == null || $rub["gastos_visitantes"][0]["personas_cubiertas"] == null ) ){
-        	        return ["success"=>false,"errores"=> [ ["La divisa es requerida en el rubro fuera del magdalena."] ] ];
-        	    }
-    	    }
     	    
     	    if(isset($rub["gastos_visitantes"][0]["cantidad_pagada_magdalena"]) && isset($rub["gastos_visitantes"][0]["divisas_magdalena"]) && isset($rub["gastos_visitantes"][0]["personas_cubiertas"])){
     	        if($rub["gastos_visitantes"][0]["cantidad_pagada_magdalena"] != null && ($rub["gastos_visitantes"][0]["divisas_magdalena"] == null || $rub["gastos_visitantes"][0]["personas_cubiertas"] == null ) ){
-        	        return ["success"=>false,"errores"=> [ ["La divisa es requerida en el rubro dentro del magdalena."] ] ];
+    	            
+    	            if($rub["gastos_visitantes"][0]["divisas_magdalena"] == null){
+    	                return ["success"=>false,"errores"=> [ ["La divisa es requerida en el rubro dentro del magdalena."] ] ];
+    	            }
+    	             if($rub["gastos_visitantes"][0]["personas_cubiertas"] == null){
+    	                return ["success"=>false,"errores"=> [ ["Las personas cubiertas son requeridas."] ] ];
+    	            }
+        	        
         	     }
     	    }
-        	     
+        	
+        	switch($rub["id"]){
+        	    case 3:
+        	        if(!isset($request->Empresa)){
+        	            return ["success"=>false,"errores"=> [ ["El campo empresa es requerido."] ] ];
+        	        }
+        	        break;
+        	    case 5:
+        	        if(!isset($request->Alquiler)){
+        	            return ["success"=>false,"errores"=> [ ["El campo localizacion de empresa de alquiler  es requerido."] ] ];
+        	        }
+        	        break;
+        	    case 10:
+        	        if(!isset($request->Ropa)){
+        	            return ["success"=>false,"errores"=> [ ["El campo don es requerido."] ] ];
+        	        }
+        	        break;
+        	    default:
+        	        break;
+        	}    
     	  
     	}
     	
@@ -1201,7 +1241,42 @@ class TurismoReceptorController extends Controller
     	                $gasto->gastos_asumidos_otros = $rub["gastos_visitantes"][0]["gastos_asumidos_otros"];
     	            }
     	            $gasto->save();
-    	        }   
+    	            
+    	            switch($rub["id"]){
+                	    case 3:
+                	        if(isset($visitante->visitanteTransporteTerrestre)){
+                		        $visitante->visitanteTransporteTerrestre()->delete();
+                		    }
+                		    if(isset($request->Empresa)){
+                		        $visitante->visitanteTransporteTerrestre()->save(new Visitante_Transporte_Terrestre([
+                	                'nombre_empresa' =>  $request->Empresa
+                	            ]));   
+                		    }
+                		     
+                	        break;
+                	    case 5:
+                	        if(count($visitante->opcionesLugares) > 0){
+                		        $visitante->opcionesLugares()->detach();
+                		    }
+                		    if(isset($request->Alquiler)){
+                		        $visitante->opcionesLugares()->attach($request->Alquiler);   
+                		    }
+                		     
+                	        break;
+                	    case 10:
+                	        if(count($visitante->opcionesLugaresG) > 0){
+                		        $visitante->opcionesLugaresG()->detach();
+                		    }
+                		    if(isset($request->Ropa)){
+                		        $visitante->opcionesLugaresG()->attach($request->Ropa);   
+                		    }
+                	        break;
+                	    default:
+                	        break;
+                	}
+    	        }
+    	        
+    	        
     	        
     	    }
     	    
@@ -1275,15 +1350,32 @@ class TurismoReceptorController extends Controller
         
         $alojamiento = collect($calificaciones)->where("Id",1)->first() != null ? 1 : 0;
         $restaurante = collect($calificaciones)->where("Id",8)->first() != null ? 1 : 0;
+        $factores = count(Calificacion::where("visitante_id",$visitante->id)->whereIn('item_evaluar_id',[13,15])->get()) >0 ?1:0;
         
-        $respuestaElementos = $visitante->elementosRepresentativos()->pluck('id')->toArray();
+        $ocio = count(Calificacion::where("visitante_id",$visitante->id)->whereIn('item_evaluar_id',[17,20])->get())> 0 ?1:0;
+        
+        $infraestructura = count(Calificacion::where("visitante_id",$visitante->id)->whereIn('item_evaluar_id',[21,23])->get()) >0 ?1:0;
+        
+        $sostenibilidad = Sostenibilidad_Visitante::find($id);
+        if($sostenibilidad != null){
+            $respuestaElementos = $sostenibilidad->actividadesSostenibilidad()->pluck('id')->toArray();
+            $flora = $sostenibilidad->es_informado?1:0;
+            $sost = $sostenibilidad->trato_turista;
+        }
+        
         
         $otroElemento = null;
-        if(in_array(11,$respuestaElementos)){
-            $otroElemento = $visitante->otrosElementosRepresentativo->nombre;
+        if(in_array(12,$respuestaElementos)){
+           $otroElemento= $sostenibilidad->actividadesSostenibilidad()->wherePivot('nombre','<>',null)->first()->pivot->nombre;
         }
         
         $valo = Valoracion_General::where('visitante_id',$visitante->id)->select(["recomendaciones as Recomendacion","calificacion as Calificacion", "volveria as Volveria","recomendaria as Recomienda","veces_visitadas as Veces"])->first();
+        
+        
+        
+        $actividades = Actividades_Sostenibilidad_Idiomas::whereHas('idioma',function($q){
+            $q->where('culture','es');
+        })->select('actividades_sostenibilidad_id as id','nombre')->get();;
         
         $retorno = [
             'success' => true,
@@ -1293,9 +1385,15 @@ class TurismoReceptorController extends Controller
             'calificar' => $calificaciones,
             'alojamiento' => $alojamiento,
             'restaurante' => $restaurante,
+            'factores'=>$factores,
+            'ocio'=>$ocio,
+            'infraestructura'=>$infraestructura,
             'respuestaElementos' => $respuestaElementos,
             'valoracion' => $valo,
             'otroElemento' => $otroElemento,
+            'actividades'=>$actividades,
+            'flora'=>$flora,
+            'sost'=>$sost,
         ];
         
         return $retorno;
@@ -1307,7 +1405,10 @@ class TurismoReceptorController extends Controller
 			'Id' => 'required|exists:visitantes,id',
 			'Alojamiento' => 'required',
 			'Restaurante' => 'required',
-			'Elementos' => 'required|exists:elementos_representativos,id',
+			'Factores'=>'required',
+			'Ocio'=>'required',
+			'Infraestructura'=>'required',
+			'Elementos' => 'exists:actividades_sostenibilidad,id',
 			'Recomendaciones'=> 'max:250',
 			'Calificacion' => 'required|between:1,10',
 			'Volveria' => 'required|exists:volveria_visitar,id',
@@ -1360,11 +1461,46 @@ class TurismoReceptorController extends Controller
 	                'calificacion' => $evaluacion['Valor']
 	            ]));
 		    }
+		
+		$sostenibilidad = Sostenibilidad_Visitante::find($request->Id);
+		    if($sostenibilidad == null){
+		        $sostenibilidad = new Sostenibilidad_Visitante;
+		        $sostenibilidad->visitante_id = $request->Id;
+		        $sostenibilidad->estado = true;
+		        $sostenibilidad->user_update = "Jhon";
+		        $sostenibilidad->user_create = "Jhon";
+		    }else{
+		        $sostenibilidad->actividadesSostenibilidad()->detach();
+		    }
 		    
-	    $visitante->elementosRepresentativos()->attach($request->Elementos);
+		    if(isset($request->Elementos)){
+		        foreach($request->Elementos as $el){
+		            
+		            if($el == 12){
+		                
+		                $sostenibilidad->actividadesSostenibilidad()->attach($el,['nombre'=>$request->OtroElementos]);
+		            }else{
+		                 $sostenibilidad->actividadesSostenibilidad()->attach($el);
+		            }
+		            
+		        }
+		        
+		    }
+		    
+		    if(isset($request->Flora)){
+		        $sostenibilidad->es_informado = $request->Flora != 0? true:false;
+		    }
+		    
+		    if(isset($request->Sostenibilidad)){
+		        $sostenibilidad->trato_turista = $request->Sostenibilidad;
+		    }
+		
+		    $sostenibilidad->save();
+		
+	    /*$visitante->elementosRepresentativos()->attach($request->Elementos);
 	    if(in_array(11,$request->Elementos)){
 	        $visitante->otrosElementosRepresentativo()->save(new Otro_Elemento_Representativo(['nombre'=>$request->OtroElementos]));
-	    }
+	    }*/
 	    
 	    $visitante->valoracionGeneral()->save(new Valoracion_General([
             'volveria' => $request->Volveria,

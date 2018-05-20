@@ -369,6 +369,11 @@ class Visitante extends Model
     {
         return $this->belongsToMany('App\Models\Opcion_Lugar', 'visitante_alquila_vehiculo', 'visitante_id', 'opciones_lugares_id');
     }
+    
+    public function opcionesLugaresG()
+    {
+        return $this->belongsToMany('App\Models\Opcion_Lugar', 'opciones_gasto_visitantes', 'visitante_id', 'opciones_lugare_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -377,13 +382,18 @@ class Visitante extends Model
     {
         return $this->hasOne('App\VisitantePaqueteTuristico', 'visitante_id');
     }
+    
+    public function sostenibilidadVisitantes()
+    {
+        return $this->hasOne('App\Models\Sostenibilidad_Visitante', 'visitante_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function financiadoresViajes()
     {
-        return $this->belongsToMany('App\Models\Financiador_Viaje', 'visitante_gastos_pagados', null, 'financiadores_viajes_id');
+        return $this->belongsToMany('App\Models\Financiador_Viaje', 'visitante_gastos_pagados', 'visitante_id', 'financiadores_viajes_id');
     }
 
     /**
