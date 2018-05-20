@@ -30,13 +30,18 @@ angular.module('receptor.percepcion_viaje', [])
                     $scope.veces = data.veces;
                     $scope.actividades = data.actividades;
     
-                    if (data.respuestaElementos == null && data.valoracion == null) {
+                    if (data.respuestaElementos.length ==0 && data.valoracion == null) {
                         $scope.estadoEncuesta = 0;
                     } else {
                         $scope.calificacion.Alojamiento = data.alojamiento;
                         $scope.calificacion.Factores = data.factores;
                         $scope.calificacion.Ocio = data.ocio;
-                        $scope.calificacion.Infraestructura = data.infraestructura;
+                        $scope.calificacion.Infra = data.infraestructura;
+                        if($scope.calificacion.Infra == 1){
+                            document.getElementById("infraestructuraSi").checked = true;
+                        }else{
+                            document.getElementById("infraestructuraNo").checked = true;
+                        }
                         $scope.calificacion.Restaurante = data.restaurante;
                         $scope.calificacion.Elementos = data.respuestaElementos;
                         $scope.calificacion.Recomendaciones = data.valoracion.Recomendacion;
@@ -189,7 +194,8 @@ angular.module('receptor.percepcion_viaje', [])
                      }, 1000);
             }else{
                 $("body").attr("class", "cbp-spmenu-push");
-                swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+                $scope.errores = data.errores;
+                swal("Error", "Corrija los errores", "error");
             }
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");

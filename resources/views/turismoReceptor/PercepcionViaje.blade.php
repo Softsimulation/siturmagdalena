@@ -42,12 +42,8 @@
 @section('content')
 <div class="container" >
     <input type="hidden" ng-model="Id" ng-init="Id={{$id}}" />
-    <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>Errores:</b></label>
-        <br />
-        <div ng-repeat="error in errores" ng-if="error.length>0">
-            -@{{error[0]}}
-        </div>
+    <div class="alert alert-danger" role="alert" ng-if="errores" ng-repeat="error in errores">
+       @{{error[0]}}
     </div>
     <form role="form" name="PercepcionForm" novalidate>
         <div class="panel panel-success">
@@ -361,13 +357,13 @@
                     <div class="col-md-12">
                         <div class="radio radio-primary">
                             <label>
-                                <input type="radio" id="infraestructuraSi" value="1" name="infraestructura"  ng-required="true" ng-model="calificacion.Infraestructura">
+                                <input type="radio" id="ocio2Si" value="1" name="inf"  ng-required="true" ng-model="calificacion.Infra">
                                 Si
                             </label>
                         </div>
                         <div class="radio radio-primary">
                             <label>
-                                <input type="radio" id="infraestructuraNo" name="infraestructura" ng-required="true" ng-change="limpiar(calificacion.Infraestructura,21,23)" value="0" ng-model="calificacion.Infraestructura" >
+                                <input type="radio" id="ocio1No" name="inf" ng-required="true" ng-change="limpiar(calificacion.Infra,17,20)" value="0" ng-model="calificacion.Infra" >
                                 No
                             </label>
                         </div>
@@ -378,7 +374,7 @@
                 </span>
             </div>
         </div>
-        <div class="panel panel-success" ng-if="calificacion.Infraestructura == 1">
+        <div class="panel panel-success" ng-if="calificacion.Infra == 1">
             <div class="panel-heading">
                 <h3 class="panel-title"><b>@{{aspectos[4].aspectos_evaluados_con_idiomas[0].nombre}}</b></h3>
             </div>

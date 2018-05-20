@@ -42,12 +42,8 @@
 <div class="main-page">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     
-    <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>Errores:</b></label>
-        <br />
-        <div ng-repeat="error in errores" ng-if="error.length>0">
-            -@{{error[0]}}
-        </div>
+    <div class="alert alert-danger" role="alert" ng-if="errores" ng-repeat="error in errores">
+       @{{error[0]}}
     </div>
     <form role="form" name="transForm" novalidate>
         <div class="panel panel-success">

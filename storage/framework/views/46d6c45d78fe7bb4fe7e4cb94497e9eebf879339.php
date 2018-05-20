@@ -138,8 +138,8 @@
         <div id="preloader">
             <div>
                 <div class="loader"></div>
-                <h1>@Resource.LabelPreloader</h1>
-                <h4>@Resource.LabelPorFavorEspere</h4>
+                <h1>Cargando</h1>
+                <h4>Por favor espere</h4>
                 <img src="/Content/image/logo.min.png" width="200" />
             </div>
         </div>

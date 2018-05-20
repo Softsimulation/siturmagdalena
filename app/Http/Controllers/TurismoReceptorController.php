@@ -57,13 +57,10 @@ use App\Models\Tipo_Proveedor_Paquete_Con_Idioma;
 use App\Models\Rubro;
 use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
-<<<<<<< HEAD
 use App\Models\Sostenibilidad_Visitante;
 use App\Models\Actividades_Sostenibilidad_Idiomas;
-=======
 use App\Models\Opcion_Actividad_Realizada_Con_Idioma;
 use App\Models\Opcion_Actividad_Realizada;
->>>>>>> refs/remotes/origin/release
 
 class TurismoReceptorController extends Controller
 {
@@ -694,8 +691,6 @@ class TurismoReceptorController extends Controller
             'calificacion'=>$sostenibilidad == null?null:$sostenibilidad->facil_llegar,
             'mover' => $visitante->transporte_interno,
             'llegar' => $visitante->transporte_llegada,
-            'empresa' => ($visitante->transporte_llegada == 6) ? $visitante->visitanteTransporteTerrestre->nombre_empresa : null,
-            'opcion_lugar' => ($visitante->transporte_interno == 5 && count($visitante->opcionesLugares) > 0 ) ? $visitante->opcionesLugares()->first()->id : null
         ];
         
         return $retorno;
@@ -910,40 +905,45 @@ class TurismoReceptorController extends Controller
         }])->get();
         
         $paquete = Visitante_Paquete_Turistico::find($id);
-        $encuesta["id"]= $id;
-        $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
-        
-        $encuesta["ViajoDepartamento"] = $paquete != null ? 1 :0;
-        
-        if( $encuesta["ViajoDepartamento"] == 1){
-            $encuesta["CostoPaquete"] = $paquete->costo_paquete;
-            $encuesta["DivisaPaquete"] = $paquete->divisas_id;
-            $encuesta["PersonasCubrio"] = $paquete->personas_cubrio;
-            $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
-            $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
-            $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
-            if($paquete->opcionesLugares()->first() != null){
-                
-                $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
-            }
-            $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
-        }
         
         $visitante = Visitante::find($id);
         
-        if($visitante->visitanteTransporteTerrestre!= null){
-            $encuesta["Empresa"] = $visitante->visitanteTransporteTerrestre->nombre_empresa;
+        $encuesta["id"]= $id;
+        if($visitante->ultima_sesion>=5){
+            
+            $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
+            
+            $encuesta["ViajoDepartamento"] = $paquete != null ? 1 :0;
+            
+            if( $encuesta["ViajoDepartamento"] == 1){
+                $encuesta["CostoPaquete"] = $paquete->costo_paquete;
+                $encuesta["DivisaPaquete"] = $paquete->divisas_id;
+                $encuesta["PersonasCubrio"] = $paquete->personas_cubrio;
+                $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
+                $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
+                $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
+                if($paquete->opcionesLugares()->first() != null){
+                    
+                    $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+                }
+                $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
+            }
+            
+          
+            
+            if($visitante->visitanteTransporteTerrestre!= null){
+                $encuesta["Empresa"] = $visitante->visitanteTransporteTerrestre->nombre_empresa;
+            }
+            if(count($visitante->opcionesLugares) > 0){
+                $encuesta["Alquiler"] = $visitante->opcionesLugares()->first()->id;
+            }
+            
+            if(count($visitante->opcionesLugaresG) > 0){
+                $encuesta["Ropa"] = $visitante->opcionesLugaresG()->first()->id;
+            }
+            
+            $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
         }
-        if(count($visitante->opcionesLugares) > 0){
-            $encuesta["Alquiler"] = $visitante->opcionesLugares()->first()->id;
-        }
-        
-        if(count($visitante->opcionesLugaresG) > 0){
-            $encuesta["Ropa"] = $visitante->opcionesLugaresG()->first()->id;
-        }
-        
-        $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
-        
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
          
 
@@ -1275,7 +1275,7 @@ class TurismoReceptorController extends Controller
 			'Restaurante' => 'required',
 			'Factores'=>'required',
 			'Ocio'=>'required',
-			'Infraestructura'=>'required',
+			'Infra'=>'required',
 			'Elementos' => 'exists:actividades_sostenibilidad,id',
 			'Recomendaciones'=> 'max:250',
 			'Calificacion' => 'required|between:1,10',
