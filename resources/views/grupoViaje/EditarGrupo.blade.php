@@ -185,11 +185,11 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        <label for="tipo"class="col-xs-12 control-label" style="padding-left: 0;">Tipo de viaje (Obligatorio) <span class="label label-danger" ng-show="ediForm.$submitted || ediForm.tipo.$touched && ediForm.tipo.$error.required">El campo es requerido.</span></label>
+                        <label for="tipo"class="col-xs-12 control-label" style="padding-left: 0;">Tipo de viaje (Obligatorio) <span class="label label-danger" ng-show="(ediForm.$submitted || ediForm.tipo.$touched) && ediForm.tipo.$error.required">El campo es requerido.</span></label>
                         <div class="col-xs-12" style="padding-left: 0;">
                             
                             <label class="checkbox-inline" ng-repeat="tipo in tipos_viajes">
-                                <input ng-show="tipo.tipos_viaje_con_idiomas.length > 0" type="radio" name="tipo" value="@{{tipo.id}}" ng-model="grupo.Tipo" ng-required="true" /> @{{tipo.tipos_viaje_con_idiomas[0].nombre}}
+                                <input ng-show="tipo.tipos_viaje_con_idiomas.length > 0" type="radio" name="tipo" value="@{{tipo.id}}" ng-model="grupo.Tipo" required /> @{{tipo.tipos_viaje_con_idiomas[0].nombre}}
                             </label>
 
                         </div>
@@ -249,7 +249,7 @@
             </div>
 
             <div class="row" style="text-align: center;">
-                <a href="/GrupoViaje" class="btn btn-default">Cancelar</a>
+                <a href="/grupoviaje/listadogrupos" class="btn btn-default">Cancelar</a>
                 <input type="submit" ng-click="editar()" value="Guardar" class="btn btn-success">
                 
             </div>
