@@ -28,7 +28,7 @@ class GrupoViajeController extends Controller
                 $q->with('aspNetUser');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->where('digitador_id',6)->get();
+            }])->where('digitador_id',1)->get();
             
         return $grupos;    
     }
@@ -124,7 +124,7 @@ class GrupoViajeController extends Controller
         
 
         $grupo = new Grupo_Viaje();
-        $grupo->digitador_id = 6;
+        $grupo->digitador_id = 1;
         $grupo->fecha_aplicacion = new \DateTime($request->Fecha);
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;

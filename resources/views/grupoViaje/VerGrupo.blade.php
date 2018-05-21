@@ -189,7 +189,7 @@
                         <td ng-if="e.Sexo">M</td><td ng-if="!e.Sexo">F</td>
                         <td>@{{e.email}}</td>
                         <td>@{{e.historial_encuestas[0].estados_encuesta.nombre}}</td>
-                        <td><a href="/turismoReceptor/editardatos/@{{e.id}}">Editar</a></td>
+                        <td><a href="/turismoreceptor/editardatos/@{{e.id}}">Editar</a></td>
                     </tr>
                 </tbody>
             </table><br />

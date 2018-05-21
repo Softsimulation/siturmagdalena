@@ -383,7 +383,7 @@ class Visitante extends Model
      */
     public function financiadoresViajes()
     {
-        return $this->belongsToMany('App\Models\Financiador_Viaje', 'visitante_gastos_pagados', null, 'financiadores_viajes_id');
+        return $this->belongsToMany('App\Models\Financiador_Viaje', 'visitante_gastos_pagados', 'visitante_id', 'financiadores_viajes_id');
     }
 
     /**

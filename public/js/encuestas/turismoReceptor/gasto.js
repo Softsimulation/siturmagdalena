@@ -1,4 +1,4 @@
-angular.module('receptor.gasto', [])
+angular.module('receptor.gasto', ['ui.select'])
 
 .controller('gasto', ['$scope', 'receptorServi', '$window',function ($scope, receptorServi, $window) {
 
@@ -92,7 +92,7 @@ angular.module('receptor.gasto', [])
                 }
             }
         }
-        
+        $scope.encuestaReceptor.id = $scope.id;
          $("body").attr("class", "cbp-spmenu-push charging");
          receptorServi.postGuardarGasto($scope.encuestaReceptor).then(function(data){
               $("body").attr("class", "cbp-spmenu-push");

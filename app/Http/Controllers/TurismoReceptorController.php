@@ -68,7 +68,7 @@ class TurismoReceptorController extends Controller
         
         $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
         
-        $encuestadores = Digitador::where('id','<>',2)->with([ 'aspNetUser'=>function($q){$q->select('Id','UserName');} ])->get();
+        $encuestadores = Digitador::with([ 'aspNetUser'=>function($q){$q->select('id','username');} ])->get();
         
         $lugar_nacimiento = Opcion_Lugar::with(["opcionesLugaresConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -250,7 +250,7 @@ class TurismoReceptorController extends Controller
             $visitante['Id'] = $visitanteCargar->id;
             $visitante['Grupo'] = $visitanteCargar->grupo_viaje_id;
             $visitante['Encuestador'] = $visitanteCargar->encuestador_creada;
-            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->aspNetUser->UserName;
+            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->aspNetUser->username;
             $visitante['Llegada'] = $visitanteCargar->fecha_llegada;
             $visitante['Salida'] = $visitanteCargar->fecha_salida;
             $visitante['Nombre'] = $visitanteCargar->nombre;
@@ -422,7 +422,7 @@ class TurismoReceptorController extends Controller
     }
     
     public function getCargardatosseccionestancia($id = null){
-        $municipios = Municipio::where('departamento_id', 1411)->select('id','nombre')->get();
+        $municipios = Municipio::where('departamento_id', 1396)->select('id','nombre')->get();
         
         $alojamientos = Tipo_Alojamiento::with(["tiposAlojamientoConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -766,9 +766,10 @@ class TurismoReceptorController extends Controller
 		$visitante->save();
         return ["success" => true];
     }
+    
     public function getEncuestas(){
         
-        $encuestas = Visitante_estado::where('digitador',6)->orWhere('creador',6)->get();
+        $encuestas = Visitante_estado::all();
         
         return $encuestas;
         
@@ -1003,9 +1004,11 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSecciongastos($id){
-        /*if(Visitante::find($id) == null || Visitante::find($id)->ultima_sesion<4){
-            redirect("/");
-        }*/
+       if(Visitante::find($id) == null){
+            return \Redirect::to('/turismoreceptor/encuestas')
+                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
+                    ->withInput();
+        }
         $data = ["id"=>$id];
         return view('turismoReceptor.Gastos',$data);
     }
@@ -1052,11 +1055,15 @@ class TurismoReceptorController extends Controller
             $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
             $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
             $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
-            $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+            if($paquete->opcionesLugares()->first() != null){
+                
+                $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+            }
             $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
         }
         
         $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
+        
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
          
 
@@ -1078,7 +1085,7 @@ class TurismoReceptorController extends Controller
 			'Municipios' => 'required_if:IncluyoOtros,1|array',
 			'Municipios.*' => 'required|exists:municipios,id',
 			'Proveedor' => 'required_if:ViajoDepartamento,1|exists:tipo_proveedor_paquete,id',
-			'LugarAgencia' => 'required_if:ViajoDepartamento,1|exists:opciones_lugares,id',
+			'LugarAgencia' => 'required_if:Proveedor,1|exists:opciones_lugares,id',
 			'ServiciosIncluidos' => 'required_if:ViajoDepartamento,1|array',
 			'ServiciosIncluidos.*' => 'required|exists:servicios_paquete,id',
 			'GastosAparte' => 'required|between:0,1',
