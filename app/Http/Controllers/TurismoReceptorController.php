@@ -957,7 +957,7 @@ class TurismoReceptorController extends Controller
              
 			'id' => 'required|exists:visitantes,id',
 			'RealizoGasto' => 'required|between:0,1',
-			'ViajoDepartamento' => 'required|between:0,1',
+			'ViajoDepartamento' => 'required_if:RealizoGasto,1|between:0,1',
 			'CostoPaquete' => 'required_if:ViajoDepartamento,1',
 			'DivisaPaquete' => 'required_if:ViajeDepartamento,1|exists:divisas,id',
 			'PersonasCubrio' => 'required_if:ViajeDepartamento,1|integer|min:1',
@@ -968,7 +968,7 @@ class TurismoReceptorController extends Controller
 			'LugarAgencia' => 'required_if:Proveedor,1|exists:opciones_lugares,id',
 			'ServiciosIncluidos' => 'required_if:ViajoDepartamento,1|array',
 			'ServiciosIncluidos.*' => 'required|exists:servicios_paquete,id',
-			'GastosAparte' => 'required|between:0,1',
+			'GastosAparte' => 'required_if:RealizoGasto,1|between:0,1',
 			'Financiadores' => 'required|array',
 			'Financiadores.*' => 'required|exists:financiadores_viajes,id',
 			'Rubros'=>'required_if:GastosAparte,1|array',

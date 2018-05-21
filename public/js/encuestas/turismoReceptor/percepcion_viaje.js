@@ -152,10 +152,6 @@ angular.module('receptor.percepcion_viaje', [])
             return;
         }
 
-        if ($scope.calificacion.Elementos == 0) {
-            swal("Error", "Formulario incompleto corrige los errores", "error");
-            return;
-        }
 
         $scope.calificacion.Evaluacion = [];
         for (var i = 0; i < $scope.aspectos.length; i++) {
