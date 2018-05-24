@@ -171,7 +171,7 @@
 
         <div class="row">
             <label>Encuestas del grupo</label><br />
-            <table class="table table-hover" ng-if="grupo.Encuestas.length != 0">
+            <table class="table table-hover" ng-if="grupo.visitantes.length != 0">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -186,14 +186,14 @@
                     <tr ng-repeat="e in grupo.visitantes">
                         <td>@{{e.id}}</td>
                         <td>@{{e.nombre}}</td>
-                        <td ng-if="e.Sexo">M</td><td ng-if="!e.Sexo">F</td>
+                        <td ng-if="e.sexo">M</td><td ng-if="!e.sexo">F</td>
                         <td>@{{e.email}}</td>
                         <td>@{{e.historial_encuestas[0].estados_encuesta.nombre}}</td>
                         <td><a href="/turismoreceptor/editardatos/@{{e.id}}">Editar</a></td>
                     </tr>
                 </tbody>
             </table><br />
-            <p ng-if="grupo.Encuestas.length == 0">No hay encuestas digitadas</p><br />
+            <p ng-if="grupo.visitantes.length == 0">No hay encuestas digitadas</p><br />
             
         </div>
         <div class="row" style="text-align: center;">

@@ -235,7 +235,7 @@
             </div>
 
             <div class="row" style="text-align: center;">
-                <a href="/GrupoViaje" class="btn btn-default">Cancelar</a>
+                <a href="/grupoviaje/listadogrupos" class="btn btn-default">Cancelar</a>
                 <input type="submit" ng-click="guardar()" value="Guardar" class="btn btn-success">
                 
             </div>

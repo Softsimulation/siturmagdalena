@@ -107,7 +107,7 @@
                             <td>@{{item.lugar}}</td>
                             <td>@{{item.fecha}}</td>
                             <td>@{{item.fechallegada | date:'dd-MM-yyyy'}}</td>
-                            <td>@{{item.UserName}}</td>
+                            <td>@{{item.username}}</td>
                             <td>@{{item.estado}}</td>
                             <td style="text-align: right;">@{{item.ultima}}</td>
                             <td style="text-align: center;"><a href="/turismoreceptor/editardatos/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span></a></td>

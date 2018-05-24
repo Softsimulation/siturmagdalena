@@ -73,9 +73,9 @@
             .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
                 vertical-align: middle;
             }
-            .dropdown-menu {
-                left: -85%;
-            }
+            /*.dropdown-menu {*/
+            /*    left: -85%;*/
+            /*}*/
             .fixed {
                 position: fixed;
                 top: 0;
@@ -138,8 +138,8 @@
         <div id="preloader">
             <div>
                 <div class="loader"></div>
-                <h1>@Resource.LabelPreloader</h1>
-                <h4>@Resource.LabelPorFavorEspere</h4>
+                <h1>Cargando</h1>
+                <h4>Por favor espere</h4>
                 <img src="/Content/image/logo.min.png" width="200" />
             </div>
         </div>
@@ -185,6 +185,7 @@
         <script src="<?php echo e(asset('/js/plugins/select.min.js')); ?>" type="text/javascript"></script>
         <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
+        
         <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/encuesta.js')); ?>"></script>
