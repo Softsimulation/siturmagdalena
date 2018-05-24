@@ -10,4 +10,6 @@ class AspNetUser extends Model
     
     protected $fillable = ['Id	', 'Email', 'UserName'];
     
+    protected $primaryKey = 'Id';
+    
 }

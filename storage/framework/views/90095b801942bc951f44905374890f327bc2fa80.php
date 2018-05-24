@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="es">
 <head>
@@ -225,6 +225,7 @@
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/Hogares.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/ActividadesRealizadas.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/ViajesRealizados.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/encuestas/turismointerno/services.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/fuentesinformacion.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/servicios.js')); ?>"></script>
     <script>

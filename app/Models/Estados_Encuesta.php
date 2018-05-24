@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,6 +50,6 @@ class Estados_Encuesta extends Model
      */
     public function historialEncuestas()
     {
-        return $this->hasMany('App\HistorialEncuestum', 'estado_id');
+        return $this->hasMany('App\Models\HistorialEncuesta', 'estado_id');
     }
 }

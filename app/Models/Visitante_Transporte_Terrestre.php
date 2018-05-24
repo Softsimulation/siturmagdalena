@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class Visitante_Transporte_Terrestre extends Model
      * @var string
      */
     protected $table = 'visitante_transporte_terrestre';
-
+    public $timestamps = false;
     /**
      * The primary key for the model.
      * 
@@ -30,7 +30,7 @@ class Visitante_Transporte_Terrestre extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
@@ -42,6 +42,6 @@ class Visitante_Transporte_Terrestre extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,18 +19,19 @@ class Calificacion extends Model
      * @var string
      */
     protected $table = 'calificacion';
-
+    public $timestamps = false;
+    public $incrementing = false;
     /**
      * @var array
      */
-    protected $fillable = ['calificacion'];
+    protected $fillable = ['calificacion','item_evaluar_id','visitante_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function itemsEvaluar()
     {
-        return $this->belongsTo('App\ItemsEvaluar', 'item_evaluar_id');
+        return $this->belongsTo('App\Models\Item_Evaluar', 'item_evaluar_id');
     }
 
     /**
@@ -38,6 +39,6 @@ class Calificacion extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante','visitante_id');
     }
 }

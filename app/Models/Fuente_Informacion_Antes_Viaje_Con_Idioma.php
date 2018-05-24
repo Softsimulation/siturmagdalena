@@ -36,4 +36,6 @@ class Fuente_Informacion_Antes_Viaje_Con_Idioma extends Model
     {
         return $this->belongsTo('App\Models\Idioma','idiomas_id');
     }
+    
+    
 }

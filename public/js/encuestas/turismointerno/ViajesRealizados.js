@@ -250,7 +250,7 @@ angular.module('interno.viajesrealizados', [])
           serviInterno.guardarviaje($scope.encuesta).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push");
                 if (data.success == true) {
-                    $scope.ver = false;
+                  
                     swal({
                         title: "Realizado",
                         text: "Se ha guardado satisfactoriamente el viaje.",
@@ -264,16 +264,35 @@ angular.module('interno.viajesrealizados', [])
                                    $scope.$apply(function() {
                                     $scope.Viajes.push(data.viaje);
                                   });
-                                   
+                                     $scope.$apply(function() {
+                                        $scope.ver = false;
+                                        $scope.encuesta = {};
+                                     });
+                                    
+                                    $scope.errores = null;
+                                    $scope.error = null;
+                                    $scope.EstanciaForm.$setPristine();
+                                    $scope.EstanciaForm.$setUntouched();
+                                    $scope.EstanciaForm.$submitted = false;
                                } else {
                                    $scope.edit.fecha_inicio = data.viaje.fecha_inicio;
                                    $scope.edit.fecha_final = data.viaje.fecha_final;
+                                     $scope.$apply(function() {
+                                    $scope.ver = false;
+                                    $scope.encuesta = {};
+                                     });
+                                    $scope.errores = null;
+                                    $scope.error = null;
+                                    $scope.EstanciaForm.$setPristine();
+                                    $scope.EstanciaForm.$setUntouched();
+                                    $scope.EstanciaForm.$submitted = false;
 
                                }
-                       
+                               
+                           
                     }, 1000);
     
-    
+                
                 } else {
                     swal("Error", "Por favor corrija los errores", "error");
                     $scope.errores = data.errores;

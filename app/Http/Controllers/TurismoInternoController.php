@@ -1153,6 +1153,7 @@ class TurismoInternoController extends Controller
     }
     
     if($noches > $numeroDias){
+        return ["noches"=> $noches,"dias"=> $numeroDias];
         return ["success" => false, "errores" => [["La suma del número de noches no debe ser mayor al número de días del viaje."]] ];
     }
     

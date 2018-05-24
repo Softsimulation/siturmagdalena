@@ -34,7 +34,7 @@ class Financiador_Viaje extends Model
      */
     public function viajes()
     {
-        return $this->belongsToMany('App\Viaje', 'viajes_financiadores', 'financiadores_id');
+        return $this->belongsToMany('App\Models\Viaje', 'viajes_financiadores', 'financiadores_id');
     }
 
     /**
@@ -42,7 +42,7 @@ class Financiador_Viaje extends Model
      */
     public function visitantes()
     {
-        return $this->belongsToMany('App\Visitante', 'visitante_gastos_pagados', 'financiadores_viajes_id');
+        return $this->belongsToMany('App\Models\Visitante', 'visitante_gastos_pagados', 'financiadores_viajes_id');
     }
 
     /**

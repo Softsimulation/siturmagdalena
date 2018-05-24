@@ -73,7 +73,7 @@
             <!--//toggle button-->
             <!--logo situr -->
             <div class="logo">
-                <a href="{{asset('/')}}"><img src="{{asset('/Content/icons/logo_situr.png')}}" height="60"/></a>
+                <a href="{{asset('/')}}"><img src="{{asset('/Content/image/logo.png')}}" height="60"/></a>
             </div>
             <!--//logo-->
         </div>

@@ -70,7 +70,7 @@ class Viaje extends Model
      */
     public function creadore()
     {
-        return $this->belongsTo('App\Digitadore', 'creada_por');
+        return $this->belongsTo('App\Models\Digitador', 'creada_por');
     }
 
     /**
@@ -86,7 +86,7 @@ class Viaje extends Model
      */
     public function motivosViaje()
     {
-        return $this->belongsTo('App\MotivosViaje', 'motivo_viaje_id');
+        return $this->belongsTo('App\Models\Motivos_Viaje', 'motivo_viaje_id');
     }
 
     /**
@@ -137,6 +137,8 @@ class Viaje extends Model
         return $this->hasMany('App\Models\Atraccion_Visitada_Interno', 'viajes_id');
     }
 
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -182,7 +184,7 @@ class Viaje extends Model
      */
     public function lugaresVisitadosInternos()
     {
-        return $this->hasMany('App\LugaresVisitadosInterno', 'viajes_id');
+        return $this->hasMany('App\Models\LugaresVisitadosInterno', 'viajes_id');
     }
 
     /**
@@ -206,7 +208,7 @@ class Viaje extends Model
      */
     public function otrosFinanciadore()
     {
-        return $this->hasOne('App\OtrosFinanciadore', 'viajes_id');
+        return $this->hasOne('App\Models\OtrosFinanciadore', 'viajes_id');
     }
 
     /**
@@ -214,7 +216,7 @@ class Viaje extends Model
      */
     public function otrosTuristasInterno()
     {
-        return $this->hasOne('App\OtrosTuristasInterno', 'viaje_id');
+        return $this->hasOne('App\Models\OtrosTuristasInterno', 'viaje_id');
     }
 
     /**
