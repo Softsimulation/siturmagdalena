@@ -17,6 +17,8 @@
     <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/styleLoading.css')}}" rel='stylesheet' type='text/css' />
+    <link href="{{asset('/css/object-table-style.css')}}" rel='stylesheet' type='text/css' />
+    
     
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select.css')}}" rel='stylesheet' type='text/css' />
@@ -181,7 +183,7 @@
                         <img src="{{asset('Content/image/logo.png')}}" alt="Logo" />
                     </div>
                     <div class="col-xs-12 col-md-9">
-                        <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>Encuesta Ad Hoc</strong></h1>
+                        <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
                     </div>
                     <div class="col-xs-12 col-md-1">
                         <div class="btn-group">
@@ -239,10 +241,15 @@
     <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
     <script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/plugins/selectjp.js')}}"></script>
+    <script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>
+    <script src="{{asset('/js/plugins/object-table.js')}}"></script>
     
     <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+    <script src="{{asset('/js/administrador/administrador.js')}}"></script>
+    <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
 
 
     <script>

@@ -59,7 +59,8 @@
         }
     </style>
 @endsection
-@section('contenido')
+@section('app','ng-app="situr_admin"')
+@section('content')
 
 <div class="main-page" ng-controller="verTemporadaCtrl">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />

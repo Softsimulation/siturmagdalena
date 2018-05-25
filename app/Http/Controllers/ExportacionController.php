@@ -8,5 +8,11 @@ use App\Http\Requests;
 
 class ExportacionController extends Controller
 {
-    //
+    
+    public function getIndex(){
+        
+        return view('exportacion.Index');
+        
+    }
+    
 }

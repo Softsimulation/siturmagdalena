@@ -1,4 +1,4 @@
-﻿var situr = angular.module("situr_admin", ['ngSanitize', 'angularUtils.directives.dirPagination', 'checklist-model', 'angular-repeat-n', 'ngMap', 'admin.temporadas']);
+var situr = angular.module("situr_admin", ['ngSanitize', 'angularUtils.directives.dirPagination', 'checklist-model', 'angular-repeat-n', 'ngMap', 'admin.temporadas']);
 
 
 situr.directive('fileInput', ['$parse', function ($parse) {

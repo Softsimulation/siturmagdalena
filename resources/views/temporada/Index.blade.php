@@ -1,7 +1,7 @@
 @extends('layout._AdminLayout')
 
 @section('Title','Administrador de temporadas :: SITUR Magdalena')
-
+@section('app','ng-app="situr_admin"')
 @section ('estilos')
     <style>
         .panel-body {
@@ -62,7 +62,7 @@
         }
     </style>
 @endsection
-@section('contenido')
+@section('content')
 <div class="main-page" ng-controller="temporadasCtrl">
     <h1 class="title1">Temporadas</h1><br />
     

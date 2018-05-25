@@ -1,4 +1,4 @@
-angular.module('admin.temporadas', ['objectTable'])
+var pp=angular.module('admin.temporadas', ['objectTable'])
 
 .controller('temporadasCtrl', ['$scope', '$http',function ($scope, $http) {
 

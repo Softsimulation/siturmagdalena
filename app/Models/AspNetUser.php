@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AspNetUser extends Model
 {
-    protected $table = 'AspNetUsers';
+    protected $table = 'users';
     
     protected $fillable = ['Id	', 'Email', 'UserName'];
     
