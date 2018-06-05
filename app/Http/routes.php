@@ -11,19 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 Route::controller('/turismointerno','TurismoInternoController');
 
 Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
 
+Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
+
+Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
+
 Route::get('/actividades', 'TurismoReceptorController@actividades');
+
+Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
+});
+
+Route::get('/', function () {
+    return view('welcome');
 });
