@@ -22,6 +22,8 @@ Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
 
+Route::controller('/ofertaempleo','OfertaEmpleoController');
+
 Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::get('/CrearGrupoViaje', function () {
