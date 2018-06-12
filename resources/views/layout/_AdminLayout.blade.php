@@ -8,22 +8,22 @@
         <meta name="description" content="Sistema de Información Turistica del Magdalena">
         <meta name="author" content="SITUR Magdalena">
         <title>@yield('title')</title>
-        <link rel="icon" type="image/ico" href="{{asset('/Content/icons/favicon-96x96.png')}}" />
+        <link rel="icon" type="image/ico" href="{{secure_asset('/Content/icons/favicon-96x96.png')}}" />
         <!--<link href="@Url.Content("/Content/mdl/bootstrap_mdl/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />-->
         <!--<link href="@Url.Content("~/Content/mdl/material.min.css")" rel="stylesheet" type="text/css" />-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         
-        <!--<link href="{{asset('/Content/bootstrap_material/dist/css/bootstrap-material-design.min.css')}}" rel="stylesheet" type="text/css" />
-        <link href="{{asset('/Content/bootstrap_material/dist/css/ripples.min.css')}}" rel="stylesheet" type="text/css" />-->
-        <link href="{{asset('/Content/sweetalert.css')}}" rel='stylesheet' type='text/css' />
+        <!--<link href="{{secure_asset('/Content/bootstrap_material/dist/css/bootstrap-material-design.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{secure_asset('/Content/bootstrap_material/dist/css/ripples.min.css')}}" rel="stylesheet" type="text/css" />-->
+        <link href="{{secure_asset('/Content/sweetalert.css')}}" rel='stylesheet' type='text/css' />
         
-        <link href="{{asset('/Content/ionicons/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />
-        <link href="{{asset('/Content/styleLoading.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/ionicons/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/styleLoading.css')}}" rel='stylesheet' type='text/css' />
         
-        <link href="{{asset('/Content/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
-        <link href="{{asset('/Content/bootstrap-datetimepicker.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/bootstrap-datetimepicker.css')}}" rel='stylesheet' type='text/css' />
         
         @yield('estilos')
         <style>
@@ -139,7 +139,7 @@
         </style>
         
     </head>
-    <body ng-app="encuesta">
+    <body ng-app="situr_admin">
         <div id="preloader">
             <div>
                 <div class="loader"></div>
@@ -177,32 +177,25 @@
             @yield('content')
         </div>
         
-        <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{{secure_asset('/js/plugins/angular.min.js')}}"></script>
         
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <!--<script src="{{asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
-        <script src="{{asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>-->
-        <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
-        <script src="{{asset('js/plugins/angular-filter.js')}}"></script>
-        <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
-        <script src="{{asset('/js/sweetalert.min.js')}}"></script>
-        <script src="{{asset('/js/dir-pagination.js')}}"></script>
-        <script src="{{asset('/js/bootstrap.min.js')}}"></script>
-        <script src="{{asset('/js/moment-with-locales.min.js')}}"></script>
-        <script src="{{asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/encuesta.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/datos_encuestado.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/estanciayvisitados.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/transporte.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/grupo_viaje.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/gasto.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/percepcion_viaje.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/enteran.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/grupo_viaje.js')}}"></script>
-        
-        <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/services/grupoViajeServices.js')}}"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <!--<script src="{{secure_asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
+        <script src="{{secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>-->
+        <script src="{{secure_asset('/js/plugins/checklist-model.js')}}"></script>
+        <script src="{{secure_asset('js/plugins/angular-filter.js')}}"></script>
+        <script src="{{secure_asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
+        <script src="{{secure_asset('/js/sweetalert.min.js')}}"></script>
+        <script src="{{secure_asset('/js/dir-pagination.js')}}"></script>
+        <script src="{{secure_asset('/js/bootstrap.min.js')}}"></script>
+        <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
+        <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
+        <script src="{{secure_asset('/js/administrador/paises/paisesController.js')}}"></script>
+        <script src="{{secure_asset('/js/administrador/paises/services.js')}}"></script>
+        <script src="{{secure_asset('/js/administrador/departamentos/departamentosController.js')}}"></script>
+        <script src="{{secure_asset('/js/administrador/departamentos/services.js')}}"></script>
+        <script src="{{secure_asset('/js/administrador/administrador.js')}}"></script>
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
