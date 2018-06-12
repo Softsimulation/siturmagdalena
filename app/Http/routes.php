@@ -32,3 +32,11 @@ Route::get('/CrearGrupoViaje', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
+
+
+Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
+Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
+Route::controller('/encuesta','EncuestaDinamicaCtrl');

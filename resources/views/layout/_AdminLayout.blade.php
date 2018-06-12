@@ -24,6 +24,10 @@
         
         <link href="{{secure_asset('/Content/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
         <link href="{{secure_asset('/Content/bootstrap-datetimepicker.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
+        
+        <link href="{{asset('/css/select.min.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
         
         @yield('estilos')
         <style>
@@ -139,7 +143,7 @@
         </style>
         
     </head>
-    <body ng-app="situr_admin">
+    <body @yield('app') @yield('controller') >
         <div id="preloader">
             <div>
                 <div class="loader"></div>
@@ -173,7 +177,7 @@
             
         </header>
         
-        <div class="container" @yield('controller')>
+        <div class="container" >
             @yield('content')
         </div>
         
@@ -191,11 +195,10 @@
         <script src="{{secure_asset('/js/bootstrap.min.js')}}"></script>
         <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
         <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/paises/paisesController.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/paises/services.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/departamentos/departamentosController.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/departamentos/services.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/administrador.js')}}"></script>
+        
+        <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
