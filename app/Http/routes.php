@@ -20,6 +20,7 @@ Route::controller('/grupoviaje','GrupoViajeController');
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
+Route::controller('/ofertaempleo','OfertaEmpleoController');
 
 Route::get('/actividades', 'TurismoReceptorController@actividades');
 
