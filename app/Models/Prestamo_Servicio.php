@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +21,7 @@ class Prestamo_Servicio extends Model
      * @var string
      */
     protected $table = 'prestamos_servicios';
+    public $timestamps = false;
 
     /**
      * @var array
