@@ -139,7 +139,7 @@
         </style>
         
     </head>
-    <body ng-app="situr_admin">
+    <body @yield('app')>
         <div id="preloader">
             <div>
                 <div class="loader"></div>
@@ -191,11 +191,6 @@
         <script src="{{secure_asset('/js/bootstrap.min.js')}}"></script>
         <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
         <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/paises/paisesController.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/paises/services.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/departamentos/departamentosController.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/departamentos/services.js')}}"></script>
-        <script src="{{secure_asset('/js/administrador/administrador.js')}}"></script>
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });

@@ -46,6 +46,22 @@ app.factory("paisServi", ["$http", "$q", function ($http, $q) {
                 defered.reject(err);
             })
             return promise;
+        },
+        postImportexcel: function (data){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administrarpaises/importexcel', data, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
         }
     }
 }]);
