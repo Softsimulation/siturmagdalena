@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +24,8 @@ class Agencia_Operadora extends Model
      * @var string
      */
     protected $table = 'agencias_operadoras';
+    
+    public $timestamps = false;
 
     /**
      * @var array
@@ -43,7 +45,7 @@ class Agencia_Operadora extends Model
      */
     public function otraActividads()
     {
-        return $this->hasMany('App\OtraActividad', 'agencia_operadora_id');
+        return $this->hasMany('App\Models\Otra_Actividad', 'agencia_operadora_id');
     }
 
     /**
@@ -51,7 +53,7 @@ class Agencia_Operadora extends Model
      */
     public function otroTours()
     {
-        return $this->hasMany('App\OtroTour', 'agencias_operadoras_id');
+        return $this->hasMany('App\Models\Otro_Tour', 'agencias_operadoras_id');
     }
 
     /**
@@ -59,7 +61,7 @@ class Agencia_Operadora extends Model
      */
     public function prestamosServicios()
     {
-        return $this->hasMany('App\PrestamosServicio', 'agencia_operadora_id');
+        return $this->hasMany('App\Models\Prestamo_Servicio', 'agencia_operadora_id');
     }
 
     /**
@@ -67,7 +69,7 @@ class Agencia_Operadora extends Model
      */
     public function tours()
     {
-        return $this->belongsToMany('App\Tour', 'tours_con_agencias_deportivas', 'agencia_operadora_id', 'tours_id');
+        return $this->belongsToMany('App\Models\Tour', 'tours_con_agencias_deportivas', 'agencia_operadora_id', 'tours_id');
     }
 
     /**
@@ -75,6 +77,6 @@ class Agencia_Operadora extends Model
      */
     public function actividadesDeportivas()
     {
-        return $this->belongsToMany('App\ActividadesDeportiva', 'agencias_operadoras_con_actividades_deportivas', 'agencias_operadoras_id', 'actividades_deportivas_id');
+        return $this->belongsToMany('App\Models\Actividad_Deportiva', 'agencias_operadoras_con_actividades_deportivas', 'agencias_operadoras_id', 'actividades_deportivas_id');
     }
 }

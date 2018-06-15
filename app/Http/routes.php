@@ -24,6 +24,7 @@ Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 //Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
+Route::controller('/ofertaempleo','OfertaEmpleoController');
 
 Route::get('/actividades', 'TurismoReceptorController@actividades');
 
@@ -36,3 +37,11 @@ Route::get('/CrearGrupoViaje', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
+
+
+Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
+Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
+Route::controller('/encuesta','EncuestaDinamicaCtrl');
