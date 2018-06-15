@@ -1,54 +1,47 @@
 <!DOCTYPE html>
 
 <html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Sistema de Información Turistica del Magdalena">
-    <meta name="author" content="SITUR Magdalena">
-    <title>@yield('Title')</title>
-    <link rel="icon" type="image/ico" href="{{asset('Content/icons/favicon-96x96.png')}}" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
-    <!--<link href="{{asset('/css/bootstrap-material-design.css')}}" rel="stylesheet" type="text/css" />-->
-    <link href="{{asset('/css/ripples.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
-    <link href="{{asset('/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />
-    <link href="{{asset('/css/styleLoading.css')}}" rel='stylesheet' type='text/css' />
-    <link href="{{asset('/css/object-table-style.css')}}" rel='stylesheet' type='text/css' />
-    
-    
-    <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
-    <link href="{{asset('/css/select.css')}}" rel='stylesheet' type='text/css' />
-    <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
-    
-    @yield('estilos')
-    <style>
-        .carga {
-           display: none;
-           position: fixed;
-           z-index: 1000;
-           top: 0;
-           left: 0;
-           height: 100%;
-           width: 100%;
-           background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-       }
-       
-        body.charging { overflow: hidden; }
-        body.charging .carga { display: block; }
-    
-        .banner {
-            background-color: white;
-            padding-top: 1em;
-            padding-bottom: 1em;
-            color: dimgray;
-            text-align: center;
-            font-weight: 700;
-        }
-
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Sistema de Información Turistica del Magdalena">
+        <meta name="author" content="SITUR Magdalena">
+        <title>@yield('title')</title>
+        <link rel="icon" type="image/ico" href="{{secure_asset('/Content/icons/favicon-96x96.png')}}" />
+        <!--<link href="@Url.Content("/Content/mdl/bootstrap_mdl/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />-->
+        <!--<link href="@Url.Content("~/Content/mdl/material.min.css")" rel="stylesheet" type="text/css" />-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        
+        <!--<link href="{{secure_asset('/Content/bootstrap_material/dist/css/bootstrap-material-design.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{secure_asset('/Content/bootstrap_material/dist/css/ripples.min.css')}}" rel="stylesheet" type="text/css" />-->
+        <link href="{{secure_asset('/Content/sweetalert.css')}}" rel='stylesheet' type='text/css' />
+        
+        <link href="{{secure_asset('/Content/ionicons/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/styleLoading.css')}}" rel='stylesheet' type='text/css' />
+        
+        <link href="{{secure_asset('/Content/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/bootstrap-datetimepicker.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{secure_asset('/Content/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
+        
+        <link href="{{asset('/css/select.min.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
+        
+        @yield('estilos')
+        <style>
+            html {
+                font-size: 16px;
+            }
+            .banner {
+                background-color: white;
+                padding-top: 1em;
+                padding-bottom: 1em;
+                color: dimgray;
+                text-align: center;
+                font-weight: 700;
+            }
             .banner img {
                 height: 6em;
             }
@@ -153,25 +146,17 @@
             .tooltip-inner {
                 text-align:left !important;
             }
-            .btn-default-focus{
-                outline: none;
-                outline-offset: 0;
-                box-shadow: none;
-                background-color: transparent;
-            }
-            .ui-select-multiple.ui-select-bootstrap .ui-select-match-item{
-                font-size: 16px;
-            }
-    </style>
-</head>
-<body @yield('app')  @yield('controller') >
-    
-    <div id="preloader">
-        <div>
-            <div class="loader"></div>
-            <h1>{{ trans('resources.LabelPreloader') }}</h1>
-            <h4>Resource.LabelPorFavorEspere</h4>
-            <img src="{{asset('Content/image/logo.min.png')}}" width="200" />
+        </style>
+        
+    </head>
+    <body @yield('app') @yield('controller') >
+        <div id="preloader">
+            <div>
+                <div class="loader"></div>
+                <h1>@Resource.LabelPreloader</h1>
+                <h4>@Resource.LabelPorFavorEspere</h4>
+                <img src="/Content/image/logo.min.png" width="200" />
+            </div>
         </div>
     </div>
     
@@ -207,31 +192,36 @@
                     </div>
                 </div>
             </div>
-
+            
+        </header>
+        
+        <div class="container" >
+            @yield('content')
         </div>
-        <div class="title-section">
-            <h3 style="margin-top: 0.5em;"><strong>@yield('TitleSection')</strong></h3>
-        </div>
-     
-    </header>
-    <div class="container" >
-        @yield('content')
-    </div>
-    <!--
-    if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Digitador"))
-    {
-        <footer id="seccion" ng-controller="seccionCtrl">
-            <select class="selectLenguage" style="margin: 0" ng-options="seccion as seccion.nombre for seccion in secciones track by seccion.id" ng-model="seccionSelected">
-                <option value="" selected disabled>Ir a la sección</option>
-            </select>
-        </footer>
-    }
-    -->
-
-   
-    <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
-    <script src="{{asset('/js/plugins/jquery.min.js')}}"></script>
-
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{{secure_asset('/js/plugins/angular.min.js')}}"></script>
+        
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <!--<script src="{{secure_asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
+        <script src="{{secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>-->
+        <script src="{{secure_asset('/js/plugins/checklist-model.js')}}"></script>
+        <script src="{{secure_asset('js/plugins/angular-filter.js')}}"></script>
+        <script src="{{secure_asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
+        <script src="{{secure_asset('/js/sweetalert.min.js')}}"></script>
+        <script src="{{secure_asset('/js/dir-pagination.js')}}"></script>
+        <script src="{{secure_asset('/js/bootstrap.min.js')}}"></script>
+        <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
+        <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
+        
+        <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+        
+        <script>
+            $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
+        </script>
+       
     <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
     <script src="{{asset('/js/plugins/material.min.js')}}"></script>
     <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>

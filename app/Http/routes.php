@@ -28,8 +28,27 @@ Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
 
+Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
+
+Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
+Route::controller('/ofertaempleo','OfertaEmpleoController');
+
 Route::get('/actividades', 'TurismoReceptorController@actividades');
+
+Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
+
+
+Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
+Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
+Route::controller('/encuesta','EncuestaDinamicaCtrl');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,7 +21,7 @@ class Alquiler_Vehiculo extends Model
      * @var string
      */
     protected $table = 'alquiler_vehiculos';
-
+    public $timestamps = false;
     /**
      * @var array
      */

@@ -448,7 +448,7 @@
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="gastoFuera" class="control-label" style="color:dimgray;">Cantidad</label>
-                                                                    <input type="number" class="form-control" name="cantDentro@{{$index}}" min="1" placeholder="Cantidad" ng-blur="cambiarAlquiler(rub)" ng-model="rub.gastos_visitantes[0].cantidad_pagada_magdalena" ng-required ="rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null" >
+                                                                    <input type="number" class="form-control" name="cantDentro@{{$index}}" min="1" placeholder="Cantidad" ng-model="rub.gastos_visitantes[0].cantidad_pagada_magdalena" ng-required ="rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].cantidad_pagada_fuera == null" >
                                                                     <span ng-show="GastoForm.$submitted || GastoForm.cantDentro@{{$index}}.$touched">
                                                                         <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.min">*El valor debe ser mayor a 0</span>
                                                                         <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.number">* Solo números.</span>
@@ -459,7 +459,7 @@
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="selectDivisa" class="control-label" style="color:dimgray;">Divisa</label>
-                                                                    <select id="selectDivisa3" class="form-control" name="divisaDentro@{{$index}}" ng-blur="cambiarAlquiler(rub)" ng-options ="item.id as item.nombre for item in divisas" ng-model="rub.gastos_visitantes[0].divisas_magdalena" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null">
+                                                                    <select id="selectDivisa3" class="form-control" name="divisaDentro@{{$index}}" ng-options ="item.id as item.nombre for item in divisas" ng-model="rub.gastos_visitantes[0].divisas_magdalena" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].cantidad_pagada_fuera == null">
                                                                         <option value="">Seleccionar divisa</option>
                                                                     </select>
                                                                     <span ng-show="GastoForm.$submitted || GastoForm.divisaDentro@{{$index}}.$touched">
@@ -473,7 +473,7 @@
                                             </td>
                                             <td style="width:10%;">
                                                 <label class="control-label">&nbsp;</label>
-                                                <input type="number" min="1" class="form-control" name="personas@{{$index}}" ng-model="rub.gastos_visitantes[0].personas_cubiertas" ng-blur="cambiarAlquiler(rub)" placeholder="0" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].divisas_magdalena != null"/>
+                                                <input type="number" min="1" class="form-control" name="personas@{{$index}}" ng-model="rub.gastos_visitantes[0].personas_cubiertas" placeholder="0" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena != null || rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].cantidad_pagada_fuera != null || rub.gastos_visitantes[0].divisas_fuera != null  "/>
                                                 <span ng-show="GastoForm.$submitted || GastoForm.personas@{{$index}}.$touched">
                                                     <span class="label label-danger" ng-show="GastoForm.personas@{{$index}}.$error.number">* Solo números.</span>
                                                     <span class="label label-danger" ng-show="GastoForm.personas@{{$index}}.$error.min">* El valor debe ser mayor a 0.</span>
