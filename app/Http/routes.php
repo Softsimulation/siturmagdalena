@@ -30,6 +30,10 @@ Route::controller('/grupoviaje','GrupoViajeController');
 
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
+Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
+
+//Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
+
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');
 
