@@ -62,8 +62,9 @@
         }
     </style>
 @endsection
+@section('controller','ng-controller="temporadasCtrl"')
 @section('content')
-<div class="main-page" ng-controller="temporadasCtrl">
+<div class="main-page">
     <h1 class="title1">Temporadas</h1><br />
     
     <div ng-repeat="error in errores" ng-if="error.length>0">

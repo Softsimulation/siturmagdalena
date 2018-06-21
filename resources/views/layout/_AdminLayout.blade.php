@@ -240,6 +240,8 @@
     <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
     <script src="{{asset('/js/administrador/administrador.js')}}"></script>
     <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
+    <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
+    <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
 
 
     <script>

@@ -79,7 +79,7 @@ class TurismoInternoController extends Controller
     
     public function getDatoshogar(){
         
-        $municipios=Municipio::where('departamento_id',1396)->get();
+        $municipios=Municipio::where('departamento_id',1411)->get();
         $niveles=Nivel_Educacion::get();
         $motivos=Motivo_No_Viaje::get();
         $estratos=Estrato::get();

@@ -1,5 +1,5 @@
 
-var app = angular.module('encuesta', ['ui.select','checklist-model','angularUtils.directives.dirPagination','encuestas.datos_encuestado','recpetorService','grupoViajeService','receptor.estanciayvisitados','receptor.transporte','receptor.grupo_viaje','receptor.gasto','receptor.percepcion_viaje','receptor.enteran'])
+var app = angular.module('encuesta', ['ui.select','checklist-model','angularUtils.directives.dirPagination','encuestas.datos_encuestado','recpetorService','receptor.estanciayvisitados','receptor.transporte','receptor.gasto','receptor.percepcion_viaje','receptor.enteran'])
 
 
 app.controller('seccionCtrl', ['$http', '$scope', function ($http, $scope) {

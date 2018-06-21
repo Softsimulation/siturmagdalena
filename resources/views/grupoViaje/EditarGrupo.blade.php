@@ -104,6 +104,8 @@
 
 @section('NumSeccion', '0%')
 
+@section('app','ng-app="situr_admin"')
+
 @section('controller','ng-controller="editar_grupo"')
 
 @section('content')

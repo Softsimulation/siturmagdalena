@@ -192,13 +192,13 @@
         <script src="{{asset('/js/encuestas/turismoReceptor/datos_encuestado.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/estanciayvisitados.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/transporte.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/grupo_viaje.js')}}"></script>
+        
         <script src="{{asset('/js/encuestas/turismoReceptor/gasto.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/percepcion_viaje.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/enteran.js')}}"></script>
         
         <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/services/grupoViajeServices.js')}}"></script>
+        <
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
