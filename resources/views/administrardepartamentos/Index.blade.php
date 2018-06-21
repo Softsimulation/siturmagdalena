@@ -97,6 +97,8 @@
 
 @section('NumSeccion', '0%')
 
+@section('app', 'ng-app="departamentosApp"')
+
 @section('controller','ng-controller="departamentosController"')
 
 @section('content')
@@ -105,17 +107,46 @@
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row" style="margin: 0;">
-            <div class="col-xs-12 col-sm-4 col-md-2">
-                <button type="button" class="btn btn-primary" ng-click="nuevoPaisModal()">
+            <div class="col-xs-12 col-sm-6 col-md-5">
+                <button type="button" class="btn btn-primary" ng-click="nuevoDepartamentoModal()">
                   Insertar departamento
                 </button>
+                <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  Importar csv
+                </button>
             </div>
-            <div class="col-xs-12 col-sm-8 col-md-offset-3 col-md-4">
-                <input type="text" ng-model="prop.search" class="form-control" id="inputEmail3" placeholder="Búsqueda de grupos de viaje (id, fecha, lugar)">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <input type="text" ng-model="prop.search" class="form-control" placeholder="Búsqueda de grupos de viaje (id, fecha, lugar)">
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-3" style="text-align: center;">
+            <div class="col-xs-12 col-sm-2 col-md-3" style="text-align: center;">
                 <span class="chip">@{{(departamentos|filter:prop.search).length}} resultados</span>
             </div>
+        </div>
+        <div class="collapse row" id="collapseExample">
+          <div class="well">
+              <div class="alert alert-danger row" ng-if="erroresCSV != null">
+                    <label><b>Errores:</b></label>
+                    <br />
+                    <div ng-repeat="error in erroresCSV" ng-if="error.length>0">
+                        -@{{error[0]}}
+                    </div>
+                </div>
+              <div class="row">
+                <div class="alert alert-info">
+                    <label><b>Importante:</b></label>
+                    <br />
+                    El archivo debe tener solamente las columnas "nombreDepartamento" y "nombrePais".
+                </div>
+            </div>
+            <div class="row">
+                <form class="form-inline" method="post" novalidate role="form" name="importarCsvForm" class="form-horizontal" enctype="multipart/form-data">
+        			<div class="form-group">
+        			    <input required type="file" name="import_file" accept=".csv" file-input='import_file' />
+        			</div>
+        			<button class="btn btn-primary" ng-click="importarCsv()">Import File</button>
+        		</form>
+            </div>
+          </div>
         </div>
         <br/>
         <div class="row">
@@ -123,7 +154,7 @@
                 <table class="table table-striped">
                     <tr>
                         <th>Id</th>
-                        <th>Nombres</th>
+                        <th>Nombre</th>
                         <th>País</th>
                         <th>Última modificación</th>
                         <th>Usuario</th>
@@ -137,7 +168,7 @@
                             @{{departamento.nombre}}
                         </td>
                         <td>
-                            @{{departamento.pais_id}}
+                            @{{nombreDelPais(departamento.pais_id)}}
                         </td>
                         <td>@{{departamento.updated_at | date:'dd-MM-yyyy'}}</td>
                         <td>@{{departamento.user_update}}</td>
@@ -153,6 +184,9 @@
                                     
                             <!--    </span>-->
                             <!--</a>-->
+                            <a href="javascript:void(0)" ng-click="editarDepartamentoModal(departamento)">
+                                <span class="glyphicon glyphicon-pencil" title="Editar país"></span>
+                            </a> 
                         </td>
                     </tr>
                 </table>
@@ -187,14 +221,14 @@
             </div>
         </div>
       </div>
-      <form novalidate role="form" name="paisForm">
+      <form novalidate role="form" name="departamentoForm">
           <div class="modal-body">
-                <input type="hidden" ng-model="pais.id" ng-require="">
+                <input type="hidden" ng-model="departamento.id" ng-require="">
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input ng-disabled="sw == 3" required type="text" name="nombre" class="form-control" placeholder="Nombre del país" ng-model="departamento.nombre"/>
                 </div>
-                <div class="form-group" ng-class="{'error': ((paisForm.$submitted || paisForm.idioma.$touched) && paisForm.idioma.$error.required) }">
+                <div class="form-group" ng-class="{'error': (departamentoForm.$submitted || departamentoForm.pais.$touched) && departamentoForm.pais.$error.required }">
                     <label for="pais">País</label>
                     <select ng-disabled="sw == 3" name="pais" required ng-model="departamento.pais_id" ng-options="pais.id as pais.paises_con_idiomas[0].nombre for pais in paises" class="form-control">
                         <option value="">Seleccione un país</option>
@@ -203,11 +237,17 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button ng-click="guardarPais()" ng-if="sw != 3" type="submit" class="btn btn-primary">Guardar</button>
+            <button ng-click="guardarDepartamento()" ng-if="sw != 3" type="submit" class="btn btn-primary">Guardar</button>
           </div>
       </form>
     </div>
   </div>
 </div>
 
+@endsection
+
+@section('javascript')
+<script src="{{secure_asset('/js/administrador/departamentos/departamentosController.js')}}"></script>
+<script src="{{secure_asset('/js/administrador/departamentos/services.js')}}"></script>
+<script src="{{secure_asset('/js/administrador/departamentos/app.js')}}"></script>
 @endsection

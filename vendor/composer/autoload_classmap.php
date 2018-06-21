@@ -116,17 +116,25 @@ return array(
     'App\\H_Viaje_Internos_Agencia' => $baseDir . '/app/Models/H_Viaje_Internos_Agencia.php',
     'App\\H_Vinculacion_Laboral' => $baseDir . '/app/Models/H_Vinculacion_Laboral.php',
     'App\\Historial_Encuesta_Interno' => $baseDir . '/app/Models/Historial_Encuesta_Interno.php',
+<<<<<<< HEAD
+=======
+    'App\\Historial_Encuesta_Oferta' => $baseDir . '/app/Models/Historial_Encuesta_Oferta.php',
+>>>>>>> refs/remotes/origin/release
     'App\\Http\\Controllers\\AdministradorAtraccionController' => $baseDir . '/app/Http/Controllers/AdministradorAtraccionController.php',
     'App\\Http\\Controllers\\AdministrarDepartamentosController' => $baseDir . '/app/Http/Controllers/AdministrarDepartamentosController.php',
     'App\\Http\\Controllers\\AdministrarPaisesController' => $baseDir . '/app/Http/Controllers/AdministrarPaisesController.php',
     'App\\Http\\Controllers\\Auth\\AuthController' => $baseDir . '/app/Http/Controllers/Auth/AuthController.php',
     'App\\Http\\Controllers\\Auth\\PasswordController' => $baseDir . '/app/Http/Controllers/Auth/PasswordController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+<<<<<<< HEAD
     'App\\Http\\Controllers\\EncuestaDinamicaCtrl' => $baseDir . '/app/Http/Controllers/EncuestaDinamicaCtrl.php',
     'App\\Http\\Controllers\\GrupoViajeController' => $baseDir . '/app/Http/Controllers/GrupoViajeController.php',
     'App\\Http\\Controllers\\IndicadoresCtrl' => $baseDir . '/app/Http/Controllers/IndicadoresCtrl.php',
     'App\\Http\\Controllers\\MuestraMaestraCtrl' => $baseDir . '/app/Http/Controllers/MuestraMaestraCtrl.php',
     'App\\Http\\Controllers\\OfertaEmpleoController' => $baseDir . '/app/Http/Controllers/OfertaEmpleoController.php',
+=======
+    'App\\Http\\Controllers\\GrupoViajeController' => $baseDir . '/app/Http/Controllers/GrupoViajeController.php',
+>>>>>>> refs/remotes/origin/release
     'App\\Http\\Controllers\\TurismoInternoController' => $baseDir . '/app/Http/Controllers/TurismoInternoController.php',
     'App\\Http\\Controllers\\TurismoReceptorController' => $baseDir . '/app/Http/Controllers/TurismoReceptorController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
@@ -163,6 +171,7 @@ return array(
     'App\\Models\\Atraccion_Visitada_Interno' => $baseDir . '/app/Models/Atraccion_Visitada_Interno.php',
     'App\\Models\\Atracciones' => $baseDir . '/app/Models/Atracciones.php',
     'App\\Models\\Barrio' => $baseDir . '/app/Models/Barrio.php',
+<<<<<<< HEAD
     'App\\Models\\Cabana' => $baseDir . '/app/Models/Cabana.php',
     'App\\Models\\Calificacion' => $baseDir . '/app/Models/Calificacion.php',
     'App\\Models\\Camping' => $baseDir . '/app/Models/Camping.php',
@@ -170,6 +179,9 @@ return array(
     'App\\Models\\Categoria_Proveedor' => $baseDir . '/app/Models/Categoria_Proveedor.php',
     'App\\Models\\Categoria_Proveedor_Con_Idioma' => $baseDir . '/app/Models/Categoria_Proveedor_Con_Idioma.php',
     'App\\Models\\Coordenadas_zona' => $baseDir . '/app/Models/Coordenadas_zona.php',
+=======
+    'App\\Models\\Calificacion' => $baseDir . '/app/Models/Calificacion.php',
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Departamento' => $baseDir . '/app/Models/Departamento.php',
     'App\\Models\\Digitador' => $baseDir . '/app/Models/Digitador.php',
     'App\\Models\\Divisa' => $baseDir . '/app/Models/Divisa.php',
@@ -179,6 +191,7 @@ return array(
     'App\\Models\\Elemento_Representativo_Con_Idioma' => $baseDir . '/app/Models/Elemento_Representativo_Con_Idioma.php',
     'App\\Models\\Empleo' => $baseDir . '/app/Models/Empleo.php',
     'App\\Models\\Encuesta' => $baseDir . '/app/Models/Encuesta.php',
+<<<<<<< HEAD
     'App\\Models\\EncuestaDinamica\\Encuestas_dinamica' => $baseDir . '/app/Models/EncuestaDinamica/Encuestas_dinamica.php',
     'App\\Models\\EncuestaDinamica\\Encuestas_idioma' => $baseDir . '/app/Models/EncuestaDinamica/Encuestas_idioma.php',
     'App\\Models\\EncuestaDinamica\\Encuestas_usuario' => $baseDir . '/app/Models/EncuestaDinamica/Encuestas_usuario.php',
@@ -200,6 +213,8 @@ return array(
     'App\\Models\\EncuestaDinamica\\Sub_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Sub_pregunta.php',
     'App\\Models\\EncuestaDinamica\\Tipo_campo' => $baseDir . '/app/Models/EncuestaDinamica/Tipo_campo.php',
     'App\\Models\\Estado_proveedor' => $baseDir . '/app/Models/Estado_proveedor.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Estados_Encuesta' => $baseDir . '/app/Models/Estados_Encuesta.php',
     'App\\Models\\Estrato' => $baseDir . '/app/Models/Estrato.php',
     'App\\Models\\Financiador_Viaje' => $baseDir . '/app/Models/Financiador_Viaje.php',
@@ -241,8 +256,11 @@ return array(
     'App\\Models\\Pais_Con_Idioma' => $baseDir . '/app/Models/Pais_Con_Idioma.php',
     'App\\Models\\Periodos_medicion' => $baseDir . '/app/Models/Periodos_medicion.php',
     'App\\Models\\Persona' => $baseDir . '/app/Models/Persona.php',
+<<<<<<< HEAD
     'App\\Models\\Proveedores_rnt' => $baseDir . '/app/Models/Proveedores_rnt.php',
     'App\\Models\\Proveedores_rnt_idioma' => $baseDir . '/app/Models/Proveedores_rnt_idioma.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Redes_Sociales' => $baseDir . '/app/Models/Redes_Sociales.php',
     'App\\Models\\Rubro' => $baseDir . '/app/Models/Rubro.php',
     'App\\Models\\Rubro_Con_Idioma' => $baseDir . '/app/Models/Rubro_Con_Idioma.php',
@@ -258,7 +276,10 @@ return array(
     'App\\Models\\Tipo_Atencion_Salud' => $baseDir . '/app/Models/Tipo_Atencion_Salud.php',
     'App\\Models\\Tipo_Atraccion' => $baseDir . '/app/Models/Tipo_Atraccion.php',
     'App\\Models\\Tipo_Atraccion_Con_Idioma' => $baseDir . '/app/Models/Tipo_Atraccion_Con_Idioma.php',
+<<<<<<< HEAD
     'App\\Models\\Tipo_Proveedor' => $baseDir . '/app/Models/Tipo_Proveedor.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Tipo_Proveedor_Paquete_Con_Idioma' => $baseDir . '/app/Models/Tipo_Proveedor_Paquete_Con_Idioma.php',
     'App\\Models\\Tipo_Transporte' => $baseDir . '/app/Models/Tipo_Transporte.php',
     'App\\Models\\Tipo_Viaje' => $baseDir . '/app/Models/Tipo_Viaje.php',
@@ -274,8 +295,11 @@ return array(
     'App\\Models\\Visitante_estado' => $baseDir . '/app/Models/Visitante_estado.php',
     'App\\Models\\Volveria_Visitar' => $baseDir . '/app/Models/Volveria_Visitar.php',
     'App\\Models\\Volveria_Visitar_Con_Idioma' => $baseDir . '/app/Models/Volveria_Visitar_Con_Idioma.php',
+<<<<<<< HEAD
     'App\\Models\\Zona' => $baseDir . '/app/Models/Zona.php',
     'App\\Models\\alojamiento' => $baseDir . '/app/Models/alojamiento.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Motivo_Estadistica_Secundaria' => $baseDir . '/app/Models/Motivo_Estadistica_Secundaria.php',
     'App\\Multimedia_Actividad' => $baseDir . '/app/Models/Multimedia_Actividad.php',
     'App\\Multimedia_Destino' => $baseDir . '/app/Models/Multimedia_Destino.php',
@@ -370,6 +394,10 @@ return array(
     'App\\Visitante_Alquila_Vehiculo' => $baseDir . '/app/Models/Visitante_Alquila_Vehiculo.php',
     'App\\Visitante_Gasto_Pagado' => $baseDir . '/app/Models/Visitante_Gasto_Pagado.php',
     'App\\Visitante_Salud' => $baseDir . '/app/Models/Visitante_Salud.php',
+<<<<<<< HEAD
+=======
+    'App\\alojamiento' => $baseDir . '/app/Models/alojamiento.php',
+>>>>>>> refs/remotes/origin/release
     'App\\models\\Motivo_Viaje_Con_Idioma' => $baseDir . '/app/Models/Motivo_Viaje_Con_Idioma.php',
     'App\\models\\Tipo_Atencion_Salud_Con_Idioma' => $baseDir . '/app/Models/Tipo_Atencion_Salud_Con_Idioma.php',
     'App\\models\\Tipo_Transporte_Con_Idioma' => $baseDir . '/app/Models/Tipo_Transporte_Con_Idioma.php',
@@ -3940,6 +3968,17 @@ return array(
     'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Processor' => $vendorDir . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Processor.php',
     'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Rule' => $vendorDir . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Rule.php',
     'Webmozart\\Assert\\Assert' => $vendorDir . '/webmozart/assert/src/Assert.php',
+    'Wilgucki\\Csv\\Commands\\Export' => $vendorDir . '/wilgucki/csv/src/Commands/Export.php',
+    'Wilgucki\\Csv\\Commands\\Import' => $vendorDir . '/wilgucki/csv/src/Commands/Import.php',
+    'Wilgucki\\Csv\\CsvCollection' => $vendorDir . '/wilgucki/csv/src/CsvCollection.php',
+    'Wilgucki\\Csv\\CsvServiceProvider' => $vendorDir . '/wilgucki/csv/src/CsvServiceProvider.php',
+    'Wilgucki\\Csv\\Facades\\Reader' => $vendorDir . '/wilgucki/csv/src/Facades/Reader.php',
+    'Wilgucki\\Csv\\Facades\\Writer' => $vendorDir . '/wilgucki/csv/src/Facades/Writer.php',
+    'Wilgucki\\Csv\\Reader' => $vendorDir . '/wilgucki/csv/src/Reader.php',
+    'Wilgucki\\Csv\\Traits\\CsvCustomCollection' => $vendorDir . '/wilgucki/csv/src/Traits/CsvCustomCollection.php',
+    'Wilgucki\\Csv\\Traits\\CsvExportable' => $vendorDir . '/wilgucki/csv/src/Traits/CsvExportable.php',
+    'Wilgucki\\Csv\\Traits\\CsvImportable' => $vendorDir . '/wilgucki/csv/src/Traits/CsvImportable.php',
+    'Wilgucki\\Csv\\Writer' => $vendorDir . '/wilgucki/csv/src/Writer.php',
     'XdgBaseDir\\Xdg' => $vendorDir . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
     'phpDocumentor\\Reflection\\DocBlock' => $vendorDir . '/phpdocumentor/reflection-docblock/src/DocBlock.php',
     'phpDocumentor\\Reflection\\DocBlockFactory' => $vendorDir . '/phpdocumentor/reflection-docblock/src/DocBlockFactory.php',

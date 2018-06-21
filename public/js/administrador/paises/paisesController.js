@@ -29,10 +29,10 @@ angular.module('paises.pais', [])
         };
         $scope.errores = null;
         $scope.sw = 1;
-        $('#myModalLabel').text('Nuevo país');
-        $('#paisesModal').modal('show');
         $scope.paisForm.$setPristine();
         $scope.paisForm.$setUntouched();
+        $('#myModalLabel').text('Nuevo país');
+        $('#paisesModal').modal('show');
     }
     
     $scope.verNombre = function(idioma){
@@ -160,5 +160,24 @@ angular.module('paises.pais', [])
                 // code
                 break;
         }
+    }
+    
+    $scope.importarCsv = function (){
+        var fd = new FormData();
+        if ($scope.import_file != null){
+            fd.append('import_file', $scope.import_file[0]);
+        }else{
+            swal('Información', 'No se ha seleccionado ningún archivo.', 'info');
+            return;
+        }
+        console.log($scope.import_file);
+        $scope.erroresCSV = null;
+        paisServi.postImportexcel(fd).then(function (data){
+            if (data.success){
+                window.location.reload();
+            }else{
+                $scope.erroresCSV = data.errores;
+            }
+        })
     }
 });

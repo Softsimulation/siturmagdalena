@@ -33,6 +33,7 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         ),
         'W' => 
         array (
+            'Wilgucki\\Csv\\' => 13,
             'Webmozart\\Assert\\' => 17,
         ),
         'T' => 
@@ -134,6 +135,10 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'XdgBaseDir\\' => 
         array (
             0 => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src',
+        ),
+        'Wilgucki\\Csv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wilgucki/csv/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -506,6 +511,7 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\H_Viaje_Internos_Agencia' => __DIR__ . '/../..' . '/app/Models/H_Viaje_Internos_Agencia.php',
         'App\\H_Vinculacion_Laboral' => __DIR__ . '/../..' . '/app/Models/H_Vinculacion_Laboral.php',
         'App\\Historial_Encuesta_Interno' => __DIR__ . '/../..' . '/app/Models/Historial_Encuesta_Interno.php',
+
         'App\\Http\\Controllers\\AdministradorAtraccionController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministradorAtraccionController.php',
         'App\\Http\\Controllers\\AdministrarDepartamentosController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministrarDepartamentosController.php',
         'App\\Http\\Controllers\\AdministrarPaisesController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministrarPaisesController.php',
@@ -760,6 +766,7 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\Visitante_Alquila_Vehiculo' => __DIR__ . '/../..' . '/app/Models/Visitante_Alquila_Vehiculo.php',
         'App\\Visitante_Gasto_Pagado' => __DIR__ . '/../..' . '/app/Models/Visitante_Gasto_Pagado.php',
         'App\\Visitante_Salud' => __DIR__ . '/../..' . '/app/Models/Visitante_Salud.php',
+
         'App\\models\\Motivo_Viaje_Con_Idioma' => __DIR__ . '/../..' . '/app/Models/Motivo_Viaje_Con_Idioma.php',
         'App\\models\\Tipo_Atencion_Salud_Con_Idioma' => __DIR__ . '/../..' . '/app/Models/Tipo_Atencion_Salud_Con_Idioma.php',
         'App\\models\\Tipo_Transporte_Con_Idioma' => __DIR__ . '/../..' . '/app/Models/Tipo_Transporte_Con_Idioma.php',
@@ -4330,6 +4337,17 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Processor' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Processor.php',
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Rule' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Rule.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
+        'Wilgucki\\Csv\\Commands\\Export' => __DIR__ . '/..' . '/wilgucki/csv/src/Commands/Export.php',
+        'Wilgucki\\Csv\\Commands\\Import' => __DIR__ . '/..' . '/wilgucki/csv/src/Commands/Import.php',
+        'Wilgucki\\Csv\\CsvCollection' => __DIR__ . '/..' . '/wilgucki/csv/src/CsvCollection.php',
+        'Wilgucki\\Csv\\CsvServiceProvider' => __DIR__ . '/..' . '/wilgucki/csv/src/CsvServiceProvider.php',
+        'Wilgucki\\Csv\\Facades\\Reader' => __DIR__ . '/..' . '/wilgucki/csv/src/Facades/Reader.php',
+        'Wilgucki\\Csv\\Facades\\Writer' => __DIR__ . '/..' . '/wilgucki/csv/src/Facades/Writer.php',
+        'Wilgucki\\Csv\\Reader' => __DIR__ . '/..' . '/wilgucki/csv/src/Reader.php',
+        'Wilgucki\\Csv\\Traits\\CsvCustomCollection' => __DIR__ . '/..' . '/wilgucki/csv/src/Traits/CsvCustomCollection.php',
+        'Wilgucki\\Csv\\Traits\\CsvExportable' => __DIR__ . '/..' . '/wilgucki/csv/src/Traits/CsvExportable.php',
+        'Wilgucki\\Csv\\Traits\\CsvImportable' => __DIR__ . '/..' . '/wilgucki/csv/src/Traits/CsvImportable.php',
+        'Wilgucki\\Csv\\Writer' => __DIR__ . '/..' . '/wilgucki/csv/src/Writer.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
         'phpDocumentor\\Reflection\\DocBlock' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlock.php',
         'phpDocumentor\\Reflection\\DocBlockFactory' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactory.php',

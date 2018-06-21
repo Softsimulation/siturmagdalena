@@ -2704,6 +2704,49 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "wilgucki/csv",
+            "version": "v0.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wilgucki/csv.git",
+                "reference": "c9f467b582208ccbb24c6537c2195af369b5aebd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wilgucki/csv/zipball/c9f467b582208ccbb24c6537c2195af369b5aebd",
+                "reference": "c9f467b582208ccbb24c6537c2195af369b5aebd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wilgucki\\Csv\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maciej Wilgucki",
+                    "email": "mwilgucki@gmail.com"
+                }
+            ],
+            "description": "Laravel 5 package for writing and reading CSV files",
+            "keywords": [
+                "csv",
+                "laravel"
+            ],
+            "time": "2017-01-26T04:38:57+00:00"
         }
     ],
     "packages-dev": [

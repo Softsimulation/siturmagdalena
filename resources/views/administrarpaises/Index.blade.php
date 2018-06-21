@@ -97,6 +97,8 @@
 
 @section('NumSeccion', '0%')
 
+@section('app', 'ng-app="paisesApp"')
+
 @section('controller','ng-controller="paisesController"')
 
 @section('content')
@@ -106,16 +108,51 @@
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row" style="margin: 0;">
             <div class="col-xs-12 col-sm-4 col-md-2">
+                
+            </div>
+            
+        </div>
+        <div class="row" style="margin: 0;">
+            <div class="col-xs-12 col-sm-6 col-md-5">
                 <button type="button" class="btn btn-primary" ng-click="nuevoPaisModal()">
                   Insertar país
                 </button>
+                <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  Importar csv
+                </button>
             </div>
-            <div class="col-xs-12 col-sm-8 col-md-offset-3 col-md-4">
-                <input type="text" ng-model="prop.search" class="form-control" id="inputEmail3" placeholder="Búsqueda de grupos de viaje (id, fecha, lugar)">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <input type="text" ng-model="prop.search" class="form-control" placeholder="Búsqueda de países (id, nombre, departamento)">
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-3" style="text-align: center;">
+            <div class="col-xs-12 col-sm-2 col-md-3" style="text-align: center;">
                 <span class="chip">@{{(paises|filter:prop.search).length}} resultados</span>
             </div>
+        </div>
+        <div class="collapse row" id="collapseExample">
+          <div class="well">
+              <div class="alert alert-danger row" ng-if="erroresCSV != null">
+                    <label><b>Errores:</b></label>
+                    <br />
+                    <div ng-repeat="error in erroresCSV" ng-if="error.length>0">
+                        -@{{error[0]}}
+                    </div>
+                </div>
+              <div class="row">
+                <div class="alert alert-info">
+                    <label><b>Importante:</b></label>
+                    <br />
+                    El archivo debe tener solamente las columnas "nombreMunicipio", "nombreDepartamento" y "nombrePais".
+                </div>
+            </div>
+            <div class="row">
+                <form class="form-inline" method="post" novalidate role="form" name="importarCsvForm" class="form-horizontal" enctype="multipart/form-data">
+        			<div class="form-group">
+        			    <input required type="file" name="import_file" accept=".csv" file-input='import_file' />
+        			</div>
+        			<button class="btn btn-primary" ng-click="importarCsv()">Import File</button>
+        		</form>
+            </div>
+          </div>
         </div>
         <br/>
         <div class="row">
@@ -214,4 +251,10 @@
   </div>
 </div>
 
+@endsection
+
+@section('javascript')
+<script src="{{secure_asset('/js/administrador/paises/paisesController.js')}}"></script>
+<script src="{{secure_asset('/js/administrador/paises/services.js')}}"></script>
+<script src="{{secure_asset('/js/administrador/paises/app.js')}}"></script>
 @endsection
