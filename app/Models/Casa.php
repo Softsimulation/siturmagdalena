@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,7 +25,13 @@ class Casa extends Model
      * @var array
      */
     protected $fillable = ['alojamientos_id', 'total', 'capacidad', 'promedio', 'habitaciones', 'tarifa', 'viajeros', 'viajeros_colombia', 'viajeros_extranjeros', 'total_huespedes', 'capacidad_ocupadas'];
-
+    public $timestamps = false;
+    
+    protected $casts = [
+        'tarifa' => 'float',
+        'habitaciones' => 'int',
+    ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

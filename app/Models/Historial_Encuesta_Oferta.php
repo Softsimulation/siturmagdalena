@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +28,9 @@ class Historial_Encuesta_Oferta extends Model
      */
     protected $fillable = ['user_id', 'encuesta_id', 'estado_encuesta_id', 'fecha_cambio'];
 
+
+    public $timestamps = false;
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

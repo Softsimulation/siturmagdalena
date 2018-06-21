@@ -161,7 +161,7 @@
                             <img src="/Content/image/logo.png" alt="Logo" />
                         </div>
                         <div class="col-xs-12 col-md-9">
-                            <h1 style="margin-top: 0.8em; font-size: 2em"><strong>Encuesta de turismo receptor</strong></h1>
+                            <h1 style="margin-top: 0.8em; font-size: 2em"><strong></strong></h1>
                         </div>
                         
                     </div>

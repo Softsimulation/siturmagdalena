@@ -1,3 +1,4 @@
+
 (function(){
 
     angular.module("appMuestraMaestra", [ 'ngSanitize', 'ui.select', 'checklist-model', "ADM-dateTimePicker",  "serviciosMuestraMaestra", "ngMap" ] )
@@ -6,119 +7,361 @@
          ADMdtpProvider.setOptions({ calType: "gregorian", format: "YYYY/MM/DD", default: "today" });
     }])
     
-    .controller("MuestraMaestraCtrl", ["$scope","ServiMuestra", "NgMap", function($scope,ServiMuestra,NgMap){
+    .controller("CrearPeriodoCtrl", ["$scope","ServiMuestra", "NgMap", function($scope,ServiMuestra,NgMap){
         
-        $scope.dataPerido = {};
-       
+        $scope.dataPerido = { zonas:[] };
+        $scope.zona = {};
+        $scope.styloMapa = [{featureType:'poi.school',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.business',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.attraction',elementType:'labels',stylers:[{visibility:'off'}]} ];
+        var PrestadoresInfowindow = new google.maps.InfoWindow();
+        
         ServiMuestra.getData($("#periodo").val())
-          .then(function(data){ 
-                $scope.dataPerido = data.periodo; 
-                $scope.digitadores = data.digitadores; 
-                for(var i=0; i< data.proveedores.length; i++){
-                    
-                    switch ( data.proveedores[i].estados_proveedor_id ) {
-                        case 1: data.proveedores[i].icono = "/Content/IconsMap/green.png";  break;
-                        case 2: data.proveedores[i].icono = "/Content/IconsMap/yellow.png"; break;
-                        case 3: data.proveedores[i].icono = "/Content/IconsMap/red.png";    break;
-                        default: break;
+           .then(function(data){ 
+                
+                if(data.periodo){
+                
+                    for(var i=0; i< data.periodo.zonas.length; i++){
+                        data.periodo.zonas[i].coordenadas = $scope.getCoordenadas(data.periodo.zonas[i].coordenadas);
+                        
+                        var ids = [];
+                        for(var j=0; j<data.periodo.zonas[i].encargados.length; j++){
+                            ids.push( data.periodo.zonas[i].encargados[j].id );
+                        }
+                        data.periodo.zonas[i].encargados = ids;
                     }
                     
+                    $scope.dataPerido = data.periodo;
+                    $scope.dataPerido.nombre = null;
+                    $scope.dataPerido.fecha_inicio = null;
+                    $scope.dataPerido.fecha_fin = null;
                 }
-                $scope.proveedores = data.proveedores; 
+                
+                $scope.digitadores = data.digitadores; 
+                $scope.proveedores = data.proveedores;
+                
             });
         
+        
+        $scope.guardar = function(){
+            
+            if (!$scope.formCrear.$valid) {
+                swal("Error", "Verifique los errores en el formulario", "error"); return;
+            }
+            
+            
+            swal({
+                title: "Guardar",
+                text: "Recuerde que las zonas que se encuentran en el mapa, seran registradas con el nuevo periodo.",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                setTimeout(function () {
+                    
+                    ServiMuestra.crearPeriodo($scope.dataPerido)
+                    .then(function (data) {
+                       
+                        if (data.success) {
+                            
+                            swal({
+                                title: "¡Periodo guardado!",
+                                text: "El perido se ha guardado exitosamnete",
+                                type: "success",
+                                showCancelButton: false,
+                                closeOnConfirm: false,
+                            }, function () {
+                                setTimeout(function () {
+                                    window.location.href = "/MuestraMaestra/periodo/"+data.id;
+                                }, 500);
+                            });
+                            
+                        }
+                        else {
+                            if(data.Error){
+                                swal("Error", data.Error, "error");
+                            }
+                            else{
+                                $scope.errores = data.errores;
+                                sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                            }
+                        }
+                       
+                        $("body").attr("class", "cbp-spmenu-push");
+                       
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        $("body").attr("class", "cbp-spmenu-push"); 
+                    });
+                    
+                    
+                }, 500);
+            });
+            
+        }
+        
+        $scope.eliminarZona = function (zona,index) {
+            swal({
+                title: "Eliminar zona",
+                text: "¿Esta seguro de eliminar la zona : "+ zona +" ?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                setTimeout(function () {
+                    swal("¡Zona eliminada!", "La zona se ha eliminado exitosamnete", "success");
+                    $scope.dataPerido.zonas.splice(index,1);
+                }, 500);
+            });
+        }
+            
+        
         $scope.openModalZona = function (zona) {
-            $scope.zona = zona ? angular.copy(zona) : { encargados:[] };
-            $scope.esCrearZona = zona ? false : true;
-            
-            if(zona){
-                var ids = [];
-                for(var i=0; i<zona.encargados.length; i++){
-                    ids.push(zona.encargados[i].pivot.digitador_id);
-                }
-                $scope.zona.encargados = ids;
-            }
-            else{
-               
-                var sw = false;
-                for(var i=0; i<$scope.dataPerido.zonas.length; i++){
-                   if($scope.dataPerido.zonas[i].isEditar){ sw=1; break;}
-                }
-               
-                if(sw){ swal("No se puede agregar una zona", "No se puede agregar una zona, ya que existe una zona en edición de posición, guardela y vuelva a intentarlo", "info"); return; }
-                
-            }
-            
+            $scope.zona = angular.copy(zona);
             $scope.form.$setPristine();
             $scope.form.$setUntouched();
             $scope.form.$submitted = false;
             $("#modalAddZona").modal("show");
         }
         
-        $scope.agregarZona = function(){
+        
+        $scope.guardarzona = function(){
+            
+            if (!$scope.form.$valid) {
+                swal("Error", "Verifique los errores en el formulario", "error"); return;
+            }
+            
+            for(var i=0; i< $scope.dataPerido.zonas.length; i++){
+                if($scope.dataPerido.zonas[i].id==$scope.zona.id){
+                    $scope.dataPerido.zonas[i].nombre=$scope.zona.nombre;
+                    $scope.dataPerido.zonas[i].encargados=$scope.zona.encargados;
+                    $scope.dataPerido.zonas[i].color=$scope.zona.color;
+                    $scope.map.shapes[i].set('fillColor',$scope.zona.color);
+                    break;
+                }
+            }
+            $("#modalAddZona").modal("hide");
+        }
+    
+        $scope.getIcono = function( estado ){
+            var icono = null;
+            switch ( estado ) {
+                case 1: icono = "/Content/IconsMap/green.png";  break;
+                case 2: icono = "/Content/IconsMap/yellow.png"; break;
+                case 3: icono = "/Content/IconsMap/red.png";    break;
+                default: break;
+            }
+            return  icono ? { url: "\""+icono+"\"" } : null;
+        }
+        
+        $scope.getCoordenadas = function(coordenadas){
+            var array = [];
+            for(var j=0; j<coordenadas.length; j++){
+                array.push([ coordenadas[j].x, coordenadas[j].y ]);
+            }
+            return array;
+        }
+        
+        
+        $scope.showInfoMapa = function(event, proveedor){
+            $scope.proveedor = proveedor;
+            $scope.map.showInfoWindow('infoProveedor', this );
+            
+        }  
+        
+        $scope.showInfoNumeroPS = function(event, zona, proveedores){
+            
+            var numeroPrestadores = 0 ;
+            for(var i=0; i<proveedores.length; i++){
+                
+                var point = new google.maps.LatLng( proveedores[i].latitud , proveedores[i].longitud );
+                if( google.maps.geometry.poly.containsLocation( point , this) ){
+                      numeroPrestadores++;
+                }
+            }
+            
+            
+            PrestadoresInfowindow.setContent( "Numero de prestadores: "+numeroPrestadores );
+            PrestadoresInfowindow.setPosition(event.latLng);
+            PrestadoresInfowindow.open($scope.map);
+        }  
+        
+        NgMap.getMap().then(function(map) { 
+            $scope.map = map;
+            $scope.map.data.loadGeoJson('/js/muestraMaestra/depto.json');
+            $scope.map.data.setStyle({
+              strokeColor: 'red',
+              strokeWeight: 1,
+              fillOpacity:0
+            });
+        });
+        
+    }])
+    
+    .controller("MuestraMaestraCtrl", ["$scope","ServiMuestra", "NgMap", function($scope,ServiMuestra,NgMap){
+        
+        $scope.filtro = { categorias:[] };
+        $scope.dataPerido = { zonas:[] };
+        $scope.zona = {};
+        var PrestadoresInfowindow = new google.maps.InfoWindow();
+        var drawingManager = null;
+        $scope.styloMapa = [{featureType:'poi.school',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.business',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.attraction',elementType:'labels',stylers:[{visibility:'off'}]} ];
+         
+        
+        ServiMuestra.getData($("#periodo").val())
+          .then(function(data){ 
+                
+                for(var i=0; i< data.periodo.zonas.length; i++){
+                    data.periodo.zonas[i].coordenadas = $scope.getCoordenadas(data.periodo.zonas[i].coordenadas);
+                }
+                
+                $scope.dataPerido = data.periodo;
+                $scope.digitadores = data.digitadores; 
+                $scope.proveedores = data.proveedores;
+                $scope.tiposProveedores = data.tiposProveedores;
+            });
+        
+        
+        $scope.exportarFileKML = function(){
+            
+            $scope.filtro.periodo = $("#periodo").val();
+            $scope.filtro.tipoProveedor = $scope.tipoPro ? $scope.tipoPro.id : null;
+            
+            ServiMuestra.getGeoJson( $scope.filtro )
+                .then(function(geojson){ 
+                    var kmlDocumentName = tokml(geojson, {
+                                                documentName: geojson.name,
+                                                documentDescription: geojson.description
+                                            });
+                    var link = document.createElement("a");
+                    link.download = "mapa.kml";
+                    link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(kmlDocumentName);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+        }
+        
+        $scope.openMensajeAddZona = function(){
+            
+            swal({ 
+                    title: "Agregar zona", 
+                    text: "Por favor primero seleccione la zona  en el mapa.", 
+                    type: "info", 
+                    showCancelButton: true,
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+            },
+
+              function (isConfirm) {
+                  if (isConfirm) {
+                     $scope.functionAgregarZonaMap();
+                  }
+              });
+            
+        }
+        
+        $scope.functionAgregarZonaMap = function(){
+             drawingManager = new google.maps.drawing.DrawingManager({
+                            drawingControl: true,
+                            drawingControlOptions: {
+                                position: google.maps.ControlPosition.TOP_CENTER,
+                                drawingModes: [ google.maps.drawing.OverlayType.POLYGON ]
+                            }
+                        });
+                        
+            google.maps.event.addListener(drawingManager, 
+                                          'overlaycomplete', 
+                                            function(e){
+                                                $scope.dataPerido.coordenadas = [];
+                                                
+                                                $scope.figura = e.overlay;
+                                                
+                                                $scope.$apply(function () {
+                                                    $scope.openModalZona();
+                                                });
+                                                
+                                                $scope.figura.getPath().getArray().forEach(function (position) {
+                                                    $scope.zona.coordenadas.push( { x: position.lat(), y: position.lng() } );
+                                                });
+                                            }
+            );
+            
+            drawingManager.setMap($scope.map);
+        }
+        
+     
+        
+        $scope.cancelarAgregarZona = function(){
+            if(drawingManager){
+                drawingManager.setMap(null);
+                $scope.figura.setMap(null);
+            }
+            $("#modalAddZona").modal("hide");
+        }
+        
+        $scope.guardarZona = function (item) {
+            
+            if (!$scope.form.$valid) {
+                swal("Error", "Verifique los errores en el formulario", "error"); return;
+            }
             
             if($scope.esCrearZona){
-                $scope.dataPerido.zonas.push({
-                                nombre: $scope.zona.nombre,
-                                encargados: $scope.zona.encargados,
-                                posicion_1: $scope.map.getCenter().lat() + ( $scope.map.getZoom() > 10 ? 0.01 : 0.5 ), 
-                                posicion_2: $scope.map.getCenter().lng() + ( $scope.map.getZoom() > 10 ? 0.01 : 0.5 ),
-                                posicion_3: $scope.map.getCenter().lat(),
-                                posicion_4: $scope.map.getCenter().lng() ,
-                                isNuevo: true,
-                              });
-               $("#modalAddZona").modal("hide");
+                $scope.crearZona();
             }
             else{
-                $scope.guardarZona($scope.zona);
+                $scope.editarZona();
             }
+            
         }
-      
-        $scope.guardarZona = function (item) {
-
-          
-            var data = angular.copy(item);
-            data.periodo =    $("#periodo").val();
-            if( ($scope.esCrearZona || data.isEditar) && $scope.ne && $scope.sw ){
-                data.posicion_1 = $scope.ne.lat(); 
-                data.posicion_2 = $scope.ne.lng();
-                data.posicion_3 = $scope.sw.lat();
-                data.posicion_4 = $scope.sw.lng();
-            }
+        
+        $scope.crearZona = function(){
             
-            /* VALIDAR ZONAS */
-            for(var i=0; i<$scope.dataPerido.zonas.length; i++){
-                var zona = $scope.dataPerido.zonas[i];
-                
-                if(  data.id != zona.id  ){
-                    if( (parseFloat(zona.posicion_1)>=data.posicion_1 && parseFloat(zona.posicion_3)<=data.posicion_1) || 
-                        (parseFloat(zona.posicion_1)>=data.posicion_3 && parseFloat(zona.posicion_3)<=data.posicion_3) ||
-                        (data.posicion_1>=parseFloat(zona.posicion_1) && data.posicion_3<=parseFloat(zona.posicion_3)) ){
-                         
-                            if( (parseFloat(zona.posicion_2)>=data.posicion_2 && parseFloat(zona.posicion_4)<=data.posicion_2) || 
-                                (parseFloat(zona.posicion_2)>=data.posicion_4 && parseFloat(zona.posicion_4)<=data.posicion_4) ||
-                                (data.posicion_2>=parseFloat(zona.posicion_2) && data.posicion_4<=parseFloat(zona.posicion_4)) ){
-                                swal("Error", "La zona que intestas guardar, no debe colisionar con otra zona.", "error"); return;
-                            }   
-                            
-                    }
-                }
-                
-            }
-            /*______FIN VALIDACIONES ZONAS_____*/
-            
-            if(data.isEditar){
-                var ids = [];
-                for(var i=0; i<data.encargados.length; i++){
-                    ids.push(data.encargados[i].pivot.digitador_id);
-                }
-                data.encargados = ids;
-            }
-            
-            ServiMuestra.guardarZona(data).then(function (data) {
+            ServiMuestra.agregarZona($scope.zona)
+                    .then(function (data) {
                        
                         if (data.success) {
-                            $scope.dataPerido = data.data;
+                            data.zona.coordenadas = $scope.getCoordenadas(data.zona.coordenadas);
+                            $scope.dataPerido.zonas.push(data.zona);
+                            swal("¡Zona guardada!", "La zona se ha guardado exitosamnete", "success");
+                            $scope.cancelarAgregarZona();
+                        }
+                        else {
+                            if(data.Error){
+                                swal("Error", data.Error, "error"); 
+                            }
+                            else{
+                                $scope.errores = data.errores;
+                                sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                            }
+                        }
+                        $("body").attr("class", "cbp-spmenu-push");
+                        
+                    }).catch(function () {
+                        $("#modalAddZona").modal("hide");
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        $("body").attr("class", "cbp-spmenu-push"); 
+                    });
+            
+        }
+        
+        $scope.editarZona = function(){
+            
+            ServiMuestra.editarZona($scope.zona)
+                    .then(function (data) {
+                       
+                        if (data.success) {
+                            for(var i=0; i<$scope.dataPerido.zonas.length;i++){
+                                if($scope.dataPerido.zonas[i].id==data.zona.id){
+                                    $scope.dataPerido.zonas[i].nombre = data.zona.nombre;
+                                    $scope.dataPerido.zonas[i].encargados = data.zona.encargados;
+                                    $scope.dataPerido.zonas[i].color = data.zona.color;
+                                    $scope.map.shapes[i].set('fillColor',data.zona.color);
+                                    break;
+                                }
+                            }
                             swal("¡Zona guardada!", "La zona se ha guardado exitosamnete", "success");
                             $("#modalAddZona").modal("hide");
                         }
@@ -140,45 +383,122 @@
                     });
             
         }
-      
-        $scope.verDetalleZona = function(zona){
-          alert("ok");  
+        
+        
+        $scope.eliminarZona = function (zona, index) {
+            swal({
+                title: "Eliminar zona",
+                text: "¿Esta seguro de eliminar la zona : "+ zona.nombre +" ?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                setTimeout(function () {
+                    
+                    ServiMuestra.eliminarZona( { zona:zona.id , periodo:$("#periodo").val()}  )
+                    .then(function (data) {
+                        if (data.success) {
+                            $scope.dataPerido.zonas.splice(index,1);
+                            swal("¡Zona eliminada!", "La zona se ha eliminado exitosamnete", "success");
+                        }
+                        else {
+                            sweetAlert("Oops...", "Ha ocurrido un error al elimar la zona.", "error");
+                        }
+                        $('#processing').removeClass('process-in');
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        $('#processing').removeClass('process-in');
+                    });
+    
+                }, 500);
+            });
         }
+            
         
-        $scope.boundsChanged = function() {
+        $scope.openModalZona = function (zona) {
+            $scope.zona = zona ? angular.copy(zona) : { periodo: $("#periodo").val(), encargados:[], coordenadas:[] };
+            $scope.esCrearZona = zona ? false : true;
             
-            $scope.ne = this.getBounds().getNorthEast();
-            $scope.sw = this.getBounds().getSouthWest();
-            
-            $scope.coordenadas = this;
-            
-            if(this.getBounds()){
-                $scope.dataPerido.zonas[this.index].tex1 = this.getBounds().getNorthEast().lat();
-                $scope.dataPerido.zonas[this.index].tex2 = this.getBounds().getSouthWest().lng();
-            }
-        };
-        
-        $scope.coordenadasRectangulo = function(zona){
             if(zona){
-                return [ [ parseFloat(zona.posicion_3) , parseFloat(zona.posicion_4) ], [ parseFloat(zona.posicion_1) , parseFloat(zona.posicion_2) ] ];
+                var ids = [];
+                for(var i=0; i<zona.encargados.length; i++){
+                    ids.push(zona.encargados[i].pivot.digitador_id);
+                }
+                $scope.zona.encargados = ids;
             }
-            return [];
-        }
-        
-        $scope.editarPosicionZona = function(zona){
-           var sw = false;
-           for(var i=0; i<$scope.dataPerido.zonas.length; i++){
-               if($scope.dataPerido.zonas[i].isEditar){ sw=1; break;}
-           }
-           
-           if(sw){ swal("No se puede editar la zona", "No se puede editar la zona, ya que existe una zona en edición de posición, guardela y vuelva a intentarlo", "info"); return; }
             
-            zona.isEditar=true;
-            $scope.ne = null;
-            $scope.sw = null;
+            $scope.form.$setPristine();
+            $scope.form.$setUntouched();
+            $scope.form.$submitted = false;
+            $("#modalAddZona").modal("show");
         }
         
-        NgMap.getMap().then(function(map) { $scope.map = map;  });
+        
+        $scope.filterProveedores = function(pro){
+            
+            if($scope.filtro.categorias.length>0){
+                return $scope.filtro.categorias.indexOf(pro.categoria_proveedores_id)!=-1 
+            }
+            
+            if($scope.tipoPro){
+                return $scope.tipoPro.id == pro.categoria.tipo_proveedores_id;
+            }
+            
+            return true;
+        }
+        
+        $scope.getIcono = function( estado ){
+            var icono = null;
+            switch ( estado ) {
+                case 1: icono = "/Content/IconsMap/green.png";  break;
+                case 2: icono = "/Content/IconsMap/yellow.png"; break;
+                case 3: icono = "/Content/IconsMap/red.png";    break;
+                default: break;
+            }
+            return  icono ? { url: "\""+icono+"\"" } : null;
+        }
+        
+        $scope.getCoordenadas = function(coordenadas){
+            var array = [];
+            for(var j=0; j<coordenadas.length; j++){
+                array.push([ coordenadas[j].x, coordenadas[j].y ]);
+            }
+            return array;
+        }
+        
+        NgMap.getMap().then(function(map) { 
+            $scope.map = map;
+            $scope.map.data.loadGeoJson('/js/muestraMaestra/depto.json');
+            $scope.map.data.setStyle({
+              strokeColor: 'red',
+              strokeWeight: 1,
+              fillOpacity:0
+            });
+        });
+        
+        $scope.showInfoMapa = function(event, proveedor){
+            $scope.proveedor = proveedor;
+            $scope.map.showInfoWindow('infoProveedor', this );
+            
+        }  
+        
+        $scope.showInfoNumeroPS = function(event, zona, proveedores){
+            
+            var numeroPrestadores = 0 ;
+            for(var i=0; i<proveedores.length; i++){
+                
+                var point = new google.maps.LatLng( proveedores[i].latitud , proveedores[i].longitud );
+                if( google.maps.geometry.poly.containsLocation( point , this) ){
+                      numeroPrestadores++;
+                }
+            }
+            
+            
+            PrestadoresInfowindow.setContent( "Numero de prestadores: "+numeroPrestadores );
+            PrestadoresInfowindow.setPosition(event.latLng);
+            PrestadoresInfowindow.open($scope.map);
+        }  
 
     }])
      
@@ -188,16 +508,6 @@
         
         ServiMuestra.getListadoPeridos()
         .then(function(data){ $scope.periodos = data; });
-        
-        
-        $scope.openModalAddPeriodo = function () {
-            $scope.periodo = {};
-            $scope.form.$setPristine();
-            $scope.form.$setUntouched();
-            $scope.form.$submitted = false;
-            $scope.IndexEditar = null;
-            $("#modalAgregarPerido").modal("show");
-        }
         
         $scope.openModalEditPeriodo = function (item, index) {
             $scope.periodo = angular.copy(item);;
@@ -218,13 +528,10 @@
             
             $("body").attr("class", "cbp-spmenu-push charging");
             
-            ServiMuestra.guardarPeriodo($scope.periodo).then(function (data) {
+            ServiMuestra.editarPeriodo($scope.periodo).then(function (data) {
                        
                         if (data.success) {
-                            if($scope.esCrear){
-                               $scope.peridos.push(data.periodo);
-                            }
-                            else{ $scope.periodos[$scope.IndexEditar] = data.periodo; }
+                            $scope.periodos[$scope.IndexEditar] = data.periodo;
                             swal("¡Periodo guardado!", "El perido se ha guardado exitosamnete", "success");
                             $("#modalAgregarPerido").modal("hide");
                         }

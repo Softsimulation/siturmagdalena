@@ -11,6 +11,9 @@
 |
 */
 
+Route::controller('/indicadores','IndicadoresCtrl');
+
+
 Route::controller('/turismointerno','TurismoInternoController');
 
 Route::controller('/turismoreceptor','TurismoReceptorController');
