@@ -16,14 +16,14 @@ use App\Models\Historial_Encuesta_Oferta;
 use App\Models\Prestamo_Servicio;
 use App\Models\Alquiler_Vehiculo;
 
-use App\Models\Encuesta;
+
 use App\Models\alojamiento;
 use App\Models\Casa;
 use App\Models\Camping;
 use App\Models\Habitacion;
 use App\Models\Apartamento;
 use App\Models\Cabana;
-use App\Models\Historial_Encuesta_Oferta;
+
 
 class OfertaEmpleoController extends Controller
 {
@@ -312,6 +312,8 @@ class OfertaEmpleoController extends Controller
 	    ]);
 		
 		return ["success" => true];
+    }
+    
     public function getCaracterizacion($id){
         return View('ofertaEmpleo.caracterizacionAlojamientos', ["id"=>$id] );
     }
