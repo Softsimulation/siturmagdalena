@@ -11,6 +11,9 @@
 |
 */
 
+Route::controller('/indicadores','IndicadoresCtrl');
+
+
 
 
 Route::get('/', function () {

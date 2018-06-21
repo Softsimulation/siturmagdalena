@@ -134,7 +134,7 @@
         </style>
         
     </head>
-    <body ng-app="ofertaempleo">
+    <body @yield('app') @yield('controller') >
         <div id="preloader">
             <div>
                 <div class="loader"></div>
@@ -152,7 +152,7 @@
                             <img src="/Content/image/logo.png" alt="Logo" />
                         </div>
                         <div class="col-xs-12 col-md-9">
-                            <h1 style="margin-top: 0.8em; font-size: 2em"><strong>Encuesta de turismo receptor</strong></h1>
+                            <h1 style="margin-top: 0.8em; font-size: 2em"><strong>Encuesta de oferta y empleo</strong></h1>
                         </div>
                         
                     </div>
@@ -160,7 +160,7 @@
                 
             </div>
             <div class="title-section">
-                <h3 style="margin-top: 0.5em;"><strong>@yield('TitleSection')</strong></h3>
+                <h3 style="margin-top: 0.5em;"><strong>@yield('establecimeinto')</strong></h3>
             </div>
             <div class="progress progress-striped active">
                 <div class="progress-bar progress-bar-info" style="width: @yield('Progreso')">@yield('NumSeccion')</div>
@@ -168,7 +168,7 @@
             
         </header>
         
-        <div class="container" @yield('controller')>
+        <div class="container" >
             @yield('content')
         </div>
         

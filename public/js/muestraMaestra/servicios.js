@@ -23,13 +23,22 @@
       return {
           
           
-          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+id);  },
+          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+ (id ? id : -1) );  },
           
           getListadoPeridos: function(){ return http.get("/MuestraMaestra/datalistado");  },
           
-          guardarPeriodo: function(data){ return http.post("/MuestraMaestra/guardarperiodo", data);  },
+          crearPeriodo: function(data){ return http.post("/MuestraMaestra/crearperiodo", data);  },
           
-          guardarZona: function(data){ return http.post("/MuestraMaestra/guardarzona", data);  },
+          editarPeriodo: function(data){ return http.post("/MuestraMaestra/editarperiodo", data);  },
+          
+          agregarZona: function(data){ return http.post("/MuestraMaestra/agregarzona", data);  },
+          
+          editarZona: function(data){ return http.post("/MuestraMaestra/editarzona", data);  },
+          
+          eliminarZona: function(data){ return http.post("/MuestraMaestra/eliminarzona", data);  },
+          
+          
+          getGeoJson: function(data){ return http.post("/MuestraMaestra/geojsonzone", data );  },
         }
         
     }]);

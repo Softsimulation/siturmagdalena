@@ -16,7 +16,6 @@ return array(
     'App\\Agencia_Operadora_Con_Actividad_Deportiva' => $baseDir . '/app/Models/Agencia_Operadora_Con_Actividad_Deportiva.php',
     'App\\Alquila_Vehiculo_Interno' => $baseDir . '/app/Models/Alquila_Vehiculo_Interno.php',
     'App\\Alquiler_Vehiculo' => $baseDir . '/app/Models/Alquiler_Vehiculo.php',
-    'App\\Apartamento' => $baseDir . '/app/Models/Apartamento.php',
     'App\\Asignacion_Salarial' => $baseDir . '/app/Models/Asignacion_Salarial.php',
     'App\\Atraccion_Con_Idioma' => $baseDir . '/app/Models/Atraccion_Con_Idioma.php',
     'App\\Atraccion_Con_Tipo' => $baseDir . '/app/Models/Atraccion_Con_Tipo.php',
@@ -24,16 +23,12 @@ return array(
     'App\\Atraccion_Favorita_Visitante' => $baseDir . '/app/Models/Atraccion_Favorita_Visitante.php',
     'App\\AtraccionesPorTipoAtraccionesRealizadas' => $baseDir . '/app/Models/AtraccionesPorTipoAtraccionesRealizadas.php',
     'App\\Calificacion_Experiencia_Interno' => $baseDir . '/app/Models/Calificacion_Experiencia_Interno.php',
-    'App\\Camping' => $baseDir . '/app/Models/Camping.php',
     'App\\Capacidad_Alimento' => $baseDir . '/app/Models/Capacidad_Alimento.php',
     'App\\Capacitacion_Empleado' => $baseDir . '/app/Models/Capacitacion_Empleado.php',
     'App\\Caracteristica' => $baseDir . '/app/Models/Caracteristica.php',
     'App\\Caracteristica_Con_Idioma' => $baseDir . '/app/Models/Caracteristica_Con_Idioma.php',
-    'App\\Casa' => $baseDir . '/app/Models/Casa.php',
     'App\\Categoria_Documento' => $baseDir . '/app/Models/Categoria_Documento.php',
     'App\\Categoria_Documento_Idioma' => $baseDir . '/app/Models/Categoria_Documento_Idioma.php',
-    'App\\Categoria_Proveedor' => $baseDir . '/app/Models/Categoria_Proveedor.php',
-    'App\\Categoria_Proveedor_Con_Idioma' => $baseDir . '/app/Models/Categoria_Proveedor_Con_Idioma.php',
     'App\\Categoria_Turismo' => $baseDir . '/app/Models/Categoria_Turismo.php',
     'App\\Categoria_Turismo_Con_Actividad' => $baseDir . '/app/Models/Categoria_Turismo_Con_Actividad.php',
     'App\\Categoria_Turismo_Con_Atraccion' => $baseDir . '/app/Models/Categoria_Turismo_Con_Atraccion.php',
@@ -120,16 +115,26 @@ return array(
     'App\\H_Viaje_Emisores_Agencia' => $baseDir . '/app/Models/H_Viaje_Emisores_Agencia.php',
     'App\\H_Viaje_Internos_Agencia' => $baseDir . '/app/Models/H_Viaje_Internos_Agencia.php',
     'App\\H_Vinculacion_Laboral' => $baseDir . '/app/Models/H_Vinculacion_Laboral.php',
-    'App\\Habitacion' => $baseDir . '/app/Models/Habitacion.php',
     'App\\Historial_Encuesta_Interno' => $baseDir . '/app/Models/Historial_Encuesta_Interno.php',
+<<<<<<< HEAD
+=======
     'App\\Historial_Encuesta_Oferta' => $baseDir . '/app/Models/Historial_Encuesta_Oferta.php',
+>>>>>>> refs/remotes/origin/release
     'App\\Http\\Controllers\\AdministradorAtraccionController' => $baseDir . '/app/Http/Controllers/AdministradorAtraccionController.php',
     'App\\Http\\Controllers\\AdministrarDepartamentosController' => $baseDir . '/app/Http/Controllers/AdministrarDepartamentosController.php',
     'App\\Http\\Controllers\\AdministrarPaisesController' => $baseDir . '/app/Http/Controllers/AdministrarPaisesController.php',
     'App\\Http\\Controllers\\Auth\\AuthController' => $baseDir . '/app/Http/Controllers/Auth/AuthController.php',
     'App\\Http\\Controllers\\Auth\\PasswordController' => $baseDir . '/app/Http/Controllers/Auth/PasswordController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+<<<<<<< HEAD
+    'App\\Http\\Controllers\\EncuestaDinamicaCtrl' => $baseDir . '/app/Http/Controllers/EncuestaDinamicaCtrl.php',
     'App\\Http\\Controllers\\GrupoViajeController' => $baseDir . '/app/Http/Controllers/GrupoViajeController.php',
+    'App\\Http\\Controllers\\IndicadoresCtrl' => $baseDir . '/app/Http/Controllers/IndicadoresCtrl.php',
+    'App\\Http\\Controllers\\MuestraMaestraCtrl' => $baseDir . '/app/Http/Controllers/MuestraMaestraCtrl.php',
+    'App\\Http\\Controllers\\OfertaEmpleoController' => $baseDir . '/app/Http/Controllers/OfertaEmpleoController.php',
+=======
+    'App\\Http\\Controllers\\GrupoViajeController' => $baseDir . '/app/Http/Controllers/GrupoViajeController.php',
+>>>>>>> refs/remotes/origin/release
     'App\\Http\\Controllers\\TurismoInternoController' => $baseDir . '/app/Http/Controllers/TurismoInternoController.php',
     'App\\Http\\Controllers\\TurismoReceptorController' => $baseDir . '/app/Http/Controllers/TurismoReceptorController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
@@ -157,6 +162,7 @@ return array(
     'App\\Models\\Actividad_Realizada_Por_Visitante' => $baseDir . '/app/Models/Actividad_Realizada_Por_Visitante.php',
     'App\\Models\\Actividad_Realizada_Viajero' => $baseDir . '/app/Models/Actividad_Realizada_Viajero.php',
     'App\\Models\\Actividades' => $baseDir . '/app/Models/Actividades.php',
+    'App\\Models\\Apartamento' => $baseDir . '/app/Models/Apartamento.php',
     'App\\Models\\AspNetUser' => $baseDir . '/app/Models/AspNetUser.php',
     'App\\Models\\Aspecto_Evaluado_Con_Idioma' => $baseDir . '/app/Models/Aspecto_Evaluado_Con_Idioma.php',
     'App\\Models\\Aspectos_Evaluado' => $baseDir . '/app/Models/Aspectos_Evaluado.php',
@@ -165,7 +171,17 @@ return array(
     'App\\Models\\Atraccion_Visitada_Interno' => $baseDir . '/app/Models/Atraccion_Visitada_Interno.php',
     'App\\Models\\Atracciones' => $baseDir . '/app/Models/Atracciones.php',
     'App\\Models\\Barrio' => $baseDir . '/app/Models/Barrio.php',
+<<<<<<< HEAD
+    'App\\Models\\Cabana' => $baseDir . '/app/Models/Cabana.php',
     'App\\Models\\Calificacion' => $baseDir . '/app/Models/Calificacion.php',
+    'App\\Models\\Camping' => $baseDir . '/app/Models/Camping.php',
+    'App\\Models\\Casa' => $baseDir . '/app/Models/Casa.php',
+    'App\\Models\\Categoria_Proveedor' => $baseDir . '/app/Models/Categoria_Proveedor.php',
+    'App\\Models\\Categoria_Proveedor_Con_Idioma' => $baseDir . '/app/Models/Categoria_Proveedor_Con_Idioma.php',
+    'App\\Models\\Coordenadas_zona' => $baseDir . '/app/Models/Coordenadas_zona.php',
+=======
+    'App\\Models\\Calificacion' => $baseDir . '/app/Models/Calificacion.php',
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Departamento' => $baseDir . '/app/Models/Departamento.php',
     'App\\Models\\Digitador' => $baseDir . '/app/Models/Digitador.php',
     'App\\Models\\Divisa' => $baseDir . '/app/Models/Divisa.php',
@@ -175,6 +191,30 @@ return array(
     'App\\Models\\Elemento_Representativo_Con_Idioma' => $baseDir . '/app/Models/Elemento_Representativo_Con_Idioma.php',
     'App\\Models\\Empleo' => $baseDir . '/app/Models/Empleo.php',
     'App\\Models\\Encuesta' => $baseDir . '/app/Models/Encuesta.php',
+<<<<<<< HEAD
+    'App\\Models\\EncuestaDinamica\\Encuestas_dinamica' => $baseDir . '/app/Models/EncuestaDinamica/Encuestas_dinamica.php',
+    'App\\Models\\EncuestaDinamica\\Encuestas_idioma' => $baseDir . '/app/Models/EncuestaDinamica/Encuestas_idioma.php',
+    'App\\Models\\EncuestaDinamica\\Encuestas_usuario' => $baseDir . '/app/Models/EncuestaDinamica/Encuestas_usuario.php',
+    'App\\Models\\EncuestaDinamica\\Estados_encuesta' => $baseDir . '/app/Models/EncuestaDinamica/Estados_encuesta.php',
+    'App\\Models\\EncuestaDinamica\\Estados_encuestas_usuario' => $baseDir . '/app/Models/EncuestaDinamica/Estados_encuestas_usuario.php',
+    'App\\Models\\EncuestaDinamica\\Idioma' => $baseDir . '/app/Models/EncuestaDinamica/Idioma.php',
+    'App\\Models\\EncuestaDinamica\\Idiomas_opciones_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Idiomas_opciones_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Idiomas_opciones_sub_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Idiomas_opciones_sub_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Idiomas_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Idiomas_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Idiomas_sub_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Idiomas_sub_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Opciones_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Opciones_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Opciones_preguntas_encuestado' => $baseDir . '/app/Models/EncuestaDinamica/Opciones_preguntas_encuestado.php',
+    'App\\Models\\EncuestaDinamica\\Opciones_sub_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Opciones_sub_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Opciones_sub_preguntas_encuestado' => $baseDir . '/app/Models/EncuestaDinamica/Opciones_sub_preguntas_encuestado.php',
+    'App\\Models\\EncuestaDinamica\\Opciones_sub_preguntas_has_sub_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Opciones_sub_preguntas_has_sub_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Respuesta_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Respuesta_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Secciones_encuesta' => $baseDir . '/app/Models/EncuestaDinamica/Secciones_encuesta.php',
+    'App\\Models\\EncuestaDinamica\\Sub_pregunta' => $baseDir . '/app/Models/EncuestaDinamica/Sub_pregunta.php',
+    'App\\Models\\EncuestaDinamica\\Tipo_campo' => $baseDir . '/app/Models/EncuestaDinamica/Tipo_campo.php',
+    'App\\Models\\Estado_proveedor' => $baseDir . '/app/Models/Estado_proveedor.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Estados_Encuesta' => $baseDir . '/app/Models/Estados_Encuesta.php',
     'App\\Models\\Estrato' => $baseDir . '/app/Models/Estrato.php',
     'App\\Models\\Financiador_Viaje' => $baseDir . '/app/Models/Financiador_Viaje.php',
@@ -187,7 +227,9 @@ return array(
     'App\\Models\\Fuente_Informacion_Durante_Viaje_Interno' => $baseDir . '/app/Models/Fuente_Informacion_Durante_Viaje_Interno.php',
     'App\\Models\\Gasto_Visitante' => $baseDir . '/app/Models/Gasto_Visitante.php',
     'App\\Models\\Grupo_Viaje' => $baseDir . '/app/Models/Grupo_Viaje.php',
+    'App\\Models\\Habitacion' => $baseDir . '/app/Models/Habitacion.php',
     'App\\Models\\Historial_Encuesta' => $baseDir . '/app/Models/Historial_Encuesta.php',
+    'App\\Models\\Historial_Encuesta_Oferta' => $baseDir . '/app/Models/Historial_Encuesta_Oferta.php',
     'App\\Models\\Hogar' => $baseDir . '/app/Models/Hogar.php',
     'App\\Models\\Idioma' => $baseDir . '/app/Models/Idioma.php',
     'App\\Models\\Item_Evaluar' => $baseDir . '/app/Models/Item_Evaluar.php',
@@ -212,7 +254,13 @@ return array(
     'App\\Models\\Otros_Turistas_Interno' => $baseDir . '/app/Models/Otros_Turistas_Interno.php',
     'App\\Models\\Pais' => $baseDir . '/app/Models/Pais.php',
     'App\\Models\\Pais_Con_Idioma' => $baseDir . '/app/Models/Pais_Con_Idioma.php',
+    'App\\Models\\Periodos_medicion' => $baseDir . '/app/Models/Periodos_medicion.php',
     'App\\Models\\Persona' => $baseDir . '/app/Models/Persona.php',
+<<<<<<< HEAD
+    'App\\Models\\Proveedores_rnt' => $baseDir . '/app/Models/Proveedores_rnt.php',
+    'App\\Models\\Proveedores_rnt_idioma' => $baseDir . '/app/Models/Proveedores_rnt_idioma.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Redes_Sociales' => $baseDir . '/app/Models/Redes_Sociales.php',
     'App\\Models\\Rubro' => $baseDir . '/app/Models/Rubro.php',
     'App\\Models\\Rubro_Con_Idioma' => $baseDir . '/app/Models/Rubro_Con_Idioma.php',
@@ -228,6 +276,10 @@ return array(
     'App\\Models\\Tipo_Atencion_Salud' => $baseDir . '/app/Models/Tipo_Atencion_Salud.php',
     'App\\Models\\Tipo_Atraccion' => $baseDir . '/app/Models/Tipo_Atraccion.php',
     'App\\Models\\Tipo_Atraccion_Con_Idioma' => $baseDir . '/app/Models/Tipo_Atraccion_Con_Idioma.php',
+<<<<<<< HEAD
+    'App\\Models\\Tipo_Proveedor' => $baseDir . '/app/Models/Tipo_Proveedor.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Models\\Tipo_Proveedor_Paquete_Con_Idioma' => $baseDir . '/app/Models/Tipo_Proveedor_Paquete_Con_Idioma.php',
     'App\\Models\\Tipo_Transporte' => $baseDir . '/app/Models/Tipo_Transporte.php',
     'App\\Models\\Tipo_Viaje' => $baseDir . '/app/Models/Tipo_Viaje.php',
@@ -243,6 +295,11 @@ return array(
     'App\\Models\\Visitante_estado' => $baseDir . '/app/Models/Visitante_estado.php',
     'App\\Models\\Volveria_Visitar' => $baseDir . '/app/Models/Volveria_Visitar.php',
     'App\\Models\\Volveria_Visitar_Con_Idioma' => $baseDir . '/app/Models/Volveria_Visitar_Con_Idioma.php',
+<<<<<<< HEAD
+    'App\\Models\\Zona' => $baseDir . '/app/Models/Zona.php',
+    'App\\Models\\alojamiento' => $baseDir . '/app/Models/alojamiento.php',
+=======
+>>>>>>> refs/remotes/origin/release
     'App\\Motivo_Estadistica_Secundaria' => $baseDir . '/app/Models/Motivo_Estadistica_Secundaria.php',
     'App\\Multimedia_Actividad' => $baseDir . '/app/Models/Multimedia_Actividad.php',
     'App\\Multimedia_Destino' => $baseDir . '/app/Models/Multimedia_Destino.php',
@@ -314,7 +371,6 @@ return array(
     'App\\Tipo_Documento_Idioma' => $baseDir . '/app/Models/Tipo_Documento_Idioma.php',
     'App\\Tipo_Evento' => $baseDir . '/app/Models/Tipo_Evento.php',
     'App\\Tipo_Evento_Con_Idioma' => $baseDir . '/app/Models/Tipo_Evento_Con_Idioma.php',
-    'App\\Tipo_Proveedor' => $baseDir . '/app/Models/Tipo_Proveedor.php',
     'App\\Tipo_Proveedor_Con_Idioma' => $baseDir . '/app/Models/Tipo_Proveedor_Con_Idioma.php',
     'App\\Tipo_Proveedor_Paquete' => $baseDir . '/app/Models/Tipo_Proveedor_Paquete.php',
     'App\\Tipo_Sitio' => $baseDir . '/app/Models/Tipo_Sitio.php',
@@ -338,7 +394,10 @@ return array(
     'App\\Visitante_Alquila_Vehiculo' => $baseDir . '/app/Models/Visitante_Alquila_Vehiculo.php',
     'App\\Visitante_Gasto_Pagado' => $baseDir . '/app/Models/Visitante_Gasto_Pagado.php',
     'App\\Visitante_Salud' => $baseDir . '/app/Models/Visitante_Salud.php',
+<<<<<<< HEAD
+=======
     'App\\alojamiento' => $baseDir . '/app/Models/alojamiento.php',
+>>>>>>> refs/remotes/origin/release
     'App\\models\\Motivo_Viaje_Con_Idioma' => $baseDir . '/app/Models/Motivo_Viaje_Con_Idioma.php',
     'App\\models\\Tipo_Atencion_Salud_Con_Idioma' => $baseDir . '/app/Models/Tipo_Atencion_Salud_Con_Idioma.php',
     'App\\models\\Tipo_Transporte_Con_Idioma' => $baseDir . '/app/Models/Tipo_Transporte_Con_Idioma.php',
@@ -1273,6 +1332,9 @@ return array(
     'FontLib\\WOFF\\File' => $vendorDir . '/phenx/php-font-lib/src/FontLib/WOFF/File.php',
     'FontLib\\WOFF\\Header' => $vendorDir . '/phenx/php-font-lib/src/FontLib/WOFF/Header.php',
     'FontLib\\WOFF\\TableDirectoryEntry' => $vendorDir . '/phenx/php-font-lib/src/FontLib/WOFF/TableDirectoryEntry.php',
+    'GeometryLibrary\\MathUtil' => $vendorDir . '/alexpechkarev/geometry-library/MathUtil.php',
+    'GeometryLibrary\\PolyUtil' => $vendorDir . '/alexpechkarev/geometry-library/PolyUtil.php',
+    'GeometryLibrary\\SphericalUtil' => $vendorDir . '/alexpechkarev/geometry-library/SphericalUtil.php',
     'GuzzleHttp\\Client' => $vendorDir . '/guzzlehttp/guzzle/src/Client.php',
     'GuzzleHttp\\ClientInterface' => $vendorDir . '/guzzlehttp/guzzle/src/ClientInterface.php',
     'GuzzleHttp\\Cookie\\CookieJar' => $vendorDir . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php',

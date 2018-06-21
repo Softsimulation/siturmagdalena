@@ -12,7 +12,7 @@
         "orchestra/parser": "~3.0",
         "barryvdh/laravel-dompdf": "^0.8.2",
         "laravelcollective/html": "^5.2.0",
-        "wilgucki/csv": "^0.6.2"
+        "alexpechkarev/geometry-library": "1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -2,56 +2,53 @@
 @extends('layout._AdminLayout')
 
 @section('title','Muestra maestra')
-@section('TitleSection', $periodo->nombre )
+@section('TitleSection', "Crear periodo" )
 @section('app','ng-app="appMuestraMaestra"')
-@section('controller','ng-controller="MuestraMaestraCtrl"')
+@section('controller','ng-controller="CrearPeriodoCtrl"')
 
 
 @section('content')
-    
-    <div class="row" >
-         <div class="col-md-3" >
-             <div class="form-group">
-                <label>Tipo proveedor</label>
-                <select class="form-control"  ng-model="tipoPro" ng-options="x as x.tipo_proveedores_con_idiomas[0].nombre for x in tiposProveedores" ng-change="filtro.categorias=[]" >
-                  <option value="" selected >Tipo proveedor</option>
-                </select>
-              </div>
-         </div>
-         <div class="col-md-5" >
-            <div class="form-group">
-                
-                <div class="form-group">
-                    <label>Categoria proveedor</label>
-                    <ui-select multiple  ng-model="filtro.categorias" class="form-control"  >
-                        <ui-select-match placeholder="Categoria" >@{{$item.categoria_proveedores_con_idiomas[0].nombre}}</ui-select-match>
-                        <ui-select-choices repeat="x.id as x in tipoPro.categoria_proveedores | filter: $select.search">
-                          <small ng-bind-html="x.categoria_proveedores_con_idiomas[0].nombre | highlight: $select.search"></small>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
-        </div>
-        <div style="float:right;">
-            <a class="btn btn-primary btn-sm" ng-click="exportarFileKML()" style="margin-right:15px;margin-top:30px;" >Exportar KML</a>
-        </div>
-    </div>
    
-    <br>
+    <input type="hidden" id="periodo" value="{{$ultipoPeriodoID}}" />
    
     <div class="row"  >
+        <form name="formCrear" >
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'error' : (form.$submitted || form.nombre.$touched) && form.nombre.$error.required}">
+                    <label class="control-label" for="pregunta">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" ng-model="dataPerido.nombre" required />
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="form-group" ng-class="{'error' : (form.$submitted || form.fechaInicio.$touched) && form.fechaInicio.$error.required}">
+                    <label class="control-label" for="fechaInicio">Fecha inicio</label>
+                    <adm-dtp full-data="date1" maxdate="@{{date2.unix}}" name="fechaInicio" id="fechaInicio" ng-model='dataPerido.fecha_inicio' options="optionFecha" ng-required="true"></adm-dtp>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="form-group" ng-class="{'error' : (form.$submitted || form.fechaFin.$touched) && form.fechaFin.$error.required}">
+                    <label class="control-label" for="fechaFin">Fecha fin</label>
+                    <adm-dtp full-data="date2" mindate="@{{date1.unix}}" name="fechaFin" id="fechaFin" ng-model='dataPerido.fecha_fin' options="optionFecha" ng-required="true"></adm-dtp>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <br>
+               <button type="submit" class="btn btn-block btn-success" ng-click="guardar()" >Guardar</button>
+            </div>
+        </form>
+    </div>
+    
+    <br>
+    
+    <div class="row"  >                
         
-        <input type="hidden" id="periodo" value="{{$periodo->id}}" />
-        
-        
-        <a class="btn btn-primary btn-sm btn-map" href="/MuestraMaestra/periodos" >Volver al listado</a>
-        <button type="button" id="btn-add" class="btn btn-success btn-sm btn-map" ng-click="openMensajeAddZona()" style="margin-top:45px;" >Agregar zona</button>
-  
-      <div class="col-md-12">
-          
+        <div class="col-md-12">
+            
             <ng-map id="mapa" zoom="9" center="[10.4113014,-74.4056612]" styles="@{{styloMapa}}" map-type-control="false" street-view-control="false" > 
               
-                <marker ng-repeat="pro in proveedores|filter:filterProveedores" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
+                <marker ng-repeat="pro in proveedores" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
                     icon="@{{ getIcono(pro.estados_proveedor_id) }}" on-click="showInfoMapa(event,pro)">
                 </marker>
                 
@@ -73,8 +70,7 @@
                               </button>
                               <ul class="dropdown-menu">
                                 <li><a href ng-click="openModalZona(item)" ><i class="material-icons">border_color</i> Ver/Editar</a></li>
-                                <li><a href ng-click="eliminarZona(item,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
-                                <li><a href="/MuestraMaestra/excel/@{{item.id}}?tipo=@{{tipoPro.id}}&categoria=@{{ filtro.categorias.join() }}" download ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
+                                <li><a href ng-click="eliminarZona(item.nombre,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
                               </ul>
                             </div>
                         </div>
@@ -89,14 +85,14 @@
     </div>
     
     
-    <!-- Modal para gregar zona -->
+       <!-- Modal para gregar zona -->
 <div id="modalAddZona" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Zona</h4>
       </div>
       <form name="form" >
@@ -143,8 +139,8 @@
             
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" ng-click="cancelarAgregarZona()">Cancelar</button>
-            <button type="submit" class="btn btn-primary" ng-click="guardarZona()" >Guardar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close" >Cancelar</button>
+            <button type="submit" class="btn btn-primary" ng-click="guardarzona()" >Guardar</button>
           </div>
           
       </form>
@@ -153,7 +149,6 @@
   </div>
 </div>
     
-
 @endsection
 
 @section('estilos')
@@ -184,16 +179,13 @@
         .gmnoprint > div > div > span {
             padding: 6px 15px !important;
         }
-        .dropdown-menu {
-            left: inherit !important;
-        }        
+                
     </style>
 @endsection
 
 
 
 @section('javascript')
-    <script src="/js/plugins/tokml.js"></script>
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="/js/plugins/ng-map.js"></script>
     <script src="{{asset('/js/muestraMaestra/servicios.js')}}"></script>
