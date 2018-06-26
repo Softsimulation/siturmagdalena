@@ -54,14 +54,21 @@ class Viaje extends Model
      */
     protected $fillable = ['digitada_por', 'creada_por', 'frecuencia_id', 'motivo_viaje_id', 'personas_id', 'tipo_transporte_id', 'fecha_inicio', 'fecha_final', 'tamaño_grupo', 'invitacion_correo', 'ultima_sesion', 'es_principal'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-   
+    
+    public $timestamps=false;
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function digitadore()
+    {
+        return $this->belongsTo('App\Models\Digitadore', 'digitada_por');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creadore()
     {
         return $this->belongsTo('App\Models\Digitador', 'creada_por');
     }
@@ -71,7 +78,7 @@ class Viaje extends Model
      */
     public function frecuenciaViaje()
     {
-        return $this->belongsTo('App\Models\Frecuencia_Viaje', 'frecuencia_id');
+        return $this->belongsTo('App\Models\FrecuenciaViaje', 'frecuencia_id');
     }
 
     /**
@@ -95,7 +102,7 @@ class Viaje extends Model
      */
     public function tiposTransporte()
     {
-        return $this->belongsTo('App\Models\Tipos_Transporte', 'tipo_transporte_id');
+        return $this->belongsTo('App\Models\TiposTransporte', 'tipo_transporte_id');
     }
 
     /**
@@ -103,7 +110,7 @@ class Viaje extends Model
      */
     public function actividadesRealizadasInternos()
     {
-        return $this->hasMany('App\Models\Actividades_Realizadas_Interno', 'viajes_id');
+        return $this->hasMany('App\Models\ActividadesRealizadasInterno', 'viajes_id');
     }
 
     /**
@@ -111,7 +118,7 @@ class Viaje extends Model
      */
     public function actividadesRealizadasViajeros()
     {
-        return $this->hasMany('App\Models\Actividades_Realizadas_Viajero', 'viajes_id');
+        return $this->hasMany('App\Models\ActividadesRealizadasViajero', 'viajes_id');
     }
 
     /**
@@ -119,7 +126,7 @@ class Viaje extends Model
      */
     public function alquilaVehiculoInterno()
     {
-        return $this->hasOne('App\Models\Alquila_Vehiculo_Interno', 'viaje_id');
+        return $this->hasOne('App\Models\AlquilaVehiculoInterno', 'viaje_id');
     }
 
     /**
@@ -127,7 +134,7 @@ class Viaje extends Model
      */
     public function atraccionesVisitadasInternos()
     {
-        return $this->hasMany('App\Models\Atracciones_Visitadas_Interno', 'viajes_id');
+        return $this->hasMany('App\Models\Atraccion_Visitada_Interno', 'viajes_id');
     }
 
 
@@ -137,7 +144,7 @@ class Viaje extends Model
      */
     public function ciudadesVisitadas()
     {
-        return $this->hasMany('App\Models\Ciudades_Visitada', 'viajes_id');
+        return $this->hasMany('App\Models\CiudadesVisitada', 'viajes_id');
     }
 
     /**
@@ -153,7 +160,7 @@ class Viaje extends Model
      */
     public function fuentesInformacionAntesViajes()
     {
-        return $this->belongsToMany('App\FuentesInformacionAntesViaje', 'fuentes_informacion_antes_viajes_interno', 'viajes_id', 'fuentes_informacion_antes_id');
+        return $this->hasMany('App\Models\Fuente_Informacion_Antes_Viaje_Interno', 'viajes_id');
     }
 
     /**
@@ -161,7 +168,7 @@ class Viaje extends Model
      */
     public function fuentesInformacionDuranteViajes()
     {
-        return $this->belongsToMany('App\Models\FuentesInformacionDuranteViaje', 'fuentes_informacion_durante_viajes_interno', 'viajes_id', 'fuente_informacion_durante_id');
+        return $this->hasMany('App\Models\Fuente_Informacion_Durante_Viaje_Interno', 'viajes_id');
     }
 
     /**
@@ -185,7 +192,7 @@ class Viaje extends Model
      */
     public function otrasFuentesInformacionAntesViajeInterno()
     {
-        return $this->hasOne('App\Models\OtrasFuentesInformacionAntesViajeInterno', 'viajes_id');
+        return $this->hasOne('App\Models\Otra_Fuente_Informacion_Antes_Viaje_Interno', 'viajes_id');
     }
 
     /**
@@ -193,7 +200,7 @@ class Viaje extends Model
      */
     public function otrasFuentesInformacionDuranteViajeInterno()
     {
-        return $this->hasOne('App\Models\OtrasFuentesInformacionDuranteViajeInterno', 'viajes_id');
+        return $this->hasOne('App\Models\Otra_Fuente_Informacion_Durante_Viaje_Interno', 'viajes_id');
     }
 
     /**
@@ -217,7 +224,7 @@ class Viaje extends Model
      */
     public function redesSociales()
     {
-        return $this->belongsToMany('App\Models\RedesSociale', 'redes_sociales_viajeros', 'viajero_id', 'redes_sociales_id');
+        return $this->hasMany('App\Models\Redes_Sociales_Viajero','viajero_id');
     }
 
     /**
@@ -225,7 +232,7 @@ class Viaje extends Model
      */
     public function viajeroRedesSociale()
     {
-        return $this->hasOne('App\Models\ViajeroRedesSociale', 'viajes_id');
+        return $this->hasMany('App\Models\Viajero_Redes_Sociales', 'viajes_id');
     }
 
     /**
@@ -233,7 +240,7 @@ class Viaje extends Model
      */
     public function viajeExcursion()
     {
-        return $this->hasOne('App\Models\ViajeExcursion', 'viajes_id');
+        return $this->hasOne('App\Models\Viaje_Excursion', 'viajes_id');
     }
 
     /**
@@ -241,7 +248,7 @@ class Viaje extends Model
      */
     public function viajesGastosInternos()
     {
-        return $this->hasMany('App\Models\ViajesGastosInterno', 'viajes_id');
+        return $this->hasMany('App\Models\Viaje_Gasto_Interno', 'viajes_id');
     }
 
     /**
@@ -249,15 +256,15 @@ class Viaje extends Model
      */
     public function acompanantesViajes()
     {
-        return $this->belongsToMany('App\Acompaniante_Viaje', 'viajes_id');
+        return $this->belongsToMany('App\Models\Acompaniante_Viaje', 'viajes_acompañantes_viajes', 'viajes_id', 'acompañantes_viajes_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function financiadoresViajes()
+public function financiadoresViajes()
     {
-        return $this->belongsToMany('App\FinanciadoresViaje', 'viajes_financiadores', null, 'financiadores_id');
+        return $this->belongsToMany('App\Models\Financiador_Viaje', 'viajes_financiadores', "viaje_id", 'financiadores_id');
     }
 
     /**
@@ -273,6 +280,6 @@ class Viaje extends Model
      */
     public function calificacionExperienciaInternos()
     {
-        return $this->hasMany('App\CalificacionExperienciaInterno', 'viajes_id');
+        return $this->hasMany('App\Models\Calificacion_Experiencia_Interno', 'viajes_id');
     }
 }

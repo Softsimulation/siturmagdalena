@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,12 +36,16 @@ class Viaje_Excursion extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
-
+    public $incrementing = false;
+    public $timestamps = false;
     /**
      * @var array
      */
     protected $fillable = ['divisas_id', 'valor_paquete', 'personas_cubrio'];
+
+    protected $casts = [
+        'valor_paquete' => 'int'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -64,7 +68,7 @@ class Viaje_Excursion extends Model
      */
     public function ubicacionAgenciaViajes()
     {
-        return $this->belongsToMany('App\UbicacionAgenciaViaje', 'lugar_agencia_viaje', null, 'ubicacion_agencia_viajes_id');
+        return $this->belongsToMany('App\Models\Ubicacion_Agencia_Viaje', 'lugar_agencia_viaje', 'viaje_excursion_id', 'ubicacion_agencia_viajes_id');
     }
 
     /**
@@ -72,7 +76,7 @@ class Viaje_Excursion extends Model
      */
     public function pagoPesosColombiano()
     {
-        return $this->hasOne('App\PagoPesosColombiano', 'viajes_id', 'viajes_id');
+        return $this->hasOne('App\Models\Pago_Peso_Colombiano', 'viajes_id', 'viajes_id');
     }
 
     /**
@@ -80,6 +84,6 @@ class Viaje_Excursion extends Model
      */
     public function serviciosPaqueteInternos()
     {
-        return $this->belongsToMany('App\ServiciosPaqueteInterno', 'servicios_excursion_incluidos_interno', 'viajes_id', 'servicios_paquete_id');
+        return $this->belongsToMany('App\Models\Servicio_Paquete_Interno', 'servicios_excursion_incluidos_interno', 'viajes_id', 'servicios_paquete_id');
     }
 }

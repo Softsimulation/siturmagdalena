@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="es">
 <head>
@@ -143,7 +143,7 @@
         <div>
             <div class="loader"></div>
             <h1><?php echo e(trans('resources.LabelPreloader')); ?></h1>
-            <h4>Resource.LabelPorFavorEspere</h4>
+            <h4><?php echo e(trans('resources.LabelPorFavorEspere')); ?></h4>
             <img src="<?php echo e(asset('Content/image/logo.min.png')); ?>" width="200" />
         </div>
     </div>
@@ -161,7 +161,7 @@
                         <div class="btn-group">
                             <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/Temporada">Volver</a></li>
+                                <li><a href="/temporada">Volver</a></li>
                                 <li class="divider"></li>
                                 <li id="log">
                                     <!--
@@ -185,7 +185,7 @@
             <h3 style="margin-top: 0.5em;"><strong><?php echo $__env->yieldContent('TitleSection'); ?></strong></h3>
         </div>
         <div class="progress progress-striped active">
-            <div class="progress-bar progress-bar-info" style="width: yield('progreso')"><?php echo $__env->yieldContent('NumSeccion'); ?></div>
+            <div class="progress-bar progress-bar-info" style="width: yield('Progreso')"><?php echo $__env->yieldContent('NumSeccion'); ?></div>
         </div>
     </header>
     <div class="container" <?php echo $__env->yieldContent('Control'); ?>>
@@ -226,6 +226,8 @@
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/ActividadesRealizadas.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/ViajesRealizados.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/encuestas/turismointerno/services.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/encuestas/turismointerno/fuentesinformacion.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/encuestas/turismointerno/servicios.js')); ?>"></script>
     <script>
         $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>

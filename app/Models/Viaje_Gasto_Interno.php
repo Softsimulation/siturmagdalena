@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +26,17 @@ class Viaje_Gasto_Interno extends Model
     /**
      * @var array
      */
-    protected $fillable = ['valor', 'gastos_realizados_otros', 'personas_cubrio', 'valor_fuera'];
+    protected $fillable = [ 'rubros_id', 'valor', 'gastos_realizados_otros', 'personas_cubrio', 'valor_fuera'];
+    
+    public $timestamps = false;
+    
+    public $primaryKey = 'viajes_id';
+
+    protected $casts = [
+        'valor' => 'int',
+        'valor_fuera' => 'int',
+    ];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -53,7 +53,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             
-            'Fecha'=>'required|date',
+            'Fecha'=>'required',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -125,7 +125,7 @@ class GrupoViajeController extends Controller
 
         $grupo = new Grupo_Viaje();
         $grupo->digitador_id = 1;
-        $grupo->fecha_aplicacion = new \DateTime($request->Fecha);
+        $grupo->fecha_aplicacion = $request->Fecha;
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
         $grupo->mayores_quince = $request->Mayores15;
@@ -190,9 +190,9 @@ class GrupoViajeController extends Controller
             }]);
         },'visitantes'=>function($q){
             $q->with(['historialEncuestas'=>function($r){
-                $r->where('fecha_cambio',$r->max('fecha_cambio'))->with(['estadosEncuesta'=>function($s){
+                $r->with(['estadosEncuesta'=>function($s){
                     $s->select("id","nombre");
-                }]);
+                }])->orderby('fecha_cambio','desc');
             }]);
         }])->first();
         
@@ -249,8 +249,8 @@ class GrupoViajeController extends Controller
                      }).First();
         return serializer.Serialize(new { grupo = grupo, sitios = sitios, tipos = tipos });       */                              
     }
-    public function getInformacioneditar($id)
-    {
+    
+    public function getInformacioneditar($id) {
         //return $id;
         //return $id;
         
@@ -351,6 +351,7 @@ class GrupoViajeController extends Controller
         
         return ["grupo"=>$grupoRetornar, "lugares_aplicacion"=>$lugares_aplicacion, "tipos_viajes"=>$tipos_viajes];                      
     }
+    
     public function getEditar($id) {
         if ($id == null)
         {
@@ -372,7 +373,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             'id'=>'required|exists:grupos_viaje,id',
-            'Fecha'=>'required|date',
+            'Fecha'=>'required',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -455,7 +456,7 @@ class GrupoViajeController extends Controller
         
         $grupo = Grupo_Viaje::where('id',$request->id)->first();
 
-        $grupo->fecha_aplicacion = date($request->Fecha);
+        $grupo->fecha_aplicacion = $request->Fecha;
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
         $grupo->mayores_quince = $request->Mayores15;

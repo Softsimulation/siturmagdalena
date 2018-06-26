@@ -58,17 +58,17 @@
     
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
 
-    <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>EncuestaMsgError:</b></label>
-        <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
-            -@{{error.errores[0].ErrorMessage}}
+        <div class="alert alert-danger" ng-if="errores != null">
+            <label><b>{{trans('resources.EncuestaMsgError')}}:</b></label>
+            <br />
+            <div ng-repeat="error in errores" ng-if="error.length>0">
+                -@{{error[0]}}
+            </div>
+
         </div>
 
-    </div>
-
     <div class="alert alert-danger" ng-if="error != nul">
-        <label><b>Encuesta MsgError:</b></label>
+        <label><b>{{trans('Encuesta MsgError')}}:</b></label>
         <br />
         <div>
             @{{error}}
@@ -120,11 +120,11 @@
                                         viaje @{{$index+1}}
                                     </th>
                                     <th>
-                                        @{{es.FechaInicio}}
+                                        @{{es.fecha_inicio}}
 
                                     </th>
                                     <th>
-                                        @{{es.FechaFin}}
+                                        @{{es.fecha_final}}
 
                                     </th>
 
@@ -503,7 +503,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12" style="text-align: center; border-top: .5px solid lightgrey">
-            <a href="/EncuestaInterno/EditarHogar/@ViewBag.hogar" class="btn btn-raised btn-default" placeholder="Anterior">Anterior</a>
+            <a href="/turismointerno/editarhogar/{{$hogar}}" class="btn btn-raised btn-default" placeholder="Anterior">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" value="Siguente" ng-click="siguiente()" ng-disabled="ver" placeholder="Siguiente">
         </div>
     </div>

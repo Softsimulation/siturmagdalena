@@ -130,6 +130,14 @@
         .radio label, label.radio-inline {
             padding-left: 1.8em;
         }
+
+        footer {
+            width: 100%;
+            background-color: rgba(0,0,0,.35);
+            padding: 1em;
+            text-align: right;
+        }
+
         #log form {
             float: none !important;
         }
