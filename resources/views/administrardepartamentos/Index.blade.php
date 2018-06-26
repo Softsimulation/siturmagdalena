@@ -226,17 +226,25 @@
                 <input type="hidden" ng-model="departamento.id" ng-require="">
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input ng-disabled="sw == 3" required type="text" name="nombre" class="form-control" placeholder="Nombre del país" ng-model="departamento.nombre"/>
+                    <input ng-disabled="sw == 3" required type="text" name="nombre" class="form-control" placeholder="Nombre del departamento" ng-model="departamento.nombre"/>
                 </div>
                 <div class="form-group" ng-class="{'error': (departamentoForm.$submitted || departamentoForm.pais.$touched) && departamentoForm.pais.$error.required }">
                     <label for="pais">País</label>
-                    <select ng-disabled="sw == 3" name="pais" required ng-model="departamento.pais_id" ng-options="pais.id as pais.paises_con_idiomas[0].nombre for pais in paises" class="form-control">
-                        <option value="">Seleccione un país</option>
-                    </select>
+                    <ui-select theme="bootstrap" ng-required="true" ng-model="departamento.pais_id" id="pais" name="pais">
+                       <ui-select-match placeholder="Nombre del país">
+                           <span ng-bind="$select.selected.paises_con_idiomas[0].nombre"></span>
+                       </ui-select-match>
+                       <ui-select-choices repeat="pais.id as pais in (paises| filter: $select.search)">
+                           <span ng-bind="pais.paises_con_idiomas[0].nombre" title="@{{pais.paises_con_idiomas[0].nombre}}"></span>
+                       </ui-select-choices>
+                   </ui-select>
+                    <!--<select ng-disabled="sw == 3" name="pais" required ng-model="departamento.pais_id" ng-options="pais.id as pais.paises_con_idiomas[0].nombre for pais in paises" class="form-control">-->
+                    <!--    <option value="">Seleccione un país</option>-->
+                    <!--</select>-->
                 </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             <button ng-click="guardarDepartamento()" ng-if="sw != 3" type="submit" class="btn btn-primary">Guardar</button>
           </div>
       </form>
@@ -244,10 +252,13 @@
   </div>
 </div>
 
+<div class='carga'>
+
+</div>
 @endsection
 
 @section('javascript')
-<script src="{{secure_asset('/js/administrador/departamentos/departamentosController.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/departamentos/services.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/departamentos/app.js')}}"></script>
+<script src="{{asset('/js/administrador/departamentos/departamentosController.js')}}"></script>
+<script src="{{asset('/js/administrador/departamentos/services.js')}}"></script>
+<script src="{{asset('/js/administrador/departamentos/app.js')}}"></script>
 @endsection

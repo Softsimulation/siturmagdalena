@@ -12,12 +12,15 @@ angular.module('paises.pais', [])
     };
     var paisVer;
     
+    $("body").attr("class", "cbp-spmenu-push charging");
     paisServi.getDatos().then(function(data){
         if (data.success){
             $scope.paises = data.paises;
             $scope.idiomas = data.idiomas;
+            $("body").attr("class", "cbp-spmenu-push");
         }
     }).catch(function(err){
+        $("body").attr("class", "cbp-spmenu-push");
         swal('Error', 'Error al cargar los datos. Recargue la página por favor.', 'error');
     });
     
@@ -87,72 +90,61 @@ angular.module('paises.pais', [])
         if(!$scope.paisForm.$valid){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         switch ($scope.sw) {
             case 1:
                 // code
                 paisServi.postCreatepais($scope.pais).then(function(data){
+                    $("body").attr("class", "cbp-spmenu-push");
                     if (data.success){
-                        $scope.paises.unshift(data.pais);
-                        swal({
-                               title: "Éxito",
-                               text: "El país se ha ingresado correctamente",
-                               type: "success",
-                               showCancelButton: false,
-                               closeOnConfirm: true,
-                               showLoaderOnConfirm: true,
-                           }, function (res) {
-                    
-                               window.location.reload();
-                             
-                           });
+                        $scope.paises.push(data.pais);
+                        $('#paisesModal').modal('hide');
+                        swal('¡Éxito!', 'País ingresado con éxito.', 'success');
                     }else{
                         $scope.errores = data.errores;
                     }
                 }).catch(function(err){
+                    $("body").attr("class", "cbp-spmenu-push");
                     swal('Error', 'Error al crear el país. Recargue la página.', 'error');
                 });
                 break;
             case 2:
                 // code
                 paisServi.postEditarpais($scope.pais).then(function(data){
+                    $("body").attr("class", "cbp-spmenu-push");
                     if (data.success){
-                        $scope.paises.unshift(data.pais);
-                        swal({
-                               title: "Éxito",
-                               text: "Se ha modificado el país satisfactoriamente.",
-                               type: "success",
-                               showCancelButton: false,
-                               closeOnConfirm: true,
-                               showLoaderOnConfirm: true,
-                           }, function (res) {
-                               window.location.reload();
-                           });
+                        for (var i = 0; i < $scope.paises.length; i++){
+                            if ($scope.paises[i].id == data.pais.id){
+                                $scope.paises[i] = data.pais;
+                            }
+                        }
+                        swal('¡Éxito!', 'País modificado con éxito.', 'success');
+                        $('#paisesModal').modal('hide');
                     }else{
                         $scope.errores = data.errores;
                     }
                 }).catch(function(err){
+                    $("body").attr("class", "cbp-spmenu-push");
                     swal('Error', 'Error al modificar el país. Recargue la página.', 'error');
                 });
                 break;
             case 4:
                 // code
                 paisServi.postAgregarnombre($scope.pais).then(function(data){
+                    $("body").attr("class", "cbp-spmenu-push");
                     if (data.success){
-                        $scope.paises.unshift(data.pais);
-                        swal({
-                               title: "Éxito",
-                               text: "Se ha agregado el nombre del país satisfactoriamente.",
-                               type: "success",
-                               showCancelButton: false,
-                               closeOnConfirm: true,
-                               showLoaderOnConfirm: true,
-                           }, function (res) {
-                               window.location.reload();
-                           });
+                        for (var i = 0; i < $scope.paises.length; i++){
+                            if ($scope.paises[i].id == data.pais.id){
+                                $scope.paises[i] = data.pais;
+                            }
+                        }
+                        swal('¡Éxito!', 'País modificado con éxito.', 'success');
+                        $('#paisesModal').modal('hide');
                     }else{
                         $scope.errores = data.errores;
                     }
                 }).catch(function(err){
+                    $("body").attr("class", "cbp-spmenu-push");
                     swal('Error', 'Error al crear el nombre del país. Recargue la página.', 'error');
                 });
                 break;
@@ -170,9 +162,10 @@ angular.module('paises.pais', [])
             swal('Información', 'No se ha seleccionado ningún archivo.', 'info');
             return;
         }
-        console.log($scope.import_file);
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.erroresCSV = null;
         paisServi.postImportexcel(fd).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 window.location.reload();
             }else{

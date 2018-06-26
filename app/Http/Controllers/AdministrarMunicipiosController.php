@@ -49,8 +49,8 @@ class AdministrarMunicipiosController extends Controller
         }
         
         $errores = [];
-        $departamento = Municipio::where('departamento_id' ,$request->departamento_id)->where('nombre', $request->nombre)->get();
-        if (count($departamento) > 0){
+        $municipio_ = Municipio::where('departamento_id' ,$request->departamento_id)->whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->first();
+        if ($municipio_ != null){
             $errores["existe"][0] = "Este municipio ya está registrado en este departamento.";
         }
         if($errores != null || sizeof($errores) > 0){
@@ -60,14 +60,16 @@ class AdministrarMunicipiosController extends Controller
         $municipio = new Municipio();
         $municipio->nombre = $request->nombre;
         $municipio->departamento_id = $request->departamento_id;
+        $municipio->estado = true;
         $municipio->updated_at = Carbon::now();
         $municipio->created_at = Carbon::now();
         $municipio->user_update = "Situr";
         $municipio->user_create = "Situr";
-        $municipio->estado = true;
-        $municipio->save();
+        $prueba = $municipio->save();
         
-        return ['success' => true, 'municipio' => $municipio];
+        $municipioReturn = Municipio::where('id', $municipio->id)->select('id', 'departamento_id', 'nombre', 'updated_at', 'user_update')->first();
+        
+        return ['success' => true, 'municipio' => $municipioReturn ];
     }
     
     public function postEditarmunicipio(Request $request){
@@ -146,6 +148,7 @@ class AdministrarMunicipiosController extends Controller
     	            if ($departamento == null){
     	                $departamento = new Departamento();
                         $departamento->nombre = $line['nombreDepartamento'];
+                        $departamento->pais_id = $paisConIdioma->pais_id;
                         $departamento->created_at = Carbon::now();
                         $departamento->updated_at = Carbon::now();
                         $departamento->user_create = "Situr";

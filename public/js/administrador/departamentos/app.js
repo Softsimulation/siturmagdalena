@@ -1,4 +1,4 @@
-var situr = angular.module("departamentosApp", ['checklist-model', 'angularUtils.directives.dirPagination', 'departamentos.departamento', 'departamentosServices']);
+var situr = angular.module("departamentosApp", ['checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'departamentos.departamento', 'departamentosServices']);
 
 
 situr.directive('fileInput', ['$parse', function ($parse) {
@@ -13,6 +13,7 @@ situr.directive('fileInput', ['$parse', function ($parse) {
         }
     }
 }]);
+
 
 situr.directive('finalizacion', function () {
     return function (scope, element, attrs) {

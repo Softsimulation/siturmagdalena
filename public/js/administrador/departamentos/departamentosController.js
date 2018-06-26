@@ -2,13 +2,16 @@
 /* global swal */
 angular.module('departamentos.departamento', [])
 
-.controller('departamentosController', function($scope, departamentosServi){
+.controller('departamentosController', function($sce, $scope, departamentosServi){
+    $("body").attr("class", "cbp-spmenu-push charging");
     departamentosServi.getDatos().then(function (data){
+        $("body").attr("class", "cbp-spmenu-push");
         if (data.success){
             $scope.departamentos = data.departamentos;
             $scope.paises = data.paises;
         }
     }).catch(function (errs){
+        $("body").attr("class", "cbp-spmenu-push");
         swal('Error', 'Error al cargar los datos. Por favor recargue la página.');
     });
     
@@ -52,33 +55,40 @@ angular.module('departamentos.departamento', [])
         if (!$scope.departamentoForm.$valid){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         switch($scope.sw){
             case 1:
                 departamentosServi.postCreardepartamento($scope.departamento).then(function(data){
+                    $("body").attr("class", "cbp-spmenu-push");
                     if (data.success){
                         $scope.departamentos.push(data.departamento);
+                        $('#departamentosModal').modal('hide');
                         swal('¡Éxito!', 'Departamento agregado con éxito', 'success');
                     }else{
                         $scope.errores = data.errores;
                     }
                 }).catch(function(err){
+                    $("body").attr("class", "cbp-spmenu-push");
                     swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
                 });
                 break;
             
             case 2:
                 departamentosServi.postEditardepartamento($scope.departamento).then(function(data){
+                    $("body").attr("class", "cbp-spmenu-push");
                     if (data.success){
                         for (var i = 0; i < $scope.departamentos.length; i++){
                             if ($scope.departamentos[i].id == data.departamento.id){
                                 $scope.departamentos[i] = data.departamento;
                             }
                         }
+                        $('#departamentosModal').modal('hide');
                         swal('¡Éxito!', 'Departamento editado con éxito', 'success');
                     }else{
                         $scope.errores = data.errores;
                     }
                 }).catch(function(err){
+                    $("body").attr("class", "cbp-spmenu-push");
                     swal('Error', 'Error al editar los datos. Por favor, recargue la página.', 'error');
                 });
                 break;
@@ -97,9 +107,10 @@ angular.module('departamentos.departamento', [])
             swal('Información', 'No se ha seleccionado ningún archivo.', 'info');
             return;
         }
-        console.log($scope.import_file);
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.erroresCSV = null;
         departamentosServi.postImportexcel(fd).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 window.location.reload();
             }else{

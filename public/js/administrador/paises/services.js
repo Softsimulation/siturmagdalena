@@ -7,7 +7,7 @@ app.factory("paisServi", ["$http", "$q", function ($http, $q) {
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administrarpaises/datos/').success(function (data) {
+            $http.get('/administrarpaises/datos').success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
