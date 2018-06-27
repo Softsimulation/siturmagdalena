@@ -60,7 +60,7 @@ use App\Models\Gasto_Visitante;
 use App\Models\Sostenibilidad_Visitante;
 use App\Models\Actividades_Sostenibilidad_Idiomas;
 use App\Models\Opcion_Actividad_Realizada_Con_Idioma;
-use App\Models\Opcion_Actividad_Realizada;
+use App\Models\Opcion_Actividad_Realizada; 
 
 class TurismoReceptorController extends Controller
 {
