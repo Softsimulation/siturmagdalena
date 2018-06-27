@@ -106,7 +106,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P1. Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Magdalena) y durante su viaje al Magdalena-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Atlántico) y durante su viaje al Atlántico</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Magdalena) y durante su viaje al Magdalena</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -225,7 +225,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <!-- P3. ¿El paquete/plan turístico incluyó municipios fuera del Magdalena?-->
-                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿El paquete/plan turístico incluyó municipios fuera del Atlántico?</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿El paquete/plan turístico incluyó municipios fuera del Magdalena?</b></h3>
                     </div>
                     <div class="panel-footer"><b>Pregunta con selección única</b></div>
                     <div class="panel-body">
@@ -254,7 +254,7 @@
                 <div class="panel panel-success" ng-show="encuestaReceptor.IncluyoOtros==1">
                     <div class="panel-heading">
                         <!-- ¿Qué otras ciudades/municipios fuera del Magdalena incluyó el paquete/plan turístico?-->
-                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué otras ciudades/municipios fuera del Atlántico incluyó el paquete/plan turístico?</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué otras ciudades/municipios fuera del Magdalena incluyó el paquete/plan turístico?</b></h3>
                     </div>
                     <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
                     <div class="panel-body">
@@ -409,7 +409,7 @@
                                                 <div class="row">
                                                     <!--<div class="col-xs-12 col-md-6">
                                                         
-                                                        <h5 style="margin-bottom: 0;"><b>Fuera del Atlántico</b></h5>
+                                                        <h5 style="margin-bottom: 0;"><b>Fuera del Magdalena</b></h5>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
