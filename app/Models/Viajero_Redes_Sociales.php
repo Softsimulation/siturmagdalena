@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +18,7 @@ class Viajero_Redes_Sociales extends Model
      * @var string
      */
     protected $table = 'viajero_redes_sociales';
+    public $timestamps=false;
 
     /**
      * The primary key for the model.
@@ -31,7 +32,7 @@ class Viajero_Redes_Sociales extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array

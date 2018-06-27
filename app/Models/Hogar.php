@@ -34,7 +34,7 @@ class Hogar extends Model
      */
     public function digitadore()
     {
-        return $this->belongsTo('App\Digitadore', 'digitadores_id');
+        return $this->belongsTo('App\Models\Digitador', 'digitadores_id');
     }
 
     /**

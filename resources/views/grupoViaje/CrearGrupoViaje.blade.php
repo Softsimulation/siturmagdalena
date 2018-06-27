@@ -95,6 +95,8 @@
 
 @section('NumSeccion', '0%')
 
+@section('app','ng-app="situr_admin"')
+
 @section('controller','ng-controller="crear_grupo"')
 
 @section('content')
@@ -235,7 +237,7 @@
             </div>
 
             <div class="row" style="text-align: center;">
-                <a href="/GrupoViaje" class="btn btn-default">Cancelar</a>
+                <a href="/grupoviaje/listadogrupos" class="btn btn-default">Cancelar</a>
                 <input type="submit" ng-click="guardar()" value="Guardar" class="btn btn-success">
                 
             </div>

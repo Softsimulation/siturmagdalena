@@ -3,6 +3,9 @@ angular.module('receptor.gasto', ['ui.select'])
 .controller('gasto', ['$scope', 'receptorServi', '$window',function ($scope, receptorServi, $window) {
 
     $scope.encuestaReceptor = {};
+    $scope.abrirAlquiler = false;
+    $scope.abrirTerrestre = false;
+    $scope.abrirRopa = false;
     $scope.$watch('id',function(){
         if($scope.id != null){
              $("body").attr("class", "cbp-spmenu-push charging");
@@ -15,6 +18,10 @@ angular.module('receptor.gasto', ['ui.select'])
                 $scope.tipos = data.tipos;
                 $scope.rubros = data.rubros;
                 $scope.encuestaReceptor = data.encuesta;
+                
+                for(var i = 0; i<$scope.rubros.length;i++){
+                    $scope.cambiarAlquiler($scope.rubros[i]);
+                }
                 
               $("body").attr("class", "cbp-spmenu-push");
             }).catch(function(){
@@ -66,6 +73,46 @@ angular.module('receptor.gasto', ['ui.select'])
         if($scope.encuestaReceptor.IncluyoOtros == 0 ){
             $scope.encuestaReceptor.Municipios = [];
         }
+    }
+    
+    $scope.cambiarAlquiler = function(rub){
+        
+        if(rub.gastos_visitantes.length==0){
+            return;
+        }
+        
+        if( rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].divisas_magdalena!= null && rub.gastos_visitantes[0].cantidad_pagada_magdalena != null){
+               switch (rub.id) {
+                   case 3:
+                        $scope.abrirTerrestre = true;
+                       break;
+                   case 5:
+                        $scope.abrirAlquiler = true;
+                       break;
+                   case 12:
+                        $scope.abrirRopa = true;
+                       break;
+                   default:
+                      break;
+               }
+        }
+        
+        if($scope.abrirTerrestre){
+            if( rub.id ==3 && rub.gastos_visitantes[0].personas_cubiertas == null && rub.gastos_visitantes[0].divisas_magdalena == null && rub.gastos_visitantes[0].cantidad_pagada_magdalena==null){
+                $scope.abrirTerrestre = false;
+            }
+        }
+        if($scope.abrirAlquiler){
+            if( rub.id == 5 && rub.gastos_visitantes[0].personas_cubiertas == null && rub.gastos_visitantes[0].divisas_magdalena == null && rub.gastos_visitantes[0].cantidad_pagada_magdalena==null){
+                $scope.abrirAlquiler = false;
+            }
+        }
+        if($scope.abrirRopa){
+            if( rub.id == 12 && rub.gastos_visitantes[0].personas_cubiertas == null && rub.gastos_visitantes[0].divisas_magdalena == null && rub.gastos_visitantes[0].cantidad_pagada_magdalena==null){
+                $scope.abrirRopa = false;
+            }
+        }
+        
     }
     
     $scope.guardar = function(){

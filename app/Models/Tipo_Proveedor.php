@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,7 +37,7 @@ class Tipo_Proveedor extends Model
      */
     public function categoriaProveedores()
     {
-        return $this->hasMany('App\CategoriaProveedore', 'tipo_proveedores_id');
+        return $this->hasMany('App\Models\Categoria_Proveedor', 'tipo_proveedores_id');
     }
 
     /**
@@ -45,7 +45,7 @@ class Tipo_Proveedor extends Model
      */
     public function tipoProveedoresConIdiomas()
     {
-        return $this->hasMany('App\TipoProveedoresConIdioma', 'tipo_proveedores_id');
+        return $this->hasMany('App\Models\Tipo_Proveedor_Con_Idioma', 'tipo_proveedores_id');
     }
 
     /**

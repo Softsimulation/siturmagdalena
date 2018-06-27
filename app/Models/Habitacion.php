@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +27,12 @@ class Habitacion extends Model
      */
     protected $table = 'habitaciones';
 
+    public $timestamps = false;
+    
+    protected $casts = [
+        'tarifa' => 'float'
+    ];
+    
     /**
      * @var array
      */

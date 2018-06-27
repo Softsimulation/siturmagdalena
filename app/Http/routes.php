@@ -11,6 +11,20 @@
 |
 */
 
+Route::controller('/indicadores','IndicadoresCtrl');
+
+
+
+
+Route::get('/', function () {
+    
+    $date = new Carbon\Carbon('2018-04-02 00:00:00', 'Europe/London');  
+    return  $date->diffInDays('2018-03-28 00:00:00');
+    
+    
+});
+
+Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
 
 Route::controller('/turismoreceptor','TurismoReceptorController');
@@ -18,6 +32,10 @@ Route::controller('/turismoreceptor','TurismoReceptorController');
 Route::controller('/grupoviaje','GrupoViajeController');
 
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
+
+Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
+
+//Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');
@@ -33,3 +51,11 @@ Route::get('/CrearGrupoViaje', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
+
+
+Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
+Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
+Route::controller('/encuesta','EncuestaDinamicaCtrl');

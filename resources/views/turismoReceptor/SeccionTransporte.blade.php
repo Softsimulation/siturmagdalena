@@ -42,12 +42,8 @@
 <div class="main-page">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     
-    <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>Errores:</b></label>
-        <br />
-        <div ng-repeat="error in errores" ng-if="error.length>0">
-            -@{{error[0]}}
-        </div>
+    <div class="alert alert-danger" role="alert" ng-if="errores" ng-repeat="error in errores">
+       @{{error[0]}}
     </div>
     <form role="form" name="transForm" novalidate>
         <div class="panel panel-success">
@@ -117,24 +113,37 @@
                 </span>
             </div>
         </div>
-        <div class="panel panel-success" ng-if="transporte.Mover ==5">
+        <div class="panel panel-success">
             <div class="panel-heading">
-                <!-- >El alquiler de vehículo fue realizado en:-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> El alquiler de vehículo fue realizado en</b></h3>
+                <!-- Experiencia de viaje-->
+                <h3 class="panel-title"><b>Sostenibilidad</b></h3>
             </div>
-            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Ninguna dificultad y 10 Mucha dificultad. ¿Qué tanta dificultad tuvo para llegar a Atlántico ?</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in lugares">
-                            <label>
-                                <input type="radio" name="alquiler" ng-value="item.id" ng-model="transporte.Alquiler"> @{{item.opciones_lugares_con_idiomas[0].nombre}}
-                            </label>
-
-                        </div>
+                    <div class="col-md-12" style="overflow-x: auto;">
+                        <table  align="center" name="tabla_calificacion" class="table table-striped">
+                            
+                            <tbody>
+                                <tr>
+                                    @for ($i = 1; $i <= 10; $i++)
+                                        <td>
+                                            <div class="radio radio-primary">
+                                                <label>
+                                                    <input type="radio" name="experiencia_@{{it.Id}}" ng-model="transporte.Calificacion" value="{{$i}}">
+                                                    {{$i}}
+                                                </label>
+                                            </div>
+                                        </td>
+                                    @endfor
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+
             </div>
+
         </div>
         
         <div class="row" style="text-align:center">

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,7 +44,7 @@ class Categoria_Proveedor extends Model
      */
     public function categoriaProveedoresConIdiomas()
     {
-        return $this->hasMany('App\CategoriaProveedoresConIdioma', 'categoria_proveedores_id');
+        return $this->hasMany('App\Models\Categoria_Proveedor_Con_Idioma', 'categoria_proveedores_id');
     }
 
     /**

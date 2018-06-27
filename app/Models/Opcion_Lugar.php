@@ -43,7 +43,7 @@ class Opcion_Lugar extends Model
      */
     public function visitantes()
     {
-        return $this->hasMany('App\Visitante', 'opciones_lugares_id');
+        return $this->hasMany('App\Models\Visitante', 'opciones_lugares_id');
     }
 
     /**
@@ -51,9 +51,12 @@ class Opcion_Lugar extends Model
      */
     public function visitantes2()
     {
-        return $this->belongsToMany('App\Visitante', 'visitante_alquila_vehiculo', 'opciones_lugares_id');
+        return $this->belongsToMany('App\Models\Visitante', 'visitante_alquila_vehiculo', 'opciones_lugares_id');
     }
-
+    
+    public function visitanteG(){
+        return $this->belongsToMany('App\Models\Visitante', 'opciones_gasto_visitantes', 'opciones_lugare_id');
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

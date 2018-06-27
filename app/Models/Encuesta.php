@@ -57,7 +57,7 @@ class Encuesta extends Model
      */
     public function alquilerVehiculos()
     {
-        return $this->hasMany('App\AlquilerVehiculo', 'encuestas_id');
+        return $this->hasMany('App\Models\Alquiler_Vehiculo', 'encuestas_id');
     }
 
     /**
@@ -73,7 +73,7 @@ class Encuesta extends Model
      */
     public function agenciasOperadoras()
     {
-        return $this->hasMany('App\AgenciasOperadora', 'encuestas_id');
+        return $this->hasMany('App\Models\Agencia_Operadora', 'encuestas_id');
     }
 
     /**

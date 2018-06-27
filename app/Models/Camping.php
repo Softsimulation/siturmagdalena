@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +23,13 @@ class Camping extends Model
      * @var array
      */
     protected $fillable = ['alojamientos_id', 'area', 'total_parcelas', 'capacidad', 'tarifa', 'viajeros', 'viajeros_extranjeros', 'total_huespedes', 'capacidad_ocupada'];
-
+    public $timestamps = false;
+    
+    protected $casts = [
+        'tarifa' => 'float',
+        'area' => 'int',
+    ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -109,12 +109,14 @@
                             <label>
                                 <input type="checkbox" name="redes" checklist-model="enteran.Redes" ng-disabled="enteran.Redes.indexOf(1) > -1 && it.Id != 1" ng-change="validar(1, it.Id)" checklist-value="it.Id"> @{{it.Nombre}}
                             </label>
+                            <span ng-if="it.Id==12">:<input type="text" name="otroRed" style="display: inline-block;" class="form-control" id="otroRed" placeholder="Escriba su otra opción" ng-disabled="enteran.Redes.indexOf(1) != -1 " ng-model="enteran.otroRed" ng-change="validarOtro(2)" ng-required="enteran.Redes.indexOf(12) != -1" /></span>
                         </div>
                         
                     </div>
                 </div>
                 <span ng-show="inForm.$submitted || inForm.redes.$touched">
                     <span class="label label-danger" ng-show="enteran.Redes.length == 0">* Debe seleccionar alguno de los valores.</span>
+                    <span class="label label-danger" ng-show="inForm.otroRed.$error.required">* Debe escribir quien fue el otro acompañante.</span>
                 </span>
             </div>
         </div>
@@ -197,7 +199,118 @@
                 </div>
             </div>
         </div>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Sostenibilidad ¿Fue fácil encontrar los servicios, productos y atractivos de Atlántico?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Respuesta única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="facilidad" id="facilidad" required value="1" ng-model="enteran.facilidad">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="facilidad" id="facilidad" required value="-1" ng-model="enteran.facilidad">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="inForm.$submitted">
+                    <span class="label label-danger" ng-show="inForm.facilidad.$error.required">* Debe seleccionar alguna de las opciones.</span>
+                </span>
+            </div>
+        </div>
         
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Conoce la marca que acaba de ver?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Respuesta única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="conoce_marca" id="conoce_marca" required value="1" ng-model="enteran.conoce_marca">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="conoce_marca" id="conoce_marca" required value="-1" ng-model="enteran.conoce_marca">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="inForm.$submitted">
+                    <span class="label label-danger" ng-show="inForm.conoce_marca.$error.required">* Debe seleccionar alguna de las opciones.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Dando cumplimiento a la ley de Protección de datos personales, solicito su autorización para que pueda contactarlo nuevamente. ¿Está usted de acuerdo?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Respuesta única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_autorizacion" id="acepta_autorizacion" required value="1" ng-model="enteran.acepta_autorizacion">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_autorizacion" id="acepta_autorizacion" required value="-1" ng-model="enteran.acepta_autorizacion">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="inForm.$submitted">
+                    <span class="label label-danger" ng-show="inForm.acepta_autorizacion.$error.required">* Debe seleccionar alguna de las opciones.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Ya para terminar, le solicito su autorización para que SITUR ATLÁNTICO comparta sus respuestas con las entidades que contrataron el proyecto, ¿Está usted de acuerdo?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Respuesta única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_tratamiento" id="acepta_tratamiento" required value="1" ng-model="enteran.acepta_tratamiento">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_tratamiento" id="acepta_tratamiento" required value="-1" ng-model="enteran.acepta_tratamiento">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="inForm.$submitted">
+                    <span class="label label-danger" ng-show="inForm.acepta_tratamiento.$error.required">* Debe seleccionar alguna de las opciones.</span>
+                </span>
+            </div>
+        </div>
 
         <div class="row" style="text-align:center">
             <a href="/turismoreceptor/seccionpercepcionviaje/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
