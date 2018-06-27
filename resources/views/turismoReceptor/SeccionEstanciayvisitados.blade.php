@@ -185,7 +185,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P2. ¿Que actividades realizó en el Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que actividades realizó en el Atlántico?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que actividades realizó en el Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -211,7 +211,8 @@
         
         <div class="panel panel-success" ng-repeat="opcion in encuesta.ActividadesRelizadas" ng-if="opcion.opciones.length > 0" >
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? (@{{opcion.actividades_realizadas_con_idiomas[0].nombre}})</b></h3>
+                <!-- P3. ¿Que playas visitó en el Magdalena?-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que playas visitó en el Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
