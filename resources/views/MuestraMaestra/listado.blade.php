@@ -9,7 +9,7 @@
 
 <div>
   
-    <button class="btn btn-success" ng-click="openModalAddPeriodo()" >+ Agregar</button>
+    <a class="btn btn-success" href="/MuestraMaestra/crearperiodo" >+ Agregar</a>
 
     <div class="row" >
 
@@ -101,7 +101,7 @@
 
 </div>
    
-<style type="text/css">
+    <style type="text/css">
      
        .btn-agregar{
             margin-left: 10px;

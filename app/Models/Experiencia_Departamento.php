@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,4 +36,6 @@ class Experiencia_Departamento extends Model
     {
         return $this->hasMany('App\CalificacionExperienciaInterno');
     }
+    
+    
 }

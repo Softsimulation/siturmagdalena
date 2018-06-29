@@ -5,6 +5,7 @@
  */
 (function(window, angular, undefined) {'use strict';
 
+
 var $sanitizeMinErr = angular.$$minErr('$sanitize');
 
 /**
@@ -146,6 +147,7 @@ function $SanitizeProvider() {
       return buf.join('');
     };
   }];
+
 }
 
 function sanitizeText(chars) {
@@ -474,6 +476,7 @@ function htmlSanitizeWriter(buf, uriValidator){
 }
 
 
+
 // define ngSanitize module and register $sanitize service
 angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
 
@@ -544,6 +547,7 @@ angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
          </tr>
        </table>
      </file>
+
      <file name="protractor.js" type="protractor">
        it('should linkify the snippet with urls', function() {
          expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).

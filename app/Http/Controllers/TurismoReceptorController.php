@@ -1044,26 +1044,31 @@ class TurismoReceptorController extends Controller
         
         $paquete = Visitante_Paquete_Turistico::find($id);
         $encuesta["id"]= $id;
-        $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
-        
-        $encuesta["ViajoDepartamento"] = $paquete != null ? 1 :0;
-        
-        if( $encuesta["ViajoDepartamento"] == 1){
-            $encuesta["CostoPaquete"] = $paquete->costo_paquete;
-            $encuesta["DivisaPaquete"] = $paquete->divisas_id;
-            $encuesta["PersonasCubrio"] = $paquete->personas_cubrio;
-            $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
-            $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
-            $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
-            if($paquete->opcionesLugares()->first() != null){
-                
-                $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+        if($visitante->ultima_sesion>=5){
+            $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
+            
+            $encuesta["ViajoDepartamento"] = $paquete != null ? 1 :0;
+            
+            if( $encuesta["ViajoDepartamento"] == 1){
+                $encuesta["CostoPaquete"] = $paquete->costo_paquete;
+                $encuesta["DivisaPaquete"] = $paquete->divisas_id;
+                $encuesta["PersonasCubrio"] = $paquete->personas_cubrio;
+                $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
+                $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
+                $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
+                if($paquete->opcionesLugares()->first() != null){
+                    
+                    $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+                }
+                $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
             }
-            $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
+            
+            $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
+        }else{
+            $encuesta["RealizoGasto"] = null;
+            $encuesta["ViajoDepartamento"] = null;
+            $encuesta["GastosAparte"] = null;
         }
-        
-        $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
-        
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
          
 

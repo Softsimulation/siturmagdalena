@@ -1,5 +1,5 @@
-﻿angular.module('interno.Actividades', [])
-.controller('estancia', ['$scope', 'internoServi',function ($scope, internoServi)  {
+angular.module('interno.Actividades', [])
+.controller('estancia', ['$scope', 'serviInterno',function ($scope, serviInterno)  {
 
 
     $scope.encuesta = {}
@@ -7,15 +7,22 @@
 
 
   $scope.$watch('id', function () {
-        internoServi.getDatosEstancia($scope.id).then(function (data) {
-                   $scope.Datos = data.Enlaces;
-                   $scope.transformarObjeto($scope.Datos);
-                   $scope.encuesta = data.encuesta;
-                   $scope.encuesta.Id = $scope.id;
-                  
-        }).catch(function () {
-            swal("Error", "No se realizo la solicitud, reinicie la página");
-        })
+        if($scope.id != null){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            serviInterno.getDatosEstancia($scope.id).then(function (data) {
+                       $scope.Datos = data.Enlaces;
+                       $scope.transformarObjeto($scope.Datos);
+                       $scope.encuesta = data.encuesta;
+                       $scope.encuesta.Id = $scope.id;
+                       $("body").attr("class", "cbp-spmenu-push");
+                      
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
+        }
+        
     })
     
       $scope.transformarObjeto = function(Datos){
@@ -304,7 +311,7 @@
         $("body").attr("class", "cbp-spmenu-push charging");
 
 
-       internoServi.guardarSeccionEstancia($scope.encuesta).then(function (data) {
+       serviInterno.guardarSeccionEstancia($scope.encuesta).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push");
                 if (data.success == true) {
                     swal({
@@ -315,7 +322,7 @@
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                        //window.location.href = "/EncuestaReceptor/SeccionTransporte/" + $scope.id;
+                        window.location.href = "/turismointerno/transporte/" + $scope.id;
                     }, 1000);
     
     

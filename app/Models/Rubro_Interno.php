@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,6 +33,6 @@ class Rubro_Interno extends Model
      */
     public function viajesGastosInternos()
     {
-        return $this->hasMany('App\ViajesGastosInterno', 'rubros_id');
+        return $this->hasMany('App\Models\Viaje_Gasto_Interno', 'rubros_id');
     }
 }

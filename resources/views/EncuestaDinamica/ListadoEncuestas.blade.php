@@ -46,7 +46,7 @@
                 <td>@{{ encuesta.telefono}}</td>
                 <td>@{{ encuesta.estado.nombre }}</td>
                 <td>
-                    <a class="btn btn-xs btn-primary" href="/encuestaAdHoc/{{$id}}?cod=@{{encuesta.codigo}}" > ver  </a>
+                    <a class="btn btn-xs btn-primary" href="/encuestaAdHoc/@{{encuesta.codigo}}" > ver  </a>
                 </td>
               </tr>
             </tbody>

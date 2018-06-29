@@ -13,7 +13,7 @@
         
         <input type="hidden" id="idEncuesta" value="{{$idEncuesta}}" />
         <input type="hidden" id="idSeccion"  value="{{$idSeccion}}" />
-        <input type="hidden" id="codigo"  value="{{$codigo}}" />
+        <input type="hidden" id="codigo"     value="{{$codigo}}" />
         
         <div class="col-md-12">
             
@@ -31,7 +31,7 @@
                  
                 <div class="row btns hide"  >
                     @if($atras)
-                       <a href="/encuestaAdHoc/{{$idTipoEncuesta}}?cod={{$codigo}}&seccion={{$atras}}" class="btn btn-default">Anterior</a>
+                       <a href="/encuestaAdHoc/{{$codigo}}?seccion={{$atras}}" class="btn btn-default">Anterior</a>
                     @endif
                     <input type="submit" class="btn btn-success" ng-click="guardarEncuesta()" value="siguiente" />
                 </div>

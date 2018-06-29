@@ -39,9 +39,9 @@ class Encuesta extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mesesDeAño()
+    public function mesesDeAnio()
     {
-        return $this->belongsTo('App\MesesDeAño', '"meses_años_id"');
+        return $this->belongsTo('App\Models\Mes_Anio', '"meses_años_id"');
     }
 
     /**

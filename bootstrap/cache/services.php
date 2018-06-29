@@ -32,6 +32,16 @@
     28 => 'App\\Providers\\RouteServiceProvider',
     29 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
     30 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+    21 => 'Wilgucki\\Csv\\CsvServiceProvider',
+    22 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    23 => 'Orchestra\\Parser\\XmlServiceProvider',
+    24 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    25 => 'Collective\\Html\\HtmlServiceProvider',
+    26 => 'App\\Providers\\AppServiceProvider',
+    27 => 'App\\Providers\\AuthServiceProvider',
+    28 => 'App\\Providers\\EventServiceProvider',
+    29 => 'App\\Providers\\RouteServiceProvider',
+    30 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
   ),
   'eager' => 
   array (
@@ -52,6 +62,14 @@
     14 => 'App\\Providers\\RouteServiceProvider',
     15 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
     16 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+    9 => 'Wilgucki\\Csv\\CsvServiceProvider',
+    10 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    11 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    12 => 'App\\Providers\\AppServiceProvider',
+    13 => 'App\\Providers\\AuthServiceProvider',
+    14 => 'App\\Providers\\EventServiceProvider',
+    15 => 'App\\Providers\\RouteServiceProvider',
+    16 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
   ),
   'deferred' => 
   array (

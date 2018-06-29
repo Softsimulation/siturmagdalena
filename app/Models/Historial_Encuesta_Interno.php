@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +23,7 @@ class Historial_Encuesta_Interno extends Model
      * @var string
      */
     protected $table = 'historial_encuesta_interno';
+    public $timestamps=false;
 
     /**
      * @var array
