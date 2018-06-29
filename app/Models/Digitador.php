@@ -35,9 +35,9 @@ class Digitador extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function aspNetUser()
+    public function user()
     {
-        return $this->belongsTo('App\Models\AspNetUser', 'user_id', 'id');
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     /**
