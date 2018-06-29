@@ -31,6 +31,7 @@
     27 => 'App\\Providers\\EventServiceProvider',
     28 => 'App\\Providers\\RouteServiceProvider',
     29 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
+    30 => 'Zizaco\\Entrust\\EntrustServiceProvider',
   ),
   'eager' => 
   array (
@@ -50,6 +51,7 @@
     13 => 'App\\Providers\\EventServiceProvider',
     14 => 'App\\Providers\\RouteServiceProvider',
     15 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
+    16 => 'Zizaco\\Entrust\\EntrustServiceProvider',
   ),
   'deferred' => 
   array (

@@ -11,7 +11,8 @@
         "guzzlehttp/guzzle": "~6.0",
         "orchestra/parser": "~3.0",
         "barryvdh/laravel-dompdf": "^0.8.2",
-        "laravelcollective/html": "^5.2.0"
+        "laravelcollective/html": "^5.2.0",
+        "zizaco/entrust": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
