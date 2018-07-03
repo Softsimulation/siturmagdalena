@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "96b62751975788ffd36674404dfce7c4",
+    "content-hash": "666a5123a6520d567782d22cce0e6d47",
     "packages": [
         {
             "name": "alexpechkarev/geometry-library",
@@ -2706,6 +2707,50 @@
             "time": "2016-09-01T10:05:43+00:00"
         },
         {
+<<<<<<< HEAD
+            "name": "zizaco/entrust",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Zizaco/entrust.git",
+                "reference": "ba9241426f9c518982d868e2cbac381a9581d802"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/ba9241426f9c518982d868e2cbac381a9581d802",
+                "reference": "ba9241426f9c518982d868e2cbac381a9581d802",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "~5.0",
+                "illuminate/console": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "illuminate/database": "~5.0",
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "~4.1",
+                "sami/sami": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Zizaco\\Entrust\\EntrustServiceProvider"
+                    ],
+                    "aliases": {
+                        "Entrust": "Zizaco\\Entrust\\EntrustFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/commands"
+                ],
+                "psr-4": {
+                    "Zizaco\\Entrust\\": "src/Entrust/"
+=======
             "name": "wilgucki/csv",
             "version": "v0.6.2",
             "source": {
@@ -2729,6 +2774,7 @@
             "autoload": {
                 "psr-4": {
                     "Wilgucki\\Csv\\": "src"
+>>>>>>> refs/remotes/origin/release
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2737,6 +2783,34 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
+                    "name": "Andrew Elkins",
+                    "homepage": "http://andrewelkins.com"
+                },
+                {
+                    "name": "Zizaco Zizuini",
+                    "email": "zizaco@gmail.com"
+                },
+                {
+                    "name": "Ben Batschelet",
+                    "homepage": "http://github.com/bbatsche"
+                },
+                {
+                    "name": "Michele Angioni",
+                    "email": "michele.angioni@gmail.com"
+                }
+            ],
+            "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+            "keywords": [
+                "acl",
+                "auth",
+                "illuminate",
+                "laravel",
+                "permission",
+                "roles"
+            ],
+            "time": "2017-11-13T23:46:19+00:00"
+=======
                     "name": "Maciej Wilgucki",
                     "email": "mwilgucki@gmail.com"
                 }
@@ -2747,6 +2821,7 @@
                 "laravel"
             ],
             "time": "2017-01-26T04:38:57+00:00"
+>>>>>>> refs/remotes/origin/release
         }
     ],
     "packages-dev": [
@@ -4546,7 +4621,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "zizaco/entrust": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
