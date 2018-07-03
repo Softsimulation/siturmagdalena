@@ -3,13 +3,13 @@
 angular.module('atracciones.crear', [])
 
 .controller('atraccionesCrearController', function($scope, atraccionesServi){
-    atraccionesServi.getDatos().then(function (data){
-        if (data.success){
-            $scope.atracciones = data.atracciones;
-        }
-    }).catch(function (errs){
-        swal('Error', 'Error al cargar los datos. Por favor recargue la página.');
-    });
+    // atraccionesServi.getDatos().then(function (data){
+    //     if (data.success){
+    //         $scope.atracciones = data.atracciones;
+    //     }
+    // }).catch(function (errs){
+    //     swal('Error', 'Error al cargar los datos. Por favor recargue la página.');
+    // });
     
     $scope.verDepartamentoModal = function (departamento){
         $scope.errores = null;

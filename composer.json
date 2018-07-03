@@ -12,6 +12,7 @@
         "orchestra/parser": "~3.0",
         "barryvdh/laravel-dompdf": "^0.8.2",
         "laravelcollective/html": "^5.2.0",
+        "zizaco/entrust": "dev-master",
         "alexpechkarev/geometry-library": "1.0"
     },
     "require-dev": {

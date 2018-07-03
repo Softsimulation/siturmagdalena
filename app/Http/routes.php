@@ -35,6 +35,8 @@ Route::controller('/administradoratracciones', 'AdministradorAtraccionController
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
+Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
+
 //Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
@@ -49,7 +51,7 @@ Route::get('/CrearGrupoViaje', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home.index');
 });
 
 

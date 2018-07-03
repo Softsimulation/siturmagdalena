@@ -63,7 +63,7 @@ angular.module('municipios.municipio', [])
                     if (data.success){ 
                         $scope.municipios.push(data.municipio);
                         $('#municipiosModal').modal('hide');
-                        swal('¡Éxito!', 'País modificado con éxito.', 'success');
+                        swal('¡Éxito!', 'Municipio creado con éxito.', 'success');
                     }else{
                         $scope.errores = data.errores;
                     }
@@ -84,7 +84,7 @@ angular.module('municipios.municipio', [])
                             }
                         }
                         $('#municipiosModal').modal('hide');
-                        swal('¡Éxito!', 'País modificado con éxito.', 'success');
+                        swal('¡Éxito!', 'Municipio modificado con éxito.', 'success');
                     }else{
                         $("body").attr("class", "cbp-spmenu-push");
                         $scope.errores = data.errores;
