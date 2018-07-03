@@ -11,7 +11,7 @@ angular.module('receptor.estanciayvisitados', [])
     $scope.$watch('id', function () {
         receptorServi.getDatosEstancia($scope.id).then(function (data) {
             $scope.Datos = data.Enlaces;
-            //$scope.transformarObjeto($scope.Datos);
+            $scope.transformarObjeto($scope.Datos);
             if(data.encuesta != undefined){
                 $scope.encuesta = data.encuesta;   
                 if (data.encuesta.Estancias == null) {
@@ -26,55 +26,55 @@ angular.module('receptor.estanciayvisitados', [])
     
     
     
-    // $scope.transformarObjeto = function(Datos){
-    //     //atracciones
-    //     var atracciones = [];
-    //     for(var i = 0; i < Datos.Atracciones.length; i++){
-    //         var objeto = {
-    //             Nombre : Datos.Atracciones[i].atraccione.sitio.sitios_con_idiomas[0].nombre,
-    //             Id : Datos.Atracciones[i].atraccion_id,
-    //             IdT : Datos.Atracciones[i].tipo_atraccion_id,
-    //         }
-    //         atracciones.push(objeto);
-    //     }
-    //     $scope.Datos.Atracciones = atracciones;
+    $scope.transformarObjeto = function(Datos){
+        //atracciones
+        var atracciones = [];
+        for(var i = 0; i < Datos.Atracciones.length; i++){
+            var objeto = {
+                Nombre : Datos.Atracciones[i].atraccione.sitio.sitios_con_idiomas[0].nombre,
+                Id : Datos.Atracciones[i].atraccion_id,
+                IdT : Datos.Atracciones[i].tipo_atraccion_id,
+            }
+            atracciones.push(objeto);
+        }
+        $scope.Datos.Atracciones = atracciones;
         
-    //     //tipoAtracciones
-    //     var arreglo = [];
-    //     for(var i = 0; i < Datos.TipoAtracciones.length; i++){
-    //         var objeto = {
-    //             Nombre : Datos.TipoAtracciones[i].tipo_atracciones_con_idiomas[0].nombre,
-    //             Id : Datos.TipoAtracciones[i].id,
-    //             IdA : Datos.TipoAtracciones[i].actividades_realizadas[0].id,
-    //         }
-    //         arreglo.push(objeto);
-    //     }
-    //     $scope.Datos.TipoAtracciones = arreglo;
+        //tipoAtracciones
+        var arreglo = [];
+        for(var i = 0; i < Datos.TipoAtracciones.length; i++){
+            var objeto = {
+                Nombre : Datos.TipoAtracciones[i].tipo_atracciones_con_idiomas[0].nombre,
+                Id : Datos.TipoAtracciones[i].id,
+                IdA : Datos.TipoAtracciones[i].actividades_realizadas[0].id,
+            }
+            arreglo.push(objeto);
+        }
+        $scope.Datos.TipoAtracciones = arreglo;
         
-    //     //actividades
-    //     var arreglo = [];
-    //     for(var i = 0; i < Datos.Actividades.length; i++){
-    //         var objeto = {
-    //             Nombre : Datos.Actividades[i].actividade.actividades_con_idiomas[0].nombre,
-    //             Id : Datos.Actividades[i].actividad_id,
-    //             IdA : Datos.Actividades[i].actividades_realizadas_id,
-    //         }
-    //         arreglo.push(objeto);
-    //     }
-    //     $scope.Datos.Actividades = arreglo;
+        //actividades
+        var arreglo = [];
+        for(var i = 0; i < Datos.Actividades.length; i++){
+            var objeto = {
+                Nombre : Datos.Actividades[i].actividade.actividades_con_idiomas[0].nombre,
+                Id : Datos.Actividades[i].actividad_id,
+                IdA : Datos.Actividades[i].actividades_realizadas_id,
+            }
+            arreglo.push(objeto);
+        }
+        $scope.Datos.Actividades = arreglo;
         
-    //     //atraccionesportal
-    //     var arreglo = [];
-    //     for(var i = 0; i < Datos.AtraccionesPortal.length; i++){
-    //         var objeto = {
-    //             Nombre : Datos.AtraccionesPortal[i].sitio.sitios_con_idiomas[0].nombre,
-    //             Id : Datos.AtraccionesPortal[i].id,
-    //         }
-    //         arreglo.push(objeto);
-    //     }
-    //     $scope.Datos.AtraccionesPortal = arreglo;
+        //atraccionesportal
+        var arreglo = [];
+        for(var i = 0; i < Datos.AtraccionesPortal.length; i++){
+            var objeto = {
+                Nombre : Datos.AtraccionesPortal[i].sitio.sitios_con_idiomas[0].nombre,
+                Id : Datos.AtraccionesPortal[i].id,
+            }
+            arreglo.push(objeto);
+        }
+        $scope.Datos.AtraccionesPortal = arreglo;
         
-    // }
+    }
 
     $scope.agregar = function () {
         $scope.estancia = new Object();
