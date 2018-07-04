@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -49,7 +49,7 @@ class Responsabilidad_Social extends Model
      */
     public function encuestasPstSostenibilidad()
     {
-        return $this->belongsTo('App\EncuestasPstSostenibilidad');
+        return $this->belongsTo('App\Models\Encuesta_Pst_Sostenibilidad');
     }
 
     /**
@@ -57,6 +57,6 @@ class Responsabilidad_Social extends Model
      */
     public function motivosResponsabilidadesPsts()
     {
-        return $this->hasMany('App\MotivosResponsabilidadesPst', 'responsabilidades_sociales_id', 'encuestas_pst_sostenibilidad_id');
+        return $this->belongsToMany('App\Models\Motivo_Responsabilidad', 'motivos_responsabildades_pst', 'responsabilidades_sociales_id','motivos_responsabilidades_id')->withPivot('otro');
     }
 }
