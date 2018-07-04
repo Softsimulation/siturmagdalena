@@ -8,7 +8,7 @@ class Proveedores_rnt extends Model
 {
     protected $table = 'proveedores_rnt';
     
-    public function idiomas(){
+    public function proveedor_rnt_idioma(){
         return $this->hasMany( "App\Models\Proveedores_rnt_idioma", 'proveedor_rnt_id'); 
     }
     

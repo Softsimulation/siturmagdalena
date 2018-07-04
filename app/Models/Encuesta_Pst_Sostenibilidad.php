@@ -60,7 +60,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function proveedoresRnt()
     {
-        return $this->belongsTo('App\ProveedoresRnt');
+        return $this->belongsTo('App\Models\Proveedores_rnt');
     }
 
     /**
@@ -68,7 +68,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function componenteSocialPst()
     {
-        return $this->hasOne('App\ComponenteSocialPst', 'encuesta_pst_sostenibilidad_id');
+        return $this->hasOne('App\Models\Componente_Social_Pst', 'encuesta_pst_sostenibilidad_id');
     }
 
     /**
@@ -76,7 +76,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function accionesCulturalesPsts()
     {
-        return $this->hasMany('App\AccionesCulturalesPst');
+        return $this->belongsToMany('App\Models\Accion_Cultural','acciones_culturales_pst','encuestas_pst_sostenibilidad_id','acciones_culturales_id')->withPivot('otro');
     }
 
     /**
