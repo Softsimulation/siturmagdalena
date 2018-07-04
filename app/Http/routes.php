@@ -37,6 +37,8 @@ Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
+Route::controller('/importarRnt','ImportacionRntController');
+
 //Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');

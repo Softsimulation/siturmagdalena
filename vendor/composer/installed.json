@@ -4642,13 +4642,93 @@
                 }
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "src/commands"
             ],
             "psr-4": {
                 "Zizaco\\Entrust\\": "src/Entrust/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Andrew Elkins",
+                "homepage": "http://andrewelkins.com"
+            },
+            {
+                "name": "Zizaco Zizuini",
+                "email": "zizaco@gmail.com"
+            },
+            {
+                "name": "Ben Batschelet",
+                "homepage": "http://github.com/bbatsche"
+            },
+            {
+                "name": "Michele Angioni",
+                "email": "michele.angioni@gmail.com"
+            }
+        ],
+        "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+        "keywords": [
+            "acl",
+            "auth",
+            "illuminate",
+            "laravel",
+            "permission",
+            "roles"
+        ]
+    },
+    {
+        "name": "wilgucki/csv",
+        "version": "v0.6.2",
+        "version_normalized": "0.6.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wilgucki/csv.git",
+            "reference": "c9f467b582208ccbb24c6537c2195af369b5aebd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wilgucki/csv/zipball/c9f467b582208ccbb24c6537c2195af369b5aebd",
+            "reference": "c9f467b582208ccbb24c6537c2195af369b5aebd",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "mikey179/vfsstream": "^1.6"
+        },
+        "time": "2017-01-26T04:38:57+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wilgucki\\Csv\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Maciej Wilgucki",
+                "email": "mwilgucki@gmail.com"
+            }
+        ],
+        "description": "Laravel 5 package for writing and reading CSV files",
+        "keywords": [
+            "csv",
+            "laravel"
+        ]
+    },
+    {
         "name": "alexpechkarev/geometry-library",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
@@ -4682,30 +4762,6 @@
         ],
         "authors": [
             {
-                "name": "Andrew Elkins",
-                "homepage": "http://andrewelkins.com"
-            },
-            {
-                "name": "Zizaco Zizuini",
-                "email": "zizaco@gmail.com"
-            },
-            {
-                "name": "Ben Batschelet",
-                "homepage": "http://github.com/bbatsche"
-            },
-            {
-                "name": "Michele Angioni",
-                "email": "michele.angioni@gmail.com"
-            }
-        ],
-        "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
-        "keywords": [
-            "acl",
-            "auth",
-            "illuminate",
-            "laravel",
-            "permission",
-            "roles"
                 "name": "Alexander Pechkarev",
                 "email": "alexpechkarev@gmail.com"
             }

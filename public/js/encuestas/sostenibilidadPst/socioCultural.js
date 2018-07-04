@@ -20,6 +20,9 @@ angular.module('sostenibilidadPst.socioCultural', [])
             $scope.esquemasAccesibles = data.esquemasAccesibles;
             $scope.beneficiosEsquema = data.beneficiosEsquema;
             $scope.tiposRiesgos = data.tiposRiesgos;
+            if(data.objeto != undefined){
+                $scope.encuesta = data.objeto;
+            }
         }).catch(function () {
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })

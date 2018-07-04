@@ -82,17 +82,17 @@ class Encuesta_Pst_Sostenibilidad extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function esquemasPsts()
+    public function esquemasAccesibles()
     {
-        return $this->hasMany('App\EsquemasPst');
+        return $this->belongsToMany('App\Models\Esquema_Accesible','esquemas_pst','encuestas_pst_sostenibilidad_id','esquemas_accesible_id')->withPivot('otro');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function beneficiosEsquemasPsts()
+    public function beneficiosEsquemas()
     {
-        return $this->hasMany('App\BeneficiosEsquemasPst', 'encuesta_pst_sostenibilidad_id');
+        return $this->belongsToMany('App\Models\Beneficio_Esquema', 'beneficios_esquemas_pst','encuesta_pst_sostenibilidad_id','beneficios_esquema_id')->withPivot('otro');
     }
 
     /**
@@ -204,7 +204,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function espaciosAlojamiento()
     {
-        return $this->hasOne('App\EspaciosAlojamiento', 'encuestas_pst_sostenibilidad_id');
+        return $this->hasOne('App\Models\Espacio_Alojamiento', 'encuestas_pst_sostenibilidad_id');
     }
 
     /**
@@ -212,6 +212,6 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function responsabilidadesSociale()
     {
-        return $this->hasOne('App\ResponsabilidadesSociale', 'encuestas_pst_sostenibilidad_id');
+        return $this->hasOne('App\Models\Responsabilidad_Social', 'encuestas_pst_sostenibilidad_id');
     }
 }
