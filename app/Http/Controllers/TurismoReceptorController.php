@@ -68,7 +68,7 @@ class TurismoReceptorController extends Controller
         
         $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
         
-        $encuestadores = Digitador::with([ 'aspNetUser'=>function($q){$q->select('id','username');} ])->get();
+        $encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','name');} ])->get();
         
         $lugar_nacimiento = Opcion_Lugar::with(["opcionesLugaresConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -402,12 +402,12 @@ class TurismoReceptorController extends Controller
     }
     
     public function getDepartamento($id){
-        $departamentos = Departamento::where('pais_id',$id)->select('id','nombre')->get();
+        $departamentos = Departamento::where('pais_id',$id)->select('id','nombre')->orderBy('nombre')->get();
         return $departamentos;
     }
     
     public function getMunicipio($id){
-        $municipios = Municipio::where('departamento_id',$id)->select('id','nombre')->get();
+        $municipios = Municipio::where('departamento_id',$id)->select('id','nombre')->orderBy('nombre')->get();
         return $municipios;
     }
     
@@ -422,7 +422,7 @@ class TurismoReceptorController extends Controller
     }
     
     public function getCargardatosseccionestancia($id = null){
-        $municipios = Municipio::where('departamento_id', 1411)->select('id','nombre')->get();
+        $municipios = Municipio::where('departamento_id', 1396)->select('id','nombre')->orderBy('nombre')->get();
         
         $alojamientos = Tipo_Alojamiento::with(["tiposAlojamientoConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -1431,10 +1431,10 @@ class TurismoReceptorController extends Controller
         $compar_redes = $visitante->redesSociales()->pluck('id')->toArray();
         
         if(in_array(14,$fuentes_antes)){
-            $OtroFuenteAntes = $visitante->otrasFuenteInformacionAntesViaje->nombre;
+            $OtroFuenteAntes = $visitante->otrasFuenteInformacionAntesViaje != null ? $visitante->otrasFuenteInformacionAntesViaje->nombre : null;
         }
         if(in_array(14,$fuentes_durante)){
-            $OtroFuenteDurante = $visitante->otrasFuenteInformacionDuranteViaje->nombre;
+            $OtroFuenteDurante = $visitante->otrasFuenteInformacionDuranteViaje != null ? $visitante->otrasFuenteInformacionDuranteViaje->nombre : null;
         }
         
         $retorno = [

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +25,8 @@ class Capacidad_Alimento extends Model
      * @var string
      */
     protected $table = 'capacidad_alimentos';
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * The primary key for the model.
@@ -38,7 +40,6 @@ class Capacidad_Alimento extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
 
     /**
      * @var array
@@ -50,6 +51,6 @@ class Capacidad_Alimento extends Model
      */
     public function provisionesAlimento()
     {
-        return $this->belongsTo('App\ProvisionesAlimento', 'id_alimento');
+        return $this->belongsTo('App\Models\Provision_Alimento', 'id_alimento');
     }
 }
