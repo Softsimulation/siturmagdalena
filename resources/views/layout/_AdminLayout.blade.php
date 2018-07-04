@@ -22,7 +22,7 @@
         <link href="{{secure_asset('/Content/ionicons/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />
         <link href="{{secure_asset('/Content/styleLoading.css')}}" rel='stylesheet' type='text/css' />
         
-        <link href="{{secure_asset('/Content/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{asset('/Content/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
         <link href="{{secure_asset('/Content/bootstrap-datetimepicker.css')}}" rel='stylesheet' type='text/css' />
         <link href="{{secure_asset('/Content/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
         
@@ -195,6 +195,9 @@
         <script src="{{secure_asset('/js/bootstrap.min.js')}}"></script>
         <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
         <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
+        
+        <script src="{{asset('/js/usuarios/usuarios.js')}}" type="text/javascript"></script> 
+        <script src="{{asset('/js/services/usuarioServices.js')}}" type="text/javascript"></script>
         
         <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
         <script src="{{asset('/js/plugins/select.min.js')}}"></script>

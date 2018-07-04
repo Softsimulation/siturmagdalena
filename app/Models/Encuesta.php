@@ -129,7 +129,7 @@ class Encuesta extends Model
      */
     public function provisionesAlimentos()
     {
-        return $this->hasMany('App\ProvisionesAlimento', 'encuestas_id');
+        return $this->hasMany('App\Models\Provision_Alimento', 'encuestas_id');
     }
 
     /**
@@ -161,7 +161,7 @@ class Encuesta extends Model
      */
     public function viajesTurismos()
     {
-        return $this->hasMany('App\ViajesTurismo', 'encuestas_id');
+        return $this->hasMany('App\Models\Viaje_Turismo', 'encuestas_id');
     }
 
     /**

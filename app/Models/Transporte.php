@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,6 +42,6 @@ class Transporte extends Model
      */
     public function ofertaTransportes()
     {
-        return $this->hasMany('App\OfertaTransporte');
+        return $this->hasMany('App\Models\Oferta_Transporte');
     }
 }
