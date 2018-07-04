@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +21,8 @@ class Persona_Destino_Con_Viaje_Turismo extends Model
      * @var string
      */
     protected $table = 'personas_destino_con_viajes_turismos';
+    public $timestamps = false;
+    protected $primaryKey = 'viajes_turismos_id';
 
     /**
      * @var array
@@ -32,7 +34,7 @@ class Persona_Destino_Con_Viaje_Turismo extends Model
      */
     public function opcionesPersonasDestino()
     {
-        return $this->belongsTo('App\OpcionesPersonasDestino');
+        return $this->belongsTo('App\Models\Opcion_Persona_Destino');
     }
 
     /**
@@ -40,6 +42,6 @@ class Persona_Destino_Con_Viaje_Turismo extends Model
      */
     public function viajesTurismo()
     {
-        return $this->belongsTo('App\ViajesTurismo', 'viajes_turismos_id');
+        return $this->belongsTo('App\Models\Viaje_Turismo', 'viajes_turismos_id');
     }
 }

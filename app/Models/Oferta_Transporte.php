@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +30,6 @@ class Oferta_Transporte extends Model
      */
     public function transporte()
     {
-        return $this->belongsTo('App\Transporte');
+        return $this->belongsTo('App\Models\Transporte');
     }
 }

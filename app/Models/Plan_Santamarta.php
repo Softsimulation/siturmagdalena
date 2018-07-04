@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +20,7 @@ class Plan_Santamarta extends Model
      * @var string
      */
     protected $table = 'planes_santamarta';
+    public $timestamps = false;
 
     /**
      * The primary key for the model.
@@ -33,8 +34,8 @@ class Plan_Santamarta extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
-
+    //protected $incrementing = false;
+    public $incrementing = false;
     /**
      * @var array
      */

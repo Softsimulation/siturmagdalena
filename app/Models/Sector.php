@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,7 +36,7 @@ class Sector extends Model
      */
     public function destino()
     {
-        return $this->belongsTo('App\Destino');
+        return $this->belongsTo('App\Models\Destino');
     }
 
     /**
@@ -44,7 +44,7 @@ class Sector extends Model
      */
     public function sitios()
     {
-        return $this->hasMany('App\Sitio', 'sectores_id');
+        return $this->hasMany('App\Models\Sitio', 'sectores_id');
     }
 
     /**
@@ -52,6 +52,6 @@ class Sector extends Model
      */
     public function sectoresConIdiomas()
     {
-        return $this->hasMany('App\SectoresConIdioma', 'sectores_id');
+        return $this->hasMany('App\Models\Sector_Con_Idioma', 'sectores_id');
     }
 }

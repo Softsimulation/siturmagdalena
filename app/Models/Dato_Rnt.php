@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,7 +41,7 @@ class Dato_Rnt extends Model
      */
     public function año()
     {
-        return $this->belongsTo('App\Año', '"años_id"');
+        return $this->belongsTo('App\Models\Año', '"años_id"');
     }
 
     /**
@@ -49,7 +49,7 @@ class Dato_Rnt extends Model
      */
     public function categoriaProveedore()
     {
-        return $this->belongsTo('App\CategoriaProveedore', 'tipos_proveedor_id');
+        return $this->belongsTo('App\Models\CategoriaProveedore', 'tipos_proveedor_id');
     }
 
     /**
