@@ -1,6 +1,6 @@
 angular.module('receptor.estanciayvisitados', [])
 
-.controller('estancia', ['$scope', 'receptorServi',function ($scope, receptorServi) {
+.controller('estancia', ['$scope', 'receptorServi','$filter',function ($scope, receptorServi,$filter) {
     //$scope.ide = 0;
     $scope.encuesta = {
         ActividadesRelizadas :[]
@@ -11,7 +11,7 @@ angular.module('receptor.estanciayvisitados', [])
     $scope.$watch('id', function () {
         receptorServi.getDatosEstancia($scope.id).then(function (data) {
             $scope.Datos = data.Enlaces;
-            $scope.transformarObjeto($scope.Datos);
+            //$scope.transformarObjeto($scope.Datos);
             if(data.encuesta != undefined){
                 $scope.encuesta = data.encuesta;   
                 if (data.encuesta.Estancias == null) {
@@ -26,55 +26,55 @@ angular.module('receptor.estanciayvisitados', [])
     
     
     
-    $scope.transformarObjeto = function(Datos){
-        //atracciones
-        var atracciones = [];
-        for(var i = 0; i < Datos.Atracciones.length; i++){
-            var objeto = {
-                Nombre : Datos.Atracciones[i].atraccione.sitio.sitios_con_idiomas[0].nombre,
-                Id : Datos.Atracciones[i].atraccion_id,
-                IdT : Datos.Atracciones[i].tipo_atraccion_id,
-            }
-            atracciones.push(objeto);
-        }
-        $scope.Datos.Atracciones = atracciones;
+    // $scope.transformarObjeto = function(Datos){
+    //     //atracciones
+    //     var atracciones = [];
+    //     for(var i = 0; i < Datos.Atracciones.length; i++){
+    //         var objeto = {
+    //             Nombre : Datos.Atracciones[i].atraccione.sitio.sitios_con_idiomas[0].nombre,
+    //             Id : Datos.Atracciones[i].atraccion_id,
+    //             IdT : Datos.Atracciones[i].tipo_atraccion_id,
+    //         }
+    //         atracciones.push(objeto);
+    //     }
+    //     $scope.Datos.Atracciones = atracciones;
         
-        //tipoAtracciones
-        var arreglo = [];
-        for(var i = 0; i < Datos.TipoAtracciones.length; i++){
-            var objeto = {
-                Nombre : Datos.TipoAtracciones[i].tipo_atracciones_con_idiomas[0].nombre,
-                Id : Datos.TipoAtracciones[i].id,
-                IdA : Datos.TipoAtracciones[i].actividades_realizadas[0].id,
-            }
-            arreglo.push(objeto);
-        }
-        $scope.Datos.TipoAtracciones = arreglo;
+    //     //tipoAtracciones
+    //     var arreglo = [];
+    //     for(var i = 0; i < Datos.TipoAtracciones.length; i++){
+    //         var objeto = {
+    //             Nombre : Datos.TipoAtracciones[i].tipo_atracciones_con_idiomas[0].nombre,
+    //             Id : Datos.TipoAtracciones[i].id,
+    //             IdA : Datos.TipoAtracciones[i].actividades_realizadas[0].id,
+    //         }
+    //         arreglo.push(objeto);
+    //     }
+    //     $scope.Datos.TipoAtracciones = arreglo;
         
-        //actividades
-        var arreglo = [];
-        for(var i = 0; i < Datos.Actividades.length; i++){
-            var objeto = {
-                Nombre : Datos.Actividades[i].actividade.actividades_con_idiomas[0].nombre,
-                Id : Datos.Actividades[i].actividad_id,
-                IdA : Datos.Actividades[i].actividades_realizadas_id,
-            }
-            arreglo.push(objeto);
-        }
-        $scope.Datos.Actividades = arreglo;
+    //     //actividades
+    //     var arreglo = [];
+    //     for(var i = 0; i < Datos.Actividades.length; i++){
+    //         var objeto = {
+    //             Nombre : Datos.Actividades[i].actividade.actividades_con_idiomas[0].nombre,
+    //             Id : Datos.Actividades[i].actividad_id,
+    //             IdA : Datos.Actividades[i].actividades_realizadas_id,
+    //         }
+    //         arreglo.push(objeto);
+    //     }
+    //     $scope.Datos.Actividades = arreglo;
         
-        //atraccionesportal
-        var arreglo = [];
-        for(var i = 0; i < Datos.AtraccionesPortal.length; i++){
-            var objeto = {
-                Nombre : Datos.AtraccionesPortal[i].sitio.sitios_con_idiomas[0].nombre,
-                Id : Datos.AtraccionesPortal[i].id,
-            }
-            arreglo.push(objeto);
-        }
-        $scope.Datos.AtraccionesPortal = arreglo;
+    //     //atraccionesportal
+    //     var arreglo = [];
+    //     for(var i = 0; i < Datos.AtraccionesPortal.length; i++){
+    //         var objeto = {
+    //             Nombre : Datos.AtraccionesPortal[i].sitio.sitios_con_idiomas[0].nombre,
+    //             Id : Datos.AtraccionesPortal[i].id,
+    //         }
+    //         arreglo.push(objeto);
+    //     }
+    //     $scope.Datos.AtraccionesPortal = arreglo;
         
-    }
+    // }
 
     $scope.agregar = function () {
         $scope.estancia = new Object();
@@ -128,12 +128,15 @@ angular.module('receptor.estanciayvisitados', [])
         }
     }
 
-    $scope.cambioActividadesRealizadas = function () {
-        $scope.sw = $scope.encuesta.ActividadesRelizadas.indexOf(23)
+    $scope.cambioActividadesRealizadas = function (actividad) {
+        actividad.Respuestas = [];
+        actividad.otro = undefined;
+        var resultado = $filter('filter')($scope.encuesta.ActividadesRelizadas, {'id':18}, true);
         
-        if ($scope.sw >= 0) {
-            $scope.encuesta.ActividadesRelizadas = [23];
+        if(resultado.length > 0){
+            $scope.encuesta.ActividadesRelizadas = [resultado[0]];    
         }
+        
     }
 
     $scope.quitar = function (es) {
@@ -146,229 +149,61 @@ angular.module('receptor.estanciayvisitados', [])
 
     }
 
-    $scope.existe = function (num) {
+    $scope.validarOtro = function(id,opcion){
         
-        if ($scope.encuesta.ActividadesRelizadas != null) {
-            $scope.sw = $scope.encuesta.ActividadesRelizadas.indexOf(num)
-            if ($scope.sw >= 0) {
-                return true;
-            } else {
-
-                if(num == 1){
-                    $scope.encuesta.AtraccionesP = [];
-                }
-
-                if (num == 2) {
-                    $scope.encuesta.TipoAtraccionesN = [];
-                    $scope.encuesta.AtraccionesN = [];
-
-                }
-
-                if (num == 3) {
-                    $scope.encuesta.TipoAtraccionesM = [];
-                    $scope.encuesta.AtraccionesM = [];
-                }
-
-                if (num == 8) {
-                    $scope.encuesta.ActividadesH = [];
-
-                }
-
-                if (num == 10) {
-                    $scope.encuesta.ActividadesD = [];
-
-                }
-
-                return false;
+        if(opcion.otro != undefined && opcion.otro != ''){
+            if(opcion.Respuestas.indexOf(id) == -1){
+                opcion.Respuestas.push(id);
             }
-        } else {
-            return false;
         }
-
-    }
-
-    $scope.existetipon = function (num) {
-
-        if ($scope.encuesta.TipoAtraccionesN != null) {
-            $scope.sw = $scope.encuesta.TipoAtraccionesN.indexOf(num);
-            if ($scope.sw >= 0) {
-                return true;
-            } else {
-                if (num == 94) {
-                    $scope.encuesta.AtraccionesN = [];
-                }
-
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
-    $scope.existetipom = function (num) {
-
-        if ($scope.encuesta.TipoAtraccionesM != null) {
-            $scope.sw = $scope.encuesta.TipoAtraccionesM.indexOf(num);
-            if ($scope.sw >= 0) {
-                return true;
-            } else {
-                if (num == 117) {
-                    $scope.encuesta.AtraccionesM = [];
-                }
-
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
-    $scope.existeAtraccion = function (num) {
-        if ($scope.encuesta.AtraccionesM != null) {
-            if ($scope.encuesta.AtraccionesM.length > 0) {
-
-                if (($scope.encuesta.AtraccionesM.indexOf(num) >= 0)) {
-                    return true;
-                }
-
-            }
-
-        }
-
-        if ($scope.encuesta.AtraccionesP != null) {
-            if ($scope.encuesta.AtraccionesP.length > 0) {
-                if (($scope.encuesta.AtraccionesP.indexOf(num) >= 0)) {
-                    return true;
-                }
-            }
-
-        }
-
-        if ($scope.encuesta.AtraccionesN != null) {
-            if ($scope.encuesta.AtraccionesN.length > 0) {
-                if (($scope.encuesta.AtraccionesN.indexOf(num) >= 0)) {
-                    return true;
-                }
-            }
-
-        }
-
-        return false;
         
     }
-
-    $scope.existeAtracciones = function () {
-
-        if ($scope.encuesta.AtraccionesM != null) {
-            if ($scope.encuesta.AtraccionesM.length > 0) {
-                return true;
+    
+    $scope.validarOtroActividad = function(activ){
+        if(activ.otroActividad != undefined && activ.otroActividad != '' && $scope.encuesta.ActividadesRelizadas != undefined){
+            var resultado = $filter('filter')($scope.encuesta.ActividadesRelizadas, {'id':19}, true);
+            if(resultado.length == 0){
+                var seleccion = $filter('filter')($scope.Datos.Actividadesrelizadas, {'id':19}, true);
+                $scope.encuesta.ActividadesRelizadas.push(seleccion[0]);    
             }
-
         }
-
-        if ($scope.encuesta.AtraccionesP != null) {
-            if ($scope.encuesta.AtraccionesP.length > 0) {
-                return true;
-            }
-
-        }
-
-        if ($scope.encuesta.AtraccionesN!= null) {
-            if ($scope.encuesta.AtraccionesN.length > 0) {
-                return true;
-            }
-
-        }
-
-        return false;
-
     }
+    
+    $scope.validarRequeridoOtroActividad = function(){
+        if($scope.encuesta.ActividadesRelizadas != undefined){
+            var resultado = $filter('filter')($scope.encuesta.ActividadesRelizadas, {'id':19}, true);
+            if(resultado.length > 0){
+                return true;   
+            }    
+        }
+        return false;
+    }
+    
+    $scope.validarContenido = function(id,opcion){
+        if(opcion.Respuestas != undefined){
+            if(opcion.Respuestas.indexOf(id) != -1){
+                return true;
+            }    
+        }
+        return false;
+    }
+
 
     $scope.Validar = function () {
-
-        if ($scope.encuesta.ActividadesRelizadas == null) {
-            return true;
-        } else {
-
-
-            if ($scope.encuesta.ActividadesRelizadas.length == 0) {
+        
+        for(var i = 0; i < $scope.encuesta.ActividadesRelizadas.length; i++){
+            if($scope.encuesta.ActividadesRelizadas[i].opciones.length > 0 && ($scope.encuesta.ActividadesRelizadas[i].Respuestas.length == 0||$scope.encuesta.ActividadesRelizadas[i].Respuestas==undefined) ){
                 return true;
-            } else {
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(1) >= 0) {
-                    if ($scope.encuesta.AtraccionesP.length == 0) {
-                        return true;
-
-                    }
-                }
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(2) >= 0) {
-
-                    if ($scope.encuesta.TipoAtraccionesN.length == 0) {
-                        return true;
-
-                    } else {
-
-                        if ($scope.encuesta.TipoAtraccionesN.indexOf(94) >= 0) {
-
-                            if ($scope.encuesta.AtraccionesN.length == 0) {
-                                return true;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(3) >= 0) {
-
-                    if ($scope.encuesta.TipoAtraccionesM.length == 0) {
-                        return true;
-
-                    } else {
-
-                        if ($scope.encuesta.TipoAtraccionesM.indexOf(117) >= 0) {
-
-                            if ($scope.encuesta.AtraccionesM.length == 0) {
-                                return true;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(8) >= 0) {
-                    if ($scope.encuesta.ActividadesH.length == 0) {
-                        return true;
-
-                    }
-                }
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(10) >= 0) {
-                    if ($scope.encuesta.ActividadesD.length == 0) {
-                        return true;
-
-                    }
-                }
-
             }
         }
-
+        
         return false;
-
     }
 
     $scope.guardar = function () {
-
-        $scope.sw2 =  $scope.Validar()
-        if (!$scope.EstanciaForm.$valid || $scope.sw2) {
+        
+        
+        if (!$scope.EstanciaForm.$valid || $scope.Validar()) {
             swal("Error", "corrija los errores", "error");
             return
         }

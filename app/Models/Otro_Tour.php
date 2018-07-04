@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +18,8 @@ class Otro_Tour extends Model
      * @var string
      */
     protected $table = 'otro_tour';
+    
+    public $timestamps = false;
 
     /**
      * @var array

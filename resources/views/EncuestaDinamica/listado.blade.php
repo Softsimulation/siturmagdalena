@@ -33,13 +33,13 @@
                 <td>
                     <a class="btn btn-xs btn-primary" href="/encuesta/configurar/@{{encuesta.id}}" > Ver </a>
                     <div class="dropdown" style="float: right;" >
-                        <button type="button" class="btn btn-xs btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"  >
                          <span class="caret"></span>
                         </button>
                         
-                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <ul class="dropdown-menu" >
                             <li>
-                                <a href ng-click="OpenModalCambiarEstado(encuesta)" >
+                                <a ng-click="OpenModalCambiarEstado(encuesta)" >
                                     Cambiar estado
                                 </a>
                             </li>

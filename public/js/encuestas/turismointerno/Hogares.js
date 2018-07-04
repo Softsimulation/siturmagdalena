@@ -156,7 +156,7 @@ angular.module('interno.hogares', [])
                 $scope.encuesta.Direccion=data.encuesta.edificacione.direccion
                 $scope.encuesta.Telefono=data.encuesta.telefono
                 $scope.encuesta.Nombre_Entrevistado=data.encuesta.edificacione.nombre_entrevistado
-                $scope.encuesta.Celular_Entrevistado=data.encuesta.edificacione.celular_entrevistado
+                $scope.encuesta.Celular_Entrevistado=data.encuesta.edificacione.telefono_entrevistado
                 $scope.encuesta.Email_Entrevistado=data.encuesta.edificacione.email_entrevistado
                
                 $scope.encuesta.integrantes= cambiar($scope.encuesta.personas)
@@ -208,7 +208,7 @@ angular.module('interno.hogares', [])
 
     $scope.changebarrio = function () {
         $scope.encuesta.Barrio=""
-        $http.post('/EncuestaInterno/getBarrios', { 'idmunicipio': $scope.municipio })
+        $http.post('/turismointerno/barrios', { 'id': $scope.municipio })
         .success(function (data) {
 
             $scope.barrios = data.barrios
@@ -235,7 +235,7 @@ angular.module('interno.hogares', [])
                 function(){
                     setTimeout(function () {
 
-                        $http.post('/EncuestaInterno/EliminarPersona', { Id: $scope.encuesta.integrantes[indice].Id})
+                        $http.post('/turismointerno/eliminarpersona', { id: $scope.encuesta.integrantes[indice].id})
                             .success(function (data) {
 
                                 if (data.success) {
@@ -292,15 +292,15 @@ angular.module('interno.hogares', [])
     }
 
     $scope.enviar = function () {
-        
+        $scope.encuesta.id=$scope.id;
         if ($scope.DatosForm.$valid) {
             $("body").attr("class", "charging");
-            $http.post('/EncuestaInterno/GuardarEdicionHogar', $scope.encuesta)
+            $http.post('/turismointerno/guardareditarhogar', $scope.encuesta)
                 .success(function (data) {
                     $("body").attr("class", "");
                     if (data.success) {
 
-                        window.location = "/EncuestaInterno/EditarHogar/" + data.id;
+                        window.location = "/turismointerno/editarhogar/" + data.id;
 
                     } else {
                         swal("Error", "Hay errores en el formulario corrigelos", "error")

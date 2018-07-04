@@ -7,7 +7,7 @@ app.factory("paisServi", ["$http", "$q", function ($http, $q) {
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administrarpaises/datos/').success(function (data) {
+            $http.get('/administrarpaises/datos').success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
@@ -45,6 +45,22 @@ app.factory("paisServi", ["$http", "$q", function ($http, $q) {
             }).error(function (err) {
                 defered.reject(err);
             })
+            return promise;
+        },
+        postImportexcel: function (data){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administrarpaises/importexcel', data, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
             return promise;
         }
     }

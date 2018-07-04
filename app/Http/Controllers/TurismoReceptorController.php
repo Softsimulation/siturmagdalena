@@ -68,7 +68,7 @@ class TurismoReceptorController extends Controller
         
         $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
         
-        $encuestadores = Digitador::with([ 'aspNetUser'=>function($q){$q->select('id','username');} ])->get();
+        $encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','name');} ])->get();
         
         $lugar_nacimiento = Opcion_Lugar::with(["opcionesLugaresConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -402,12 +402,12 @@ class TurismoReceptorController extends Controller
     }
     
     public function getDepartamento($id){
-        $departamentos = Departamento::where('pais_id',$id)->select('id','nombre')->get();
+        $departamentos = Departamento::where('pais_id',$id)->select('id','nombre')->orderBy('nombre')->get();
         return $departamentos;
     }
     
     public function getMunicipio($id){
-        $municipios = Municipio::where('departamento_id',$id)->select('id','nombre')->get();
+        $municipios = Municipio::where('departamento_id',$id)->select('id','nombre')->orderBy('nombre')->get();
         return $municipios;
     }
     
@@ -422,7 +422,7 @@ class TurismoReceptorController extends Controller
     }
     
     public function getCargardatosseccionestancia($id = null){
-        $municipios = Municipio::where('departamento_id', 1396)->select('id','nombre')->get();
+        $municipios = Municipio::where('departamento_id', 1396)->select('id','nombre')->orderBy('nombre')->get();
         
         $alojamientos = Tipo_Alojamiento::with(["tiposAlojamientoConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -1044,26 +1044,31 @@ class TurismoReceptorController extends Controller
         
         $paquete = Visitante_Paquete_Turistico::find($id);
         $encuesta["id"]= $id;
-        $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
-        
-        $encuesta["ViajoDepartamento"] = $paquete != null ? 1 :0;
-        
-        if( $encuesta["ViajoDepartamento"] == 1){
-            $encuesta["CostoPaquete"] = $paquete->costo_paquete;
-            $encuesta["DivisaPaquete"] = $paquete->divisas_id;
-            $encuesta["PersonasCubrio"] = $paquete->personas_cubrio;
-            $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
-            $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
-            $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
-            if($paquete->opcionesLugares()->first() != null){
-                
-                $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+        if($visitante->ultima_sesion>=5){
+            $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
+            
+            $encuesta["ViajoDepartamento"] = $paquete != null ? 1 :0;
+            
+            if( $encuesta["ViajoDepartamento"] == 1){
+                $encuesta["CostoPaquete"] = $paquete->costo_paquete;
+                $encuesta["DivisaPaquete"] = $paquete->divisas_id;
+                $encuesta["PersonasCubrio"] = $paquete->personas_cubrio;
+                $encuesta["IncluyoOtros"] = $paquete->municipios()->count()>0?1:0;
+                $encuesta["Municipios"] = $paquete->municipios()->pluck('id');
+                $encuesta["Proveedor"] = $paquete->tipo_proveedor_paquete_id;
+                if($paquete->opcionesLugares()->first() != null){
+                    
+                    $encuesta["LugarAgencia"]= $paquete->opcionesLugares()->first()->id;
+                }
+                $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
             }
-            $encuesta["ServiciosIncluidos"] = $paquete->serviciosPaquetes()->pluck('id');
+            
+            $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
+        }else{
+            $encuesta["RealizoGasto"] = null;
+            $encuesta["ViajoDepartamento"] = null;
+            $encuesta["GastosAparte"] = null;
         }
-        
-        $encuesta["GastosAparte"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 ? 1 :0;
-        
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
          
 
@@ -1426,10 +1431,10 @@ class TurismoReceptorController extends Controller
         $compar_redes = $visitante->redesSociales()->pluck('id')->toArray();
         
         if(in_array(14,$fuentes_antes)){
-            $OtroFuenteAntes = $visitante->otrasFuenteInformacionAntesViaje->nombre;
+            $OtroFuenteAntes = $visitante->otrasFuenteInformacionAntesViaje != null ? $visitante->otrasFuenteInformacionAntesViaje->nombre : null;
         }
         if(in_array(14,$fuentes_durante)){
-            $OtroFuenteDurante = $visitante->otrasFuenteInformacionDuranteViaje->nombre;
+            $OtroFuenteDurante = $visitante->otrasFuenteInformacionDuranteViaje != null ? $visitante->otrasFuenteInformacionDuranteViaje->nombre : null;
         }
         
         $retorno = [

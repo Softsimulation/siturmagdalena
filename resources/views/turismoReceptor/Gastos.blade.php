@@ -94,19 +94,15 @@
 @section('content')
 <div class="main-page" >
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>Errores:</b></label>
-        <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
-            -@{{error.errores[0].ErrorMessage}}
-        </div>
+    <div class="alert alert-danger" role="alert" ng-if="errores" ng-repeat="error in errores">
+       @{{error[0]}}
     </div>
   
     <form role="form" name="GastoForm" novalidate>
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P1. Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Magdalena) y durante su viaje al Magdalena-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Atlántico) y durante su viaje al Atlántico</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Magdalena) y durante su viaje al Magdalena</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -167,7 +163,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <!-- Información del paquete turístico-->
-                        <h3 class="panel-title"><b>Información del paquete turístico</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Información del paquete turístico</b></h3>
                     </div>
                     <div class="panel-footer"><b>Complete la siguiente información</b></div>
                     <div class="panel-body">
@@ -190,7 +186,7 @@
                             <div class="col-xs-12 col-md-4">
                                 <div class="form-group">
                                     <!-- P5P2. Moneda de compra del paquete turístico o excursión-->
-                                    <label for="selectDivisa" class="col-md-12 control-label" style="color:dimgray;"><span class="asterik glyphicon glyphicon-asterisk" style="font-size: .9em;"></span> Moneda de compra del paquete turístico o excursión</label>
+                                    <label for="selectDivisa" class="col-md-12 control-label" style="color:dimgray;">Moneda de compra del paquete turístico o excursión</label>
 
                                     <div class="col-md-12">
                                         <select id="selectDivisa" class="form-control" ng-model="encuestaReceptor.DivisaPaquete" name="Divisa" ng-options="item.id as item.nombre for item in divisas" ng-required="encuestaReceptor.ViajoDepartamento==1">
@@ -225,7 +221,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <!-- P3. ¿El paquete/plan turístico incluyó municipios fuera del Magdalena?-->
-                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿El paquete/plan turístico incluyó municipios fuera del Atlántico?</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿El paquete/plan turístico incluyó municipios fuera del Magdalena?</b></h3>
                     </div>
                     <div class="panel-footer"><b>Pregunta con selección única</b></div>
                     <div class="panel-body">
@@ -254,7 +250,7 @@
                 <div class="panel panel-success" ng-show="encuestaReceptor.IncluyoOtros==1">
                     <div class="panel-heading">
                         <!-- ¿Qué otras ciudades/municipios fuera del Magdalena incluyó el paquete/plan turístico?-->
-                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué otras ciudades/municipios fuera del Atlántico incluyó el paquete/plan turístico?</b></h3>
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué otras ciudades/municipios fuera del Magdalena incluyó el paquete/plan turístico?</b></h3>
                     </div>
                     <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
                     <div class="panel-body">
@@ -409,7 +405,7 @@
                                                 <div class="row">
                                                     <!--<div class="col-xs-12 col-md-6">
                                                         
-                                                        <h5 style="margin-bottom: 0;"><b>Fuera del Atlántico</b></h5>
+                                                        <h5 style="margin-bottom: 0;"><b>Fuera del Magdalena</b></h5>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
@@ -502,6 +498,68 @@
                 </div>
             </div>
         
+        </div>
+        
+        <div class="panel panel-success" ng-show="abrirTerrestre">
+            <div class="panel-heading">
+                <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Atlántico?</b></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="encuestaReceptor.Empresa" ng-required="abrirTerrestre" placeholder="Presione aquí para ingresar la empresa de transporte"/>
+                    </div>
+                </div>
+                <span  ng-show="GastoForm.$submitted || GastoForm.empresa.$touched">
+                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>
+                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success" ng-show="abrirAlquiler">
+            <div class="panel-heading">
+                <!-- >El alquiler de vehículo fue realizado en:-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> El alquiler de vehículo fue realizado en</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in opciones">
+                            <label ng-show="item.id != 3">
+                                <input type="radio" name="alquiler" ng-value="item.id" ng-model="encuestaReceptor.Alquiler" ng-required="abrirAlquiler"> @{{item.nombre}}
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <span  ng-show="GastoForm.$submitted || GastoForm.alquiler.$touched">
+                    <span class="label label-danger" ng-show="GastoForm.alquiler.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        <div class="panel panel-success" ng-show="abrirRopa">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> En dónde fue realizado el mayor gasto de productos como ropa, calzado,  artesanías etc. (bienes duraderos) antes y durante el viaje a Atlántico : Respuesta única</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in opciones">
+                            <label>
+                                <input type="radio" name="ropa" ng-value="item.id" ng-model="encuestaReceptor.Ropa" ng-required="abrirRopa"> @{{item.nombre}}
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <span  ng-show="GastoForm.$submitted || GastoForm.ropa.$touched">
+                    <span class="label label-danger" ng-show="GastoForm.ropa.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
         </div>
         <div class="panel panel-success">
             <div class="panel-heading">

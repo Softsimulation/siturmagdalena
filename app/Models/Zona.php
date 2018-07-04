@@ -11,4 +11,8 @@ class Zona extends Model
         return $this->belongsToMany('App\Models\Digitador', 'zonas_digitadores', 'zona_id', 'digitador_id');
     }
     
+    public function coordenadas(){
+        return $this->hasMany('App\Models\Coordenadas_zona', 'zona_id');
+    }
+    
 }

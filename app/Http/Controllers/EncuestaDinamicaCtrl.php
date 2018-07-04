@@ -633,10 +633,10 @@ class EncuestaDinamicaCtrl extends Controller
     
     //////////// Encuesta dinamica para usuarios ///////////////////////7
     
-    public function encuesta($encuesta, Request $request){
+    public function encuesta($codigo, Request $request){
         
-        $encuesta = Encuestas_usuario::where([ ["codigo", $request->cod], ["encuestas_id",$encuesta], ["estados_encuestas_usuarios_id","!=",3] , ["estado",true] ])->first();
-        
+        $encuesta = Encuestas_usuario::where([ ["codigo", $codigo ], ["estados_encuestas_usuarios_id","!=",3] , ["estado",true] ])->first();
+        //return $encuesta;
         if($encuesta){
            
             $secciones = Secciones_encuesta::where("encuestas_id", $encuesta->encuestas_id )->lists('id')->toArray();
@@ -648,29 +648,26 @@ class EncuestaDinamicaCtrl extends Controller
             else if(!$request->seccion && $encuesta->ultima_seccion!=0){
                 $index = array_search($encuesta->ultima_seccion,$secciones);
                 $seccion = $secciones[$index+1];
-                $atras = $index==0 ? null : $secciones[$index-1];
+                $atras = $index==0 ? $secciones[0] : $secciones[$index-1];
             }
             else if($request->seccion){
                 $index = array_search($request->seccion,$secciones);
-                if($index>0){
-                   $seccion = $request->seccion;
-                   $atras =  $secciones[$index-1];
-                }
+                $seccion = $request->seccion;
+                $atras =  $index>0 ? $secciones[$index-1] : null;
             }
             
-            if($seccion!=null){
-                $data = [ 
-                      "codigo"=>$encuesta->codigo,
-                      "idEncuesta"=>$encuesta->id,
-                      "idTipoEncuesta"=>$encuesta->encuestas_id,
-                      "idSeccion"=>$seccion, 
-                      "atras"=>$atras, 
-                      "porcentaje"=>(round( 100/count($secciones) )*$index),
-                      "nunSeccion"=> $index+1
-                    ];
-    
-                return View("/EncuestaDinamica/encuesta", $data ); 
-            }
+            
+            $data = [ 
+                  "codigo"=>$encuesta->codigo,
+                  "idEncuesta"=>$encuesta->id,
+                  "idSeccion"=>$seccion, 
+                  "atras"=>$atras, 
+                  "porcentaje"=>(round( 100/count($secciones) )*$index),
+                  "nunSeccion"=> $index+1
+                ];
+
+            return View("/EncuestaDinamica/encuesta", $data ); 
+            
                  
         }
         
@@ -723,7 +720,7 @@ class EncuestaDinamicaCtrl extends Controller
         $index = array_search( $request->id, $secciones );
         $seccion = ($index+1) < count($secciones) ? $secciones[$index+1] : null;
         
-        $ruta = "/encuestaAdHoc/" . $request->id . ( $seccion==null ? "/registro" : "?cod=" . $encuesta->codigo . "&seccion=".$seccion );
+        $ruta = "/encuestaAdHoc/" . ( $seccion==null ? $encuesta->encuestas_id . "/registro" : $encuesta->codigo . "?seccion=".$seccion );
         $termino = $seccion==null ? true: false;
         
         if($seccion!=null){

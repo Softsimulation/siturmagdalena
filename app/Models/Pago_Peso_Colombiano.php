@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,8 @@ class Pago_Peso_Colombiano extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public  $incrementing = false;
+    public  $timestamps = false;
 
     /**
      * @var array
@@ -42,6 +43,6 @@ class Pago_Peso_Colombiano extends Model
      */
     public function viajeExcursion()
     {
-        return $this->belongsTo('App\ViajeExcursion', 'viajes_id', 'viajes_id');
+        return $this->belongsTo('App\Models\ViajeExcursion', 'viajes_id', 'viajes_id');
     }
 }

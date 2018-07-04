@@ -70,16 +70,16 @@ app.factory("receptorServi", ["$http", "$q", function ($http, $q) {
             return promise;
         },
 
-        getEncuestas: function (data) {
+        getEncuestas: function () {
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/turismoreceptor/encuestas',data).success(function (data) {
+            $http.get('/turismoreceptor/encuestas').success(function (data) {
              defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
             })
-            
+            return promise;
         },
         getDatosTransporte: function (id) {
             var defered = $q.defer();

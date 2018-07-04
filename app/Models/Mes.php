@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,8 +26,8 @@ class Mes extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function mesesDeAños()
+    public function mesesAnio()
     {
-        return $this->hasMany('App\MesesDeAño', 'mes_id');
+        return $this->hasMany('App\Model\Mes_Anio', 'mes_id');
     }
 }
