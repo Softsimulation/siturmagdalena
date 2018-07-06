@@ -3,48 +3,66 @@
 angular.module('atracciones.crear', [])
 
 .controller('atraccionesCrearController', function($scope, atraccionesServi){
-    atraccionesServi.getDatos().then(function (data){
+    var marker;
+    var lat;
+    var lng;
+    var latlng;
+    $scope.atraccion = {
+        pos: {
+            lat,
+            lng
+        }
+    };
+    
+    atraccionesServi.getDatoscrear().then(function (data){
         if (data.success){
-            $scope.atracciones = data.atracciones;
+            $scope.sectores = data.sectores;
         }
     }).catch(function (errs){
-        swal('Error', 'Error al cargar los datos. Por favor recargue la página.');
+        swal('Error', 'Error al cargar los datos. Por favor recargue la página.', 'error');
     });
     
-    $scope.verDepartamentoModal = function (departamento){
-        $scope.errores = null;
-        $scope.sw = 3;
-        $scope.departamento = angular.copy(departamento);
-        $('#myModalLabel').text('Ver departamento');
-        $('#departamentosModal').modal('show');
-    }
-    
-    $scope.nuevoDepartamentoModal = function (){
-        $scope.errores = null;
-        $scope.sw = 1;
-        $scope.departamento = null;
-        $scope.departamentoForm.$setPristine();
-        $scope.departamentoForm.$setUntouched();
-        $('#myModalLabel').text('Nuevo departamento');
-        $('#departamentosModal').modal('show');
-    }
-    
-    $scope.nombreDelPais = function (pais_id){
-        for (var i = 0; i < $scope.paises.length; i++){
-            if ($scope.paises[i].id == pais_id){
-                return $scope.paises[i].paises_con_idiomas[0].nombre;
-            }
+    var map = new GMaps({
+        el: '#direccion_map',
+        lat: 11.2315042,
+        lng: -74.193007,
+        zoom: 12,
+        click: function (e){
+            lat = e.latLng.lat();
+            lng = e.latLng.lng();
+            map.removeMarkers();
+            marker = map.addMarker({
+                lat: lat,
+                lng: lng,
+                infoWindow: {
+                    content: '<p><b>Su posición</b></p>'
+                }
+            });
+            $scope.atraccion.pos.lat = angular.copy(lat);
+            $scope.atraccion.pos.lng = angular.copy(lng);
         }
-    }
+    });
     
-    $scope.editarDepartamentoModal = function (departamento){
-        $scope.errores = null;
-        $scope.sw = 2;
-        $scope.departamento = angular.copy(departamento);
-        $scope.departamentoForm.$setPristine();
-        $scope.departamentoForm.$setUntouched();
-        $('#myModalLabel').text('Editar departamento');
-        $('#departamentosModal').modal('show');
+    $scope.searchAdress = function(){
+        GMaps.geocode({
+            address: $('#address').val(),
+            callback: function(results, status) {
+                if (status == 'OK') {
+                    latlng = results[0].geometry.location;
+                    map.setCenter(latlng.lat(), latlng.lng());
+                    map.removeMarkers();
+                    marker = map.addMarker({
+                        lat: latlng.lat(),
+                        lng: latlng.lng(),
+                        infoWindow: {
+                            content: '<p><b>'+ $('#address').val() +'</b></p>'
+                        }
+                    });
+                    $scope.atraccion.pos.lat = angular.copy(latlng.lat());
+                    $scope.atraccion.pos.lng = angular.copy(latlng.lng());
+                }
+            }
+        });
     }
     
     $scope.guardarDepartamento = function (){

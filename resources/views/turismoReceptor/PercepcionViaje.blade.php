@@ -31,7 +31,7 @@
     </style>    
 @endsection
 
-@section('TitleSection', 'Percepción del viaje al departamento del Atlántico')
+@section('TitleSection', 'Percepción del viaje al departamento del Magdalena')
 
 @section('Progreso', '83.31%')
 
@@ -476,7 +476,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Qué recomendaría para lograr atraer más visitantes al Magdalena?-->
-                <h3 class="panel-title"><b>Qué aspectos no le gustaron de Atlántico?</b></h3>
+                <h3 class="panel-title"><b>¿Qué recomendaría para lograr atraer más visitantes al Magdalena?</b></h3>
             </div>
             <!-- Resalte en detalle aspectos que realmente le disgustaron-->
             <div class="panel-footer"><b>Respuesta abierta</b></div>
@@ -566,7 +566,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Volvería a visitar el departamento del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Volvería a visitar el departamento del Atlántico?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Volvería a visitar el departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -581,14 +581,14 @@
                     </div>
                 </div>
                 <span ng-show="PercepcionForm.$submitted || PercepcionForm.radioVolveria.$touched">
-                    <span class="label label-danger" ng-show="PercepcionForm.radioVolveria.$error.required">*El campo volveria a visitar el Atlántico es requerido.</span>
+                    <span class="label label-danger" ng-show="PercepcionForm.radioVolveria.$error.required">*El campo volveria a visitar el Magdalena es requerido.</span>
                 </span>
             </div>
         </div>
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Recomendaría visitar el departamento del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Recomendaría visitar el departamento del Atlántico?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Recomendaría visitar el departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -603,14 +603,14 @@
                     </div>
                 </div>
                 <span ng-show="PercepcionForm.$submitted || PercepcionForm.radioRecomienda.$touched">
-                    <span class="label label-danger" ng-show="PercepcionForm.radioRecomienda.$error.required">*El campo recomendaría visitar el Atlántico es requerido.</span>
+                    <span class="label label-danger" ng-show="PercepcionForm.radioRecomienda.$error.required">*El campo recomendaría visitar el Magdalena es requerido.</span>
                 </span>
             </div>
         </div>
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Cuántas veces ha venido al Magdalena en los últimos dos años?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuántas veces ha venido al Atlántico en los últimos dos años?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuántas veces ha venido al Magdalena en los últimos dos años?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -627,8 +627,8 @@
                     
                 </div>
                 <span ng-show="PercepcionForm.$submitted || PercepcionForm.selectVeces.$touched">
-                    <span class="label label-danger" ng-show="PercepcionForm.selectVeces.$error.required">*El campo volveria a visitar el Atlántico es requerido.</span>
-                    <span class="label label-danger" ng-show="calificacion.VecesVisitadas==0">*El campo volveria a visitar el Atlántico es requerido.</span>
+                    <span class="label label-danger" ng-show="PercepcionForm.selectVeces.$error.required">*El campo volveria a visitar el Magdalena es requerido.</span>
+                    <span class="label label-danger" ng-show="calificacion.VecesVisitadas==0">*El campo volveria a visitar el Magdalena es requerido.</span>
 
                 </span>
             </div>

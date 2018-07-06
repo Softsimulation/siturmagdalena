@@ -49,7 +49,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Qué tipo de transporte utilizó para llegar al departamento del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué tipo de transporte utilizó para llegar al departamento del Atlántico?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Qué tipo de transporte utilizó para llegar al departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -72,7 +72,22 @@
                 </span>
             </div>
         </div>
-        
+        <div class="panel panel-success" ng-if="transporte.Llegar == 6">
+            <div class="panel-heading">
+                <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
+                <h3 class="panel-title"><b> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="transporte.Empresa" placeholder="Presione aquí para ingresar la empresa de transporte"/>
+                    </div>
+                </div>
+                <span  ng-show="transForm.$submitted || transForm.empresa.$touched">
+                    <span class="label label-danger" ng-show="transForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>
+                </span>
+            </div>
+        </div>
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Cuál fue el transporte utilizado la mayor parte del tiempo para desplazarse por el departamento?-->

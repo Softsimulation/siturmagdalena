@@ -3,12 +3,15 @@
 angular.module('municipios.municipio', [])
 
 .controller('municipiosController', function($scope, municipiosServi){
+    $("body").attr("class", "cbp-spmenu-push charging");
     municipiosServi.getDatos().then(function (data){
         if (data.success){
             $scope.departamentos = data.departamentos;
             $scope.municipios = data.municipios;
+            $("body").attr("class", "cbp-spmenu-push");
         }
     }).catch(function (errs){
+        $("body").attr("class", "cbp-spmenu-push");
         swal('Error', 'Error al cargar los datos. Por favor recargue la página.', 'error');
     });
     
@@ -33,7 +36,7 @@ angular.module('municipios.municipio', [])
     $scope.imprimirNombre = function (departamento_id){
         for (var i = 0; i < $scope.departamentos.length; i++){
             if ($scope.departamentos[i].id == departamento_id){
-                return $scope.departamentos[i].nombre + ',' + $scope.departamentos[i].paise.paises_con_idiomas[0].nombre;
+                return $scope.departamentos[i].nombre + ', ' + $scope.departamentos[i].paise.paises_con_idiomas[0].nombre;
             }
         }
     }
@@ -52,16 +55,20 @@ angular.module('municipios.municipio', [])
         if (!$scope.municipioForm.$valid){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         switch($scope.sw){
             case 1:
                 municipiosServi.postCrearmunicipio($scope.municipio).then(function (data){
-                    if (data.success){
+                    $("body").attr("class", "cbp-spmenu-push");
+                    if (data.success){ 
                         $scope.municipios.push(data.municipio);
                         $('#municipiosModal').modal('hide');
+                        swal('¡Éxito!', 'Municipio creado con éxito.', 'success');
                     }else{
                         $scope.errores = data.errores;
                     }
                 }).catch(function (){
+                    $("body").attr("class", "cbp-spmenu-push");
                     swal('Error', 'Error al ingresar el municipio. Intente de nuevo', 'error');
                 });
                 break;
@@ -69,6 +76,7 @@ angular.module('municipios.municipio', [])
             case 2:
                 municipiosServi.postEditarmunicipio($scope.municipio).then(function (data){
                     if (data.success){
+                        $("body").attr("class", "cbp-spmenu-push");
                         for (var i = 0; i < $scope.municipios.length; i++){
                             if ($scope.municipios[i].id == data.municipio.id){
                                 $scope.municipios[i] = data.municipio;
@@ -76,7 +84,9 @@ angular.module('municipios.municipio', [])
                             }
                         }
                         $('#municipiosModal').modal('hide');
+                        swal('¡Éxito!', 'Municipio modificado con éxito.', 'success');
                     }else{
+                        $("body").attr("class", "cbp-spmenu-push");
                         $scope.errores = data.errores;
                     }
                 })
@@ -96,10 +106,11 @@ angular.module('municipios.municipio', [])
             swal('Información', 'No se ha seleccionado ningún archivo.', 'info');
             return;
         }
-        console.log($scope.import_file);
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.erroresCSV = null;
         municipiosServi.postImportexcel(fd).then(function (data){
             if (data.success){
+                $("body").attr("class", "cbp-spmenu-push");
                 window.location.reload();
             }else{
                 $scope.erroresCSV = data.errores;

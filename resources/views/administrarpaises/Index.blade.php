@@ -207,10 +207,6 @@
           </div>
         </div>
     </div>
-    
-    <div class='carga'>
-
-    </div>
 </div>
 
 <!-- Modal -->
@@ -243,7 +239,7 @@
                 </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             <button ng-click="guardarPais()" ng-if="sw != 3" type="submit" class="btn btn-primary">Guardar</button>
           </div>
       </form>
@@ -251,10 +247,13 @@
   </div>
 </div>
 
+<div class='carga'>
+
+</div>
 @endsection
 
 @section('javascript')
-<script src="{{secure_asset('/js/administrador/paises/paisesController.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/paises/services.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/paises/app.js')}}"></script>
+<script src="{{asset('/js/administrador/paises/paisesController.js')}}"></script>
+<script src="{{asset('/js/administrador/paises/services.js')}}"></script>
+<script src="{{asset('/js/administrador/paises/app.js')}}"></script>
 @endsection

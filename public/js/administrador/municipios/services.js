@@ -6,7 +6,7 @@ app.factory('municipiosServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administrarmunicipios/datos/').success(function (data) {
+            $http.get('/administrarmunicipios/datos').success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

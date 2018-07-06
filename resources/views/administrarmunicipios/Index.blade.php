@@ -103,7 +103,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="title1">Lista de departamentos</h1>
+    <h1 class="title1">Lista de municipios</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row" style="margin: 0;">
@@ -231,13 +231,21 @@
                 </div>
                 <div class="form-group" ng-class="{'error': (municipioForm.$submitted || municipioForm.pais.$touched) && municipioForm.departamento.$error.required }">
                     <label for="departamento">Departamento</label>
-                    <select ng-disabled="sw == 3" name="departamento" required ng-model="municipio.departamento_id" ng-options="departamento.id as departamento.nombre + ', ' + departamento.paise.paises_con_idiomas[0].nombre for departamento in departamentos" class="form-control">
-                        <option value="">Seleccione un departamento</option>
-                    </select>
+                    <ui-select ng-required="true" ng-model="municipio.departamento_id" id="departamento" name="departamento">
+                       <ui-select-match placeholder="Nombre del departamento">
+                           <span ng-bind="$select.selected.nombre"></span>
+                       </ui-select-match>
+                       <ui-select-choices repeat="departamento.id as departamento in (departamentos| filter: $select.search)">
+                           <span ng-bind="departamento.nombre + ', ' + departamento.paise.paises_con_idiomas[0].nombre" title="@{{departamento.nombre}} @{{departamento.paise.paises_con_idiomas[0].nombre}}"></span>
+                       </ui-select-choices> 
+                    </ui-select>
+                    <!--<select ng-disabled="sw == 3" name="departamento" required ng-model="municipio.departamento_id" ng-options="departamento.id as departamento.nombre + ', ' + departamento.paise.paises_con_idiomas[0].nombre for departamento in departamentos" class="form-control">-->
+                    <!--    <option value="">Seleccione un departamento</option>-->
+                    <!--</select>-->
                 </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             <button ng-click="guardarMunicipio()" ng-if="sw != 3" type="submit" class="btn btn-primary">Guardar</button>
           </div>
       </form>
@@ -248,7 +256,7 @@
 @endsection
 
 @section('javascript')
-<script src="{{secure_asset('/js/administrador/municipios/municipiosController.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/municipios/services.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/municipios/app.js')}}"></script>
+<script src="{{asset('/js/administrador/municipios/municipiosController.js')}}"></script>
+<script src="{{asset('/js/administrador/municipios/services.js')}}"></script>
+<script src="{{asset('/js/administrador/municipios/app.js')}}"></script>
 @endsection

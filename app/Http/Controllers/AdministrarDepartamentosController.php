@@ -47,7 +47,7 @@ class AdministrarDepartamentosController extends Controller
         }
         
         $errores = [];
-        $departamento = Departamento::where('pais_id' ,$request->pais_id)->where('nombre', $request->nombre)->get();
+        $departamento = Departamento::where('pais_id' ,$request->pais_id)->whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->get();
         if (count($departamento) > 0){
             $errores["existe"][0] = "Este departamento ya está registrado en este país.";
         }
@@ -111,7 +111,10 @@ class AdministrarDepartamentosController extends Controller
         $departamento->updated_at = Carbon::now();
         $departamento->save();
         
-        return ['success' => true, 'departamento' => $departamento];
+        $departamentoReturn = Departamento::where('id', $departamento->id)
+            ->select('pais_id', 'id', 'nombre', 'updated_at', 'user_update')->first();
+        
+        return ['success' => true, 'departamento' => $departamentoReturn];
     }
     
     public function postImportexcel (Request $request){
@@ -128,7 +131,7 @@ class AdministrarDepartamentosController extends Controller
             $errores['departamentos'] = array();
 		    while(($line = $reader->readLine()) !== false){
 	            if (!is_numeric($line['nombrePais']) && !is_numeric($line['nombreDepartamento'])){
-	                $paisConIdioma = Pais_Con_Idioma::where('nombre', $line['nombrePais'])->get()->first();
+	                $paisConIdioma = Pais_Con_Idioma::whereRaw("LOWER(nombre) = '".strtolower($line['nombrePais'])."'")->get()->first();
 		            if ($paisConIdioma == null){
 		                $paisConIdioma = new Pais_Con_Idioma();
                         $paisConIdioma->nombre = $line['nombrePais'];
@@ -145,7 +148,7 @@ class AdministrarDepartamentosController extends Controller
                         $paisConIdioma->pais_id = $pais->id;
                         $paisConIdioma->save();
 		            }
-		            $departamento = Departamento::where('pais_id', $paisConIdioma->pais_id)->where('nombre', $line['nombreDepartamento'])->first();
+		            $departamento = Departamento::where('pais_id', $paisConIdioma->pais_id)->whereRaw("LOWER(nombre) = '".strtolower($line['nombreDepartamento'])."'")->first();
     		        if ($departamento == null){
     		            $departamento = new Departamento();
     		            $departamento->nombre = $line['nombreDepartamento'];

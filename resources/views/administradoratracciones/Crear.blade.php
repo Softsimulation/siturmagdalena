@@ -103,153 +103,173 @@
 
 @section('content')
 <div class="container">
-    <h1 class="title1">Lista de departamentos</h1>
+    <h1 class="title1">Insertar atracción</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
-        <div class="row" style="margin: 0;">
-            <div class="col-xs-12 col-sm-6 col-md-5">
-                <button type="button" class="btn btn-primary" ng-click="nuevoMunicipioModal()">
-                  Insertar municipio
-                </button>
-                <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                  Importar csv
-                </button>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-4">
-                <input type="text" ng-model="prop.search" class="form-control" id="inputEmail3" placeholder="Búsqueda de municipios (id, nombre, departamento)">
-            </div>
-            <div class="col-xs-12 col-sm-2 col-md-3" style="text-align: center;">
-                <span class="chip">@{{(municipios|filter:prop.search).length}} resultados</span>
-            </div>
-        </div>
-        <div class="collapse row" id="collapseExample">
-          <div class="well">
-              <div class="alert alert-danger row" ng-if="erroresCSV != null">
-                    <label><b>Errores:</b></label>
-                    <br />
-                    <div ng-repeat="error in erroresCSV" ng-if="error.length>0">
-                        -@{{error[0]}}
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#info">Información básica</a></li>
+            <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
+            <li><a data-toggle="tab" href="#adicional">Información adicional</a></li>
+        </ul>
+        <div class="tab-content">
+            <!--Información básica-->
+            <div id="info" class="tab-pane fade in active">
+                <h2>Datos de la atracción</h2>
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    Los campos marcados con <strong>*</strong> son obligatorios.
+                </div>
+                <form novalidate role="form" name="crearAtraccionForm">
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label for="nombre">Nombre</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <input ng-model="atraccion.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-              <div class="row">
-                <div class="alert alert-info">
-                    <label><b>Importante:</b></label>
-                    <br />
-                    El archivo debe tener solamente las columnas "nombreMunicipio", "nombreDepartamento" y "nombrePais".
-                </div>
-            </div>
-            <div class="row">
-                <form class="form-inline" method="post" novalidate role="form" name="importarCsvForm" class="form-horizontal" enctype="multipart/form-data">
-        			<div class="form-group">
-        			    <input required type="file" name="import_file" accept=".csv" file-input='import_file' />
-        			</div>
-        			<button class="btn btn-primary" ng-click="importarCsv()">Import File</button>
-        		</form>
-            </div>
-          </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="col-xs-12">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Departamento, País</th>
-                        <th>Última modificación</th>
-                        <th>Usuario</th>
-                        <th style="text-align: center;">Opciones</th>
-                    </tr>
-                    <tr dir-paginate="municipio in municipios | filter:prop.search | itemsPerPage:10" pagination-id="pagination_municipios" >
-                        <td>
-                            @{{municipio.id}}
-                        </td>
-                        <td>
-                            @{{municipio.nombre}}
-                        </td>
-                        
-                        <td>
-                            @{{imprimirNombre(municipio.departamento_id)}}
-                        </td>
-                        <td>@{{municipio.updated_at | date:'dd-MM-yyyy'}}</td>
-                        <td>@{{municipio.user_update}}</td>
-                        <td style="text-align: center;">
-                            <a href="javascript:void(0)" ng-click="verMunicipioModal(municipio)">
-                                <span class="glyphicon glyphicon-eye-open" title="Ver municipio"></span>
-                            </a> 
-                            <!--<a ng-repeat="idioma in pais.paises_con_idiomas" ng-click="editarPaisModal(pais, idioma.idioma.id)" title="Editar @{{idioma.idioma.nombre}}" href="javascript:void(0)">-->
-                            <!--    @{{idioma.idioma.culture | uppercase}} -->
-                            <!--</a>-->
-                            <!--<a ng-click="agregarNombre(pais)" href="javascript:void(0)" ng-if="pais.paises_con_idiomas.length != idiomas.length" title="Agregar nombre en otro idioma">-->
-                            <!--    <span class="glyphicon glyphicon-plus">-->
-                                    
-                            <!--    </span>-->
-                            <!--</a>-->
-                            <a href="javascript:void(0)" ng-click="editarMunicipioModal(municipio)">
-                                <span class="glyphicon glyphicon-pencil" title="Editar país"></span>
-                            </a> 
-                        </td>
-                    </tr>
-                </table>
-                <div class="alert alert-warning" role="alert" ng-show="municipios.length == 0 || (municipios|filter:prop.search).length == 0">No hay resultados disponibles <span ng-show="(municipios|filter:prop.search).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label for="descripcion">Descripción</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <textarea style="resize: none;" ng-model="atraccion.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="valor_minimo">Valor mínimo ($)</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <input ng-model="atraccion.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="valor_maximo">Valor máximo ($)</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <input ng-model="atraccion.valor_maximo" required type="numbers" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="sector">Sector</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <ui-select theme="bootstrap" ng-required="true" ng-model="atraccion.sector_id" id="sector" name="sector">
+                                   <ui-select-match placeholder="Nombre del sector.">
+                                       <span ng-bind="$select.selected.sectores_con_idiomas[0].nombre"></span>
+                                   </ui-select-match>
+                                   <ui-select-choices group-by="sector.destino.destino_con_idiomas[0].nombre" repeat="sector.id as sector in (sectores| filter: $select.search)">
+                                       <span ng-bind="sector.sectores_con_idiomas[0].nombre" title="@{{sector.sectores_con_idiomas[0].nombre}}"></span>
+                                   </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="direccion">Dierección</label>
+                            <input ng-model="atraccion.direccion" type="text" name="direccion" id="direccion" class="form-control" placeholder="Máximo 150 caracteres."/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="horario">Horario</label>
+                            <input ng-model="atraccion.horario" type="text" name="horario" id="horario" class="form-control" placeholder="Máximo 255 caracteres."/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input ng-model="atraccion.telefono" type="tel" name="telefono" id="telefono" class="form-control" placeholder="Máximo 100 caracteres."/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pagina_web">Página web</label>
+                                <input ng-model="atraccion.pagina_web" type="text" name="pagina_web" id="pagina_web" class="form-control" placeholder="Máximo 255 caracteres."/>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="actividad">Periodo de actividad e inactividad</label>
+                                <textarea style="resize: none;" rows="4" class="form-control" id="actividad" name="actividad" ng-model="atraccion.actividad" placeholder="Máximo 1,000 caracteres."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="recomendaciones">Recomendaciones</label>
+                            <textarea style="resize: none;" rows="5" class="form-control" id="recomendaciones" name="recomendaciones" ng-model="atraccion.recomendaciones" placeholder="Máximo 1,000 caracteres."></textarea>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="reglas">Reglas</label>
+                            <textarea style="resize: none;" rows="5" class="form-control" id="reglas" name="reglas" ng-model="atraccion.reglas" placeholder="Reglas o normas que deben seguir los visitantes. Máximo 1,000 caracteres."></textarea>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="como_llegar">Como llegar</label>
+                            <textarea style="resize: none;" rows="5" class="form-control" id="como_llegar" name="como_llegar" ng-model="atraccion.como_llegar" placeholder="Pasos o indicaciones para llegar al lugar. Máximo 1,000 caracteres."></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="display: flex;">
+                        <form class="form-inline" novalidate>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="adress">Dirección</label>
+                                    <input required type="text" class="form-control" id="address" name="address" placeholder="Ingrese una dirección">
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="align-self: flex-end;">
+                                <button type="submit" ng-click="searchAdress()" class="btn btn-default">Buscar</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <div id="direccion_map" style="height: 400px;">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <button type="submit" class="btn btn-lg btn-success">Guardar cambios</button>
+                        </div>
+                    </div>
+                </form>
             </div>
             
-        </div>
-        <div class="row">
-          <div class="col-6" style="text-align:center;">
-          <dir-pagination-controls pagination-id="pagination_municipios"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
-          </div>
-        </div>
-    </div>
-    
-    <div class='carga'>
-
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="atraccionesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-        <div class="alert alert-danger" ng-if="errores != null">
-            <label><b>Errores:</b></label>
-            <br />
-            <div ng-repeat="error in errores" ng-if="error.length>0">
-                -@{{error[0]}}
+            <!--Multimedia-->
+            <div id="multimedia" class="tab-pane fade">
+                <h3>Multimedia</h3>
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Tenga en cuenta que para subir imágenes.</strong>
+                    <ul>
+                        <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
+                        <li>Puede subir máximo 5 imágenes por atracción. El peso de cada imagen debe ser menor o igual a 2MB.</li>
+                        <li>Si alguna de sus imágenes sobrepasa el tamaño permitido se le sugiere comprimir la imagen en <a href="https://compressor.io" target="_blank">compressor.io <span class="glyphicon glyphicon-share"></span></n></a>, <a href="http://optimizilla.com" target="_blank">optimizilla.com <span class="glyphicon glyphicon-share"></span></a>, o cualquier otro compresor de imágenes.</li>
+                        <li>Para seleccionar varias imágenes debe mantener presionada la tecla ctrl o arrastre el ratón sobre las imágenes que desea seleccionar.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!--Información adicional-->
+            <div id="adicional" class="tab-pane fade">
+                <h3>Información adicional</h3>
+                <p>Some content in menu 2.</p>
             </div>
         </div>
-      </div>
-      <form novalidate role="form" name="municipioForm">
-          <div class="modal-body">
-                <input type="hidden" ng-model="municipio.id" ng-require="">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input ng-disabled="sw == 3" required type="text" name="nombre" class="form-control" placeholder="Nombre del municipio" ng-model="municipio.nombre"/>
-                </div>
-                <div class="form-group" ng-class="{'error': (municipioForm.$submitted || municipioForm.pais.$touched) && municipioForm.departamento.$error.required }">
-                    <label for="departamento">Departamento</label>
-                    <select ng-disabled="sw == 3" name="departamento" required ng-model="municipio.departamento_id" ng-options="departamento.id as departamento.nombre + ', ' + departamento.paise.paises_con_idiomas[0].nombre for departamento in departamentos" class="form-control">
-                        <option value="">Seleccione un departamento</option>
-                    </select>
-                </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button ng-click="guardarMunicipio()" ng-if="sw != 3" type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-      </form>
     </div>
-  </div>
 </div>
-
 @endsection
 
 @section('javascript')
-<script src="{{secure_asset('/js/administrador/atracciones/indexController.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/atracciones/crearController.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/atracciones/services.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/atracciones/app.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/crearController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/services.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
+<script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
+<script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 @endsection

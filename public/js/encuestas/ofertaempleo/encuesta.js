@@ -1,1 +1,1 @@
-var app = angular.module('ofertaempleo', ['checklist-model','oferta.agenciasOperadoras','ofertaService','oferta.alquilarTransporte'])
+var app = angular.module('ofertaempleo', ['checklist-model','admin.agenciaViaje','agenciaViajeService','admin.restaurante','restauranteService','oferta.agenciasOperadoras','ofertaService','oferta.alquilarTransporte'])

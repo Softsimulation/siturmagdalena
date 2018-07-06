@@ -44,7 +44,7 @@ class Sector extends Model
      */
     public function sitios()
     {
-        return $this->hasMany('App\Sitio', 'sectores_id');
+        return $this->hasMany('App\Models\Sitio', 'sectores_id');
     }
 
     /**

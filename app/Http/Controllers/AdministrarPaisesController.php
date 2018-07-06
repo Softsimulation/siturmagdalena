@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use CsvReader;
 
 use App\Models\Pais;
 use App\Models\Idioma;
@@ -22,8 +23,8 @@ class AdministrarPaisesController extends Controller
         $paises = Pais::with(['paisesConIdiomas' => function ($q){
             $q->with(['idioma' => function($i){
                 $i->select('id', 'culture', 'nombre');
-            }], 'nombre');
-        }], 'id')->select('id', 'user_update', 'updated_at')->get();
+            }])->select('pais_id', 'nombre', 'idioma_id');
+        }])->select('id', 'user_update', 'updated_at')->get();
         
         $idiomas = Idioma::select('id', 'culture', 'nombre')->get();
         return ['paises' => $paises, 'success' => true, 'idiomas' => $idiomas];
@@ -46,6 +47,15 @@ class AdministrarPaisesController extends Controller
         if($validator->fails()){
             return ["success"=>false,'errores'=>$validator->errors()];
         }
+        $errores = [];
+        $pais_ = Pais_Con_Idioma::whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->first();
+        if ($pais_ != null){
+            $errores["existe"][0] = "Este país ya está registrado en el sistema.";
+        }
+        if($errores != null || sizeof($errores) > 0){
+            return  ["success"=>false,"errores"=>$errores];
+        }
+        
         $pais_con_idioma = new Pais_Con_Idioma();
         $pais_con_idioma->nombre = $request->nombre;
         $pais_con_idioma->idioma_id = $request->idioma;
@@ -62,7 +72,13 @@ class AdministrarPaisesController extends Controller
         $pais_con_idioma->save();
         $idioma = Idioma::find($pais_con_idioma->idioma_id)->select('id', 'nombre', 'culture');
         
-        return ['success' => true, 'pais' => $pais];
+        $paisReturn = Pais::where('id', $pais->id)->with(['paisesConIdiomas' => function($q){
+            $q->with(['idioma' => function($i){
+                $i->select('id', 'culture', 'nombre');
+            }])->select('pais_id', 'nombre', 'idioma_id');
+        }])->select('id', 'user_update', 'updated_at')->first();
+        
+        return ['success' => true, 'pais' => $paisReturn, 'prueba' => $pais_];
     }
     
     public function postAgregarnombre (Request $request){
@@ -102,7 +118,13 @@ class AdministrarPaisesController extends Controller
         $pais_con_idioma->nombre = $request->nombre;
         $pais_con_idioma->save();
         
-        return ['success' => true, 'pais_con_idioma' => $pais_con_idioma];
+        $paisReturn = Pais::where('id', $pais_con_idioma->pais_id)->with(['paisesConIdiomas' => function($q){
+            $q->with(['idioma' => function($i){
+                $i->select('id', 'culture', 'nombre');
+            }])->select('pais_id', 'nombre', 'idioma_id');
+        }])->select('id', 'user_update', 'updated_at')->first();
+        
+        return ['success' => true, 'pais' => $paisReturn];
     }
     
     public function postEditarpais (Request $request){
@@ -138,7 +160,13 @@ class AdministrarPaisesController extends Controller
         $pais_con_idioma->nombre = $request->nombre;
         $pais_con_idioma->save();
         
-        return ['success' => true, 'pais_con_idioma' => $pais_con_idioma];
+        $paisReturn = Pais::where('id', $pais_con_idioma->pais_id)->with(['paisesConIdiomas' => function($q){
+            $q->with(['idioma' => function($i){
+                $i->select('id', 'culture', 'nombre');
+            }])->select('pais_id', 'nombre', 'idioma_id');
+        }])->select('id', 'user_update', 'updated_at')->first();
+        
+        return ['success' => true, 'pais' => $paisReturn];
     }
     
     public function postImportexcel(Request $request){
@@ -155,7 +183,7 @@ class AdministrarPaisesController extends Controller
             $errores = array();
 		    while(($line = $reader->readLine()) !== false){
 	            if (!empty($line['nombreMunicipio']) && !empty($line['nombreDepartamento']) && !empty($line['nombrePais'])){
-	                $paisConIdioma = Pais_Con_Idioma::where('nombre', $line['nombrePais'])->get()->first();
+	                $paisConIdioma = Pais_Con_Idioma::whereRaw("LOWER(nombre) = '".strtolower($line['nombrePais'])."'")->get()->first();
     	            if ($paisConIdioma == null){
     	                $paisConIdioma = new Pais_Con_Idioma();
                         $paisConIdioma->nombre = $line['nombrePais'];

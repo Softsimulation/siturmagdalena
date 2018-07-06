@@ -193,6 +193,13 @@
         <script src="{{asset('/js/encuestas/ofertaempleo/agenciasOperadoras.js')}}"></script>
         <script src="{{asset('/js/encuestas/ofertaempleo/alquilerTransporte.js')}}"></script>
         
+        <script src="{{asset('/js/encuestas/ofertaempleo/administrador/agenciaViajes.js')}}" type="text/javascript"></script> 
+        <script src="{{asset('/js/encuestas/ofertaempleo/services/agenciaViajeServices.js')}}" type="text/javascript"></script> 
+        
+        <script src="{{asset('/js/encuestas/ofertaempleo/administrador/restaurantes.js')}}" type="text/javascript"></script> 
+        <script src="{{asset('/js/encuestas/ofertaempleo/services/restauranteServices.js')}}" type="text/javascript"></script> 
+        
+        
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
         </script>
