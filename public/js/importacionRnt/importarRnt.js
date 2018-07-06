@@ -1,4 +1,4 @@
-angular.module('importarRntApp', ["checklist-model","proveedorService"])
+angular.module('importarRntApp', ["checklist-model","proveedorService",'angularUtils.directives.dirPagination'])
 
 .directive('fileInput', ['$parse', function ($parse) {
 

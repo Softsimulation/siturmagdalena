@@ -83,7 +83,7 @@ angular.module('sostenibilidadPst.socioCultural', [])
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    //window.location = "/turismoreceptor/seccionestancia/"+data.encuesta.id;
+                    window.location = "/sostenibilidadpst/ambiental/"+$scope.id;
                 }, 1000);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");

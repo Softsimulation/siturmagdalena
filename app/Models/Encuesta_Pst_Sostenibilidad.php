@@ -100,7 +100,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function componenteAmbientalPst()
     {
-        return $this->hasOne('App\ComponenteAmbientalPst', 'encuesta_pst_sostenibilidad_id');
+        return $this->hasOne('App\Models\Componente_Ambiental_Pst', 'encuesta_pst_sostenibilidad_id');
     }
 
     /**
@@ -108,7 +108,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function actividadesAmbientalesPsts()
     {
-        return $this->hasMany('App\ActividadesAmbientalesPst');
+        return $this->belongsToMany('App\Models\Actividad_Medio_Ambiente','actividades_ambientales_pst','encuestas_pst_sostenibilidad_id','actividades_medio_ambiente_id')->withPivot('otro');
     }
 
     /**
@@ -116,7 +116,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function programasConservacionPsts()
     {
-        return $this->hasMany('App\ProgramasConservacionPst');
+        return $this->belongsToMany('App\Models\Programa_Conservacion','programas_conservacion_pst','encuestas_pst_sostenibilidad_id','programas_conservacion_id')->withPivot('otro');
     }
 
     /**
@@ -124,7 +124,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function planesMitigacionPsts()
     {
-        return $this->hasMany('App\PlanesMitigacionPst');
+        return $this->belongsToMany('App\Models\Plan_Mitigacion','planes_mitigacion_pst','encuestas_pst_sostenibilidad_id','planes_mitigacion_id')->withPivot('otro');
     }
 
     /**
@@ -132,7 +132,12 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function informesGestionPst()
     {
-        return $this->hasOne('App\InformesGestionPst', 'encuestas_pst_sosteniblidad_id');
+        return $this->hasOne('App\Models\Informe_Gestion_Pst', 'encuestas_pst_sosteniblidad_id');
+    }
+    
+    public function aguaReciclada()
+    {
+        return $this->hasOne('App\Models\Agua_Reciclada', 'encuesta_pst_sosteniblidad_id');
     }
 
     /**
@@ -140,7 +145,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function actividadesResiduosPsts()
     {
-        return $this->hasMany('App\ActividadesResiduosPst');
+        return $this->belongsToMany('App\Models\Actividad_Residuo','actividades_residuos_pst','encuestas_pst_sostenibilidad_id','actividades_residuo_id')->withPivot('otro');
     }
 
     /**
@@ -148,7 +153,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function accionesReducirEnergiaPsts()
     {
-        return $this->hasMany('App\AccionesReducirEnergiaPst', 'id');
+        return $this->belongsToMany('App\Models\Accion_Reducir_Energia', 'acciones_reducir_energia_pst','id','acciones_reduccir_energia_id')->withPivot('otro');
     }
 
     /**
@@ -156,7 +161,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function energiasRenovablesPst()
     {
-        return $this->hasOne('App\EnergiasRenovablesPst', 'encuestas_pst_sostenibilidad_id');
+        return $this->belongsToMany('App\Models\Tipo_Energia_Renovable', 'energias_renovables_pst' ,'encuestas_pst_sostenibilidad_id', 'tipos_energias_renovable_id')->withPivot('otro');
     }
 
     /**

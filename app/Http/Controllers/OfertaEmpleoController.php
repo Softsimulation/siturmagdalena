@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Carbon\Carbon;
-<<<<<<< HEAD
 use App\Models\Servicio_Agencia;
 use App\Models\Encuesta;
 use App\Models\Viaje_Turismo;
@@ -19,14 +18,10 @@ use App\Models\Provision_Alimento;
 use App\Models\Especialidad;
 use App\Models\Capacidad_Alimento;
 use App\Models\Historial_Encuesta_Oferta;
-=======
 use App\Models\Actividad_Deportiva;
 use App\Models\Tour;
-use App\Models\Encuesta;
 use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
-use App\Models\Otro_Tour;
-use App\Models\Historial_Encuesta_Oferta;
 use App\Models\Prestamo_Servicio;
 use App\Models\Alquiler_Vehiculo;
 
@@ -38,7 +33,6 @@ use App\Models\Habitacion;
 use App\Models\Apartamento;
 use App\Models\Cabana;
 
->>>>>>> refs/remotes/origin/release
 
 class OfertaEmpleoController extends Controller
 {
@@ -1107,6 +1101,8 @@ class OfertaEmpleoController extends Controller
         ]);
         
         return [ "success"=>true ];
+    }
+    
     public function postGuardarofertaalimentos(Request $request)
     {
         //return $request->all();

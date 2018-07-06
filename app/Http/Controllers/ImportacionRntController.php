@@ -76,11 +76,19 @@ class ImportacionRntController extends Controller
 	        		"user_update" => "MM",
 	        	]);
 	        	
-	        	Proveedores_rnt_idioma::create([
-        			'idioma_id' => 1,
-        			'proveedor_rnt_id' => $proveedorCrear->id,
-        			'nombre' => $registro["nombre_comercial_plataforma"]
-        		]);
+	        	if($registro["nombre_comercial_plataforma"] != null){
+	        		$proveedorIdioma = $proveedorCrear->proveedor_rnt_idioma->where('idiomas_id',1)->first();
+					if($proveedorIdioma){
+						$proveedorIdioma->nombre = $request->nombre_comercial_plataforma;
+						$proveedorIdioma->save();
+					}else{
+						Proveedores_rnt_idioma::create([
+			    			'idioma_id' => 1,
+			    			'proveedor_rnt_id' => $proveedorCrear->id,
+			    			'nombre' => $registro["nombre_comercial_plataforma"]
+			    		]);
+					}	
+	        	}
 	        	
 		        $registro['id'] = $proveedorCrear->id;
 		        $registro['es_correcto'] = 1;
@@ -103,9 +111,9 @@ class ImportacionRntController extends Controller
 		
 		
 		$reader->close();
-		return ["success" => true];
+		
 		//return ['success' => true, 'nuevos' => json_encode($nuevos_retornar), 'antiguos' => json_encode($antiguos_retornar) ];
-		//return response()->json(['success' => true, 'nuevos' => $nuevos_retornar, 'antiguos' => $antiguos_retornar]);
+		return response()->json(['success' => true, 'nuevos' => $nuevos_retornar, 'antiguos' => $antiguos_retornar]);
     }
     
     public function postEditarproveedor(Request $request){
@@ -161,7 +169,7 @@ class ImportacionRntController extends Controller
 		$proveedor->user_update = "MM";
 		$proveedor->save();
 		
-		$proveedorIdioma = $proveedor->proveedoresRntIdiomas->where('idiomas_id',1)->first();
+		$proveedorIdioma = $proveedor->proveedor_rnt_idioma->where('idiomas_id',1)->first();
 		if($proveedorIdioma){
 			$proveedorIdioma->nombre = $request->nombre_comercial_plataforma;
 			$proveedorIdioma->save();

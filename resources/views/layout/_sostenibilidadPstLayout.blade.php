@@ -204,6 +204,8 @@
         <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadPst/configuracionEncuesta.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadPst/socioCultural.js')}}"></script>
+        <script src="{{asset('/js/encuestas/sostenibilidadPst/ambiental.js')}}"></script>
+        <script src="{{asset('/js/encuestas/sostenibilidadPst/economico.js')}}"></script>
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });

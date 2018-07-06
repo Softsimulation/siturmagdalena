@@ -1,6 +1,6 @@
 @extends('layout._sostenibilidadPstLayout')
 
-@section('title', 'SOSTENIBILIDAD DE LAS ACTIVIDADES TURÍSTICAS- PRESTADORES SERVICIOS TURÍSTICOS (PST)')
+@section('title', 'SOSTENIBILIDAD DE LAS ACTIVIDADES TURÍSTICAS - PRESTADORES SERVICIOS TURÍSTICOS (PST)')
 
 @section('estilos')
     <style>
@@ -507,7 +507,7 @@
                                         @{{item.nombre}} <input type="text" class="form-control" ng-if="item.id==8" ng-model="item.otroRiesgo" >
                                         <span class="label label-danger" ng-show="datosForm.riesgo_@{{item.id}}.$error.required && datosForm.$submitted">* Requerido.</span>
                                     </td>
-                                    <td ng-repeat="cal in criteriosCalificacion">
+                                    <td ng-repeat="cal in criteriosCalificacion" style="text-align: center;">
                                         <div class="radio radio-primary">
                                             <label>
                                                 <input type="radio" name="riesgo_@{{item.id}}" value="@{{cal.id}}" ng-model="item.califcacion" required >       
@@ -531,7 +531,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <textarea ng-model="encuesta.contribucion_turismo" class="form-control" name="contribucion_turismo" required></textarea>
+                            <textarea placeholder="Presione aquí para ingresar su respuesta" ng-model="encuesta.contribucion_turismo" class="form-control" name="contribucion_turismo" required></textarea>
                         </div>
                     </div>
                 </div>

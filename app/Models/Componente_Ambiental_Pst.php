@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,12 +35,12 @@ class Componente_Ambiental_Pst extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
-
+    public $incrementing = false;
+    public $timestamps = false;
     /**
      * @var array
      */
-    protected $fillable = ['criterios_calificacion_id', 'areas_promociona', 'tiene_guia', 'tiene_informe_gestion', 'energias_renovables'];
+    protected $fillable = ['encuesta_pst_sostenibilidad_id','agua_reciclabe','criterios_calificacion_id', 'areas_promociona', 'tiene_guia', 'tiene_informe_gestion', 'energias_renovables','tiene_manual'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
