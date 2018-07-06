@@ -6,7 +6,18 @@ app.factory('atraccionesServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administradoratracciones/datos/').success(function (data) {
+            $http.get('/administradoratracciones/datos').success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
+        getDatoscrear: function (){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/administradoratracciones/datoscrear').success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

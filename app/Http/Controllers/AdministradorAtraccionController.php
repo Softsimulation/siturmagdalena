@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Models\Atracciones;
 use App\Models\Idioma;
 use App\Models\Tipo_Atraccion;
+use App\Models\Destino;
+use App\Models\Sector;
 
 class AdministradorAtraccionController extends Controller
 {
@@ -19,6 +21,29 @@ class AdministradorAtraccionController extends Controller
     
     public function getCrear(){
         return view('administradoratracciones.Crear');
+    }
+    
+    public function getDatoscrear(){
+        // $destinos = Destino::with(['sectores' => function ($querySectores){
+        //     $querySectores->with(['sectoresConIdiomas' => function ($querySectoresConIdiomas){
+        //         $querySectoresConIdiomas->with(['idioma' => function($queryIdiomas){
+        //             $queryIdiomas->select('id' ,'nombre', 'culture');
+        //         }])->select('idiomas_id', 'sectores_id', 'nombre');
+        //     }])->select('id', 'destino_id', 'es_urbano');
+        // }])->with(['destinoConIdiomas' => function ($queryDestinoConIdiomas){
+        //     $queryDestinoConIdiomas->select('destino_id', 'idiomas_id', 'nombre', 'descripcion');
+        // }])->select('latitud', 'longitud', 'id')->get();
+        
+        $sectores = Sector::with(['destino' => function ($queryDestino){
+            $queryDestino->with(['destinoConIdiomas' => function($queryDestinoConIdiomas){
+                $queryDestinoConIdiomas->select('destino_id', 'idiomas_id', 'nombre', 'descripcion');
+            }])->select('latitud', 'longitud', 'id');
+        }])->with(['sectoresConIdiomas' => function ($querySectoresConIdiomas){
+            $querySectoresConIdiomas->with(['idioma' => function($queryIdiomas){
+                $queryIdiomas->select('id' ,'nombre', 'culture');
+            }])->select('idiomas_id', 'sectores_id', 'nombre');
+        }])->select('id', 'destino_id', 'es_urbano')->groupBy('destino_id', 'es_urbano', 'id')->get();
+        return ['success' => true, 'sectores' => $sectores];
     }
     
     public function getDatos (){

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,6 +36,6 @@ class Multimedia_Destino extends Model
      */
     public function destino()
     {
-        return $this->belongsTo('App\Destino');
+        return $this->belongsTo('App\Models\Destino');
     }
 }

@@ -42,6 +42,6 @@ class Transporte extends Model
      */
     public function ofertaTransportes()
     {
-        return $this->hasMany('App\OfertaTransporte');
+        return $this->hasMany('App\Models\Oferta_Transporte');
     }
 }

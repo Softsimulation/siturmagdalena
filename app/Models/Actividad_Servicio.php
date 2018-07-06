@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +28,6 @@ class Actividad_Servicio extends Model
      */
     public function provisionesAlimentos()
     {
-        return $this->hasMany('App\ProvisionesAlimento');
+        return $this->hasMany('App\Models\Provision_Alimento');
     }
 }

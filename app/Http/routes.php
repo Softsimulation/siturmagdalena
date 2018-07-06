@@ -28,6 +28,10 @@ Route::controller('/administradoratracciones', 'AdministradorAtraccionController
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
+Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
+
+Route::controller('/importarRnt','ImportacionRntController');
+
 //Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
@@ -42,7 +46,7 @@ Route::get('/CrearGrupoViaje', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home.index');
 });
 
 
@@ -52,3 +56,5 @@ Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
 Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
 Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
+
+Route::controller('/usuario','UsuarioController');
