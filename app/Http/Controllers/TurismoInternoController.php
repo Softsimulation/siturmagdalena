@@ -861,7 +861,7 @@ class TurismoInternoController extends Controller
         return [ 
                 "financiadores"=> Financiador_Viaje::with([ "financiadoresViajesConIdiomas"=>function($q) use($idioma){ $q->where("idiomas_id",$idioma); }])->get(),
                 "serviciosPaquetes"=> Servicio_Paquete_Interno::get(),
-                "opcionesLugares"=> Opcion_Lugar::with([ "opcionesLugaresConIdiomas"=>function($q) use($idioma){ $q->where("idiomas_id",$idioma); }])->get(),
+                "opcionesLugares"=> Ubicacion_Agencia_Viaje::get(),
                 "divisas"=> Divisa::with([ "divisasConIdiomas"=>function($q) use($idioma){ $q->where("idiomas_id",$idioma); }])->get(),
                 "encuesta"=>$encuesta,
             ];
@@ -875,8 +875,8 @@ class TurismoInternoController extends Controller
                 'financiadores'=>'required|array|min:1',
                 'financiadores.*'=>'required|numeric|exists:financiadores_viajes,id',
                 'realizoGasto'=>'required',
-                'viajePaquete'=>'required',
-                'gastosAparte'=>'required',
+                'viajePaquete'=>'required_if:realizoGasto,1',
+                'gastosAparte'=>'required_if:realizoGasto,1',
                 
                 'rubros'=>'required_if:gastosAparte,1|array|min:1',
                 'rubros.*.rubros_id'=>'required|exists:rubro_interno,id',
@@ -887,7 +887,7 @@ class TurismoInternoController extends Controller
                 
                 'serviciosPaquetes'=>'required_if:viajePaquete,1|array|min:1',
                 'serviciosPaquetes.*'=>'required|numeric|exists:servicios_paquete_interno,id',
-                'lugarAgencia'=>'required_if:viajePaquete,1|exists:ubicacion_agencia_viajes,id',
+                'lugarAgencia'=>'required_if:viajePaquete,1|exists:opciones_lugares,id',
                 'modalidadPago'=>'required_if:viajeExcursion.divisas_id,39',
             ]);
             

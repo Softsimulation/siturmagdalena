@@ -49,6 +49,8 @@
 
 @section('NumSeccion', '0%')
 
+@section('app','ng-app="situr_admin"')
+
 @section('controller','ng-controller="listadoEncuestasCtrl"')
 
 @section('content')

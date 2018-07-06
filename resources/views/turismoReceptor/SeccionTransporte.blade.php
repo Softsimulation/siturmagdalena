@@ -118,7 +118,7 @@
                 <!-- Experiencia de viaje-->
                 <h3 class="panel-title"><b>Sostenibilidad</b></h3>
             </div>
-            <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Ninguna dificultad y 10 Mucha dificultad. ¿Qué tanta dificultad tuvo para llegar a Atlántico ?</b></div>
+            <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Ninguna dificultad y 10 Mucha dificultad. ¿Qué tanta dificultad tuvo para llegar a Magdalena ?</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12" style="overflow-x: auto;">

@@ -414,7 +414,7 @@ class Visitante extends Model
     
     public function opcionesActividadesRealizadas()
     {
-        return $this->belongsToMany('App\Models\Opcion_Actividad_Realizada', 'opciones_actividades_realizadas_por_visitantes', 'visitante_id', 'opciones_activades_realizada_id')->withPivot('otro');
+        return $this->belongsToMany('App\Models\Opcion_Actividad_Realizada', 'opciones_actividades_realizadas_por_visitantes', 'visitante_id', 'opciones_activades_realizada_id');
     }
     
 }

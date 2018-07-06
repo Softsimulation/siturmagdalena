@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Sistema de Información Turistica del Atlántico">
-    <meta name="author" content="SITUR Atlántico">
+    <meta name="description" content="Sistema de Información Turistica del Magdalena y Santa Marta">
+    <meta name="author" content="SITUR Magdalena">
     <title>@yield('Title')</title>
     <link rel="icon" type="image/ico" href="{{asset('Content/icons/favicon-96x96.png')}}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
@@ -21,6 +21,31 @@
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
+   
+   
+<link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link href="{{asset('css/dashboard/font-awesome.css')}}" rel="stylesheet"> 
+<!-- jQuery -->
+<link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
+<!-- lined-icons -->
+<link rel="stylesheet" href="{{asset('css/dashboard/icon-font.min.css')}}" type='text/css' />
+<!-- //lined-icons -->
+<script src="{{asset('js/administrador/dashboard/jquery-1.10.2.min.js')}}"></script>
+<script src="{{asset('js/administrador/dashboard/amcharts.js')}}"></script>	
+<script src="{{asset('js/administrador/dashboard/serial.js')}}"></script>	
+<script src="{{asset('js/administrador/dashboard/light.js')}}"></script>	
+<script src="{{asset('js/administrador/dashboard/radar.js')}}"></script>	
+<link href="{{asset('css/dashboard/barChart.css')}}" rel='stylesheet' type='text/css' />
+<link href="{{asset('css/dashboard/fabochart.css')}}" rel='stylesheet' type='text/css' />
+<!--clock init-->
+<script src="{{asset('js/administrador/dashboard/css3clock.js')}}"></script>
+<!--Easy Pie Chart-->
+<!--skycons-icons-->
+<script src="{{asset('js/administrador/dashboard/skycons.js')}}"></script>
+
+<script src="{{asset('js/administrador/dashboard//jquery.easydropdown.js')}}"></script>
+   
    
         
     @yield('estilos')
@@ -182,47 +207,106 @@
     </div>
     
     <header>
-        <div class="banner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-md-2">
-                        <img src="{{asset('Content/image/logo.png')}}" alt="Logo" />
-                    </div>
-                    <div class="col-xs-12 col-md-9">
-                        <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
-                    </div>
-                    <div class="col-xs-12 col-md-1">
-                        <div class="btn-group">
-                            <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/Temporada">Volver</a></li>
-                                <li class="divider"></li>
-                                <li id="log">
-                                    <!--
-                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                                    {
-                                        Html.AntiForgeryToken()
-
-                                        <a href="javascript:document.getElementById('logoutForm').submit()" style="color: white;font-size: 1.2em;"><span class="ion-android-person"></span> Resource.LabelCerrarSesion</a>
-                                    }
-                                    -->
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="title-section">
-            <h3 style="margin-top: 0.5em;"><strong>@yield('TitleSection')</strong></h3>
-        </div>
+       
+   
      
     </header>
-    <div class="container" >
+    
+       <div class="page-container">
+   <!--/content-inner-->
+	<div class="left-content">
+	   <div class="inner-content">
+		<!-- header-starts -->
+			<div class="header-section">
+						<!--menu-right-->
+				
+						<!--//menu-right-->
+					<div class="clearfix"></div>
+				</div>
+					<!-- //header-ends -->
+				     <div class="title-section">
+            <h3 style="margin-top: 0.5em;"><strong>@yield('TitleSection')</strong></h3>
+        </div>
+       
         @yield('content')
-    </div>
+    
+  
+									<!--/charts-inner-->
+									</div>
+										<!--//outer-wp-->
+									</div>
+								
+								</div>
+						
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    	<!--/sidebar-menu-->
+				<div class="sidebar-menu">
+					<header class="logo">
+		 <img  class="img-responsive" width="304" height="236" src="{{asset('Content/image/logo.png')}}"> 
+			
+				</header>
+			<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+			<!--/down-->
+							<div class="down">	
+									  <a href="#"><img src="images/admin.jpg"></a>
+									  <a href="#"><span class=" name-caret">Usuario</span></a>
+									 <p>Rol</p>
+									<ul>
+									<li><a class="tooltips" href=""><span>Profile</span><i class="lnr lnr-user"></i></a></li>
+										<li><a class="tooltips" href="#"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
+										<li><a class="tooltips" href="#"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
+										</ul>
+									</div>
+							   <!--//down-->
+                           <div class="menu">
+									<ul id="menu" >
+										
+										 <li id="menu-academico" ><a href="#"><i class="fa fa-table"></i> <span> Turismo Receptor</span></span></a>
+										   <ul id="menu-academico-sub" >
+											<ligv id="menu-academico-avaliacoes" ><a href="{{asset('grupoviaje/listadogrupos')}}"> Grupo de viajes</a></li>
+											<li id="menu-academico-boletim" ><a href="{{asset('turismoreceptor/listadoencuestas')}}">Listado de encuestas</a></li>
+											
+											
+										  </ul>
+										</li>
+										 <li id="menu-academico" ><a href="#"><i class="fa fa-file-text-o"></i> <span>Turismo Interno y Emisor</span></a>
+											 <ul id="menu-academico-sub" >
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('temporada')}}">Temporada</a></li>
+												<li id="menu-academico-boletim" ><a href="validation.html">Validation Forms</a></li>
+										
+											  </ul>
+										 </li>
+								
+									<li id="menu-academico" ><a href="#"><i class="lnr lnr-book"></i> <span>Administrar paises</span> </span></a>
+										  <ul id="menu-academico-sub" >
+										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administrarpaises')}}">Paises</a></li>
+										    <li id="menu-academico-boletim" ><a href="{{asset('administrardepartamentos')}}">Departamentos</a></li>
+											<li id="menu-academico-boletim" ><a href="{{asset('administrarmunicipios')}}">Municipios</a></li>
+											
+										  </ul>
+									 </li>
+								
+									 
+									 <li><a href="{{asset('MuestraMaestra/periodos')}}"><i class="lnr lnr-envelope"></i> <span>Muestra Maestra</span></a>
+									
+									</li>
+							        <li id="menu-academico" ><a href="{{asset('encuesta/listado')}}"><i class="lnr lnr-layers"></i> <span>Encuetas ADHOC</span></a>
+							
+									 </li>
+								
+								
+								  </ul>
+								</div>
+							  </div>
+    
     <!--
     if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Digitador"))
     {
@@ -253,6 +337,11 @@
     <script src="{{asset('/js/plugins/object-table.js')}}" type="text/javascript"></script>
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/dir-pagination.js')}}"></script>
+    
+    <script src="{{asset('/js/administrador/administrador.js')}}"></script>
+    <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
+    <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
+    <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
   
     
     

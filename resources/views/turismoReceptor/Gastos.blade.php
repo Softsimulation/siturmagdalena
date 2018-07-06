@@ -500,67 +500,67 @@
         
         </div>
         
-        <div class="panel panel-success" ng-show="abrirTerrestre">
-            <div class="panel-heading">
+        <!--<div class="panel panel-success" ng-show="abrirTerrestre">-->
+        <!--    <div class="panel-heading">-->
                 <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Atlántico?</b></h3>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="encuestaReceptor.Empresa" ng-required="abrirTerrestre" placeholder="Presione aquí para ingresar la empresa de transporte"/>
-                    </div>
-                </div>
-                <span  ng-show="GastoForm.$submitted || GastoForm.empresa.$touched">
-                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>
-                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.required">* El campo es requerido.</span>
-                </span>
-            </div>
-        </div>
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="encuestaReceptor.Empresa" ng-required="abrirTerrestre" placeholder="Presione aquí para ingresar la empresa de transporte"/>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <span  ng-show="GastoForm.$submitted || GastoForm.empresa.$touched">-->
+        <!--            <span class="label label-danger" ng-show="GastoForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>-->
+        <!--            <span class="label label-danger" ng-show="GastoForm.empresa.$error.required">* El campo es requerido.</span>-->
+        <!--        </span>-->
+        <!--    </div>-->
+        <!--</div>-->
         
-        <div class="panel panel-success" ng-show="abrirAlquiler">
-            <div class="panel-heading">
+        <!--<div class="panel panel-success" ng-show="abrirAlquiler">-->
+        <!--    <div class="panel-heading">-->
                 <!-- >El alquiler de vehículo fue realizado en:-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> El alquiler de vehículo fue realizado en</b></h3>
-            </div>
-            <div class="panel-footer"><b>Pregunta con selección única</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in opciones">
-                            <label ng-show="item.id != 3">
-                                <input type="radio" name="alquiler" ng-value="item.id" ng-model="encuestaReceptor.Alquiler" ng-required="abrirAlquiler"> @{{item.nombre}}
-                            </label>
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> El alquiler de vehículo fue realizado en</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-footer"><b>Pregunta con selección única</b></div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <div class="radio" ng-repeat="item in opciones">-->
+        <!--                    <label ng-show="item.id != 3">-->
+        <!--                        <input type="radio" name="alquiler" ng-value="item.id" ng-model="encuestaReceptor.Alquiler" ng-required="abrirAlquiler"> @{{item.nombre}}-->
+        <!--                    </label>-->
 
-                        </div>
-                    </div>
-                </div>
-                <span  ng-show="GastoForm.$submitted || GastoForm.alquiler.$touched">
-                    <span class="label label-danger" ng-show="GastoForm.alquiler.$error.required">* El campo es requerido.</span>
-                </span>
-            </div>
-        </div>
-        <div class="panel panel-success" ng-show="abrirRopa">
-            <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> En dónde fue realizado el mayor gasto de productos como ropa, calzado,  artesanías etc. (bienes duraderos) antes y durante el viaje a Atlántico : Respuesta única</b></h3>
-            </div>
-            <div class="panel-footer"><b>Pregunta con selección única</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in opciones">
-                            <label>
-                                <input type="radio" name="ropa" ng-value="item.id" ng-model="encuestaReceptor.Ropa" ng-required="abrirRopa"> @{{item.nombre}}
-                            </label>
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <span  ng-show="GastoForm.$submitted || GastoForm.alquiler.$touched">-->
+        <!--            <span class="label label-danger" ng-show="GastoForm.alquiler.$error.required">* El campo es requerido.</span>-->
+        <!--        </span>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="panel panel-success" ng-show="abrirRopa">-->
+        <!--    <div class="panel-heading">-->
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> En dónde fue realizado el mayor gasto de productos como ropa, calzado,  artesanías etc. (bienes duraderos) antes y durante el viaje a Magdalena : Respuesta única</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-footer"><b>Pregunta con selección única</b></div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <div class="radio" ng-repeat="item in opciones">-->
+        <!--                    <label>-->
+        <!--                        <input type="radio" name="ropa" ng-value="item.id" ng-model="encuestaReceptor.Ropa" ng-required="abrirRopa"> @{{item.nombre}}-->
+        <!--                    </label>-->
 
-                        </div>
-                    </div>
-                </div>
-                <span  ng-show="GastoForm.$submitted || GastoForm.ropa.$touched">
-                    <span class="label label-danger" ng-show="GastoForm.ropa.$error.required">* El campo es requerido.</span>
-                </span>
-            </div>
-        </div>
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <span  ng-show="GastoForm.$submitted || GastoForm.ropa.$touched">-->
+        <!--            <span class="label label-danger" ng-show="GastoForm.ropa.$error.required">* El campo es requerido.</span>-->
+        <!--        </span>-->
+        <!--    </div>-->
+        <!--</div>-->
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P10. Los gastos de las personas que conformaron el grupo de viaje fueron pagados por:-->

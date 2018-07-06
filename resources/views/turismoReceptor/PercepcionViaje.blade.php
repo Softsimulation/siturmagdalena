@@ -428,7 +428,7 @@
       <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- ¿Cuál fue el  atractivo y/o el elemento de la ciudad que más llamó su atención?-->
-                <h3 class="panel-title"><b> Sostenibilidad ¿Realizó alguna de las siguientes actividades para ayudar a la conservación del medio ambiente en Atlántico?</b></h3>
+                <h3 class="panel-title"><b> Sostenibilidad ¿Realizó alguna de las siguientes actividades para ayudar a la conservación del medio ambiente en Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -450,7 +450,7 @@
         <div class="panel panel-success">
             <div class="panel-heading p1">
                 <!-- ¿Durante su viaje utilizó servicio de alojamiento?-->
-                <h3 class="panel-title"><b> ¿Fue informado sobre las normas y cuidados que debe tener el visitante con la flora y fauna de Atlántico?</b></h3>
+                <h3 class="panel-title"><b> ¿Fue informado sobre las normas y cuidados que debe tener el visitante con la flora y fauna de Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">

@@ -195,7 +195,7 @@
                             <label>
                                 <input type="checkbox" checklist-model="encuesta.ActividadesRelizadas" name= "actividadesr"  checklist-value="activ"  ng-click="cambioActividadesRealizadas(activ)" > @{{activ.actividades_realizadas_con_idiomas[0].nombre}}
                             </label>
-                            <span ng-if="activ.id == 19">:<input type="text" name="otroActividad" style="display: inline-block;" class="form-control" id="otroActividad" placeholder="Escriba su otra opción" ng-model="activ.otroActividad" ng-change="validarOtroActividad(activ)" ng-required="validarRequeridoOtroActividad()"/></span>
+                            
                         </div>
                         <span ng-show="EstanciaForm.$submitted || EstanciaForm.actividadesr.$touched || encuesta.ActividadesRelizadas.length > 0">
                             <!--EncuestaEstanciaP2Alert1. Debe seleccionar alguno de los valores-->
@@ -222,7 +222,7 @@
                             <label>
                                 <input type="checkbox" name ="opcion_@{{opcion.id}}" id="opcion_@{{opcion.id}}" checklist-model="opcion.Respuestas" checklist-value="item.id" > @{{item.opciones_actividades_realizadas_idiomas[0].nombre}}
                             </label>
-                            <span ng-if="item.id==22 || item.id==26 || item.id==34">:<input type="text" name="opcionOtro_@{{opcion.id}}" style="display: inline-block;" class="form-control" id="opcionOtro_@{{opcion.id}}" placeholder="Escriba su otra opción" ng-model="opcion.otro" ng-change="validarOtro(item.id,opcion)" ng-required="(item.id==22 || item.id==26 || item.id==34) && validarContenido(item.id,opcion)"/></span>
+                           
                         </div>
                         <span ng-show="EstanciaForm.$submitted || EstanciaForm.opcion_@{{opcion.id}}.$touched || opcion.Respuestas.length > 0">
                             <span class="label label-danger" ng-show="opcion.Respuestas.length == 0 || opcion.Respuestas == undefined">* Debe seleccionar alguna opción</span>
