@@ -31,20 +31,35 @@
         
         @yield('estilos')
         <style>
-            html {
-                font-size: 16px;
-            }
-            .banner {
-                background-color: white;
-                padding-top: 1em;
-                padding-bottom: 1em;
-                color: dimgray;
-                text-align: center;
-                font-weight: 700;
-            }
-            .banner img {
-                height: 6em;
-            }
+        
+        .carga {
+           display: none;
+           position: fixed;
+           z-index: 1000;
+           top: 0;
+           left: 0;
+           height: 100%;
+           width: 100%;
+           background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
+        }
+        
+        body.charging { overflow: hidden; }
+        body.charging .carga { display: block; }
+        
+        html {
+            font-size: 16px;
+        }
+        .banner {
+            background-color: white;
+            padding-top: 1em;
+            padding-bottom: 1em;
+            color: dimgray;
+            text-align: center;
+            font-weight: 700;
+        }
+        .banner img {
+            height: 6em;
+        }
 
         .title-section {
             background-color: dodgerblue;
@@ -150,6 +165,7 @@
         
     </head>
     <body @yield('app') @yield('controller') >
+        
         <div id="preloader">
             <div>
                 <div class="loader"></div>
@@ -158,41 +174,42 @@
                 <img src="/Content/image/logo.min.png" width="200" />
             </div>
         </div>
-    </div>
     
-    <header>
-        <div class="banner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-md-2">
-                        <img src="{{asset('Content/image/logo.png')}}" alt="Logo" />
-                    </div>
-                    <div class="col-xs-12 col-md-9">
-                        <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
-                    </div>
-                    <div class="col-xs-12 col-md-1">
-                        <div class="btn-group">
-                            <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/Temporada">Volver</a></li>
-                                <li class="divider"></li>
-                                <li id="log">
-                                    <!--
-                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                                    {
-                                        Html.AntiForgeryToken()
-
-                                        <a href="javascript:document.getElementById('logoutForm').submit()" style="color: white;font-size: 1.2em;"><span class="ion-android-person"></span> Resource.LabelCerrarSesion</a>
-                                    }
-                                    -->
-                                </li>
-
-                            </ul>
+    
+        <header>
+            <div class="banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-2">
+                            <img src="{{asset('Content/image/logo.png')}}" alt="Logo" />
+                        </div>
+                        <div class="col-xs-12 col-md-9">
+                            <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
+                        </div>
+                        <div class="col-xs-12 col-md-1">
+                            <div class="btn-group">
+                                <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/Temporada">Volver</a></li>
+                                    <li class="divider"></li>
+                                    <li id="log">
+                                        <!--
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            Html.AntiForgeryToken()
+    
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" style="color: white;font-size: 1.2em;"><span class="ion-android-person"></span> Resource.LabelCerrarSesion</a>
+                                        }
+                                        -->
+                                    </li>
+    
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
+                
+           </div>    
         </header>
         
         <div class="container" >

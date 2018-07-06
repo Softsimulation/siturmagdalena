@@ -1,21 +1,9 @@
 {
 	"type": "FeatureCollection",
-
-	"crs": {
-		"type": "name",
-		"properties": {
-			"name": "urn:ogc:def:crs:OGC:1.3:CRS84"
-		}
-	},
-
 	"features": [{
 		"type": "Feature",
 		"properties": {
-			"DPTO": "47",
-			"NOMBRE_DPT": "MAGDALENA",
-			"AREA": 22846394629.859001,
-			"PERIMETER": 916642.470000,
-			"HECTARES": 2284639.463000
+			"NOMBRE_DPT": "MAGDALENA"
 		},
 		"geometry": {
 			"type": "Polygon",

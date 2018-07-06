@@ -133,6 +133,48 @@
                                             '</tbody>'+
                                         '</table>';
                                 break;
+                                
+                            case 10:
+                                campo = '<table class="table table-striped">'+
+                                            '<thead>'+
+                                                '<tr>'+
+                                                    '<td></td>'+
+                                                    '<td ng-repeat="item in pregunta.opciones_sub_preguntas" > {{item.idiomas[0].nombre}} </td>'+ 
+                                                '</tr>'+
+                                            '</thead>'+
+                                            '<tbody>'+
+                                                '<tr ng-repeat="item in pregunta.sub_preguntas">'+
+                                                    '<td> {{item.idiomas[0].nombre}}</td>'+
+                                                    '<td ng-repeat="it in item.opciones" >'+
+                                                        '<input type="number" class="form-control" id="item{{item.id}}" name="item{{item.id}}" ng-model="it.respuesta" min="{{pregunta.valor_min}}" max="{{pregunta.valor_max}}" ng-required="{{pregunta.es_requerido}}" />'+
+                                                    '</td>'+
+                                                '</tr>'+ 
+                                            '</tbody>'+
+                                        '</table>';
+                                break;
+                            
+                            case 11:
+                                campo = '<table class="table table-striped">'+
+                                            '<thead>'+
+                                                '<tr>'+
+                                                    '<td></td>'+
+                                                    '<td ng-repeat="item in pregunta.opciones_sub_preguntas" > {{item.idiomas[0].nombre}} </td>'+ 
+                                                '</tr>'+
+                                            '</thead>'+
+                                            '<tbody>'+
+                                                '<tr ng-repeat="item in pregunta.sub_preguntas">'+
+                                                    '<td> {{item.idiomas[0].nombre}}</td>'+
+                                                    '<td ng-repeat="it in item.opciones" >'+
+                                                        '<input type="text" class="form-control" id="item{{item.id}}" name="item{{item.id}}" ng-model="it.respuesta" maxlength="{{pregunta.max_length}}" ng-required="{{pregunta.es_requerido}}" />'+
+                                                    '</td>'+
+                                                '</tr>'+ 
+                                            '</tbody>'+
+                                        '</table>';
+                                break;
+                                
+                            case 12: 
+                                campo = '<input type="email" class="form-control" id="item{{pregunta.id}}" name="item{{pregunta.id}}" ng-model="pregunta.respuesta" maxlength="150" ng-required="{{pregunta.es_requerido}}" />'; 
+                                break;
 
                             default: return null;
                         }
@@ -143,6 +185,7 @@
                                                 '<span ng-show="form.item{{pregunta.id}}.$error.min">El valor minimo es {{pregunta.valor_min}}</span>' +
                                                 '<span ng-show="form.item{{pregunta.id}}.$error.max">El valor maximo es {{pregunta.valor_max}}</span>' +
                                                 '<span ng-show="form.item{{pregunta.id}}.$error.number">Formato de numero invalido</span>' +
+                                                '<span ng-show="form.item{{pregunta.id}}.$error.email">Formato de correo invalido</span>' +
                                                 '<span ng-show="form.item{{pregunta.id}}.$error.maxlength">El numero maximo de caracteres es @{{pregunta.max_length}}</span>' +
                                                 '<span ng-show="(pregunta.es_requerido && (pregunta.respuesta==null || pregunta.respuesta.length==0) && (pregunta.tipo_campos_id==3 || pregunta.tipo_campos_id==4 || pregunta.tipo_campos_id==5 || pregunta.tipo_campos_id==7))">Campo requerido</span>' +
                                             '</span>';

@@ -39,7 +39,7 @@
                 <div class="col-md-2" >
                     <div class="form-group" >
                         <button class="btn btn-success" ng-click="descargarGrafica()" ng-disabled="!(data && data.length>0)" >
-                            Descragar
+                            Descargar
                         </button>
                     </div>
                 </div>  

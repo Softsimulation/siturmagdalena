@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -60,7 +60,7 @@ class Destino extends Model
      */
     public function destinoConIdiomas()
     {
-        return $this->hasMany('App\DestinoConIdioma');
+        return $this->hasMany('App\Models\Destino_Con_Idioma');
     }
 
     /**
