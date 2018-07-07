@@ -169,7 +169,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function componenteEconomicoPst()
     {
-        return $this->hasOne('App\ComponenteEconomicoPst', 'encuestas_pst_sostenibilidad_id');
+        return $this->hasOne('App\Models\Componente_Economico_Pst', 'encuestas_pst_sostenibilidad_id');
     }
 
     /**
@@ -177,7 +177,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function clasificacionesProveedoresPsts()
     {
-        return $this->hasMany('App\ClasificacionesProveedoresPst');
+        return $this->belongsToMany('App\Models\Clasificacion_Proveedor','clasificaciones_proveedores_pst','encuestas_pst_sostenibilidad_id','clasificaciones_proveedor_id')->withPivot('otro');
     }
 
     /**
@@ -185,7 +185,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function aspectosSeleccionPsts()
     {
-        return $this->hasMany('App\AspectosSeleccionPst');
+        return $this->belongsToMany('App\Models\Aspecto_Seleccion_Proveedor','aspectos_seleccion_pst','encuestas_pst_sostenibilidad_id','aspectos_seleccion_proveedor_id')->withPivot('otro');
     }
 
     /**

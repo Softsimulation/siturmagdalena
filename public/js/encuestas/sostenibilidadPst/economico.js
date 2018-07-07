@@ -55,6 +55,30 @@ angular.module('sostenibilidadPst.economico', [])
         
         
         $scope.encuesta.pst_id = $scope.id;
+        $scope.encuesta.beneficios = $scope.beneficios;
+        
+        $("body").attr("class", "charging");
+        sostenibilidadPstServi.guardarEconomico($scope.encuesta).then(function (data) {
+            $("body").attr("class", "");
+            if (data.success) {
+                swal({
+                    title: "Realizado",
+                    text: "Sección guardada exitosamente",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    //window.location = "/sostenibilidadpst/ambiental/"+$scope.id;
+                }, 1000);
+            } else {
+                swal("Error", "Hay errores en el formulario corrigelos", "error");
+                $scope.errores = data.errores;
+            }
+        }).catch(function () {
+            $("body").attr("class", "");
+            swal("Error", "No se realizo la solicitud, reinicie la página", "error");
+        })
         
     }
     

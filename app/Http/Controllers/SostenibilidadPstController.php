@@ -34,6 +34,7 @@ use App\Models\Aspecto_Seleccion_Proveedor;
 use App\Models\Beneficio;
 use App\Models\Calificacion_Factor;
 use App\Models\Beneficio_Economico;
+use App\Models\Componente_Economico_Pst;
 
 class SostenibilidadPstController extends Controller
 {
@@ -620,5 +621,73 @@ class SostenibilidadPstController extends Controller
     	
     	return $retornado;
     }
-    
+	
+	public function postGuardareconomico(Request $request){
+		$validator = \Validator::make($request->all(), [
+			'pst_id' => 'required|exists:encuestas_pst_sostenibilidad,id',
+			'es_positivo' => 'required',
+			'porcentaje' => 'required|numeric',
+			'clasificacionesProveedor' => 'required',
+			'clasificacionesProveedor.*' => 'exists:clasificaciones_proveedores,id',
+			'aspectosSeleccion' => 'required',
+			'aspectosSeleccion.*' => 'exists:aspectos_seleccion_proveedores,id',
+			'dificultades' => 'required|max:2000',
+			'beneficios' => 'required',
+			'beneficios.*.id' => 'exists:beneficios,id',
+			'beneficios.*.califcacion' => 'exists:calificaciones_factores,id',
+			'beneficiosEconomicos' => 'required',
+			'beneficiosEconomicos.*' => 'exists:beneficios_economicos,id',
+			'conoce_marca' => 'required',
+			'autoriza_tratamiento' => 'required',
+			'autorizacion' => 'required'
+    	],[
+       		
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if(in_array(14,$request->clasificacionesProveedor) && !isset($request->otroClasificacion) ){
+			return ["success" => false, "errores" => [["El campo otro en la pregunta 24.1 es requerido."]] ];
+		}
+		if(in_array(9,$request->aspectosSeleccion) && !isset($request->otroSeleccion) ){
+			return ["success" => false, "errores" => [["El campo otro en la pregunta 24.2 es requerido."]] ];
+		}
+		if(in_array(12,$request->beneficiosEconomicos) && !isset($request->otroEconomico) ){
+			return ["success" => false, "errores" => [["El campo otro en la pregunta 27 es requerido."]] ];
+		}
+		
+		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
+		
+		if($encuesta->componenteEconomicoPst){
+			
+		}
+		
+		$economico = new Componente_Economico_Pst();
+		$economico->encuestas_pst_sostenibilidad_id = $encuesta->id;
+		$economico->es_positivo = $request->es_positivo;
+		$economico->porcentaje = $request->porcentaje;
+		$economico->dificultades = $request->dificultades;
+		$economico->save();
+		
+		foreach($request->clasificacionesProveedor as $item){
+			if($item != 14){
+				$encuesta->clasificacionesProveedoresPsts()->attach($item);	
+			}else{
+				$encuesta->clasificacionesProveedoresPsts()->attach($item,['otro' => $request->otroClasificacion]);
+			}
+		}
+		
+		foreach($request->aspectosSeleccion as $item){
+			if($item != 9){
+				$encuesta->aspectosSeleccionPsts()->attach($item);	
+			}else{
+				$encuesta->aspectosSeleccionPsts()->attach($item,['otro' => $request->otroSeleccion]);
+			}
+		}
+		
+		return ["success" => true];
+	}
+	    
 }

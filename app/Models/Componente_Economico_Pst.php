@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,12 +32,13 @@ class Componente_Economico_Pst extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
+    public $timestamps = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['es_positivo', 'porcentaje', 'dificultades'];
+    protected $fillable = ['es_positivo', 'porcentaje', 'dificultades','encuestas_pst_sostenibilidad_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

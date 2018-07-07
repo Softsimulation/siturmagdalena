@@ -85,7 +85,7 @@ angular.module('importarRntApp', ["checklist-model","proveedorService",'angularU
             if (data.success) {
                 $("body").attr("class", "cbp-spmenu-push");
                 $scope.antiguos[$scope.indexEditar] = data.proveedor;
-                
+                $scope.errores = null;
                 swal({
                     title: "Realizado",
                     text: "Se ha editado satisfactoriamente el registro.",
@@ -129,6 +129,7 @@ angular.module('importarRntApp', ["checklist-model","proveedorService",'angularU
         
         proveedorServi.CrearProveedor($scope.registro).then(function (data) {
             if (data.success) {
+                $scope.errores = null;
                 $("body").attr("class", "cbp-spmenu-push");
                 $scope.nuevos[$scope.indexCrear] = data.proveedor;
                 swal({
