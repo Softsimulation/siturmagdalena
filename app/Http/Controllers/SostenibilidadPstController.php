@@ -35,6 +35,7 @@ use App\Models\Beneficio;
 use App\Models\Calificacion_Factor;
 use App\Models\Beneficio_Economico;
 use App\Models\Componente_Economico_Pst;
+use App\Models\Beneficio_Economico_Temporada_Pst;
 
 class SostenibilidadPstController extends Controller
 {
@@ -610,13 +611,38 @@ class SostenibilidadPstController extends Controller
     	$calificacionesFactor = Calificacion_Factor::all();
     	$beneficiosEconomicos = Beneficio_Economico::all();
     	
+    	$objeto = null;
+    	if($encuesta->componenteEconomicoPst){
+    		$objeto['es_positivo'] = $encuesta->componenteEconomicoPst->es_positivo;
+    		$objeto['porcentaje'] = floatval($encuesta->componenteEconomicoPst->porcentaje);
+    		$objeto['clasificacionesProveedor'] = $encuesta->clasificacionesProveedoresPsts->pluck('id')->toArray();
+    		$objeto['otroClasificacion'] = in_array(14,$objeto['clasificacionesProveedor']) ? $encuesta->clasificacionesProveedoresPsts->where('id',14)->first()->pivot->otro : null;
+    		$objeto['aspectosSeleccion'] = $encuesta->aspectosSeleccionPsts->pluck('id')->toArray();
+    		$objeto['otroSeleccion'] = in_array(9,$objeto['aspectosSeleccion']) ? $encuesta->aspectosSeleccionPsts->where('id',9)->first()->pivot->otro : null;
+    		$objeto['dificultades'] = $encuesta->componenteEconomicoPst->dificultades;
+    		$objeto['beneficiosEconomicos'] = $encuesta->beneficiosEconomicosPsts->pluck('id')->toArray();
+    		$objeto['otroEconomico'] = in_array(12,$objeto['beneficiosEconomicos']) ? $encuesta->beneficiosEconomicosPsts->where('id',12)->first()->pivot->otro : null;
+    		$objeto['conoce_marca'] = $encuesta->conoce_marca;
+    		$objeto['autoriza_tratamiento'] = $encuesta->autoriza_tratamiento;
+    		$objeto['autorizacion'] = $encuesta->autorizacion;
+    		
+    		foreach($beneficios as $item){
+    			$beneficio = Beneficio_Economico_Temporada_Pst::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
+				$item['califcacion'] = $beneficio->calificacion_factores_id;
+    			$item['otroBeneficio'] = $beneficio->otro;
+    		}
+    		$objeto['beneficios'] = $beneficios;
+    		
+    	}
+    	
     	$retornado = [
     		'proveedor' => $proveedor,
     		'clasificacionesProveedor' => $clasificacionesProveedor,
     		'aspectosSeleccion' => $aspectosSeleccion,
     		'beneficios' => $beneficios,
     		'calificacionesFactor' => $calificacionesFactor,
-    		'beneficiosEconomicos' => $beneficiosEconomicos
+    		'beneficiosEconomicos' => $beneficiosEconomicos,
+    		'objeto' => $objeto
     	];
     	
     	return $retornado;
@@ -661,7 +687,10 @@ class SostenibilidadPstController extends Controller
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
 		
 		if($encuesta->componenteEconomicoPst){
-			
+			$encuesta->componenteEconomicoPst->delete();
+			$encuesta->clasificacionesProveedoresPsts()->detach();
+			$encuesta->aspectosSeleccionPsts()->detach();
+			$encuesta->beneficiosEconomicosPsts()->detach();
 		}
 		
 		$economico = new Componente_Economico_Pst();
@@ -686,6 +715,34 @@ class SostenibilidadPstController extends Controller
 				$encuesta->aspectosSeleccionPsts()->attach($item,['otro' => $request->otroSeleccion]);
 			}
 		}
+		
+		foreach($request->beneficios as $item){
+			$beneficio = Beneficio_Economico_Temporada_Pst::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
+			if($beneficio){
+				$beneficio->calificacion_factores_id = $item['califcacion'];
+				$beneficio->save();
+			}else{
+				Beneficio_Economico_Temporada_Pst::create([
+					'calificacion_factores_id' => $item['califcacion'],
+					'encuestas_pst_sostenibilidad_id' => $encuesta->id,
+					'beneficio_id' => $item['id'],
+					'otro' => ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null 
+				]);	
+			}
+		}
+		
+		foreach($request->beneficiosEconomicos as $item){
+			if($item != 12){
+				$encuesta->beneficiosEconomicosPsts()->attach($item);	
+			}else{
+				$encuesta->beneficiosEconomicosPsts()->attach($item,['otro' => $request->otroEconomico]);
+			}
+		}
+		
+		$encuesta->conoce_marca = $request->conoce_marca;
+		$encuesta->autoriza_tratamiento = $request->autoriza_tratamiento;
+		$encuesta->autorizacion = $request->autorizacion;
+		$encuesta->save();
 		
 		return ["success" => true];
 	}

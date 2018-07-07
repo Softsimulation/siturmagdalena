@@ -193,7 +193,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
      */
     public function beneficiosEconomicosPsts()
     {
-        return $this->hasMany('App\BeneficiosEconomicosPst', 'encuestas_sostenibilidad_id');
+        return $this->belongsToMany('App\Models\Beneficio_Economico', 'beneficios_economicos_pst' ,'encuestas_sostenibilidad_id','beneficios_economico_id')->withPivot('otro');
     }
 
     /**

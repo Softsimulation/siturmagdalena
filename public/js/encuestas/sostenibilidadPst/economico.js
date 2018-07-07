@@ -17,6 +17,9 @@ angular.module('sostenibilidadPst.economico', [])
             $scope.beneficios = data.beneficios;
             $scope.calificacionesFactor = data.calificacionesFactor;
             $scope.beneficiosEconomicos = data.beneficiosEconomicos;
+            if(data.objeto){
+                $scope.encuesta = data.objeto;
+            }
         }).catch(function () {
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,8 +28,7 @@ class Beneficio_Economico_Temporada_Pst extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
-
+    public $timestamps = false;
     /**
      * @var array
      */
