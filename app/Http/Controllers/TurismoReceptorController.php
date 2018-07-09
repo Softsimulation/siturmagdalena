@@ -68,7 +68,7 @@ class TurismoReceptorController extends Controller
         
         $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
         
-        $encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','name');} ])->get();
+        $encuestadores = Digitador::with([ 'user'])->get();
         
         $lugar_nacimiento = Opcion_Lugar::with(["opcionesLugaresConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -250,7 +250,7 @@ class TurismoReceptorController extends Controller
             $visitante['Id'] = $visitanteCargar->id;
             $visitante['Grupo'] = $visitanteCargar->grupo_viaje_id;
             $visitante['Encuestador'] = $visitanteCargar->encuestador_creada;
-            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->aspNetUser->username;
+            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->user->nombre;
             $visitante['Llegada'] = $visitanteCargar->fecha_llegada;
             $visitante['Salida'] = $visitanteCargar->fecha_salida;
             $visitante['Nombre'] = $visitanteCargar->nombre;

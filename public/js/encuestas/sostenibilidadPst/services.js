@@ -90,5 +90,27 @@ app.factory("sostenibilidadPstServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        CargarEditarEncuesta: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/sostenibilidadpst/cargareditarencuesta/' + id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        guardarEditarEncuesta: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/sostenibilidadpst/guardareditarencuesta',data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

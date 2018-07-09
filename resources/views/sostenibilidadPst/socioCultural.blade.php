@@ -542,7 +542,7 @@
         </div>
         
         <div class="row" style="text-align:center">
-            <a href="/turismoreceptor/seccionpercepcionviaje/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
+            <a href="/sostenibilidadpst/editarencuesta/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />

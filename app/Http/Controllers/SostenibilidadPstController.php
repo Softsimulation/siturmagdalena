@@ -45,7 +45,7 @@ class SostenibilidadPstController extends Controller
     }
     
     public function getCargarproveedoresrnt(){
-        $proveedores = Proveedores_rnt_idioma::where('proveedor_rnt_id',1)->with('proveedoresRnt')->get();
+        $proveedores = Proveedores_rnt_idioma::with('proveedoresRnt')->get();
         return ['proveedores' => $proveedores];
     }
     
@@ -87,6 +87,66 @@ class SostenibilidadPstController extends Controller
 	    ]);
 		
 		return ["success" => true, 'encuesta' => $encuesta];
+    }
+    
+    public function getEditarencuesta($id){
+    	if(Encuesta_Pst_Sostenibilidad::find($id) == null){
+    		return "no";
+    	}else{
+    		return view('sostenibilidadPst.editarEncuesta',["id" => $id]);
+    	}	
+    }
+    
+    public function getCargareditarencuesta($id){
+    	$proveedores = Proveedores_rnt_idioma::with('proveedoresRnt')->get();
+        
+        $encuesta = Encuesta_Pst_Sostenibilidad::find($id);
+        
+        $encuesta['establecimiento'] = Proveedores_rnt_idioma::where('proveedor_rnt_id',$encuesta->id)->with('proveedoresRnt')->first();
+        
+        return ['proveedores' => $proveedores, 'encuesta' => $encuesta];
+    }
+    
+    public function postGuardareditarencuesta(Request $request){
+    	$validator = \Validator::make($request->all(), [
+    		'id' => 'required|exists:encuestas_pst_sostenibilidad,id',
+			'fechaAplicacion' => 'required|date',
+			'lugar_encuesta' => 'required|max:255',
+			'nombre_contacto' => 'required|max:255',
+			'cargo' => 'required|max:255',
+			'establecimiento' => 'required',
+			'establecimiento.proveedor_rnt_id' => 'exists:proveedores_rnt,id'
+    	],[
+       		'fechaAplicacion.required' => 'La fecha de apliación es requerida.',
+       		'fechaAplicacion.date' => 'La fecha de apliación debe ser tipo fecha.',
+       		'lugar_encuesta.required' => 'El lugar de la encuesta es requerido.',
+       		'lugar_encuesta.max' => 'El lugar de la encuesta no debe superar los 255 caracteres.',
+       		'nombre_contacto.required' => 'El nombre del contacto es requerido.',
+       		'nombre_contacto.max' => 'El nombre del contacto no debe superar los 255 caracteres.',
+       		'cargo.required' => 'El cargo del contacto es requerido.',
+       		'cargo.max' => 'El cargo del contacto no debe superar los 255 caracteres.',
+       		'establecimiento.required' => 'Debe seleccionar el establecimiento.',
+       		'establecimiento.proveedor_rnt_id' => 'El establecimiento seleccionado no se encuentra ingresado en el sistema.'
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if( date('Y-m-d',strtotime(str_replace("/","-",$request->fechaAplicacion))) > date('Y-m-d') ){
+		    return ["success"=>false,"errores"=> [ ["La fecha de aplicación no debe ser mayor a la actual."] ] ];
+		}
+		
+		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->id);
+		$encuesta->nombre_contacto = $request->nombre_contacto;
+		$encuesta->proveedores_rnt_id = $request->establecimiento['proveedor_rnt_id'];
+		$encuesta->nombre_contacto = $request->nombre_contacto;
+		$encuesta->lugar_encuesta = $request->lugar_encuesta;
+		$encuesta->cargo = $request->cargo;
+		$encuesta->fecha_aplicacion = date('Y-m-d H:i',strtotime(str_replace("/","-",$request->fechaAplicacion)));
+		$encuesta->save();
+		
+		return ["success" => true];
     }
     
     public function getSociocultural($id){
