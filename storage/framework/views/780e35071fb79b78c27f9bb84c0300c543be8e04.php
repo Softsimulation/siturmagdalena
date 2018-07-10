@@ -1,5 +1,5 @@
 <?php $__env->startSection('title','Muestra maestra'); ?>
-<?php $__env->startSection('TitleSection','Configuración encuesta Ad Hoc'); ?>
+<?php $__env->startSection('TitleSection','Listado de mediciones'); ?>
 <?php $__env->startSection('app','ng-app="appMuestraMaestra"'); ?>
 <?php $__env->startSection('controller','ng-controller="ListarPeriodosCtrl"'); ?>
 
@@ -12,7 +12,7 @@
     <div class="row" >
 
        <div class="col-md-12">
-          <h2>Listado de encuestas</h2>
+        
           
           <table class="table table-striped">
             <thead>

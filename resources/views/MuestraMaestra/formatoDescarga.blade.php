@@ -64,9 +64,35 @@
           </tr>
           
           @if (count($proveedores) === 0)
-             <tr>
-                 <td colspan="15" >No se encontraron proveedores dentro de la zona</td>
-             </tr>
+          
+            @for ($i = 0; $i < 10; $i++)
+                <tr>
+                    <td rowspan="2" style="width:10%;" ></td>
+                    <td rowspan="2" style="width:10%;" ></td>
+                    <td rowspan="2" style="width:20%;" ></td>    <td style="width:5%; background: #85f185;" >SI</td>
+                    <td style="width:25%;" ></td>                <td style="width:5%; background: #85f185;" >SI</td>
+                    <td style="width:25%;" ></td>                <td style="width:5%; background: #85f185;" >SI</td>
+                    <td style="width:25%;" ></td>                <td style="width:5%; background: #85f185;" >SI</td>
+                    <td style="width:25%;" ></td>                <td style="width:5%; background: #85f185;" >SI</td>
+                    <td style="width:25%;" rowspan="2" ></td>
+                    <td style="width:15%;" ></td>
+                    <td style="width:10%;" ></td>
+                </tr>
+                  
+                <tr>
+                    <td style="width: 20%;" ></td> <td style=";width: 5%;" >NO</td>
+                    <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>       
+                    <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                    <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                    <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                    <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                    <td style="width: 25%;" ></td> <td style=";width: 25%;">NOMBRE</td>
+                    <td style="width:10%;" >RECO</td>
+                </tr>
+                
+                
+            @endfor
+            
           @endif
           
           @foreach ($proveedores as $proveedor)

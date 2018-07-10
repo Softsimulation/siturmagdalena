@@ -1,7 +1,7 @@
 @extends('layout._AdminLayout')
 
 @section('title','Muestra maestra')
-@section('TitleSection','Configuración encuesta Ad Hoc')
+@section('TitleSection','Listado de mediciones')
 @section('app','ng-app="appMuestraMaestra"')
 @section('controller','ng-controller="ListarPeriodosCtrl"')
 
@@ -14,7 +14,7 @@
     <div class="row" >
 
        <div class="col-md-12">
-          <h2>Listado de encuestas</h2>
+        
           
           <table class="table table-striped">
             <thead>

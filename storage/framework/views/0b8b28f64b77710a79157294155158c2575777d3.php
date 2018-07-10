@@ -169,7 +169,7 @@
             
             <!-- Modal agregar pregunta-->
             <div class="modal fade" id="modalAgregarPregunta" tabindex="-1" >
-                <div class="modal-dialog" ng-class="{'modal-lg':(pregunta.tipoCampo==8 || pregunta.tipoCampo==9)}" role="document">
+                <div class="modal-dialog" ng-class="{'modal-lg':(pregunta.tipoCampo==8 || pregunta.tipoCampo==9 || pregunta.tipoCampo==10 || pregunta.tipoCampo==11)}" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Agregar pregunta</h5>
@@ -212,7 +212,7 @@
                                   
                                 </div>
                                 
-                                <div class="row" ng-if="pregunta.tipoCampo==1"  >
+                                <div class="row" ng-if="pregunta.tipoCampo==1 || pregunta.tipoCampo==11"  >
                                     <div class="col-md-6">
                                         <div class="form-group" ng-class="{'error' : (formPregunta.$submitted || formPregunta.caracteres.$touched) && formPregunta.caracteres.$error.required}">
                                             <label class="control-label" for="caracteres">Número maximo de caracteres</label>
@@ -221,7 +221,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row" ng-if="pregunta.tipoCampo==2"  >
+                                <div class="row" ng-if="pregunta.tipoCampo==2 || pregunta.tipoCampo==10"  >
                                     <div class="col-md-6">
                                         <div class="form-group" ng-class="{'error' : (formPregunta.$submitted || formPregunta.minNumero.$touched) && formPregunta.minNumero.$error.required}">
                                             <label class="control-label" for="minNumero">Mínimo valor</label>
@@ -237,9 +237,9 @@
                                 </div>
                                 
                                 
-                                <div class="row" ng-if="pregunta.tipoCampo==3 || pregunta.tipoCampo==5 || pregunta.tipoCampo==6 || pregunta.tipoCampo==7 || pregunta.tipoCampo==8 || pregunta.tipoCampo==9" >
+                                <div class="row" ng-if="pregunta.tipoCampo==3 || pregunta.tipoCampo==5 || pregunta.tipoCampo==6 || pregunta.tipoCampo==7 || pregunta.tipoCampo==8 || pregunta.tipoCampo==9 || pregunta.tipoCampo==10 || pregunta.tipoCampo==11" >
                                     
-                                    <div class="col-md-6" ng-if="pregunta.tipoCampo==8 || pregunta.tipoCampo==9" >
+                                    <div class="col-md-6" ng-if="pregunta.tipoCampo==8 || pregunta.tipoCampo==9 || pregunta.tipoCampo==10 || pregunta.tipoCampo==11" >
                                        
                                          <br>
                                        
@@ -281,7 +281,7 @@
                                        
                                     </div>
                                     
-                                    <div class="col-md-12" ng-class="{'col-md-6':(pregunta.tipoCampo==8 || pregunta.tipoCampo==9)}" >
+                                    <div class="col-md-12" ng-class="{'col-md-6':(pregunta.tipoCampo==8 || pregunta.tipoCampo==9 || pregunta.tipoCampo==10 || pregunta.tipoCampo==11)}" >
                                        
                                          <br>
                                        
@@ -338,7 +338,7 @@
         
              <!-- Modal detalle pregunta-->
             <div class="modal fade" id="modalDetallePregunta" tabindex="-1" >
-                <div class="modal-dialog" ng-class="{'modal-lg':(detallePregunta.tipo_campos_id==8 || detallePregunta.tipo_campos_id==9)}" role="document">
+                <div class="modal-dialog" ng-class="{'modal-lg':(detallePregunta.tipo_campos_id==8 || detallePregunta.tipo_campos_id==9 ||detallePregunta.tipo_campos_id==10 || detallePregunta.tipo_campos_id==11)}" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Detalle pregunta</h5>
@@ -374,7 +374,7 @@
                                   
                                 </div>
                                 
-                                <div class="row" ng-if="detallePregunta.tipo_campos_id==1"  >
+                                <div class="row" ng-if="detallePregunta.tipo_campos_id==1 || detallePregunta.tipo_campos_id==11"  >
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Número máximo de caracteres</label>
@@ -383,7 +383,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row" ng-if="pregunta.tipo_campos_id==2"  >
+                                <div class="row" ng-if="pregunta.tipo_campos_id==2 || detallePregunta.tipo_campos_id==10"  >
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Mínimo valor</label>
@@ -421,7 +421,7 @@
                                 </div>
                                 
                                 
-                                <div class="row" ng-if="detallePregunta.tipo_campos_id==8 || detallePregunta.tipo_campos_id==9"  >
+                                <div class="row" ng-if="detallePregunta.tipo_campos_id==8 || detallePregunta.tipo_campos_id==9 || detallePregunta.tipo_campos_id==10 || detallePregunta.tipo_campos_id==11"  >
                                     <div class="col-md-6">
                                        
                                           <ul class="list-group">
@@ -476,7 +476,7 @@
         
             <!-- Modal agregar idioma pregunta-->
             <div class="modal fade" id="modalAgregarIdiomaPregunta" tabindex="-1" >
-                <div class="modal-dialog" ng-class="{'modal-lg': (detallePregunta.tipo_campos_id==8 || detallePregunta.tipo_campos_id==9)}" role="document">
+                <div class="modal-dialog" ng-class="{'modal-lg': (detallePregunta.tipo_campos_id==8 || detallePregunta.tipo_campos_id==9 || detallePregunta.tipo_campos_id==10 || detallePregunta.tipo_campos_id==11)}" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Idioma pregunta</h5>
@@ -531,7 +531,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row" ng-if="idomaPregunta.tipoCampo==8 || idomaPregunta.tipoCampo==9"  >
+                                <div class="row" ng-if="idomaPregunta.tipoCampo==8 || idomaPregunta.tipoCampo==9 || idomaPregunta.tipoCampo==10 || idomaPregunta.tipoCampo==11"  >
                                     <div class="col-md-6">
                                        
                                         <table class="table table-striped">
@@ -651,7 +651,7 @@
         <?php else: ?>    
             <!-- Modal detalle idioma pregunta-->
             <div class="modal fade" id="modalAgregarIdiomaPregunta" tabindex="-1" >
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog" ng-class="{'modal-lg': (idomaPregunta.tipoCampo==8 || idomaPregunta.tipoCampo==9 || idomaPregunta.tipoCampo==10 || idomaPregunta.tipoCampo==11)}" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Idioma pregunta</h5>
@@ -703,6 +703,51 @@
                                        
                                     </div>
                                 </div>
+                                
+                                <div class="row" ng-if="idomaPregunta.tipoCampo==8 || idomaPregunta.tipoCampo==9 || idomaPregunta.tipoCampo==10 || idomaPregunta.tipoCampo==11"  >
+                                    <div class="col-md-6">
+                                       
+                                        <table class="table table-striped">
+                                          <thead>
+                                            <tr>
+                                              <th></th>
+                                              <th>Opción de respuesta</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr ng-repeat="item in idomaPregunta.subPreguntas" >
+                                                  <td>{{$index+1}}</td>
+                                                  <td>{{item.texto}}</td>
+                                            </tr>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                       
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                       
+                                        <table class="table table-striped">
+                                          <thead>
+                                            <tr>
+                                              <th></th>
+                                              <th>Opción</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr ng-repeat="item in idomaPregunta.opcionesSubPreguntas" >
+                                                  <td>{{$index+1}}</td>
+                                                  <td>{{item.texto}}</td>
+                                            </tr>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                       
+                                    </div>
+                                    
+                                </div>
+                                
+                                
                                 
                             </div>
                             <div class="modal-footer center" >

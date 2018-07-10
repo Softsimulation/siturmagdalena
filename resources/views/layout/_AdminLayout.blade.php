@@ -23,9 +23,9 @@
     <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
    
    
-<link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />
-<!-- Graph CSS -->
-<link href="{{asset('css/dashboard/font-awesome.css')}}" rel="stylesheet"> 
+<link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />-->
+<!-- Graph CSS 
+
 <!-- jQuery -->
 <link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
 <!-- lined-icons -->
@@ -39,12 +39,9 @@
 <link href="{{asset('css/dashboard/barChart.css')}}" rel='stylesheet' type='text/css' />
 <link href="{{asset('css/dashboard/fabochart.css')}}" rel='stylesheet' type='text/css' />
 <!--clock init-->
-<script src="{{asset('js/administrador/dashboard/css3clock.js')}}"></script>
-<!--Easy Pie Chart-->
-<!--skycons-icons-->
-<script src="{{asset('js/administrador/dashboard/skycons.js')}}"></script>
 
-<script src="{{asset('js/administrador/dashboard//jquery.easydropdown.js')}}"></script>
+
+
    
    
         
@@ -59,11 +56,14 @@
            height: 100%;
            width: 100%;
            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-       }
-       
+        }
+        
         body.charging { overflow: hidden; }
         body.charging .carga { display: block; }
-    
+        
+        html {
+            font-size: 16px;
+        }
         .banner {
             background-color: white;
             padding-top: 1em;
@@ -72,10 +72,9 @@
             text-align: center;
             font-weight: 700;
         }
-
-            .banner img {
-                height: 6em;
-            }
+        .banner img {
+            height: 6em;
+        }
 
         .title-section {
             background-color: dodgerblue;
@@ -206,55 +205,71 @@
         </div>
     </div>
     
-    <header>
-       
-   
-     
-    </header>
+        <header>
+            
+            <div class="banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-2">
+                           
+                        </div>
+                        <div class="col-xs-12 col-md-9">
+                            <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
+                        </div>
+                        <div class="col-xs-12 col-md-1">
+                            <div class="btn-group">
+                                <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/Temporada">Volver</a></li>
+                                    <li class="divider"></li>
+                                    <li id="log">
+                                        <!--
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            Html.AntiForgeryToken()
+    
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" style="color: white;font-size: 1.2em;"><span class="ion-android-person"></span> Resource.LabelCerrarSesion</a>
+                                        }
+                                        -->
+                                    </li>
+    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </header>
     
        <div class="page-container">
    <!--/content-inner-->
-	<div class="left-content">
-	   <div class="inner-content">
-		<!-- header-starts -->
-			<div class="header-section">
-						<!--menu-right-->
-				
-						<!--//menu-right-->
-					<div class="clearfix"></div>
-				</div>
-					<!-- //header-ends -->
-				     <div class="title-section">
-            <h3 style="margin-top: 0.5em;"><strong>@yield('TitleSection')</strong></h3>
+        <div class="left-content">
+           <div class="inner-content">
+        	<!-- header-starts -->
+        		<div class="header-section">
+        					<!--menu-right-->
+        			
+        					<!--//menu-right-->
+				    <div class="clearfix"></div>
+			    </div>
+				<!-- //header-ends -->
+			    <div class="title-section">
+                    <h3 style="margin-top: 0.5em;"><strong>@yield('TitleSection')</strong></h3>
+                </div>
+                
+                <div class="container">
+                    @yield('content')
+                </div>
+                
+                <!--/charts-inner-->
+        	</div>
+        		<!--//outer-wp-->
+        	</div>
         </div>
-       
-        @yield('content')
+        
     
-  
-									<!--/charts-inner-->
-									</div>
-										<!--//outer-wp-->
-									</div>
-								
-								</div>
-						
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    	<!--/sidebar-menu-->
 				<div class="sidebar-menu">
-					<header class="logo">
-		 <img  class="img-responsive" width="304" height="236" src="{{asset('Content/image/logo.png')}}"> 
-			
-				</header>
-			<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
-			<!--/down-->
 							<div class="down">	
 									  <a href="#"><img src="images/admin.jpg"></a>
 									  <a href="#"><span class=" name-caret">Usuario</span></a>
@@ -265,7 +280,7 @@
 										<li><a class="tooltips" href="#"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
 										</ul>
 									</div>
-							   <!--//down-->
+							   
                            <div class="menu">
 									<ul id="menu" >
 										
@@ -280,7 +295,7 @@
 										 <li id="menu-academico" ><a href="#"><i class="fa fa-file-text-o"></i> <span>Turismo Interno y Emisor</span></a>
 											 <ul id="menu-academico-sub" >
 												<li id="menu-academico-avaliacoes" ><a href="{{asset('temporada')}}">Temporada</a></li>
-												<li id="menu-academico-boletim" ><a href="validation.html">Validation Forms</a></li>
+												
 										
 											  </ul>
 										 </li>
@@ -294,10 +309,15 @@
 										  </ul>
 									 </li>
 								
-									 
-									 <li><a href="{{asset('MuestraMaestra/periodos')}}"><i class="lnr lnr-envelope"></i> <span>Muestra Maestra</span></a>
+									 	<li id="menu-academico" ><a href="#"><i class="lnr lnr-book"></i> <span>Muestra Maestra</span> </span></a>
+										  <ul id="menu-academico-sub" >
+										    <li id="menu-academico-avaliacoes" ><a href="{{asset('MuestraMaestra/periodos')}}">Crear</a></li>
+										    <li id="menu-academico-boletim" ><a href="{{asset('importarRnt')}}">Importar</a></li>
 									
-									</li>
+											
+										  </ul>
+									 </li>
+									 
 							        <li id="menu-academico" ><a href="{{asset('encuesta/listado')}}"><i class="lnr lnr-layers"></i> <span>Encuetas ADHOC</span></a>
 							
 									 </li>
@@ -306,7 +326,7 @@
 								  </ul>
 								</div>
 							  </div>
-    
+							 
     <!--
     if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Digitador"))
     {
