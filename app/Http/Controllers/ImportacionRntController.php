@@ -44,6 +44,11 @@ class ImportacionRntController extends Controller
 		
 		$arreglo = $reader->readAll();
 		$arreglo = collect($arreglo);
+		
+		if(count($arreglo) > 2000){
+			return ["success" => false, "errores" => [["El documento debe tener no más de 2000 registros."]] ];
+		}
+		
 		//dd($arreglo[0]);
 		
 		$proveedoresIngresados = ProveedoresRntVista::all();

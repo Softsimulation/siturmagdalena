@@ -36,6 +36,10 @@ use App\Models\Calificacion_Factor;
 use App\Models\Beneficio_Economico;
 use App\Models\Componente_Economico_Pst;
 use App\Models\Beneficio_Economico_Temporada_Pst;
+use App\Models\Estados_Encuesta;
+use App\Models\Historial_Encuesta_Pst_Sostenibilidad;
+use App\Models\ListadoEncuestasPst;
+use App\Models\Digitador;
 
 class SostenibilidadPstController extends Controller
 {
@@ -45,8 +49,10 @@ class SostenibilidadPstController extends Controller
     }
     
     public function getCargarproveedoresrnt(){
-        $proveedores = Proveedores_rnt_idioma::with('proveedoresRnt')->get();
-        return ['proveedores' => $proveedores];
+        $proveedores = Proveedores_rnt::all();
+        $encuestadores = Digitador::with([ 'user'])->get();
+        
+        return ['proveedores' => $proveedores, 'encuestadores' => $encuestadores];
     }
     
     public function postGuardarconfiguracion(Request $request){
@@ -56,7 +62,8 @@ class SostenibilidadPstController extends Controller
 			'nombre_contacto' => 'required|max:255',
 			'cargo' => 'required|max:255',
 			'establecimiento' => 'required',
-			'establecimiento.proveedor_rnt_id' => 'exists:proveedores_rnt,id'
+			'establecimiento.id' => 'exists:proveedores_rnt,id',
+			'digitador_id' => 'required|exists:users,id'
     	],[
        		'fechaAplicacion.required' => 'La fecha de apliación es requerida.',
        		'fechaAplicacion.date' => 'La fecha de apliación debe ser tipo fecha.',
@@ -67,7 +74,9 @@ class SostenibilidadPstController extends Controller
        		'cargo.required' => 'El cargo del contacto es requerido.',
        		'cargo.max' => 'El cargo del contacto no debe superar los 255 caracteres.',
        		'establecimiento.required' => 'Debe seleccionar el establecimiento.',
-       		'establecimiento.proveedor_rnt_id' => 'El establecimiento seleccionado no se encuentra ingresado en el sistema.'
+       		'establecimiento.id' => 'El establecimiento seleccionado no se encuentra ingresado en el sistema.',
+       		'digitador_id.required' => 'El encuestador es requerido.',
+       		'digitador_id.exists' => 'El encuestador seleccionado no se encuentra ingresado en el sistema'
     	]);
        
     	if($validator->fails()){
@@ -79,12 +88,25 @@ class SostenibilidadPstController extends Controller
 		}
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::create([
-		    'proveedores_rnt_id' => $request->establecimiento['proveedor_rnt_id'],
+		    'proveedores_rnt_id' => $request->establecimiento['id'],
 		    'nombre_contacto' => $request->nombre_contacto,
 		    'lugar_encuesta' => $request->lugar_encuesta,
 		    'cargo' => $request->cargo,
-		    'fecha_aplicacion' => date('Y-m-d H:i',strtotime(str_replace("/","-",$request->fechaAplicacion)))
+		    'fecha_aplicacion' => date('Y-m-d H:i',strtotime(str_replace("/","-",$request->fechaAplicacion))),
+		    'estado_encuesta_id' => 1,
+		    'numero_seccion' => 1,
+		    'digitador_id' => $request->digitador_id
 	    ]);
+	    
+	    Historial_Encuesta_Pst_Sostenibilidad::create([
+    		'estado_encuesta_id' => 1,
+    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+    		'observacion' => 'Se ha creado la encuesta.',
+    		'fecha_cambio' => date('Y-m-d H:i'),
+    		'estado' => 1,
+    		'user_create' => 'admin',
+    		'user_update' => 'admin'
+    	]);
 		
 		return ["success" => true, 'encuesta' => $encuesta];
     }
@@ -98,13 +120,15 @@ class SostenibilidadPstController extends Controller
     }
     
     public function getCargareditarencuesta($id){
-    	$proveedores = Proveedores_rnt_idioma::with('proveedoresRnt')->get();
+    	$proveedores = Proveedores_rnt::all();
         
         $encuesta = Encuesta_Pst_Sostenibilidad::find($id);
         
-        $encuesta['establecimiento'] = Proveedores_rnt_idioma::where('proveedor_rnt_id',$encuesta->id)->with('proveedoresRnt')->first();
+        $encuesta['establecimiento'] = Proveedores_rnt::find($encuesta->id);
         
-        return ['proveedores' => $proveedores, 'encuesta' => $encuesta];
+        $encuestadores = Digitador::with([ 'user'])->get();
+        
+        return ['proveedores' => $proveedores, 'encuesta' => $encuesta, 'encuestadores' => $encuestadores];
     }
     
     public function postGuardareditarencuesta(Request $request){
@@ -115,7 +139,8 @@ class SostenibilidadPstController extends Controller
 			'nombre_contacto' => 'required|max:255',
 			'cargo' => 'required|max:255',
 			'establecimiento' => 'required',
-			'establecimiento.proveedor_rnt_id' => 'exists:proveedores_rnt,id'
+			'establecimiento.id' => 'exists:proveedores_rnt,id',
+			'digitador_id' => 'required|exists:users,id'
     	],[
        		'fechaAplicacion.required' => 'La fecha de apliación es requerida.',
        		'fechaAplicacion.date' => 'La fecha de apliación debe ser tipo fecha.',
@@ -126,7 +151,9 @@ class SostenibilidadPstController extends Controller
        		'cargo.required' => 'El cargo del contacto es requerido.',
        		'cargo.max' => 'El cargo del contacto no debe superar los 255 caracteres.',
        		'establecimiento.required' => 'Debe seleccionar el establecimiento.',
-       		'establecimiento.proveedor_rnt_id' => 'El establecimiento seleccionado no se encuentra ingresado en el sistema.'
+       		'establecimiento.id' => 'El establecimiento seleccionado no se encuentra ingresado en el sistema.',
+       		'digitador_id.required' => 'El encuestador es requerido.',
+       		'digitador_id.exists' => 'El encuestador seleccionado no se encuentra ingresado en el sistema'
     	]);
        
     	if($validator->fails()){
@@ -139,12 +166,23 @@ class SostenibilidadPstController extends Controller
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->id);
 		$encuesta->nombre_contacto = $request->nombre_contacto;
-		$encuesta->proveedores_rnt_id = $request->establecimiento['proveedor_rnt_id'];
+		$encuesta->proveedores_rnt_id = $request->establecimiento['id'];
 		$encuesta->nombre_contacto = $request->nombre_contacto;
 		$encuesta->lugar_encuesta = $request->lugar_encuesta;
+		$encuesta->digitador_id = $request->digitador_id;
 		$encuesta->cargo = $request->cargo;
 		$encuesta->fecha_aplicacion = date('Y-m-d H:i',strtotime(str_replace("/","-",$request->fechaAplicacion)));
 		$encuesta->save();
+		
+		Historial_Encuesta_Pst_Sostenibilidad::create([
+    		'estado_encuesta_id' => 1,
+    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+    		'observacion' => 'Se ha editado la encuesta en la sección de configuración.',
+    		'fecha_cambio' => date('Y-m-d H:i'),
+    		'estado' => 1,
+    		'user_create' => 'admin',
+    		'user_update' => 'admin'
+    	]);
 		
 		return ["success" => true];
     }
@@ -168,6 +206,9 @@ class SostenibilidadPstController extends Controller
     	$beneficiosEsquema = Beneficio_Esquema::all();
     	$tiposRiesgos = Tipo_Riesgo::where('categorias_riesgo_id',1)->get();
     	
+    	$tipoProveedor = $encuesta->proveedoresRnt->categoria->tipo_proveedores_id;
+    	
+    	
     	$objeto = null;
     	if($encuesta->componenteSocialPst){
     		$objeto['trato_general'] = $encuesta->componenteSocialPst->trato_general;
@@ -182,9 +223,9 @@ class SostenibilidadPstController extends Controller
     		$objeto['otroMotivoResp'] = in_array(9,$objeto['motivosResponsabilidad']) ? $encuesta->responsabilidadesSociale->motivosResponsabilidadesPsts->where('id',9)->first()->pivot->otro : null;
     		$objeto['anio_compromiso'] = $encuesta->responsabilidadesSociale ? $encuesta->responsabilidadesSociale->anio_compromiso : null;
     		$objeto['anio_normas'] = $encuesta->responsabilidadesSociale ? $encuesta->responsabilidadesSociale->anio_normas : null;
-    		$objeto['espacios_accesibles'] = $encuesta->componenteSocialPst->espacios_accesibles;
-    		$objeto['numero_habitaciones'] = $encuesta->espaciosAlojamiento ? $encuesta->espaciosAlojamiento->numero_habitaciones : null;
-    		$objeto['tiposDiscapacidad'] =  $encuesta->espaciosAlojamiento ? $encuesta->espaciosAlojamiento->tiposDiscapacidades : array();
+    		$objeto['espacios_accesibles'] = $tipoProveedor == 1 ? $encuesta->componenteSocialPst->espacios_accesibles : null;
+    		$objeto['numero_habitaciones'] = $encuesta->espaciosAlojamiento && $tipoProveedor == 1 ? $encuesta->espaciosAlojamiento->numero_habitaciones : null;
+    		$objeto['tiposDiscapacidad'] =  $encuesta->espaciosAlojamiento && $tipoProveedor == 1 ? $encuesta->espaciosAlojamiento->tiposDiscapacidades : array();
     		$objeto['esquemasAccesibles'] = $encuesta->esquemasAccesibles->pluck('id')->toArray();
     		$objeto['otroEsquemaAcc'] = in_array(8,$objeto['esquemasAccesibles']) ? $encuesta->esquemasAccesibles->where('id',8)->first()->pivot->otro : null;
     		$objeto['beneficiosEsquema'] = $encuesta->beneficiosEsquemas->pluck('id')->toArray();
@@ -218,7 +259,8 @@ class SostenibilidadPstController extends Controller
     		'esquemasAccesibles' => $esquemasAccesibles,
     		'beneficiosEsquema' => $beneficiosEsquema,
     		'tiposRiesgos' => $tiposRiesgos,
-    		'objeto' => $objeto
+    		'objeto' => $objeto,
+    		'tipoProveedor' => $tipoProveedor
     	];
     	
     	return $retornado;
@@ -230,14 +272,14 @@ class SostenibilidadPstController extends Controller
 			'trato_general' => 'required|integer',
 			'respetan_normas' => 'required',
 			'criterios_calificacion_id' => 'required|exists:criterios_calificaciones,id',
-			'ofrece_informacion' => 'required_if:criterios_calificacion_id,!=,4',
+			//'ofrece_informacion' => 'required_if:criterios_calificacion_id,!=,4',
 			'accionesCulturales' => 'required',
 			'accionesCulturales.*' => 'exists:acciones_culturales,id',
 			'nivel_importancia' => 'required|integer',
 			'responsabilidad_social' => 'required',
 			'motivosResponsabilidad' => 'required_if:responsabilidad_social,1',
 			'motivosResponsabilidad.*' => 'exists:motivos_responsabilidades,id',
-			'espacios_accesibles' => 'required',
+			'espacios_accesibles' => 'required_if:tipoProveedor,1',
 			'numero_habitaciones' => 'required_if:espacios_accesibles,1|min:0',
 			'tiposDiscapacidad.*.id' => 'exists:tipos_discapacidades,id',
 			'tiposDiscapacidad.*.numero_habitacion' => 'required_if:espacios_accesibles,1|min:0',
@@ -253,6 +295,10 @@ class SostenibilidadPstController extends Controller
        
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if( !isset($request->ofrece_informacion) && $request->criterios_calificacion_id != 4 ){
+			return ["success" => false, "errores" => [["El campo ofrece informacion es obligatorio cuando criterios calificacion id es diferente de No conoce."]] ];
 		}
 		
 		if(in_array(8,$request->accionesCulturales) && !isset($request->otroCultural) ){
@@ -288,13 +334,15 @@ class SostenibilidadPstController extends Controller
 		if($encuesta->componenteSocialPst){
 			$encuesta->componenteSocialPst->delete();
 			
-			$espaciosAlo = Espacio_Alojamiento::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->first();
-			$espaciosAlo->tiposDiscapacidades()->detach();
-			$encuesta->espaciosAlojamiento->delete();
+			if($encuesta->proveedoresRnt->categoria->tipo_proveedores_id == 1){
+				$espaciosAlo = Espacio_Alojamiento::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->first();
+				$espaciosAlo->tiposDiscapacidades()->detach();
+				$encuesta->espaciosAlojamiento->delete();
+			}
 			
 			$res = Responsabilidad_Social::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->first();
-			$res->motivosResponsabilidadesPsts()->detach();
-			$encuesta->responsabilidadesSociale->delete();
+			if($res){$res->motivosResponsabilidadesPsts()->detach();}
+			Responsabilidad_Social::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->delete();
 			
 			$encuesta->accionesCulturalesPsts()->detach();
 			$encuesta->esquemasAccesibles()->detach();
@@ -311,7 +359,7 @@ class SostenibilidadPstController extends Controller
 		$componenteSocial->ofrece_informacion = $request->criterios_calificacion_id != 4 ? ($request->ofrece_informacion==1?1:0) : null;
 		$componenteSocial->nivel_importancia = $request->nivel_importancia;
 		$componenteSocial->responsabilidad_social = $request->responsabilidad_social == 1 ? 1 : 0;
-		$componenteSocial->espacios_accesibles = $request->espacios_accesibles == 1 ? 1 : 0;
+		$componenteSocial->espacios_accesibles = $request->tipoProveedor == 1 ? $request->espacios_accesibles : null;
 		$componenteSocial->conoce_herramienta_tic = !in_array(7,$request->esquemasAccesibles) ? ($request->conoce_herramienta_tic == 1 ? 1 : 0) : null;
 		$componenteSocial->implementa_herramienta_tic = !in_array(7,$request->esquemasAccesibles) && $request->conoce_herramienta_tic == 1 ? ($request->implementa_herramienta_tic == 1 ? 1 : 0) : null;
 		$componenteSocial->contribucion_turismo = $request->contribucion_turismo;
@@ -320,7 +368,7 @@ class SostenibilidadPstController extends Controller
 		$componenteSocial->estado = 1;
 		$componenteSocial->save();
 		
-		if($request->espacios_accesibles == 1){
+		if($request->espacios_accesibles == 1 && $request->tipoProveedor == 1){
 			$espacioAlojamiento = Espacio_Alojamiento::create([
 				'encuestas_pst_sostenibilidad_id' => $encuesta->id,
 				'numero_habitaciones' => $request->numero_habitaciones
@@ -394,6 +442,33 @@ class SostenibilidadPstController extends Controller
 					'otro' => $item['id'] == 8 && isset($item['otroRiesgo']) ? $item['otroRiesgo'] : null 
 				]);	
 			}
+		}
+		
+		if($encuesta->numero_seccion == 1){
+			$encuesta->numero_seccion = 2;
+			$encuesta->estado_encuesta_id = 2;
+			$encuesta->save();
+			
+			Historial_Encuesta_Pst_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha creado la encuesta en la sección socio-cultural.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+			
+		}else{
+			Historial_Encuesta_Pst_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha editado la encuesta en la sección socio-cultural.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
 		}
 		
 		return ["success" => true];
@@ -539,6 +614,7 @@ class SostenibilidadPstController extends Controller
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
 		
+		
 		if($encuesta->componenteAmbientalPst){
 			$encuesta->componenteAmbientalPst->delete();
 			$encuesta->actividadesAmbientalesPsts()->detach();
@@ -649,6 +725,32 @@ class SostenibilidadPstController extends Controller
 					$encuesta->energiasRenovablesPst()->attach($item,['otro' => $request->otroRenovable]);
 				}
 			}
+		}
+		
+		if($encuesta->numero_seccion == 2){
+			$encuesta->numero_seccion = 3;
+			$encuesta->save();
+			
+			Historial_Encuesta_Pst_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha creado la encuesta en la sección ambiental.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+			
+		}else{
+			Historial_Encuesta_Pst_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha editado la encuesta en la sección ambiental.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
 		}
 		
 		return ["success" => true];
@@ -804,7 +906,44 @@ class SostenibilidadPstController extends Controller
 		$encuesta->autorizacion = $request->autorizacion;
 		$encuesta->save();
 		
+		
+		if($encuesta->numero_seccion == 3){
+			$encuesta->numero_seccion = 4;
+			$encuesta->estado_encuesta_id = 3;
+			$encuesta->save();
+			
+			Historial_Encuesta_Pst_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 3,
+	    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha creado la encuesta en la sección económico.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+			
+		}else{
+			Historial_Encuesta_Pst_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 3,
+	    		'encuesta_pst_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha editado la encuesta en la sección económico.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+		}
+		
 		return ["success" => true];
+	}
+	
+	public function getEncuestas(){
+		return view('sostenibilidadPst.listadoEncuestas');
+	}
+	
+	public function getListarencuestas(){
+		$encuestas = ListadoEncuestasPst::all();
+		return ['encuestas' => $encuestas];
 	}
 	    
 }

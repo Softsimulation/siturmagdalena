@@ -53,7 +53,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
     /**
      * @var array
      */
-    protected $fillable = ['proveedores_rnt_id', 'nombre_contacto', 'lugar_encuesta', 'cargo', 'fecha_aplicacion', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion'];
+    protected $fillable = ['proveedores_rnt_id', 'nombre_contacto', 'lugar_encuesta', 'cargo', 'fecha_aplicacion', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion','estado_encuesta_id','numero_seccion','digitador_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -32,6 +32,7 @@ angular.module('sostenibilidadPst.configuracion', [])
     $scope.encuesta = {};
     sostenibilidadPstServi.getProveedoresRnt().then(function (data) {
         $scope.proveedores = data.proveedores;
+        $scope.encuestadores = data.encuestadores;
     }).catch(function () {
         swal("Error", "No se realizo la solicitud, reinicie la página");
     });
@@ -103,6 +104,7 @@ angular.module('sostenibilidadPst.configuracion', [])
     $scope.$watch('id', function () {
         sostenibilidadPstServi.CargarEditarEncuesta($scope.id).then(function (data) {
             $scope.proveedores = data.proveedores;
+            $scope.encuestadores = data.encuestadores;
             $scope.encuesta = data.encuesta;
             
             var split1 = data.encuesta.fecha_aplicacion.split(" ");

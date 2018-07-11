@@ -20,6 +20,7 @@ angular.module('sostenibilidadPst.socioCultural', [])
             $scope.esquemasAccesibles = data.esquemasAccesibles;
             $scope.beneficiosEsquema = data.beneficiosEsquema;
             $scope.tiposRiesgos = data.tiposRiesgos;
+            $scope.tipoProveedor = data.tipoProveedor;
             if(data.objeto != undefined){
                 $scope.encuesta = data.objeto;
             }
@@ -69,6 +70,7 @@ angular.module('sostenibilidadPst.socioCultural', [])
         $scope.encuesta.tiposDiscapacidad = $scope.tiposDiscapacidad;
         $scope.encuesta.tiposRiesgos = $scope.tiposRiesgos;
         $scope.encuesta.pst_id = $scope.id;
+        $scope.encuesta.tipoProveedor = $scope.tipoProveedor;
         
         
         $("body").attr("class", "charging");
