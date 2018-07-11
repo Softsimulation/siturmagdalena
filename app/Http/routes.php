@@ -31,6 +31,8 @@ Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
 
+Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
+
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
