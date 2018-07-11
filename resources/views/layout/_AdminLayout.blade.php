@@ -37,11 +37,14 @@
            height: 100%;
            width: 100%;
            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-       }
-       
+        }
+        
         body.charging { overflow: hidden; }
         body.charging .carga { display: block; }
-    
+        
+        html {
+            font-size: 16px;
+        }
         .banner {
             background-color: white;
             padding-top: 1em;
@@ -50,10 +53,9 @@
             text-align: center;
             font-weight: 700;
         }
-
-            .banner img {
-                height: 6em;
-            }
+        .banner img {
+            height: 6em;
+        }
 
         .title-section {
             background-color: dodgerblue;
@@ -182,40 +184,87 @@
             <h4>Resource.LabelPorFavorEspere</h4>
             <img src="{{asset('Content/image/logo.min.png')}}" width="200" />
         </div>
-    </div>
     
-    <header>
-        <div class="banner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-md-2">
-                        <img src="{{asset('Content/image/logo.png')}}" alt="Logo" />
-                    </div>
-                    <div class="col-xs-12 col-md-9">
-                        <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
-                    </div>
-                    <div class="col-xs-12 col-md-1">
-                        <div class="btn-group">
-                            <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/Temporada">Volver</a></li>
-                                <li class="divider"></li>
-                                <li id="log">
-                                    <!--
-                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                                    {
-                                        Html.AntiForgeryToken()
-
-                                        <a href="javascript:document.getElementById('logoutForm').submit()" style="color: white;font-size: 1.2em;"><span class="ion-android-person"></span> Resource.LabelCerrarSesion</a>
-                                    }
-                                    -->
-                                </li>
-
-                            </ul>
+    
+        <header>
+            <div class="banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-2">
+                            <img src="{{asset('Content/image/logo.png')}}" alt="Logo" />
+                        </div>
+                        <div class="col-xs-12 col-md-9">
+                            <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
+                        </div>
+                        <div class="col-xs-12 col-md-1">
+                            <div class="btn-group">
+                                <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/Temporada">Volver</a></li>
+                                    <li class="divider"></li>
+                                    <li id="log">
+                                        <!--
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            Html.AntiForgeryToken()
+    
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" style="color: white;font-size: 1.2em;"><span class="ion-android-person"></span> Resource.LabelCerrarSesion</a>
+                                        }
+                                        -->
+                                    </li>
+    
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+                
+           </div>    
+        </header>
+        
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{{secure_asset('/js/plugins/angular.min.js')}}"></script>
+        
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <!--<script src="{{secure_asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
+        <script src="{{secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>-->
+        
+        
+        <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
+        <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
+        
+        
+        <script>
+            $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
+        </script>
+       
+        <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/material.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>
+        
+        <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/selectjp.js')}}"></script>
+        <script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/object-table.js')}}"></script>
+        
+        <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+        <script src="{{asset('/js/dir-pagination.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+        
+        <script src="{{asset('/js/administrador/administrador.js')}}"></script>
+        <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
+        <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
+        <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
+        
+        <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
+        <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
 
         </div>
         <div class="title-section">
@@ -223,9 +272,7 @@
         </div>
      
     </header>
-    <div class="container" >
-        @yield('content')
-    </div>
+    
     <!--
     if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Digitador"))
     {
@@ -236,7 +283,11 @@
         </footer>
     }
     -->
-
+    
+    <div class="container" >
+        @yield('content')
+    </div>
+    
    
     <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -257,7 +308,8 @@
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/dir-pagination.js')}}"></script>
   
-    
+    <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
+    <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
     
     <script>
         $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });

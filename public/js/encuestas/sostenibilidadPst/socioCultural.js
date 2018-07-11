@@ -20,6 +20,10 @@ angular.module('sostenibilidadPst.socioCultural', [])
             $scope.esquemasAccesibles = data.esquemasAccesibles;
             $scope.beneficiosEsquema = data.beneficiosEsquema;
             $scope.tiposRiesgos = data.tiposRiesgos;
+            $scope.tipoProveedor = data.tipoProveedor;
+            if(data.objeto != undefined){
+                $scope.encuesta = data.objeto;
+            }
         }).catch(function () {
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
@@ -66,6 +70,7 @@ angular.module('sostenibilidadPst.socioCultural', [])
         $scope.encuesta.tiposDiscapacidad = $scope.tiposDiscapacidad;
         $scope.encuesta.tiposRiesgos = $scope.tiposRiesgos;
         $scope.encuesta.pst_id = $scope.id;
+        $scope.encuesta.tipoProveedor = $scope.tipoProveedor;
         
         
         $("body").attr("class", "charging");
@@ -80,7 +85,7 @@ angular.module('sostenibilidadPst.socioCultural', [])
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    //window.location = "/turismoreceptor/seccionestancia/"+data.encuesta.id;
+                    window.location = "/sostenibilidadpst/ambiental/"+$scope.id;
                 }, 1000);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");

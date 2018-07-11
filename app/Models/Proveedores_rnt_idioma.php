@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Proveedores_rnt_idioma extends Model
 {
+    public $timestamps = false;
+    
     /**
      * @var array
      */

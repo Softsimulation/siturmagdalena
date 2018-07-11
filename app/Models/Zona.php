@@ -15,4 +15,9 @@ class Zona extends Model
         return $this->hasMany('App\Models\Coordenadas_zona', 'zona_id');
     }
     
+    public function proveedores(){
+        return $this->hasMany('App\Models\Proveedores_rnt', 'zona_id');
+    }
+    
+    
 }

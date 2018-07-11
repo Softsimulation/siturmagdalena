@@ -287,7 +287,7 @@ class EncuestaDinamicaCtrl extends Controller
         $pregunta_idioma->pregunta = $request->pregunta;
         $pregunta_idioma->save();
         
-        if($request->tipoCampo==3 || $request->tipoCampo==5 || $request->tipoCampo==6 || $request->tipoCampo==7){
+        if($request->tipoCampo==3 || $request->tipoCampo==5 || $request->tipoCampo==6 || $request->tipoCampo==7 ){
                
             foreach($request->opciones as $item){   
                 $opcion = new Opciones_pregunta();
@@ -303,7 +303,7 @@ class EncuestaDinamicaCtrl extends Controller
             }
             
         }
-        else if($request->tipoCampo==8 || $request->tipoCampo==9){
+        else if($request->tipoCampo==8 || $request->tipoCampo==9 || $request->tipoCampo==10 || $request->tipoCampo==11){
             
             $idsOpcions = [];
             
@@ -675,17 +675,17 @@ class EncuestaDinamicaCtrl extends Controller
     }
     
     public function postGuardarencuestausuarios(Request $request){
-        
+        /*
         $validar = $this->vailidarGuardado($request);
         if(!$validar["success"]){
             return $validar;
         }
-        
+        */
         $encuesta = Encuestas_usuario::where([ ["id",$request->idEncuesta], ["estado",true] ])->first();
         
         foreach($request->preguntas as $pregunta){
             
-            if( $pregunta["tipo_campos_id"]==1 || $pregunta["tipo_campos_id"]==2 || $pregunta["tipo_campos_id"]==4 ){
+            if( $pregunta["tipo_campos_id"]==1 || $pregunta["tipo_campos_id"]==2 || $pregunta["tipo_campos_id"]==4 || $pregunta["tipo_campos_id"]==12){
                 Respuesta_pregunta::updateOrCreate(
                                                     [ "encuestado_id"=> $encuesta->id , "preguntas_id"=> $pregunta["id"] ], 
                                                     [ "estado"=>true, "respuesta"=>$pregunta["respuesta"] ]
@@ -703,6 +703,22 @@ class EncuestaDinamicaCtrl extends Controller
                     $encuesta->opcionesRespuestasSubPreguntas()->attach( $subPregunta["respuesta"] );
                 }
             }
+            
+            else if( $pregunta["tipo_campos_id"]==10 || $pregunta["tipo_campos_id"]==11 ){
+                
+                foreach($pregunta["sub_preguntas"] as $subPregunta){
+                    
+                    foreach(Opciones_sub_preguntas_has_sub_pregunta::where("sub_preguntas_id",$subPregunta["id"])->get() as $item){
+                        $item->opcionesRespuestas()->wherePivot('encuestas_usuarios_id', $encuesta->id)->detach();
+                    }
+                   
+                    foreach($subPregunta["opciones"] as $item){  
+                        $encuesta->opcionesRespuestasSubPreguntas()->attach( $item["id"], [ "respuesta"=> $item["respuesta"] ] );
+                    }
+                    
+                }
+            }
+            
             else{
                 //$encuesta->opcionesRespuestas()->where("preguntas_id", $pregunta["id"])->detach();
                 
@@ -748,7 +764,7 @@ class EncuestaDinamicaCtrl extends Controller
         
         $seccion = Secciones_encuesta::where("id",$idSeccion)
                                      ->with([ "preguntas"=>function($qr) use ($idIdioma){
-                                               $qr->where("es_visible",true)
+                                               $qr->where([ ["es_visible",true], ["estado",true] ])
                                                   ->with( [ 
                                                            "idiomas"=> function($qrr) use ($idIdioma) { $qrr->where("idiomas_id",$idIdioma)->select("id","preguntas_id","idiomas_id","pregunta"); }, 
                                                            "opciones"=>function($qrr) use ($idIdioma) { 
@@ -798,6 +814,26 @@ class EncuestaDinamicaCtrl extends Controller
                 foreach($pregunta->subPreguntas as $subPregunta){
                     $subPregunta["respuesta"] = Opciones_sub_preguntas_encuestado::join("opciones_sub_preguntas_has_sub_preguntas","opciones_sub_preguntas_has_sub_preguntas_id", "=" ,"opciones_sub_preguntas_has_sub_preguntas.id")
                                                                        ->where([ ["sub_preguntas_id",$subPregunta->id], ["encuestas_usuarios_id",$idEncuestado]  ])->lists('id')->toArray();
+                }
+            }
+            else if($pregunta->tipo_campos_id==10){
+                foreach($pregunta->subPreguntas as $subPregunta){
+                    foreach($subPregunta->opciones as $opcion){
+                    
+                        $opcion["respuesta"] = Opciones_sub_preguntas_encuestado::
+                                                    where([ ["opciones_sub_preguntas_has_sub_preguntas_id",$opcion->id], ["encuestas_usuarios_id",$idEncuestado] ])->pluck("respuesta")->first();
+                        $opcion["respuesta"] = $opcion["respuesta"] ? intval( $opcion["respuesta"] ) : null;
+                        
+                    }
+                }
+            }
+            else if($pregunta->tipo_campos_id==11){
+                foreach($pregunta->subPreguntas as $subPregunta){
+                    foreach($subPregunta->opciones as $opcion){
+                    
+                        $opcion["respuesta"] = Opciones_sub_preguntas_encuestado::
+                                                    where([ ["opciones_sub_preguntas_has_sub_preguntas_id",$opcion->id], ["encuestas_usuarios_id",$idEncuestado] ])->pluck("respuesta")->first();
+                    }
                 }
             }
             else{
