@@ -53,6 +53,12 @@ return [
             'root' => storage_path('app/public'),
             'visibility' => 'public',
         ],
+        
+        'multimedia-atraccion' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/atracciones',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',

@@ -32,7 +32,7 @@ class Actividad_Con_Idioma extends Model
      */
     public function actividade()
     {
-        return $this->belongsTo('App\Actividade', 'actividades_id');
+        return $this->belongsTo('App\Models\Actividad', 'actividades_id');
     }
 
     /**

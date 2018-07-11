@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,7 @@ class Categoria_Turismo_Con_Idioma extends Model
      */
     public function categoriaTurismo()
     {
-        return $this->belongsTo('App\CategoriaTurismo');
+        return $this->belongsTo('App\Models\Categoria_Turismo', 'categoria_turismo_id');
     }
 
     /**
@@ -39,6 +39,6 @@ class Categoria_Turismo_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }
