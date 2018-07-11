@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,7 +32,7 @@ class Destino_Con_Idioma extends Model
      */
     public function destino()
     {
-        return $this->belongsTo('App\Destino');
+        return $this->belongsTo('App\Models\Destino');
     }
 
     /**
@@ -40,6 +40,6 @@ class Destino_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }

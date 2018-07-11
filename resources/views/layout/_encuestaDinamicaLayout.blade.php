@@ -249,6 +249,8 @@
     <script src="{{asset('/js/encuestas/dinamica/serviPublic.js')}}"></script>
     <script src="{{asset('/js/encuestas/dinamica/appPublic.js')}}"></script>
     
+    
+    
     <script>
         $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>

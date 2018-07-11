@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,18 +25,19 @@ class Espacio_Alojamiento extends Model
      * @var string
      */
     protected $primaryKey = 'encuestas_pst_sostenibilidad_id';
-
+    
+    public $timestamps = false;
     /**
      * Indicates if the IDs are auto-incrementing.
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['numero_habitaciones'];
+    protected $fillable = ['numero_habitaciones','encuestas_pst_sostenibilidad_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -49,8 +50,8 @@ class Espacio_Alojamiento extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function habitacionesDiscapacidades()
+    public function tiposDiscapacidades()
     {
-        return $this->hasMany('App\HabitacionesDiscapacidade', null, 'encuestas_pst_sostenibilidad_id');
+        return $this->belongsToMany('App\Models\Tipo_Discapacidad', 'habitaciones_discapacidades', 'espacios_alojamiento_id','tipos_discapacidad_id')->withPivot('numero_habitacion','user_create','user_update')->withTimestamps();;
     }
 }

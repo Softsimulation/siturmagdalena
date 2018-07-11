@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,4 +30,5 @@ class Opcion_Persona_Destino extends Model
     {
         return $this->hasMany('App\PersonasDestinoConViajesTurismo');
     }
+    
 }

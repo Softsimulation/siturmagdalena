@@ -85,7 +85,7 @@
                         <select class="form-control" name="encuestador" ng-model="encuesta.Encuestador" ng-required="true">
                             <!--P2Select1. Presione aquí para seleccionar un encuestador-->
                             <option value="" disabled>Presione aquí para seleccionar un encuestador</option>
-                            <option ng-repeat="item in encuestadores" value="@{{item.id}}">@{{item.asp_net_user.username}}</option>
+                            <option ng-repeat="item in encuestadores" value="@{{item.id}}">@{{item.user.nombre}}</option>
                         </select>
                         <span class="text-danger" ng-show="DatosForm.$submitted || DatosForm.encuestador.$touched">
                             <!--P2Alert1. El campo encuestador es requerido.-->
