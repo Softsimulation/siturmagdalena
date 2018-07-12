@@ -124,7 +124,7 @@ class Casa_Sostenibilidad extends Model
      */
     public function componenteTecnico()
     {
-        return $this->hasOne('App\ComponenteTecnico', 'casas_sostenibilidad_id');
+        return $this->hasOne('App\Models\Componente_Tecnico', 'casas_sostenibilidad_id');
     }
 
     /**
@@ -132,7 +132,7 @@ class Casa_Sostenibilidad extends Model
      */
     public function sectoresTurismosSostenibilidads()
     {
-        return $this->hasMany('App\SectoresTurismosSostenibilidad');
+        return $this->belongsToMany('App\Models\Sectores_Turismo','sectores_turismos_sostenibilidad','casas_sostenibilidad_id','sectores_turismos_id')->withPivot('otro');
     }
 
     /**
@@ -140,7 +140,7 @@ class Casa_Sostenibilidad extends Model
      */
     public function sectoresEconomiaSostenibilidads()
     {
-        return $this->hasMany('App\SectoresEconomiaSostenibilidad');
+        return $this->belongsToMany('App\Models\Sectores_Economia','sectores_economia_sostenibilidad', 'casas_sostenibilidad_id' ,'sectores_economia_id')->withPivot('otro');
     }
 
     /**

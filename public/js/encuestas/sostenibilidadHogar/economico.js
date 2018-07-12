@@ -1,23 +1,22 @@
-angular.module('sostenibilidadPst.economico', [])
+angular.module('sostenibilidadHogar.economico', [])
 
-.controller('economicoController', ['$scope', 'sostenibilidadPstServi',function ($scope,sostenibilidadPstServi) {
+.controller('economicoController', ['$scope', 'sostenibilidadHogarServi',function ($scope,sostenibilidadHogarServi) {
     
     $scope.proveedor = {};
     $scope.encuesta = {
-        clasificacionesProveedor : [],
-        aspectosSeleccion : [],
-        beneficiosEconomicos : []
+        sectoresTurismo : [],
+        sectoresEconomia : []
     };
     
     $scope.$watch('id', function () {
         $("body").attr("class", "charging");
-        sostenibilidadPstServi.CargarEconomico($scope.id).then(function (data) {
-            $scope.proveedor = data.proveedor;
-            $scope.clasificacionesProveedor = data.clasificacionesProveedor;
-            $scope.aspectosSeleccion = data.aspectosSeleccion;
+        sostenibilidadHogarServi.getInfoEconomico($scope.id).then(function (data) {
+            $scope.sectoresTurismo = data.sectoresTurismo;
+            $scope.sectoresEconomia = data.sectoresEconomia;
             $scope.beneficios = data.beneficios;
             $scope.calificacionesFactor = data.calificacionesFactor;
-            $scope.beneficiosEconomicos = data.beneficiosEconomicos;
+            $scope.tiposRiesgos = data.tiposRiesgos;
+            $scope.criteriosCalificacion = data.criteriosCalificacion;
             if(data.objeto){
                 $scope.encuesta = data.objeto;
             }
@@ -30,24 +29,17 @@ angular.module('sostenibilidadPst.economico', [])
     
     $scope.validarOtro = function (sw) {
         if (sw == 1) {
-            var i = $scope.encuesta.clasificacionesProveedor.indexOf(14);
-            if ($scope.encuesta.otroClasificacion != null && $scope.encuesta.otroClasificacion != '') {
+            var i = $scope.encuesta.sectoresTurismo.indexOf(7);
+            if ($scope.encuesta.otroSectorTurismo != null && $scope.encuesta.otroSectorTurismo != '') {
                 if (i == -1) {
-                    $scope.encuesta.clasificacionesProveedor.push(14);
+                    $scope.encuesta.sectoresTurismo.push(7);
                 }
             }
         } else if (sw == 2) {
-            var i = $scope.encuesta.aspectosSeleccion.indexOf(9);
-            if ($scope.encuesta.otroSeleccion != null && $scope.encuesta.otroSeleccion != '') {
+            var i = $scope.encuesta.sectoresEconomia.indexOf(12);
+            if ($scope.encuesta.otroSectorEconomia != null && $scope.encuesta.otroSectorEconomia != '') {
                 if (i == -1) {
-                    $scope.encuesta.aspectosSeleccion.push(9);
-                }
-            }
-        } else if (sw == 3) {
-            var i = $scope.encuesta.beneficiosEconomicos.indexOf(12);
-            if ($scope.encuesta.otroEconomico != null && $scope.encuesta.otroEconomico != '') {
-                if (i == -1) {
-                    $scope.encuesta.beneficiosEconomicos.push(12);
+                    $scope.encuesta.sectoresEconomia.push(12);
                 }
             }
         }
@@ -55,16 +47,17 @@ angular.module('sostenibilidadPst.economico', [])
     
     $scope.guardar = function(){
         
-        if( !$scope.datosForm.$valid){
+        if( !$scope.datosForm.$valid || $scope.encuesta.sectoresTurismo.length == 0 || ($scope.encuesta.sectoresEconomia.length == 0 && $scope.encuesta.sectoresTurismo.indexOf(6) == -1 && $scope.encuesta.sectoresTurismo.length > 0 )  ){
             return;
         }
         
         
-        $scope.encuesta.pst_id = $scope.id;
+        $scope.encuesta.hogar_id = $scope.id;
         $scope.encuesta.beneficios = $scope.beneficios;
+        $scope.encuesta.tiposRiesgos = $scope.tiposRiesgos;
         
         $("body").attr("class", "charging");
-        sostenibilidadPstServi.guardarEconomico($scope.encuesta).then(function (data) {
+        sostenibilidadHogarServi.GuardarEconomico($scope.encuesta).then(function (data) {
             $("body").attr("class", "");
             if (data.success) {
                 swal({
@@ -75,7 +68,7 @@ angular.module('sostenibilidadPst.economico', [])
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    window.location = "/sostenibilidadpst/encuestas";
+                    window.location = "/sostenibilidadhogares/encuestas";
                 }, 1000);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");

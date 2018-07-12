@@ -79,16 +79,16 @@ angular.module('ambiental', [])
              $("body").attr("class", "cbp-spmenu-push");
             if(data.success){
                 swal("Éxito","Se ha guardado con exito","success");
-                // swal({
-                //      title: "Realizado",
-                //      text: "Se ha guardado satisfactoriamente la sección.",
-                //      type: "success",
-                //      timer: 1000,
-                //      showConfirmButton: false
-                //   });
-                //   setTimeout(function () {
-                //       window.location.href = "/turismoreceptor/seccionpercepcionviaje/" + $scope.id;
-                //     }, 1000);
+                swal({
+                     title: "Realizado",
+                     text: "Se ha guardado satisfactoriamente la sección.",
+                     type: "success",
+                     timer: 1000,
+                     showConfirmButton: false
+                  });
+                  setTimeout(function () {
+                      window.location.href = "/sostenibilidadhogares/economico/" + $scope.id;
+                    }, 1000);
             }else{
                 $scope.errores = data.errores;
                 swal("Error","Corrija los errores","error")

@@ -91,5 +91,38 @@ app.factory("sostenibilidadHogarServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        getInfoEconomico: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/sostenibilidadhogares/cargardatoseconomico/'+id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        GuardarEconomico: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/sostenibilidadhogares/guardareconomico',data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        CargarEncuestas: function () {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/sostenibilidadhogares/listarencuestas').success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

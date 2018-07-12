@@ -97,12 +97,14 @@ class OfertaEmpleoController extends Controller
     public function getCapacidadalimentos($id){
         return view('ofertaEmpleo.CapacidadAlimentos',array('id' => $id));
     }
+    
     public function getDatosagencia(){
         $servicios = Servicio_Agencia::all();
         //$servicios = (from servicio in conexion.servicios_agencias select new { id = servicio.id, nombre = servicio.nombre }).ToList();
         //return json.Serialize(servicios);
         return $servicios;
     }
+    
     public function getAgencia($id){
         $agencia = Encuesta::with(['viajesTurismos'=>function($q){
             $q->with(['viajesTurismosOtro','serviciosAgencias'=>function($r){

@@ -22,7 +22,7 @@ class Historial_Encuesta_Oferta extends Model
      * @var string
      */
     protected $table = 'historial_encuesta_oferta';
-    public $timestamps = false;
+    
 
     /**
      * @var array

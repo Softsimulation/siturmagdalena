@@ -331,25 +331,26 @@ class SostenibilidadPstController extends Controller
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
 		
+		//-----------------------------------------
 		if($encuesta->componenteSocialPst){
 			$encuesta->componenteSocialPst->delete();
-			
-			if($encuesta->proveedoresRnt->categoria->tipo_proveedores_id == 1){
-				$espaciosAlo = Espacio_Alojamiento::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->first();
-				$espaciosAlo->tiposDiscapacidades()->detach();
-				$encuesta->espaciosAlojamiento->delete();
-			}
-			
-			$res = Responsabilidad_Social::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->first();
-			if($res){$res->motivosResponsabilidadesPsts()->detach();}
-			Responsabilidad_Social::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->delete();
-			
-			$encuesta->accionesCulturalesPsts()->detach();
-			$encuesta->esquemasAccesibles()->detach();
-			$encuesta->beneficiosEsquemas()->detach();
-			
-			//Riesgo_Encuesta_Pst_Sostenibilidad::where('encuesta_pst_sostenibilidad_id',$encuesta->id)->delete();
 		}
+		if($encuesta->proveedoresRnt->categoria->tipo_proveedores_id == 1){
+			$espaciosAlo = Espacio_Alojamiento::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->first();
+			if($espaciosAlo){
+				$espaciosAlo->tiposDiscapacidades()->detach();	
+			}
+			Espacio_Alojamiento::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->delete();
+		}
+		
+		$res = Responsabilidad_Social::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->first();
+		if($res){$res->motivosResponsabilidadesPsts()->detach();}
+		Responsabilidad_Social::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->delete();
+		
+		$encuesta->accionesCulturalesPsts()->detach();
+		$encuesta->esquemasAccesibles()->detach();
+		$encuesta->beneficiosEsquemas()->detach();
+		//------------------------------------------
 		
 		$componenteSocial = new Componente_Social_Pst();
 		$componenteSocial->encuesta_pst_sostenibilidad_id = $encuesta->id;
@@ -433,6 +434,7 @@ class SostenibilidadPstController extends Controller
 			$riesgo = Riesgo_Encuesta_Pst_Sostenibilidad::where('encuesta_pst_sostenibilidad_id',$encuesta->id)->where('tipo_riesgo_id', $item['id'])->first();
 			if($riesgo){
 				$riesgo->criterios_calificacion_id = $item['califcacion'];
+				$riesgo->otro = $item['id'] == 8 && isset($item['otroRiesgo']) ? $item['otroRiesgo'] : null;
 				$riesgo->save();
 			}else{
 				Riesgo_Encuesta_Pst_Sostenibilidad::create([
@@ -614,18 +616,19 @@ class SostenibilidadPstController extends Controller
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
 		
-		
+		//----------------------------------------------------------------------------------
 		if($encuesta->componenteAmbientalPst){
 			$encuesta->componenteAmbientalPst->delete();
-			$encuesta->actividadesAmbientalesPsts()->detach();
-			$encuesta->programasConservacionPsts()->detach();
-			$encuesta->planesMitigacionPsts()->detach();
-			Informe_Gestion_Pst::where('encuestas_pst_sosteniblidad_id',$encuesta->id)->delete();
-			$encuesta->actividadesResiduosPsts()->detach();
-			$encuesta->accionesReducirEnergiaPsts()->detach();
-			Agua_Reciclada::where('encuesta_pst_sosteniblidad_id',$encuesta->id)->delete();
-			$encuesta->energiasRenovablesPst()->detach();
 		}
+		$encuesta->actividadesAmbientalesPsts()->detach();
+		$encuesta->programasConservacionPsts()->detach();
+		$encuesta->planesMitigacionPsts()->detach();
+		Informe_Gestion_Pst::where('encuestas_pst_sosteniblidad_id',$encuesta->id)->delete();
+		$encuesta->actividadesResiduosPsts()->detach();
+		$encuesta->accionesReducirEnergiaPsts()->detach();
+		Agua_Reciclada::where('encuesta_pst_sosteniblidad_id',$encuesta->id)->delete();
+		$encuesta->energiasRenovablesPst()->detach();
+		//----------------------------------------------------------------------------------
 		
 		$ambiental = new Componente_Ambiental_Pst();
 		$ambiental->encuesta_pst_sostenibilidad_id = $encuesta->id;
@@ -658,6 +661,7 @@ class SostenibilidadPstController extends Controller
 			$riesgo = Riesgo_Encuesta_Pst_Sostenibilidad::where('encuesta_pst_sostenibilidad_id',$encuesta->id)->where('tipo_riesgo_id', $item['id'])->first();
 			if($riesgo){
 				$riesgo->criterios_calificacion_id = $item['califcacion'];
+				$riesgo->otro = $item['id'] == 21 && isset($item['otroRiesgo']) ? $item['otroRiesgo'] : null;
 				$riesgo->save();
 			}else{
 				Riesgo_Encuesta_Pst_Sostenibilidad::create([
@@ -769,7 +773,7 @@ class SostenibilidadPstController extends Controller
     	$proveedor = $encuesta->proveedoresRnt;
     	$clasificacionesProveedor = Clasificacion_Proveedor::orderBy('id')->get();
     	$aspectosSeleccion = Aspecto_Seleccion_Proveedor::orderBy('id')->get();
-    	$beneficios = Beneficio::where('tipo_beneficio',true)->orderBy('id')->get();
+    	$beneficios = Beneficio::where('tipo_beneficio',true)->orderBy('peso')->get();
     	$calificacionesFactor = Calificacion_Factor::all();
     	$beneficiosEconomicos = Beneficio_Economico::all();
     	
@@ -790,8 +794,10 @@ class SostenibilidadPstController extends Controller
     		
     		foreach($beneficios as $item){
     			$beneficio = Beneficio_Economico_Temporada_Pst::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
-				$item['califcacion'] = $beneficio->calificacion_factores_id;
-    			$item['otroBeneficio'] = $beneficio->otro;
+				if($beneficio){
+					$item['califcacion'] = $beneficio->calificacion_factores_id;
+    				$item['otroBeneficio'] = $beneficio->otro;	
+				}
     		}
     		$objeto['beneficios'] = $beneficios;
     		
@@ -848,12 +854,14 @@ class SostenibilidadPstController extends Controller
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
 		
+		//----------------------------------------------------------------------
 		if($encuesta->componenteEconomicoPst){
 			$encuesta->componenteEconomicoPst->delete();
-			$encuesta->clasificacionesProveedoresPsts()->detach();
-			$encuesta->aspectosSeleccionPsts()->detach();
-			$encuesta->beneficiosEconomicosPsts()->detach();
 		}
+		$encuesta->clasificacionesProveedoresPsts()->detach();
+		$encuesta->aspectosSeleccionPsts()->detach();
+		$encuesta->beneficiosEconomicosPsts()->detach();
+		//----------------------------------------------------------------------
 		
 		$economico = new Componente_Economico_Pst();
 		$economico->encuestas_pst_sostenibilidad_id = $encuesta->id;
@@ -882,6 +890,7 @@ class SostenibilidadPstController extends Controller
 			$beneficio = Beneficio_Economico_Temporada_Pst::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
 			if($beneficio){
 				$beneficio->calificacion_factores_id = $item['califcacion'];
+				$beneficio->otro = ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null;
 				$beneficio->save();
 			}else{
 				Beneficio_Economico_Temporada_Pst::create([

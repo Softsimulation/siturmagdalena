@@ -1,4 +1,4 @@
-angular.module('oferta.alquilarTransporte', ["checklist-model"])
+angular.module('oferta.alquilarTransporte', ["checklist-model","ofertaService"])
 
 
 .controller('seccionAlquiler', function ($scope, ofertaServi) {
