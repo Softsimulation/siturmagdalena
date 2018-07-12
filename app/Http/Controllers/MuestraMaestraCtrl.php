@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
 
 use App\Http\Requests;
 
@@ -16,8 +17,13 @@ use App\Models\Municipio;
 use App\Models\Tipo_Proveedor;
 use App\Models\Categoria_Proveedor_Con_Idioma;
 use App\Models\Coordenadas_zona;
+use App\Models\Estado_proveedor;
+use App\Models\Muestra_proveedor;
+use App\Models\Sector;
 
+use DB;
 use Excel;
+
 
 
 class MuestraMaestraCtrl extends Controller
@@ -35,6 +41,17 @@ class MuestraMaestraCtrl extends Controller
         return "Error";
     }
     
+    public function getDetalleperiodo($id){
+        
+        $periodo = Periodos_medicion::find($id);
+        
+        if($periodo){
+            
+            return View("MuestraMaestra.DetallePeriodo", [ "periodo"=> $periodo ]);
+        }
+        
+        return "Error";
+    }
     
     public function getPeriodos(){
         return View("MuestraMaestra.listado");
@@ -53,8 +70,8 @@ class MuestraMaestraCtrl extends Controller
         
         return [
                 "proveedores"=> Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                               ->with([ "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
-                                               ->get(["id", "latitud","longitud","categoria_proveedores_id","estados_proveedor_id"]),
+                                               ->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
+                                               ->get(),
                 
                 "periodo"=> Periodos_medicion::where("id",$id)
                                              ->with([ "zonas"=>function($q){ $q->with(["encargados","coordenadas"]); } ])->first(),
@@ -69,7 +86,15 @@ class MuestraMaestraCtrl extends Controller
                                                                      $qq->where("idiomas_id",1)->select("id","categoria_proveedores_id","nombre");
                                                                 } ]); 
                                                            },
-                                            ])->select("id")->get()
+                                            ])->select("id")->get(),
+                "sectores"=> Sector::where("estado",true)->with([ 
+                                                                 "sectoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
+                                                                 "destino"=>function($q){ $q->with( ["destinoConIdiomas"=>function($qq){ $qq->where("idiomas_id",1); }] ); }
+                                                                ])->get(),
+                "estados"=> Estado_proveedor::get(),
+                
+                "municipios"=> Proveedores_rnt::join("municipios","municipios.id","=","municipio_id")->select('municipios.id','municipios.nombre')->distinct()->get()
+                
             ];
     }
     
@@ -165,39 +190,34 @@ class MuestraMaestraCtrl extends Controller
         
     }
     
-    public function postAgregarzona(Request $request){
+    public function postAgregarzona(Request $request){ 
         
         $validator = \Validator::make($request->all(), [
 			'periodo' => 'required|exists:periodos_mediciones,id',
-			'nombre' => 'required|max:250',
+			'sector_id' => 'required|exists:sectores,id',
+			'nombre' => 'required|unique:zonas,nombre,null,null,periodo_medicion_id,' .$request->periodo. '|max:250',
 			'encargados' => 'array|min:1',
 			'encargados.*' => 'exists:digitadores,id',
 			'coordenadas' => 'array|min:3',
 			'color' => 'required',
     	]);
        
-    	if($validator->fails()){
-    		return ["success"=>false,"errores"=>$validator->errors()];
-		}
-        /*
-        $zonas = Zona::where([ ["id","!=",$request->id], ["periodo_medicion_id",$request->periodo] ])->get();
+    	if($validator->fails()){ return ["success"=>false,"errores"=>$validator->errors()]; }
         
-        foreach($zonas as $zona){
-            
-            if( (floatval($zona->posicion_1)>=$request->posicion_1 && floatval($zona->posicion_3)<=$request->posicion_1) || 
-                (floatval($zona->posicion_1)>=$request->posicion_3 && floatval($zona->posicion_3)<=$request->posicion_3) ||
-                ($request->posicion_1>=floatval($zona->posicion_1) && $request->posicion_3<=floatval($zona->posicion_3)) ){
-                 
-                    if( (floatval($zona->posicion_2)>=$request->posicion_2 && floatval($zona->posicion_4)<=$request->posicion_2) || 
-                        (floatval($zona->posicion_2)>=$request->posicion_4 && floatval($zona->posicion_4)<=$request->posicion_4) ||
-                        ($request->posicion_2>=floatval($zona->posicion_2) && $request->posicion_4<=floatval($zona->posicion_4)) ){
-                        return ["success"=>false, "Error"=>"La zona que intestas guardar, no debe colisionar con otra zona." ];
-                    }   
-            }
+        $polygono = "";
+        foreach($request->coordenadas as $coordenada){ 
+            $polygono = $polygono . $coordenada["x"]  ." ". $coordenada["y"] .",";
         }
-        */
+        $polygono = $polygono . $request->coordenadas[0]["x"]  ." ". $request->coordenadas[0]["y"];
+        
+        $validarZonas = new Collection( DB::select("SELECT *from interseccion_coordenadas(?,?,?)", array( "POLYGON(( $polygono ))" , -1 , $request->periodo )) );
+        if( $validarZonas[0]->interseccion_coordenadas ){
+    		return ["success"=>false,"error"=>"La zona que intentas guardar se intersecta con otra del mismo periodo." ];
+		}
+        
         $zona = new Zona();
         $zona->periodo_medicion_id = $request->periodo;
+        $zona->sector_id = $request->sector_id;
         $zona->nombre = $request->nombre;
         $zona->color = $request->color;
         $zona->user_update = "ADMIN";
@@ -216,11 +236,12 @@ class MuestraMaestraCtrl extends Controller
         
     }
     
-    public function postEditarzona(Request $request){
+    public function postEditarzona(Request $request){ 
         
         $validator = \Validator::make($request->all(), [
 			'id' => 'required|exists:zonas,id',
-			'nombre' => 'required|max:250',
+			'sector_id' => 'required|exists:sectores,id',
+			'nombre' => 'required|unique:zonas,nombre,' .$request->id. ',id,periodo_medicion_id,' .$request->periodo_medicion_id. '|max:250',
 			'encargados' => 'array|min:1',
 			'encargados.*' => 'exists:digitadores,id',
 			'nombre' => 'required|max:250',
@@ -229,7 +250,9 @@ class MuestraMaestraCtrl extends Controller
        
     	if($validator->fails()){ return ["success"=>false,"errores"=>$validator->errors()];	}
 		
+		
         $zona = Zona::find($request->id);
+        $zona->sector_id = $request->sector_id;
         $zona->nombre = $request->nombre;
         $zona->color = $request->color;
         $zona->user_update = "ADMIN";
@@ -255,6 +278,41 @@ class MuestraMaestraCtrl extends Controller
         return [ "success"=>false ];
     }
     
+    public function postEditarposicionzona(Request $request){
+        
+        $validator = \Validator::make($request->all(), [
+			'id' => 'required|exists:zonas,id',
+			'coordenadas' => 'array|min:3',
+    	]);
+       
+    	if($validator->fails()){ return ["success"=>false,"errores"=>$validator->errors()]; }
+		
+		
+		$zona = Zona::find($request->id);
+		
+		$polygono = "";
+        foreach($request->coordenadas as $coordenada){ 
+            $polygono = $polygono . $coordenada[0]  ." ". $coordenada[1] .",";
+        }
+        $polygono = $polygono . $request->coordenadas[0][0] ." ". $request->coordenadas[0][1];
+        
+        $validarZonas = new Collection( DB::select("SELECT *from interseccion_coordenadas(?,?,?)", array( "POLYGON(( $polygono ))" , $zona->id , $zona->periodo_medicion_id )) );
+        if( $validarZonas[0]->interseccion_coordenadas ){
+    		return ["success"=>false,"error"=>"La zona que intentas guardar se intersecta con otra del mismo periodo." ];
+		}
+        
+        
+        $zona->user_update = "ADMIN";
+        $zona->coordenadas()->delete();
+        
+        foreach($request->coordenadas as $coordenada){ 
+            $zona->coordenadas()->save( new Coordenadas_zona([ "zona_id"=>$zona->id, "x"=>$coordenada[0], "y"=>$coordenada[1] ]) );
+        }
+        
+        return [ "success"=> true, "zona"=> Zona::where("id",$zona->id)->with(["encargados","coordenadas"])->first() ];
+        
+    }
+    
     
     public function getExcel($id){ 
 
@@ -278,6 +336,9 @@ class MuestraMaestraCtrl extends Controller
                 }
                 
             } 
+            
+            $zona->es_generada = true;
+            $zona->save();
             
             Excel::create('Periodo', function($excel) use($proveedoresAux, $zona) {
     
@@ -402,5 +463,131 @@ class MuestraMaestraCtrl extends Controller
         return $list;
     }
     
+    
+    
+    ////////////////////////////////////////////////////
+    
+    public function getLlenarinfozona($id){
+        $zona = Zona::find($id);
+        if($zona){
+            return View( "MuestraMaestra.llenarInfoZona", [ "zona"=> $id, "periodo"=>$zona->periodo_medicion_id ] );
+        }
+        return "Error zona no encontrada"; 
+    }
+    
+    
+    public function getDatazonallenarinfo($id){
+       
+        $zona = Zona::where("id",$id)->with("encargados")->first();
+        
+        if($zona){
+        
+            $proveedores = Proveedores_rnt::with([ "estadop", "categoria" ])->get();
+            $proveedoresAux = [];
+            $polygon = Coordenadas_zona::where("zona_id",$zona->id)->get(['x as lat','y as lng'])->toArray();
+        
+            foreach($proveedores as $proveedor){
+            
+                $point = [ "lat"=>$proveedor->latitud, "lng"=>$proveedor->longitud ];
+                $validacion = \GeometryLibrary\PolyUtil::containsLocation($point,$polygon);
+                
+                if( $validacion ){
+                    
+                    $proveedor["muestra"] = Muestra_proveedor::where([ ["zona_id",$zona->id], ["proveedor_rnt_id",$proveedor->id] ])->first();
+                    
+                    $proveedor["nombreCategoria"] =  Categoria_Proveedor_Con_Idioma::where("categoria_proveedores_id",$proveedor->categoria_proveedores_id )->pluck("nombre")->first();
+                                                                 
+                    $proveedor["tipo"] = Tipo_Proveedor::join("tipo_proveedores_con_idiomas","tipo_proveedores.id","=","tipo_proveedores_id")
+                                                       ->where("tipo_proveedores.id",$proveedor->categoria->tipo_proveedores_id )->pluck("nombre")->first();
+                    array_push($proveedoresAux, $proveedor );
+                }
+                
+            } 
+            
+            
+            return [ 
+                      "success"=>true, 
+                      "zona"=>$zona, 
+                      "proveedores"=>$proveedoresAux,
+                      "tiposProveedores"=>Tipo_Proveedor::with([ 
+                                                       "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1)->select("id","tipo_proveedores_id","nombre"); },
+                                                       "categoriaProveedores"=>function($q){ 
+                                                           $q->select("id","tipo_proveedores_id")
+                                                              ->with([ "categoriaProveedoresConIdiomas"=>function($qq){ 
+                                                                     $qq->where("idiomas_id",1)->select("id","categoria_proveedores_id","nombre");
+                                                                } ]); 
+                                                           },
+                                            ])->select("id")->get(),
+                        "estados"=> Estado_proveedor::get()
+                    ];
+        }
+
+        return ["success"=>false];
+    }
+    
+    
+    public function postGuardarinfozona(Request $request){
+        
+        foreach($request->proveedores as $item){
+            
+            $muestra = Muestra_proveedor::where([ ["zona_id",$request->zona], ["proveedor_rnt_id",$item["id"]] ])->first();
+            
+            if( !$muestra ){
+                $muestra = new Muestra_proveedor();
+                $muestra->zona_id = $request->zona;
+                $muestra->proveedor_rnt_id = $item["id"];
+                $muestra->user_create = "BRCC";
+                $muestra->estado = true;
+            }
+            
+            $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
+            $muestra->rnt = $item["muestra"]["rnt"];
+            $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
+            $muestra->direccion = $item["muestra"]["direccion"];
+            $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
+            $muestra->observaciones = $item["muestra"]["observaciones"];
+            $muestra->user_update = "BRCC";
+            $muestra->save();
+        }
+        
+        return [ "success"=>true ];
+    }
+    
+    public function getExcelinfozona($id){
+        
+        $proveedores = Muestra_proveedor::where("zona_id",$id)->with([ "estadop", "proveedor"=>function($q){ $q->with("estadop"); } ])->get();
+        //return View("MuestraMaestra.formatoDescargaInformacion", [ "proveedores"=> $proveedores ]);
+        Excel::create('Data', function($excel) use($proveedores) {
+    
+                    $excel->sheet('data', function($sheet) use($proveedores) {
+                        $sheet->setAutoFilter('A1:O1');
+                        $sheet->loadView('MuestraMaestra.formatoDescargaInformacionZona', [ 'proveedores'=> $proveedores ] );
+                    });
+    
+            })->export('xls');
+        
+    }
+    
+    
+    ///////////////////////////////////////////////////
+    
+    
+    public function getExcelinfoperiodo($id){
+        
+        $proveedores = Muestra_proveedor::whereHas('zona',function ($q) use($id){  $q->where( 'periodo_medicion_id', $id); })
+                                        ->with([ "estadop", "proveedor"=>function($q){ $q->with(["municipio","estadop"]); } ])
+                                        ->get();
+                                   
+        //return View("MuestraMaestra.formatoDescargaInformacionPeriodo", [ "proveedores"=> $proveedores ]);
+        Excel::create('Data', function($excel) use($proveedores) {
+    
+                    $excel->sheet('data', function($sheet) use($proveedores) {
+                        $sheet->setAutoFilter('A1:O1');
+                        $sheet->loadView('MuestraMaestra.formatoDescargaInformacionPeriodo', [ 'proveedores'=> $proveedores ] );
+                    });
+    
+            })->export('xls');
+        
+    }
     
 }

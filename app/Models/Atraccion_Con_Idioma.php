@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +19,12 @@ use Illuminate\Database\Eloquent\Model;
 class Atraccion_Con_Idioma extends Model
 {
     /**
+     * The timestamps.
+     * 
+     * @var bool
+     */   
+    public $timestamps = false;
+    /**
      * The table associated with the model.
      * 
      * @var string
@@ -35,7 +41,7 @@ class Atraccion_Con_Idioma extends Model
      */
     public function atraccione()
     {
-        return $this->belongsTo('App\Atraccione', 'atracciones_id');
+        return $this->belongsTo('App\Models\Atraccione', 'atracciones_id');
     }
 
     /**
@@ -43,6 +49,6 @@ class Atraccion_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }

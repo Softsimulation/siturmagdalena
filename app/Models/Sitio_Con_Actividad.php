@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,7 @@ class Sitio_Con_Actividad extends Model
      */
     public function actividade()
     {
-        return $this->belongsTo('App\Actividade', 'actividades_id');
+        return $this->belongsTo('App\Models\Actividade', 'actividades_id');
     }
 
     /**
@@ -38,6 +38,6 @@ class Sitio_Con_Actividad extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
     }
 }

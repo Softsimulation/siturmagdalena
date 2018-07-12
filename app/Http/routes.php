@@ -31,11 +31,15 @@ Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
 
+Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
+
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
+
+Route::controller('/importarRnt','ImportacionRntController');
 
 //Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 

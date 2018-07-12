@@ -237,7 +237,7 @@
                        <ui-select-choices repeat="pais.id as pais in (paises| filter: $select.search)">
                            <span ng-bind="pais.paises_con_idiomas[0].nombre" title="@{{pais.paises_con_idiomas[0].nombre}}"></span>
                        </ui-select-choices>
-                   </ui-select>
+                    </ui-select>
                     <!--<select ng-disabled="sw == 3" name="pais" required ng-model="departamento.pais_id" ng-options="pais.id as pais.paises_con_idiomas[0].nombre for pais in paises" class="form-control">-->
                     <!--    <option value="">Seleccione un país</option>-->
                     <!--</select>-->

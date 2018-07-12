@@ -1,5 +1,5 @@
 
-var app = angular.module('encuestaSostenibilidadPst', ['ADM-dateTimePicker','ui.select','checklist-model','angularUtils.directives.dirPagination','sostenibilidadPstService','sostenibilidadPst.configuracion','sostenibilidadPst.socioCultural'])
+var app = angular.module('encuestaSostenibilidadPst', ['ADM-dateTimePicker','ui.select','checklist-model','angularUtils.directives.dirPagination','sostenibilidadPstService','sostenibilidadPst.configuracion','sostenibilidadPst.socioCultural','sostenibilidadPst.ambiental','sostenibilidadPst.economico'])
 
 
 app.filter('range', function() {

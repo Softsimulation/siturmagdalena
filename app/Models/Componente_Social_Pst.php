@@ -45,12 +45,12 @@ class Componente_Social_Pst extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['criterios_calificacion_id', 'trato_general', 'respetan_normas', 'ofrece_informacion', 'nivel_importacia', 'responsabilidad_social', 'espacios_accesibles', 'conoce_herramienta_tic', 'implementa_herramienta_tic', 'contribucion_turismo', 'user_create', 'estado', 'user_update', 'updated_at', 'created_at'];
+    protected $fillable = ['criterios_calificacion_id', 'trato_general', 'respetan_normas', 'ofrece_informacion', 'nivel_importancia', 'responsabilidad_social', 'espacios_accesibles', 'conoce_herramienta_tic', 'implementa_herramienta_tic', 'contribucion_turismo', 'user_create', 'estado', 'user_update', 'updated_at', 'created_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

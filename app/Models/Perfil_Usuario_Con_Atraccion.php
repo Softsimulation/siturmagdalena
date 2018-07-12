@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,7 @@ class Perfil_Usuario_Con_Atraccion extends Model
      */
     public function atraccione()
     {
-        return $this->belongsTo('App\Atraccione', 'atracciones_id');
+        return $this->belongsTo('App\Models\Atraccione', 'atracciones_id');
     }
 
     /**
@@ -38,6 +38,6 @@ class Perfil_Usuario_Con_Atraccion extends Model
      */
     public function perfilesUsuario()
     {
-        return $this->belongsTo('App\PerfilesUsuario', 'perfiles_usuarios_id');
+        return $this->belongsTo('App\Models\Perfil_Usuario', 'perfiles_usuarios_id');
     }
 }

@@ -243,7 +243,7 @@
                     }      
                 }    
             }
-            else if( pregunta.tipo_campos_id==8 || pregunta.tipo_campos_id==9 ){
+            else if( pregunta.tipo_campos_id==8 || pregunta.tipo_campos_id==9 || pregunta.tipo_campos_id==10 || pregunta.tipo_campos_id==11 ){
                 for(var i=0; i<pregunta.sub_preguntas.length ; i++ ){
                     for(var j=0; j<pregunta.sub_preguntas[i].idiomas.length ; j++ ){
                         if(pregunta.sub_preguntas[i].idiomas[j].idiomas_id==preguntaIdioma.idiomas_id){
@@ -287,7 +287,7 @@
         $scope.getSubPreguntas = function(p){
             
             var x = [];
-            if( p.tipo_campos_id==8 || p.tipo_campos_id==9 ){
+            if( p.tipo_campos_id==8 || p.tipo_campos_id==9 || p.tipo_campos_id==10 || p.tipo_campos_id==11 ){
                 for(var i=0; i<p.sub_preguntas.length ;i++ ){
                     x.push({ idSubPregunta : p.sub_preguntas[i].id });
                 }    
@@ -299,7 +299,7 @@
         $scope.getOpcionesSubPreguntas = function(p){
             
             var x = [];
-            if( p.tipo_campos_id==8 || p.tipo_campos_id==9 ){
+            if( p.tipo_campos_id==8 || p.tipo_campos_id==9 || p.tipo_campos_id==10 || p.tipo_campos_id==11 ){
                 for(var i=0; i<p.opciones_sub_preguntas.length ;i++ ){
                     x.push({ idOpcionSubPregunta : p.opciones_sub_preguntas[i].id });
                 }    

@@ -24,7 +24,7 @@ class Encuestas_usuario extends Model
     
     public function opcionesRespuestasSubPreguntas()
     {
-        return $this->belongsToMany('App\Models\EncuestaDinamica\Opciones_sub_preguntas_has_sub_pregunta', 'opciones_sub_preguntas_encuestados', 'encuestas_usuarios_id', 'opciones_sub_preguntas_has_sub_preguntas_id');
+        return $this->belongsToMany('App\Models\EncuestaDinamica\Opciones_sub_preguntas_has_sub_pregunta', 'opciones_sub_preguntas_encuestados', 'encuestas_usuarios_id', 'opciones_sub_preguntas_has_sub_preguntas_id')->withPivot('respuesta');;
     }
     
 }

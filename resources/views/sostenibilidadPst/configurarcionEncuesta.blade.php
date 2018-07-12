@@ -96,15 +96,38 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <ui-select id="establecimiento"  name="establecimiento" ng-model="encuesta.establecimiento"  ng-required="true">
-                                <ui-select-match placeholder="Seleccione establecimiento">@{{item.nombre}}</ui-select-match>
+                                <ui-select-match placeholder="Seleccione establecimiento">@{{$select.selected.razon_social}}</ui-select-match>
                                 <ui-select-choices repeat="item as item in proveedores | filter:$select.search">
-                                    @{{item.nombre}}
+                                    @{{item.razon_social}}
                                 </ui-select-choices>
                             </ui-select>
                             <span ng-show="datosForm.$submitted || datosForm.establecimiento.$touched">
                                 <span class="label label-danger" ng-show="datosForm.establecimiento.$error.required">*El campo es requerido</span>
                             </span>
-                            @{{encuesta.establecimiento}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading p1">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Encuestador</b></h3>
+            </div>
+            <div class="panel-footer"><b>Seleccione encuestador</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <ui-select id="digitador_id"  name="digitador_id" ng-model="encuesta.digitador_id"  ng-required="true">
+                                <ui-select-match placeholder="Seleccione encuestador">@{{$select.selected.user.nombre}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in encuestadores | filter:$select.search">
+                                    @{{item.user.nombre}}
+                                </ui-select-choices>
+                            </ui-select>
+                            <span ng-show="datosForm.$submitted || datosForm.digitador_id.$touched">
+                                <span class="label label-danger" ng-show="datosForm.digitador_id.$error.required">*El campo es requerido</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -146,7 +169,7 @@
                         <div class="form-group">
                             <label for="email" class="col-xs-12 control-label">Email</label>
                             <div class="col-xs-12">
-                                <input type="text" class="form-control" id="email" name="email" value="@{{encuesta.establecimiento.proveedores_rnt.email}}" placeholder="No ingresado" readonly>
+                                <input type="text" class="form-control" id="email" name="email" value="@{{encuesta.establecimiento.email}}" placeholder="No ingresado" readonly>
                             </div>
                         </div>
                     </div>
@@ -154,7 +177,7 @@
                         <div class="form-group">
                             <label for="celular" class="col-xs-12 control-label">Celular</label>
                             <div class="col-xs-12">
-                                <input type="text" class="form-control" id="celular" name="celular" value="@{{encuesta.establecimiento.proveedores_rnt.celular}}" placeholder="No ingresado" readonly>
+                                <input type="text" class="form-control" id="celular" name="celular" value="@{{encuesta.establecimiento.celular}}" placeholder="No ingresado" readonly>
                             </div>
                         </div>
                     </div>
@@ -162,7 +185,7 @@
                         <div class="form-group">
                             <label for="telefono" class="col-xs-12 control-label">Teléfono</label>
                             <div class="col-xs-12">
-                                <input type="text" class="form-control" id="telefono" name="telefono" value="@{{encuesta.establecimiento.proveedores_rnt.telefono}}" placeholder="No ingresado" readonly>
+                                <input type="text" class="form-control" id="telefono" name="telefono" value="@{{encuesta.establecimiento.telefono}}" placeholder="No ingresado" readonly>
                             </div>
                         </div>
                     </div>

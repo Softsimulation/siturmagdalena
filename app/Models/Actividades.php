@@ -67,11 +67,11 @@ class Actividades extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function sitiosConActividades()
     {
-        return $this->hasMany('App\SitiosConActividade', 'actividades_id');
+        return $this->belongsToMany('App\Models\Sitio', 'sitios_con_actividades', 'actividades_id', 'sitios_id');
     }
 
     /**

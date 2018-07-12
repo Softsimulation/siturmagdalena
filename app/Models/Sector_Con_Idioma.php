@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,7 @@ class Sector_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 
     /**
@@ -39,6 +39,6 @@ class Sector_Con_Idioma extends Model
      */
     public function sectore()
     {
-        return $this->belongsTo('App\Sectore', 'sectores_id');
+        return $this->belongsTo('App\Models\Sector', 'sectores_id');
     }
 }

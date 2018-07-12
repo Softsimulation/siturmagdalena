@@ -1083,6 +1083,7 @@ class OfertaEmpleoController extends Controller
         
         return [ "success"=>true ];
     }
+    
     public function postGuardarofertaalimentos(Request $request)
     {
         //return $request->all();

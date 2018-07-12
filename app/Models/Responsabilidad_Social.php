@@ -37,12 +37,12 @@ class Responsabilidad_Social extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['anio_compromiso', 'anio_normas', 'user_update', 'created_at', 'user_create', 'estado', 'updated_at'];
+    protected $fillable = ['encuestas_pst_sostenibilidad_id','anio_compromiso', 'anio_normas', 'user_update', 'created_at', 'user_create', 'estado', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -57,6 +57,6 @@ class Responsabilidad_Social extends Model
      */
     public function motivosResponsabilidadesPsts()
     {
-        return $this->belongsToMany('App\Models\Motivo_Responsabilidad', 'motivos_responsabildades_pst', 'responsabilidades_sociales_id','motivos_responsabilidades_id')->withPivot('otro');
+        return $this->belongsToMany('App\Models\Motivo_Responsabilidad', 'motivos_responsabilidades_pst', 'responsabilidades_sociales_id','motivos_responsabilidades_id')->withPivot('otro');
     }
 }
