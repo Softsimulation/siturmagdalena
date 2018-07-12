@@ -74,7 +74,18 @@ app.factory("usuarioServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-        
+        envioCorreos: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/email/enviocorreooferta', data)
+            .success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
         
     }
 }]);

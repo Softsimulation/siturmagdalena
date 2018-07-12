@@ -47,7 +47,7 @@
 @section('Progreso', '30%')
 
 @section('NumSeccion', '30%')
-
+@section('app','ng-app="ofertaempleo"')
 @section('controller','ng-controller="caracterizacionAlimentosCtrl"')
 
 @section('content')

@@ -47,7 +47,7 @@
 @section('Progreso', '50%')
 
 @section('NumSeccion', '50%')
-
+@section('app','ng-app="ofertaempleo"')
 @section('controller','ng-controller="ofertaAgenciaViajesCtrl"')
 
 @section('content') 

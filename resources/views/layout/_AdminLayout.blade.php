@@ -21,6 +21,9 @@
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
+    <link href="{{asset('/css/fileinput.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/fileinput-rtl.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/theme.min.css')}}" media="all" rel="stylesheet" type="text/css" />
    
         
     @yield('estilos')
@@ -290,7 +293,7 @@
     
    
     <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
@@ -312,7 +315,7 @@
     <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
     
     <script>
-        $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
+        $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>
 
     <script>  $.material.init(); </script>

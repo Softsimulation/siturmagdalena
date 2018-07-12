@@ -29,6 +29,13 @@ use Illuminate\Database\Eloquent\Model;
 class Sitio extends Model
 {
     /**
+     * Indicates if the IDs are auto-incrementing.
+     * 
+     * @var bool
+     */
+    public $incrementing = true;
+    
+    /**
      * @var array
      */
     protected $fillable = ['sectores_id', 'tipo_sitios_id', 'latitud', 'longitud', 'direccion', 'created_at', 'updated_at', 'user_create', 'user_update', 'estado'];
@@ -86,15 +93,15 @@ class Sitio extends Model
      */
     public function sitiosParaEncuestas()
     {
-        return $this->hasMany('App\SitiosParaEncuesta', 'sitios_id');
+        return $this->hasMany('App\Models\Sitio_Para_Encuesta', 'sitios_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function sitiosConActividades()
     {
-        return $this->hasMany('App\SitiosConActividade', 'sitios_id');
+        return $this->belongsToMany('App\Models\Sitio', 'sitios_con_actividades', 'sitios_id', 'actividades_id');
     }
 
     /**

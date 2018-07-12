@@ -203,7 +203,7 @@ class Idioma extends Model
      */
     public function sitiosConIdiomas()
     {
-        return $this->hasMany('App\SitiosConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\Sitio_Con_Idioma', 'idiomas_id');
     }
 
     /**

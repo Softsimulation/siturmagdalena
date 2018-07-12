@@ -44,7 +44,7 @@ class Tipo_Atraccion extends Model
      */
     public function atraccionesConTipos()
     {
-        return $this->hasMany('App\AtraccionesConTipo', 'tipo_atracciones_id');
+        return $this->belongsToMany('App\Models\Atracciones', 'atracciones_con_tipo', 'tipo_atracciones_id', 'atracciones_id');
     }
 
     /**
