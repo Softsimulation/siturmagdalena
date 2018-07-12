@@ -254,14 +254,16 @@
                 <form novalidate role="form" name="multimediaForm">
                     <div class="row">
                         <h4><span class="text-error">*</span> Imagen de portada</h4>
-                        <div class="col-sm-6">
-                            <input id="portadaIMG" name="portadaIMG" type="file" accept="image/*">
+                        <div class="col-sm-12">
+                            <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                         </div>
                     </div>
+                    <div>
                         <h4>Subir imágenes</h4>
-                        <div class="file-loading">
-                            <input style="width: 800px;" id="imagenes" name="imagenes" type="file" accept="image/*" multiple>
+                        <div class="col-sm-12">
+                            <file-input ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
                         </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 form-group">
                             <label for="video_promocional"><h4>Video promocional</h4></label>
@@ -366,4 +368,5 @@
 <script src="{{asset('/js/plugins/purify.min.js')}}"></script>
 <script src="{{asset('/js/plugins/locales/es.js')}}"></script>
 <script src="{{asset('/js/plugins/theme.min.js')}}"></script>
+<script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
 @endsection
