@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,7 +48,7 @@ class Proveedor extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
     }
 
     /**
@@ -96,7 +96,7 @@ class Proveedor extends Model
      */
     public function proveedoresConIdiomas()
     {
-        return $this->hasMany('App\ProveedoresConIdioma', 'proveedores_id');
+        return $this->hasMany('App\Models\Proveedor_Con_Idioma', 'proveedores_id');
     }
 
     /**

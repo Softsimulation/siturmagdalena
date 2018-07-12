@@ -63,3 +63,4 @@ Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 Route::controller('/usuario','UsuarioController');
+Route::controller('/email','EmailController');

@@ -254,7 +254,8 @@
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/dir-pagination.js')}}"></script>
   
-    
+    <script src="{{asset('/js/usuarios/usuarios.js')}}" type="text/javascript"></script>
+    <script src="{{asset('/js/services/usuarioServices.js')}}" type="text/javascript"></script>
     
     <script>
         $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });

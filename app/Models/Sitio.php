@@ -86,7 +86,7 @@ class Sitio extends Model
      */
     public function sitiosParaEncuestas()
     {
-        return $this->hasMany('App\SitiosParaEncuesta', 'sitios_id');
+        return $this->hasMany('App\Models\Sitio_Para_Encuesta', 'sitios_id');
     }
 
     /**
