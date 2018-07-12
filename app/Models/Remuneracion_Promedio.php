@@ -13,19 +13,26 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $personal_permanente
  * @property int $aprendiz
  */
-class Empleado_Vinculacion extends Model
+class Remuneracion_Promedio extends Model
 {
     /**
      * The table associated with the model.
      * 
      * @var string
      */
-    protected $table = 'empleados_vinculacion';
+    protected $table = 'remuneracion_promedio';
+
 
     /**
      * @var array
      */
-    protected $fillable = ['encuestas_id', 'contrato_direto', 'personal_agencia', 'personal_permanente', 'aprendiz'];
+    protected $fillable = ['encuesta_id','valor'];
+
+   
+   protected $casts = [
+       'valor' => 'float',
+
+   ];
  public $timestamps = false;
      
     /**
@@ -33,6 +40,6 @@ class Empleado_Vinculacion extends Model
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuesta_id');
     }
 }

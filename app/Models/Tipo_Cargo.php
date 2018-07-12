@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,7 +29,7 @@ class Tipo_Cargo extends Model
      */
     public function asignacionesSalariales()
     {
-        return $this->hasMany('App\AsignacionesSalariale', 'tipos_cargos_id');
+        return $this->hasMany('App\Models\AsignacionesSalariale', 'tipos_cargos_id');
     }
 
     /**
@@ -37,6 +37,6 @@ class Tipo_Cargo extends Model
      */
     public function dominiosingles()
     {
-        return $this->hasMany('App\Dominiosingle', 'tipos_cargos_id');
+        return $this->hasMany('App\Models\Dominiosingle', 'tipos_cargos_id');
     }
 }

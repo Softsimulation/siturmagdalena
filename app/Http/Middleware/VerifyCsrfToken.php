@@ -14,7 +14,7 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         '/turismointerno/barrios',
         '/turismointerno/hogar',
-        '/turismointerno/datoshogar'
-        
+        '/turismointerno/datoshogar',
+        '/*'
     ];
 }
