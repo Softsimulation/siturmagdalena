@@ -20,21 +20,23 @@ class Transporte extends Model
      * @var array
      */
     protected $fillable = ['encuestas_id', 'tipos_transporte_oferta_id', 'numero_vehiculos', 'personas'];
+    public $timestamps = false;
+     public $incrementing = false;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tipoTransporteOfertum()
+    public function tipoTransporteOferta()
     {
-        return $this->belongsTo('App\TipoTransporteOfertum', 'tipos_transporte_oferta_id');
+        return $this->belongsTo('App\Models\Tipo_Transporte_Oferta', 'tipos_transporte_oferta_id');
     }
 
     /**

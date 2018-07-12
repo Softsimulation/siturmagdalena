@@ -1,4 +1,4 @@
-angular.module('oferta.agenciasOperadoras', ["checklist-model"])
+angular.module('oferta.agenciasOperadoras', ["checklist-model","ofertaService"])
 
 
 .controller('ocupacioncAgencias', function ($scope, ofertaServi) {

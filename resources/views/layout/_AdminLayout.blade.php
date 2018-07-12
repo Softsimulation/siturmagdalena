@@ -265,6 +265,9 @@
         
         <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
+        
+        <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
+        <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
 
         </div>
         <div class="title-section">

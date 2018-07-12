@@ -22,7 +22,7 @@ class Historial_Encuesta_Oferta extends Model
      * @var string
      */
     protected $table = 'historial_encuesta_oferta';
-    public $timestamps = false;
+    
 
     /**
      * @var array
@@ -30,7 +30,6 @@ class Historial_Encuesta_Oferta extends Model
     protected $fillable = ['user_id', 'encuesta_id', 'estado_encuesta_id', 'fecha_cambio'];
 
 
-    public $timestamps = false;
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

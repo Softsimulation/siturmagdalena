@@ -199,6 +199,9 @@
         <script src="{{asset('/js/encuestas/ofertaempleo/administrador/restaurantes.js')}}" type="text/javascript"></script> 
         <script src="{{asset('/js/encuestas/ofertaempleo/services/restauranteServices.js')}}" type="text/javascript"></script> 
         
+        <script src="{{asset('/js/encuestas/ofertaempleo/administrador/transporte.js')}}" type="text/javascript"></script> 
+        <script src="{{asset('/js/encuestas/ofertaempleo/services/transporteServices.js')}}" type="text/javascript"></script> 
+        
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });

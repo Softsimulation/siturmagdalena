@@ -53,7 +53,7 @@
     
 
 <div class="container">
-    <h1 class="title1">Listado de encuestas</h1>
+    <h1 class="title1">Listado de usuarios</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row">
@@ -72,16 +72,23 @@
             <div class="col-sm-3">
                 <span class="chip">@{{( usuarios |filter: search|filter: filtroRol).length}} Resultados</span>
             </div>
+            
         </div>
         <br/>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-2" style="text-align: center;">
+                <a ng-click="enviarCorreos()" class="btn btn-success" style="margin-bottom: .5em;">Enviar correos</a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12" style="overflow: auto;">
                 <div>
                     <table class="table table-hover table-responsive Table">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>#</th>
-                                <th>Username</th>
+                                <th>Nombres</th>
                                 <th>Email</th>
                                 <th>Roles</th>
                                 <th>Estado</th>
@@ -90,8 +97,9 @@
                         </thead>
                         <tbody ng-init="currentPageUsuarios = 1">
                             <tr dir-paginate="usuario in usuarios|filter:search|itemsPerPage: 10" current-page="currentPageUsuarios" ng-click="verDetalleUsuario($event, usuario)">
+                                <td><input type="checkbox" checklist-model="usuariosCorreos.ids" checklist-value="usuario.id"></td>
                                 <td>@{{($index + 1) + (currentPageUsuarios - 1) * 10}}</td>
-                                <td>@{{usuario.username}}</td>
+                                <td>@{{usuario.nombre}}</td>
                                 <td>@{{usuario.email}}</td>
                                 <td><span ng-repeat="rol in usuario.roles">@{{rol.display_name}}<span ng-if="!$last">,</span></span></td>
                                 <td ng-if="usuario.estado == true">Activo</td>

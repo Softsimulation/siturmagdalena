@@ -11,6 +11,7 @@ angular.module('sostenibilidadPst.socioCultural', [])
     };
     
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         sostenibilidadPstServi.getCargarSocioCultural($scope.id).then(function (data) {
             $scope.proveedor = data.proveedor;
             $scope.criteriosCalificacion = data.criteriosCalificacion;
@@ -24,7 +25,9 @@ angular.module('sostenibilidadPst.socioCultural', [])
             if(data.objeto != undefined){
                 $scope.encuesta = data.objeto;
             }
+            $("body").attr("class", "");
         }).catch(function () {
+            $("body").attr("class", "");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     });

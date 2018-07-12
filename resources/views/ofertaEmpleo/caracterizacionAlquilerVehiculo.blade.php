@@ -47,8 +47,9 @@
 
 @section('NumSeccion', '50%')
 
-@section('controller','ng-controller="seccionAlquiler"')
+@section('app','ng-app="oferta.alquilarTransporte"')
 
+@section('controller','ng-controller="seccionAlquiler"')
 
 @section('content')
 
