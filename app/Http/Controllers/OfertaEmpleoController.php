@@ -25,10 +25,10 @@ use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
 use App\Models\Otro_Tour;
 
-use App\Models\Agencia_Operadora;
-use App\Models\Otra_Actividad;
-use App\Models\Otro_Tour;
-use App\Models\Prestamo_Servicio;
+//use App\Models\Agencia_Operadora;
+//use App\Models\Otra_Actividad;
+//use App\Models\Otro_Tour;
+//use App\Models\Prestamo_Servicio;
 use App\Models\Alquiler_Vehiculo;
 use App\Models\Transporte;
 use App\Models\Oferta_Transporte;
@@ -1090,10 +1090,7 @@ class OfertaEmpleoController extends Controller
         return [ "success"=>true ];
     }
     
-<<<<<<< HEAD
 
-=======
->>>>>>> 084152e7770aac0dd4e8fb3d8c62bdb93c5c1613
     public function postGuardarofertaalimentos(Request $request)
     {
         //return $request->all();

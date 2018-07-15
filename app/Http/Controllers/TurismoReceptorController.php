@@ -1022,7 +1022,9 @@ class TurismoReceptorController extends Controller
             $q->where('culture','es');
         })->select('financiadores_viaje_id as id','nombre')->get();
         
-        $municipios = Municipio::select('id','nombre')->get();
+        $municipios = Municipio::select('id','nombre')->whereHas('departamento',function($q){
+            $q->where('pais_id',47);
+        })->get();
         
         $opciones = Opcion_Lugar_Con_Idioma::whereHas('idioma', function($p){
                 $p->where('culture','es');
@@ -1044,6 +1046,7 @@ class TurismoReceptorController extends Controller
         
         $paquete = Visitante_Paquete_Turistico::find($id);
         $encuesta["id"]= $id;
+        $visitante = Visitante::find($id);
         if($visitante->ultima_sesion>=5){
             $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
             
