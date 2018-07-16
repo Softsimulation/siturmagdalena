@@ -216,6 +216,8 @@ angular.module('receptor.percepcion_viaje', [])
     }
 
 }])
+
+
 .controller('percepcion-crear_visitante', ['$scope','$http',function ($scope, $http) {
 
     $scope.bandera = false;
