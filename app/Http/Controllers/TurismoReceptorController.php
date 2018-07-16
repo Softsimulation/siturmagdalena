@@ -922,7 +922,9 @@ class TurismoReceptorController extends Controller
             $q->where('culture','es');
         })->select('financiadores_viaje_id as id','nombre')->get();
         
-        $municipios = Municipio::select('id','nombre')->get();
+        $municipios = Municipio::select('id','nombre')->whereHas('departamento',function($q){
+            $q->where('pais_id',47);
+        })->get();
         
         $opciones = Opcion_Lugar_Con_Idioma::whereHas('idioma', function($p){
                 $p->where('culture','es');
@@ -944,6 +946,7 @@ class TurismoReceptorController extends Controller
         
         $paquete = Visitante_Paquete_Turistico::find($id);
         $encuesta["id"]= $id;
+        $visitante = Visitante::find($id);
         if($visitante->ultima_sesion>=5){
             $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
             
@@ -1195,6 +1198,13 @@ class TurismoReceptorController extends Controller
             $otroElemento = $visitante->otrosElementosRepresentativo->nombre;
         }
         
+        
+        $sostenibilidad = Sostenibilidad_Visitante::find($id);
+        if($sostenibilidad != null){
+            $flora = $sostenibilidad->es_informado?1:0;
+            $sost = $sostenibilidad->trato_turista;
+        }
+        
         $valo = Valoracion_General::where('visitante_id',$visitante->id)->select(["recomendaciones as Recomendacion","calificacion as Calificacion", "volveria as Volveria","recomendaria as Recomienda","veces_visitadas as Veces"])->first();
         
         $retorno = [
@@ -1208,6 +1218,8 @@ class TurismoReceptorController extends Controller
             'respuestaElementos' => $respuestaElementos,
             'valoracion' => $valo,
             'otroElemento' => $otroElemento,
+            'flora'=> isset($flora) ? $flora : null,
+            'sost'=> isset($sost) ? $sost : null,
         ];
         
         return $retorno;
@@ -1258,20 +1270,22 @@ class TurismoReceptorController extends Controller
 		$sw = 0;
 		if($visitante->ultima_sesion >= 6){
 		    $sw =1;
-		    $visitante->elementosRepresentativos()->detach();
-	        $visitante->calificacions()->delete();
-	        $visitante->valoracionGeneral()->delete();
-	        if($visitante->otrosElementosRepresentativo!=null){$visitante->otrosElementosRepresentativo()->delete();}
+		    
 		}else{
 		    $visitante->ultima_sesion = 6;
 		}
 		
+		$visitante->elementosRepresentativos()->detach();
+        $visitante->calificacions()->delete();
+        $visitante->valoracionGeneral()->delete();
+        if($visitante->otrosElementosRepresentativo!=null){$visitante->otrosElementosRepresentativo()->delete();}
+		
 		foreach($request->Evaluacion as $evaluacion){
-		        $visitante->calificacions()->save(new Calificacion([
-	                'item_evaluar_id' => $evaluacion['Id'],
-	                'calificacion' => $evaluacion['Valor']
-	            ]));
-		    }
+	        $visitante->calificacions()->save(new Calificacion([
+                'item_evaluar_id' => $evaluacion['Id'],
+                'calificacion' => $evaluacion['Valor']
+            ]));
+	    }
 		    
 	    $visitante->elementosRepresentativos()->attach($request->Elementos);
 	    if(in_array(11,$request->Elementos)){
@@ -1285,6 +1299,25 @@ class TurismoReceptorController extends Controller
             'calificacion' => $request->Calificacion,
             'recomendaria' => $request->Recomienda
         ]));
+        
+        $sostenibilidad = Sostenibilidad_Visitante::find($request->Id);
+	    if($sostenibilidad == null){
+	        $sostenibilidad = new Sostenibilidad_Visitante;
+	        $sostenibilidad->visitante_id = $request->Id;
+	        $sostenibilidad->estado = true;
+	        $sostenibilidad->user_update = "Jhon";
+	        $sostenibilidad->user_create = "Jhon";
+	    }
+	    
+	    if(isset($request->Flora)){
+	        $sostenibilidad->es_informado = $request->Flora != 0? true:false;
+	    }
+	    
+	    if(isset($request->Sostenibilidad)){
+	        $sostenibilidad->trato_turista = $request->Sostenibilidad;
+	    }
+	
+	    $sostenibilidad->save();
 		
 		$visitante->historialEncuestas()->save(new Historial_Encuesta([
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,

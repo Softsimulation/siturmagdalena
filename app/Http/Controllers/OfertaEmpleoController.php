@@ -20,10 +20,15 @@ use App\Models\Capacidad_Alimento;
 use App\Models\Historial_Encuesta_Oferta;
 use App\Models\Actividad_Deportiva;
 use App\Models\Tour;
+
 use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
 use App\Models\Otro_Tour;
-use App\Models\Prestamo_Servicio;
+
+//use App\Models\Agencia_Operadora;
+//use App\Models\Otra_Actividad;
+//use App\Models\Otro_Tour;
+//use App\Models\Prestamo_Servicio;
 use App\Models\Alquiler_Vehiculo;
 use App\Models\Transporte;
 use App\Models\Oferta_Transporte;
@@ -1085,6 +1090,7 @@ class OfertaEmpleoController extends Controller
         return [ "success"=>true ];
     }
     
+
     public function postGuardarofertaalimentos(Request $request)
     {
         //return $request->all();

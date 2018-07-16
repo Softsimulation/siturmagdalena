@@ -201,10 +201,10 @@ angular.module('receptor.percepcion_viaje', [])
 
     $scope.verificarOtro = function () {
         
-        var i = $scope.calificacion.Elementos.indexOf(12)
+        var i = $scope.calificacion.Elementos.indexOf(11)
         if ($scope.calificacion.OtroElementos != null && $scope.calificacion.OtroElementos != '') {
             if (i == -1) {
-                $scope.calificacion.Elementos.push(12);
+                $scope.calificacion.Elementos.push(11);
                 $scope.bandera = true;
             }
         } else {
