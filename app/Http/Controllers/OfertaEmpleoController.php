@@ -642,11 +642,13 @@ class OfertaEmpleoController extends Controller
         if($encuesta){
             $agencia = $encuesta->agenciasOperadoras->first();
             if($agencia){
-                $prestamo = $agencia->prestamosServicios->first();  
-                $prestamoCargar["totalP"] = floatval($prestamo->numero_personas);
-                $prestamoCargar["porcentajeC"] = floatval($prestamo->personas_colombianas);
-                $prestamoCargar["porcentajeE"] = floatval($prestamo->personas_extranjeras);
-                $prestamoCargar["porcentajeM"] = floatval($prestamo->personas_magdalena);
+                $prestamo = $agencia->prestamosServicios->first();
+                if($prestamo){
+                    $prestamoCargar["totalP"] = floatval($prestamo->numero_personas);
+                    $prestamoCargar["porcentajeC"] = floatval($prestamo->personas_colombianas);
+                    $prestamoCargar["porcentajeE"] = floatval($prestamo->personas_extranjeras);
+                    $prestamoCargar["porcentajeM"] = floatval($prestamo->personas_magdalena);    
+                }
             }
         }
 		return ["prestamo" => $prestamoCargar];
