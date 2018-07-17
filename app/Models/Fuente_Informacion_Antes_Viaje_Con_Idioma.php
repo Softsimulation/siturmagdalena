@@ -30,11 +30,12 @@ class Fuente_Informacion_Antes_Viaje_Con_Idioma extends Model
      */
     public function fuentesInformacionAntesViaje()
     {
-        return $this->belongsTo('App\FuentesInformacionAntesViaje');
+        return $this->belongsTo('App\Models\Fuente_Informacion_Antes_Viaje','fuentes_informacion_antes_viaje_id');
     }
-    
     public function idioma()
     {
-        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma','idiomas_id');
     }
+    
+    
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +17,7 @@ class Otra_Fuente_Informacion_Antes_Viaje_Interno extends Model
      * @var string
      */
     protected $table = 'otras_fuentes_informacion_antes_viaje_interno';
+    public $timestamps=false;
 
     /**
      * The primary key for the model.
@@ -30,7 +31,7 @@ class Otra_Fuente_Informacion_Antes_Viaje_Interno extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
@@ -42,6 +43,6 @@ class Otra_Fuente_Informacion_Antes_Viaje_Interno extends Model
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }

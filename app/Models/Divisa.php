@@ -35,11 +35,12 @@ class Divisa extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function gastosVisitantesMag()
+     /*
+    public function gastosVisitantes()
     {
         return $this->hasMany('App\Models\Gasto_Visitante', 'divisas_magdalena');
     }
-
+    */
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -61,6 +62,6 @@ class Divisa extends Model
      */
     public function divisasConIdiomas()
     {
-        return $this->hasMany('App\Model\DivisasConIdioma', 'divisas_id');
+        return $this->hasMany('App\Models\Divisa_Con_Idioma', 'divisas_id');
     }
 }

@@ -48,7 +48,7 @@ class Tipo_Transporte extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function visitantes2()
+    public function visitantesllegada()
     {
         return $this->hasMany('App\models\Visitante', 'transporte_llegada');
     }

@@ -148,6 +148,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         
+        Wilgucki\Csv\CsvServiceProvider::class,
+        
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Orchestra\Parser\XmlServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
@@ -163,7 +165,7 @@ return [
         
         //models generator
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
-
+        Zizaco\Entrust\EntrustServiceProvider::class,
     ],
 
     /*
@@ -214,6 +216,9 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'CsvReader' => Wilgucki\Csv\Facades\Reader::class,
+        'CsvWriter' => Wilgucki\Csv\Facades\Writer::class,
 
     ],
 

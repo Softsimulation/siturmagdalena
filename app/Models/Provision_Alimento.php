@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +24,7 @@ class Provision_Alimento extends Model
      * @var string
      */
     protected $table = 'provisiones_alimentos';
+    public $timestamps = false;
 
     /**
      * @var array
@@ -35,7 +36,7 @@ class Provision_Alimento extends Model
      */
     public function actividadesServicio()
     {
-        return $this->belongsTo('App\ActividadesServicio');
+        return $this->belongsTo('App\Models\ActividadesServicio');
     }
 
     /**
@@ -43,7 +44,7 @@ class Provision_Alimento extends Model
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
     }
 
     /**
@@ -59,6 +60,6 @@ class Provision_Alimento extends Model
      */
     public function capacidadAlimento()
     {
-        return $this->hasOne('App\CapacidadAlimento', 'id_alimento');
+        return $this->hasOne('App\Models\Capacidad_Alimento', 'id_alimento');
     }
 }

@@ -30,6 +30,8 @@ class Historial_Encuesta_Oferta extends Model
      */
     protected $fillable = ['user_id', 'encuesta_id', 'estado_encuesta_id', 'fecha_cambio'];
 
+
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

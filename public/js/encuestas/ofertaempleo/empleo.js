@@ -246,7 +246,7 @@ angular.module('empleo.Empleo', [])
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                          window.location.href = "/ofertaempleo/encuestasproveedor";
+                          window.location.href = "/ofertaempleo/empleadoscaracterizacion/" + $scope.id;;
                     }, 1000);
     
     
@@ -426,7 +426,7 @@ $scope.$watch('id', function () {
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                          window.location.href = "/ofertaempleo/empleomensual/" + $scope.id;
+                          window.location.href = "/ofertaempleo/encuesta/" + $scope.id;
                     }, 1000);
     
     

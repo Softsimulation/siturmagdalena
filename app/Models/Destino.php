@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property ComentariosDestino[] $comentariosDestinos
  * @property DestinoConIdioma[] $destinoConIdiomas
  * @property MultimediaDestino[] $multimediaDestinos
- * @property Sectore[] $sectores
+ * @property Sector[] $sectores
  * @property DatoRnt[] $datoRnts
  * @property int $id
  * @property int $tipo_destino_id
@@ -44,7 +44,7 @@ class Destino extends Model
      */
     public function tipoDestino()
     {
-        return $this->belongsTo('App\TipoDestino');
+        return $this->belongsTo('App\Models\Tipo_Destino');
     }
 
     /**
@@ -52,7 +52,7 @@ class Destino extends Model
      */
     public function comentariosDestinos()
     {
-        return $this->hasMany('App\ComentariosDestino', 'destinos_id');
+        return $this->hasMany('App\Models\Comentario_Destino', 'destinos_id');
     }
 
     /**
@@ -60,7 +60,7 @@ class Destino extends Model
      */
     public function destinoConIdiomas()
     {
-        return $this->hasMany('App\DestinoConIdioma');
+        return $this->hasMany('App\Models\Destino_Con_Idioma');
     }
 
     /**
@@ -68,7 +68,7 @@ class Destino extends Model
      */
     public function multimediaDestinos()
     {
-        return $this->hasMany('App\MultimediaDestino');
+        return $this->hasMany('App\Models\Multimedia_Destino');
     }
 
     /**
@@ -76,7 +76,7 @@ class Destino extends Model
      */
     public function sectores()
     {
-        return $this->hasMany('App\Sectore');
+        return $this->hasMany('App\Models\Sector');
     }
 
     /**
@@ -84,6 +84,6 @@ class Destino extends Model
      */
     public function datoRnts()
     {
-        return $this->hasMany('App\DatoRnt');
+        return $this->hasMany('App\Models\Dato_Rnt');
     }
 }

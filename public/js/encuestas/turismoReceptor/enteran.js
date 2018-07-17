@@ -31,6 +31,11 @@ angular.module('receptor.enteran', [])
                     $scope.enteran.Invitacion = data.invitacion;
                     $scope.enteran.NombreFacebook = data.facebook;
                     $scope.enteran.NombreTwitter = data.twitter;
+                    $scope.enteran.facilidad = data.facilidad;
+                    $scope.enteran.conoce_marca = data.conoce_marca;
+                    $scope.enteran.acepta_autorizacion = data.acepta_autorizacion;
+                    $scope.enteran.acepta_tratamiento = data.acepta_tratamiento;
+                    $scope.enteran.otroRed = data.otroRed;
                 }
             }else{
                 $("body").attr("class", "cbp-spmenu-push");
@@ -83,11 +88,18 @@ angular.module('receptor.enteran', [])
                     $scope.enteran.FuentesAntes.push(14);
                 }
             } 
-        } else {
+        } else if(sw == 1) {
             var i = $scope.enteran.FuentesDurante.indexOf(14);
             if ($scope.enteran.OtroFuenteDurante != null && $scope.enteran.OtroFuenteDurante != '') {
                 if (i == -1) {
                     $scope.enteran.FuentesDurante.push(14);
+                }
+            } 
+        } else if(sw == 2) {
+            var i = $scope.enteran.Redes.indexOf(12);
+            if ($scope.enteran.otroRed != null && $scope.enteran.otroRed != '') {
+                if (i == -1) {
+                    $scope.enteran.Redes.push(12);
                 }
             } 
         }
@@ -129,7 +141,11 @@ angular.module('receptor.enteran', [])
                     timer: 1000,
                     showConfirmButton: false
                 });
-    
+                
+                setTimeout(function () {
+                    window.location.href = "/turismoreceptor/listadoencuestas";
+                }, 1000);
+                
                 if(data.rol == "Encuestador"){
                     setTimeout(function () {
                         //window.location.href = "/EncuestaReceptor/EncuestasSitur";
@@ -183,6 +199,10 @@ angular.module('receptor.enteran', [])
                     $scope.enteran.Invitacion = data.invitacion;
                     $scope.enteran.NombreFacebook = data.facebook;
                     $scope.enteran.NombreTwitter = data.twitter;
+                    $scope.enteran.facilidad = data.facilidad;
+                    $scope.enteran.conoce_marca = data.conoce_marca;
+                    $scope.enteran.acepta_autorizacion = data.acepta_autorizacion;
+                    $scope.enteran.acepta_tratamiento = data.acepta_tratamiento;
                 }
             }).error(function () {
                 $("body").attr("class", "cbp-spmenu-push");

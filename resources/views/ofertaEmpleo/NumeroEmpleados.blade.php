@@ -107,6 +107,7 @@
 @section('TitleSection','Numero de empleados')
 @section('Progreso','75%')
 @section('NumSeccion','75%')
+@section('app','ng-app="ofertaempleo"')
 @section('controller','ng-controller="numeroEmpleados"')
 
 @section('content')

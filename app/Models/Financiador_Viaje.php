@@ -50,6 +50,6 @@ class Financiador_Viaje extends Model
      */
     public function financiadoresViajesConIdiomas()
     {
-        return $this->hasMany('App\Models\FinanciadoresViajesConIdioma');
+        return $this->hasMany('App\Models\Financiador_Viaje_Con_Idioma', 'financiadores_viaje_id');
     }
 }

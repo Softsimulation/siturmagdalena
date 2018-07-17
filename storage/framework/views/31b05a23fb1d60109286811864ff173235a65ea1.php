@@ -183,7 +183,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P2. ¿Que actividades realizó en el Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que actividades realizó en el Atlántico?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que actividades realizó en el Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -207,7 +207,7 @@
         <div class="panel panel-success" ng-if="existe(1)">
             <div class="panel-heading">
                 <!-- P3. ¿Que playas visitó en el Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que playas visitó en el Atlántico?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que playas visitó en el Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -359,7 +359,7 @@
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="actividad in Datos.Actividades | filter : { IdA : 10 }">
                             <label>
-                                <input type="checkbox"  name ="actividadesd" checklist-model="encuesta.ActividadesD" checklist-value="actividad.Id"> {{actividad.Nombre}}
+                                <input type="checkbox"  name ="actividadesd" checklist-model="encuesta.ActividadesD" checklist-value="actividad.Id"> {{actividad.Nombre}}  
                             </label>
                         </div>
                         <span ng-show="EstanciaForm.$submitted || EstanciaForm.actividadesd.$touched">

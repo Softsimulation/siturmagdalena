@@ -104,6 +104,7 @@
 @section('TitleSection','Empleo Mensual')
 @section('Progreso','80%')
 @section('NumSeccion','80%')
+@section('app','ng-app="ofertaempleo"')
 @section('controller','ng-controller="empleoMensual"')
 
 @section('content')
@@ -117,9 +118,6 @@
         </div>
     </div>
     
-   
-    
-
     <form role="form" name="empleoForm" novalidate>
 
         <div class="numEmpleados">
@@ -1629,8 +1627,8 @@
         
         
         <div class="row" style="text-align:center">
-            <a href="" class="btn btn-raised btn-default" >@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="@Resource.EncuestaBtnSiguiente" />
+            <a href="{{$ruta}}/{{$id}}" class="btn btn-raised btn-default" >@Resource.EncuestaBtnAnterior</a>
+            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />
     </form>

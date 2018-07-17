@@ -23,13 +23,73 @@
       return {
           
           
-          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+id);  },
+          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+ (id ? id : -1) );  },
           
           getListadoPeridos: function(){ return http.get("/MuestraMaestra/datalistado");  },
           
-          guardarPeriodo: function(data){ return http.post("/MuestraMaestra/guardarperiodo", data);  },
+          crearPeriodo: function(data){ return http.post("/MuestraMaestra/crearperiodo", data);  },
           
-          guardarZona: function(data){ return http.post("/MuestraMaestra/guardarzona", data);  },
+          editarPeriodo: function(data){ return http.post("/MuestraMaestra/editarperiodo", data);  },
+          
+          agregarZona: function(data){ return http.post("/MuestraMaestra/agregarzona", data);  },
+          
+          editarZona: function(data){ return http.post("/MuestraMaestra/editarzona", data);  },
+          
+          editarPosicionZona: function(data){ return http.post("/MuestraMaestra/editarposicionzona", data);  },
+          
+          eliminarZona: function(data){ return http.post("/MuestraMaestra/eliminarzona", data);  },
+          
+          
+          getGeoJson: function(data){ return http.post("/MuestraMaestra/geojsonzone", data );  },
+          
+          getDataLLenarInfoZona: function(id){ return http.get("/MuestraMaestra/datazonallenarinfo/"+ (id ? id : -1) );  },
+          guardarDataInfoZona: function(data){ return http.post("/MuestraMaestra/guardarinfozona", data );  },
+          
+          
+          
+          validarProveedoresFueraZona: function(pro, zn){
+                var defered = $q.defer();
+                
+                var proveedores = angular.copy(pro);
+                var zonas = angular.copy(zn);
+                
+                var promise = defered.promise;
+                
+                for(var k=0; k<zonas.length; k++){
+                    
+                    for (var i = 0; i<zonas[k].coordenadas.length; i++ ) {
+                        zonas[k].coordenadas[i] = { lat: zonas[k].coordenadas[i][0] , lng: zonas[k].coordenadas[i][1] };    
+                    }
+                    zonas[k].polygono = new google.maps.Polygon({paths: zonas[k].coordenadas});
+                }
+                
+                var proveedoresFuera = []; 
+                
+                for(var k=0; k<proveedores.length; k++){
+                    
+                    var point = new google.maps.LatLng( proveedores[k].latitud , proveedores[k].longitud );
+                    var sw = false;
+                    
+                    for(var i=0; i<zonas.length; i++){
+                       if( google.maps.geometry.poly.containsLocation( point , zonas[i].polygono ) ){
+                          sw = true; break;
+                       }
+                        
+                    }
+                    
+                    if(sw==false){
+                        proveedoresFuera.push( proveedores[k].razon_social );
+                    }
+                    
+                }
+                
+                defered.resolve(proveedoresFuera); 
+            
+         
+                return promise;      
+            }
+          
+          
         }
         
     }]);

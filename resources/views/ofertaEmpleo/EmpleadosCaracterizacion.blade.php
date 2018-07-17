@@ -106,6 +106,7 @@
 @section('TitleSection','Caracterización de empleados')
 @section('Progreso','90%')
 @section('NumSeccion','90%')
+@section('app','ng-app="ofertaempleo"')
 @section('controller','ng-controller="empleoCaracterizacion"')
 
 @section('content')
@@ -340,8 +341,8 @@
         </div>        
 
         <div class="row" style="text-align:center">
-            <a href="/EncuestaOfertaEmpleo/NumeroEmpleados/{{$id}}" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" />
+            <a href="/ofertaempleo/empleomensual/{{$id}}" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
+            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />
     </form>

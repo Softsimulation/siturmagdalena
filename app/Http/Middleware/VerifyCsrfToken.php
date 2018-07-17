@@ -12,9 +12,23 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
+        
+        '/temporada/guardartemporada',
+        '/temporada/cambiarestado',
         '/turismointerno/barrios',
         '/turismointerno/hogar',
         '/turismointerno/datoshogar',
+        '/turismointerno/eliminarpersona',
+        '/turismointerno/guardareditarhogar',
+        '/turismointerno/guardartransporte',
+        '/turismointerno/datagastos',
+        '/turismointerno/guardargastos',
+        '/turismointerno/guardarfuentesinformacion',
+        '/turismointerno/crearestancia',
+        '/turismointerno/datoseditar',
+        '/turismointerno/guardarhogar',
+        '/turismointerno/createviaje',
+        '/turismointerno/siguienteviaje',
         '/*'
     ];
 }

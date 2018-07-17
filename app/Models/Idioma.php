@@ -107,7 +107,7 @@ class Idioma extends Model
      */
     public function destinoConIdiomas()
     {
-        return $this->hasMany('App\DestinoConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\Destino_Con_Idioma', 'idiomas_id');
     }
 
     /**
@@ -203,7 +203,7 @@ class Idioma extends Model
      */
     public function sitiosConIdiomas()
     {
-        return $this->hasMany('App\SitiosConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\Sitio_Con_Idioma', 'idiomas_id');
     }
 
     /**
@@ -371,7 +371,7 @@ class Idioma extends Model
      */
     public function sectoresConIdiomas()
     {
-        return $this->hasMany('App\SectoresConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\Sector_Con_Idioma', 'idiomas_id');
     }
 
     /**

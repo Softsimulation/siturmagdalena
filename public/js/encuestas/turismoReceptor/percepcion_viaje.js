@@ -28,11 +28,20 @@ angular.module('receptor.percepcion_viaje', [])
                     $scope.aspectos = $scope.convertirObjeto(data.percepcion);
                     $scope.elementos = data.elementos;
                     $scope.veces = data.veces;
+                    $scope.actividades = data.actividades;
     
-                    if (data.respuestaElementos == null && data.valoracion == null || data.respuestaElementos.length==0) {
+                    if (data.respuestaElementos.length ==0 && data.valoracion == null) {
                         $scope.estadoEncuesta = 0;
                     } else {
                         $scope.calificacion.Alojamiento = data.alojamiento;
+                        $scope.calificacion.Factores = data.factores;
+                        $scope.calificacion.Ocio = data.ocio;
+                        $scope.calificacion.Infra = data.infraestructura;
+                        if($scope.calificacion.Infra == 1){
+                            document.getElementById("infraestructuraSi").checked = true;
+                        }else{
+                            document.getElementById("infraestructuraNo").checked = true;
+                        }
                         $scope.calificacion.Restaurante = data.restaurante;
                         $scope.calificacion.Elementos = data.respuestaElementos;
                         $scope.calificacion.Recomendaciones = data.valoracion.Recomendacion;
@@ -41,6 +50,8 @@ angular.module('receptor.percepcion_viaje', [])
                         $scope.calificacion.Recomienda = data.valoracion.Recomienda;
                         $scope.calificacion.VecesVisitadas = data.valoracion.Veces;
                         $scope.calificacion.OtroElementos = data.otroElemento;
+                        $scope.calificacion.Flora = data.flora;
+                        $scope.calificacion.Sostenibilidad = data.sost;
                         $scope.estadoEncuesta = 1;
                         if (data.restaurante == -1) {
                             $scope.calificacion.Restaurante = 0;
@@ -141,10 +152,6 @@ angular.module('receptor.percepcion_viaje', [])
             return;
         }
 
-        if ($scope.calificacion.Elementos == 0) {
-            swal("Error", "Formulario incompleto corrige los errores", "error");
-            return;
-        }
 
         $scope.calificacion.Evaluacion = [];
         for (var i = 0; i < $scope.aspectos.length; i++) {
@@ -183,7 +190,8 @@ angular.module('receptor.percepcion_viaje', [])
                      }, 1000);
             }else{
                 $("body").attr("class", "cbp-spmenu-push");
-                swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+                $scope.errores = data.errores;
+                swal("Error", "Corrija los errores", "error");
             }
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
@@ -193,10 +201,10 @@ angular.module('receptor.percepcion_viaje', [])
 
     $scope.verificarOtro = function () {
         
-        var i = $scope.calificacion.Elementos.indexOf(11)
+        var i = $scope.calificacion.Elementos.indexOf(12)
         if ($scope.calificacion.OtroElementos != null && $scope.calificacion.OtroElementos != '') {
             if (i == -1) {
-                $scope.calificacion.Elementos.push(11);
+                $scope.calificacion.Elementos.push(12);
                 $scope.bandera = true;
             }
         } else {

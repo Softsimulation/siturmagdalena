@@ -39,7 +39,7 @@
                 <div class="col-md-2" >
                     <div class="form-group" >
                         <button class="btn btn-success" ng-click="descargarGrafica()" ng-disabled="!(data && data.length>0)" >
-                            Descragar
+                            Descargar
                         </button>
                     </div>
                 </div>  
@@ -47,7 +47,7 @@
             
             <div class="row" style="margin-bottom:15px"  >
                 <div class="col-md-12 text-center" >
-                    <img src="/Estadisticas.jpg" ng-if="!data || data.length==0" >
+                    <img src="/Content/icons/estadisticas/estadisticas.png" ng-if="!data || data.length==0" style="width: 220px;margin-left: 25%;margin-top: 50px;" >
                     <canvas id="base" class="chart-base" chart-type="tipoGrafica"
                       chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colores">
                     </canvas>

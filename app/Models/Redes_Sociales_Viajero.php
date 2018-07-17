@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +18,8 @@ class Redes_Sociales_Viajero extends Model
      * @var string
      */
     protected $table = 'redes_sociales_viajeros';
+    protected $primaryKey = 'viajero_id';
+    public $timestamps=false;
 
     /**
      * @var array

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,18 +22,20 @@ class Ciudad_Visitada extends Model
      * @var string
      */
     protected $table = 'ciudades_visitadas';
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['destino_principal', 'numero_noches'];
+    protected $fillable = ['destino_principal', 'numero_noches','municipio_id','viajes_id','tipo_alojamientos_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function municipio()
     {
-        return $this->belongsTo('App\Municipio');
+         return $this->belongsTo('App\Models\Municipio');
     }
 
     /**
@@ -49,6 +51,6 @@ class Ciudad_Visitada extends Model
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }
