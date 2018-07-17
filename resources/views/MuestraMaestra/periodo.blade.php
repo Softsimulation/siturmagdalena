@@ -1,5 +1,5 @@
 
-@extends('layout._AdminLayout')
+@extends('layout._MuestraMaestraLayaoutLayout')
 
 @section('title','Muestra maestra')
 @section('TitleSection', $periodo->nombre )

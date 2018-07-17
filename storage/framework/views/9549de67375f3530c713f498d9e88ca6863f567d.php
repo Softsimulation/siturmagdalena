@@ -668,4 +668,4 @@
     <script src="<?php echo e(asset('/js/muestraMaestra/app.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layout._AdminLayout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make('layout._MuestraMaestraLayaoutLayout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

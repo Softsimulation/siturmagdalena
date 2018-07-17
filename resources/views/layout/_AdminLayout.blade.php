@@ -22,8 +22,7 @@
     <link href="{{asset('/css/select.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
    
-   
-<link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />-->
+<link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />
 <!-- Graph CSS 
 
 <!-- jQuery -->
@@ -200,7 +199,7 @@
         <div>
             <div class="loader"></div>
             <h1>{{ trans('resources.LabelPreloader') }}</h1>
-            <h4>Resource.LabelPorFavorEspere</h4>
+            <h4>Por Favor Espere</h4>
             <img src="{{asset('Content/image/logo.min.png')}}" width="200" />
         </div>
     </div>
@@ -220,7 +219,7 @@
                             <div class="btn-group">
                                 <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/Temporada">Volver</a></li>
+                                    <li><a href="/temporada">Volver</a></li>
                                     <li class="divider"></li>
                                     <li id="log">
                                         <!--
@@ -271,7 +270,7 @@
     
 				<div class="sidebar-menu">
 							<div class="down">	
-									  <a href="#"><img src="images/admin.jpg"></a>
+									  <a href="#"><img src="{{asset('Content/image/user.png')}}"></a>
 									  <a href="#"><span class=" name-caret">Usuario</span></a>
 									 <p>Rol</p>
 									<ul>
@@ -292,7 +291,7 @@
 											
 										  </ul>
 										</li>
-										 <li id="menu-academico" ><a href="#"><i class="fa fa-file-text-o"></i> <span>Turismo Interno y Emisor</span></a>
+										 <li id="menu-academico" ><a href="#"> <span>Turismo Interno y Emisor</span></a>
 											 <ul id="menu-academico-sub" >
 												<li id="menu-academico-avaliacoes" ><a href="{{asset('temporada')}}">Temporada</a></li>
 												
@@ -300,7 +299,7 @@
 											  </ul>
 										 </li>
 								
-									<li id="menu-academico" ><a href="#"><i class="lnr lnr-book"></i> <span>Administrar paises</span> </span></a>
+									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administrarpaises')}}">Paises</a></li>
 										    <li id="menu-academico-boletim" ><a href="{{asset('administrardepartamentos')}}">Departamentos</a></li>
@@ -309,7 +308,7 @@
 										  </ul>
 									 </li>
 								
-									 	<li id="menu-academico" ><a href="#"><i class="lnr lnr-book"></i> <span>Muestra Maestra</span> </span></a>
+									 	<li id="menu-academico" ><a href="#"><span>Muestra Maestra</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="{{asset('MuestraMaestra/periodos')}}">Crear</a></li>
 										    <li id="menu-academico-boletim" ><a href="{{asset('importarRnt')}}">Importar</a></li>
@@ -318,7 +317,7 @@
 										  </ul>
 									 </li>
 									 
-							        <li id="menu-academico" ><a href="{{asset('encuesta/listado')}}"><i class="lnr lnr-layers"></i> <span>Encuetas ADHOC</span></a>
+							        <li id="menu-academico" ><a href="{{asset('encuesta/listado')}}"> <span>Encuetas ADHOC</span></a>
 							
 									 </li>
 								
