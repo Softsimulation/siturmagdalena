@@ -143,12 +143,28 @@ angular.module('atracciones.crear', [])
         if (!$scope.multimediaForm.$valid && $scope.atraccion.id != -1){
             return;
         }
-        var portada = $("#portadaIMG");
         var fd = new FormData();
-        fd.append("portadaIMG", portada[0].files[0]);
-        jQuery.each($("#imagenes")[0].files, function (i, value){
-            fd.append("image[]", value);
-        });
+        var input = $('#portadaIMG');
+        if (input[0] != undefined) {
+            // check for browser support (may need to be modified)
+            if (input[0].files && input[0].files.length == 1) {
+                if (input[0].files[0].size > 2097152) {
+                    swal("Error", "Por favor la imagen debe tener un peso menor de " + (2097152 / 1024 / 1024) + " MB", "error");
+                    // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
+                    return;
+                }
+            }
+        }
+        if ($scope.portadaIMG != null) {
+            fd.append("portadaIMG", $scope.portadaIMG[0]);
+        }else{
+            swal('Error', 'No ha adjuntado imagen de portada..', 'error');
+        }
+        if ($scope.imagenes != null) {
+            for (i in $scope.imagenes){
+                fd.append("image[]", $scope.imagenes[i]);
+            }
+        }
         fd.append('id', $scope.atraccion.id);
         fd.append('video_promocional', $("#video_promocional").val());
         atraccionesServi.postGuardarmultimedia(fd).then(function (data){
@@ -163,10 +179,10 @@ angular.module('atracciones.crear', [])
     }
     
     $scope.guardarAdicional = function (){
-        if (!$scope.informacionAdicionalForm.$valid || $scope.atraccion.id != -1){
+        if (!$scope.informacionAdicionalForm.$valid || $scope.atraccion.id == -1){
             return;
         }
-        $scope.atraccion.adicional.id = 115;
+        $scope.atraccion.adicional.id = $scope.atraccion.id;
         atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
             if (data.success){
                 swal('¡Éxito!', 'Atracción creada con éxito.', 'success');

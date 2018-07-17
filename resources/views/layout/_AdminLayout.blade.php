@@ -263,6 +263,9 @@
         <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
         <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
         
+        <script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
+        <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
+        
         <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
         

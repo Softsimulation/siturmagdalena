@@ -65,7 +65,12 @@ class Opcion_Actividad_Realizada extends Model
      */
     public function visitantes()
     {
-        return $this->belongsToMany('App\Visitante', 'opciones_actividades_realizadas_por_visitantes', 'opciones_activades_realizada_id');
+        return $this->belongsToMany('App\Visitante', 'opciones_actividades_realizadas_por_visitantes', 'opciones_activades_realizada_id')->withPivot('otro');
+    }
+    
+    public function subOpciones()
+    {
+        return $this->hasMany('App\Models\Sub_Opciones_Actividades_Realizadas', 'opciones_actividades_realizada_id');
     }
 
     /**
