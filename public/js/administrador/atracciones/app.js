@@ -1,4 +1,4 @@
-var situr = angular.module("atraccionesApp", ['angularFileUpload' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'atracciones.index', 'atraccionesServices', 'atracciones.crear']);
+var situr = angular.module("atraccionesApp", ['InputFile', 'angularFileUpload' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'atracciones.index', 'atraccionesServices', 'atracciones.crear']);
 
 
 situr.directive('fileInput', ['$parse', function ($parse) {

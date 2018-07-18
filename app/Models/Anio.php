@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Anio extends Model
 {
     //
-    protected $table ="años";
+    protected $table ="anios";
     protected $fillable = ['id','anio', 'user_create', 'user_update'];
     
     

@@ -14,6 +14,7 @@ angular.module('sostenibilidadPst.ambiental', [])
     };
     
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         sostenibilidadPstServi.CargarAmbiental($scope.id).then(function (data) {
             $scope.proveedor = data.proveedor;
             $scope.criteriosCalificacion = data.criteriosCalificacion;
@@ -29,7 +30,9 @@ angular.module('sostenibilidadPst.ambiental', [])
             if(data.objeto){
                 $scope.encuesta = data.objeto;
             }
+            $("body").attr("class", "");
         }).catch(function () {
+            $("body").attr("class", "");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     });

@@ -77,7 +77,7 @@ class Sitio extends Model
      */
     public function proveedores()
     {
-        return $this->hasMany('App\Proveedore', 'sitios_id');
+        return $this->hasMany('App\Models\Proveedor', 'sitios_id');
     }
 
     /**

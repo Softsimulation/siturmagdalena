@@ -11,7 +11,11 @@ situr.controller('caracterizacionAgenciaViajesCtrl', ['$scope','agenciaViajeServ
             agenciaViajeServi.getAgencia($scope.encuesta.id).then(function (data) {
                 if (data.Id > 0) {
                     var arrayAux = [];
+<<<<<<< HEAD
                     if(data.TipoServicios.length > 0){
+=======
+                    if(data.TipoServicios != null){
+>>>>>>> 1f9164be354fbe83840a60ead297027aa9c703bc
                         if(data.TipoServicios.servicios_agencias.length > 0){
                             for(var i=0; i<data.TipoServicios.servicios_agencias.length;i++){
                                 arrayAux.push(data.TipoServicios.servicios_agencias[i].id);

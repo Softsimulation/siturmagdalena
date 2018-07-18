@@ -266,9 +266,13 @@
         <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
         <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
         
+        <script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
+        <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
+        
         <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
         
+<<<<<<< HEAD
         <script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
         <script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
@@ -280,6 +284,10 @@
     	    
     	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
 		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
+=======
+        <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
+        <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
+>>>>>>> 1f9164be354fbe83840a60ead297027aa9c703bc
 
         </div>
         <div class="title-section">

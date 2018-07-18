@@ -1,4 +1,4 @@
-var app = angular.module('sostenibilidadHogar', ['ADM-dateTimePicker','ui.select','checklist-model','angularUtils.directives.dirPagination','ambiental','sostenibilidadHogarServices','social','crear'])
+var app = angular.module('sostenibilidadHogar', ['ADM-dateTimePicker','ui.select','checklist-model','angularUtils.directives.dirPagination','ambiental','sostenibilidadHogarServices','social','crear','sostenibilidadHogar.economico'])
 
 app.filter('range', function() {
   return function(input, total) {

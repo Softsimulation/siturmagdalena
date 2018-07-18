@@ -22,7 +22,7 @@ class Viaje_Turismo extends Model
      * @var string
      */
      public $timestamps = false;
-     public $incrementing = false;
+     //public $incrementing = false;
     protected $table = 'viajes_turismos';
     
 

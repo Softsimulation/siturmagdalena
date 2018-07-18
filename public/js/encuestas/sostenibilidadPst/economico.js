@@ -10,6 +10,7 @@ angular.module('sostenibilidadPst.economico', [])
     };
     
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         sostenibilidadPstServi.CargarEconomico($scope.id).then(function (data) {
             $scope.proveedor = data.proveedor;
             $scope.clasificacionesProveedor = data.clasificacionesProveedor;
@@ -20,7 +21,9 @@ angular.module('sostenibilidadPst.economico', [])
             if(data.objeto){
                 $scope.encuesta = data.objeto;
             }
+            $("body").attr("class", "");
         }).catch(function () {
+            $("body").attr("class", "");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     });
@@ -72,7 +75,7 @@ angular.module('sostenibilidadPst.economico', [])
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    //window.location = "/sostenibilidadpst/ambiental/"+$scope.id;
+                    window.location = "/sostenibilidadpst/encuestas";
                 }, 1000);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");

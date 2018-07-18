@@ -24,6 +24,13 @@ use App\Models\Actividad_Medio_Ambiente;
 use App\Models\Accion_Ambiental;
 use App\Models\Componente_Ambiental;
 use App\Models\Digitador;
+use App\Models\Sectores_Turismo;
+use App\Models\Sectores_Economia;
+use App\Models\Componente_Tecnico;
+use App\Models\Estados_Encuesta;
+use App\Models\Historial_Encuesta_Hogar_Sostenibilidad;
+use App\Models\ListadoEncuestasHogarSostenibilidad;
+
 
 class SostenibilidadHogaresController extends Controller
 {
@@ -40,6 +47,7 @@ class SostenibilidadHogaresController extends Controller
     	
     	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores];
     }
+    
     public function getInfoeditar($id){
     	$estratos = Estrato::all();
         $barrios = Barrio::all();
@@ -86,6 +94,16 @@ class SostenibilidadHogaresController extends Controller
 		$casa->estado_encuesta_id = 1;
 		$casa->numero_sesion = 1;
 		$casa->save();
+		
+		Historial_Encuesta_Hogar_Sostenibilidad::create([
+    		'estado_encuesta_id' => 1,
+    		'casas_sostenibilidad_id' => $casa->id,
+    		'observacion' => 'Se ha creado la encuesta.',
+    		'fecha_cambio' => date('Y-m-d H:i'),
+    		'estado' => 1,
+    		'user_create' => 'admin',
+    		'user_update' => 'admin'
+    	]);
 			
 		return ["success"=>true,"id"=>$casa->id];
 		
@@ -125,6 +143,16 @@ class SostenibilidadHogaresController extends Controller
 		$casa->estado_encuesta_id = 1;
 		$casa->numero_sesion = 1;
 		$casa->save();
+		
+		Historial_Encuesta_Hogar_Sostenibilidad::create([
+    		'estado_encuesta_id' => 1,
+    		'casas_sostenibilidad_id' => $casa->id,
+    		'observacion' => 'Se ha editado la encuesta.',
+    		'fecha_cambio' => date('Y-m-d H:i'),
+    		'estado' => 1,
+    		'user_create' => 'admin',
+    		'user_update' => 'admin'
+    	]);
 			
 		return ["success"=>true,"id"=>$casa->id];
 		
@@ -146,7 +174,7 @@ class SostenibilidadHogaresController extends Controller
         $riesgos = Tipo_Riesgo::where('categorias_riesgo_id',1)->get();
         $factoresPositivos = Factor_Calidad::where('estado',true)->where('tipo_factor_id',3)->get();
         $calificacionFactor = Calificacion_Factor::where('estado',true)->get();
-        $beneficios = Beneficio::where('tipo_beneficio',false)->get();
+        $beneficios = Beneficio::where('tipo_beneficio',false)->orderBy('peso')->get();
         
         
         
@@ -473,8 +501,36 @@ class SostenibilidadHogaresController extends Controller
 		
 		$componente->save();
 		
+		if($casa->numero_seccion == 1){
+			$casa->numero_seccion = 2;
+			$casa->estado_encuesta_id = 2;
+			$casa->save();
+			
+			Historial_Encuesta_Hogar_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'casas_sostenibilidad_id' => $casa->id,
+	    		'observacion' => 'Se ha creado la encuesta en la sección socio-cultural.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+			
+		}else{
+			Historial_Encuesta_Hogar_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'casas_sostenibilidad_id' => $casa->id,
+	    		'observacion' => 'Se ha editado la encuesta en la sección socio-cultural.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+		}
+		
 		return ["success"=>true];
     }
+    
     public function getComponenteambiental($id){
     	$data = ["id"=>$id];
         return view('sostenibilidadHogar.ambiental',$data);
@@ -639,10 +695,254 @@ class SostenibilidadHogaresController extends Controller
 		}
 		$casa->save();
 		$componente->save();
+		
+		if($casa->numero_seccion == 2){
+			$casa->numero_seccion = 3;
+			$casa->estado_encuesta_id = 2;
+			$casa->save();
+			
+			Historial_Encuesta_Hogar_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'casas_sostenibilidad_id' => $casa->id,
+	    		'observacion' => 'Se ha creado la encuesta en la sección ambiental.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+			
+		}else{
+			Historial_Encuesta_Hogar_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 2,
+	    		'casas_sostenibilidad_id' => $casa->id,
+	    		'observacion' => 'Se ha editado la encuesta en la sección ambiental.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+		}
 			
 		return ["success"=>true];
 		
     }
     
+    public function getEconomico($id){
+    	if(Casa_Sostenibilidad::find($id) == null){
+    		return "no";
+    	}else{
+    		return view('sostenibilidadHogar.economico',["id" => $id]);
+    	}
+    }
+    
+    public function getCargardatoseconomico($id){
+    	$sectoresTurismo = Sectores_Turismo::all();
+    	$sectoresEconomia = Sectores_Economia::all();
+    	$beneficios = Beneficio::where('tipo_beneficio',true)->orderBy('peso')->get();
+    	$calificacionesFactor = Calificacion_Factor::all();
+    	$tiposRiesgos = Tipo_Riesgo::where('categorias_riesgo_id',3)->get();
+    	$criteriosCalificacion = Criterio_Calificacion::all();
+    	
+    	$encuesta = Casa_Sostenibilidad::find($id);
+    	$objeto = null;
+    	if($encuesta->componenteTecnico){
+			$objeto['contribuira'] = !isset($encuesta->componenteTecnico->contribuira) ? -1 : $encuesta->componenteTecnico->contribuira;
+			$objeto['aspectos_mejorar'] = $encuesta->componenteTecnico->aspectos_mejorar;
+    		$objeto['sectoresTurismo'] = $encuesta->sectoresTurismosSostenibilidads->pluck('id')->toArray();
+    		$objeto['otroSectorTurismo'] = in_array(7,$objeto['sectoresTurismo']) ? $encuesta->sectoresTurismosSostenibilidads->where('id',7)->first()->pivot->otro : null;
+    		$objeto['es_fuente'] = !in_array(6,$objeto['sectoresTurismo']) ? $encuesta->componenteTecnico->es_fuente : null;
+    		$objeto['sectoresEconomia'] = !in_array(6,$objeto['sectoresTurismo']) ? $encuesta->sectoresEconomiaSostenibilidads->pluck('id')->toArray() : array();
+    		$objeto['otroSectorEconomia'] = in_array(12,$objeto['sectoresEconomia']) ? $encuesta->sectoresEconomiaSostenibilidads->where('id',12)->first()->pivot->otro : null;
+    		$objeto['impacto_economico'] = $encuesta->componenteTecnico->impacto_economico;
+    		$objeto['conoce_marca'] = $encuesta->conoce_marca;
+    		$objeto['autoriza_tratamiento'] = $encuesta->autoriza_tratamiento;
+    		$objeto['autorizacion'] = $encuesta->autorizacion;
+    		
+    		foreach($beneficios as $item){
+    			$beneficio = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
+				if($beneficio){
+					$item['califcacion'] = $beneficio->calificacion_factores_id;
+    				$item['otroBeneficio'] = $beneficio->otro;	
+				}
+    		}
+    		$objeto['beneficios'] = $beneficios;
+    		
+    		foreach($tiposRiesgos as $item){
+    			$riesgo = Riesgo_Turismo::where('casas_sostenibilidad_id',$encuesta->id)->where('tipos_riesgo_id', $item['id'])->first();
+				if($riesgo){
+					$item['califcacion'] = $riesgo->criterios_calificacion_id;
+    				$item['otroRiesgo'] = $riesgo->otro;	
+				}
+    		}
+    		$objeto['tiposRiesgos'] = $tiposRiesgos;
+    			
+    	}
+    	
+    	$retornado = [
+    		'sectoresTurismo' => $sectoresTurismo,
+    		'sectoresEconomia' => $sectoresEconomia,
+    		'beneficios' => $beneficios,
+    		'calificacionesFactor' => $calificacionesFactor,
+    		'tiposRiesgos' => $tiposRiesgos,
+    		'criteriosCalificacion' => $criteriosCalificacion,
+    		'objeto' => $objeto
+    	];
+    	
+    	return $retornado;
+    }
+    
+    public function postGuardareconomico(Request $request){
+    	$validator = \Validator::make($request->all(), [
+			'hogar_id' => 'required|exists:casas_sostenibilidad,id',
+			'contribuira' => 'required',
+			'aspectos_mejorar' => 'required_if:contribuira,1',
+			'sectoresTurismo' => 'required',
+			'sectoresTurismo.*' => 'exists:sectores_turismos,id',
+			'sectoresEconomia' => 'exists:sectores_economia,id',
+			'beneficios' => 'required',
+			'beneficios.*.id' => 'exists:beneficios,id',
+			'beneficios.*.califcacion' => 'exists:calificaciones_factores,id',
+			'impacto_economico' => 'required',
+			'tiposRiesgos' => 'required',
+			'tiposRiesgos.*.id' => 'exists:tipos_riesgos,id',
+			'tiposRiesgos.*.califcacion' => 'exists:criterios_calificaciones,id',
+			'conoce_marca' => 'required',
+			'autoriza_tratamiento' => 'required',
+			'autorizacion' => 'required'
+    	],[
+       		
+    	]);
+    	
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if( !in_array(6,$request->sectoresTurismo) && !isset($request->es_fuente) ){
+			return ["success" => false, "errores" => [["El campo fuente de generación de ingreso es reuqerido si en los secotres no marco ninguno."]] ];
+		}
+		
+		if(!in_array(6,$request->sectoresTurismo) && count($request->sectoresEconomia) == 0 ){
+			return ["success" => false, "errores" => [["Debe seleccionar alguna de las actividades económicas si en los secotres no marco ninguno."]] ];
+		}
+		
+		if(in_array(7,$request->sectoresTurismo) && !isset($request->otroSectorTurismo) ){
+			return ["success" => false, "errores" => [["El campo otro en la pregunta 22 es requerido."]] ];
+		}
+		
+		if(in_array(12,$request->sectoresEconomia) && !isset($request->otroSectorEconomia) ){
+			return ["success" => false, "errores" => [["El campo otro en la pregunta 22.2 es requerido."]] ];
+		}
+		
+		$encuesta = Casa_Sostenibilidad::find($request->hogar_id);
+		
+		//----------------------------------------------------------------
+		if($encuesta->componenteTecnico){
+			$encuesta->componenteTecnico->delete();
+		}
+		$encuesta->sectoresTurismosSostenibilidads()->detach();
+		$encuesta->sectoresEconomiaSostenibilidads()->detach();
+		//----------------------------------------------------------------
+		
+		$tecnico = new Componente_Tecnico();
+		$tecnico->casas_sostenibilidad_id = $encuesta->id;
+		$tecnico->contribuira =$request->contribuira == -1 ? null : $request->contribuira;
+		$tecnico->aspectos_mejorar = $request->contribuira == 1 ? $request->aspectos_mejorar : null;
+		$tecnico->es_fuente = !in_array(6,$request->sectoresTurismo) ? $request->es_fuente : null;
+		$tecnico->impacto_economico = $request->impacto_economico;
+		$tecnico->save();
+		
+		foreach($request->sectoresTurismo as $item){
+			if($item != 7){
+				$encuesta->sectoresTurismosSostenibilidads()->attach($item);	
+			}else{
+				$encuesta->sectoresTurismosSostenibilidads()->attach($item,['otro' => $request->otroSectorTurismo]);
+			}
+		}
+		
+		if( !in_array(6,$request->sectoresTurismo) ){
+			foreach($request->sectoresEconomia as $item){
+				if($item != 12){
+					$encuesta->sectoresEconomiaSostenibilidads()->attach($item);	
+				}else{
+					$encuesta->sectoresEconomiaSostenibilidads()->attach($item,['otro' => $request->otroSectorEconomia]);
+				}
+			}
+		}
+		
+		foreach($request->beneficios as $item){
+			$beneficio = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
+			if($beneficio){
+				$beneficio->calificacion_factores_id = $item['califcacion'];
+				$beneficio->otro = ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null ;
+				$beneficio->save();
+			}else{
+				Beneficio_Sociocultural::create([
+					'calificacion_factores_id' => $item['califcacion'],
+					'casas_sostenibilidad_id' => $encuesta->id,
+					'beneficio_id' => $item['id'],
+					'otro' => ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null 
+				]);	
+			}
+		}
+		
+		foreach($request->tiposRiesgos as $item){
+			$riesgo = Riesgo_Turismo::where('casas_sostenibilidad_id',$encuesta->id)->where('tipos_riesgo_id', $item['id'])->first();
+			if($riesgo){
+				$riesgo->criterios_calificacion_id = $item['califcacion'];
+				$riesgo->otro = $item['id'] == 28 && isset($item['otroRiesgo']) ? $item['otroRiesgo'] : null;
+				$riesgo->save();
+			}else{
+				Riesgo_Turismo::create([
+					'criterios_calificacion_id' => $item['califcacion'],
+					'casas_sostenibilidad_id' => $encuesta->id,
+					'tipos_riesgo_id' => $item['id'],
+					'otro' => $item['id'] == 28 && isset($item['otroRiesgo']) ? $item['otroRiesgo'] : null 
+				]);	
+			}
+		}
+		
+		$encuesta->conoce_marca = $request->conoce_marca;
+		$encuesta->autoriza_tratamiento = $request->autoriza_tratamiento;
+		$encuesta->autorizacion = $request->autorizacion;
+		$encuesta->save();
+		
+		if($encuesta->numero_seccion == 3){
+			$encuesta->numero_seccion = 4;
+			$encuesta->estado_encuesta_id = 3;
+			$encuesta->save();
+			
+			Historial_Encuesta_Hogar_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 3,
+	    		'casas_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha creado la encuesta en la sección económico.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+			
+		}else{
+			Historial_Encuesta_Hogar_Sostenibilidad::create([
+	    		'estado_encuesta_id' => 3,
+	    		'casas_sostenibilidad_id' => $encuesta->id,
+	    		'observacion' => 'Se ha editado la encuesta en la sección económico.',
+	    		'fecha_cambio' => date('Y-m-d H:i'),
+	    		'estado' => 1,
+	    		'user_create' => 'admin',
+	    		'user_update' => 'admin'
+	    	]);
+		}
+		
+		return ["success" => true];
+    }
+    
+    public function getEncuestas(){
+		return view('sostenibilidadHogar.listadoEncuestas');
+	}
+    
+    public function getListarencuestas(){
+		$encuestas = ListadoEncuestasHogarSostenibilidad::all();
+		return ['encuestas' => $encuestas];
+	}
     
 }

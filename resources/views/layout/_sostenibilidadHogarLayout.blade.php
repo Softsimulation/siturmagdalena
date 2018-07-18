@@ -204,7 +204,7 @@
         <script src="{{asset('/js/encuestas/sostenibilidadHogar/social.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadHogar/ambiental.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadHogar/configurar.js')}}"></script>
-        
+        <script src="{{asset('/js/encuestas/sostenibilidadHogar/economico.js')}}"></script>
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
