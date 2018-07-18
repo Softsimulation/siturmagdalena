@@ -23,6 +23,8 @@
     <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/fileinput.min.css')}}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{asset('/css/fileinput-rtl.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/lf-ng-md-file-input.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/mycss.css')}}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{asset('/css/theme.min.css')}}" media="all" rel="stylesheet" type="text/css" />
    
 <link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />
@@ -378,6 +380,7 @@
         <script src="{{asset('/js/plugins/select.min.js')}}"></script>
         <script src="{{asset('/js/dir-pagination.js')}}"></script>
         <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+        <script src="{{asset('/js/plugins/lf-ng-md-file-input.min.js')}}"></script>
         
         <script src="{{asset('/js/administrador/administrador.js')}}"></script>
         <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
@@ -390,8 +393,22 @@
         <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
         
+<<<<<<< HEAD
+        <script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
+        <script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    		
+    	    
+    	    
+    	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
+		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
+=======
         <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
+>>>>>>> 1f9164be354fbe83840a60ead297027aa9c703bc
 
         </div>
        
@@ -422,6 +439,8 @@
   
     <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
     <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
+    
+    
     
     <script>
         $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
