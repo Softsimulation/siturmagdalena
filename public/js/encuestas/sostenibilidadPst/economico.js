@@ -10,6 +10,7 @@ angular.module('sostenibilidadPst.economico', [])
     };
     
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         sostenibilidadPstServi.CargarEconomico($scope.id).then(function (data) {
             $scope.proveedor = data.proveedor;
             $scope.clasificacionesProveedor = data.clasificacionesProveedor;
@@ -17,7 +18,12 @@ angular.module('sostenibilidadPst.economico', [])
             $scope.beneficios = data.beneficios;
             $scope.calificacionesFactor = data.calificacionesFactor;
             $scope.beneficiosEconomicos = data.beneficiosEconomicos;
+            if(data.objeto){
+                $scope.encuesta = data.objeto;
+            }
+            $("body").attr("class", "");
         }).catch(function () {
+            $("body").attr("class", "");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     });
@@ -55,6 +61,30 @@ angular.module('sostenibilidadPst.economico', [])
         
         
         $scope.encuesta.pst_id = $scope.id;
+        $scope.encuesta.beneficios = $scope.beneficios;
+        
+        $("body").attr("class", "charging");
+        sostenibilidadPstServi.guardarEconomico($scope.encuesta).then(function (data) {
+            $("body").attr("class", "");
+            if (data.success) {
+                swal({
+                    title: "Realizado",
+                    text: "Sección guardada exitosamente",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    window.location = "/sostenibilidadpst/encuestas";
+                }, 1000);
+            } else {
+                swal("Error", "Hay errores en el formulario corrigelos", "error");
+                $scope.errores = data.errores;
+            }
+        }).catch(function () {
+            $("body").attr("class", "");
+            swal("Error", "No se realizo la solicitud, reinicie la página", "error");
+        })
         
     }
     

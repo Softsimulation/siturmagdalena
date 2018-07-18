@@ -41,8 +41,8 @@ class Accion_Cultural extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function accionesCulturaresCasas()
+    public function Casa_Sostenibilidad()
     {
-        return $this->hasMany('App\AccionesCulturaresCasa', 'acciones_culturales_id');
+        return $this->belongsToMany('App\Models\Casa_Sostenibilidad','acciones_culturares_casas','acciones_culturales_id','casas_sostenibilidad_id');
     }
 }

@@ -1,4 +1,4 @@
-angular.module('oferta.alquilarTransporte', ["checklist-model"])
+angular.module('oferta.alquilarTransporte', ["checklist-model","ofertaService"])
 
 
 .controller('seccionAlquiler', function ($scope, ofertaServi) {
@@ -46,7 +46,7 @@ angular.module('oferta.alquilarTransporte', ["checklist-model"])
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    //window.location.href = "/EncuestaOfertaEmpleo/EmpleoMensual/" + $scope.id;
+                    window.location.href = "/ofertaempleo/empleomensual/" + $scope.id;
                 }, 1000);
             } else {
                 $scope.errores = data.errores

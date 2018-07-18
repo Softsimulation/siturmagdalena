@@ -43,7 +43,7 @@ class UsuarioController extends Controller
         $userRetornar = [];
         
         $userRetornar["id"] = $user->id;
-        $userRetornar["nombres"] = $user->username;
+        $userRetornar["nombres"] = $user->nombre;
         $userRetornar["email"] = $user->email;
         $userRetornar["rol"] = $roles_retornar;
         
@@ -89,7 +89,8 @@ class UsuarioController extends Controller
             return ['success'=>false, 'errores'=>$errores];
         }
         $user = new User();
-        $user->username = $request->nombres;
+        $user->username = $request->email;
+        $user->nombre = $request->nombres;
         $user->password = $request->password1;
         $user->email = $request->email;
         $user->estado = 1;
@@ -150,9 +151,9 @@ class UsuarioController extends Controller
         foreach($request->rol as $rol){
             $user->roles()->attach($rol);
         }
-        $user->username = $request->nombres;
+        $user->nombre = $request->nombres;
+        $user->username = $request->email;
         $user->email = $request->email;
-        $user->estado = 1;
         $user->save();
         
         return ['success'=> true];

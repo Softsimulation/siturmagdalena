@@ -24,6 +24,8 @@ Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
 
+Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
+
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
@@ -58,3 +60,4 @@ Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 Route::controller('/usuario','UsuarioController');
+Route::controller('/email','EmailController');

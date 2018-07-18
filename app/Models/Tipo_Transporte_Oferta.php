@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,6 +33,6 @@ class Tipo_Transporte_Oferta extends Model
      */
     public function transportes()
     {
-        return $this->hasMany('App\Transporte', 'tipos_transporte_oferta_id');
+        return $this->hasMany('App\Models\Transporte', 'tipos_transporte_oferta_id');
     }
 }

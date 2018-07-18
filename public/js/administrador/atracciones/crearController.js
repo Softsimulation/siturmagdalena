@@ -2,21 +2,75 @@
 /* global swal */
 angular.module('atracciones.crear', [])
 
-.controller('atraccionesCrearController', function($scope, atraccionesServi){
-    var marker;
+.controller('atraccionesCrearController', function($scope, atraccionesServi, FileUploader){
+    var marker = null;
     var lat;
     var lng;
     var latlng;
     $scope.atraccion = {
-        pos: {
-            lat,
-            lng
-        }
+        datosGenerales: {
+            pos: {
+                lat: null,
+                lng: null
+            }
+        },
+        id: -1
     };
+    $("#portadaIMG").fileinput({
+        language: "es",
+        showUpload: false,
+        required: true,
+        allowedFileExtensions: ["jpg", "png", "gif"]
+    });
+    // $("#imagenes").fileinput({
+    //     maxFileCount: 5,
+    //     showUpload: false,
+    //     validateInitialCount: true,
+    //     autoFitCaption: true,
+    //     autoReplace: true,
+    //     overwriteInitial: false,
+    //     language: "es",
+    //     initialPreview: [
+    //         "<img class='kv-preview-data file-preview-image' src='https://placeimg.com/800/460/nature'>",
+    //         "<img class='kv-preview-data file-preview-image' src='https://placeimg.com/800/460/nature'>",
+    //         "<img class='kv-preview-data file-preview-image' src='https://placeimg.com/800/460/nature'>"
+    //     ],
+    //     initialPreviewConfig: [
+    //         {caption: "Nature-1.jpg", size: 628782, width: "120px", url: "/site/file-delete", key: 1},
+    //         {caption: "Nature-2.jpg", size: 982873, width: "120px", url: "/site/file-delete", key: 2}, 
+    //         {caption: "Nature-3.jpg", size: 567728, width: "120px", url: "/site/file-delete", key: 3} 
+    //     ],
+    //     allowedFileExtensions: ["jpg", "png", "gif"]
+    // });
+    $("#imagenes").fileinput({
+        autoReplace: false,
+        uploadUrl: "",
+        maxFileCount: 5,
+        showUpload: false,
+        language: "es",
+        allowedFileExtensions: ["jpg", "png", "gif"],
+        fileActionSettings: {
+            showUpload: false
+        }
+    });
+    
+    $scope.groupByDestino = function (item) {
+        // by returning this, it will attach this as the group by key
+        // and automatically group your items by this
+        return item.destino.destino_con_idiomas[0].nombre;
+    }
+    
+    $scope.portadaUploader = new FileUploader({
+        queueLimit: 1
+    });
     
     atraccionesServi.getDatoscrear().then(function (data){
         if (data.success){
             $scope.sectores = data.sectores;
+            $scope.perfiles_turista = data.perfiles_turista;
+            $scope.tipos_atracciones = data.tipos_atracciones;
+            $scope.categorias_turismo = data.categorias_turismo;
+            $scope.actividades = data.actividades;
         }
     }).catch(function (errs){
         swal('Error', 'Error al cargar los datos. Por favor recargue la página.', 'error');
@@ -38,8 +92,8 @@ angular.module('atracciones.crear', [])
                     content: '<p><b>Su posición</b></p>'
                 }
             });
-            $scope.atraccion.pos.lat = angular.copy(lat);
-            $scope.atraccion.pos.lng = angular.copy(lng);
+            $scope.atraccion.datosGenerales.pos.lat = angular.copy(lat);
+            $scope.atraccion.datosGenerales.pos.lng = angular.copy(lng);
         }
     });
     
@@ -58,70 +112,85 @@ angular.module('atracciones.crear', [])
                             content: '<p><b>'+ $('#address').val() +'</b></p>'
                         }
                     });
-                    $scope.atraccion.pos.lat = angular.copy(latlng.lat());
-                    $scope.atraccion.pos.lng = angular.copy(latlng.lng());
+                    $scope.atraccion.datosGenerales.pos.lat = angular.copy(latlng.lat());
+                    $scope.atraccion.datosGenerales.pos.lng = angular.copy(latlng.lng());
                 }
             }
         });
     }
     
-    $scope.guardarDepartamento = function (){
-        if (!$scope.departamentoForm.$valid){
+    $scope.guardarDatosGenerales = function (){
+        if (!$scope.crearAtraccionForm.$valid || $scope.atraccion.id != -1){
             return;
         }
-        switch($scope.sw){
-            case 1:
-                departamentosServi.postCreardepartamento($scope.departamento).then(function(data){
-                    if (data.success){
-                        $scope.departamentos.push(data.departamento);
-                        swal('¡Éxito!', 'Departamento agregado con éxito', 'success');
-                    }else{
-                        $scope.errores = data.errores;
-                    }
-                }).catch(function(err){
-                    swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
-                });
-                break;
-            
-            case 2:
-                departamentosServi.postEditardepartamento($scope.departamento).then(function(data){
-                    if (data.success){
-                        for (var i = 0; i < $scope.departamentos.length; i++){
-                            if ($scope.departamentos[i].id == data.departamento.id){
-                                $scope.departamentos[i] = data.departamento;
-                            }
-                        }
-                        swal('¡Éxito!', 'Departamento editado con éxito', 'success');
-                    }else{
-                        $scope.errores = data.errores;
-                    }
-                }).catch(function(err){
-                    swal('Error', 'Error al editar los datos. Por favor, recargue la página.', 'error');
-                });
-                break;
-                
-            default:
-                swal('Error', 'Error al guardar los datos. Por favor, recargue la página.', 'error');
-                break;
+        if (marker == null){
+            swal('Error', 'No ha colocado un marcador en el mapa.', 'error');
+            return;
         }
+        atraccionesServi.postCrearatraccion($scope.atraccion.datosGenerales).then(function(data){
+            if (data.success){
+                $scope.atraccion.id = data.id;
+                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+            }else{
+                $scope.errores = data.errores;
+            }
+        }).catch(function(err){
+            swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+        });
     }
     
-    $scope.importarCsv = function (){
-        var fd = new FormData();
-        if ($scope.import_file != null){
-            fd.append('import_file', $scope.import_file[0]);
-        }else{
-            swal('Información', 'No se ha seleccionado ningún archivo.', 'info');
+    $scope.guardarMultimedia = function (){
+        if (!$scope.multimediaForm.$valid && $scope.atraccion.id != -1){
             return;
         }
-        console.log($scope.import_file);
-        $scope.erroresCSV = null;
-        departamentosServi.postImportexcel(fd).then(function (data){
-            if (data.success){
-                window.location.reload();
-            }else{
-                $scope.erroresCSV = data.errores;
+        var fd = new FormData();
+        var input = $('#portadaIMG');
+        if (input[0] != undefined) {
+            // check for browser support (may need to be modified)
+            if (input[0].files && input[0].files.length == 1) {
+                if (input[0].files[0].size > 2097152) {
+                    swal("Error", "Por favor la imagen debe tener un peso menor de " + (2097152 / 1024 / 1024) + " MB", "error");
+                    // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
+                    return;
+                }
             }
-        })
+        }
+        if ($scope.portadaIMG != null) {
+            fd.append("portadaIMG", $scope.portadaIMG[0]);
+        }else{
+            swal('Error', 'No ha adjuntado imagen de portada..', 'error');
+        }
+        if ($scope.imagenes != null) {
+            for (i in $scope.imagenes){
+                fd.append("image[]", $scope.imagenes[i]);
+            }
+        }
+        fd.append('id', $scope.atraccion.id);
+        fd.append('video_promocional', $("#video_promocional").val());
+        atraccionesServi.postGuardarmultimedia(fd).then(function (data){
+            if (data.success){
+                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+            }else{
+                $scope.errores = data.errores;
+            }
+        }).catch(function (){
+            swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+        });
+    }
+    
+    $scope.guardarAdicional = function (){
+        if (!$scope.informacionAdicionalForm.$valid || $scope.atraccion.id == -1){
+            return;
+        }
+        $scope.atraccion.adicional.id = $scope.atraccion.id;
+        atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
+            if (data.success){
+                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+            }else{
+                $scope.errores = data.errores;
+            }
+        }).catch(function(err){
+            swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+        });
     }
 });

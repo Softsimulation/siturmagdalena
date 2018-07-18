@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,7 +36,7 @@ class Tipo_Turismo extends Model
      */
     public function categoriaTurismos()
     {
-        return $this->hasMany('App\CategoriaTurismo');
+        return $this->hasMany('App\Models\CategoriaTurismo');
     }
 
     /**
@@ -44,6 +44,6 @@ class Tipo_Turismo extends Model
      */
     public function tipoTurismoConIdiomas()
     {
-        return $this->hasMany('App\TipoTurismoConIdioma');
+        return $this->hasMany('App\Models\Tipo_Turismo_Con_Idioma','tipo_turismo_id');
     }
 }

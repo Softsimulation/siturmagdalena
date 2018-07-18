@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -86,7 +86,7 @@ class Actividad extends Model
      */
     public function actividadesConIdiomas()
     {
-        return $this->hasMany('App\ActividadesConIdioma', 'actividades_id');
+        return $this->hasMany('App\Models\Actividad_Con_Idioma', 'actividades_id');
     }
 
     /**

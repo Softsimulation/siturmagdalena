@@ -80,7 +80,7 @@ class Visitante extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id','encuestador_creada', 'digitada', 'grupo_viaje_id', 'motivo_viaje', 'municipio_residencia', 'destino_principal', 'opciones_lugares_id', 'pais_nacimiento', 'transporte_interno', 'transporte_llegada', 'nombre', 'edad', 'sexo', 'email', 'telefono', 'celular', 'fecha_llegada', 'fecha_salida', 'ultima_sesion', 'tamaño_grupo_visitante', 'invitacion_correo', 'token', 'es_ingles', 'es_verificado', 'facilidad','acepta_autorizacion','acepta_tratamiento','conoce_marca'];
+    protected $fillable = ['id','encuestador_creada', 'digitada', 'grupo_viaje_id', 'motivo_viaje', 'municipio_residencia', 'destino_principal', 'opciones_lugares_id', 'pais_nacimiento', 'transporte_interno', 'transporte_llegada', 'nombre', 'edad', 'sexo', 'email', 'telefono', 'celular', 'fecha_llegada', 'fecha_salida', 'ultima_sesion', 'tamaño_grupo_visitante', 'invitacion_correo', 'token', 'es_ingles', 'es_verificado', 'facilidad','acepta_autorizacion','acepta_tratamiento','conoce_marca','atraccion_favorita'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -415,6 +415,11 @@ class Visitante extends Model
     public function opcionesActividadesRealizadas()
     {
         return $this->belongsToMany('App\Models\Opcion_Actividad_Realizada', 'opciones_actividades_realizadas_por_visitantes', 'visitante_id', 'opciones_activades_realizada_id');
+    }
+    
+    public function subOpcionesActividadesRealizadas()
+    {
+        return $this->belongsToMany('App\Models\Sub_Opciones_Actividades_Realizadas', 'sub_opciones_actividades_realizadas_por_visitantes', 'visitante_id', 'sub_opciones_actividades_realizada_id');
     }
     
 }

@@ -46,7 +46,7 @@
 
 <?php $__env->startSection('NumSeccion', '0%'); ?>
 
-<?php $__env->startSection('app','ng-app="situr_admin"'); ?>
+<?php $__env->startSection('app','ng-app="encuestaListado"'); ?>
 
 <?php $__env->startSection('controller','ng-controller="listadoEncuestasCtrl"'); ?>
 
@@ -102,9 +102,9 @@
                     <tr dir-paginate="item in encuestas|filter:filtrarEncuesta|filter:filtrarCampo|filter:prop.search |itemsPerPage:10 as results" pagination-id="paginacion_encuestas" >
                         <td>{{$index+1}}</td>
                             <td>{{item.id}}</td>
-                            <td>{{item.grupo}}</td>
-                            <td>{{item.lugar}}</td>
-                            <td>{{item.fecha}}</td>
+                            <td>{{item.idgrupo}}</td>
+                            <td>{{item.lugaraplicacion}}</td>
+                            <td>{{item.fechaaplicacion| date:'dd-MM-yyyy'}}</td>
                             <td>{{item.fechallegada | date:'dd-MM-yyyy'}}</td>
                             <td>{{item.username}}</td>
                             <td>{{item.estado}}</td>

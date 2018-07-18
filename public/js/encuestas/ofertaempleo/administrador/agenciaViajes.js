@@ -11,12 +11,13 @@ situr.controller('caracterizacionAgenciaViajesCtrl', ['$scope','agenciaViajeServ
             agenciaViajeServi.getAgencia($scope.encuesta.id).then(function (data) {
                 if (data.Id > 0) {
                     var arrayAux = [];
-                    if(data.TipoServicios.length > 0){
-                        for(var i=0; i<data.TipoServicios.servicios_agencias.length;i++){
-                            arrayAux.push(data.TipoServicios.servicios_agencias[i].id);
+                    if(data.TipoServicios != null){
+                        if(data.TipoServicios.servicios_agencias.length > 0){
+                            for(var i=0; i<data.TipoServicios.servicios_agencias.length;i++){
+                                arrayAux.push(data.TipoServicios.servicios_agencias[i].id);
+                            }
                         }
                     }
-                    
                     $scope.encuesta.TipoServicios = arrayAux;
                     
                     $scope.encuesta.Planes = data.Planes + ""
@@ -104,10 +105,13 @@ situr.controller('ofertaAgenciaViajesCtrl', ['$scope','agenciaViajeServi', funct
                         $scope.encuesta.personas[i].nacional = parseInt($scope.encuesta.personas[i].nacional);
                         $scope.encuesta.personas[i].numerototal = parseInt($scope.encuesta.personas[i].numerototal);
                     }
-                    $scope.encuesta.numero=parseInt(data.planes_santamarta.numero)
-                    $scope.encuesta.magdalena=parseInt(data.planes_santamarta.residentes)
-                    $scope.encuesta.nacional=parseInt(data.planes_santamarta.noresidentes)
-                    $scope.encuesta.internacional=parseInt(data.planes_santamarta.extrajeros)
+                    if(data.planes_santamarta != null){
+                        $scope.encuesta.numero=parseInt(data.planes_santamarta.numero)
+                        $scope.encuesta.magdalena=parseInt(data.planes_santamarta.residentes)
+                        $scope.encuesta.nacional=parseInt(data.planes_santamarta.noresidentes)
+                        $scope.encuesta.internacional=parseInt(data.planes_santamarta.extrajeros)
+                    }
+                    
                 }
                 $("body").attr("class", "cbp-spmenu-push");
                 

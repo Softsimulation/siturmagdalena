@@ -318,6 +318,16 @@
     									<td><input type="text" class="form-control" ng-model="registro.correo" required ></td>
     									<td>@{{registro.correo2}}</td>
     								</tr>
+    								<tr>
+    									<td>Latitud</td>
+    									<td><input type="text" class="form-control" ng-model="registro.latitud" required ></td>
+    									<td>@{{registro.latitud2}}</td>
+    								</tr>
+    								<tr>
+    									<td>Longitud</td>
+    									<td><input type="text" class="form-control" ng-model="registro.longitud" required ></td>
+    									<td>@{{registro.longitud2}}</td>
+    								</tr>
     							</table>
     						</div>
                         </div>
@@ -419,6 +429,14 @@
     									<td>Correo Electronico</td>
     									<td><input type="text" class="form-control" ng-model="registro.correo" required ></td>
     								</tr>
+    								<tr>
+    									<td>Latitud</td>
+    									<td><input type="text" class="form-control" ng-model="registro.latitud" required ></td>
+    								</tr>
+    								<tr>
+    									<td>Longitud</td>
+    									<td><input type="text" class="form-control" ng-model="registro.longitud" required ></td>
+    								</tr>
     							</table>
     						</div>
                         </div>
@@ -508,6 +526,14 @@
     							<tr>
     								<td>Correo Electronico</td>
     								<td>@{{registro.correo}}</td>
+    							</tr>
+    							<tr>
+    								<td>Latitud</td>
+    								<td>@{{registro.latitud}}</td>
+    							</tr>
+    							<tr>
+    								<td>Longitud</td>
+    								<td>@{{registro.longitud}}</td>
     							</tr>
     						</table>
     					</div>

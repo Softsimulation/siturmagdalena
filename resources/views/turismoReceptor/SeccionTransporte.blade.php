@@ -42,8 +42,12 @@
 <div class="main-page">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     
-    <div class="alert alert-danger" role="alert" ng-if="errores" ng-repeat="error in errores">
-       @{{error[0]}}
+    <div class="alert alert-danger" ng-if="errores != null">
+        <label><b>Errores:</b></label>
+        <br />
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
+        </div>
     </div>
     <form role="form" name="transForm" novalidate>
         <div class="panel panel-success">
@@ -75,12 +79,12 @@
         <div class="panel panel-success" ng-if="transporte.Llegar == 6">
             <div class="panel-heading">
                 <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
-                <h3 class="panel-title"><b> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="transporte.Empresa" placeholder="Presione aquí para ingresar la empresa de transporte"/>
+                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="transporte.Empresa" placeholder="Presione aquí para ingresar la empresa de transporte" ng-required="transporte.Llegar == 6"/>
                     </div>
                 </div>
                 <span  ng-show="transForm.$submitted || transForm.empresa.$touched">
@@ -113,10 +117,30 @@
                 </span>
             </div>
         </div>
+        <div class="panel panel-success" ng-if="transporte.Mover ==5">
+            <div class="panel-heading">
+                <!-- >El alquiler de vehículo fue realizado en:-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> El alquiler de vehículo fue realizado en</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta con selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in lugares">
+                            <label>
+                                <input type="radio" name="alquiler" ng-value="item.id" ng-model="transporte.Alquiler"> @{{item.opciones_lugares_con_idiomas[0].nombre}}
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- Experiencia de viaje-->
-                <h3 class="panel-title"><b>Sostenibilidad</b></h3>
+                <h3 class="panel-title"><b>C3. Sostenibilidad</b></h3>
             </div>
             <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Ninguna dificultad y 10 Mucha dificultad. ¿Qué tanta dificultad tuvo para llegar a Magdalena ?</b></div>
             <div class="panel-body">

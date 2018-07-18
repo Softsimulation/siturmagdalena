@@ -304,7 +304,7 @@
             </div>
         </div>
         
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-show="tipoProveedor == 1">
             <div class="panel-heading p3">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.7 ¿Su establecimiento posee espacios accesibles para personas en condición de discapacidad?</b></h3>
             </div>
@@ -314,13 +314,13 @@
                     <div class="col-md-12">
                         <div class="radio radio-primary">
                             <label>
-                                <input type="radio" id="espacios_accesibles" value="1" name="espacios_accesibles" required ng-model="encuesta.espacios_accesibles">
+                                <input type="radio" id="espacios_accesibles" value="1" name="espacios_accesibles" ng-required="tipoProveedor == 1" ng-model="encuesta.espacios_accesibles">
                                 SI
                             </label>
                         </div>
                         <div class="radio radio-primary">
                             <label>
-                                <input type="radio" id="espacios_accesibles" value="0" name="espacios_accesibles" required ng-model="encuesta.espacios_accesibles">
+                                <input type="radio" id="espacios_accesibles" value="0" name="espacios_accesibles" ng-required="tipoProveedor == 1" ng-model="encuesta.espacios_accesibles">
                                 NO
                             </label>
                         </div>
@@ -332,7 +332,7 @@
             </div>
         </div>
         
-        <div class="panel panel-success" ng-show="encuesta.espacios_accesibles == 1">
+        <div class="panel panel-success" ng-show="encuesta.espacios_accesibles == 1 && tipoProveedor == 1">
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.7.1 ¿Cuántas habitaciones tiene su establecimiento?</b></h3>
             </div>
@@ -341,7 +341,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input type="number" class="form-control" id="numero_habitaciones" name="numero_habitaciones" ng-model="encuesta.numero_habitaciones" ng-required="encuesta.espacios_accesibles == 1" placeholder="Presione aquí para ingresar el número de habitaciones"  />
+                            <input type="number" class="form-control" id="numero_habitaciones" name="numero_habitaciones" ng-model="encuesta.numero_habitaciones" ng-required="encuesta.espacios_accesibles == 1 && tipoProveedor == 1" placeholder="Presione aquí para ingresar el número de habitaciones"  />
                         </div>
                     </div>
                 </div>
@@ -351,7 +351,7 @@
             </div>
         </div>
         
-        <div class="panel panel-success" ng-show="encuesta.espacios_accesibles == 1">
+        <div class="panel panel-success" ng-show="encuesta.espacios_accesibles == 1 && tipoProveedor == 1">
             <div class="panel-heading p3">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.7.2 Por tipo de discapacidad  por favor indique el número de habitaciones  accesibles. Tenga en cuenta que si una habitación   es accesible para varias categorías de discapacidad, éstas deben indicarse en "Discapacidad múltiple"</b></h3>
             </div>
@@ -370,7 +370,7 @@
                                 <tr ng-repeat="item in tiposDiscapacidad">
                                     <td>@{{item.nombre}}</td>
                                     <td>
-                                        <input type="number" name="discapacidad_@{{item.id}}" class="form-control" ng-model="item.numero_habitacion" ng-required="encuesta.espacios_accesibles == 1" />
+                                        <input type="number" name="discapacidad_@{{item.id}}" class="form-control" ng-model="item.numero_habitacion" ng-required="encuesta.espacios_accesibles == 1 && tipoProveedor == 1" />
                                         <span ng-show="datosForm.$submitted || datosForm.discapacidad_@{{item.id}}.$touched">
                                             <span class="label label-danger" ng-show="datosForm.discapacidad_@{{item.id}}.$error.required">*El campo es requerido.</span>
                                         </span>
@@ -542,7 +542,7 @@
         </div>
         
         <div class="row" style="text-align:center">
-            <a href="/turismoreceptor/seccionpercepcionviaje/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
+            <a href="/sostenibilidadpst/editarencuesta/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />
