@@ -94,7 +94,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <select class="form-control" name="encuestador" ng-options="item.id as item.asp_net_user.username for item in encuestadores" ng-model="encuesta.Encuestador" ng-required="true">
+                        <select class="form-control" name="encuestador" ng-options="item.id as item.user.nombre for item in encuestadores" ng-model="encuesta.Encuestador" ng-required="true">
                             <!--P2Select1. Presione aquí para seleccionar un encuestador-->
                             <option value="" disabled>Presione aquí para seleccionar un encuestador</option>
                         </select>

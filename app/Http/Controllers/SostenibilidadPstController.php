@@ -50,7 +50,7 @@ class SostenibilidadPstController extends Controller
     
     public function getCargarproveedoresrnt(){
         $proveedores = Proveedores_rnt::all();
-        $encuestadores = Digitador::with([ 'aspNetUser'])->get();
+        $encuestadores = Digitador::with([ 'user'])->get();
         
         return ['proveedores' => $proveedores, 'encuestadores' => $encuestadores];
     }
