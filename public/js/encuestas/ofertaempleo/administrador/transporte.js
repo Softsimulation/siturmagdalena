@@ -161,7 +161,7 @@ situr.controller('ofertaTransporteCtrl', ['$scope','transporteServi', function (
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    window.location.href = "/ofertaempleo/empleomensualtransporte/" + $scope.id;
+                    window.location.href = "/ofertaempleo/empleomensual/" + $scope.id;
                 }, 1000);
             } else {
                 $("body").attr("class", "cbp-spmenu-push")

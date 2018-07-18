@@ -28,6 +28,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/turismointerno/datoseditar',
         '/turismointerno/guardarhogar',
         '/turismointerno/createviaje',
-        '/turismointerno/siguienteviaje'
+        '/turismointerno/siguienteviaje',
+        '/*'
     ];
 }

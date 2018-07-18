@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,9 +22,11 @@ class Dominiosingles extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+     public $timestamps = false;
+     protected $primaryKey = 'encuestas_id';
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
     }
 
     /**
@@ -32,6 +34,6 @@ class Dominiosingles extends Model
      */
     public function tiposCargo()
     {
-        return $this->belongsTo('App\TiposCargo', 'tipos_cargos_id');
+        return $this->belongsTo('App\Models\TiposCargo', 'tipos_cargos_id');
     }
 }
