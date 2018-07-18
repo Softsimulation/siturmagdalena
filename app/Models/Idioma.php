@@ -389,4 +389,12 @@ class Idioma extends Model
     {
         return $this->hasMany('App\TiposViajeConIdioma', 'idiomas_id');
     }
+    public function noticias()
+    {
+        return $this->belongsToMany('App\Models\Noticia', 'noticias_has_idiomas', 'noticias_id', 'idiomas_id');
+    }
+    public function tiposNoticias()
+    {
+        return $this->belongsToMany('App\Models\Tipo_noticia', 'tipos_noticias_has_idiomas', 'tipos_noticias_id', 'idiomas_id');
+    }
 }
