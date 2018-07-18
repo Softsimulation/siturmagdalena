@@ -58,6 +58,7 @@ use App\Models\Rubro;
 use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
 use App\Models\Sostenibilidad_Visitante;
+use App\Models\Actividades_Sostenibilidad_Idiomas;
 
 
 class TurismoReceptorController extends Controller
@@ -70,7 +71,7 @@ class TurismoReceptorController extends Controller
         
         $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
         
-        $encuestadores = Digitador::with([ 'user'])->get();
+        $encuestadores = Digitador::with([ 'aspNetUser'])->get();
         
         $lugar_nacimiento = Opcion_Lugar::with(["opcionesLugaresConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
