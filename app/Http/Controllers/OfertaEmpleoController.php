@@ -71,7 +71,7 @@ class OfertaEmpleoController extends Controller
         
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
-                                    'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion']]);
+                                    'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
     }
     
     
@@ -892,8 +892,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-    		$encuesta = Empleo::find($request->Encuesta);
-    
+    		$encuesta = Encuesta::find($request->Encuesta);
+          
     		 if($request->capacitacion == 1 ){
     		     if($request->tematicas == null || count($request->tematicas) == 0){
     	                return ["success" => false, "errores" => [["Es requerido las tematicas."]] ];    
@@ -991,8 +991,9 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		}
 		
 		
-
-        return ["success" => true];
+        
+        
+        return ["success" => true, "idsitio"=> $encuesta->sitios_para_encuestas_id ];
     }
     
     public function postGuardarnumeroemp(Request $request){
