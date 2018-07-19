@@ -103,101 +103,56 @@
 
 @section('content')
 <div class="container">
-    <h1 class="title1">Lista de departamentos</h1>
+    <h1 class="title1">Lista de atracciones</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row" style="margin: 0;">
             <div class="col-xs-12 col-sm-6 col-md-5">
-                <button type="button" class="btn btn-primary" ng-click="nuevoMunicipioModal()">
-                  Insertar municipio
-                </button>
-                <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                  Importar csv
-                </button>
+                <a href="/administradoratracciones/crear" type="button" class="btn btn-primary" >
+                  Insertar atracción
+                </a>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4">
-                <input type="text" ng-model="prop.search" class="form-control" id="inputEmail3" placeholder="Búsqueda de municipios (id, nombre, departamento)">
+                <input type="text" ng-model="prop.search" class="form-control" id="inputEmail3" placeholder="Búsqueda de atracciones">
             </div>
             <div class="col-xs-12 col-sm-2 col-md-3" style="text-align: center;">
-                <span class="chip">@{{(municipios|filter:prop.search).length}} resultados</span>
+                <span class="chip">@{{(atracciones|filter:prop.search).length}} resultados</span>
             </div>
-        </div>
-        <div class="collapse row" id="collapseExample">
-          <div class="well">
-              <div class="alert alert-danger row" ng-if="erroresCSV != null">
-                    <label><b>Errores:</b></label>
-                    <br />
-                    <div ng-repeat="error in erroresCSV" ng-if="error.length>0">
-                        -@{{error[0]}}
-                    </div>
-                </div>
-              <div class="row">
-                <div class="alert alert-info">
-                    <label><b>Importante:</b></label>
-                    <br />
-                    El archivo debe tener solamente las columnas "nombreMunicipio", "nombreDepartamento" y "nombrePais".
-                </div>
-            </div>
-            <div class="row">
-                <form class="form-inline" method="post" novalidate role="form" name="importarCsvForm" class="form-horizontal" enctype="multipart/form-data">
-        			<div class="form-group">
-        			    <input required type="file" name="import_file" accept=".csv" file-input='import_file' />
-        			</div>
-        			<button class="btn btn-primary" ng-click="importarCsv()">Import File</button>
-        		</form>
-            </div>
-          </div>
         </div>
         <br/>
         <div class="row">
             <div class="col-xs-12">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Departamento, País</th>
-                        <th>Última modificación</th>
-                        <th>Usuario</th>
-                        <th style="text-align: center;">Opciones</th>
-                    </tr>
-                    <tr dir-paginate="municipio in municipios | filter:prop.search | itemsPerPage:10" pagination-id="pagination_municipios" >
-                        <td>
-                            @{{municipio.id}}
-                        </td>
-                        <td>
-                            @{{municipio.nombre}}
-                        </td>
-                        
-                        <td>
-                            @{{imprimirNombre(municipio.departamento_id)}}
-                        </td>
-                        <td>@{{municipio.updated_at | date:'dd-MM-yyyy'}}</td>
-                        <td>@{{municipio.user_update}}</td>
-                        <td style="text-align: center;">
-                            <a href="javascript:void(0)" ng-click="verMunicipioModal(municipio)">
-                                <span class="glyphicon glyphicon-eye-open" title="Ver municipio"></span>
-                            </a> 
-                            <!--<a ng-repeat="idioma in pais.paises_con_idiomas" ng-click="editarPaisModal(pais, idioma.idioma.id)" title="Editar @{{idioma.idioma.nombre}}" href="javascript:void(0)">-->
-                            <!--    @{{idioma.idioma.culture | uppercase}} -->
-                            <!--</a>-->
-                            <!--<a ng-click="agregarNombre(pais)" href="javascript:void(0)" ng-if="pais.paises_con_idiomas.length != idiomas.length" title="Agregar nombre en otro idioma">-->
-                            <!--    <span class="glyphicon glyphicon-plus">-->
-                                    
-                            <!--    </span>-->
-                            <!--</a>-->
-                            <a href="javascript:void(0)" ng-click="editarMunicipioModal(municipio)">
-                                <span class="glyphicon glyphicon-pencil" title="Editar país"></span>
-                            </a> 
-                        </td>
-                    </tr>
-                </table>
-                <div class="alert alert-warning" role="alert" ng-show="municipios.length == 0 || (municipios|filter:prop.search).length == 0">No hay resultados disponibles <span ng-show="(municipios|filter:prop.search).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
+                <ul class="media-list">
+                    <li dir-paginate="atraccion in atracciones | filter:prop.search | itemsPerPage:10" pagination-id="pagination_atracciones" class="media">
+                        <div class="media-left">
+                            <a href="/administradoratracciones/editar/@{{atraccion.id}}">
+                                <img class="media-object" style="width: 450px; height: 200px;" 
+                                src="@{{atraccion.sitio.multimedia_sitios.length > 0 ?  atraccion.sitio.multimedia_sitios[0].ruta : 'img/app/noimage.jpg'}}" 
+                                alt="@{{atraccion.sitio.sitios_con_idiomas[0].nombre}}">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">@{{atraccion.sitio.sitios_con_idiomas[0].nombre}}</h4>
+                            <p class="text-justify">
+                                @{{atraccion.sitio.sitios_con_idiomas[0].descripcion | limitTo:400}}...
+                            </p>
+                            <br>
+                            <p class="text-right">
+                                <button class="btn btn-@{{atraccion.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(atraccion)">@{{atraccion.estado ? 'Desactivar' : 'Activar'}}</button>
+                                <a href="/administradoratracciones/idioma/@{{atraccion.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in atraccion.sitio.sitios_con_idiomas"> @{{traduccion.idioma.culture}}</a>
+                                <a href="javascript:void(0)" ng-click="modalIdioma(atraccion)" ng-if="atraccion.sitio.sitios_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span></a>
+                                <a href="/administradoratracciones/editar/@{{atraccion.id}}"> <span class="glyphicon glyphicon-pencil"></span></a>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="alert alert-warning" role="alert" ng-show="atracciones.length == 0 || (atracciones|filter:prop.search).length == 0">No hay resultados disponibles <span ng-show="(atracciones|filter:prop.search).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
             </div>
             
         </div>
         <div class="row">
           <div class="col-6" style="text-align:center;">
-          <dir-pagination-controls pagination-id="pagination_municipios"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+          <dir-pagination-controls pagination-id="pagination_atracciones"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
           </div>
         </div>
     </div>
@@ -207,49 +162,41 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="atraccionesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-        <div class="alert alert-danger" ng-if="errores != null">
-            <label><b>Errores:</b></label>
-            <br />
-            <div ng-repeat="error in errores" ng-if="error.length>0">
-                -@{{error[0]}}
+<div class="modal fade" tabindex="-1" role="dialog" id="idiomaModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Nuevo idioma para la atracción</h4>
+                </div>
+                <div class="modal-body">
             </div>
-        </div>
-      </div>
-      <form novalidate role="form" name="municipioForm">
-          <div class="modal-body">
-                <input type="hidden" ng-model="municipio.id" ng-require="">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input ng-disabled="sw == 3" required type="text" name="nombre" class="form-control" placeholder="Nombre del municipio" ng-model="municipio.nombre"/>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="idioma">Elija un idioma</label>
+                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|filter:{id: idioma.id}:true" class="form-control">
+                            <option value="">Seleccione un idioma</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group" ng-class="{'error': (municipioForm.$submitted || municipioForm.pais.$touched) && municipioForm.departamento.$error.required }">
-                    <label for="departamento">Departamento</label>
-                    <select ng-disabled="sw == 3" name="departamento" required ng-model="municipio.departamento_id" ng-options="departamento.id as departamento.nombre + ', ' + departamento.paise.paises_con_idiomas[0].nombre for departamento in departamentos" class="form-control">
-                        <option value="">Seleccione un departamento</option>
-                    </select>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" ng-click="nuevoIdioma()" class="btn btn-primary">Enviar</button>
                 </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button ng-click="guardarMunicipio()" ng-if="sw != 3" type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-      </form>
-    </div>
-  </div>
-</div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @endsection
 
 @section('javascript')
-<script src="{{secure_asset('/js/administrador/atracciones/indexController.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/atracciones/crearController.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/atracciones/services.js')}}"></script>
-<script src="{{secure_asset('/js/administrador/atracciones/app.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/crearController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/editarController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/idiomaController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/services.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
+<script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
 @endsection

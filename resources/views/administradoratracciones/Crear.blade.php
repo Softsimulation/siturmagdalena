@@ -344,7 +344,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <button type="submit"  class="btn btn-lg btn-success" ng-click="guardarAdicional()">Guardar</button>
+                            <button type="submit"  class="btn btn-lg btn-success" ng-class="{'disabled': (atraccion.id == -1)}" ng-click="guardarAdicional()">Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -357,16 +357,11 @@
 @section('javascript')
 <script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/crearController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/editarController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/idiomaController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/services.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
-<script src="{{asset('/js/plugins/angular-file-upload.min.js')}}"></script>
-<script src="{{asset('/js/plugins/fileinput.min.js')}}"></script>
-<script src="{{asset('/js/plugins/piexif.min.js')}}"></script>
-<script src="{{asset('/js/plugins/sortable.min.js')}}"></script>
-<script src="{{asset('/js/plugins/purify.min.js')}}"></script>
-<script src="{{asset('/js/plugins/locales/es.js')}}"></script>
-<script src="{{asset('/js/plugins/theme.min.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
 @endsection

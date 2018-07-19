@@ -33,7 +33,11 @@ Route::controller('/grupoviaje','GrupoViajeController');
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 
+Route::get('/administradoratracciones/datos-idioma/{id}/{idIdioma}', 'AdministradorAtraccionController@getDatosIdioma');
+
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
+
+//Route::get('/administradoratracciones/idioma/{id}/{idIdioma}', 'AdministradorAtraccionController@getIdiomaa');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 

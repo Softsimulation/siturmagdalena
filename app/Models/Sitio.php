@@ -45,7 +45,7 @@ class Sitio extends Model
      */
     public function sectore()
     {
-        return $this->belongsTo('App\Sectore', 'sectores_id');
+        return $this->belongsTo('App\Models\Sectore', 'sectores_id');
     }
 
     /**
@@ -53,7 +53,7 @@ class Sitio extends Model
      */
     public function tipoSitio()
     {
-        return $this->belongsTo('App\TipoSitio', 'tipo_sitios_id');
+        return $this->belongsTo('App\Models\Tipo_Sitio', 'tipo_sitios_id');
     }
 
     /**
@@ -61,7 +61,7 @@ class Sitio extends Model
      */
     public function atracciones()
     {
-        return $this->hasMany('App\Atraccione', 'sitios_id');
+        return $this->hasMany('App\Models\Atraccione', 'sitios_id');
     }
 
     /**
@@ -69,7 +69,7 @@ class Sitio extends Model
      */
     public function multimediaSitios()
     {
-        return $this->hasMany('App\MultimediaSitio', 'sitios_id');
+        return $this->hasMany('App\Models\Multimedia_Sitio', 'sitios_id');
     }
 
     /**
@@ -77,7 +77,7 @@ class Sitio extends Model
      */
     public function proveedores()
     {
-        return $this->hasMany('App\Proveedore', 'sitios_id');
+        return $this->hasMany('App\Models\Proveedore', 'sitios_id');
     }
 
     /**
@@ -109,6 +109,6 @@ class Sitio extends Model
      */
     public function sitiosConEventos()
     {
-        return $this->hasMany('App\SitiosConEvento', 'sitios_id');
+        return $this->hasMany('App\Models\SitiosConEvento', 'sitios_id');
     }
 }
