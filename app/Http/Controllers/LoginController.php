@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Role_User;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -15,11 +16,17 @@ class LoginController extends Controller
         return view('Login');
     }
     public function postAutenticacion(Request $request){
+        if($request->userName == null || $request->password == null || $request->userName == '' || $request->password == '' ){
+            return redirect()->intended('login/login')->with('message', 'Credenciales no validas');
+        }
         $user = User::where('email',$request->userName)->first();
         //return $user->password;
-        if($user != null || \Hash::check($user->password, $request->password)){
-            Auth::login($user);
-            return redirect()->intended('usuario/listadousuarios'); 
+        if(\Hash::check($request->password,$user->password)){
+            if($user != null){
+                Auth::login($user);
+                return redirect()->intended('usuario/listadousuarios');    
+            }
+             
             
         }else{
             return redirect()->intended('login/login')->with('message', 'Credenciales no validas');

@@ -11,7 +11,7 @@ situr.controller('caracterizacionAgenciaViajesCtrl', ['$scope','agenciaViajeServ
             agenciaViajeServi.getAgencia($scope.encuesta.id).then(function (data) {
                 if (data.Id > 0) {
                     var arrayAux = [];
-                    if(data.TipoServicios != null){
+                    if(data.TipoServicios.length > 0){
                         if(data.TipoServicios.servicios_agencias.length > 0){
                             for(var i=0; i<data.TipoServicios.servicios_agencias.length;i++){
                                 arrayAux.push(data.TipoServicios.servicios_agencias[i].id);
@@ -90,26 +90,28 @@ situr.controller('caracterizacionAgenciaViajesCtrl', ['$scope','agenciaViajeServ
 
 situr.controller('ofertaAgenciaViajesCtrl', ['$scope','agenciaViajeServi', function ($scope,agenciaViajeServi) {
     $scope.encuesta = {};
-    $scope.encuesta.personas = [];
+    $scope.encuesta.personas = {};
     
     $scope.$watch('encuesta.id', function () {
         
         if ($scope.encuesta.id != null) {
             $("body").attr("class", "charging");
-            agenciaViajeServi.getOfertaAgencia($scope.encuesta.id).then(function (dato) {
-                if (dato.id > 0) {
-
-                    $scope.encuesta.personas = dato.personas_destino_con_viajes_turismos;
-                    for(var i=0; i<$scope.encuesta.personas.length; i++){
-                        $scope.encuesta.personas[i].internacional = parseInt($scope.encuesta.personas[i].internacional);
-                        $scope.encuesta.personas[i].nacional = parseInt($scope.encuesta.personas[i].nacional);
-                        $scope.encuesta.personas[i].numerototal = parseInt($scope.encuesta.personas[i].numerototal);
+            agenciaViajeServi.getOfertaAgencia($scope.encuesta.id).then(function (data) {
+                if (data.id > 0) {
+                    if(data.personas_destino_con_viajes_turismos.length > 0){
+                        $scope.encuesta.personas = data.personas_destino_con_viajes_turismos;
+                        for(var i=0; i<$scope.encuesta.personas.length; i++){
+                            $scope.encuesta.personas[i].internacional = parseInt($scope.encuesta.personas[i].internacional);
+                            $scope.encuesta.personas[i].nacional = parseInt($scope.encuesta.personas[i].nacional);
+                            $scope.encuesta.personas[i].numerototal = parseInt($scope.encuesta.personas[i].numerototal);
+                        }
                     }
-                    if(dato.planes_santamarta != null){
-                        $scope.encuesta.numero=parseInt(dato.planes_santamarta.numero)
-                        $scope.encuesta.magdalena=parseInt(dato.planes_santamarta.residentes)
-                        $scope.encuesta.nacional=parseInt(dato.planes_santamarta.noresidentes)
-                        $scope.encuesta.internacional=parseInt(dato.planes_santamarta.extrajeros)
+                    
+                    if(data.planes_santamarta != null){
+                        $scope.encuesta.numero=parseInt(data.planes_santamarta.numero)
+                        $scope.encuesta.magdalena=parseInt(data.planes_santamarta.residentes)
+                        $scope.encuesta.nacional=parseInt(data.planes_santamarta.noresidentes)
+                        $scope.encuesta.internacional=parseInt(data.planes_santamarta.extrajeros)
                     }
                     
                 }
@@ -137,6 +139,7 @@ situr.controller('ofertaAgenciaViajesCtrl', ['$scope','agenciaViajeServi', funct
        if ($scope.DatosForm.$valid) {
            
             $("body").attr("class", "charging");
+            
             agenciaViajeServi.guardarOfertaAgenciaViajes($scope.encuesta).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push");
                 if (data.success) {
