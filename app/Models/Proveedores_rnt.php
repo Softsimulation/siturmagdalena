@@ -14,9 +14,8 @@ class Proveedores_rnt extends Model
     
     protected $appends = ['tipoCategoria'];
     
-    
-    
     protected $fillable = ['categoria_proveedores_id', 'estados_proveedor_id', 'municipio_id', 'razon_social', 'longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email', 'estado', 'user_create', 'created_at', 'updated_at', 'user_update'];
+    
     
     public function idiomas(){
         return $this->hasMany( "App\Models\Proveedores_rnt_idioma", 'proveedor_rnt_id'); 
@@ -41,8 +40,8 @@ class Proveedores_rnt extends Model
             $idTipo = $this->categoria->tipo_proveedores_id;
             
             return $this->attributes['tipo_categoria'] =  [
-                                                              "tipo"=> Categoria_Proveedor_Con_Idioma::where("categoria_proveedores_id", $idCategoria )->pluck("nombre")->first(),
-                                                              "categoria"=> Tipo_Proveedor::join("tipo_proveedores_con_idiomas","tipo_proveedores.id","=","tipo_proveedores_id")
+                                                              "categoria"=> Categoria_Proveedor_Con_Idioma::where("categoria_proveedores_id", $idCategoria )->pluck("nombre")->first(),
+                                                              "tipo"=> Tipo_Proveedor::join("tipo_proveedores_con_idiomas","tipo_proveedores.id","=","tipo_proveedores_id")
                                                                                           ->where("tipo_proveedores.id", $idTipo )->pluck("nombre")->first()
                                                             ];
         }

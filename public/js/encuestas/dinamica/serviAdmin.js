@@ -60,6 +60,10 @@
         
         estadisticasencuesta: function(id){ return http.get("/encuesta/estadisticasencuesta/"+id);  },
         
+        
+        duplicarEncuesta: function(data){ return http.post("/encuesta/duplicarencuesta", data );  },
+        duplicarPregunta: function(data){ return http.post("/encuesta/duplicarpregunta", data );  },
+        
       };
       
       

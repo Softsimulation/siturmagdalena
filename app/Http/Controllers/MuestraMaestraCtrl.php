@@ -20,6 +20,7 @@ use App\Models\Coordenadas_zona;
 use App\Models\Estado_proveedor;
 use App\Models\Muestra_proveedor;
 use App\Models\Sector;
+use App\Models\Proveedores_informale;
 
 use DB;
 use Excel;
@@ -68,10 +69,14 @@ class MuestraMaestraCtrl extends Controller
     
     public function getDatacongiguracion($id){
         
+        
         return [
                 "proveedores"=> Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                               ->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
-                                               ->get(),
+                                      ->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
+                                      ->get(),
+                                      
+                "proveedoresInformales" => Proveedores_informale::where([ ["latitud","!=",null], ["longitud","!=",null] ])
+                                                      ->with("categoria")->get(),
                 
                 "periodo"=> Periodos_medicion::where("id",$id)
                                              ->with([ "zonas"=>function($q){ $q->with(["encargados","coordenadas"]); } ])->first(),
@@ -318,39 +323,23 @@ class MuestraMaestraCtrl extends Controller
 
         $zona = Zona::where("id",$id)->with("encargados")->first();
         if($zona){
-            $proveedores = Proveedores_rnt::with([ "estadop", "categoria" ])->get();
-            $proveedoresAux = [];
-            $polygon = Coordenadas_zona::where("zona_id",$zona->id)->get(['x as lat','y as lng'])->toArray();
-        
-            foreach($proveedores as $proveedor){
-            
-                $point = [ "lat"=>$proveedor->latitud, "lng"=>$proveedor->longitud ];
-                $validacion = \GeometryLibrary\PolyUtil::containsLocation($point,$polygon);
-                
-                if( $validacion ){  
-                    $proveedor["nombreCategoria"] =  Categoria_Proveedor_Con_Idioma::where("categoria_proveedores_id",$proveedor->categoria_proveedores_id )->pluck("nombre")->first();
-                                                                 
-                    $proveedor["tipo"] = Tipo_Proveedor::join("tipo_proveedores_con_idiomas","tipo_proveedores.id","=","tipo_proveedores_id")
-                                                       ->where("tipo_proveedores.id",$proveedor->categoria->tipo_proveedores_id )->pluck("nombre")->first();
-                    array_push($proveedoresAux, $proveedor );
-                }
-                
-            } 
-            
+         
+            $proveedores = new Collection( DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ) );
+    
             $zona->es_generada = true;
             $zona->save();
             
-            Excel::create('Periodo', function($excel) use($proveedoresAux, $zona) {
+            Excel::create('Periodo', function($excel) use($proveedores, $zona) {
     
-                    $excel->sheet('data', function($sheet) use($proveedoresAux, $zona) {
-                        //$sheet->setAutoFilter('A9:O9');
+                    $excel->sheet('data', function($sheet) use($proveedores, $zona) {
+                        
                         $sheet->getStyle('A9:O1000' , $sheet->getHighestRow())->getAlignment()->setWrapText(true);
                         
                         $sheet->cells('A9:O1000', function($cells) {
                             $cells->setAlignment('center');
                             $cells->setValignment('center');
                         });
-                        $sheet->loadView('MuestraMaestra.formatoDescarga', [ 'proveedores'=> $proveedoresAux, "zona"=>$zona ] );
+                        $sheet->loadView('MuestraMaestra.formatoDescarga', [ 'proveedores'=> $proveedores, "zona"=>$zona ] );
                     });
     
             })->export('xls');
@@ -482,33 +471,16 @@ class MuestraMaestraCtrl extends Controller
         
         if($zona){
         
-            $proveedores = Proveedores_rnt::with([ "estadop", "categoria" ])->get();
-            $proveedoresAux = [];
-            $polygon = Coordenadas_zona::where("zona_id",$zona->id)->get(['x as lat','y as lng'])->toArray();
-        
+            $proveedores = DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) );
+            
             foreach($proveedores as $proveedor){
-            
-                $point = [ "lat"=>$proveedor->latitud, "lng"=>$proveedor->longitud ];
-                $validacion = \GeometryLibrary\PolyUtil::containsLocation($point,$polygon);
-                
-                if( $validacion ){
-                    
-                    $proveedor["muestra"] = Muestra_proveedor::where([ ["zona_id",$zona->id], ["proveedor_rnt_id",$proveedor->id] ])->first();
-                    
-                    $proveedor["nombreCategoria"] =  Categoria_Proveedor_Con_Idioma::where("categoria_proveedores_id",$proveedor->categoria_proveedores_id )->pluck("nombre")->first();
-                                                                 
-                    $proveedor["tipo"] = Tipo_Proveedor::join("tipo_proveedores_con_idiomas","tipo_proveedores.id","=","tipo_proveedores_id")
-                                                       ->where("tipo_proveedores.id",$proveedor->categoria->tipo_proveedores_id )->pluck("nombre")->first();
-                    array_push($proveedoresAux, $proveedor );
-                }
-                
+                $proveedor->{"muestra"} = Muestra_proveedor::where([ ["zona_id",$zona->id], ["proveedor_rnt_id",$proveedor->id] ])->first();
             } 
-            
-            
+
             return [ 
                       "success"=>true, 
                       "zona"=>$zona, 
-                      "proveedores"=>$proveedoresAux,
+                      "proveedores"=>$proveedores,
                       "tiposProveedores"=>Tipo_Proveedor::with([ 
                                                        "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1)->select("id","tipo_proveedores_id","nombre"); },
                                                        "categoriaProveedores"=>function($q){ 
@@ -588,6 +560,49 @@ class MuestraMaestraCtrl extends Controller
     
             })->export('xls');
         
+    }
+    
+    
+    
+    //////////////////////////////////////////
+    
+    
+    public function postGuardarproveedorinformal(Request $request){
+        
+        $proveedor = Proveedores_informale::find($request->id);
+        if(!$proveedor){
+            $proveedor =  new Proveedores_informale();
+            $proveedor->latitud = $request->latitud;
+            $proveedor->longitud = $request->longitud;
+            $proveedor->user_create = "Admin";
+            $proveedor->estado = true;
+        }
+        
+        $proveedor->razon_social = $request->razon_social;
+        $proveedor->direccion = $request->direccion;
+        $proveedor->telefono = $request->telefono;
+        $proveedor->categoria_proveedor_id = $request->categoria_proveedor_id;
+        $proveedor->user_update = "Admin";
+        $proveedor->save();
+        
+        return [ "success"=>true, "proveedor"=>Proveedores_informale::where("id",$proveedor->id) ->with("categoria")->first() ];
+    }
+    
+    public function postEditarubicacionproveedor(Request $request){
+        
+        
+        $proveedor = null;
+        if($request->numero_rnt){
+            $proveedor = Proveedores_rnt::find($request->id);
+        }
+        else{
+            $proveedor = Proveedores_informale::find($request->id);
+        }
+        $proveedor->latitud  = $request->latitud;
+        $proveedor->longitud = $request->longitud;
+        $proveedor->save();
+        
+        return [ "success"=>true ];
     }
     
 }
