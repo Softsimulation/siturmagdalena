@@ -32,15 +32,11 @@ Route::get('/administradoratracciones/datos-idioma/{id}/{idIdioma}', 'Administra
 
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
-//Route::get('/administradoratracciones/idioma/{id}/{idIdioma}', 'AdministradorAtraccionController@getIdiomaa');
-
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
 Route::controller('/importarRnt','ImportacionRntController');
-
-//Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');

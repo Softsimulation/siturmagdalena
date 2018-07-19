@@ -126,7 +126,7 @@
                     <li dir-paginate="atraccion in atracciones | filter:prop.search | itemsPerPage:10" pagination-id="pagination_atracciones" class="media">
                         <div class="media-left">
                             <a href="/administradoratracciones/editar/@{{atraccion.id}}">
-                                <img class="media-object" style="width: 450px; height: 200px;" 
+                                <img class="media-object" style="width: 400px; height: 200px;" 
                                 src="@{{atraccion.sitio.multimedia_sitios.length > 0 ?  atraccion.sitio.multimedia_sitios[0].ruta : 'img/app/noimage.jpg'}}" 
                                 alt="@{{atraccion.sitio.sitios_con_idiomas[0].nombre}}">
                             </a>
@@ -137,7 +137,7 @@
                                 @{{atraccion.sitio.sitios_con_idiomas[0].descripcion | limitTo:400}}...
                             </p>
                             <br>
-                            <p class="text-right">
+                            <p class="text-left">
                                 <button class="btn btn-@{{atraccion.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(atraccion)">@{{atraccion.estado ? 'Desactivar' : 'Activar'}}</button>
                                 <a href="/administradoratracciones/idioma/@{{atraccion.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in atraccion.sitio.sitios_con_idiomas"> @{{traduccion.idioma.culture}}</a>
                                 <a href="javascript:void(0)" ng-click="modalIdioma(atraccion)" ng-if="atraccion.sitio.sitios_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span></a>
@@ -198,5 +198,7 @@
 <script src="{{asset('/js/administrador/atracciones/idiomaController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/services.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
+<script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
+<script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
 @endsection

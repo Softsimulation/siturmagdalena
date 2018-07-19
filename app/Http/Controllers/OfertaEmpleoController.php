@@ -42,14 +42,7 @@ use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
 use App\Models\Otro_Tour;
 
-<<<<<<< HEAD
 use App\Models\Prestamo_Servicio;
-=======
-//use App\Models\Agencia_Operadora;
-//use App\Models\Otra_Actividad;
-//use App\Models\Otro_Tour;
-//use App\Models\Prestamo_Servicio;
->>>>>>> 571a38e01a6d33a863f55488a5026ab1c3ddcf91
 use App\Models\Alquiler_Vehiculo;
 use App\Models\Transporte;
 use App\Models\Oferta_Transporte;
@@ -63,7 +56,6 @@ use App\Models\Mes;
 use App\Models\Anio;
 use App\Models\Mes_Anio;
 use App\Models\Sitio_Para_Encuesta;
-Use App\Models\Prestamo_Servicio;
 
 
 class OfertaEmpleoController extends Controller
