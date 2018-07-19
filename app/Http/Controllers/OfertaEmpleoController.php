@@ -59,6 +59,7 @@ use App\Models\Mes;
 use App\Models\Anio;
 use App\Models\Mes_Anio;
 use App\Models\Sitio_Para_Encuesta;
+Use App\Models\Prestamo_Servicio;
 
 
 class OfertaEmpleoController extends Controller
@@ -74,8 +75,8 @@ class OfertaEmpleoController extends Controller
     }
     
     
-    public function getCrearEncuesta(){
-        return view('ofertaempleo.CrearEncuesta');
+    public function getCrearencuesta(){
+        return view('ofertaEmpleo.Crearencuesta');
     }
     
     public function getEncuesta($one){
