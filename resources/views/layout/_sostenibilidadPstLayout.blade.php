@@ -163,7 +163,15 @@
                         <div class="col-xs-12 col-md-9">
                             <h1 style="margin-top: 0.8em; font-size: 2em"><strong>Encuesta a Prestadores Turísticos (PST) Sostenibilidad en Turismo</strong></h1>
                         </div>
-                        
+                        <div class="col-xs-12 col-md-1">
+                            <div class="btn-group">
+                                <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/sostenibilidadpst/encuestas">Volver</a></li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 

@@ -47,6 +47,8 @@
 
 @section('NumSeccion', '50%')
 
+@section('app','ng-app="oferta.agenciasOperadoras"')
+
 @section('controller','ng-controller="ocupacioncAgencias"')
 
 @section('content')

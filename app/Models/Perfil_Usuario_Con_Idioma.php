@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,7 @@ class Perfil_Usuario_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 
     /**
@@ -39,6 +39,6 @@ class Perfil_Usuario_Con_Idioma extends Model
      */
     public function perfilesUsuario()
     {
-        return $this->belongsTo('App\PerfilesUsuario', 'perfiles_usuarios_id');
+        return $this->belongsTo('App\Models\PerfilesUsuario', 'perfiles_usuarios_id');
     }
 }

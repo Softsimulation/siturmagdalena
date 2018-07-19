@@ -24,38 +24,38 @@ app.factory('atraccionesServi', ['$http', '$q', function ($http, $q){
             });
             return promise;
         },
-        postCreardepartamento: function (data){
+        postCrearatraccion: function (data){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administrardepartamentos/creardepartamento', data).success(function (data) {
+            $http.post('/administradoratracciones/crearatraccion', data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
             });
             return promise;
         },
-        postEditardepartamento: function (data){
+        postGuardarmultimedia: function (data){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administrardepartamentos/editardepartamento', data).success(function (data) {
-                defered.resolve(data);
-            }).error(function (err) {
-                defered.reject(err);
-            });
-            return promise;
-        },
-        postImportexcel: function (data){
-            var defered = $q.defer();
-            var promise = defered.promise;
-
-            $http.post('/administrardepartamentos/importexcel', data, {
+            $http.post('/administradoratracciones/guardarmultimedia', data, {
                 transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined
                 }
             }).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
+        postGuardaradicional: function (data){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administradoratracciones/guardaradicional', data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

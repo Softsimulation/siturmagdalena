@@ -42,7 +42,11 @@ return [
     */
 
     'disks' => [
-
+        'Noticias' => [
+            'driver' => 'local',
+            'root' => public_path().'/Noticias',
+            'visibility' => 'public',
+        ],
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
@@ -51,6 +55,12 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
+            'visibility' => 'public',
+        ],
+        
+        'multimedia-atraccion' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/atracciones',
             'visibility' => 'public',
         ],
 

@@ -2,6 +2,8 @@ var situr = angular.module("admin.usuario", ['ngSanitize','ADM-dateTimePicker','
 
 situr.controller('listadoUsuariosCtrl', ['$scope','usuarioServi', function ($scope,usuarioServi) {
     
+    $scope.usuariosCorreos = { ids:[] };
+    
     $("body").attr("class", "charging");
     usuarioServi.getUsuarios().then(function (data) {
         $scope.usuarios = data.usuarios;
@@ -43,6 +45,35 @@ situr.controller('listadoUsuariosCtrl', ['$scope','usuarioServi', function ($sco
 
 
     }
+    
+    $scope.enviarCorreos = function () {
+        $("body").attr("class", "charging");
+        usuarioServi.envioCorreos( { usuarios:$scope.usuariosCorreos.ids } ).then(function (data) {
+            if (data.success) {
+                $scope.usuariosCorreos = {};
+                swal({
+                    title: "Realizado",
+                    text: "Acción realizada satisfactoriamente.",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+
+                    //window.location.href = "/usuario/listadousuarios"
+                }, 1000);
+            } else {
+                swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                $scope.errores = data.errores;
+            }
+            $("body").attr("class", "cbp-spmenu-push");
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+
+    }
+    
 }])
 situr.controller('guardarUsuarioCtrl', ['$scope','usuarioServi', function ($scope,usuarioServi) {
     

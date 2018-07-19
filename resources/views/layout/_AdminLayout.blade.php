@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Sistema de Información Turistica del Atlántico">
-    <meta name="author" content="SITUR Atlántico">
+    <meta name="description" content="Sistema de Información Turistica del Magdalena y Santa Marta">
+    <meta name="author" content="SITUR Magdalena">
     <title>@yield('Title')</title>
     <link rel="icon" type="image/ico" href="{{asset('Content/icons/favicon-96x96.png')}}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
@@ -21,6 +21,32 @@
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/select2.css')}}" rel='stylesheet' type='text/css' />
+    <link href="{{asset('/css/fileinput.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/fileinput-rtl.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/lf-ng-md-file-input.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/mycss.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/theme.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+   
+<link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />
+<!-- Graph CSS 
+
+<!-- jQuery -->
+<link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
+<!-- lined-icons -->
+<link rel="stylesheet" href="{{asset('css/dashboard/icon-font.min.css')}}" type='text/css' />
+<!-- //lined-icons -->
+<script src="{{asset('js/administrador/dashboard/jquery-1.10.2.min.js')}}"></script>
+<script src="{{asset('js/administrador/dashboard/amcharts.js')}}"></script>	
+<script src="{{asset('js/administrador/dashboard/serial.js')}}"></script>	
+<script src="{{asset('js/administrador/dashboard/light.js')}}"></script>	
+<script src="{{asset('js/administrador/dashboard/radar.js')}}"></script>	
+<link href="{{asset('css/dashboard/barChart.css')}}" rel='stylesheet' type='text/css' />
+<link href="{{asset('css/dashboard/fabochart.css')}}" rel='stylesheet' type='text/css' />
+<!--clock init-->
+
+
+
+   
    
         
     @yield('estilos')
@@ -178,17 +204,18 @@
         <div>
             <div class="loader"></div>
             <h1>{{ trans('resources.LabelPreloader') }}</h1>
-            <h4>Resource.LabelPorFavorEspere</h4>
+            <h4>Por Favor Espere</h4>
             <img src="{{asset('Content/image/logo.min.png')}}" width="200" />
         </div>
     </div>
     
         <header>
+            
             <div class="banner">
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-md-2">
-                            <img src="{{asset('Content/image/logo.png')}}" alt="Logo" />
+                           
                         </div>
                         <div class="col-xs-12 col-md-9">
                             <h1 style="margin-top: 0.6em; text-transform: uppercase"><strong>@yield('Title')</strong></h1>
@@ -197,7 +224,7 @@
                             <div class="btn-group">
                                 <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/Temporada">Volver</a></li>
+                                    <li><a href="/temporada">Volver</a></li>
                                     <li class="divider"></li>
                                     <li id="log">
                                         <!--
@@ -216,16 +243,175 @@
                     </div>
                 </div>
             </div>
+
         </header>
         
-        <div class="container" >
-            @yield('content')
+        
+     
+    
+    
+    
+       <div class="page-container">
+   <!--/content-inner-->
+        <div class="left-content">
+           <div class="inner-content">
+        	<!-- header-starts -->
+        		<div class="header-section">
+        					<!--menu-right-->
+        			
+        					<!--//menu-right-->
+				    <div class="clearfix"></div>
+			    </div>
+				<!-- //header-ends -->
+			    <div class="title-section">
+                    <h3 style="margin-top: 0.5em;"><strong>@yield('TitleSection')</strong></h3>
+                </div>
+                
+                <div class="container">
+                    @yield('content')
+                </div>
+                
+                <!--/charts-inner-->
+        	</div>
+        		<!--//outer-wp-->
+        	</div>
         </div>
         
+    
+				<div class="sidebar-menu">
+							<div class="down">	
+									  <a href="#"><img src="{{asset('Content/image/user.png')}}"></a>
+									  <a href="#"><span class=" name-caret">Usuario</span></a>
+									 <p>Rol</p>
+									<ul>
+									<li><a class="tooltips" href=""><span>Profile</span><i class="lnr lnr-user"></i></a></li>
+										<li><a class="tooltips" href="#"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
+										<li><a class="tooltips" href="#"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
+										</ul>
+									</div>
+							   
+                           <div class="menu">
+									<ul id="menu" >
+										
+										 <li id="menu-academico" ><a href="#"><i class="fa fa-table"></i> <span> Turismo Receptor</span></span></a>
+										   <ul id="menu-academico-sub" >
+											<ligv id="menu-academico-avaliacoes" ><a href="{{asset('grupoviaje/listadogrupos')}}"> Grupo de viajes</a></li>
+											<li id="menu-academico-boletim" ><a href="{{asset('turismoreceptor/listadoencuestas')}}">Listado de encuestas</a></li>
+											
+											
+										  </ul>
+										</li>
+										 <li id="menu-academico" ><a href="#"> <span>Turismo Interno y Emisor</span></a>
+											 <ul id="menu-academico-sub" >
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('temporada')}}">Temporada</a></li>
+												
+										
+											  </ul>
+										 </li>
+								
+									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
+										  <ul id="menu-academico-sub" >
+										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administrarpaises')}}">Paises</a></li>
+										    <li id="menu-academico-boletim" ><a href="{{asset('administrardepartamentos')}}">Departamentos</a></li>
+											<li id="menu-academico-boletim" ><a href="{{asset('administrarmunicipios')}}">Municipios</a></li>
+											
+										  </ul>
+									 </li>
+								
+									 	<li id="menu-academico" ><a href="#"><span>Muestra Maestra</span> </span></a>
+										  <ul id="menu-academico-sub" >
+										    <li id="menu-academico-avaliacoes" ><a href="{{asset('MuestraMaestra/periodos')}}">Crear</a></li>
+										    <li id="menu-academico-boletim" ><a href="{{asset('importarRnt')}}">Importar</a></li>
+									
+											
+										  </ul>
+									 </li>
+									 
+							        <li id="menu-academico" ><a href="{{asset('encuesta/listado')}}"> <span>Encuetas ADHOC</span></a>
+							
+									 </li>
+								
+								
+								  </ul>
+								</div>
+							  </div>
+							 
+    <!--
+    if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Digitador"))
+    {
+        <footer id="seccion" ng-controller="seccionCtrl">
+            <select class="selectLenguage" style="margin: 0" ng-options="seccion as seccion.nombre for seccion in secciones track by seccion.id" ng-model="seccionSelected">
+                <option value="" selected disabled>Ir a la sección</option>
+            </select>
+        </footer>
+    }
+    -->
+    
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{{secure_asset('/js/plugins/angular.min.js')}}"></script>
+        
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <!--<script src="{{secure_asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
+        <script src="{{secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>-->
+        
+        
+        <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
+        <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
+        
+        
+        <script>
+            $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
+        </script>
+       
+        <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/material.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>
+        
+        <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/selectjp.js')}}"></script>
+        <script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/object-table.js')}}"></script>
+        
+        <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+        <script src="{{asset('/js/dir-pagination.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+        <script src="{{asset('/js/plugins/lf-ng-md-file-input.min.js')}}"></script>
+        
+        <script src="{{asset('/js/administrador/administrador.js')}}"></script>
+        <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
+        <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
+        <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
+        
+        <script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
+        <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
+        
+        <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
+        <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
+        
+        <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
+        <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
+        <script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
+        <script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    		
+    	    
+    	    
+    	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
+		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
+
+        </div>
        
    
     <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
@@ -242,12 +428,22 @@
     <script src="{{asset('/js/plugins/object-table.js')}}" type="text/javascript"></script>
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/dir-pagination.js')}}"></script>
+    
+    <script src="{{asset('/js/usuarios/usuarios.js')}}"></script>
+    <script src="{{asset('/js/services/usuarioServices.js')}}"></script>
+    
+    <script src="{{asset('/js/administrador/administrador.js')}}"></script>
+    <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
+    <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
+    <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
   
     <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
     <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
     
+    
+    
     <script>
-        $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
+        $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>
 
     <script>  $.material.init(); </script>

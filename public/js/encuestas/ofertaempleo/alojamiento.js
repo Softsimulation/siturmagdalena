@@ -94,7 +94,7 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
         OfertaEmpleoServi.guardarOfertaAlojamiento( data ).then(function(data){
             
             if(data.success){
-                window.location.href = "/ofertaempleo/oferta/" + $("#id").val();
+                window.location.href = "/ofertaempleo/empleomensual/" + $("#id").val();
             }
             else{
                 $scope.errores = data.errores;

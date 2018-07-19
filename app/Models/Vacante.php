@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,8 +22,11 @@ class Vacante extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+     
+     public $timestamps = false;
+     
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
     }
 }

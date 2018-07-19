@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mes_Anio extends Model
 {
-    protected $table = 'meses_de_año';
+    protected $table = 'meses_de_anio';
+    public $timestamps = false;
 
     /**
      * @var array

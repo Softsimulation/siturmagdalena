@@ -297,7 +297,7 @@
                                     <div class="radio radio-primary" ng-repeat="opc in opcionesLugares">
                                         <label>
                                             <input type="radio" id="radio-opt-@{{opc.Id}}" value="@{{opc.id}}" name="lugar" ng-model="encuesta.lugarAgencia" ng-required="encuesta.comproEnAgencia==1">
-                                            @{{opc.opciones_lugares_con_idiomas[0].nombre}}
+                                            @{{opc.nombre}}
                                         </label>
                                     </div>
                                     <span ng-show="GastoForm.$submitted">

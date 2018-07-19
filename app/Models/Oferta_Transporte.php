@@ -19,6 +19,8 @@ class Oferta_Transporte extends Model
      * @var string
      */
     protected $table = 'oferta_transporte';
+    public $timestamps = false;
+     public $incrementing = false;
 
     /**
      * @var array

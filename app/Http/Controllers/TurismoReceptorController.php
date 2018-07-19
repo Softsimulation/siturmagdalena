@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\Models\Grupo_Viaje;
 use App\Models\Digitador;
 use App\Models\Opcion_Lugar;
@@ -57,7 +53,7 @@ use App\Models\Tipo_Proveedor_Paquete_Con_Idioma;
 use App\Models\Rubro;
 use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
-
+use App\Models\Sostenibilidad_Visitante;
 class TurismoReceptorController extends Controller
 {
     public function getDatosencuestados(){
@@ -68,7 +64,7 @@ class TurismoReceptorController extends Controller
         
         $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
         
-        $encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','name');} ])->get();
+        $encuestadores = Digitador::with([ 'user'])->get();
         
         $lugar_nacimiento = Opcion_Lugar::with(["opcionesLugaresConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -202,7 +198,6 @@ class TurismoReceptorController extends Controller
 		
 		switch ($visitante->motivo_viaje)
         {
-
             case 3:
                 $visitante->visitantesTransito()->save( new Visitante_Transito(['horas_transito' => $request->Horas]) );
                 break;
@@ -250,7 +245,7 @@ class TurismoReceptorController extends Controller
             $visitante['Id'] = $visitanteCargar->id;
             $visitante['Grupo'] = $visitanteCargar->grupo_viaje_id;
             $visitante['Encuestador'] = $visitanteCargar->encuestador_creada;
-            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->aspNetUser->username;
+            $visitante['Encuestador_nombre'] = $visitanteCargar->digitadoreDigitada->user->nombre;
             $visitante['Llegada'] = $visitanteCargar->fecha_llegada;
             $visitante['Salida'] = $visitanteCargar->fecha_salida;
             $visitante['Nombre'] = $visitanteCargar->nombre;
@@ -377,7 +372,6 @@ class TurismoReceptorController extends Controller
     	
     	switch ($visitante->motivo_viaje)
         {
-
             case 3:
                 $visitante->visitantesTransito()->save( new Visitante_Transito(['horas_transito' => $request->Horas]) );
                 break;
@@ -422,7 +416,7 @@ class TurismoReceptorController extends Controller
     }
     
     public function getCargardatosseccionestancia($id = null){
-        $municipios = Municipio::where('departamento_id', 1396)->select('id','nombre')->orderBy('nombre')->get();
+        $municipios = Municipio::where('departamento_id', 1411)->select('id','nombre')->orderBy('nombre')->get();
         
         $alojamientos = Tipo_Alojamiento::with(["tiposAlojamientoConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
@@ -434,25 +428,20 @@ class TurismoReceptorController extends Controller
             $q->whereHas('idioma', function($p){
                 $p->where('culture','es');
             })->select('actividad_realizada_id','nombre');
+        },"opciones" => function($q){
+            $q->orderBy('id')->with(["opcionesActividadesRealizadasIdiomas" => function($w){
+                $w->whereHas('idioma',function($p){
+                    $p->where('culture','es');
+                })->select('opciones_actividad_realizada_id','nombre');
+            },"subOpciones" => function($w){
+                $w->orderBy('id')->with(["subOpcionesActividadesRealizadasIdiomas" => function($a){
+                    $a->whereHas('idioma',function($p){
+                        $p->where('culture','es');
+                    })->select('sub_opciones_actividades_realizada_id','nombre');
+                }]);
+            }]);
         }])->get();
         
-        $tipoatracciones = Tipo_Atraccion::has('actividadesRealizadas')->where('estado',1)->with(["tipoAtraccionesConIdiomas" => function($q){
-            $q->whereHas('idioma', function($p){
-                $p->where('culture','es');
-            })->select('tipo_atracciones_id','nombre');
-        }, "actividadesRealizadas"])->get();
-        
-        $atracciones = Atraccion_Por_Tipo_Actividad_Realizada::has('atraccione')->with([
-            'atraccione' => function($p){
-                $p->where('estado',1)->with(['sitio'=> function($w){
-                    $w->with(['sitiosConIdiomas' => function($q){
-                        $q->whereHas('idioma', function($x){
-                            $x->where('culture','es');
-                        })->select('sitios_id','nombre');
-                    }]);
-                }]);
-            }
-        ])->get();
         
         $atraccionesportal = Atracciones::where('estado',1)->with(['sitio' => function($q){
             $q->with(['sitiosConIdiomas' => function($p){
@@ -462,77 +451,57 @@ class TurismoReceptorController extends Controller
             }]);
         }])->get();
         
-        $actividades = Actividad_Realizada_Con_Actividad::with([
-            'actividade' => function($p){
-                $p->where('estado',1)->with(["actividadesConIdiomas"=>function($q){
-                    $q->whereHas('idioma', function($x){
-                        $x->where('culture','es');
-                    })->select('actividades_id','nombre');
-                }]);
-            }
-        ])->get();
-        
         $visitante = Visitante::find($id);
         $encuesta = null;
         if($visitante->ultima_sesion >= 2){
             $estancias = Municipio_Visitado_Magdalena::where('visitante_id', $visitante->id)->get(['municipios_id AS Municipio','tipo_alojamiento_id AS Alojamiento','numero_noches AS Noches']);
             $principal = Municipio_Visitado_Magdalena::where('visitante_id', $visitante->id)->where('destino_principal',1)->first() != null ? Municipio_Visitado_Magdalena::where('visitante_id', $visitante->id)->where('destino_principal',1)->first()->municipios_id : null;
-            $atraccionesP = collect(Atraccion_Visitada::where('visitante_id', $visitante->id)->where('tipo_atraccion_id',77)->get())->pluck('atraccion_id')->toArray();
-            $atraccionesM = collect(Atraccion_Visitada::where('visitante_id', $visitante->id)->where('tipo_atraccion_id',117)->get())->pluck('atraccion_id')->toArray();
-            $atraccionesN = collect(Atraccion_Visitada::where('visitante_id', $visitante->id)->where('tipo_atraccion_id',94)->get())->pluck('atraccion_id')->toArray();
-            $tipoAtraccionesN = collect(Lugar_Visitado::where('visitante_id',$visitante->id)->where('actividad_realizada_id',2)->get())->pluck('tipo_atraccion_id')->toArray();
-            $tipoAtraccionesM = collect(Lugar_Visitado::where('visitante_id',$visitante->id)->where('actividad_realizada_id',3)->get())->pluck('tipo_atraccion_id')->toArray();
-            $actividadesH = collect(Actividad_Hecha_Visitante::where('visitante_id',$visitante->id)->where('acitvidades_realizadas_id',8)->get())->pluck('actividad_id')->toArray();
-            $actividadesD = collect(Actividad_Hecha_Visitante::where('visitante_id',$visitante->id)->where('acitvidades_realizadas_id',10)->get())->pluck('actividad_id')->toArray();
-            $actividadesRelizadas = collect(Actividad_Realizada_Por_Visitante::where('visitante_id',$visitante->id)->get())->pluck('actividades_realizadas_id')->toArray();
             
             $encuesta = collect();
+            $arreglo = array();
             
-            if(count($atraccionesP) > 0){
-                array_push($actividadesRelizadas,1);
+            foreach ($actividadesrealizadas as $actividad) {
+                
+                $arregloSegundo = array();
+                
+                if(Actividad_Realizada_Por_Visitante::where('actividades_realizadas_id',$actividad['id'])->where('visitante_id',$visitante->id)->first() != null){
+                    array_push($arreglo,$actividad);    
+                }else{
+                    $swOp = 0;
+                    foreach($actividad->opciones as $opcion){
+                        $respuestasTercerIds = $visitante->subOpcionesActividadesRealizadas->where('opciones_actividades_realizada_id',$opcion['id'])->pluck('id')->toArray();
+                        
+                        if(count($respuestasTercerIds) > 0){
+                            $opcion["Respuestas"] = $respuestasTercerIds;
+                            array_push($arregloSegundo,$opcion);
+                            //array_push($arreglo,$actividad);
+                            $swOp = 1;
+                        }else{
+                            if($visitante->opcionesActividadesRealizadas->where('id',$opcion['id'])->first() != null){
+                                array_push($arregloSegundo,$opcion);
+                                //array_push($arreglo,$actividad);
+                                $swOp = 1;
+                            }
+                        }
+                    }
+                    
+                    $actividad['Respuestas'] = $arregloSegundo;
+                    if($swOp == 1){array_push($arreglo,$actividad);}
+                }
+                
+                
             }
             
-            if(count($atraccionesN) > 0){
-                array_push($actividadesRelizadas,2);
-                array_push($tipoAtraccionesN,94);
-            }
-            
-            if(count($atraccionesM) > 0){
-                array_push($actividadesRelizadas,3);
-                array_push($tipoAtraccionesM,117);
-            }
-            
-            if(count($actividadesD) > 0){
-                array_push($actividadesRelizadas,10);
-            }
-            
-            if(count($actividadesH) > 0){
-                array_push($actividadesRelizadas,8);
-            }
-            
-            $encuesta['Favorito'] = count($visitante->atracciones) == 0 ? null : $visitante->atracciones->first()->id;
+            $encuesta['favorita'] = $visitante->atraccion_favorita;
+            $encuesta['ActividadesRelizadas'] = $arreglo;
             $encuesta['Estancias'] = $estancias;
-            $encuesta['ActividadesRelizadas'] = $actividadesRelizadas;
             $encuesta['Principal'] = $principal;
-            $encuesta['AtraccionesP'] = $atraccionesP;
-            $encuesta['AtraccionesN'] = $atraccionesN;
-            $encuesta['AtraccionesM'] = $atraccionesM;
-            $encuesta['ActividadesD'] = $actividadesD;
-            $encuesta['ActividadesH'] = $actividadesH;
-            $encuesta['TipoAtraccionesN'] = $tipoAtraccionesN;
-            $encuesta['TipoAtraccionesM'] = $tipoAtraccionesM;
-            
-            
         }
         
         $enlaces = collect();
         $enlaces['Municipios'] = $municipios;
         $enlaces['Alojamientos'] = $alojamientos;
         $enlaces['Actividadesrelizadas'] = $actividadesrealizadas;
-        $enlaces['TipoAtracciones'] = $tipoatracciones;
-        $enlaces['Atracciones'] = $atracciones;
-        $enlaces['AtraccionesPortal'] = $atraccionesportal;
-        $enlaces['Actividades'] = $actividades;
         
         $retorno = [
             'Enlaces' => $enlaces,
@@ -550,16 +519,11 @@ class TurismoReceptorController extends Controller
 			'Estancias.*.Alojamiento' => 'required|exists:tipos_alojamiento,id',
 			'Estancias.*.Noches' => 'required|min:0',
 			'Principal' => 'required|exists:municipios,id',
-			'Favorito' => 'exists:atracciones,id',
 			'ActividadesRelizadas' => 'required',
-			'ActividadesRelizadas.*' => 'exists:actividades_realizadas,id',
-			'AtraccionesP.*' => 'exists:atracciones_por_tipo_actividades_realizadas,atraccion_id',
-			'TipoAtraccionesN.*' => 'exists:actividades_realizadas_atraccion,tipo_atraccion_id',
-			'AtraccionesN.*' => 'exists:atracciones_por_tipo_actividades_realizadas,atraccion_id',
-			'TipoAtraccionesM.*' => 'exists:actividades_realizadas_atraccion,tipo_atraccion_id',
-			'AtraccionesM.*' => 'exists:atracciones_por_tipo_actividades_realizadas,atraccion_id',
-			'ActividadesH.*' => 'exists:actividades_realizadas_con_actividades,actividad_id',
-			'ActividadesD.*' => 'exists:actividades_realizadas_con_actividades,actividad_id',
+			'ActividadesRelizadas.*.id' => 'exists:actividades_realizadas,id',
+			'ActividadesRelizadas.*.Respuestas.*.id' => 'exists:opciones_actividades_realizadas,id',
+			'ActividadesRelizadas.*.Respuestas.*.Respuestas.*' => 'exists:sub_opciones_actividades_realizadas,id',
+			'favorita' => 'required|max:255'
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
        		'Id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',
@@ -573,16 +537,12 @@ class TurismoReceptorController extends Controller
        		'Estancias.*Noches.min' => 'El número de noches en las estancias debe ser mayor o igual que cero.',
        		'Principal.required' => 'Debe seleccionar el municipio principal de la estancia.',
        		'Principal.exists' => 'El municipio principal no se encuentra registrado en el sistema.',
-       		'Favorito.exists' => 'La atracción favorita no se encuentra registrada en el sistema.',
        		'ActividadesRelizadas.required' => 'Debe seleccionar por lo menos una actividad realizada.',
-       		'ActividadesRelizadas.*.exists' => 'Alguna de las actividades realizadas no se encuentra registrada en el sistema.',
-       		'AtraccionesP.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'TipoAtraccionesN.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'TipoAtraccionesM.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'AtraccionesN.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'AtraccionesM.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'ActividadesH.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'ActividadesD.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
+       		'ActividadesRelizadas.*.id.exists' => 'Alguna de las actividades realizadas no se encuentra registrada en el sistema.',
+       		'ActividadesRelizadas.*.Respuestas.*.id.exists' => 'Verifique que alguna de las opciones del segundo nivel se encuentre registrada en el sistema.',
+       		'ActividadesRelizadas.*.Respuestas.*.Respuestas.*' => 'Verifique que alguna de las opciones del tercer nivel se encuentre registrada en el sistema.',
+       		'favorita.required' => 'Debe ingresar un valor en la pregunta de la atracción favorita.',
+       		'favorita.max' => 'La atracción favorita no debe superar los 255 caracteres.'
     	]);
        
     	if($validator->fails()){
@@ -611,67 +571,37 @@ class TurismoReceptorController extends Controller
 		    return ["success" => false, "errores" => [["La suma del número de noches no debe ser mayor al número de días del viaje."]] ];
 		}
 		
-		if(in_array(23,$request->ActividadesRelizadas)){
-		    if( count($request->ActividadesRelizadas) > 1 ){
-		        return ["success" => false, "errores" => [["Si selecciona la opción ninguna no puede seleccionar otras actividades."]] ];    
+		foreach($request->ActividadesRelizadas as $actividad){
+		    if($actividad['id'] == 19 && !isset($actividad['otroActividad']) ){
+		        return ["success" => false, "errores" => [["Si en las actividades realizadas seleccionó el valor 'Otro' debe ingresar el texto de este."]] ];
 		    }
-		}
-		
-		if(in_array(1,$request->ActividadesRelizadas)){
-		    if(!isset($request->AtraccionesP) || count($request->AtraccionesP)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos una playa."]] ];    
+		    
+		    if(count($actividad['opciones']) > 0 && count($actividad['Respuestas']) == 0 ){
+		        return ["success" => false, "errores" => [["Verifique que en las actividades que tengan segundo nivel haya seleccionado alguna opción."]] ];    
 		    }
-		}
-		
-		if(in_array(2,$request->ActividadesRelizadas)){
-		    if(!isset($request->TipoAtraccionesN) || count($request->TipoAtraccionesN)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos uno de los parques,rios."]] ];    
-		    }else if(in_array(94,$request->TipoAtraccionesN)){
-		        if(!isset($request->AtraccionesN) || count($request->AtraccionesN)==0 ){
-		            return ["success" => false, "errores" => [["Debe seleccionar por lo menos un parque."]] ];
-		        }
+		    
+		    if(count($actividad['opciones']) > 0){
+		        foreach($actividad['Respuestas'] as $opcion){
+    		        if(count($opcion['sub_opciones']) > 0 && count($opcion["Respuestas"]) == 0 ){
+    		            return ["success" => false, "errores" => [["Verifique que en las opciones que tengan tercer nivel haya seleccionado alguna opción."]] ];
+    		        }
+    		    }    
 		    }
+		    
 		}
-		
-		if(in_array(3,$request->ActividadesRelizadas)){
-		    if(!isset($request->TipoAtraccionesM) || count($request->TipoAtraccionesM)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos una visitas a museos, santuarios, ect."]] ];    
-		    }else if(in_array(117,$request->TipoAtraccionesM)){
-		        if(!isset($request->AtraccionesM) || count($request->AtraccionesM)==0 ){
-		            return ["success" => false, "errores" => [["Debe seleccionar por lo menos un museo."]] ];
-		        }
-		    }
-		}
-		
-		if(in_array(8,$request->ActividadesRelizadas)){
-		    if(!isset($request->ActividadesH) || count($request->ActividadesH)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos una hacienda."]] ];    
-		    }
-		}
-		
-		if(in_array(10,$request->ActividadesRelizadas)){
-		    if(!isset($request->ActividadesD) || count($request->ActividadesD)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos un deporte."]] ];    
-		    }
-		}
-		
 		
 		$sw = 0;
 		if($visitante->ultima_sesion >= 2){
 		    $sw =1;
-		    Municipio_Visitado_Magdalena::where('visitante_id', $visitante->id)->delete();
-		    Atraccion_Visitada::where('visitante_id', $visitante->id)->delete();
-		    Lugar_Visitado::where('visitante_id', $visitante->id)->delete();
-		    Actividad_Hecha_Visitante::where('visitante_id', $visitante->id)->delete();
-		    Actividad_Realizada_Por_Visitante::where('visitante_id', $visitante->id)->delete();
 		}else{
 		    $visitante->ultima_sesion = 2;
 		}
 		
-		if(isset($request->Favorito)){
-		    $visitante->atracciones()->detach();
-		    $visitante->atracciones()->attach($request->Favorito);
-		}
+		Municipio_Visitado_Magdalena::where('visitante_id', $visitante->id)->delete();
+	    Actividad_Realizada_Por_Visitante::where('visitante_id', $visitante->id)->delete();
+	    $visitante->opcionesActividadesRealizadas()->detach();
+	    $visitante->subOpcionesActividadesRealizadas()->detach();
+		
 		
 		foreach($request->Estancias as $estancia){
 		    $visitante->municipiosVisitadosMagdalenas()->save(new Municipio_Visitado_Magdalena([
@@ -683,76 +613,20 @@ class TurismoReceptorController extends Controller
 		}
 		
 		foreach($request->ActividadesRelizadas as $actividad){
-		    switch($actividad){
-		        case 1:
-		            foreach ($request->AtraccionesP as $value) {
-		                $visitante->atraccionesVisitadas()->save(new Atraccion_Visitada([
-	                        'atraccion_id' => $value,
-	                        'actividades_realizadas_id' => $actividad,
-	                        'tipo_atraccion_id' => 77
-	                    ]));
+		    if(count($actividad['opciones']) > 0){
+		        foreach ($actividad['Respuestas'] as $respuesta) {
+		            if(count($respuesta['sub_opciones']) > 0){
+		                $visitante->subOpcionesActividadesRealizadas()->attach($respuesta["Respuestas"]);
+		            }else{
+		                $visitante->opcionesActividadesRealizadas()->attach($respuesta['id']);    
 		            }
-		            break;
-	            case 2:
-	                foreach($request->TipoAtraccionesN as $tipoAtrac){
-	                    if($tipoAtrac == 94){
-	                        foreach($request->AtraccionesN as $value){
-	                            $visitante->atraccionesVisitadas()->save(new Atraccion_Visitada([
-        	                        'atraccion_id' => $value,
-        	                        'actividades_realizadas_id' => $actividad,
-        	                        'tipo_atraccion_id' => $tipoAtrac
-        	                    ]));
-	                        }
-	                    }else{
-	                        $visitante->lugaresVisitados()->save(new Lugar_Visitado([
-                                'actividad_realizada_id' => $actividad,
-                                'tipo_atraccion_id' => $tipoAtrac,
-                                'estado' => 1
-                            ]));
-	                    }
-	                }
-	                break;
-                case 3:
-                    foreach($request->TipoAtraccionesM as $tipoAtrac){
-                        if($tipoAtrac == 117){
-                            foreach($request->AtraccionesM as $value){
-                                $visitante->atraccionesVisitadas()->save(new Atraccion_Visitada([
-        	                        'atraccion_id' => $value,
-        	                        'actividades_realizadas_id' => $actividad,
-        	                        'tipo_atraccion_id' => $tipoAtrac
-        	                    ]));
-                            }
-                        }else{
-                            $visitante->lugaresVisitados()->save(new Lugar_Visitado([
-                                'actividad_realizada_id' => $actividad,
-                                'tipo_atraccion_id' => $tipoAtrac,
-                                'estado' => 1
-                            ]));
-                        }
-                    }
-                    break;
-                case 8:
-                    foreach($request->ActividadesH as $tipoActi){
-                        $visitante->actividadesHechasVisitantes()->save(new Actividad_Hecha_Visitante([
-                            'acitvidades_realizadas_id' => $actividad,
-                            'actividad_id' => $tipoActi
-                        ]));
-                    }
-                    break;
-                case 10:
-                    foreach($request->ActividadesD as $tipoActi){
-                        $visitante->actividadesHechasVisitantes()->save(new Actividad_Hecha_Visitante([
-                            'acitvidades_realizadas_id' => $actividad,
-                            'actividad_id' => $tipoActi,
-                        ]));
-                    }
-                    break;
-                default:
-                    $visitante->actividadesRealizadasPorVisitantes()->save(new Actividad_Realizada_Por_Visitante([
-                        'actividades_realizadas_id' => $actividad,
-                        'estado' => 1
-                    ]));
-                    break;
+		        }
+		    }else{
+		        $visitante->actividadesRealizadasPorVisitantes()->save(new Actividad_Realizada_Por_Visitante([
+                    'actividades_realizadas_id' => $actividad['id'],
+                    'estado' => 1,
+                    //'otro' => $actividad['id'] == 19 ? $actividad['otroActividad'] : null
+                ]));
 		    }
 		}
 		
@@ -763,6 +637,7 @@ class TurismoReceptorController extends Controller
             'usuario_id' => 1
         ]));
 		
+		$visitante->atraccion_favorita = $request->favorita;
 		$visitante->save();
         return ["success" => true];
     }
@@ -815,11 +690,14 @@ class TurismoReceptorController extends Controller
             })->select('opciones_lugares_id','nombre');
         }])->get();
         
+        $sostenibilidad = Sostenibilidad_Visitante::find($id);
+        
         $retorno = [
             'success' => true,
             'transporte_llegar' => $transporte_llegar,
             'lugares' => $lugares,
             'mover' => $visitante->transporte_interno,
+            'calificacion'=>$sostenibilidad == null?null:$sostenibilidad->facil_llegar,
             'llegar' => $visitante->transporte_llegada,
             'empresa' => ($visitante->transporte_llegada == 6) ? $visitante->visitanteTransporteTerrestre->nombre_empresa : null,
             'opcion_lugar' => ($visitante->transporte_interno == 5 && count($visitante->opcionesLugares) > 0 ) ? $visitante->opcionesLugares()->first()->id : null
@@ -834,6 +712,7 @@ class TurismoReceptorController extends Controller
 			'Llegar' => 'required|exists:tipos_transporte,id',
 			'Empresa' => 'required_if:Llegar,6|max:100',
 			'Mover' => 'required|exists:tipos_transporte,id',
+			'Calificacion'=>'integer',
 			'Alquiler' => 'required_if:Mover,5|exists:opciones_lugares,id'
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
@@ -883,6 +762,20 @@ class TurismoReceptorController extends Controller
 		        $visitante->opcionesLugares()->attach($request->Alquiler);
 		    }
 		}
+		
+		if(isset($request->Calificacion)){
+		    $sostenibilidad = Sostenibilidad_Visitante::find($request->Id);
+		    if($sostenibilidad == null){
+		        $sostenibilidad = new Sostenibilidad_Visitante;
+		        $sostenibilidad->visitante_id = $request->Id;
+		        $sostenibilidad->estado = true;
+		        $sostenibilidad->user_update = "Jhon";
+		        $sostenibilidad->user_create = "Jhon";
+		    }
+		    $sostenibilidad->facil_llegar = $request->Calificacion;
+		    $sostenibilidad->save();
+		}
+		
 		
 		$visitante->historialEncuestas()->save(new Historial_Encuesta([
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
@@ -1022,7 +915,9 @@ class TurismoReceptorController extends Controller
             $q->where('culture','es');
         })->select('financiadores_viaje_id as id','nombre')->get();
         
-        $municipios = Municipio::select('id','nombre')->get();
+        $municipios = Municipio::select('id','nombre')->whereHas('departamento',function($q){
+            $q->where('pais_id',47);
+        })->get();
         
         $opciones = Opcion_Lugar_Con_Idioma::whereHas('idioma', function($p){
                 $p->where('culture','es');
@@ -1044,6 +939,7 @@ class TurismoReceptorController extends Controller
         
         $paquete = Visitante_Paquete_Turistico::find($id);
         $encuesta["id"]= $id;
+        $visitante = Visitante::find($id);
         if($visitante->ultima_sesion>=5){
             $encuesta["RealizoGasto"] = Gasto_Visitante::where('visitante_id',$id)->count()>0 || $paquete != null ? 1:0;
             
@@ -1071,7 +967,6 @@ class TurismoReceptorController extends Controller
         }
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
          
-
         return ["divisas"=>$divisas ,"financiadores"=>$financiadores ,"municipios"=>$municipios,"opciones"=>$opciones,"servicios"=>$servicios,"rubros"=>$rubros,"tipos"=>$tipos,"encuesta"=>$encuesta];
         
     }
@@ -1295,6 +1190,13 @@ class TurismoReceptorController extends Controller
             $otroElemento = $visitante->otrosElementosRepresentativo->nombre;
         }
         
+        
+        $sostenibilidad = Sostenibilidad_Visitante::find($id);
+        if($sostenibilidad != null){
+            $flora = $sostenibilidad->es_informado?1:0;
+            $sost = $sostenibilidad->trato_turista;
+        }
+        
         $valo = Valoracion_General::where('visitante_id',$visitante->id)->select(["recomendaciones as Recomendacion","calificacion as Calificacion", "volveria as Volveria","recomendaria as Recomienda","veces_visitadas as Veces"])->first();
         
         $retorno = [
@@ -1308,6 +1210,8 @@ class TurismoReceptorController extends Controller
             'respuestaElementos' => $respuestaElementos,
             'valoracion' => $valo,
             'otroElemento' => $otroElemento,
+            'flora'=> isset($flora) ? $flora : null,
+            'sost'=> isset($sost) ? $sost : null,
         ];
         
         return $retorno;
@@ -1326,7 +1230,7 @@ class TurismoReceptorController extends Controller
 			'Recomienda' => 'required|exists:volveria_visitar,id',
 			'VecesVisitadas' => 'required',
 			'OtroElementos' => 'max:100',
-			'Evaluacion' => 'required',
+			//'Evaluacion' => 'required',
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
        		'Id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',
@@ -1358,20 +1262,22 @@ class TurismoReceptorController extends Controller
 		$sw = 0;
 		if($visitante->ultima_sesion >= 6){
 		    $sw =1;
-		    $visitante->elementosRepresentativos()->detach();
-	        $visitante->calificacions()->delete();
-	        $visitante->valoracionGeneral()->delete();
-	        if($visitante->otrosElementosRepresentativo!=null){$visitante->otrosElementosRepresentativo()->delete();}
+		    
 		}else{
 		    $visitante->ultima_sesion = 6;
 		}
 		
+		$visitante->elementosRepresentativos()->detach();
+        $visitante->calificacions()->delete();
+        $visitante->valoracionGeneral()->delete();
+        if($visitante->otrosElementosRepresentativo!=null){$visitante->otrosElementosRepresentativo()->delete();}
+		
 		foreach($request->Evaluacion as $evaluacion){
-		        $visitante->calificacions()->save(new Calificacion([
-	                'item_evaluar_id' => $evaluacion['Id'],
-	                'calificacion' => $evaluacion['Valor']
-	            ]));
-		    }
+	        $visitante->calificacions()->save(new Calificacion([
+                'item_evaluar_id' => $evaluacion['Id'],
+                'calificacion' => $evaluacion['Valor']
+            ]));
+	    }
 		    
 	    $visitante->elementosRepresentativos()->attach($request->Elementos);
 	    if(in_array(11,$request->Elementos)){
@@ -1385,6 +1291,25 @@ class TurismoReceptorController extends Controller
             'calificacion' => $request->Calificacion,
             'recomendaria' => $request->Recomienda
         ]));
+        
+        $sostenibilidad = Sostenibilidad_Visitante::find($request->Id);
+	    if($sostenibilidad == null){
+	        $sostenibilidad = new Sostenibilidad_Visitante;
+	        $sostenibilidad->visitante_id = $request->Id;
+	        $sostenibilidad->estado = true;
+	        $sostenibilidad->user_update = "Jhon";
+	        $sostenibilidad->user_create = "Jhon";
+	    }
+	    
+	    if(isset($request->Flora)){
+	        $sostenibilidad->es_informado = $request->Flora != 0? true:false;
+	    }
+	    
+	    if(isset($request->Sostenibilidad)){
+	        $sostenibilidad->trato_turista = $request->Sostenibilidad;
+	    }
+	
+	    $sostenibilidad->save();
 		
 		$visitante->historialEncuestas()->save(new Historial_Encuesta([
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,

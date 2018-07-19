@@ -1,7 +1,7 @@
 @extends('layout._AdminLayout')
 
 @section('title','Muestra maestra')
-@section('TitleSection','Configuración encuesta Ad Hoc')
+@section('TitleSection','Creación de medición de Muestra Maestra')
 @section('app','ng-app="appMuestraMaestra"')
 @section('controller','ng-controller="LlenatInfoZonaCtrl"')
 
