@@ -1238,7 +1238,7 @@ class TurismoReceptorController extends Controller
 			'Recomienda' => 'required|exists:volveria_visitar,id',
 			'VecesVisitadas' => 'required',
 			'OtroElementos' => 'max:100',
-			'Evaluacion' => 'required',
+			//'Evaluacion' => 'required',
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
        		'Id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',

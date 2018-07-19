@@ -68,3 +68,5 @@ Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
+Route::controller('/login','LoginController');
+Route::controller('/noticias','NoticiaController');

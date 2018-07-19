@@ -174,7 +174,7 @@ class SostenibilidadHogaresController extends Controller
         $riesgos = Tipo_Riesgo::where('categorias_riesgo_id',1)->get();
         $factoresPositivos = Factor_Calidad::where('estado',true)->where('tipo_factor_id',3)->get();
         $calificacionFactor = Calificacion_Factor::where('estado',true)->get();
-        $beneficios = Beneficio::where('tipo_beneficio',false)->get();
+        $beneficios = Beneficio::where('tipo_beneficio',false)->orderBy('peso')->get();
         
         
         
