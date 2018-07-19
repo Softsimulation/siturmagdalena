@@ -13,4 +13,5 @@ class Sub_pregunta extends Model
     public function opciones(){
         return $this->hasMany('App\Models\EncuestaDinamica\Opciones_sub_preguntas_has_sub_pregunta', 'sub_preguntas_id'); 
     }
+
 }

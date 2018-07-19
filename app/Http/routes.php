@@ -24,6 +24,8 @@ Route::get('/', function () {
     
 });
 
+Route::controller('/EstadistivasSecunarias','EstadisticasSecundariasCtrl');
+
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
 
