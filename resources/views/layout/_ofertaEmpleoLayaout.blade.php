@@ -189,7 +189,10 @@
         <script src="{{asset('/js/sweetalert.min.js')}}"></script>
         <script src="{{asset('/js/dir-pagination.js')}}"></script>
         <script src="{{asset('/js/encuestas/ofertaempleo/encuesta.js')}}"></script>
+        <script src="{{asset('/js/encuestas/ofertaempleo/empleo.js')}}"></script>
         <script src="{{asset('/js/encuestas/ofertaempleo/services.js')}}"></script>
+        <script src="{{asset('/js/encuestas/ofertaempleo/servicios.js')}}"></script>
+        <script src="{{asset('/js/encuestas/ofertaempleo/actividadComercial.js')}}"></script>
         <script src="{{asset('/js/encuestas/ofertaempleo/agenciasOperadoras.js')}}"></script>
         <script src="{{asset('/js/encuestas/ofertaempleo/alquilerTransporte.js')}}"></script>
         

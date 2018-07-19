@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +27,7 @@ class Motivo_Estadistica_Secundaria extends Model
     /**
      * @var array
      */
-    protected $fillable = ['nombre', 'name', 'user_create', 'user_update', 'created_at', 'updated_at', 'estado'];
+    protected $fillable = ['nombre', 'name', 'estadisticas_secundaria_id', 'user_create', 'user_update', 'created_at', 'updated_at', 'estado'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

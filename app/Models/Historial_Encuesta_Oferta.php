@@ -22,7 +22,8 @@ class Historial_Encuesta_Oferta extends Model
      * @var string
      */
     protected $table = 'historial_encuesta_oferta';
-    
+     public $timestamps = false;
+     
 
     /**
      * @var array
@@ -36,7 +37,7 @@ class Historial_Encuesta_Oferta extends Model
      */
     public function aspNetUser()
     {
-        return $this->belongsTo('App\AspNetUser', 'user_id', '"Id"');
+        return $this->belongsTo('App\Models\AspNetUser', 'user_id', '"Id"');
     }
 
     /**
@@ -44,7 +45,7 @@ class Historial_Encuesta_Oferta extends Model
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta');
+        return $this->belongsTo('App\Models\Encuesta');
     }
 
     /**
@@ -52,6 +53,6 @@ class Historial_Encuesta_Oferta extends Model
      */
     public function estadosEncuestum()
     {
-        return $this->belongsTo('App\EstadosEncuestum', 'estado_encuesta_id');
+        return $this->belongsTo('App\Models\EstadosEncuestum', 'estado_encuesta_id');
     }
 }

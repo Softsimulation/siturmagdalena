@@ -49,6 +49,7 @@ angular.module('importarRntApp', ["checklist-model","proveedorService",'angularU
         
         proveedorServi.CargarSoporte(fd).then(function (data) {
             if (data.success) {
+                $scope.errores = null;
                 $("body").attr("class", "cbp-spmenu-push");
                 $scope.nuevos = data.nuevos;
                 $scope.antiguos = data.antiguos;

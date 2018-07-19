@@ -56,7 +56,7 @@ class Proveedor extends Model
      */
     public function categoriaProveedore()
     {
-        return $this->belongsTo('App\CategoriaProveedore', 'categoria_proveedores_id');
+        return $this->belongsTo('App\Models\Categoria_Proveedor', 'categoria_proveedores_id');
     }
 
     /**
@@ -64,7 +64,7 @@ class Proveedor extends Model
      */
     public function categoriaTurismoConProveedores()
     {
-        return $this->hasMany('App\CategoriaTurismoConProveedore', 'proveedores_id');
+        return $this->hasMany('App\Models\CategoriaTurismoConProveedore', 'proveedores_id');
     }
 
     /**
@@ -72,7 +72,7 @@ class Proveedor extends Model
      */
     public function comentariosProveedores()
     {
-        return $this->hasMany('App\ComentariosProveedore', 'proveedores_id');
+        return $this->hasMany('App\Models\ComentariosProveedore', 'proveedores_id');
     }
 
     /**
@@ -80,7 +80,7 @@ class Proveedor extends Model
      */
     public function perfilesUsuariosConProveedores()
     {
-        return $this->hasMany('App\PerfilesUsuariosConProveedore', 'proveedores_id');
+        return $this->hasMany('App\Models\PerfilesUsuariosConProveedore', 'proveedores_id');
     }
 
     /**
@@ -88,7 +88,7 @@ class Proveedor extends Model
      */
     public function planificadorProveedores()
     {
-        return $this->hasMany('App\PlanificadorProveedore', 'proveedor_id');
+        return $this->hasMany('App\Models\PlanificadorProveedore', 'proveedor_id');
     }
 
     /**
@@ -96,7 +96,7 @@ class Proveedor extends Model
      */
     public function proveedoresConIdiomas()
     {
-        return $this->hasMany('App\Models\Proveedor_Con_Idioma', 'proveedores_id');
+        return $this->hasMany('App\Models\Models\Proveedor_Con_Idioma', 'proveedores_id');
     }
 
     /**
@@ -104,7 +104,7 @@ class Proveedor extends Model
      */
     public function aspNetUsers()
     {
-        return $this->belongsToMany('App\AspNetUser', 'proveedores_favoritos', 'proveedores_id', 'usuario_id');
+        return $this->belongsToMany('App\Models\AspNetUser', 'proveedores_favoritos', 'proveedores_id', 'usuario_id');
     }
 
     /**
@@ -112,6 +112,6 @@ class Proveedor extends Model
      */
     public function proveedoresCaracteristicas()
     {
-        return $this->hasMany('App\ProveedoresCaracteristica', 'proveedores_id');
+        return $this->hasMany('App\Models\ProveedoresCaracteristica', 'proveedores_id');
     }
 }

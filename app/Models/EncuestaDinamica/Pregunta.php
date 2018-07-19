@@ -29,6 +29,8 @@ class Pregunta extends Model
         return $this->hasOne('App\Models\EncuestaDinamica\Tipo_campo', 'id', 'tipo_campos_id'); 
     }
     
-    
+    public function seccion(){
+        return $this->hasOne('App\Models\EncuestaDinamica\Secciones_encuesta', 'id', 'secciones_encuestas_id'); 
+    }
 
 }

@@ -69,7 +69,7 @@ app.factory("receptorServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-
+        
         getEncuestas: function () {
             var defered = $q.defer();
             var promise = defered.promise;
@@ -81,6 +81,7 @@ app.factory("receptorServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+       
         getDatosTransporte: function (id) {
             var defered = $q.defer();
             var promise = defered.promise;

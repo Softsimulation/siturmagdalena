@@ -101,19 +101,21 @@ situr.controller('ofertaTransporteCtrl', ['$scope','transporteServi', function (
             $("body").attr("class", "charging");
             transporteServi.getOfertaTransporte($scope.id).then(function (data) {
                 for (var i = 0; i < data.oferta.length; i++) {
+                    if(data.oferta[i].transporte != null){
+                        if (data.oferta[i].transporte.tipos_transporte_oferta_id == 1) {
+                            $scope.transporte.TotalTerrestre = parseInt(data.oferta[i].personas_total);
+                            $scope.transporte.TarifaTerrestre = parseInt(data.oferta[i].tarifa_promedio);
+                        }
+                        if (data.oferta[i].transporte.tipos_transporte_oferta_id == 2) {
+                            $scope.transporte.TotalAereo = parseInt(data.oferta[i].personas_total);
+                            $scope.transporte.TarifaAereo = parseInt(data.oferta[i].tarifa_promedio);
+                        }
+                        if (data.oferta[i].transporte.tipos_transporte_oferta_id == 3) {
+                            $scope.transporte.TotalMaritimo = parseInt(data.oferta[i].personas_total);
+                            $scope.transporte.TarifaMaritimo = parseInt(data.oferta[i].tarifa_promedio);
+                        }
+                    }
                     
-                    if (data.oferta[i].transporte.tipos_transporte_oferta_id == 1) {
-                        $scope.transporte.TotalTerrestre = parseInt(data.oferta[i].personas_total);
-                        $scope.transporte.TarifaTerrestre = parseInt(data.oferta[i].tarifa_promedio);
-                    }
-                    if (data.oferta[i].transporte.tipos_transporte_oferta_id == 2) {
-                        $scope.transporte.TotalAereo = parseInt(data.oferta[i].personas_total);
-                        $scope.transporte.TarifaAereo = parseInt(data.oferta[i].tarifa_promedio);
-                    }
-                    if (data.oferta[i].transporte.tipos_transporte_oferta_id == 3) {
-                        $scope.transporte.TotalMaritimo = parseInt(data.oferta[i].personas_total);
-                        $scope.transporte.TarifaMaritimo = parseInt(data.oferta[i].tarifa_promedio);
-                    }
                 }
                     $scope.tipos = data.ides;
                     $("body").attr("class", "cbp-spmenu-push charging")
@@ -161,7 +163,7 @@ situr.controller('ofertaTransporteCtrl', ['$scope','transporteServi', function (
                     showConfirmButton: false
                 });
                 setTimeout(function () {
-                    window.location.href = "/ofertaempleo/empleomensualtransporte/" + $scope.id;
+                    window.location.href = "/ofertaempleo/empleomensual/" + $scope.id;
                 }, 1000);
             } else {
                 $("body").attr("class", "cbp-spmenu-push")

@@ -79,12 +79,12 @@
         <div class="panel panel-success" ng-if="transporte.Llegar == 6">
             <div class="panel-heading">
                 <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
-                <h3 class="panel-title"><b> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="transporte.Empresa" placeholder="Presione aquí para ingresar la empresa de transporte"/>
+                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="transporte.Empresa" placeholder="Presione aquí para ingresar la empresa de transporte" ng-required="transporte.Llegar == 6"/>
                     </div>
                 </div>
                 <span  ng-show="transForm.$submitted || transForm.empresa.$touched">
@@ -135,6 +135,39 @@
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <!-- Experiencia de viaje-->
+                <h3 class="panel-title"><b>C3. Sostenibilidad</b></h3>
+            </div>
+            <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Ninguna dificultad y 10 Mucha dificultad. ¿Qué tanta dificultad tuvo para llegar a Magdalena ?</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12" style="overflow-x: auto;">
+                        <table  align="center" name="tabla_calificacion" class="table table-striped">
+                            
+                            <tbody>
+                                <tr>
+                                    @for ($i = 1; $i <= 10; $i++)
+                                        <td>
+                                            <div class="radio radio-primary">
+                                                <label>
+                                                    <input type="radio" name="experiencia_@{{it.Id}}" ng-model="transporte.Calificacion" value="{{$i}}">
+                                                    {{$i}}
+                                                </label>
+                                            </div>
+                                        </td>
+                                    @endfor
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
         
         <div class="row" style="text-align:center">

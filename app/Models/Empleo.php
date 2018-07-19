@@ -21,6 +21,7 @@ class Empleo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+     public $timestamps = false;
     public function encuesta()
     {
         return $this->belongsTo('App\Encuesta', 'encuestas_id');

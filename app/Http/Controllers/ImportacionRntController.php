@@ -36,7 +36,7 @@ class ImportacionRntController extends Controller
         $reader = \CsvReader::open($request->soporte, ';');
         $header = $reader->getHeader();
 		
-		$cabeceras = ["Numero del RNT","Estado","Municipio","Departamento","Nombre Comercial RNT","Nombre Comercial Plataforma","Categoria","Subcategoria","Direccion Comercial","Telefono","Celular","Correo Electronico"];
+		$cabeceras = ["Numero del RNT","Estado","Municipio","Departamento","Nombre Comercial RNT","Nombre Comercial Plataforma","Categoria","Subcategoria","Direccion Comercial","Telefono","Celular","Correo Electronico","Latitud","Longitud"];
 		
 		if($cabeceras != $header){
 		    return ["success" => false, "errores" => [["Verifique que las cabeceras cumplen con los requisitos del archivo."]] ];
@@ -76,6 +76,8 @@ class ImportacionRntController extends Controller
 	        		"telefono" => $registro["telefono"],
 	        		"celular" => $registro["celular"],
 	        		"email" => $registro["correo"],
+	        		"latitud" => isset($registro["latitud"]) ? $registro["latitud"] : null,
+	        		"longitud" => isset($registro["longitud"]) ? $registro["longitud"] : null,
 	        		"estado" => 1,
 	        		"user_create" => "MM",
 	        		"user_update" => "MM",
@@ -136,6 +138,8 @@ class ImportacionRntController extends Controller
 			'telefono' => 'required|max:255',
 			'celular' => 'required|max:255',
 			'correo' => 'required|max:455',
+			'latitud' => 'required',
+			'longitud' => 'required'
     	],[
        		'id.required' => 'Debe seleccionar el registro a editar.',
        		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
@@ -171,6 +175,8 @@ class ImportacionRntController extends Controller
 		$proveedor->telefono = $request->telefono;
 		$proveedor->celular = $request->celular;
 		$proveedor->email = $request->correo;
+		$proveedor->latitud = $request->latitud;
+		$proveedor->longitud = $request->longitud;
 		$proveedor->user_update = "MM";
 		$proveedor->save();
 		
@@ -211,6 +217,10 @@ class ImportacionRntController extends Controller
 		$objeto["celular2"] = $request->celular;
 		$objeto["correo"] = $request->correo;
 		$objeto["correo2"] = $request->correo;
+		$objeto["latitud"] = $request->latitud;
+		$objeto["latitud2"] = $request->latitud;
+		$objeto["longitud"] = $request->longitud;
+		$objeto["longitud2"] = $request->longitud;
 		
         return ["success" => true, 'proveedor' => $objeto];
     }
@@ -229,6 +239,8 @@ class ImportacionRntController extends Controller
 			'telefono' => 'required|max:255',
 			'celular' => 'required|max:255',
 			'correo' => 'required|max:455',
+			'latitud' => 'required',
+			'longitud' => 'required'
     	],[
        		'id.required' => 'Debe seleccionar el registro a editar.',
        		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
@@ -264,6 +276,8 @@ class ImportacionRntController extends Controller
 			"telefono" => $request["telefono"],
 			"celular" => $request["celular"],
 			"email" => $request["correo"],
+			"latitud" => $request["latitud"],
+			"longitud" => $request["longitud"],
 			"estado" => 1,
 			"user_create" => "MM",
 			"user_update" => "MM",
@@ -289,6 +303,8 @@ class ImportacionRntController extends Controller
 		$objeto["celular"] = $request->celular;
 		$objeto["correo"] = $request->correo;
 		$objeto['es_correcto'] = 1;
+		$objeto["latitud"] = $request->latitud;
+		$objeto["longitud"] = $request->longitud;
 		
         return ["success" => true, 'proveedor' => $objeto];
     }
@@ -306,6 +322,8 @@ class ImportacionRntController extends Controller
         $objeto["telefono"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Telefono"]))) ;
         $objeto["celular"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Celular"]))) ;
         $objeto["correo"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Correo Electronico"]))) ;
+        $objeto["longitud"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Longitud"]))) ;
+        $objeto["latitud"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Latitud"]))) ;
         return $objeto;
     }
     
@@ -329,6 +347,8 @@ class ImportacionRntController extends Controller
         $objeto["telefono2"] = $proveedor["telefono"];
         $objeto["celular2"] = $proveedor["celular"];
         $objeto["correo2"] = $proveedor["correo"];
+        $objeto["latitud2"] = $proveedor["latitud"];
+        $objeto["longitud2"] = $proveedor["longitud"];
         return $objeto;
     }
     

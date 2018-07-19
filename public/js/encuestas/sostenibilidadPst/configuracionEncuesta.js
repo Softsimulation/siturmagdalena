@@ -30,10 +30,13 @@ angular.module('sostenibilidadPst.configuracion', [])
     
     $scope.proveedores = [];
     $scope.encuesta = {};
+    $("body").attr("class", "charging");
     sostenibilidadPstServi.getProveedoresRnt().then(function (data) {
         $scope.proveedores = data.proveedores;
         $scope.encuestadores = data.encuestadores;
+        $("body").attr("class", "");
     }).catch(function () {
+        $("body").attr("class", "");
         swal("Error", "No se realizo la solicitud, reinicie la página");
     });
     
@@ -102,6 +105,7 @@ angular.module('sostenibilidadPst.configuracion', [])
     $scope.encuesta = {};
     
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         sostenibilidadPstServi.CargarEditarEncuesta($scope.id).then(function (data) {
             $scope.proveedores = data.proveedores;
             $scope.encuestadores = data.encuestadores;
@@ -112,8 +116,9 @@ angular.module('sostenibilidadPst.configuracion', [])
             split1 = split1[0].split("-");
             var fechaAp = new Date(split1[0], split1[1] - 1, split1[2],split2[0],split2[1]);
             $scope.encuesta.fechaAplicacion = formatDate(fechaAp) + " " + split2[0] + ":" + split2[1];
-            
+            $("body").attr("class", "");
         }).catch(function () {
+            $("body").attr("class", "");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     });

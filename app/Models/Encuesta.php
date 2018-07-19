@@ -35,7 +35,7 @@ class Encuesta extends Model
      * @var array
      */
     protected $fillable = ['sitios_para_encuestas_id', 'meses_años_id', 'actividad_comercial', 'numero_dias'];
-
+    public $timestamps = false;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

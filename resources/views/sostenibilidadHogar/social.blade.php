@@ -297,19 +297,19 @@
                         <div class="col-md-12">
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" ng-value="true" name="cambian_turistas" ng-model="social.cambian_turistas" required>
+                                    <input type="radio" ng-value="true" name="cambian_turistas" ng-model="social.cambian_turistas" >
                                     Si
                                 </label>
                             </div>
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" ng-value="false" name="cambian_turistas" ng-model="social.cambian_turistas" required>
+                                    <input type="radio" ng-value="false" name="cambian_turistas" ng-model="social.cambian_turistas" >
                                     No
                                 </label>
                             </div>
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" ng-value="null" name="cambian_turistas" ng-model="social.cambian_turistas" required>
+                                    <input type="radio" ng-value="null" name="cambian_turistas" ng-model="social.cambian_turistas" >
                                     No sabe /No responde
                                 </label>
                             </div>

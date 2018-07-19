@@ -9,9 +9,10 @@ angular.module('receptor.estanciayvisitados', [])
 
     
     $scope.$watch('id', function () {
+        $("body").attr("class", "cbp-spmenu-push charging");
         receptorServi.getDatosEstancia($scope.id).then(function (data) {
             $scope.Datos = data.Enlaces;
-            $scope.transformarObjeto($scope.Datos);
+            //$scope.transformarObjeto($scope.Datos);
             if(data.encuesta != undefined){
                 $scope.encuesta = data.encuesta;   
                 if (data.encuesta.Estancias == null) {
@@ -19,62 +20,14 @@ angular.module('receptor.estanciayvisitados', [])
                 }
             }
             $scope.encuesta.Id = $scope.id;
+            $("body").attr("class", "cbp-spmenu-push");
         }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     })
     
     
-    
-    $scope.transformarObjeto = function(Datos){
-        //atracciones
-        var atracciones = [];
-        for(var i = 0; i < Datos.Atracciones.length; i++){
-            var objeto = {
-                Nombre : Datos.Atracciones[i].atraccione.sitio.sitios_con_idiomas[0].nombre,
-                Id : Datos.Atracciones[i].atraccion_id,
-                IdT : Datos.Atracciones[i].tipo_atraccion_id,
-            }
-            atracciones.push(objeto);
-        }
-        $scope.Datos.Atracciones = atracciones;
-        
-        //tipoAtracciones
-        var arreglo = [];
-        for(var i = 0; i < Datos.TipoAtracciones.length; i++){
-            var objeto = {
-                Nombre : Datos.TipoAtracciones[i].tipo_atracciones_con_idiomas[0].nombre,
-                Id : Datos.TipoAtracciones[i].id,
-                IdA : Datos.TipoAtracciones[i].actividades_realizadas[0].id,
-            }
-            arreglo.push(objeto);
-        }
-        $scope.Datos.TipoAtracciones = arreglo;
-        
-        //actividades
-        var arreglo = [];
-        for(var i = 0; i < Datos.Actividades.length; i++){
-            var objeto = {
-                Nombre : Datos.Actividades[i].actividade.actividades_con_idiomas[0].nombre,
-                Id : Datos.Actividades[i].actividad_id,
-                IdA : Datos.Actividades[i].actividades_realizadas_id,
-            }
-            arreglo.push(objeto);
-        }
-        $scope.Datos.Actividades = arreglo;
-        
-        //atraccionesportal
-        var arreglo = [];
-        for(var i = 0; i < Datos.AtraccionesPortal.length; i++){
-            var objeto = {
-                Nombre : Datos.AtraccionesPortal[i].sitio.sitios_con_idiomas[0].nombre,
-                Id : Datos.AtraccionesPortal[i].id,
-            }
-            arreglo.push(objeto);
-        }
-        $scope.Datos.AtraccionesPortal = arreglo;
-        
-    }
 
     $scope.agregar = function () {
         $scope.estancia = new Object();
@@ -131,7 +84,7 @@ angular.module('receptor.estanciayvisitados', [])
     $scope.cambioActividadesRealizadas = function (actividad) {
         actividad.Respuestas = [];
         actividad.otro = undefined;
-        var resultado = $filter('filter')($scope.encuesta.ActividadesRelizadas, {'id':18}, true);
+        var resultado = $filter('filter')($scope.encuesta.ActividadesRelizadas, {'id':23}, true);
         
         if(resultado.length > 0){
             $scope.encuesta.ActividadesRelizadas = [resultado[0]];    
@@ -190,11 +143,24 @@ angular.module('receptor.estanciayvisitados', [])
 
 
     $scope.Validar = function () {
-        
+        if($scope.encuesta.ActividadesRelizadas.length == 0){
+            return true;
+        }
         for(var i = 0; i < $scope.encuesta.ActividadesRelizadas.length; i++){
             if($scope.encuesta.ActividadesRelizadas[i].opciones.length > 0 && ($scope.encuesta.ActividadesRelizadas[i].Respuestas.length == 0||$scope.encuesta.ActividadesRelizadas[i].Respuestas==undefined) ){
                 return true;
             }
+            
+            if($scope.encuesta.ActividadesRelizadas[i].opciones.length > 0){
+                if($scope.encuesta.ActividadesRelizadas[i].Respuestas.length > 0){
+                    for(var j = 0; j < $scope.encuesta.ActividadesRelizadas[i].Respuestas.length; j++){
+                        if($scope.encuesta.ActividadesRelizadas[i].Respuestas[j].sub_opciones.length > 0 && ($scope.encuesta.ActividadesRelizadas[i].Respuestas[j].Respuestas.length == 0 || $scope.encuesta.ActividadesRelizadas[i].Respuestas[j].Respuestas == undefined ) ){
+                            return true;    
+                        }
+                    }        
+                }
+            }
+            
         }
         
         return false;

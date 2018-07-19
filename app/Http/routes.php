@@ -16,13 +16,8 @@ Route::controller('/indicadores','IndicadoresCtrl');
 
 
 
-Route::get('/', function () {
-    
-    $date = new Carbon\Carbon('2018-04-02 00:00:00', 'Europe/London');  
-    return  $date->diffInDays('2018-03-28 00:00:00');
-    
-    
-});
+
+Route::controller('/EstadistivasSecunarias','EstadisticasSecundariasCtrl');
 
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
@@ -72,3 +67,5 @@ Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
+Route::controller('/login','LoginController');
+Route::controller('/noticias','NoticiaController');

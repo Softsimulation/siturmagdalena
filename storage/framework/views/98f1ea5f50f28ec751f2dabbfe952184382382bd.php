@@ -450,7 +450,7 @@
         <div class="panel panel-success" ng-if="encuesta.Motivo == 3">
             <div class="panel-heading">
                 <!-- P6P2. ¿Cuantas hora duro/durara la parada mas larga en el Magdalena?-->
-                <h3 class="panel-title"><b>¿Cuantas hora duro/durara la parada mas larga en el Atlántico?</b></h3>
+                <h3 class="panel-title"><b>¿Cuantas hora duro/durara la parada mas larga en el Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
