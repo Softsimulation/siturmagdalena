@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,7 +42,7 @@ class Publicacion extends Model
      */
     public function categoriaDocumento()
     {
-        return $this->belongsTo('App\CategoriaDocumento', 'categoria_doucmento_id');
+        return $this->belongsTo('App\Models\CategoriaDocumento', 'categoria_doucmento_id');
     }
 
     /**
@@ -50,7 +50,7 @@ class Publicacion extends Model
      */
     public function tipoDocumento()
     {
-        return $this->belongsTo('App\TipoDocumento');
+        return $this->belongsTo('App\Models\TipoDocumento');
     }
 
     /**
@@ -58,6 +58,6 @@ class Publicacion extends Model
      */
     public function publicacionesIdiomas()
     {
-        return $this->hasMany('App\PublicacionesIdioma', 'publicaciones_id');
+        return $this->hasMany('App\Models\PublicacionesIdioma', 'publicaciones_id');
     }
 }

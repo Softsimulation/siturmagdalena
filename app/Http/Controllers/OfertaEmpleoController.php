@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests;
 use Carbon\Carbon;
 use App\Models\Empleo;
@@ -37,7 +37,7 @@ use App\Models\Especialidad;
 use App\Models\Capacidad_Alimento;
 use App\Models\Actividad_Deportiva;
 use App\Models\Tour;
-
+use DB;
 use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
 use App\Models\Otro_Tour;
@@ -59,6 +59,7 @@ use App\Models\Mes;
 use App\Models\Anio;
 use App\Models\Mes_Anio;
 use App\Models\Sitio_Para_Encuesta;
+use App\Models\Medio_Actualizacion;
 
 
 class OfertaEmpleoController extends Controller
@@ -74,9 +75,72 @@ class OfertaEmpleoController extends Controller
     }
     
     
+    
+    
     public function getCrearEncuesta(){
         return view('ofertaempleo.CrearEncuesta');
     }
+    
+    public function getListadoproveedores(){
+        return view('ofertaEmpleo.ListadoProveedores');
+    }
+    
+    public function getListado(){
+      
+      $provedores = Sitio_Para_Encuesta::with(["proveedor"=> function($q1){ $q1->with([ "estadop", "categoria", "proveedor_rnt_idioma"=>function($q){ $q->where("idioma_id",1); } ])->get(); }])->get();
+      
+      return ["success" => true, "proveedores"=> $provedores];
+    }
+    
+    public function getEncuestas($one){
+        
+        return view('ofertaEmpleo.ListadoEncuestas',['id'=>$one]);
+    }
+    
+     public function getEncuestasrealizadas($id){
+ 
+          $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where sitio_para_encuesta =".$id));
+        
+          $ruta = null;
+          $tipo = Sitio_Para_Encuesta::where("id",$id)->first();
+         
+          if($tipo->proveedor->categoria->tipoProveedore->id == 1){
+              $ruta = "/ofertaempleo/caracterizacion";
+              }else{
+                  
+                    if($tipo->proveedor->categoria->id == 15){
+                         $ruta = "/ofertaempleo/agenciaviajes";
+                    }
+                     if($tipo->proveedor->categoria->id == 14){
+                         $ruta = "/ofertaempleo/caracterizacionagenciasoperadoras";
+                    }
+                     if($tipo->proveedor->categoria->id == 21){
+                         $ruta = "/ofertaempleo/caracterizacionalquilervehiculo";
+                    }
+                     if($tipo->proveedor->categoria->id == 22){
+                         $ruta = "/ofertaempleo/caracterizaciontransporte";
+                    }
+                     if($tipo->proveedor->categoria->id == 12){
+                         $ruta = "/ofertaempleo/caracterizacionalimentos";
+                    }
+                   if($tipo->proveedor->categoria->id == 11){
+                         $ruta = "/ofertaempleo/caracterizacionalimentos";
+                    }
+              }
+         
+          
+          if($ruta != null){
+              $ruta = $ruta.'/'.$id;
+          }else{
+              $ruta = 'proveedor';
+          }
+        
+        
+        
+        return ["success"=>true, "encuestas"=>$data, 'ruta'=>$ruta];
+
+    }
+    
     
     public function getEncuesta($one){
         $meses = array();
@@ -194,6 +258,7 @@ class OfertaEmpleoController extends Controller
         {
             $encuesta->actividad_comercial = 0;
             $encuesta->numero_dias = 0;
+            $ruta = "ofertaempleo/encuestas/".$request->Sitio;
         }
         else
         {
@@ -227,27 +292,7 @@ class OfertaEmpleoController extends Controller
         $encuesta->save();
             
        $ruta = null;
-         if ($encuesta->actividad_comercial == 0)
-            {
-                $ruta = "/ProveedorPerfil";
-                  Historial_Encuesta_Oferta::create([
-                   'encuesta_id' => $encuesta->id,
-                   'user_id' => 1,
-                   'estado_encuesta_id' => 3,
-                   'fecha_cambio' => Carbon::now()
-               ]);
-            }
-            else
-            {
-                  Historial_Encuesta_Oferta::create([
-                   'encuesta_id' => $encuesta->id,
-                   'user_id' => 1,
-                   'estado_encuesta_id' => 1,
-                   'fecha_cambio' => Carbon::now()
-               ]);
-                
-            }
-       
+        
      
        $tipo = Sitio_Para_Encuesta::where("id",$encuesta->sitios_para_encuestas_id)->first();
          
@@ -276,11 +321,7 @@ class OfertaEmpleoController extends Controller
               }
          
           
-          if($ruta != null){
-              $ruta = $ruta.'/'.$encuesta->id;
-          }else{
-              $ruta = 'proveedor';
-          }
+        
        
        
        return ["success"=>true,"ruta"=>$ruta];
@@ -455,11 +496,16 @@ class OfertaEmpleoController extends Controller
             $empleo["lineasopvt"] = Capacitacion_Empleo::join("tematicas_aplicadas_encuestas",'capacitaciones_empleo.encuesta_id','=','tematicas_aplicadas_encuestas.encuesta_id')->join("lineas_tematicas","id","=","linea_tematica_id")->where("capacitaciones_empleo.encuesta_id",$id)->where("tipo_nivel",false)->pluck("linea_tematica_id as id")->toArray();
             $empleo["tipos"] = Capacitacion_Empleo::join("programas_capaciaciones",'capacitaciones_empleo.encuesta_id','=','programas_capaciaciones.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->pluck("tipo_programa_capacitacion_id")->toArray();
             $empleo["medios"] = Capacitacion_Empleo::join("medios_capacitaciones_encuestas",'capacitaciones_empleo.encuesta_id','=','medios_capacitaciones_encuestas.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->pluck("medio_capacitacion_id")->toArray();
+            $empleo["autorizacion"] = Encuesta::where("id",$id)->pluck("autorizacion")->first();
+            $empleo["esta_acuerdo"] = Encuesta::where("id",$id)->pluck("esta_acuerdo")->first();
+            $empleo["medios_actualizacion_id"] = Encuesta::where("id",$id)->pluck("medios_actualizacion_id")->first();
+            
             
             $data = collect();
             $data["lineas"] = Linea_Tematica::select("id","nombre","tipo_nivel")->get();
             $data["tipos"] = Tipo_Programa_Capacitacion::select("id","nombre")->get();
             $data["medios"] = Medio_Capacitacion::select("id","nombre")->get();
+            $data["actualizaciones"] = Medio_Actualizacion::select("id","nombre")->get(); 
           
             $empleo["otrotipo"] = Capacitacion_Empleo::join("programas_capaciaciones",'capacitaciones_empleo.encuesta_id','=','programas_capaciaciones.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->where("tipo_programa_capacitacion_id",10)->pluck("otro")->first();
             $empleo["otromedio"] = Capacitacion_Empleo::join("medios_capacitaciones_encuestas",'capacitaciones_empleo.encuesta_id','=','medios_capacitaciones_encuestas.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->where("medio_capacitacion_id",6)->pluck("otro")->first();
@@ -874,7 +920,10 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     public function postGuardarempcaracterizacion(Request $request){
         $validator = \Validator::make($request->all(), [
   	         'Encuesta' => 'required|exists:encuestas,id',
-  	         'capacitacion' => 'required|min:0',
+  	         'capacitacion' => 'required|min:0|max:1',
+  	         'autorizacion' => 'required|min:0|max:1',
+  	         'esta_acuerdo' => 'required|min:0|max:1',
+  	         'medios_actualizacion_id'=> 'required|exists:medios_actualizaciones,id',
 			 'medios.*' => 'required|exists:medios_capacitaciones,id',
 		     'tipos.*' => 'required|exists:tipos_programas_capacitaciones,id',
 		     'lineasadmin.*' => 'required|exists:lineas_tematicas,id',
@@ -891,8 +940,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-    		$encuesta = Empleo::find($request->Encuesta);
-    
+    		$encuesta = Encuesta::find($request->Encuesta);
+
     		 if($request->capacitacion == 1 ){
     		     if($request->tematicas == null || count($request->tematicas) == 0){
     	                return ["success" => false, "errores" => [["Es requerido las tematicas."]] ];    
@@ -928,7 +977,12 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                     $capacitacion->save();
                 }
 
-                   
+            
+            $encuesta->autorizacion = $request->autorizacion;
+            $encuesta->esta_acuerdo = $request->esta_acuerdo;
+            $encuesta->medios_actualizacion_id = $request->medios_actualizacion_id;
+            $encuesta->save();    
+                
             $capacitacion->lineasTematicas()->detach();
             $capacitacion->mediosCapacitacion()->detach();
             $capacitacion->programasCapaciacion()->detach();      

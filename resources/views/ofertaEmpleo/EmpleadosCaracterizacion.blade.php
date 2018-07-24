@@ -334,11 +334,101 @@
 
             </div>
         </div>
-                   
+       </div>   
+       
+       
+       <div>
+            <div class="panel panel-success">
+            <div class="panel-heading">
          
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>.Dando cumplimiento a la ley de Protección de datos Personales le solicito su autorización para que SITUR Magdalena pueda contactarlo nuevamente en caso de ser necesario ¿Está usted de acuerdo? </b></h3>
+            </div>
+            <div class="panel-footer"><b>si o no </b></div>
+            <div class="panel-body">
+                <div class="row">
+                <div class="col-md-12">
+                            <div class="radio radio-primary">
+                                <label>
+                                    <input type="radio" id="SiCapacitacion" value="1" name="autorizacion" ng-model="empleo.autorizacion" ng-required="true">
+                                    Si
+                                </label>
+                            </div>
+                            <div class="radio radio-primary">
+                                <label>
+                                    <input type="radio" id="NoCapacitacion" value="0" name="autorizacion" ng-model="empleo.autorizacion" ng-required="true">
+                                    No
+                                </label>
+                            </div>
+                            <span ng-show="empleoForm.$submitted || empleoForm.autorizacion.$touched">
+                                <span class="label label-danger" ng-show="empleoForm.autorizacion.$error.required">* El campo es requerido.</span>
+                            </span>
+                        </div>
+                </div>
 
+            </div>
+        </div>
+        </div>
+
+       <div>
+            <div class="panel panel-success">
+            <div class="panel-heading">
+         
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>D8 Ya para terminar, le solicito su autorización para que SITUR Magdalena comparta sus respuestas con las entidades que contrataron el proyecto si o no </b></h3>
+            </div>
+            <div class="panel-footer"><b>si o no </b></div>
+            <div class="panel-body">
+                <div class="row">
+                <div class="col-md-12">
+                            <div class="radio radio-primary">
+                                <label>
+                                    <input type="radio" id="SiCapacitacion" value="1" name="esta_acuerdo" ng-model="empleo.esta_acuerdo" ng-required="true">
+                                    Si
+                                </label>
+                            </div>
+                            <div class="radio radio-primary">
+                                <label>
+                                    <input type="radio" id="NoCapacitacion" value="0" name="esta_acuerdo" ng-model="empleo.esta_acuerdo" ng-required="true">
+                                    No
+                                </label>
+                            </div>
+                            <span ng-show="empleoForm.$submitted || empleoForm.esta_acuerdo.$touched">
+                                <span class="label label-danger" ng-show="empleoForm.esta_acuerdo.$error.required">* El campo es requerido.</span>
+                            </span>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
         
-        </div>        
+
+       <div>
+            <div class="panel panel-success">
+            <div class="panel-heading">
+         
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Por cual medio le gustaría actualizar la información </b></h3>
+            </div>
+            <div class="panel-footer"></div>
+            <div class="panel-body">
+                <div class="row">
+                <div class="col-md-12">
+                            <div class="radio radio-primary">
+                                <label ng-repeat ="medio in data.actualizaciones ">
+                                    <input type="radio" id="SiCapacitacion" value="@{{medio.id}}" name="medios_actualizacion_id" ng-model="empleo.medios_actualizacion_id" ng-required="true">
+                                    @{{medio.nombre}}
+                                </label>
+                            </div>
+                            <span ng-show="empleoForm.$submitted || empleoForm.medios_actualizacion_id.$touched">
+                                <span class="label label-danger" ng-show="empleoForm.medios_actualizacion_id.$error.required">* El campo es requerido.</span>
+                            </span>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+
 
         <div class="row" style="text-align:center">
             <a href="/ofertaempleo/empleomensual/{{$id}}" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
