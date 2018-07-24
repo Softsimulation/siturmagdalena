@@ -53,6 +53,10 @@ class OfertaEmpleo
                 return redirect('/ofertaempleo/encuesta/'.$request->one);
     }
     
+
+    
+    
+    
     if(strlen(strstr($request->path(),'ofertaempleo/agenciaviajes'))>0){
             $encuesta = Encuesta::find($request->one);
             

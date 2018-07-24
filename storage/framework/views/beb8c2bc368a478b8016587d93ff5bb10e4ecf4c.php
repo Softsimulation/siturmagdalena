@@ -97,13 +97,13 @@
           
           <?php foreach($proveedores as $proveedor): ?>
               <tr>
-                <td rowspan="2" style="width:10%;" > <?php echo e($proveedor['id']); ?> </td>
-                <td rowspan="2" style="width:10%;" > <?php echo e($proveedor['numero_rnt']); ?> </td>
-                <td rowspan="2" style="width:20%;" > <?php echo e($proveedor['estadop']["nombre"]); ?> </td> <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['razon_social']); ?> </td>                  <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['direccion']); ?> </td>                     <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['tipo']); ?> </td>                          <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['nombreCategoria']); ?> </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td rowspan="2" style="width:10%;" > <?php echo e($proveedor->id); ?> </td>
+                <td rowspan="2" style="width:10%;" > <?php echo e($proveedor->rnt); ?> </td>
+                <td rowspan="2" style="width:20%;" > <?php echo e($proveedor->estado); ?> </td>      <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e($proveedor->nombre); ?> </td>                  <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e($proveedor->direccion); ?> </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e($proveedor->categoria); ?> </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e($proveedor->subcategoria); ?> </td>              <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" rowspan="2" ></td>
                 <td style="width:15%;" >FECHA   HORA</td>
                 <td style="width:10%;" >ENTR</td>

@@ -68,7 +68,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Capacidad del establecimiento</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 <div class="row">
                     <table class="table table-striped">

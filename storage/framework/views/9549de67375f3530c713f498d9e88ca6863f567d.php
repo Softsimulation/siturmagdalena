@@ -9,14 +9,14 @@
     <input type="hidden" id="periodo" value="<?php echo e($periodo->id); ?>" />
     
     
-    <div style="padding: 20px 100px;" ng-show="proveedoresFuera.length>0" >
-        <div class="alert alert-info" >
+ 
+        <div class="alert alert-info" ng-show="proveedoresFuera.length>0" >
           <a href="#" class="close" ng-click="proveedoresFuera=[]" >&times;</a>
           <strong>Atención proveedores fuera de la zona.!</strong> 
            Se encontraron los siguientes proveedores fuera de una zona: 
-          <span ng-repeat="it in proveedoresFuera" > {{it}},</span>
+          <span ng-repeat="it in proveedoresFuera track by $index" > {{it}},</span>
         </div>
-    </div>
+
     
     <div class="row" >
         
@@ -35,15 +35,35 @@
                 <br>
                 
                 <div class="form-group">
-                    <div class="checkbox" style="font-size:1.3em;">
+                    <div class="checkbox" style="font-size:1.1em;margin-top: 0;">
                        <label><input type="checkbox" ng-model="filtro.verZonas" ng-change="verOcultarZonas()" >Ver zonas</label>
                     </div>
                 </div>
                 
-                <hr>
+                <hr style="margin: 3%;">
                 
-                <div class="form-group">
-                    <input type="text" class="form-control" ng-model="filtro.busqueda" placeholder="Busqueda general" />
+                <b>Proveedores</b>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="1" checked> Todos
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="2"> Formales
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="3"> Informales
+                  </label>
+                </div>
+                
+                <hr style="margin: 3%;">
+                
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" ng-model="filtro.busqueda" placeholder="Búsqueda general en proveedores" />
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
                 
                 <br>
@@ -76,7 +96,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                               <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapse2" >Categoria proveedor</a>
+                               <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapse2" >Categoría proveedor</a>
                             </h4>
                         </div>
                         <div id="collapse2" class="panel-collapse collapse">
@@ -217,20 +237,19 @@
                 </a>  
                 
                 <div class="dropdown">
-                      <a class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="padding: 0 3px; margin-left: 5px;" >
+                      <a class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="padding: 0 3px; margin-left: 5px;" >
                          <i class="material-icons">menu</i>
                       </a>
                       <ul class="dropdown-menu">
-                        <li><a href ng-click="verTablaZonas()" >Ver tabla de zonas</a></li>
-                        <li><a href="/MuestraMaestra/excelinfoperiodo/<?php echo e($periodo->id); ?>" download >Decargar excel de la muestra</a></li>
-                        <li><a href ng-click="exportarFileKML()" >Exportar KML</a></li>
+                        <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
+                        <li><a href="/MuestraMaestra/excelinfoperiodo/<?php echo e($periodo->id); ?>" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
+                        <li><a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a></li>
+                        <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
+                        <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar zona</a></li>
                       </ul>
                 </div>
                 
-                <button type="button" id="btn-add" class="btn btn-success btn-sm" ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" style="margin-left: 5px;" >
-                    Agregar zona
-                </button>
-                <button type="button" id="btn-add" class="btn btn-danger btn-sm" ng-click="cancelarAgregarZona()" ng-show="es_crear_zona" style="margin-left: 5px;" >
+                <button type="button" id="btn-add" class="btn btn-danger btn-sm" ng-click="cancelarAgregarZonaPRoveedor()" ng-show="es_crear_zona" style="margin-left: 5px;" >
                     Cancelar crear zona
                 </button>
                 
@@ -238,8 +257,9 @@
             
             <ng-map id="mapa" zoom="9" center="[10.4113014,-74.4056612]" styles="{{styloMapa}}" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
               
-                <marker ng-repeat="pro in proveedores|filter:filtro.busqueda|filter:filterProveedores|filter:filterProveedoresSectorMunicipio" position="{{pro.latitud}},{{pro.longitud}}"  id="{{pro.id}}"
-                    icon="{{ getIcono(pro.estados_proveedor_id) }}" on-click="showInfoMapa(event,pro)" label="{{pro.idiomas[0].nombre}}" >     
+                <marker ng-repeat="pro in proveedores|filter:filtro.busqueda|filter:filterProveedores" position="{{pro.latitud}},{{pro.longitud}}"  id="{{pro.id}}"
+                    icon="{{ getIcono(pro.estados_proveedor_id) }}" on-click="showInfoMapa(event,pro,$index)" label="{{pro.razon_social}}"
+                    draggable="{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" >     
                 </marker>
         
                 <shape index="fig-{{$index}}" ng-repeat="item in dataPerido.zonas|filter:filterZonas" fill-color="{{item.color}}" 
@@ -272,10 +292,9 @@
                      </custom-marker>
                 </shape>
                 
-                
-                <drawing-manager ng-if="es_crear_zona"
+                <drawing-manager ng-if="es_crear_zona || es_crear_proveedor"
                       on-overlaycomplete="onMapOverlayCompleted()"
-                      drawing-control-options="{position: 'TOP_CENTER',drawingModes:['polygon']}"
+                      drawing-control-options="{position: 'TOP_CENTER',drawingModes:['{{figuraCrear}}']}"
                       drawingControl="true" drawingMode="null">
                     </drawing-manager>
                 </ng-map>
@@ -294,7 +313,6 @@
             </h4>
         </div>
       
-      
         <div class="contenido" ng-show="proveedor" >
             <div class="item-info" >
                 <p>Nombre</p>
@@ -303,12 +321,12 @@
             
             <div class="item-info" >
                 <p>RNT</p>
-                <p><b>{{proveedor.numero_rnt}}</b></p>
+                <p><b>{{proveedor.numero_rnt || 'No disponible'}}</b></p>
             </div>
             
             <div class="item-info" >
                 <p>Estado</p>
-                <p><b>{{proveedor.estadop.nombre}}</b></p>
+                <p><b>{{proveedor.estadop.nombre || 'No disponible'}}</b></p>
             </div>
             
             <div class="item-info" >
@@ -324,6 +342,20 @@
             <div class="item-info" >
                 <p>Categoria de proveedor</p>
                 <p><b>{{proveedor.tipoCategoria.categoria}}</b></p>
+            </div>
+            
+            <button class="btn btn-block btn-success btn-sm" ng-click="openModalZonaProveedores(proveedor)"  ng-if="!proveedor.numero_rnt" >
+                <i class="glyphicon glyphicon-pencil"></i> Editar información
+            </button>
+              
+            <button class="btn btn-block btn-primary btn-sm" ng-click="editarPosicionProveedor()" ng-show="!proveedor.editar" >
+               <i class="glyphicon glyphicon-map-marker"></i> Cambiar ubicación
+            </button>
+            
+            <br>
+            <div class="btn-group" role="group"  ng-show="proveedor.editar" style="width:100%;" >
+              <button type="button" class="btn btn-danger" ng-click="cancelarEditarPosicionProveedor()" style="width:50%;">Cancelar</button>
+              <button type="button" class="btn btn-success" ng-click="guardarEditarPosicionProveedor()" style="width:50%;">Guardar</button>
             </div>
                 
         </div>
@@ -441,8 +473,8 @@
             
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" ng-click="cancelarAgregarZona()">Cancelar</button>
-            <button type="submit" class="btn btn-primary" ng-click="guardarZona()" >Guardar</button>
+            <button type="button" class="btn btn-default" ng-click="cancelarAgregarZonaPRoveedor()">Cancelar</button>
+            <button type="submit" class="btn btn-success" ng-click="guardarZona()" >Guardar</button>
           </div>
           
       </form>
@@ -517,10 +549,124 @@
 </div>
     
 
+    <!-- Modal para gregar proveedores informales -->
+<div id="modalAddProveedor" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
+        <h4 class="modal-title">Proveedor informal</h4>
+      </div>
+      <form name="formP" >
+      
+          <div class="modal-body">
+            
+            <div class="row">    
+                <div class="col-md-12">
+                    <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.nombreP.$touched) && formP.nombreP.$error.required}" >
+                      <label>Nombre:</label>
+                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.razon_social" placeholder="Nombre del establecimiento" required >
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+        
+            <div class="row">    
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.ditecionP.$touched) && formP.ditecionP.$error.required}" >
+                      <label>Dirección:</label>
+                      <input type="text" class="form-control"  name="ditecionP" ng-model="proveedorInformal.direccion" placeholder="Direción" required >
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.telefono.$touched) && formP.telefono.$error.required}" >
+                      <label>Teléfono:</label>
+                      <input type="text" class="form-control"  name="telefono" ng-model="proveedorInformal.telefono" placeholder="Número de teléfono" required >
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+            
+            <div class="row">    
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.tipoP.$touched) && formP.tipoP.$error.required}">
+                        <label class="control-label" for="tipoP">Tipo proveedor</label>
+                        <ui-select  ng-model="TipoProveedorInformal.select" name="tipoP" id="tipoP" theme="bootstrap" sortable="true" ng-change="proveedorInformal.categoria_proveedor_id=null"  ng-required="true" >
+                            <ui-select-match placeholder="Seleccione un tipo">
+                                <span ng-bind="$select.selected.tipo_proveedores_con_idiomas[0].nombre"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="t as t in (tiposProveedores |filter:$select.search)">
+                                <span ng-bind="t.tipo_proveedores_con_idiomas[0].nombre" title="{{t.tipo_proveedores_con_idiomas[0].nombre}}"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.tipoP.$touched) && formP.tipoP.$error.required}">
+                        <label class="control-label" for="tipoP">Categoría proveedor</label>
+                        <ui-select  ng-model="proveedorInformal.categoria_proveedor_id" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
+                            <ui-select-match placeholder="Seleccione una categoria">
+                                <span ng-bind="$select.selected.categoria_proveedores_con_idiomas[0].nombre"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="t.id as t in (TipoProveedorInformal.select.categoria_proveedores |filter:$select.search)">
+                                <span ng-bind="t.categoria_proveedores_con_idiomas[0].nombre" title="{{t.categoria_proveedores_con_idiomas[0].nombre}}"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <br>
+            
+            <div class="row">    
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.latitud.$touched) && formP.latitud.$error.required}" >
+                      <label>Latitud:</label>
+                      <input type="text" class="form-control"  name="latitud" ng-model="proveedorInformal.latitud" required readonly >
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.longitud.$touched) && formP.longitud.$error.required}" >
+                      <label>Longitud:</label>
+                      <input type="text" class="form-control"  name="longitud" ng-model="proveedorInformal.longitud" required readonly >
+                    </div>
+                </div>
+            </div>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancelarAgregarZonaPRoveedor()">Cancelar</button>
+            <button type="submit" class="btn btn-success" ng-click="guardarProveedorInformal()" >Guardar</button>
+          </div>
+          
+      </form>
+    </div>
+
+  </div>
+</div>
+
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('estilos'); ?>
     <style type="text/css">
+    
+        .alert{
+            position: fixed;
+            width: 80%;
+            bottom: 2%;
+            top: initial !important;
+            left: 10%;
+            box-shadow: 0px 0px 3px 0px rgba(0,0,0,.5);
+            z-index: 10;
+        }
+    
         #cont-filtros{
             z-index: 1;
             padding: 0;
@@ -536,7 +682,7 @@
             margin-top: -10px;
             margin-left: -10px;
             margin-right: -10px;
-            background: red;
+            background: #1b5f9d;
             padding: 5px;
             font-size: 1.5em;
             font-weight: bold;
@@ -622,7 +768,7 @@
         }
         
         .sidenav .cabecera{
-            background: red;
+            background: #1b5f9d;
             height: 40px;
             color: white;
             padding: 2px;

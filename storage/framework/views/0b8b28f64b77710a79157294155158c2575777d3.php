@@ -70,7 +70,7 @@
                                               <button type="button" class="btn btn-xs btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                  <span class="caret"></span>
                                               </button>
-                                              <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
                                                    <li>
                                                         <a href ng-click="activarDesactivarPregunta(pregunta)" >
                                                              {{ !pregunta.es_visible ? 'Activar' : 'Desactivar'}}
@@ -80,6 +80,10 @@
                                                     <li>
                                                      <a href ng-click="eliminarPregunta(pregunta,$index)" >
                                                          Eliminar
+                                                     </a>
+                                                     <li>
+                                                     <a href ng-click="duplicarPregunta(pregunta)" >
+                                                         Duplicar
                                                      </a>
                                                     </li>
                                                     <li class="divider"></li>
@@ -262,7 +266,7 @@
                                              </div>
                                          </div>
                                          
-                                       
+                                          <br>
                                           <ul class="list-group">
                                             
                                             <li href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
@@ -292,9 +296,14 @@
                                                 <div class="form-group" ng-class="{'error' : (formPregunta.$submitted || formPregunta.maxNumero.$touched) && formPregunta.maxNumero.$error.required}">
                                                     <label class="control-label" >Agregar opcion</label>
                                                     <div class="input-group">
-                                                      <input type="text" class="form-control" placeholder="Nueva opción" ng-model="opcion" >
+                                                      <input type="text" class="form-control" placeholder="Nueva opción" ng-model="opcion.text" >
+                                                      
+                                                      <div class="input-group-addon checkbox" ng-show="pregunta.tipoCampo==3 || pregunta.tipoCampo==7" >
+                                                          <label><input type="checkbox" name="otro" ng-model="opcion.otro"  >Otro</label>
+                                                      </div>
+                                                      
                                                       <div class="input-group-btn">
-                                                        <button class="btn btn-success" type="button" ng-click="pregunta.opciones.push(opcion); opcion=null;" ng-disabled="!opcion" >
+                                                        <button class="btn btn-success" type="button" ng-click="pregunta.opciones.push(opcion); opcion={};" ng-disabled="!opcion.text" >
                                                              Agregar
                                                         </button>
                                                       </div>
@@ -304,22 +313,23 @@
                                              </div>
                                          </div>
                                          
+                                         <br>
                                        
-                                          <ul class="list-group">
+                                        <ul class="list-group">
                                             
                                             <li href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
                                               Opciones
                                             </li>
                                             
                                             <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="item in pregunta.opciones track by $index" style="cursor:default" >
-                                                {{item}}  <span class="badge badge-primary badge-pill" ng-click="pregunta.opciones.splice($index,1);" >X</span>
+                                                {{item.text}} <span ng-show="item.otro" >(Es otro)</span>  <span class="badge badge-primary badge-pill" ng-click="pregunta.opciones.splice($index,1);" >X</span>
                                             </li>
                                             
                                             <li class="list-group-item d-flex justify-content-between align-items-center" ng-if="pregunta.opciones.length==0" >
                                                 0 opciones agregadas
                                             </li>
                                             
-                                          </ul>
+                                        </ul>
                                        
                                     </div>
                                 </div>
@@ -646,6 +656,56 @@
                         </form>
                     </div>
                 </div>
+            </div>
+            
+             <!-- Modal cambiar el orden de las preguntas de una sección -->
+            <div id="ModalDuplicarPregunta" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+            
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Duplicar pregunta</h4>
+                  </div>
+                  <div class="modal-body">
+                        
+                        <div class="row">
+                                  
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label class="control-label">Pregunta</label>
+                                    <p>{{ (preguntDuplicar.idiomas|filter:{ 'idiomas_id':1 })[0].pregunta }}</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <br>
+                        
+                        <div class="row">
+                                  
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label class="control-label">Sección</label>
+                                    <select class="form-control" ng-model="preguntDuplicar.seccion"  >
+                                      <option value="" selectd disabled >Selecione una opción</option>
+                                      <option ng-repeat="item in encuesta.secciones" value="{{item.id}}" >{{$index+1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                      
+                  </div>
+                  <div class="modal-footer center">
+                    <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-click="guardarDuplicadoPregunta()" class="btn btn-success">Guardar</button>
+                  </div>
+                </div>
+            
+              </div>
             </div>
         
         <?php else: ?>    
