@@ -393,15 +393,10 @@
         <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
         
-<<<<<<< HEAD
         <script src="{{asset('/js/encuestas/ofertaempleo/proveedoresapp.js')}}"></script>
         <script src="{{asset('/js/encuestas/ofertaempleo/servicesproveedor.js')}}"></script>
         
         
-=======
-        <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
-        <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
->>>>>>> 31fa3f97183b265998862caf01720d70a6f7f5e4
         <script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
         <script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
@@ -411,15 +406,12 @@
     		
     	    
     	    
-<<<<<<< HEAD
+    	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
+		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
 	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
 	    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
         <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
-=======
-    	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
-		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
->>>>>>> 31fa3f97183b265998862caf01720d70a6f7f5e4
 
         </div>
        

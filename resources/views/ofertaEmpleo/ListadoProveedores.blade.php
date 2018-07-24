@@ -106,7 +106,7 @@
 
 </div>    
 
-<div class="container">
+
        <div class="row">
             <h1 class="title1">Proveedores</h1>
             <br>
@@ -115,7 +115,7 @@
                     <input type="text" style="margin-bottom: .5em;" ng-model="prop.searchAntiguo" class="form-control" id="inputSearch" placeholder="Buscar registro...">
                 </div>
                 <div class="col-xs-12 col-sm-12 col-lg-2 col-md-12" style="text-align: center;">
-                    <span class="chip" style="margin-bottom: .5em;">@{{(antiguos|filter:prop.searchAntiguo).length}} resultados</span>
+                    <span class="chip" style="margin-bottom: .5em;">@{{(proveedores|filter:prop.searchAntiguo).length}} resultados</span>
                 </div>
             </div>
             <div class="row">
@@ -137,15 +137,14 @@
                         <tr dir-paginate="item in proveedores|filter:prop.searchAntiguo|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
                                 <td>@{{$index+1}}</td>
                                 <td>@{{item.proveedor.numero_rnt}}</td>
-                                <td>@{{item.proveedor.proveedor_rnt_idioma[0].nombre}}</td>
+                                <td>@{{item.proveedor.idiomas[0].nombre}}</td>
                                 <td>@{{item.proveedor.tipoCategoria.categoria}}</td>
                                 <td>@{{item.proveedor.tipoCategoria.tipo}}</td>
                                 <td>@{{item.email}}</td>
                                 <td>@{{item.proveedor.estadop.nombre}}</td>
                                 <td style="text-align: center;">
                                 <a href="/ofertaempleo/encuesta/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta sin realizar" ><span class = "glyphicon glyphicon-th-list"></span></a>
-                                <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta realizadas" style="margin: 0;"><i class="material-icons">assignment</i></a>
-                                
+                                <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta realizadas"><span class="glyphicon glyphicon-list-alt"></span></a>
                                 </td>
                             </tr>
                          </tbody>
@@ -161,7 +160,7 @@
         </div>
     <div class='carga'>
     </div>
-</div>
+
 
 @endsection
 

@@ -393,8 +393,10 @@
         <script src="<?php echo e(asset('/js/encuestas/sostenibilidadPst/listado.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/encuestas/sostenibilidadPst/services.js')); ?>"></script>
         
-        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadHogar/listado.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadHogar/services.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/encuestas/ofertaempleo/proveedoresapp.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/encuestas/ofertaempleo/servicesproveedor.js')); ?>"></script>
+        
+        
         <script src="<?php echo e(asset('/js/administrador/noticias/noticias.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/administrador/noticias/noticiaServices.js')); ?>"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
@@ -406,6 +408,10 @@
     	    
     	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
 		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
+	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
+	    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
+        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadHogar/listado.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadHogar/services.js')); ?>"></script>
 
         </div>
        

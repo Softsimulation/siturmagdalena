@@ -82,7 +82,7 @@ class OfertaEmpleoController extends Controller
     
     public function getListado(){
       
-      $provedores = Sitio_Para_Encuesta::with(["proveedor"=> function($q1){ $q1->with([ "estadop", "categoria", "proveedor_rnt_idioma"=>function($q){ $q->where("idioma_id",1); } ])->get(); }])->get();
+      $provedores = Sitio_Para_Encuesta::with(["proveedor"=> function($q1){ $q1->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])->get(); }])->get();
       
       return ["success" => true, "proveedores"=> $provedores];
     }
@@ -92,7 +92,7 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.ListadoEncuestas',['id'=>$one]);
     }
     
-     public function getEncuestasrealizadas($id){
+    public function getEncuestasrealizadas($id){
  
           $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where sitio_para_encuesta =".$id));
         
@@ -124,18 +124,12 @@ class OfertaEmpleoController extends Controller
               }
          
           
-          if($ruta != null){
-              $ruta = $ruta.'/'.$id;
-          }else{
-              $ruta = 'proveedor';
-          }
-        
+ 
         
         
         return ["success"=>true, "encuestas"=>$data, 'ruta'=>$ruta];
 
     }
-    
     
     public function getEncuesta($one){
         $meses = array();
@@ -315,7 +309,12 @@ class OfertaEmpleoController extends Controller
                     }
               }
          
-          
+           if($ruta != null){
+              $ruta = $ruta.'/'.$encuesta->id;
+          }else{
+              $ruta = 'proveedor';
+          }
+        
         
        
        
