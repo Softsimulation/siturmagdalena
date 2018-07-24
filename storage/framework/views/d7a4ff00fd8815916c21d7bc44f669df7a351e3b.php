@@ -243,7 +243,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </header>
         
         
@@ -293,7 +293,7 @@
                            <div class="menu">
 									<ul id="menu" >
 										
-										 <li id="menu-academico" ><a href="#"><i class="fa fa-table"></i> <span> Turismo Receptor</span></span></a>
+										 <li id="menu-academico" ><a href="#"> <span>Turismo Receptor</span></span></a>
 										   <ul id="menu-academico-sub" >
 											<ligv id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('grupoviaje/listadogrupos')); ?>"> Grupo de viajes</a></li>
 											<li id="menu-academico-boletim" ><a href="<?php echo e(asset('turismoreceptor/listadoencuestas')); ?>">Listado de encuestas</a></li>
@@ -301,14 +301,22 @@
 											
 										  </ul>
 										</li>
-										 <li id="menu-academico" ><a href="#"> <span>Turismo Interno y Emisor</span></a>
+										 <!--<li id="menu-academico" ><a href="<?php echo e(asset('temporada')); ?>"> <span>Turismo Interno y Emisor</span></a>
+										
+										 </li>-->
+										 
+									<li id="menu-academico" ><a href="#"> <span>Oferta y Empleo</span></a>
 											 <ul id="menu-academico-sub" >
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('temporada')); ?>">Temporada</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/1')); ?>">Alojamiento</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/2')); ?>">Restaurante</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/3')); ?>">Agencia operadoras</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/4')); ?>">Agencia de viajes</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/5')); ?>">Alquiler de vehiculo</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/6')); ?>">Transporte</a></li>
 												
 										
 											  </ul>
 										 </li>
-								
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administrarpaises')); ?>">Paises</a></li>
@@ -349,7 +357,7 @@
     
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="<?php echo e(secure_asset('/js/plugins/angular.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/plugins/angular.min.js')); ?>"></script>
         
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
         <!--<script src="<?php echo e(secure_asset('/Content/bootstrap_material/dist/js/material.min.js')); ?>"></script>
@@ -408,24 +416,10 @@
 		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
 
         </div>
-       
-   
-    <script src="<?php echo e(asset('/js/plugins/angular.min.js')); ?>"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="<?php echo e(asset('/Content/bootstrap_material/dist/js/material.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/Content/bootstrap_material/dist/js/ripples.min.js')); ?>"></script>
     <script>
         $.material.init();
     </script>
-    <script src="<?php echo e(asset('/js/plugins/checklist-model.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/select.min.js')); ?>" type="text/javascript"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/ADM-dateTimePicker.min.js')); ?>" type="text/javascript"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-sanitize.js')); ?>" type="text/javascript"></script>
-    <script src="<?php echo e(asset('/js/plugins/object-table.js')); ?>" type="text/javascript"></script>
+   
     <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
     
@@ -433,8 +427,6 @@
     <script src="<?php echo e(asset('/js/services/usuarioServices.js')); ?>"></script>
     
     <script src="<?php echo e(asset('/js/administrador/administrador.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/administrador/grupo_viaje.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/administrador/grupoViajeServices.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/administrador/temporadas.js')); ?>"></script>
   
     <script src="<?php echo e(asset('/js/importacionRnt/importarRnt.js')); ?>"></script>

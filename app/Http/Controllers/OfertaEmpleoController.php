@@ -2044,7 +2044,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }
        
     
-        $alojamiento = alojamiento::where("encuestas_id",$request->id)->first();
+        $alojamiento = alojamiento::where("encuestas_id",$request->encuesta)->first();
     
         /////////////////////////////////////////////////////////////////////////
         if($request->habitaciones){
@@ -2106,7 +2106,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         
         Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->id,
+           'encuesta_id' => $request->encuesta,
            'user_id' => 1,
            'estado_encuesta_id' => 2,
            'fecha_cambio' => Carbon::now()
