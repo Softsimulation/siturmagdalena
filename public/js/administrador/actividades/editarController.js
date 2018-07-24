@@ -1,23 +1,25 @@
 /* global angular */
 /* global swal */
-angular.module('atracciones.editar', [])
+angular.module('actividades.editar', [])
 
-.controller('atraccionesEditarController', function($scope, atraccionesServi, $location, $http){
-    $scope.atraccion = {
-        adicional: {}
+.controller('actividadesEditarController', function($scope, actividadesServi, $location, $http){
+    $scope.actividad = {
+        adicional: {},
+        datosGenerales: {}
     };
     $scope.previewportadaIMG = [];
     $scope.previewImagenes = [];
     
     $scope.$watch('id', function(){
         $("body").attr("class", "cbp-spmenu-push charging");
-        atraccionesServi.getDatosatraccion($scope.id).then(function(data){
+        actividadesServi.getDatosactividad($scope.id).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                $scope.atraccion.adicional.perfiles = data.perfiles_turista;
-                $scope.atraccion.adicional.tipos = data.tipo_atracciones;
-                $scope.atraccion.adicional.categorias = data.categorias_turismo;
-                $scope.atraccion.adicional.actividades = data.actividades;
+                $scope.actividad.adicional.perfiles = data.perfiles_turista;
+                $scope.actividad.adicional.sitios = data.sitios;
+                $scope.actividad.adicional.categorias = data.categorias_turismo;
+                $scope.actividad.datosGenerales.valor_maximo = parseInt(data.actividad.valor_max);
+                $scope.actividad.datosGenerales.valor_minimo = parseInt(data.actividad.valor_min);
                 
                 var portada = null;
                 $http.get("../.." + data.portadaIMG, {responseType: "blob"}).success((data) => {
@@ -34,7 +36,6 @@ angular.module('atracciones.editar', [])
                         $scope.previewImagenes = imagenes;
                     }
                 }
-                $scope.video_promocional = data.video_promocional;
             }
         }).catch(function(error){
             $("body").attr("class", "cbp-spmenu-push");
@@ -42,20 +43,18 @@ angular.module('atracciones.editar', [])
         });
     });
     
-    atraccionesServi.getDatoscrear().then(function (data){
+    actividadesServi.getDatoscrear().then(function (data){
         if (data.success){
-            $scope.sectores = data.sectores;
+            $scope.sitios = data.sitios;
             $scope.perfiles_turista = data.perfiles_turista;
-            $scope.tipos_atracciones = data.tipos_atracciones;
             $scope.categorias_turismo = data.categorias_turismo;
-            $scope.actividades = data.actividades;
         }
     }).catch(function (errs){
         swal('Error', 'Error al cargar los datos. Por favor recargue la página.', 'error');
     });
     
     $scope.guardarMultimedia = function (){
-        if (!$scope.multimediaForm.$valid && $scope.atraccion.id != -1){
+        if (!$scope.editarMultimediaForm.$valid){
             return;
         }
         var fd = new FormData();
@@ -72,22 +71,21 @@ angular.module('atracciones.editar', [])
         }
         
         $("body").attr("class", "cbp-spmenu-push charging");
-        if ($scope.portadaIMG != null) {
+        if ($scope.portadaIMG != undefined) {
             fd.append("portadaIMG", $scope.portadaIMG[0]);
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
-        if ($scope.imagenes != null) {
-            for (var i in $scope.imagenes){
+        if ($scope.imagenes != undefined) {
+            for (i in $scope.imagenes){
                 if (Number.isInteger(parseInt(i))){
                     fd.append("image[]", $scope.imagenes[i]);
                 }
-                console.log(i);
             }
         }
+        console.log($scope.imagenes);
         fd.append('id', $scope.id);
-        fd.append('video_promocional', $("#video_promocional").val());
-        atraccionesServi.postGuardarmultimedia(fd).then(function (data){
+        actividadesServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
@@ -101,13 +99,29 @@ angular.module('atracciones.editar', [])
     }
     
     $scope.guardarAdicional = function (){
-        if (!$scope.informacionAdicionalForm.$valid || $scope.atraccion.id == -1){
+        if (!$scope.informacionAdicionalForm.$valid){
             return;
         }
-        $scope.atraccion.adicional.id = $scope.id;
-        atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
+        $scope.actividad.adicional.id = $scope.id;
+        actividadesServi.postGuardaradicional($scope.actividad.adicional).then(function(data){
             if (data.success){
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                swal('¡Éxito!', 'Información adicional editada con éxito.', 'success');
+            }else{
+                $scope.errores = data.errores;
+            }
+        }).catch(function(err){
+            swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+        });
+    }
+    
+    $scope.guardarDatosGenerales = function (){
+        if (!$scope.editarActividadForm.$valid){
+            return;
+        }
+        $scope.actividad.datosGenerales.id = $scope.id;
+        actividadesServi.postEditardatosgenerales($scope.actividad.datosGenerales).then(function(data){
+            if (data.success){
+                swal('¡Éxito!', 'Actividad modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }

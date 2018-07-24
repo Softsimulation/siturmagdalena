@@ -107,6 +107,8 @@
                     switch(contentType){
                         case 'audio/aac':
                             return '.acc';
+                        case 'image/png':
+                            return '.acc';
                         case 'application/x-abiword':
                             return '.abw';
                         case 'application/octet-stream':
