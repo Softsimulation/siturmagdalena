@@ -1,7 +1,7 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Nueva atracción')
+@section('title', 'Editar atracción')
 
 @section('estilos')
     <style>
@@ -91,7 +91,7 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Nueva atracción')
+@section('TitleSection', 'Editar atracción')
 
 @section('Progreso', '0%')
 
@@ -99,147 +99,21 @@
 
 @section('app', 'ng-app="atraccionesApp"')
 
-@section('controller','ng-controller="atraccionesCrearController"')
+@section('controller','ng-controller="atraccionesEditarController"')
 
 @section('content')
 <div class="container">
-    <h1 class="title1">Insertar atracción</h1>
+    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
+    <h1 class="title1">Editar atracción</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#info">Información básica</a></li>
-            <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
+            <li class="active"><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
             <li><a data-toggle="tab" href="#adicional">Información adicional</a></li>
         </ul>
         <div class="tab-content">
-            <!--Información básica-->
-            <div id="info" class="tab-pane fade in active">
-                <h2>Datos de la atracción</h2>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    Los campos marcados con <strong>*</strong> son obligatorios.
-                </div>
-                <form novalidate role="form" name="crearAtraccionForm">
-                    <div class="row">
-                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.nombre.$touched) && crearAtraccionForm.nombre.$error.required}">
-                            <label for="nombre">Nombre</label>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
-                                <input ng-model="atraccion.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.descripcion.$touched) && crearAtraccionForm.descripcion.$error.required}">
-                            <label for="descripcion">Descripción</label>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
-                                <textarea style="resize: none;" ng-model="atraccion.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.valor_minimo.$touched) && crearAtraccionForm.valor_minimo.$error.required}">
-                            <label for="valor_minimo">Valor mínimo ($)</label>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
-                                <input ng-model="atraccion.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.valor_maximo.$touched) && crearAtraccionForm.valor_maximo.$error.required}">
-                            <label for="valor_maximo">Valor máximo ($)</label>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
-                                <input ng-model="atraccion.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-3" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
-                            <label for="sector">Sector</label>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
-                                <ui-select theme="bootstrap" ng-required="true" ng-model="atraccion.datosGenerales.sector_id" id="sector" name="sector">
-                                   <ui-select-match placeholder="Nombre del sector.">
-                                       <span ng-bind="$select.selected.sectores_con_idiomas[0].nombre"></span>
-                                   </ui-select-match>
-                                   <ui-select-choices group-by="groupByDestino" repeat="sector.id as sector in (sectores| filter: $select.search)">
-                                       <span ng-bind="sector.sectores_con_idiomas[0].nombre" title="@{{sector.sectores_con_idiomas[0].nombre}}"></span>
-                                   </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label for="direccion">Dirección</label>
-                            <input ng-model="atraccion.datosGenerales.direccion" type="text" name="direccion" id="direccion" class="form-control" placeholder="Máximo 150 caracteres."/>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label for="horario">Horario</label>
-                            <input ng-model="atraccion.datosGenerales.horario" type="text" name="horario" id="horario" class="form-control" placeholder="Máximo 255 caracteres."/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="telefono">Teléfono</label>
-                                <input ng-model="atraccion.datosGenerales.telefono" type="tel" name="telefono" id="telefono" class="form-control" placeholder="Máximo 100 caracteres."/>
-                            </div>
-                            <div class="form-group">
-                                <label for="pagina_web">Página web</label>
-                                <input ng-model="atraccion.datosGenerales.pagina_web" type="text" name="pagina_web" id="pagina_web" class="form-control" placeholder="Máximo 255 caracteres."/>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="actividad">Periodo de actividad e inactividad</label>
-                                <textarea style="resize: none;" rows="4" class="form-control" id="actividad" name="actividad" ng-model="atraccion.datosGenerales.actividad" placeholder="Máximo 1,000 caracteres."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-4">
-                            <label for="recomendaciones">Recomendaciones</label>
-                            <textarea style="resize: none;" rows="5" class="form-control" id="recomendaciones" name="recomendaciones" ng-model="atraccion.datosGenerales.recomendaciones" placeholder="Máximo 1,000 caracteres."></textarea>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="reglas">Reglas</label>
-                            <textarea style="resize: none;" rows="5" class="form-control" id="reglas" name="reglas" ng-model="atraccion.datosGenerales.reglas" placeholder="Reglas o normas que deben seguir los visitantes. Máximo 1,000 caracteres."></textarea>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="como_llegar">Como llegar</label>
-                            <textarea style="resize: none;" rows="5" class="form-control" id="como_llegar" name="como_llegar" ng-model="atraccion.datosGenerales.como_llegar" placeholder="Pasos o indicaciones para llegar al lugar. Máximo 1,000 caracteres."></textarea>
-                        </div>
-                    </div>
-                    <div class="row" style="display: flex;">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="adress">Dirección</label>
-                                <input required type="text" class="form-control" id="address" name="address" placeholder="Ingrese una dirección">
-                            </div>
-                        </div>
-                        <div class="col-sm-3" style="align-self: flex-end;">
-                            <button type="button" ng-click="searchAdress()" class="btn btn-default">Buscar</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12" >
-                            <div id="direccion_map" style="height: 400px;">
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <button type="submit" ng-click="guardarDatosGenerales()" ng-class="{'disabled': (atraccion.id != -1)}" class="btn btn-lg btn-success">Guardar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            
             <!--Multimedia-->
-            <div id="multimedia" class="tab-pane fade">
+            <div id="multimedia" class="tab-pane fade in active">
                 <h3>Multimedia</h3>
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -255,19 +129,19 @@
                     <div class="row">
                         <h4><span class="text-error">*</span> Imagen de portada</h4>
                         <div class="col-sm-12">
-                            <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                            <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                         </div>
                     </div>
                     <div>
                         <h4>Subir imágenes</h4>
                         <div class="col-sm-12">
-                            <file-input ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
+                            <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 form-group">
                             <label for="video_promocional"><h4>Video promocional</h4></label>
-                            <input type="text" name="video_promocional" id="video_promocional" class="form-control" placeholder="URL del video de YouTube" />
+                            <input type="text" name="video_promocional" id="video_promocional" ng-model="video_promocional" class="form-control" placeholder="URL del video de YouTube" />
                         </div>
                     </div>
                     <br>
@@ -344,7 +218,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <button type="submit"  class="btn btn-lg btn-success" ng-class="{'disabled': (atraccion.id == -1)}" ng-click="guardarAdicional()">Guardar</button>
+                            <button type="submit"  class="btn btn-lg btn-success" ng-click="guardarAdicional()">Guardar</button>
                         </div>
                     </div>
                 </form>

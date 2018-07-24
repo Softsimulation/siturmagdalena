@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,7 +32,7 @@ class Tipo_Sitio_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 
     /**
@@ -40,6 +40,6 @@ class Tipo_Sitio_Con_Idioma extends Model
      */
     public function tipoSitio()
     {
-        return $this->belongsTo('App\TipoSitio', 'tipo_sitios_id');
+        return $this->belongsTo('App\Models\Tipo_Sitio', 'tipo_sitios_id');
     }
 }
