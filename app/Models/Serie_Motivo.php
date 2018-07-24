@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,11 +44,4 @@ class Serie_Motivo extends Model
         return $this->belongsTo('App\EstadisiticasSecundaria', 'estadisticas_secundarias_id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function motivoEstadisticasSecundaria()
-    {
-        return $this->belongsTo('App\MotivoEstadisticasSecundaria', 'motivo_estadisticas_secundarias_id');
-    }
 }

@@ -107,7 +107,7 @@
 </div>    
 
 <div class="container">
-    <h1 class="title1">Importar RNT</h1>
+  
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row">

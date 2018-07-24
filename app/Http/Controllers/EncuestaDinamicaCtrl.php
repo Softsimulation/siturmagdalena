@@ -27,6 +27,7 @@ use App\Models\EncuestaDinamica\Idiomas_sub_pregunta;
 use App\Models\EncuestaDinamica\Opciones_sub_preguntas_encuestado;
 use App\Models\EncuestaDinamica\Opciones_sub_preguntas_has_sub_pregunta;
 
+use Excel;
 
 class EncuestaDinamicaCtrl extends Controller
 {
@@ -68,7 +69,7 @@ class EncuestaDinamicaCtrl extends Controller
         $encuesta = Encuestas_dinamica::where("id", $id)->with([
                                                       "idiomas"=>function($q){ $q->where("idiomas_id",1); },
                                                       "encuestas"=>function($q){ $q->with("estado"); }
-                                                    ] )->first();
+                                                    ] )->orderBy("id")->first();
         
         if(!$encuesta){
             return [ "success"=>false ];
@@ -81,7 +82,7 @@ class EncuestaDinamicaCtrl extends Controller
    ///listado de encuestas dinamicas
     public function getListadoencuestasdinamicas(){
         return  [ 
-                    "encuestas"=> Encuestas_dinamica::where("estado",true)->with([ "estado", "idiomas"=>function($q){ $q->with("idioma"); }])->get(),
+                    "encuestas"=> Encuestas_dinamica::where("estado",true)->with([ "estado", "idiomas"=>function($q){ $q->with("idioma"); }])->orderBy("id")->get(),
                     "idiomas"=> Idioma::get(),
                     "estados"=> Estados_encuesta::where("id","!=",1)->get()
                 ];
@@ -292,13 +293,14 @@ class EncuestaDinamicaCtrl extends Controller
             foreach($request->opciones as $item){   
                 $opcion = new Opciones_pregunta();
                 $opcion->preguntas_id = $pregunta->id;
+                if( ($request->tipoCampo==3||$request->tipoCampo==7) && array_key_exists("otro", $item) ){ $opcion->es_otro = true; }
                 $opcion->estado = true;
                 $opcion->save();
                 
                 $opcion_idioma = new Idiomas_opciones_pregunta();
                 $opcion_idioma->idiomas_id =1;
                 $opcion_idioma->opciones_preguntas_id = $opcion->id;
-                $opcion_idioma->nombre = $item;
+                $opcion_idioma->nombre = $item["text"];
                 $opcion_idioma->save();
             }
             
@@ -316,7 +318,7 @@ class EncuestaDinamicaCtrl extends Controller
                 $opcion_idioma = new Idiomas_opciones_sub_pregunta();
                 $opcion_idioma->idiomas_id =1;
                 $opcion_idioma->opciones_sub_preguntas_id = $opcion->id;
-                $opcion_idioma->nombre = $item;
+                $opcion_idioma->nombre = $item["text"];
                 $opcion_idioma->save();
                 
                 array_push($idsOpcions, $opcion->id);
@@ -634,29 +636,31 @@ class EncuestaDinamicaCtrl extends Controller
     //////////// Encuesta dinamica para usuarios ///////////////////////7
     
     public function encuesta($codigo, Request $request){
-        
-        $encuesta = Encuestas_usuario::where([ ["codigo", $codigo ], ["estados_encuestas_usuarios_id","!=",3] , ["estado",true] ])->first();
+        //, ["estados_encuestas_usuarios_id","!=",3]
+        $encuesta = Encuestas_usuario::where([ ["codigo", $codigo ] , ["estado",true] ])->first();
         //return $encuesta;
         if($encuesta){
            
-            $secciones = Secciones_encuesta::where("encuestas_id", $encuesta->encuestas_id )->lists('id')->toArray();
-            $seccion =   null;
+            $secciones = Secciones_encuesta::where("encuestas_id", $encuesta->encuestas_id )->orderby("id")->lists('id')->toArray();
+            $seccion =   $secciones[0];
             $atras = null;
             $index = 0;
             
-            if($encuesta->ultima_seccion==0){ $seccion = $secciones[0]; }
-            else if(!$request->seccion && $encuesta->ultima_seccion!=0){
-                $index = array_search($encuesta->ultima_seccion,$secciones);
-                $seccion = $secciones[$index+1];
-                $atras = $index==0 ? $secciones[0] : $secciones[$index-1];
-            }
-            else if($request->seccion){
+            if($request->seccion){
                 $index = array_search($request->seccion,$secciones);
-                $seccion = $request->seccion;
-                $atras =  $index>0 ? $secciones[$index-1] : null;
+                if($index>0){
+                   $seccion = $request->seccion;
+                   $atras =   $secciones[$index-1];
+                }
             }
-            
-            
+            else if($encuesta->ultima_seccion!=0){
+                $index = array_search($encuesta->ultima_seccion,$secciones);
+                if($index>0){
+                   $seccion = $encuesta->ultima_seccion;
+                   $atras =   $secciones[$index-1];
+                }
+            }
+        
             $data = [ 
                   "codigo"=>$encuesta->codigo,
                   "idEncuesta"=>$encuesta->id,
@@ -675,12 +679,12 @@ class EncuestaDinamicaCtrl extends Controller
     }
     
     public function postGuardarencuestausuarios(Request $request){
-        /*
+        
         $validar = $this->vailidarGuardado($request);
         if(!$validar["success"]){
             return $validar;
         }
-        */
+        
         $encuesta = Encuestas_usuario::where([ ["id",$request->idEncuesta], ["estado",true] ])->first();
         
         foreach($request->preguntas as $pregunta){
@@ -722,11 +726,19 @@ class EncuestaDinamicaCtrl extends Controller
             else{
                 //$encuesta->opcionesRespuestas()->where("preguntas_id", $pregunta["id"])->detach();
                 
+                $idOtro = null;
+                
                 foreach(Opciones_pregunta::where("preguntas_id",$pregunta["id"])->get() as $item){
                     $item->opcionesRespuestas()->wherePivot('encuestado_id', $encuesta->id)->detach();
+                    $idOtro = $item->es_otro==true ? $item->id : -1;
                 }
                 
                 $encuesta->opcionesRespuestas()->attach( $pregunta["respuesta"] );
+                
+                if( ($pregunta["tipo_campos_id"]==3 || $pregunta["tipo_campos_id"]==7) && $idOtro!=-1 ){
+                    $opcionOtro = Opciones_preguntas_encuestado::where([ ['encuestado_id', $encuesta->id],['opciones_preguntas_id',$idOtro] ])->update(['otro'=> $pregunta["otro"]]);
+                }
+                
             }
             
         }
@@ -772,7 +784,7 @@ class EncuestaDinamicaCtrl extends Controller
                                                                                        "idiomas"=> function($qrrr) use ($idIdioma) { 
                                                                                                         $qrrr->where("idiomas_id",$idIdioma)->select("id","opciones_preguntas_id","nombre"); 
                                                                                                     }
-                                                                                    ])->select("id","preguntas_id");
+                                                                                    ])->select("id","preguntas_id","es_otro");
                                                                         },
                                                             "subPreguntas"=>function($qrr) use ($idIdioma) { 
                                                                             $qrr->with(["opciones", 
@@ -795,15 +807,20 @@ class EncuestaDinamicaCtrl extends Controller
                                            
         foreach($seccion->preguntas as $pregunta){
             
-            if( $pregunta->tipo_campos_id==1 || $pregunta->tipo_campos_id==2 || $pregunta->tipo_campos_id==4 ){
+            if( $pregunta->tipo_campos_id==1 || $pregunta->tipo_campos_id==2 || $pregunta->tipo_campos_id==4 || $pregunta->tipo_campos_id==12 ){
                 $pregunta["respuesta"] =  Respuesta_pregunta::where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado] ])->pluck("respuesta")->first();
                 
                 $pregunta["respuesta"] = ( $pregunta->tipo_campos_id==2 && $pregunta["respuesta"] ) ? intval($pregunta["respuesta"]) : $pregunta["respuesta"];
             }
-            else if($pregunta->tipo_campos_id==4 || $pregunta->tipo_campos_id==5){
+            else if($pregunta->tipo_campos_id==3 || $pregunta->tipo_campos_id==5){
                 $pregunta["respuesta"] =  Opciones_preguntas_encuestado::join("opciones_preguntas","opciones_preguntas_id", "=" ,"opciones_preguntas.id")
                                                                        ->where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado]  ])->pluck("id")->first();
             }
+            else if($pregunta->tipo_campos_id==6 || $pregunta->tipo_campos_id==7){
+                $pregunta["respuesta"] =  Opciones_preguntas_encuestado::join("opciones_preguntas","opciones_preguntas_id", "=", "opciones_preguntas.id")
+                                                                       ->where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado]  ])->lists('id')->toArray();
+            }
+            
             else if($pregunta->tipo_campos_id==8){
                 foreach($pregunta->subPreguntas as $subPregunta){
                     $subPregunta["respuesta"] = Opciones_sub_preguntas_encuestado::join("opciones_sub_preguntas_has_sub_preguntas","opciones_sub_preguntas_has_sub_preguntas_id", "=" ,"opciones_sub_preguntas_has_sub_preguntas.id")
@@ -836,18 +853,22 @@ class EncuestaDinamicaCtrl extends Controller
                     }
                 }
             }
-            else{
-                $pregunta["respuesta"] =  Opciones_preguntas_encuestado::join("opciones_preguntas","opciones_preguntas_id", "=", "opciones_preguntas.id")
-                                                                       ->where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado]  ])->lists('id')->toArray();
+            
+            
+            
+            if($pregunta->tipo_campos_id==3 || $pregunta->tipo_campos_id==7){
+                $pregunta["otro"] =  Opciones_preguntas_encuestado::join("opciones_preguntas","opciones_preguntas_id", "=" ,"opciones_preguntas.id")
+                                                                  ->where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado], ["es_otro",true] ])
+                                                                  ->pluck("otro")->first();
             }
+            
+            
         }                              
         
         
         
         $seccion["encuesta"] = Encuestas_dinamica::where("id", $encuesta->encuestas_id)
-                                       ->with([ "idiomas"=>function($q) use($idIdioma) { 
-                                                                $q->where("idiomas_id",$idIdioma); 
-                                       }] )->first();
+                                       ->with([ "idiomas"=>function($q) use($idIdioma) { $q->where("idiomas_id",$idIdioma); }])->first();
                                                
         return $seccion;
         
@@ -891,68 +912,16 @@ class EncuestaDinamicaCtrl extends Controller
         
         foreach($request->preguntas as $pregunta){
           
-            $preg = Pregunta::find($pregunta["id"]);
+            $validaciones = $this->getValidaciones( $pregunta["id"], $pregunta["idiomas"][0]["pregunta"] );
             
-            $validaciones = $preg->es_requerido ? ["respuesta"=>"required"] : ["respuesta"=>""];
-            $mensajes =     $preg->es_requerido ? ["respuesta.required"=> $pregunta["idiomas"][0]["pregunta"] . ", es requerida."] : [];
-            
-            
-            if( $preg->tipo_campos_id==1 ){
-                $validaciones["respuesta"] = $validaciones["respuesta"] . "|max:" . $preg->max_length;
-                $mensajes["respuesta.max"] = $pregunta["idiomas"][0]["pregunta"] . ", en número maximo de caracteres es " . $preg->max_length . ".";
-            }
-            else 
-            if( $preg->tipo_campos_id==2 ){
-                $validaciones["respuesta"] =  $validaciones["respuesta"] . "|min:" .$preg->valor_min. "|max:" . $preg->valor_max;
-                $mensajes["respuesta.min"] =  $pregunta["idiomas"][0]["pregunta"] . ", en número minimo es " . $preg->valor_min . ".";
-                $mensajes["respuesta.max"] =  $pregunta["idiomas"][0]["pregunta"] . ", en número maximo es " . $preg->valor_max . ".";
-            }
-            else 
-            if( $preg->tipo_campos_id==4 ){
-                $validaciones["respuesta"] = $validaciones["respuesta"] . "|date";
-                $mensajes["respuesta.date"] = $pregunta["idiomas"][0]["pregunta"] . ", formato de fecha invalida.";
-            }
-            else 
-            if( $preg->tipo_campos_id==3 || $preg->tipo_campos_id==5 ){
-                $validaciones["respuesta"] = $validaciones["respuesta"] . "|exists:opciones_preguntas,id";
-                $mensajes["respuesta.exists"] = $pregunta["idiomas"][0]["pregunta"] . ", es requerida.";
-            }
-            else
-            if( $preg->tipo_campos_id==8 ){
-                $validaciones = ["respuesta"=>""];
-                $validaciones["sub_preguntas.*.respuesta"] = ( $preg->es_requerido ? "required|" : "" ) . "exists:opciones_sub_preguntas_has_sub_preguntas,id";
-                $mensajes["sub_preguntas.*.respuesta.required"] = $pregunta["idiomas"][0]["pregunta"] . ", es requerida.";
-                $mensajes["sub_preguntas.*.respuesta.exists"] = $pregunta["idiomas"][0]["pregunta"] . ", la opción no existe en el sistema.";
-            }
-            else
-            if( $preg->tipo_campos_id==9 ){
-                $validaciones = ["respuesta"=>""];
-                $validaciones["sub_preguntas.*.respuesta.*"] = ( $preg->es_requerido ? "required|" : "" ) . "exists:opciones_sub_preguntas_has_sub_preguntas,id";
-                $mensajes["sub_preguntas.*.respuesta.*.required"] = $pregunta["idiomas"][0]["pregunta"] . ", es requerida.";
-                $mensajes["sub_preguntas.*.respuesta.*.exists"] = $pregunta["idiomas"][0]["pregunta"] . ", la opción no existe en el sistema.";
-            }
-            else{
-                
-                if($preg->es_requerido){
-                    $validaciones["respuesta"] =  $validaciones["respuesta"] . "|min:1";
-                    $mensajes["respuesta.date"] = $pregunta["idiomas"][0]["pregunta"] . ", es requerido.";
-                }
-                
-                $validaciones["respuesta"] = $validaciones["respuesta"] . "|array";
-                $mensajes["respuesta.array"] = $pregunta["idiomas"][0]["pregunta"] . ", formato de respuesta invalido.";
-                
-                $validaciones["respuesta.*"] = "|exists:opciones_preguntas,id";
-                $mensajes["respuesta.*.exists"] = $pregunta["idiomas"][0]["pregunta"] . ", la opción ingresada no existe.";
-            
-            }
-            
-            $validate = \ Validator::make( $pregunta , $validaciones, $mensajes);
+            $validate = \ Validator::make( $pregunta , $validaciones[0], $validaciones[1]);
             if ($validate->fails())
             {
                 $error = json_decode($validate->errors(),true);
                 $errores = array_merge($errores, $error);
                 $estadoValidacion = false;
             }
+            
         }
         
         if(!$estadoValidacion){
@@ -962,6 +931,89 @@ class EncuestaDinamicaCtrl extends Controller
     
         return [ "success"=>true ];
         
+    }
+    
+    
+    private function getValidaciones( $id, $pregunta ){
+        
+        $preg = Pregunta::find($id);
+        
+        $validaciones =  $preg->es_requerido ? [  
+                                                 ["respuesta"=>"required|"],
+                                                 ["respuesta.required"=> "$pregunta: es requerida."]  
+                                                ] 
+                                                : [ ["respuesta"=>""], []  ];
+        
+        switch ($preg->tipo_campos_id){
+            
+            case 1:   
+                    $validaciones[0]["respuesta"] .=  "max:" . $preg->max_length;
+                    $validaciones[1]["respuesta.max"] =  "$pregunta, en número maximo de caracteres es " . $preg->max_length . ".";
+                    break;
+                    
+            case 2:   
+                    $validaciones[0]["respuesta"] .=  "min:" .$preg->valor_min. "|max:" . $preg->valor_max;
+                    $validaciones[1]["respuesta.min"] =  "$pregunta, en número minimo es " . $preg->valor_min . ".";
+                    $validaciones[1]["respuesta.max"] =  "$pregunta, en número maximo es " . $preg->valor_max . ".";
+                    break;
+            
+            case 3:        
+            case 5:   
+                    $validaciones[0]["respuesta"] .=  "exists:opciones_preguntas,id";
+                    $validaciones[1]["respuesta.exists"] =  "$pregunta, la respuesta que intentas guardar no existe en el sistema.";
+                    break;
+            
+            case  4:  
+                    $validaciones[0]["respuesta"] .=  "date";
+                    $validaciones[1]["respuesta.date"] =  "$pregunta, formato de fecha invalida.";
+                    break;        
+            case 6:            
+            case 7: 
+                    $validaciones[0]["respuesta"] .=  "array|min:1";
+                    $validaciones[1]["respuesta.array"] = "$pregunta, formato de respuesta invalido.";
+                    $validaciones[1]["respuesta.min"] = "$pregunta, es requerido.";
+                    
+                    $validaciones[0]["respuesta.*"] = "exists:opciones_preguntas,id";
+                    $validaciones[1]["respuesta.*.exists"] = "$pregunta, la opción ingresada no existe.";
+                    break;    
+            
+            case 8:   
+                    $validaciones[0]["respuesta"] = "";
+                    $validaciones[0]["sub_preguntas.*.respuesta"] = ( $preg->es_requerido ? "required|" : "" ) . "exists:opciones_sub_preguntas_has_sub_preguntas,id";
+                    $validaciones[1]["sub_preguntas.*.respuesta.required"] = "$pregunta, es requerida.";
+                    $validaciones[1]["sub_preguntas.*.respuesta.exists"] = "$pregunta, la opción no existe en el sistema.";
+                    break;
+            case 9:  
+                    $validaciones[0]["respuesta"] = "";
+                    $validaciones[0]["sub_preguntas.*.respuesta.*"] = ( $preg->es_requerido ? "required|" : "" ) . "exists:opciones_sub_preguntas_has_sub_preguntas,id";
+                    $validaciones[1]["sub_preguntas.*.respuesta.*.required"] = "$pregunta, es requerida.";
+                    $validaciones[1]["sub_preguntas.*.respuesta.*.exists"] = "$pregunta, la opción no existe en el sistema.";
+                    break;
+             
+            case 10:
+                    $validaciones[0]["respuesta"] = "";
+                    $validaciones[0]["sub_preguntas.*.opciones.*.respuesta.*"] = ($preg->es_requerido ? "required|" : "") . "integer|min:" .$preg->valor_min. "|max:" . $preg->valor_max;
+                    $validaciones[0]["sub_preguntas.*.opciones.*.respuesta.*.required"] = "$pregunta, todos los campos son requeridos.";
+                    $validaciones[0]["sub_preguntas.*.opciones.*.respuesta.*.min"] =  "$pregunta, en número minimo es " . $preg->valor_min . ".";
+                    $validaciones[0]["sub_preguntas.*.opciones.*.respuesta.*.max"] =  "$pregunta, en número maximo es " . $preg->valor_max . ".";
+                break;
+            
+            case 11:
+                    $validaciones[0]["respuesta"] = "";
+                    $validaciones[0]["sub_preguntas.*.opciones.*.respuesta.*"] = $preg->es_requerido ? "required" : "";
+                    $validaciones[0]["sub_preguntas.*.opciones.*.respuesta.*.required"] = "$pregunta, todos los campos son requeridos.";
+                break;
+                
+                
+                    
+            case 12:   
+                    $validaciones[0]["respuesta"] .=  "email";
+                    $validaciones[1]["respuesta.date"] =  "$pregunta, formato de email invalido.";
+                    break;  
+            
+        }
+        
+        return $validaciones;
     }
     
     
@@ -1073,6 +1125,308 @@ class EncuestaDinamicaCtrl extends Controller
         $usuario->save();
         
         return [ "success"=>true , "encuesta"=>Encuestas_usuario::where("id",$usuario->id)->with("estado")->first() ];
+    }
+    
+    
+    /////// EXPORTAR DATOS DE LAS ENCUESTAS DINAMICA //////////////////////////
+    public function getExcel($id){
+        
+        
+        $dataEncuestas = $this->DataEncuestas($id);
+        
+        //return View( "EncuestaDinamica.formatoDescarga", $dataEncuestas);
+        
+        Excel::create('Data', function($excel) use($dataEncuestas) {
+    
+                    $excel->sheet('data', function($sheet) use($dataEncuestas) {
+                        $sheet->loadView('EncuestaDinamica.formatoDescarga', $dataEncuestas );
+                    });
+    
+            })->export('xls');
+        
+    }
+    
+    private function DataEncuestas($id){
+        
+        $preguntas = Pregunta::whereHas( 'seccion',function($q) use($id){ $q->where("encuestas_id",$id); })
+                             ->where("estado",true)
+                             ->with([ 
+                                      "subPreguntas"=> function($q){ $q->with([ "idiomas"=> function($qq){ $qq->where("idiomas_id",1); } ]); }, 
+                                      "idiomas"=> function($q){ $q->where("idiomas_id",1); }
+                                    ])->orderBy('secciones_encuestas_id')->orderBy('orden')->get();
+                            
+        $encuestasIDS = Encuestas_usuario::where("encuestas_id",$id)->lists('id')->toArray();
+        
+        $encuestas = [];
+        
+        foreach($encuestasIDS as $idEncuestado){
+            
+            $ronda = [];
+                                        
+            foreach($preguntas as $pregunta){
+                
+                if( $pregunta->tipo_campos_id==1 || $pregunta->tipo_campos_id==2 || $pregunta->tipo_campos_id==4 || $pregunta->tipo_campos_id==12 ){
+                    $res =  Respuesta_pregunta::where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado] ])->pluck("respuesta")->first();
+                    array_push($ronda,$res);
+                }
+                
+                else if($pregunta->tipo_campos_id==3 || $pregunta->tipo_campos_id==5 || $pregunta->tipo_campos_id==6 || $pregunta->tipo_campos_id==7){
+                    $res =  Opciones_preguntas_encuestado::join("opciones_preguntas","opciones_preguntas_encuestados.opciones_preguntas_id", "=" ,"opciones_preguntas.id")
+                                                         ->join("idiomas_opciones_preguntas","idiomas_opciones_preguntas.opciones_preguntas_id", "=" ,"opciones_preguntas.id")
+                                                         ->where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado], ["idiomas_id",1]  ])
+                                                         ->lists('nombre')->toArray();
+                                                         
+                    if($pregunta->tipo_campos_id==3 || $pregunta->tipo_campos_id==7){
+                        
+                        $otro =  Opciones_preguntas_encuestado::join("opciones_preguntas","opciones_preguntas_id", "=" ,"opciones_preguntas.id")
+                                                                  ->where([ ["preguntas_id",$pregunta->id], ["encuestado_id",$idEncuestado], ["es_otro",true] ])
+                                                                  ->pluck("otro")->first();
+                        if($otro){  array_push($res, "[otro=$otro]" );  }
+                    }
+                    array_push($ronda, implode(";", $res) );
+                }
+                
+                else if($pregunta->tipo_campos_id==8 || $pregunta->tipo_campos_id==9){
+                    foreach($pregunta->subPreguntas as $subPregunta){
+                        $res = Opciones_sub_preguntas_encuestado::join("opciones_sub_preguntas_has_sub_preguntas","opciones_sub_preguntas_has_sub_preguntas_id", "=" ,"opciones_sub_preguntas_has_sub_preguntas.id")
+                                                                ->join("idiomas_opciones_sub_preguntas","idiomas_opciones_sub_preguntas.opciones_sub_preguntas_id", "=" ,"opciones_sub_preguntas_has_sub_preguntas.opciones_sub_preguntas_id")
+                                                                ->where([ ["sub_preguntas_id",$subPregunta->id], ["encuestas_usuarios_id",$idEncuestado]  ])->lists('nombre')->toArray();
+                        array_push($ronda, implode(";", $res) );                                        
+                    }
+                }
+               
+                else if($pregunta->tipo_campos_id==10 || $pregunta->tipo_campos_id==11){
+                    foreach($pregunta->subPreguntas as $subPregunta){
+                        $res = Opciones_sub_preguntas_encuestado::join("opciones_sub_preguntas_has_sub_preguntas","opciones_sub_preguntas_has_sub_preguntas_id", "=" ,"opciones_sub_preguntas_has_sub_preguntas.id")
+                                                                ->where([ ["sub_preguntas_id",$subPregunta->id], ["encuestas_usuarios_id",$idEncuestado]  ])->lists('respuesta')->toArray();
+                        array_push($ronda, implode(";", $res) );  
+                    }
+                }
+                
+            }                              
+            
+            array_push($encuestas,$ronda);
+            
+        }
+        
+        return [ "preguntas"=>$preguntas, "encuestas"=>$encuestas ];
+        
+    }
+    
+    
+    //////////////// DUPLICAR ENCUESTA //////////////////////////
+    public function postDuplicarencuesta(Request $request){
+        
+        $encuesta = Encuestas_dinamica::find($request->id);
+        
+        $encuestaNueva = new Encuestas_dinamica();
+        $encuestaNueva->estados_encuestas_id = 1;
+        $encuestaNueva->estado = true;
+        $encuestaNueva->save();
+        
+        foreach($encuesta->idiomas()->get() as $item){
+            $idioma = new Encuestas_idioma();
+            $idioma->estado = $item->estado;
+            $idioma->nombre = $item->nombre;
+            $idioma->descripcion = $item->descripcion;
+            $idioma->encuestas_id = $encuestaNueva->id;
+            $idioma->idiomas_id = $item->idiomas_id;
+            $idioma->save();
+        }
+        
+        foreach($encuesta->secciones()->get() as $seccion){
+            
+            $seccionNueva = new Secciones_encuesta();
+            $seccionNueva->encuestas_id = $encuestaNueva->id;
+            $seccionNueva->save();
+            
+            foreach($seccion->preguntas()->get() as $pregunta){
+                
+                $this->DuplicarPregunta($pregunta,$seccionNueva->id);
+                /*
+                $preguntaNueva = new Pregunta();
+                $preguntaNueva->secciones_encuestas_id = $seccionNueva->id;
+                $preguntaNueva->tipo_campos_id = $pregunta->tipo_campos_id;
+                $preguntaNueva->es_requerido = $pregunta->es_requerido;
+                $preguntaNueva->max_length = $pregunta->max_length;
+                $preguntaNueva->valor_max = $pregunta->valor_max;
+                $preguntaNueva->valor_min = $pregunta->valor_min;
+                $preguntaNueva->orden = $pregunta->orden;
+                $preguntaNueva->es_visible = $pregunta->es_visible;
+                $preguntaNueva->estado = $pregunta->estado;
+                $preguntaNueva->save();
+                
+                foreach($pregunta->idiomas()->get() as $item){
+                    $idioma = new Idiomas_pregunta();
+                    $idioma->idiomas_id = $item->idiomas_id;
+                    $idioma->preguntas_id = $preguntaNueva->id;
+                    $idioma->pregunta = $item->pregunta;
+                    $idioma->save();
+                }
+        
+                foreach($pregunta->opciones()->get() as $opcion){   
+                    
+                    $opcionNueva = new Opciones_pregunta();
+                    $opcionNueva->preguntas_id = $preguntaNueva->id;
+                    $opcionNueva->es_otro = $opcion->es_otro;
+                    $opcionNueva->estado = $opcion->estado;
+                    $opcionNueva->save();
+                    
+                    foreach($opcion->idiomas()->get() as $item){
+                        $idioma = new Idiomas_opciones_pregunta();
+                        $idioma->idiomas_id = $item->idiomas_id;
+                        $idioma->opciones_preguntas_id = $opcionNueva->id;
+                        $idioma->nombre = $item->nombre;
+                        $idioma->save();
+                    }
+                }
+                
+                
+                $idsSubpreguntas = [];
+                foreach($pregunta->subPreguntas()->get() as $subPregunta){
+                    
+                    $subPreguntaNueva = new Sub_pregunta();
+                    $subPreguntaNueva->preguntas_id = $preguntaNueva->id;
+                    $subPreguntaNueva->estado = $subPregunta->estado;
+                    $subPreguntaNueva->save();
+                    array_push($idsSubpreguntas, $subPreguntaNueva->id);
+                    
+                    foreach($subPregunta->idiomas()->get() as $item){
+                        $opcion_idioma = new Idiomas_sub_pregunta();
+                        $opcion_idioma->idiomas_id = $item->idiomas_id;
+                        $opcion_idioma->sub_preguntas_id = $subPreguntaNueva->id;
+                        $opcion_idioma->nombre = $item->nombre;
+                        $opcion_idioma->save();
+                    }
+                }
+                
+                foreach($pregunta->OpcionesSubPreguntas()->get() as $opcion){ 
+                    
+                    $opcionNueva = new Opciones_sub_pregunta();
+                    $opcionNueva->preguntas_id = $preguntaNueva->id;
+                    $opcionNueva->estado = $opcion->estado;
+                    $opcionNueva->save();
+                    
+                    foreach($opcion->idiomas()->get() as $item){
+                        $idioma = new Idiomas_opciones_sub_pregunta();
+                        $idioma->idiomas_id = $item->idiomas_id;
+                        $idioma->opciones_sub_preguntas_id = $opcionNueva->id;
+                        $idioma->nombre = $item->nombre;
+                        $idioma->save();
+                    }
+                    
+                    foreach($idsSubpreguntas as $id){
+                       $Opcion_Pregunta = new Opciones_sub_preguntas_has_sub_pregunta();
+                       $Opcion_Pregunta->opciones_sub_preguntas_id = $opcionNueva->id;
+                       $Opcion_Pregunta->sub_preguntas_id = $id;
+                       $Opcion_Pregunta->save();
+                    }
+                    
+                }
+                */
+            }
+            
+        }
+            
+        return [
+                 "success"=>true, 
+                 "data"=> Encuestas_dinamica::where([ ["id",$encuestaNueva->id] ])->with([ "estado","idiomas"=>function($q){ $q->with("idioma"); }])->first() 
+                ];
+        
+    }
+    
+    public function postDuplicarpregunta(Request $request){
+        
+        
+        $this->DuplicarPregunta( Pregunta::find($request->idPregunta) , $request->idSeccion );
+        
+        return [ "success"=>true, "data"=> $this->getDataEncuesta($request->idEncuesta) ];
+    }
+    
+    
+    private function DuplicarPregunta($pregunta,$idSeccion){
+        
+        $preguntaNueva = new Pregunta();
+        $preguntaNueva->secciones_encuestas_id = $idSeccion;
+        $preguntaNueva->tipo_campos_id = $pregunta->tipo_campos_id;
+        $preguntaNueva->es_requerido = $pregunta->es_requerido;
+        $preguntaNueva->max_length = $pregunta->max_length;
+        $preguntaNueva->valor_max = $pregunta->valor_max;
+        $preguntaNueva->valor_min = $pregunta->valor_min;
+        $preguntaNueva->orden = $pregunta->orden;
+        $preguntaNueva->es_visible = $pregunta->es_visible;
+        $preguntaNueva->estado = $pregunta->estado;
+        $preguntaNueva->save();
+        
+        foreach($pregunta->idiomas()->get() as $item){
+            $idioma = new Idiomas_pregunta();
+            $idioma->idiomas_id = $item->idiomas_id;
+            $idioma->preguntas_id = $preguntaNueva->id;
+            $idioma->pregunta = $item->pregunta;
+            $idioma->save();
+        }
+
+        foreach($pregunta->opciones()->get() as $opcion){   
+            
+            $opcionNueva = new Opciones_pregunta();
+            $opcionNueva->preguntas_id = $preguntaNueva->id;
+            $opcionNueva->es_otro = $opcion->es_otro;
+            $opcionNueva->estado = $opcion->estado;
+            $opcionNueva->save();
+            
+            foreach($opcion->idiomas()->get() as $item){
+                $idioma = new Idiomas_opciones_pregunta();
+                $idioma->idiomas_id = $item->idiomas_id;
+                $idioma->opciones_preguntas_id = $opcionNueva->id;
+                $idioma->nombre = $item->nombre;
+                $idioma->save();
+            }
+        }
+        
+        
+        $idsSubpreguntas = [];
+        foreach($pregunta->subPreguntas()->get() as $subPregunta){
+            
+            $subPreguntaNueva = new Sub_pregunta();
+            $subPreguntaNueva->preguntas_id = $preguntaNueva->id;
+            $subPreguntaNueva->estado = $subPregunta->estado;
+            $subPreguntaNueva->save();
+            array_push($idsSubpreguntas, $subPreguntaNueva->id);
+            
+            foreach($subPregunta->idiomas()->get() as $item){
+                $opcion_idioma = new Idiomas_sub_pregunta();
+                $opcion_idioma->idiomas_id = $item->idiomas_id;
+                $opcion_idioma->sub_preguntas_id = $subPreguntaNueva->id;
+                $opcion_idioma->nombre = $item->nombre;
+                $opcion_idioma->save();
+            }
+        }
+        
+        foreach($pregunta->OpcionesSubPreguntas()->get() as $opcion){ 
+            
+            $opcionNueva = new Opciones_sub_pregunta();
+            $opcionNueva->preguntas_id = $preguntaNueva->id;
+            $opcionNueva->estado = $opcion->estado;
+            $opcionNueva->save();
+            
+            foreach($opcion->idiomas()->get() as $item){
+                $idioma = new Idiomas_opciones_sub_pregunta();
+                $idioma->idiomas_id = $item->idiomas_id;
+                $idioma->opciones_sub_preguntas_id = $opcionNueva->id;
+                $idioma->nombre = $item->nombre;
+                $idioma->save();
+            }
+            
+            foreach($idsSubpreguntas as $id){
+               $Opcion_Pregunta = new Opciones_sub_preguntas_has_sub_pregunta();
+               $Opcion_Pregunta->opciones_sub_preguntas_id = $opcionNueva->id;
+               $Opcion_Pregunta->sub_preguntas_id = $id;
+               $Opcion_Pregunta->save();
+            }
+            
+        }
+        
+        
     }
     
     

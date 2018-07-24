@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,6 +41,6 @@ class Serie_Mensual extends Model
      */
     public function tiempoIndicador()
     {
-        return $this->belongsTo('App\TiempoIndicador');
+        return $this->belongsTo('App\Models\Tiempo_Indicador');
     }
 }

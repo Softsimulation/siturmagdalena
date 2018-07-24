@@ -534,23 +534,23 @@
         
         </div>
         
-        <div class="panel panel-success" ng-show="abrirTerrestre">
-            <div class="panel-heading">
+        <!--<div class="panel panel-success" ng-show="abrirTerrestre">-->
+        <!--    <div class="panel-heading">-->
                 <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Atlántico?</b></h3>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="encuestaReceptor.Empresa" ng-required="abrirTerrestre" placeholder="Presione aquí para ingresar la empresa de transporte"/>
-                    </div>
-                </div>
-                <span  ng-show="GastoForm.$submitted || GastoForm.empresa.$touched">
-                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>
-                    <span class="label label-danger" ng-show="GastoForm.empresa.$error.required">* El campo es requerido.</span>
-                </span>
-            </div>
-        </div>
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="encuestaReceptor.Empresa" ng-required="abrirTerrestre" placeholder="Presione aquí para ingresar la empresa de transporte"/>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <span  ng-show="GastoForm.$submitted || GastoForm.empresa.$touched">-->
+        <!--            <span class="label label-danger" ng-show="GastoForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>-->
+        <!--            <span class="label label-danger" ng-show="GastoForm.empresa.$error.required">* El campo es requerido.</span>-->
+        <!--        </span>-->
+        <!--    </div>-->
+        <!--</div>-->
         
         <!--<div class="panel panel-success" ng-show="abrirAlquiler">-->
         <!--    <div class="panel-heading">-->

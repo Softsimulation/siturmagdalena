@@ -183,7 +183,11 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P2. ¿Que actividades realizó en el Magdalena?-->
+<<<<<<< HEAD
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que actividades realizó en el Magdalena?</b></h3>
+=======
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>B5. ¿Que actividades realizó en el Magdalena?</b></h3>
+>>>>>>> 216a52beeb218240d04ca5a8005d7aa0df7e6190
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -193,7 +197,11 @@
                             <label>
                                 <input type="checkbox" checklist-model="encuesta.ActividadesRelizadas" name= "actividadesr"  checklist-value="activ"  ng-click="cambioActividadesRealizadas(activ)" > {{activ.actividades_realizadas_con_idiomas[0].nombre}}
                             </label>
+<<<<<<< HEAD
+                            
+=======
                             <!--<span ng-if="activ.id == 19">:<input type="text" name="otroActividad" style="display: inline-block;" class="form-control" id="otroActividad" placeholder="Escriba su otra opción" ng-model="activ.otroActividad" ng-change="validarOtroActividad(activ)" ng-required="validarRequeridoOtroActividad()"/></span>-->
+>>>>>>> 216a52beeb218240d04ca5a8005d7aa0df7e6190
                         </div>
                         <span ng-show="EstanciaForm.$submitted || EstanciaForm.actividadesr.$touched || encuesta.ActividadesRelizadas.length > 0">
                             <!--EncuestaEstanciaP2Alert1. Debe seleccionar alguno de los valores-->
@@ -209,7 +217,8 @@
         
         <div class="panel panel-success" ng-repeat="opcion in encuesta.ActividadesRelizadas" ng-if="opcion.opciones.length > 0" >
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? ({{opcion.actividades_realizadas_con_idiomas[0].nombre}})</b></h3>
+                <!-- P3. ¿Que playas visitó en el Magdalena?-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Que playas visitó en el Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -219,7 +228,11 @@
                             <label>
                                 <input type="checkbox" name ="opcion_{{opcion.id}}" id="opcion_{{opcion.id}}" checklist-model="opcion.Respuestas" checklist-value="item" > {{item.opciones_actividades_realizadas_idiomas[0].nombre}}
                             </label>
+<<<<<<< HEAD
+                           
+=======
                             <!--<span ng-if="item.id==22 || item.id==26 || item.id==34">:<input type="text" name="opcionOtro_{{opcion.id}}" style="display: inline-block;" class="form-control" id="opcionOtro_{{opcion.id}}" placeholder="Escriba su otra opción" ng-model="opcion.otro" ng-change="validarOtro(item.id,opcion)" ng-required="(item.id==22 || item.id==26 || item.id==34) && validarContenido(item.id,opcion)"/></span>-->
+>>>>>>> 216a52beeb218240d04ca5a8005d7aa0df7e6190
                         </div>
                         <span ng-show="EstanciaForm.$submitted || EstanciaForm.opcion_{{opcion.id}}.$touched || opcion.Respuestas.length > 0">
                             <span class="label label-danger" ng-show="opcion.Respuestas.length == 0 || opcion.Respuestas == undefined">* Debe seleccionar alguna opción</span>

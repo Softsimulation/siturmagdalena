@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\Models\Grupo_Viaje;
 use App\Models\Digitador;
 use App\Models\Opcion_Lugar;
@@ -58,7 +54,6 @@ use App\Models\Rubro;
 use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
 use App\Models\Sostenibilidad_Visitante;
-
 class TurismoReceptorController extends Controller
 {
     public function getDatosencuestados(){
@@ -203,7 +198,6 @@ class TurismoReceptorController extends Controller
 		
 		switch ($visitante->motivo_viaje)
         {
-
             case 3:
                 $visitante->visitantesTransito()->save( new Visitante_Transito(['horas_transito' => $request->Horas]) );
                 break;
@@ -378,7 +372,6 @@ class TurismoReceptorController extends Controller
     	
     	switch ($visitante->motivo_viaje)
         {
-
             case 3:
                 $visitante->visitantesTransito()->save( new Visitante_Transito(['horas_transito' => $request->Horas]) );
                 break;
@@ -974,7 +967,6 @@ class TurismoReceptorController extends Controller
         }
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
          
-
         return ["divisas"=>$divisas ,"financiadores"=>$financiadores ,"municipios"=>$municipios,"opciones"=>$opciones,"servicios"=>$servicios,"rubros"=>$rubros,"tipos"=>$tipos,"encuesta"=>$encuesta];
         
     }

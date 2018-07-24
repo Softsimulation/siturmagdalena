@@ -42,10 +42,7 @@ use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
 use App\Models\Otro_Tour;
 
-//use App\Models\Agencia_Operadora;
-//use App\Models\Otra_Actividad;
-//use App\Models\Otro_Tour;
-//use App\Models\Prestamo_Servicio;
+use App\Models\Prestamo_Servicio;
 use App\Models\Alquiler_Vehiculo;
 use App\Models\Transporte;
 use App\Models\Oferta_Transporte;
@@ -75,10 +72,8 @@ class OfertaEmpleoController extends Controller
     }
     
     
-    
-    
-    public function getCrearEncuesta(){
-        return view('ofertaempleo.CrearEncuesta');
+    public function getCrearencuesta(){
+        return view('ofertaEmpleo.Crearencuesta');
     }
     
     public function getListadoproveedores(){

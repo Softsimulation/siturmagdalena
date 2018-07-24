@@ -97,13 +97,13 @@
           
           @foreach ($proveedores as $proveedor)
               <tr>
-                <td rowspan="2" style="width:10%;" > {{$proveedor['id']}} </td>
-                <td rowspan="2" style="width:10%;" > {{$proveedor['numero_rnt']}} </td>
-                <td rowspan="2" style="width:20%;" > {{$proveedor['estadop']["nombre"]}} </td> <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > {{$proveedor['razon_social']}} </td>                  <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > {{$proveedor['direccion']}} </td>                     <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > {{$proveedor['tipo']}} </td>                          <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > {{$proveedor['nombreCategoria']}} </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td rowspan="2" style="width:10%;" > {{$proveedor->id}} </td>
+                <td rowspan="2" style="width:10%;" > {{$proveedor->rnt}} </td>
+                <td rowspan="2" style="width:20%;" > {{$proveedor->estado}} </td>      <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->nombre}} </td>                  <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->direccion}} </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->categoria}} </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->subcategoria}} </td>              <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" rowspan="2" ></td>
                 <td style="width:15%;" >FECHA   HORA</td>
                 <td style="width:10%;" >ENTR</td>

@@ -1,83 +1,74 @@
-@extends('layout._AdminLayout')
 
-@section('title', 'Autenticación')
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Inicio de Sesión de SITUR MAGDALENA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Augment Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+ <!-- Bootstrap Core CSS -->
+<link href="{{asset('css/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
+<!-- Custom CSS -->
+<link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link href="{{asset('css/dashboard/font-awesome.css')}}" rel="stylesheet"> 
+<!-- jQuery -->
+<!-- lined-icons -->
+<link rel="stylesheet" href="{{asset('css/dashboardcss/icon-font.min.css')}}" type='text/css' />
+<!-- //lined-icons -->
 
-@section('estilos')
-    <style>
-        .row {
-            margin: 1em 0 0;
-        }
-        .blank-page {
-            padding: 1em;
-        }
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat;
-        }
-        .carga>.text{
-            position: absolute;
-            display:block;
-            text-align:center;
-            width: 100%;
-            top: 40%;
-            color: white;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
+<!--clock init-->
+</head> 
+<body>
+								<!--/login-->
+								
+									   <div class="error_page">
+												<!--/login-top-->
+												
+													<div class="error-top">
+													
+													    <div class="login">
+														<h3 class="inner-tittle t-inner">Inicio de Sesión</h3>
+														 @if(Session::has('message'))
+                                                            <span class="messages">
+                                                                <span class="color_errores">{{Session::get('message')}}</span>
+                                                            </span>
+                                                        @endif
+																<div class="buttons login">
+																			
+																		</div>
+																<form action="/login/autenticacion" method="POST">
+																		<input type="text" name="userName" class="text" placeholder="Email" >
+																		<input type="password" name="password" placeholder="Contraseña">
+																		<div class="submit"><input type="submit" value="Iniciar"/></div>
+																		<div class="clearfix"></div>
+																		
+																		<div class="new">																
+																			<div class="clearfix"></div>
+																		</div>
+																	</form>
+														</div>
 
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-    </style>
-@endsection
+														
+													</div>
+													
+													
+												<!--//login-top-->
+										   </div>
+						
+										  	<!--//login-->
+										    <!--footer section start-->
+										<div class="footer">
+												<div class="error-btn">
+															
+															</div>
+										   <p>Situr Magdalena 2018 | Design by <a href="#" target="_blank">SOFTSIMULATION S.A.S</a></p>
+										</div>
+									<!--footer section end-->
+									<!--/404-->
+<!--js -->
 
-@section('TitleSection', 'Autenticación')
-
-@section('content')
-
-<div role="tabpanel" class="tab-pane" id="dependencias">
-                        <div  style="padding:30px">
-                            <br>
-                            @if(Session::has('message'))
-                                <span class="messages">
-                                    <span class="color_errores">{{Session::get('message')}}</span>
-                                </span>
-                            @endif
-                            <br><br>
-                                
-                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" id="login">
-                                <form class="form-horizontal" name="formLogin"  action="/login/autenticacion" method="POST" >
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                  <div class="form-group row col-sm-12 col-xs-12" >
-                                      
-                                      <input type="text" name="userName" class="form-control" id="inputEmail3" placeholder="Nombre de usuario">
-                                      
-                                  </div>
-                
-                                 <div class="form-group col-sm-12 col-xs-12" >
-                                    
-                                      <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Contraseña">
-                                    
-                                  </div>
-                                  <div class="form-group col-sm-12 col-xs-12" style="text-align:center;">
-                                      
-                                      <button type="submit" class="btn btn-default" id="btn-login">Iniciar sesión</button>
-                                      
-                                  </div>
-                                  
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    @endsection
+</body>
+</html>
