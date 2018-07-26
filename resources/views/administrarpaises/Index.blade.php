@@ -253,6 +253,7 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
 <script src="{{asset('/js/administrador/paises/paisesController.js')}}"></script>
 <script src="{{asset('/js/administrador/paises/services.js')}}"></script>
 <script src="{{asset('/js/administrador/paises/app.js')}}"></script>

@@ -1,4 +1,4 @@
-var pp=angular.module('admin.temporadas', ['objectTable'])
+var pp=angular.module('admin.temporadas', ['angularUtils.directives.dirPagination'])
 
 .controller('temporadasCtrl', ['$scope', '$http',function ($scope, $http) {
 

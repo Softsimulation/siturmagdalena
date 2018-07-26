@@ -373,7 +373,6 @@
         </script>
        
         <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/material.min.js')}}"></script>
         <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>
         
         <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
@@ -388,32 +387,26 @@
         <script src="{{asset('/js/plugins/select.min.js')}}"></script>
         <script src="{{asset('/js/dir-pagination.js')}}"></script>
         <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
-        <script src="{{asset('/js/plugins/lf-ng-md-file-input.min.js')}}"></script>
+      
         
         <script src="{{asset('/js/administrador/administrador.js')}}"></script>
-        <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
+       
         <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
         <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
         
         <script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
         
-        <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
-        <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
+       
         
-        <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
-        <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
-        <script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
-        <script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+       
+        
+       
+        
     		
     	    
     	    
-    	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
-		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
+    	  
 
         </div>
     <script>
@@ -421,13 +414,8 @@
     </script>
    
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
-    <script src="{{asset('/js/dir-pagination.js')}}"></script>
-    
-    <script src="{{asset('/js/usuarios/usuarios.js')}}"></script>
-    <script src="{{asset('/js/services/usuarioServices.js')}}"></script>
-    
     <script src="{{asset('/js/administrador/administrador.js')}}"></script>
-    <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
+    
   
     <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
     <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>

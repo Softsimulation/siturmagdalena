@@ -146,3 +146,15 @@
         <!--<a target="_blank" href="http://www.facebook.com/sharer.php?u=http://situr-luifer.c9users.io/Noticias/2-20180504-00:22:52.jpg">Compartir FB</a>-->
     </div>
 @endsection
+@section('javascript')
+<script src="{{asset('/js/plugins/angular-material/angular-animate.min.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-material/angular-aria.min.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-material/angular-messages.min.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-material/angular-material.min.js')}}"></script>
+<script src="{{asset('/js/plugins/material.min.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
+<script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
+@endsection
