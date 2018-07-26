@@ -1,4 +1,4 @@
-var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination', 'admin.temporadas','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService']);
+var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService']);
 
 situr.controller('listadoEncuestasCtrl', ['$scope','grupoViajeServi', function ($scope,receptorServi) {
     $scope.prop = {

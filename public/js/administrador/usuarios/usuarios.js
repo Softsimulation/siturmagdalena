@@ -1,4 +1,4 @@
-var situr = angular.module("admin.usuario", ['ngSanitize','ADM-dateTimePicker','ui.select', 'angularUtils.directives.dirPagination', 'checklist-model', 'angular-repeat-n','usuarioService']);
+var situr = angular.module("admin.usuario", ['ngSanitize','ADM-dateTimePicker','ui.select', 'angularUtils.directives.dirPagination','usuarioService','checklist-model']);
 
 situr.controller('listadoUsuariosCtrl', ['$scope','usuarioServi', function ($scope,usuarioServi) {
     
