@@ -1,7 +1,7 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Nueva actividad')
+@section('title', 'Editar actividad')
 
 @section('estilos')
     <style>
@@ -91,7 +91,7 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Nueva actividad')
+@section('TitleSection', 'Editar actividad')
 
 @section('Progreso', '0%')
 
@@ -99,11 +99,12 @@
 
 @section('app', 'ng-app="actividadesApp"')
 
-@section('controller','ng-controller="actividadesCrearController"')
+@section('controller','ng-controller="actividadesEditarController"')
 
 @section('content')
 <div class="container">
-    <h1 class="title1">Insertar actividad</h1>
+    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
+    <h1 class="title1">Editar actividad</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
@@ -119,25 +120,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     Los campos marcados con <strong>*</strong> son obligatorios.
                 </div>
-                <form novalidate role="form" name="crearActividadForm">
-                    <div class="row">
-                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.nombre.$touched) && crearActividadForm.nombre.$error.required}">
-                            <label for="nombre">Nombre</label>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
-                                <input ng-model="actividad.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la actividad (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.descripcion.$touched) && crearActividadForm.descripcion.$error.required}">
-                            <label for="descripcion">Descripción</label>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
-                                <textarea style="resize: none;" ng-model="actividad.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la actividad (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
-                            </div>
-                        </div>
-                    </div>
+                <form novalidate role="form" name="editarActividadForm">
                     <div class="row">
                         <div class="form-group col-sm-6" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.valor_minimo.$touched) && crearActividadForm.valor_minimo.$error.required}">
                             <label for="valor_minimo">Valor mínimo ($)</label>
@@ -158,7 +141,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <button type="submit" ng-click="guardarDatosGenerales()" ng-class="{'disabled': (actividad.id != -1)}" class="btn btn-lg btn-success">Guardar</button>
+                            <button type="submit" ng-click="guardarDatosGenerales()" class="btn btn-lg btn-success">Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -177,24 +160,24 @@
                         <li>Para seleccionar varias imágenes debe mantener presionada la tecla ctrl o arrastre el ratón sobre las imágenes que desea seleccionar.</li>
                     </ul>
                 </div>
-                <form novalidate role="form" name="multimediaForm">
+                <form novalidate role="form" name="editarMultimediaForm">
                     <div class="row">
                         <h4><span class="text-error">*</span> Imagen de portada</h4>
                         <div class="col-sm-12">
-                            <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                            <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                         </div>
                     </div>
                     <div>
-                        <h4>Galería de imágenes</h4>
+                        <h4>Subir imágenes</h4>
                         <div class="col-sm-12">
-                            <file-input ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
+                            <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
                         </div>
                     </div>
                     <br>
                     <br>
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <button ng-click="guardarMultimedia()" type="submit" ng-class="{'disabled': (actividad.id == -1)}" class="btn btn-lg btn-success" >Guardar</button>
+                            <button ng-click="guardarMultimedia()" type="submit" class="btn btn-lg btn-success" >Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -251,7 +234,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <button type="submit"  class="btn btn-lg btn-success" ng-class="{'disabled': (actividad.id == -1)}" ng-click="guardarAdicional()">Guardar</button>
+                            <button type="submit"  class="btn btn-lg btn-success" ng-click="guardarAdicional()">Guardar</button>
                         </div>
                     </div>
                 </form>

@@ -153,7 +153,7 @@
                                 <input ng-model="atraccion.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
-                        <div class="form-group col-sm-3" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
+                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
                             <label for="sector">Sector</label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">*</span>
