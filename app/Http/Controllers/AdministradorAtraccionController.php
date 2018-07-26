@@ -55,7 +55,7 @@ class AdministradorAtraccionController extends Controller
         }
         $atraccion = Atracciones::with(['sitio' => function ($querySitio){
             $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
-                $querySitiosConIdiomas->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');
+                $querySitiosConIdiomas->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion')->orderBy('idiomas_id');
             }, 'tipoSitio' => function ($queryTipoSitio){
                 $queryTipoSitio->with(['tipoSitiosConIdiomas' => function ($queryTipoSitiosConIdiomas){
                     $queryTipoSitiosConIdiomas->select('idiomas_id', 'tipo_sitios_id', 'nombe', 'descripcion');
@@ -190,7 +190,8 @@ class AdministradorAtraccionController extends Controller
             'actividad' => 'max:1000',
             'recomendaciones' => 'max:1000',
             'reglas' => 'max:1000',
-            'como_llegar' => 'max:1000'
+            'como_llegar' => 'max:1000',
+            'pos' => 'required'
         ],[
             'nombre.required' => 'Se necesita un nombre para la atracción.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
@@ -223,7 +224,9 @@ class AdministradorAtraccionController extends Controller
             
             'reglas.max' => 'Se ha excedido el número máximo de caracteres para el campo "Reglas".',
             
-            'como_llegar.max' => 'Se ha excedido el número máximo de caracteres para el campo "Como llegar".'
+            'como_llegar.max' => 'Se ha excedido el número máximo de caracteres para el campo "Como llegar".',
+            
+            'po.requireds' => 'Agregue un marcador en el mapa de Google.'
         ]);
         
         if($validator->fails()){
@@ -306,6 +309,8 @@ class AdministradorAtraccionController extends Controller
         }
         
         $atraccion = Atracciones::find($request->id);
+        $atraccion->user_update = "Situr";
+        $atraccion->updated_at = Carbon::now();
         
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
         if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/'.$portadaNombre)){
@@ -409,7 +414,14 @@ class AdministradorAtraccionController extends Controller
             $sitio = Sitio::find($atraccion->sitios_id);
             $sitio->sitiosConActividades()->detach();
             $sitio->sitiosConActividades()->attach($request->actividades);
+            $sitio->user_update = "Situr";
+            $sitio->updated_at = Carbon::now();
+            $sitio->save();
         }
+        
+        $atraccion->user_update = "Situr";
+        $atraccion->updated_at = Carbon::now();
+        $atraccion->save();
         
         return ["success" => true];
     }
@@ -518,5 +530,55 @@ class AdministradorAtraccionController extends Controller
         }])->select('telefono', 'sitio_web', 'sitios_id', 'id')->where('id', $request->id)->first();
         
         return ['success' => true, 'atraccion' => $atraccion];
+    }
+    
+    public function postEditaratraccion (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:atracciones|numeric',
+            'valor_minimo' => 'required|numeric',
+            'valor_maximo' => 'required|numeric',
+            'sector_id' => 'required|numeric|exists:sectores,id',
+            'pos' => 'required'
+        ],[
+            'id.required' => 'Se necesita el identificador de la atracción.',
+            'id.exists' => 'La atracción que planea modificar no se encuentra registrada en la base de datos.',
+            'id.numeric' => 'El identificador de la atracción debe ser un valor numérico.',
+            
+            'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para la atracción.',
+            'valor_minimo.numeric' => '"Valor mínimo" debe tener un valor numérico.',
+            
+            'valor_maximo.required' => 'Se requiere ingresar un valor máximo para la atracción.',
+            'valor_maximo.numeric' => '"Valor máximo" debe tener un valor numérico.',
+            
+            'sector_id.required' => 'Se necesita saber el sector de la atracción.',
+            'sector_id.numeric' => '"Sector" debe tener un valor numérico.',
+            'sector_id.exists' => 'El sector que especificó no se encuentra registrado en el sistema.',
+            
+            'pos.required' => 'Por favor marque la ubicación de la atracción en el mapa de Google.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $atraccion = Atracciones::find($request->id);
+        $atraccion->valor_max = $request->valor_maximo;
+        $atraccion->valor_min = $request->valor_minimo;
+        $atraccion->telefono = $request->telefono;
+        $atraccion->sitio_web = $request->sitio_web;
+        $atraccion->user_update = "Situr";
+        $atraccion->updated_at = Carbon::now();
+        $atraccion->save();
+        
+        $sitio = Sitio::find($atraccion->sitios_id);
+        $sitio->latitud = $request->pos['lat'];
+        $sitio->longitud = $request->pos['lng'];
+        $sitio->sectores_id = $request->sector_id;
+        $sitio->direccion = $request->direccion;
+        $sitio->user_update = "Situr";
+        $sitio->updated_at = Carbon::now();
+        $sitio->save();
+        
+        return ['success' => true];
     }
 }

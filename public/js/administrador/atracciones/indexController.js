@@ -21,7 +21,7 @@ angular.module('atracciones.index', [])
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 atraccion.estado = !atraccion.estado;
-                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+                swal('¡Éxito!', 'Operación realizada con éxito.', 'success');
             }
         }).catch(function (error){
             $("body").attr("class", "cbp-spmenu-push");

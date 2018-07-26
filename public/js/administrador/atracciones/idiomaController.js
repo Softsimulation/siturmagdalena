@@ -46,7 +46,7 @@ angular.module('atracciones.idioma', [])
                     'reglas' : data.atraccion.atracciones_con_idiomas[0].reglas,
                     'como_llegar' : data.atraccion.atracciones_con_idiomas[0].como_llegar,
                 };
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                swal('¡Éxito!', 'Atracción modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }

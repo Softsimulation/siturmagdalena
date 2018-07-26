@@ -94,11 +94,23 @@ app.factory('atraccionesServi', ['$http', '$q', function ($http, $q){
                 defered.reject(err);
             });
             return promise;
-        },postEditaridioma: function (data){
+        },
+        postEditaridioma: function (data){
             var defered = $q.defer();
             var promise = defered.promise;
 
             $http.post('/administradoratracciones/editaridioma', data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
+        postEditaratraccion: function (data){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administradoratracciones/editaratraccion', data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

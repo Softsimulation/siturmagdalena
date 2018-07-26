@@ -64,6 +64,7 @@ angular.module('atracciones.crear', [])
                     latlng = results[0].geometry.location;
                     map.setCenter(latlng.lat(), latlng.lng());
                     map.removeMarkers();
+                    map.setZoom(16);
                     marker = map.addMarker({
                         lat: latlng.lat(),
                         lng: latlng.lng(),
