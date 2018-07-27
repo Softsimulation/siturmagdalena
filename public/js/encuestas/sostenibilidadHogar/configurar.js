@@ -3,7 +3,7 @@ angular.module('crear', [])
 .controller('crearController', ['$scope', 'sostenibilidadHogarServi',function ($scope,sostenibilidadHogarServi) {
     $scope.optionFecha = {
         calType: 'gregorian',
-        format: 'DD/MM/YYYY hh:mm',
+        format: 'YYYY-MM-DD hh:mm',
         zIndex: 1060,
         autoClose: true,
         default: '',
@@ -14,6 +14,21 @@ angular.module('crear', [])
             todayBtn: "Hoy"
         }
     };
+    
+    $scope.minfecha = '2018-01-01';
+    
+    $scope.fechaActual = "'" + formatDate(new Date()) + "'";
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
     
   
     $("body").attr("class", "cbp-spmenu-push charging");
@@ -70,7 +85,7 @@ angular.module('crear', [])
 .controller('editarController', ['$scope', 'sostenibilidadHogarServi',function ($scope,sostenibilidadHogarServi) {
     $scope.optionFecha = {
         calType: 'gregorian',
-        format: 'DD/MM/YYYY hh:mm',
+        format: 'YYYY/MM/DD hh:mm',
         zIndex: 1060,
         autoClose: true,
         default: '',
@@ -81,6 +96,20 @@ angular.module('crear', [])
             todayBtn: "Hoy"
         }
     };
+    
+    $scope.fechaActual = "'" + formatDate(new Date()) + "'";
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
+    
     
 
         
@@ -93,6 +122,7 @@ angular.module('crear', [])
                 $scope.barrios = data.barrios;
                 $scope.encuestadores = data.encuestadores;
                 $scope.social = data.casa;
+                $scope.social.fecha_aplicacion = $scope.social.fecha_aplicacion.substring(0,$scope.social.fecha_aplicacion.length-3);
                  $("body").attr("class", "cbp-spmenu-push");
             }).catch(function(){
                  $("body").attr("class", "cbp-spmenu-push");

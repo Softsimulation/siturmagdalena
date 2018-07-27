@@ -33,6 +33,67 @@ class AdministradorAtraccionController extends Controller
         return view('administradoratracciones.Crear');
     }
     
+    public function getIdioma($id, $idIdioma){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Atracciones::find($id) == null){
+            return response('Not found.', 404);
+        }
+        if ($idIdioma == null){
+            return response('Bad request.', 400);
+        }elseif(Idioma::find($idIdioma) == null){
+            return response('Not found.', 404);
+        }
+        return view('administradoratracciones.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
+    }
+    
+    public function getDatosatraccion($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Atracciones::find($id) == null){
+            return response('Not found.', 404);
+        }
+        $atraccion = Atracciones::with(['sitio' => function ($querySitio){
+            $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
+                $querySitiosConIdiomas->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion')->orderBy('idiomas_id');
+            }, 'tipoSitio' => function ($queryTipoSitio){
+                $queryTipoSitio->with(['tipoSitiosConIdiomas' => function ($queryTipoSitiosConIdiomas){
+                    $queryTipoSitiosConIdiomas->select('idiomas_id', 'tipo_sitios_id', 'nombe', 'descripcion');
+                }])->select('id');
+            }])->select('tipo_sitios_id', 'latitud', 'longitud', 'id', 'sectores_id', 'direccion');
+        }, 'atraccionesConIdiomas' => function($queryAtraccionesConIdiomas){
+            $queryAtraccionesConIdiomas->select('atracciones_id', 'idiomas_id', 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
+        }])->where('id', $id)->select('id' ,'sitios_id', 'telefono', 'sitio_web', 'valor_min', 'valor_max')->first();
+        
+        $perfiles_turista = Atracciones::find($id)->perfilesUsuariosConAtracciones()->pluck('perfiles_usuarios_id')->toArray();
+        $tipo_atracciones = Atracciones::find($id)->atraccionesConTipos()->pluck('tipo_atracciones_id')->toArray();
+        $categorias_turismo = Atracciones::find($id)->categoriaTurismoConAtracciones()->pluck('categoria_turismo_id')->toArray();
+        $actividades = Sitio::find($atraccion->sitios_id)->sitiosConActividades()->pluck('actividades_id')->toArray();
+        
+        $portadaIMG = Multimedia_Sitio::where('portada', true)->where('sitios_id', $atraccion->sitios_id)->pluck('ruta')->first();
+        $imagenes = Multimedia_Sitio::where('portada', false)->where('tipo', false)->where('sitios_id', $atraccion->sitios_id)->pluck('ruta')->toArray();
+        $video = Multimedia_Sitio::where('portada', false)->where('tipo', true)->where('sitios_id', $atraccion->sitios_id)->pluck('ruta')->first();
+        
+        return ['atraccion' => $atraccion,
+            'success' => true,
+            'perfiles_turista' => $perfiles_turista,
+            'tipo_atracciones' => $tipo_atracciones,
+            'categorias_turismo' => $categorias_turismo,
+            'actividades' => $actividades,
+            'portadaIMG' => $portadaIMG,
+            'imagenes' => $imagenes,
+            'video_promocional' => $video];
+    }
+    
+    public function getEditar($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Atracciones::find($id) == null){
+            return response('Not found.', 404);
+        }
+        return view('administradoratracciones.Editar', ['id' => $id]);
+    }
+    
     public function getDatoscrear(){
         $sectores = Sector::with(['destino' => function ($queryDestino){
             $queryDestino->with(['destinoConIdiomas' => function($queryDestinoConIdiomas){
@@ -86,34 +147,33 @@ class AdministradorAtraccionController extends Controller
     }
     
     public function getDatos (){
-        $idiomas = Idioma::select('id', 'nombre', 'culture')->where('estado', true)->get();
+        $atracciones = Atracciones::with(['sitio' => function ($querySitio){
+            $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
+                $querySitiosConIdiomas->with(['idioma' => function ($queryIdioma){
+                    $queryIdioma->select('id', 'nombre', 'culture');
+                }])->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion')->orderBy('idiomas_id');
+            }, 'multimediaSitios' => function($queryMultimediaSitios) {
+                $queryMultimediaSitios->where('portada', true)->select('sitios_id', 'ruta');
+            }])->select('id');
+        }])->select('sitios_id', 'id', 'estado')->orderBy('id')->get();
         
-        $atracciones = Atracciones::with(['sitio' => function ($q){
-            $q->with(['sitiosConIdiomas' => function($x){
-                $x->with(['idioma' => function($i){
-                    $i->select('id', 'nombre', 'culture');
-                }])->select('id', 'idioma_id', 'nombre', 'descripcion')->get();
-            }])->get();
-        }, 'atraccionesConIdiomas' => function($q){
-            $q->with(['idioma' => function($i){
-                    $i->select('id', 'nombre', 'culture');
-                }])->select('como_llegar', 'idioma_id')->get();
-        }, 'atraccionesConTipos' => function($q){
-            $q->with(['tipoAtraccione' => function($a){
-                $a->with(['tipoAtraccionesConIdiomas' => function($ta){
-                        $ta->with(['idioma' => function($i){
-                            $i->select('id', 'nombre', 'culture');
-                    }])->select('nombre', 'idioma_id')->get();
-                }])->select('tipo_atracciones_id', 'idioma_id', 'id', 'nombre')->get();
-            }])->get();
-        }])->select('id', 'sitios_id', 'estado', 'telefono', 'sitio_web', 'valor_min', 'valor_max')->get();
+        $idiomas = Idioma::select('id', 'nombre', 'culture')->get();
         
-        $tiposAtracciones = Tipo_Atraccion::with(['tipoAtraccionesConIdiomas' => function ($query){
-            $query->with(['idioma' => function ($idioma){
-                $idioma->select('id', 'nombre', 'culture');
-            }])->select('id', 'nombre', 'idiomas_id', 'tipo_atracciones_id');
-        }])->select('id')->get();
-        return ['atracciones' => $atracciones, 'idiomas' => $idiomas, 'tiposAtracciones' => $tiposAtracciones];
+        return ['atracciones' => $atracciones, 'success' => true, 'idiomas' => $idiomas];
+    }
+    
+    public function getDatosIdioma ($id, $idIdioma){
+        $atraccion = Atracciones::with(['sitio' => function ($querySitio) use ($idIdioma, $id){
+            $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas) use ($idIdioma, $id) {
+                $querySitiosConIdiomas->where('idiomas_id', $idIdioma)->select('sitios_id', 'nombre', 'descripcion');
+            }])->select('sectores_id', 'id', 'direccion');
+        }, 'atraccionesConIdiomas' => function ($queryAtraccionesConIdiomas) use ($idIdioma, $id) {
+            $queryAtraccionesConIdiomas->where('idiomas_id', $idIdioma)->select('atracciones_id', 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
+        }])->select('telefono', 'sitio_web', 'sitios_id', 'id')->where('id', $id)->first();
+        
+        $idioma = Idioma::find($idIdioma);
+        
+        return ['atraccion' => $atraccion, 'success' => Atraccion_Con_Idioma::where('atracciones_id', $id)->where('idiomas_id', $idIdioma)->first() != null, 'idioma' => $idioma];
     }
     
     public function postCrearatraccion(Request $request){
@@ -130,7 +190,8 @@ class AdministradorAtraccionController extends Controller
             'actividad' => 'max:1000',
             'recomendaciones' => 'max:1000',
             'reglas' => 'max:1000',
-            'como_llegar' => 'max:1000'
+            'como_llegar' => 'max:1000',
+            'pos' => 'required'
         ],[
             'nombre.required' => 'Se necesita un nombre para la atracción.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
@@ -163,7 +224,9 @@ class AdministradorAtraccionController extends Controller
             
             'reglas.max' => 'Se ha excedido el número máximo de caracteres para el campo "Reglas".',
             
-            'como_llegar.max' => 'Se ha excedido el número máximo de caracteres para el campo "Como llegar".'
+            'como_llegar.max' => 'Se ha excedido el número máximo de caracteres para el campo "Como llegar".',
+            
+            'po.requireds' => 'Agregue un marcador en el mapa de Google.'
         ]);
         
         if($validator->fails()){
@@ -246,16 +309,18 @@ class AdministradorAtraccionController extends Controller
         }
         
         $atraccion = Atracciones::find($request->id);
+        $atraccion->user_update = "Situr";
+        $atraccion->updated_at = Carbon::now();
         
-        $portadaNombre = "portada-".$request->id.".".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
-        if (Storage::disk('multimedia-atraccion')->exists($portadaNombre)){
+        $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
+        if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/'.$portadaNombre)){
             Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('portada', true)->delete();
-            Storage::disk('multimedia-atraccion')->delete($portadaNombre);
+            Storage::disk('multimedia-atraccion')->deleteDirectory('atraccion-'.$request->id);
         }
         
         $multimedia_sitio = new Multimedia_Sitio();
         $multimedia_sitio->sitios_id = $atraccion->sitios_id;
-        $multimedia_sitio->ruta = "/multimedia/atracciones/".$portadaNombre;
+        $multimedia_sitio->ruta = "/multimedia/atracciones/atraccion-".$request->id."/".$portadaNombre;
         $multimedia_sitio->tipo = false;
         $multimedia_sitio->portada = true;
         $multimedia_sitio->estado = true;
@@ -264,6 +329,8 @@ class AdministradorAtraccionController extends Controller
         $multimedia_sitio->created_at = Carbon::now();
         $multimedia_sitio->updated_at = Carbon::now();
         $multimedia_sitio->save();
+        
+        Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$portadaNombre, File::get($request->portadaIMG));
         
         if ($request->video_promocional != null){
             Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('tipo', true)->delete();
@@ -280,17 +347,18 @@ class AdministradorAtraccionController extends Controller
             $multimedia_sitio->save();
         }
         
-        Storage::disk('multimedia-atraccion')->put($portadaNombre, File::get($request->portadaIMG));
-        
-        $cont = "";
-        foreach($request->image as $key => $file){
-            $nombre = "atraccion".$atraccion->id."-imagen".$key.".".pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);;
-            if (Storage::disk('multimedia-atraccion')->exists($nombre)){
-                Storage::disk('multimedia-atraccion')->delete($nombre);
+        Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('tipo', false)->where('portada', false)->delete();
+        for ($i = 0; $i < 5; $i++){
+            $nombre = "imagen-".$i.".*";
+            if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/'.$nombre)){
+                Storage::disk('multimedia-atraccion')->delete('atraccion-'.$request->id.'/'.$nombre);
             }
+        }
+        foreach($request->image as $key => $file){
+            $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
             $multimedia_sitio = new Multimedia_Sitio();
             $multimedia_sitio->sitios_id = $atraccion->sitios_id;
-            $multimedia_sitio->ruta = "/multimedia/atracciones/".$nombre;
+            $multimedia_sitio->ruta = "/multimedia/atracciones/atraccion-".$request->id."/".$nombre;
             $multimedia_sitio->tipo = false;
             $multimedia_sitio->portada = false;
             $multimedia_sitio->estado = true;
@@ -300,7 +368,7 @@ class AdministradorAtraccionController extends Controller
             $multimedia_sitio->updated_at = Carbon::now();
             $multimedia_sitio->save();
             
-            Storage::disk('multimedia-atraccion')->put($nombre, File::get($file));
+            Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$nombre, File::get($file));
             $cont = $nombre;
         }
         
@@ -346,8 +414,171 @@ class AdministradorAtraccionController extends Controller
             $sitio = Sitio::find($atraccion->sitios_id);
             $sitio->sitiosConActividades()->detach();
             $sitio->sitiosConActividades()->attach($request->actividades);
+            $sitio->user_update = "Situr";
+            $sitio->updated_at = Carbon::now();
+            $sitio->save();
         }
         
+        $atraccion->user_update = "Situr";
+        $atraccion->updated_at = Carbon::now();
+        $atraccion->save();
+        
         return ["success" => true];
+    }
+    
+    public function postDesactivarActivar (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:atracciones'
+        ],[
+            'id.required' => 'Se necesita el identificador de la atracción.',
+            'id.numeric' => 'El identificador de la atracción debe ser un valor numérico.',
+            'id.exists' => 'La atracción no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $atraccion = Atracciones::find($request->id);
+        $atraccion->estado = !$atraccion->estado;
+        $atraccion->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postEditaridioma (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'id' => 'required|exists:atracciones|numeric',
+            'idIdioma' => 'required|exists:idiomas,id|numeric',
+            'descripcion' => 'required|max:1000|min:100',
+            'horario' => 'max:255',
+            'actividad' => 'max:1000',
+            'recomendaciones' => 'max:1000',
+            'reglas' => 'max:1000',
+            'como_llegar' => 'max:1000'
+        ],[
+            'nombre.required' => 'Se necesita un nombre para la atracción.',
+            'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
+            
+            'id.required' => 'Se necesita el identificador de la atracción.',
+            'id.exists' => 'La atracción no se encuentra registrada en la base de datos.',
+            'id.numeric' => 'El identificador de la atracción debe ser un valor numérico.',
+            
+            'idIdioma.required' => 'Se necesita el identificador del idioma.',
+            'idIdioma.numeric' => 'El identificador del idioma debe ser un valor numérico.',
+            'idIdioma.exists' => 'El idioma especificado no se encuentra registrado en la base de datos.',
+            
+            
+            'descripcion.required' => 'Se necesita una descripción para la atracción.',
+            'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
+            'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
+            
+            'horario.max' => 'Se ha excedido el número máximo de caracteres para el campo "Horario".',
+            
+            'actividad.max' => 'Se ha excedido el número máximo de caracteres para el campo "Periodo de actividad e inactividad".',
+            
+            'recomendaciones.max' => 'Se ha excedido el número máximo de caracteres para el campo "Recomendaciones".',
+            
+            'reglas.max' => 'Se ha excedido el número máximo de caracteres para el campo "Reglas".',
+            
+            'como_llegar.max' => 'Se ha excedido el número máximo de caracteres para el campo "Como llegar".'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $atraccion = Atracciones::find($request->id);
+        
+        if (Atraccion_Con_Idioma::where('atracciones_id', $request->id)->where('idiomas_id', $request->idIdioma)->first() != null){
+            Sitio_Con_Idioma::where('sitios_id', $atraccion->sitios_id)->where('idiomas_id', $request->idIdioma)
+                ->update([
+                'nombre' => $request->nombre,
+                'descripcion' => $request->descripcion]);
+            
+            Atraccion_Con_Idioma::where('atracciones_id', $request->id)->where('idiomas_id', $request->idIdioma)
+                ->update([
+                'como_llegar' => $request->como_llegar,
+                'horario' => $request->horario,
+                'periodo' => $request->actividad,
+                'recomendaciones' => $request->recomendaciones,
+                'reglas' => $request->reglas]);
+        }else{
+            Sitio_Con_Idioma::create([
+                'sitios_id' => $atraccion->sitios_id,
+                'idiomas_id' => $request->idIdioma,
+                'nombre' => $request->nombre,
+                'descripcion' => $request->descripcion]);
+            
+            Atraccion_Con_Idioma::create([
+                'atracciones_id' => $request->id,
+                'idiomas_id' => $request->idIdioma,
+                'como_llegar' => $request->como_llegar,
+                'horario' => $request->horario,
+                'periodo' => $request->actividad,
+                'recomendaciones' => $request->recomendaciones,
+                'reglas' => $request->reglas]);
+        }
+        
+        $atraccion = Atracciones::with(['sitio' => function ($querySitio) use ($request){
+            $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas) use ($request) {
+                $querySitiosConIdiomas->where('idiomas_id', $request->idIdioma)->select('sitios_id', 'nombre', 'descripcion');
+            }])->select('sectores_id', 'id', 'direccion');
+        }, 'atraccionesConIdiomas' => function ($queryAtraccionesConIdiomas) use ($request) {
+            $queryAtraccionesConIdiomas->where('idiomas_id', $request->idIdioma)->select('atracciones_id', 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
+        }])->select('telefono', 'sitio_web', 'sitios_id', 'id')->where('id', $request->id)->first();
+        
+        return ['success' => true, 'atraccion' => $atraccion];
+    }
+    
+    public function postEditaratraccion (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:atracciones|numeric',
+            'valor_minimo' => 'required|numeric',
+            'valor_maximo' => 'required|numeric',
+            'sector_id' => 'required|numeric|exists:sectores,id',
+            'pos' => 'required'
+        ],[
+            'id.required' => 'Se necesita el identificador de la atracción.',
+            'id.exists' => 'La atracción que planea modificar no se encuentra registrada en la base de datos.',
+            'id.numeric' => 'El identificador de la atracción debe ser un valor numérico.',
+            
+            'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para la atracción.',
+            'valor_minimo.numeric' => '"Valor mínimo" debe tener un valor numérico.',
+            
+            'valor_maximo.required' => 'Se requiere ingresar un valor máximo para la atracción.',
+            'valor_maximo.numeric' => '"Valor máximo" debe tener un valor numérico.',
+            
+            'sector_id.required' => 'Se necesita saber el sector de la atracción.',
+            'sector_id.numeric' => '"Sector" debe tener un valor numérico.',
+            'sector_id.exists' => 'El sector que especificó no se encuentra registrado en el sistema.',
+            
+            'pos.required' => 'Por favor marque la ubicación de la atracción en el mapa de Google.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $atraccion = Atracciones::find($request->id);
+        $atraccion->valor_max = $request->valor_maximo;
+        $atraccion->valor_min = $request->valor_minimo;
+        $atraccion->telefono = $request->telefono;
+        $atraccion->sitio_web = $request->sitio_web;
+        $atraccion->user_update = "Situr";
+        $atraccion->updated_at = Carbon::now();
+        $atraccion->save();
+        
+        $sitio = Sitio::find($atraccion->sitios_id);
+        $sitio->latitud = $request->pos['lat'];
+        $sitio->longitud = $request->pos['lng'];
+        $sitio->sectores_id = $request->sector_id;
+        $sitio->direccion = $request->direccion;
+        $sitio->user_update = "Situr";
+        $sitio->updated_at = Carbon::now();
+        $sitio->save();
+        
+        return ['success' => true];
     }
 }

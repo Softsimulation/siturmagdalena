@@ -735,6 +735,8 @@
 
 
 @section('javascript')
+    <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
+    <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {

@@ -42,10 +42,7 @@ use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
 use App\Models\Otro_Tour;
 
-//use App\Models\Agencia_Operadora;
-//use App\Models\Otra_Actividad;
-//use App\Models\Otro_Tour;
-//use App\Models\Prestamo_Servicio;
+use App\Models\Prestamo_Servicio;
 use App\Models\Alquiler_Vehiculo;
 use App\Models\Transporte;
 use App\Models\Oferta_Transporte;
@@ -70,12 +67,12 @@ class OfertaEmpleoController extends Controller
         
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
-                                    'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion']]);
+                                    'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
     }
     
     
-    public function getCrearEncuesta(){
-        return view('ofertaempleo.CrearEncuesta');
+    public function getCrearencuesta(){
+        return view('ofertaEmpleo.Crearencuesta');
     }
     
     public function getEncuesta($one){
@@ -891,8 +888,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-    		$encuesta = Empleo::find($request->Encuesta);
-    
+    		$encuesta = Encuesta::find($request->Encuesta);
+          
     		 if($request->capacitacion == 1 ){
     		     if($request->tematicas == null || count($request->tematicas) == 0){
     	                return ["success" => false, "errores" => [["Es requerido las tematicas."]] ];    
@@ -990,8 +987,9 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		}
 		
 		
-
-        return ["success" => true];
+        
+        
+        return ["success" => true, "idsitio"=> $encuesta->sitios_para_encuestas_id ];
     }
     
     public function postGuardarnumeroemp(Request $request){
@@ -2042,7 +2040,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }
        
     
-        $alojamiento = alojamiento::where("encuestas_id",$request->id)->first();
+        $alojamiento = alojamiento::where("encuestas_id",$request->encuesta)->first();
     
         /////////////////////////////////////////////////////////////////////////
         if($request->habitaciones){
@@ -2104,7 +2102,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         
         Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->id,
+           'encuesta_id' => $request->encuesta,
            'user_id' => 1,
            'estado_encuesta_id' => 2,
            'fecha_cambio' => Carbon::now()

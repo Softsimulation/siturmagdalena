@@ -16,13 +16,8 @@ Route::controller('/indicadores','IndicadoresCtrl');
 
 
 
-Route::get('/', function () {
-    
-    $date = new Carbon\Carbon('2018-04-02 00:00:00', 'Europe/London');  
-    return  $date->diffInDays('2018-03-28 00:00:00');
-    
-    
-});
+
+Route::controller('/EstadistivasSecunarias','EstadisticasSecundariasCtrl');
 
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
@@ -33,15 +28,19 @@ Route::controller('/grupoviaje','GrupoViajeController');
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 
+Route::get('/administradoratracciones/datos-idioma/{id}/{idIdioma}', 'AdministradorAtraccionController@getDatosIdioma');
+
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
+
+Route::controller('/administradoractividades', 'AdministradorActividadesController');
+
+Route::controller('/administradordestinos', 'AdministradorDestinosController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
 Route::controller('/importarRnt','ImportacionRntController');
-
-//Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');
@@ -68,3 +67,5 @@ Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
+Route::controller('/login','LoginController');
+Route::controller('/noticias','NoticiaController');

@@ -158,7 +158,7 @@
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-8 col-md-8">
                         <div class="form-group">
                             <!--P4P1. Nombre del Encuestado-->
                             <label for="inputNombreEncuestado" class="col-xs-12 control-label">Nombre del Encuestado</label>
@@ -173,6 +173,17 @@
                             </div>
                         </div>
 
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label for="ocupacion_persona_id" class="col-xs-12 control-label">Ocupación</label>
+                            <div class="col-xs-12">
+                                <select class="form-control" id="ocupacion_persona_id" ng-options="item.id as item.nombre for item in ocupaciones" ng-model="encuesta.ocupacion_persona_id" name="ocupacion_persona_id" required>
+                                    <option value="" disabled>Seleccione ocupación</option>
+                                </select>
+                                <span class="label label-danger" ng-show="(DatosForm.$submitted || DatosForm.ocupacion_persona_id.$touched)  && DatosForm.ocupacion_persona_id.$error.required">*El campo es requerido</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">

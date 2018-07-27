@@ -25,7 +25,7 @@ class GrupoViajeController extends Controller
 
 
             $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
-                $q->with('aspNetUser');
+                $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
             }])->where('digitador_id',1)->get();

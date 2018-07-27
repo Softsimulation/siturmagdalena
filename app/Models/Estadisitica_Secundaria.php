@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,16 +33,17 @@ class Estadisitica_Secundaria extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function serieMotivos()
+    public function rotulos()
     {
-        return $this->hasMany('App\SerieMotivo', 'estadisticas_secundarias_id');
+        return $this->hasMany('App\Models\Rotulos_estadistica', 'estadisticas_secundaria_id');
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function seriesMensuals()
+    public function series()
     {
-        return $this->hasMany('App\SeriesMensual', 'estadisticas_secundarias_id');
+        return $this->hasMany('App\Models\Series_estadistica', 'estadisticas_secundaria_id');
     }
+    
 }

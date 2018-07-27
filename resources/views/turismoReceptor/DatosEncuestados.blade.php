@@ -145,7 +145,7 @@
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-8 col-md-8">
                         <div class="form-group">
                             <!--P4P1. Nombre del Encuestado-->
                             <label for="inputNombreEncuestado" class="col-xs-12 control-label">Nombre del Encuestado</label>
@@ -159,7 +159,18 @@
                                 </span>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label for="ocupacion_persona_id" class="col-xs-12 control-label">Ocupación</label>
+                            <div class="col-xs-12">
+                                <select class="form-control" id="ocupacion_persona_id" ng-model="encuesta.ocupacion_persona_id" name="ocupacion_persona_id" required>
+                                    <option value="" disabled>Seleccione ocupación</option>
+                                    <option ng-repeat="item in ocupaciones" value="@{{item.id}}">@{{item.nombre}}</option>
+                                </select>
+                                <span class="label label-danger" ng-show="(DatosForm.$submitted || DatosForm.ocupacion_persona_id.$touched)  && DatosForm.ocupacion_persona_id.$error.required">*El campo es requerido</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -414,7 +425,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in motivos">
+                        <div class="radio" ng-repeat="item in motivos | orderBy: 'peso'">
                             <label>
                                 <input type="radio" ng-change="cambiomotivo()" name="motivo" ng-model="encuesta.Motivo" value="@{{item.id}}" ng-required="true">@{{item.motivos_viaje_con_idiomas[0].nombre}} <input type="text" class="form-control" name="otro" ng-model="encuesta.Otro" ng-change="otro()" ng-if="item.id == 18" />
                             </label>

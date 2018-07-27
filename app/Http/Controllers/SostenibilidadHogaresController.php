@@ -245,7 +245,7 @@ class SostenibilidadHogaresController extends Controller
 			'es_agradable' => 'boolean',
 			'calificacion' => 'required|integer',
 			'criterios_calificacion_id' => 'required|exists:criterios_calificaciones,id',
-			'ofrece_informacion' => 'required_if:criterios_calificacion_id,!=,4',
+			'ofrece_informacion' => 'required_if:criterios_calificacion_id,1,2,3',
 			'pertenece_gremio' => 'required|boolean',
 			'culturales' => 'required',
 			'culturales.*' => 'exists:acciones_culturales,id',
@@ -499,8 +499,8 @@ class SostenibilidadHogaresController extends Controller
 		
 		$componente->save();
 		
-		if($casa->numero_seccion == 1){
-			$casa->numero_seccion = 2;
+		if($casa->numero_sesion == 1){
+			$casa->numero_sesion = 2;
 			$casa->estado_encuesta_id = 2;
 			$casa->save();
 			
@@ -581,7 +581,7 @@ class SostenibilidadHogaresController extends Controller
 			'id' => 'required|exists:casas_sostenibilidad,id',
 			'areas_protegidas' => 'required|string|max:2000',
 			'criterios_calificacion_id' => 'required|exists:criterios_calificaciones,id',
-			'existe_guia' => 'required_if:criterios_calificacion_id,!=,4',
+			'existe_guia' => 'required_if:criterios_calificacion_id,1,2,3',
 			'actividades' => 'required',
 			'actividades.*' => 'exists:actividades_medio_ambientes,id',
 			'residuos' => 'required',
@@ -694,8 +694,8 @@ class SostenibilidadHogaresController extends Controller
 		$casa->save();
 		$componente->save();
 		
-		if($casa->numero_seccion == 2){
-			$casa->numero_seccion = 3;
+		if($casa->numero_sesion == 2){
+			$casa->numero_sesion = 3;
 			$casa->estado_encuesta_id = 2;
 			$casa->save();
 			
@@ -904,8 +904,8 @@ class SostenibilidadHogaresController extends Controller
 		$encuesta->autorizacion = $request->autorizacion;
 		$encuesta->save();
 		
-		if($encuesta->numero_seccion == 3){
-			$encuesta->numero_seccion = 4;
+		if($encuesta->numero_sesion == 3){
+			$encuesta->numero_sesion = 4;
 			$encuesta->estado_encuesta_id = 3;
 			$encuesta->save();
 			

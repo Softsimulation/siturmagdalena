@@ -153,7 +153,7 @@
                                 <input ng-model="atraccion.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
-                        <div class="form-group col-sm-3" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
+                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
                             <label for="sector">Sector</label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">*</span>
@@ -344,7 +344,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <button type="submit"  class="btn btn-lg btn-success" ng-click="guardarAdicional()">Guardar</button>
+                            <button type="submit"  class="btn btn-lg btn-success" ng-class="{'disabled': (atraccion.id == -1)}" ng-click="guardarAdicional()">Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -357,16 +357,11 @@
 @section('javascript')
 <script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/crearController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/editarController.js')}}"></script>
+<script src="{{asset('/js/administrador/atracciones/idiomaController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/services.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
-<script src="{{asset('/js/plugins/angular-file-upload.min.js')}}"></script>
-<script src="{{asset('/js/plugins/fileinput.min.js')}}"></script>
-<script src="{{asset('/js/plugins/piexif.min.js')}}"></script>
-<script src="{{asset('/js/plugins/sortable.min.js')}}"></script>
-<script src="{{asset('/js/plugins/purify.min.js')}}"></script>
-<script src="{{asset('/js/plugins/locales/es.js')}}"></script>
-<script src="{{asset('/js/plugins/theme.min.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
 @endsection

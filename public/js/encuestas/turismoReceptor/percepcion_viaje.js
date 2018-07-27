@@ -27,11 +27,11 @@ angular.module('receptor.percepcion_viaje', [])
                     $("body").attr("class", "cbp-spmenu-push");
                     
                     $scope.aspectos = $scope.convertirObjeto(data.percepcion);
-                    $scope.elementos = data.elementos;
+                    //$scope.elementos = data.elementos;
                     $scope.veces = data.veces;
                     $scope.actividades = data.actividades;
     
-                    if (data.respuestaElementos.length ==0 && data.valoracion == null) {
+                    if (data.valoracion == null) {
                         $scope.estadoEncuesta = 0;
                     } else {
                         $scope.calificacion.Alojamiento = data.alojamiento;
@@ -44,13 +44,13 @@ angular.module('receptor.percepcion_viaje', [])
                             document.getElementById("infraestructuraNo").checked = true;
                         }
                         $scope.calificacion.Restaurante = data.restaurante;
-                        $scope.calificacion.Elementos = data.respuestaElementos;
+                        //$scope.calificacion.Elementos = data.respuestaElementos;
                         $scope.calificacion.Recomendaciones = data.valoracion.Recomendacion;
                         $scope.calificacion.Calificacion = data.valoracion.Calificacion;
                         $scope.calificacion.Volveria = data.valoracion.Volveria;
                         $scope.calificacion.Recomienda = data.valoracion.Recomienda;
                         $scope.calificacion.VecesVisitadas = data.valoracion.Veces;
-                        $scope.calificacion.OtroElementos = data.otroElemento;
+                        //$scope.calificacion.OtroElementos = data.otroElemento;
                         $scope.calificacion.Flora = data.flora;
                         $scope.calificacion.Sostenibilidad = data.sost;
                         $scope.calificacion.Actividades = data.respuestaActividades;

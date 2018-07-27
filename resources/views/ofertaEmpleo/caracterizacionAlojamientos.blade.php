@@ -26,7 +26,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Selecciones las modalidades de alojamiento que ofrece su establecimiento</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgSeleccionOpcion</b></div>
+            <div class="panel-footer"><b>Seleccione una opción</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12 col-md-offset-1 col-md-2">
@@ -78,7 +78,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b> Habitaciones </b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 
                 <div class="row">
@@ -136,7 +136,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b> Apartamentos </b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12">
@@ -194,7 +194,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b> Casas </b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12" style="overflow-x: auto;">
@@ -265,7 +265,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b> Cabañas </b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12" style="overflow-x: auto;">
@@ -334,7 +334,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b> Camping </b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12">

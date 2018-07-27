@@ -221,7 +221,7 @@
          
          <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.6 De las siguientes situaciones en función del turismo sostenible, ¿Cuáles considera que representan  un riesgo  alto, medio  o bajo en  Magdalena</b></h3>
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.6 De las siguientes situaciones en función del turismo sostenible, ¿Cuáles considera que representan  un riesgo  alto, medio  o bajo en  Magdalena?</b></h3>
                 </div>
                 <div class="panel-footer"><b>Respuesta múltiple</b></div>
                 <div class="panel-body">
@@ -297,19 +297,19 @@
                         <div class="col-md-12">
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" ng-value="true" name="cambian_turistas" ng-model="social.cambian_turistas" required>
+                                    <input type="radio" ng-value="true" name="cambian_turistas" ng-model="social.cambian_turistas" >
                                     Si
                                 </label>
                             </div>
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" ng-value="false" name="cambian_turistas" ng-model="social.cambian_turistas" required>
+                                    <input type="radio" ng-value="false" name="cambian_turistas" ng-model="social.cambian_turistas" >
                                     No
                                 </label>
                             </div>
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" ng-value="null" name="cambian_turistas" ng-model="social.cambian_turistas" required>
+                                    <input type="radio" ng-value="null" name="cambian_turistas" ng-model="social.cambian_turistas" >
                                     No sabe /No responde
                                 </label>
                             </div>
@@ -340,14 +340,14 @@
                                             @{{item.nombre}} <input type="text" name="otroFactor1" ng-required="verificarOtroTabla(factores,11)" class="form-control" ng-if="item.id==11" ng-model="item.otroFactor1" >
                                              <span class="label label-danger" ng-if="item.id==11"  ng-show="socialForm.otroFactor1.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td ng-repeat="cal in calificacionFactor">
+                                        <td ng-repeat="cal in calificacionFactor" style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_1_@{{item.id}}" value="@{{cal.id}}" ng-model="item.calificacion">       
                                                 </label>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_1_@{{item.id}}" ng-value="null" ng-model="item.calificacion" >       
@@ -523,7 +523,7 @@
         
         <div class="panel panel-success" ng-show="social.viviendas_turisticas == true">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.10.1 ¿Cuántas de sus viviendas tienen uso turístico actualmente?</b></h3>
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.10.4 ¿Cuántas de las propiedades mencionadas anteriormente están inscritas en el Registro Nacional de Turismo (RNT)? </b></h3>
                 </div>
                 <div class="panel-footer"><b>Respuesta abierta</b></div>
                 <div class="panel-body">
@@ -563,21 +563,21 @@
                                             @{{item.nombre}} <input type="text" name="otroFactor3" ng-required="verificarOtroTabla(factoresPositivos,36)" class="form-control" ng-if="item.id==36" ng-model="item.otroFactor3" >
                                              <span class="label label-danger" ng-if="item.id==36"  ng-show="socialForm.otroFactor3.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_3_@{{item.id}}" ng-value="true" ng-model="item.calificacion" >       
                                                 </label>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_3_@{{item.id}}" ng-value="false" ng-model="item.calificacion" >       
                                                 </label>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_3_@{{item.id}}" ng-value="null"  ng-model="item.calificacion"  >       
@@ -647,7 +647,7 @@
                                             <span class="label label-danger" ng-show="socialForm.beneficioB@{{item.id}}.$error.required && socialForm.$submitted">* Requerido.</span>
                                             <span class="label label-danger" ng-if="item.id==6"  ng-show="socialForm.otroBB.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td ng-repeat="cal in calificacionFactor">
+                                        <td ng-repeat="cal in calificacionFactor" style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="beneficioB@{{item.id}}" ng-value="cal.id" ng-model="item.calificacion" ng-required="item.id != 6" >       
@@ -675,7 +675,7 @@
                                             <span class="label label-danger" ng-show="socialForm.beneficioA@{{item.id}}.$error.required && socialForm.$submitted">* Requerido.</span>
                                             <span class="label label-danger" ng-if="item.id==12"  ng-show="socialForm.beneficioAlto.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td ng-repeat="cal in calificacionFactor">
+                                        <td ng-repeat="cal in calificacionFactor" style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="beneficioA@{{item.id}}" ng-value="cal.id" ng-model="item.calificacion" ng-required="item.id != 12" >       

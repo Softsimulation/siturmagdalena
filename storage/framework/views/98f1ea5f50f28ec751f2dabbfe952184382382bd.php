@@ -54,7 +54,7 @@
                 <!-- P1. Grupo de Viaje-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Grupo de Viaje</b></h3>
             </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
+            <div class="panel-footer"><b>Presione aquí para desplegar los grupos de viaje</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -143,7 +143,7 @@
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-8 col-md-8">
                         <div class="form-group">
                             <!--P4P1. Nombre del Encuestado-->
                             <label for="inputNombreEncuestado" class="col-xs-12 control-label">Nombre del Encuestado</label>
@@ -157,7 +157,18 @@
                                 </span>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label for="ocupacion_persona_id" class="col-xs-12 control-label">Ocupación</label>
+                            <div class="col-xs-12">
+                                <select class="form-control" id="ocupacion_persona_id" ng-model="encuesta.ocupacion_persona_id" name="ocupacion_persona_id" required>
+                                    <option value="" disabled>Seleccione ocupación</option>
+                                    <option ng-repeat="item in ocupaciones" value="{{item.id}}">{{item.nombre}}</option>
+                                </select>
+                                <span class="label label-danger" ng-show="!DatosForm.$pristine && DatosForm.ocupacion_persona_id.$error.required">*El campo es requerido</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -358,7 +369,7 @@
         <div class="panel panel-success" ng-if="pais_residencia != 47">
             <div class="panel-heading p1">
                 <!-- P5. ¿Cual fue su destino principal en colombia?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cual fue su destino principal en colombia?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue su destino principal en Colombia?</b></h3>
             </div>
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
@@ -406,13 +417,13 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P6. ¿Cuál fué el motivo principal para venir al departamento del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fué el motivo principal para venir al departamento del Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue el motivo principal para venir al departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in motivos">
+                        <div class="radio" ng-repeat="item in motivos | orderBy: 'peso'">
                             <label>
                                 <input type="radio" ng-change="cambiomotivo()" name="motivo" ng-model="encuesta.Motivo" value="{{item.id}}" ng-required="true">{{item.motivos_viaje_con_idiomas[0].nombre}} <input type="text" class="form-control" name="otro" ng-model="encuesta.Otro" ng-change="otro()" ng-if="item.id == 18" />
                             </label>
@@ -450,7 +461,7 @@
         <div class="panel panel-success" ng-if="encuesta.Motivo == 3">
             <div class="panel-heading">
                 <!-- P6P2. ¿Cuantas hora duro/durara la parada mas larga en el Magdalena?-->
-                <h3 class="panel-title"><b>¿Cuantas hora duro/durara la parada mas larga en el Atlántico?</b></h3>
+                <h3 class="panel-title"><b>¿Cuantas hora duro/durara la parada mas larga en el Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
@@ -468,7 +479,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P7. ¿Quien va a diligenciar la encuesta?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quien va a diligenciar la encuesta?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quién va a diligenciar la encuesta?</b></h3>
             </div>
             <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
             <div class="panel-body">

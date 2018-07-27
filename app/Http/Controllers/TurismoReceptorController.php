@@ -59,6 +59,7 @@ use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
 use App\Models\Sostenibilidad_Visitante;
 use App\Models\Actividades_Sostenibilidad_Idiomas;
+use App\Models\Ocupacion_Persona;
 
 class TurismoReceptorController extends Controller
 {
@@ -106,6 +107,8 @@ class TurismoReceptorController extends Controller
         
         $departamentos = Departamento::where('pais_id',47)->select('id','nombre')->get();
         
+        $ocupaciones = Ocupacion_Persona::all();
+        
         $result = [ 
             'grupos' => $grupos, 
             'encuestadores' => $encuestadores, 
@@ -114,6 +117,7 @@ class TurismoReceptorController extends Controller
             'motivos' => $motivos,
             'medicos' => $medicos,
             'departamentos' => $departamentos,
+            'ocupaciones' => $ocupaciones
         ];
         
         return $result;
@@ -140,6 +144,7 @@ class TurismoReceptorController extends Controller
 			'Horas' => 'required_if:Motivo,3',
 			'Otro' => 'required_if:Motivo,18|max:150',
 			'Actor' => 'required',
+			'ocupacion_persona_id' => 'required|exists:ocupaciones_personas,id'
     	],[
        		'Grupo.required' => 'Debe seleccionar el grupo de viaje.',
        		'Grupo.exists' => 'El grupo de viaje seleccionado no se encuentra registrado en el sistema.',
@@ -212,6 +217,7 @@ class TurismoReceptorController extends Controller
 		$visitante->pais_nacimiento = $request->Nacimiento != 3 ? 47 : $request->Pais_Nacimiento;
 		$visitante->sexo = $request->Sexo;
 		$visitante->ultima_sesion = 1;
+		$visitante->ocupacion_persona_id = $request->ocupacion_persona_id;
 		$visitante->save();
 		
 		switch ($visitante->motivo_viaje)
@@ -280,6 +286,7 @@ class TurismoReceptorController extends Controller
             $visitante['Pais'] = $visitanteCargar->municipioResidencia->departamento->pais_id;
             $visitante['Motivo'] = $visitanteCargar->motivo_viaje;
             $visitante['Destino'] = $visitanteCargar->destino_principal;
+            $visitante['ocupacion_persona_id'] = $visitanteCargar->ocupacion_persona_id;
             $visitante['DepartamentoDestino'] = $visitanteCargar->municipioPrincipal!=null?$visitanteCargar->municipioPrincipal->departamento_id : null;
             $visitante['Salud'] = count($visitanteCargar->tiposAtencionSaluds) > 0 ? $visitanteCargar->tiposAtencionSaluds->take(1)->id : null;
             $visitante['Horas'] = $visitanteCargar->visitantesTransito != null ? $visitanteCargar->visitantesTransito->horas_transito : null ;
@@ -293,6 +300,8 @@ class TurismoReceptorController extends Controller
             }
         }
         
+        $ocupaciones = Ocupacion_Persona::all();
+        
         $result = [ 
             'datos' => $this->getInformaciondatoscrear(),
             'visitante' => $visitante,
@@ -300,6 +309,7 @@ class TurismoReceptorController extends Controller
             'departamentosr' => $departamentosr,
             'municipiosr' => $municipiosr,
             'municipiosd' => $municipiosd,
+            'ocupaciones' => $ocupaciones,
         ];
         
         return $result;
@@ -326,6 +336,7 @@ class TurismoReceptorController extends Controller
 			'Salud' => 'exists:tipos_atencion_salud,id|required_if:Motivo,5',
 			'Horas' => 'required_if:Motivo,3',
 			'Otro' => 'required_if:Motivo,18|max:150',
+			'ocupacion_persona_id' => 'required|exists:ocupaciones_personas,id'
     	],[
     	    'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
        		'Id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',
@@ -392,6 +403,7 @@ class TurismoReceptorController extends Controller
 		$visitante->opciones_lugares_id = $request->Nacimiento;
 		$visitante->pais_nacimiento = $request->Nacimiento != 3 ? 47 : $request->Pais_Nacimiento;
 		$visitante->sexo = $request->Sexo;
+		$visitante->ocupacion_persona_id = $request->ocupacion_persona_id;
 		
 		$visitante->visitantesTransito()->delete();
 		$visitante->tiposAtencionSaluds()->detach();
@@ -581,6 +593,10 @@ class TurismoReceptorController extends Controller
 		    
 		    if($estancia['Noches'] == 0 && $estancia['Alojamiento'] != 15 ){
 		        return ["success" => false, "errores" => [["Si el número de noches es igual a 0 debe seleccionar la opcion Ningún tipo de alojamiento."]] ];
+		    }
+		    
+		    if($estancia['Noches'] > 0 && $estancia['Alojamiento'] == 15){
+		        return ["success" => false, "errores" => [["Si el número de noches es mayor a 0 no puede seleccionar la opcion Ningún tipo de alojamiento."]] ];
 		    }
 		    
 		    if( collect($request->Estancias)->where('Municipio', $estancia['Municipio'] )->count() > 1 ){
@@ -1160,11 +1176,11 @@ class TurismoReceptorController extends Controller
             }]);
         }])->get();
         
-        $elementos = Elemento_Representativo::where('estado',1)->with(["elementosRepresentativosConIdiomas"=>function($q){
-            $q->whereHas('idioma',function($p){
-                $p->where('culture','es');
-            });
-        }])->get();
+        // $elementos = Elemento_Representativo::where('estado',1)->with(["elementosRepresentativosConIdiomas"=>function($q){
+        //     $q->whereHas('idioma',function($p){
+        //         $p->where('culture','es');
+        //     });
+        // }])->get();
         
         $veces = Volveria_Visitar::where('estado',1)->with(["volveriaVisitarConIdiomas"=>function($q){
             $q->whereHas('idioma',function($p){
@@ -1177,12 +1193,12 @@ class TurismoReceptorController extends Controller
         $alojamiento = collect($calificaciones)->where("Id",1)->first() != null ? 1 : 0;
         $restaurante = collect($calificaciones)->where("Id",8)->first() != null ? 1 : 0;
         
-        $respuestaElementos = $visitante->elementosRepresentativos()->pluck('id')->toArray();
+        // $respuestaElementos = $visitante->elementosRepresentativos()->pluck('id')->toArray();
         
-        $otroElemento = null;
-        if(in_array(11,$respuestaElementos)){
-            $otroElemento = $visitante->otrosElementosRepresentativo->nombre;
-        }
+        // $otroElemento = null;
+        // if(in_array(11,$respuestaElementos)){
+        //     $otroElemento = $visitante->otrosElementosRepresentativo->nombre;
+        // }
         
         
         $sostenibilidad = Sostenibilidad_Visitante::find($id);
@@ -1203,14 +1219,14 @@ class TurismoReceptorController extends Controller
         $retorno = [
             'success' => true,
             'percepcion' => $percepcion,
-            'elementos' => $elementos,
+            //'elementos' => $elementos,
             'veces' => $veces,
             'calificar' => $calificaciones,
             'alojamiento' => $alojamiento,
             'restaurante' => $restaurante,
-            'respuestaElementos' => $respuestaElementos,
+            //'respuestaElementos' => $respuestaElementos,
             'valoracion' => $valo,
-            'otroElemento' => $otroElemento,
+            //'otroElemento' => $otroElemento,
             'flora'=> isset($flora) ? $flora : null,
             'sost'=> isset($sost) ? $sost : null,
             'actividades' => $actividades,
@@ -1227,7 +1243,7 @@ class TurismoReceptorController extends Controller
 			'Id' => 'required|exists:visitantes,id',
 			'Alojamiento' => 'required',
 			'Restaurante' => 'required',
-			'Elementos' => 'required|exists:elementos_representativos,id',
+			//'Elementos' => 'required|exists:elementos_representativos,id',
 			'Recomendaciones'=> 'max:250',
 			'Calificacion' => 'required|between:1,10',
 			'Volveria' => 'required|exists:volveria_visitar,id',
@@ -1245,13 +1261,13 @@ class TurismoReceptorController extends Controller
 		}
 		
 		$aux = collect($request->Evaluacion)->pluck('Id')->toArray();
-		if($request->Alojamiento == 1){
-		    for($i=1;$i<=7;$i++){
-		        if(!in_array($i,$aux)){
-		            return ["success"=>false,"errores"=>[["Por favor califique todos los items del aspecto de alojamiento."]]];
-		        }
-		    }
-		}
+// 		if($request->Alojamiento == 1){
+// 		    for($i=1;$i<=7;$i++){
+// 		        if(!in_array($i,$aux)){
+// 		            return ["success"=>false,"errores"=>[["Por favor califique todos los items del aspecto de alojamiento."]]];
+// 		        }
+// 		    }
+// 		}
 		if($request->Restaurante == 1){
 		    for($i=8;$i<=12;$i++){
 		        if(!in_array($i,$aux)){
@@ -1259,9 +1275,9 @@ class TurismoReceptorController extends Controller
 		        }
 		    }
 		}
-		if( (!isset($request->OtroElementos)) && in_array(11,$request->Elementos) ){
-		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro."]]];
-		}
+// 		if( (!isset($request->OtroElementos)) && in_array(11,$request->Elementos) ){
+// 		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro."]]];
+// 		}
 		if( (!isset($request->OtroActividad)) && in_array(12,$request->Actividades) ){
 		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro en las actividades."]]];
 		}
@@ -1275,7 +1291,7 @@ class TurismoReceptorController extends Controller
 		    $visitante->ultima_sesion = 6;
 		}
 		
-		$visitante->elementosRepresentativos()->detach();
+		//$visitante->elementosRepresentativos()->detach();
         $visitante->calificacions()->delete();
         $visitante->valoracionGeneral()->delete();
         if($visitante->otrosElementosRepresentativo!=null){$visitante->otrosElementosRepresentativo()->delete();}
@@ -1287,10 +1303,10 @@ class TurismoReceptorController extends Controller
             ]));
 	    }
 		    
-	    $visitante->elementosRepresentativos()->attach($request->Elementos);
-	    if(in_array(11,$request->Elementos)){
-	        $visitante->otrosElementosRepresentativo()->save(new Otro_Elemento_Representativo(['nombre'=>$request->OtroElementos]));
-	    }
+	   // $visitante->elementosRepresentativos()->attach($request->Elementos);
+	   // if(in_array(11,$request->Elementos)){
+	   //     $visitante->otrosElementosRepresentativo()->save(new Otro_Elemento_Representativo(['nombre'=>$request->OtroElementos]));
+	   // }
 	    
 	    $visitante->valoracionGeneral()->save(new Valoracion_General([
             'volveria' => $request->Volveria,

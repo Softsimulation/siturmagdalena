@@ -67,7 +67,7 @@ class Atracciones extends Model
      */
     public function atraccionesConIdiomas()
     {
-        return $this->hasMany('App\AtraccionesConIdioma', 'atracciones_id');
+        return $this->hasMany('App\Models\Atraccion_Con_Idioma', 'atracciones_id');
     }
 
     /**
