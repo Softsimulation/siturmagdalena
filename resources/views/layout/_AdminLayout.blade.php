@@ -375,18 +375,18 @@
         <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
         <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>
         
-        <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
-        <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
-        <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/selectjp.js')}}"></script>
-        <script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/object-table.js')}}"></script>
+        <!--<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/angular-filter.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/selectjp.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/object-table.js')}}"></script>-->
         
-        <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/select.min.js')}}"></script>
-        <script src="{{asset('/js/dir-pagination.js')}}"></script>
-        <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+        <!--<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/select.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/dir-pagination.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>-->
       
         
         <script src="{{asset('/js/administrador/administrador.js')}}"></script>

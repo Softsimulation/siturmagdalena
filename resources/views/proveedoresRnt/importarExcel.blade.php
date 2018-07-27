@@ -735,6 +735,12 @@
 
 
 @section('javascript')
+
+    <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+    <script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
+    
+    
     <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
     <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
     <script>
