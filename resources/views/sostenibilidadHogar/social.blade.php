@@ -221,7 +221,7 @@
          
          <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.6 De las siguientes situaciones en función del turismo sostenible, ¿Cuáles considera que representan  un riesgo  alto, medio  o bajo en  Magdalena</b></h3>
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.6 De las siguientes situaciones en función del turismo sostenible, ¿Cuáles considera que representan  un riesgo  alto, medio  o bajo en  Magdalena?</b></h3>
                 </div>
                 <div class="panel-footer"><b>Respuesta múltiple</b></div>
                 <div class="panel-body">
@@ -523,7 +523,7 @@
         
         <div class="panel panel-success" ng-show="social.viviendas_turisticas == true">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.10.1 ¿Cuántas de sus viviendas tienen uso turístico actualmente?</b></h3>
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>P.10.4 ¿Cuántas de las propiedades mencionadas anteriormente están inscritas en el Registro Nacional de Turismo (RNT)? </b></h3>
                 </div>
                 <div class="panel-footer"><b>Respuesta abierta</b></div>
                 <div class="panel-body">
