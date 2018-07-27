@@ -112,4 +112,10 @@
 
 @endsection
 
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
+<script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
+@endsection
+
 

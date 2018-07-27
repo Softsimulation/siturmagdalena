@@ -10,6 +10,7 @@
     .controller("ConfigurarEncuestaCtrl", ["$scope","ServiEncuesta", function($scope,ServiEncuesta){
         
         $scope.tabOpen = { activo:0 } ;
+        $scope.opcion = {};
         
         $scope.$watch("id", function() {
             if($scope.id){
@@ -417,6 +418,60 @@
             });
         }
         
+        
+        $scope.agregarOpcion = function(){
+            
+            if( ($scope.pregunta.tipoCampo==3 || $scope.pregunta.tipoCampo==7) && $scope.opcion.otro ){
+                for(var i=0; i<$scope.pregunta.opciones.length; i++){
+                    if($scope.pregunta.opciones[i].otro){ sweetAlert("Oops...", "Ya existe una opción con otro, dentro de las opciones.", "error");  }
+                }
+            }
+            
+            $scope.pregunta.opciones( angular.copy($scope.opcion) );
+            $scope.opcion = {};
+        }
+        
+        
+        
+        $scope.duplicarPregunta = function(pregunta){
+            $scope.preguntDuplicar = angular.copy(pregunta);
+            $("#ModalDuplicarPregunta").modal("show");
+        }
+        
+        $scope.guardarDuplicadoPregunta = function () {
+
+            if (!$scope.preguntDuplicar.seccion) {
+                swal("Error", "Verifique los errores en el formulario", "error");
+                return;
+            }
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            var data = {
+                idEncuesta: $scope.encuesta.id,
+                idPregunta: $scope.preguntDuplicar.id,
+                idSeccion: $scope.preguntDuplicar.seccion
+            };
+            
+            ServiEncuesta.duplicarPregunta(data).then(function (data) {
+                       
+                        if (data.success) {
+                            $scope.encuesta = data.data;
+                            swal("¡Pregunta agregada!", "La pregunta se agregado exitosamente", "success");
+                            $("#modalAgregarPregunta").modal("hide");
+                        }
+                        else {
+                            $scope.errores = data.errores;
+                            sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                        }
+                        $("body").attr("class", "cbp-spmenu-push"); 
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        $("body").attr("class", "cbp-spmenu-push"); 
+                    });
+            
+        }
+        
     }])
      
     .controller("ListarEncuestasCtrl", ["$scope","ServiEncuesta", function($scope,ServiEncuesta){
@@ -622,7 +677,36 @@
                     });
             
         }
-                          
+        
+        
+        $scope.duplicarEncuesta = function (id) {
+            swal({
+                title: "Duplicar encuesta",
+                text: "¿Esta seguro de duplicar la encuesta?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                setTimeout(function () {
+                   
+                    ServiEncuesta.duplicarEncuesta( {id:id} ).then(function (data) {
+                        if (data.success) {
+                            $scope.encuestas.push(data.data);
+                            swal("¡Duplicada!", "LA encuesta se ha duplicado exitosamente", "success");
+                        }
+                        else {
+                            sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                        }
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                    });
+    
+                }, 500);
+            });
+        }
+        
+                        
         
     }])
     

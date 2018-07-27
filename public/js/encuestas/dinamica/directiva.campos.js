@@ -51,16 +51,17 @@
                         switch (pregunta.tipo_campos_id) {
 
                             case 1: 
-                                campo = '<input type="text" class="form-control" id="item{{pregunta.id}}" name="item{{pregunta.id}}" ng-model="pregunta.respuesta" maxlength="{{pregunta.max_length}}" ng-required="{{pregunta.es_requerido}}" />'; 
+                                campo = '<input type="text" class="form-control" id="item{{pregunta.id}}" name="item{{pregunta.id}}" ng-model="pregunta.respuesta" maxlength="{{pregunta.max_length}}" ng-required="{{pregunta.es_requerido}}" placeholder="Solo texto" />'; 
                                 break;
 
                             case 2:
-                                campo = '<input type="number" class="form-control" id="item{{pregunta.id}}" name="item{{pregunta.id}}" ng-model="pregunta.respuesta" min="{{pregunta.valor_min}}" max="{{pregunta.valor_max}}" ng-required="{{pregunta.es_requerido}}" />'; 
+                                campo = '<input type="number" class="form-control" id="item{{pregunta.id}}" name="item{{pregunta.id}}" ng-model="pregunta.respuesta" min="{{pregunta.valor_min}}" max="{{pregunta.valor_max}}" ng-required="{{pregunta.es_requerido}}" placeholder="Solo número" />'; 
                                 break;
 
                             case 3: 
                                    campo = '<div class="radio" ng-repeat="op in pregunta.opciones" >' +
-                                                '<label> <input type="radio" name="item{{op.id}}" ng-model="pregunta.respuesta" ng-value="op.id" ng-required="!pregunta.respuesta"> {{op.idiomas[0].nombre}} </label>' +
+                                                '<label> <input type="radio" name="itemOP{{op.id}}" ng-model="pregunta.respuesta" ng-value="op.id" ng-required="!pregunta.respuesta"> {{op.idiomas[0].nombre}} </label>' +
+                                                '<input type="text" class="form-control" ng-if="op.es_otro && pregunta.respuesta==op.id" name="itemOT{{op.id}}" ng-model="pregunta.otro" maxlength="250" ng-required="{{pregunta.es_requerido}}" placeholder="Solo texto" />'+
                                            '</div>';  
                                 break;
 
@@ -70,7 +71,7 @@
 
                             case 5:
                                    campo = '<ui-select name="item@{{pregunta.id}}" ng-model="pregunta.respuesta" ng-required="{{pregunta.es_requerido}}" >' +
-                                                '<ui-select-match >{{$select.selected.idiomas[0].nombre}}</ui-select-match>' +
+                                                '<ui-select-match placeholder="Seleccione una opción" >{{$select.selected.idiomas[0].nombre}}</ui-select-match>' +
                                                 '<ui-select-choices repeat="item.id as item in ( pregunta.opciones | filter:$select.search)">' +
                                                     '<small> {{item.idiomas[0].nombre}} </small>' +
                                                 '</ui-select-choices>' +
@@ -79,7 +80,7 @@
 
                             case 6:
                                     campo = '<ui-select name="item{{pregunta.id}}" multiple ng-model="pregunta.respuesta" ng-required="{{pregunta.es_requerido}}">' +
-                                                '<ui-select-match > {{$item.idiomas[0].nombre}} </ui-select-match>' +
+                                                '<ui-select-match placeholder="Seleccione sus opciones" > {{$item.idiomas[0].nombre}} </ui-select-match>' +
                                                 '<ui-select-choices repeat="item.id as item in pregunta.opciones | filter:$select.search">' +
                                                     '<small> {{item.idiomas[0].nombre}} </small>' +
                                                 '</ui-select-choices>' +
@@ -89,6 +90,7 @@
                             case 7:
                                 campo = '<div class="checkbox" ng-repeat="op in pregunta.opciones" >' +
                                             '<label><input type="checkbox" name="item{{pregunta.id}}@{{$index}}" checklist-model="pregunta.respuesta" checklist-value="op.id" > {{op.idiomas[0].nombre}} </label>' +
+                                            '<input type="text" class="form-control" ng-if="op.es_otro && pregunta.respuesta.indexOf(op.id)!=-1" name="itemOT{{op.id}}" ng-model="pregunta.otro" maxlength="250" ng-required="{{pregunta.es_requerido}}" placeholder="Solo texto" />'+
                                         '</div>';
                                 break;
                             
@@ -146,7 +148,7 @@
                                                 '<tr ng-repeat="item in pregunta.sub_preguntas">'+
                                                     '<td> {{item.idiomas[0].nombre}}</td>'+
                                                     '<td ng-repeat="it in item.opciones" >'+
-                                                        '<input type="number" class="form-control" id="item{{item.id}}" name="item{{item.id}}" ng-model="it.respuesta" min="{{pregunta.valor_min}}" max="{{pregunta.valor_max}}" ng-required="{{pregunta.es_requerido}}" />'+
+                                                        '<input type="number" class="form-control" id="item{{item.id}}" name="item{{item.id}}" ng-model="it.respuesta" min="{{pregunta.valor_min}}" max="{{pregunta.valor_max}}" ng-required="{{pregunta.es_requerido}}" placeholder="Número" />'+
                                                     '</td>'+
                                                 '</tr>'+ 
                                             '</tbody>'+
@@ -165,7 +167,7 @@
                                                 '<tr ng-repeat="item in pregunta.sub_preguntas">'+
                                                     '<td> {{item.idiomas[0].nombre}}</td>'+
                                                     '<td ng-repeat="it in item.opciones" >'+
-                                                        '<input type="text" class="form-control" id="item{{item.id}}" name="item{{item.id}}" ng-model="it.respuesta" maxlength="{{pregunta.max_length}}" ng-required="{{pregunta.es_requerido}}" />'+
+                                                        '<input type="text" class="form-control" id="item{{item.id}}" name="item{{item.id}}" ng-model="it.respuesta" maxlength="{{pregunta.max_length}}" ng-required="{{pregunta.es_requerido}}" placeholder="Texto" />'+
                                                     '</td>'+
                                                 '</tr>'+ 
                                             '</tbody>'+
@@ -173,7 +175,7 @@
                                 break;
                                 
                             case 12: 
-                                campo = '<input type="email" class="form-control" id="item{{pregunta.id}}" name="item{{pregunta.id}}" ng-model="pregunta.respuesta" maxlength="150" ng-required="{{pregunta.es_requerido}}" />'; 
+                                campo = '<input type="email" class="form-control" id="item{{pregunta.id}}" name="item{{pregunta.id}}" ng-model="pregunta.respuesta" maxlength="150" ng-required="{{pregunta.es_requerido}}" placeholder="example@example.com" />'; 
                                 break;
 
                             default: return null;

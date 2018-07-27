@@ -69,13 +69,13 @@
 
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  ¿El establecimiento tuvo actividad comercial?</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgSeleccionOpcion</b></div>
+            <div class="panel-footer"><b>Seleccione una opción</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
 
                         <select class="form-control" name="actividadComercial" ng-model="actividad.Comercial" ng-required="true">
-                            <option value="" disabled selected>@Resource.EncuestaMsgListaDesplegable</option>
+                            <option value="" disabled selected>Seleccione</option>
                             <option value="1">Si</option>
                             <option value="0">No</option>
                         </select>
@@ -92,7 +92,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúantos días en el mes?</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteInformacion</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -111,8 +111,8 @@
         </div>
 
         <div class="row" style="text-align:center">
-            <a class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="@Resource.EncuestaBtnSiguiente" />
+            <a class="btn btn-raised btn-default">Anterior</a>
+            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />
 

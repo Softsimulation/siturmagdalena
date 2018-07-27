@@ -154,8 +154,8 @@
             </div>
         </div>
         <div class="row" style="text-align:center">
-            <a href="/ofertaempleo/caracterizaciontransporte/{{$id}}" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="@Resource.EncuestaBtnSiguiente" />
+            <a href="/ofertaempleo/caracterizaciontransporte/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
+            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
 
     </form>

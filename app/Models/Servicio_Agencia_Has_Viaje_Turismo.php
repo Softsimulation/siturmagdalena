@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +18,8 @@ class Servicio_Agencia_Has_Viaje_Turismo extends Model
      * @var string
      */
     protected $table = 'servicios_agencias_has_viaje_turismo';
-
+    public $incrementing = false;
+    public $timestamps = false;
     /**
      * @var array
      */
@@ -29,7 +30,7 @@ class Servicio_Agencia_Has_Viaje_Turismo extends Model
      */
     public function serviciosAgencia()
     {
-        return $this->belongsTo('App\ServiciosAgencia', 'servicios_agencias_id');
+        return $this->belongsTo('App\Models\ServiciosAgencia', 'servicios_agencias_id');
     }
 
     /**
@@ -37,6 +38,6 @@ class Servicio_Agencia_Has_Viaje_Turismo extends Model
      */
     public function viajesTurismo()
     {
-        return $this->belongsTo('App\ViajesTurismo', 'viaje_turismo_id');
+        return $this->belongsTo('App\Models\ViajesTurismo', 'viaje_turismo_id');
     }
 }

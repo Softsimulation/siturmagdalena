@@ -68,6 +68,6 @@ class Perfil_Usuario extends Model
      */
     public function perfilesUsuariosConActividades()
     {
-        return $this->hasMany('App\Models\PerfilesUsuariosConActividade', 'perfiles_usuarios_id');
+       return $this->belongsToMany('App\Models\Perfil_Usuario_Con_Actividad', 'perfiles_usuarios_con_actividades', 'perfiles_usuarios_id', 'actividades_id');
     }
 }

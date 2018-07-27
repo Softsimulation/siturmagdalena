@@ -46,6 +46,9 @@
           guardarDataInfoZona: function(data){ return http.post("/MuestraMaestra/guardarinfozona", data );  },
           
           
+          agregarProveedorInformal: function(data){ return http.post("/MuestraMaestra/guardarproveedorinformal", data );  },
+          editarPosicionProveedor: function(data){ return http.post("/MuestraMaestra/editarubicacionproveedor", data);  },
+          
           
           validarProveedoresFueraZona: function(pro, zn){
                 var defered = $q.defer();

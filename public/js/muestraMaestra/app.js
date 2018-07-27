@@ -202,8 +202,9 @@
         
         $("body").attr("class", "cbp-spmenu-push charging");
         $scope.pantallaCompleta = false;
+        $scope.TipoProveedorInformal = {};
         $scope.selectTipoProveedores = { select:[] };
-        $scope.filtro = { tipo:[], categorias:[], estados:[], sectoresProv:[], municipios:[], verZonas:true, sectores:[], encargados:[] };
+        $scope.filtro = { tipo:[], categorias:[], estados:[], sectoresProv:[], municipios:[], verZonas:true, sectores:[], encargados:[], tipoProveedores:1 };
         $scope.dataPerido = { zonas:[] };
         $scope.zona = {};
         $scope.styloMapa = [{featureType:'poi.school',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.business',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.attraction',elementType:'labels',stylers:[{visibility:'off'}]} ];
@@ -217,15 +218,15 @@
                 for(var i=0; i< data.periodo.zonas.length; i++){
                     data.periodo.zonas[i].coordenadas = $scope.getCoordenadas(data.periodo.zonas[i].coordenadas);
                     
-                    if( $scope.sectoresZonas.indexOf( data.periodo.zonas[i].sector_id )==-1 && data.periodo.zonas[i].sector_id ){
+                    if( $scope.sectoresZonasIDS.indexOf( data.periodo.zonas[i].sector_id )==-1 && data.periodo.zonas[i].sector_id ){
                         $scope.sectoresZonasIDS.push( data.periodo.zonas[i].sector_id );
-                        $scope.sectoresZonas.push( $scope.getSector(data.sectores,data.periodo.zonas[i].sector_id) );
+                        $scope.sectoresZonas.push( $scope.buscarAbjetoInArray(data.sectores,data.periodo.zonas[i].sector_id) );
                     }
                 }
                 
                 $scope.dataPerido = data.periodo;
                 $scope.digitadores = data.digitadores; 
-                $scope.proveedores = data.proveedores;
+                $scope.proveedores = data.proveedores.concat(data.proveedoresInformales);
                 $scope.tiposProveedores = data.tiposProveedores;
                 $scope.sectores = data.sectores;
                 $scope.estados = data.estados;
@@ -245,12 +246,7 @@
            ServiMuestra.validarProveedoresFueraZona($scope.proveedores,$scope.dataPerido.zonas) .then(function(data){  $scope.proveedoresFuera = data; });
         }, 60000);
         
-        $scope.getSector = function(array, id){
-            for(var j=0; j<array.length; j++){
-                if( array[j].id==id ){ return array[j]; }
-            }
-            return null;
-         } 
+        
         
         $scope.exportarFileKML = function(){
             
@@ -271,6 +267,7 @@
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
+                    $("body").attr("class", "cbp-spmenu-push");
                 });
             
         }
@@ -290,39 +287,93 @@
 
               function (isConfirm) {
                   if (isConfirm) {
-                      $scope.$apply(function(){ $scope.es_crear_zona = true; });
+                        $scope.$apply(function(){ 
+                            $scope.es_crear_zona = true;
+                            $scope.figuraCrear = "polygon";
+                        });
                   }
               });
             
         }
         
-        $scope.cancelarAgregarZona = function(){
+        
+        $scope.openMensajeAddProveedorInformal = function(){
+            
+            swal({ 
+                    title: "Agregar proveedor informal", 
+                    text: "Por favor primero seleccione la unicación en el mapa.", 
+                    type: "info", 
+                    showCancelButton: true,
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+            },
+
+              function (isConfirm) {
+                  if (isConfirm) {
+                        $scope.$apply(function(){ 
+                            $scope.es_crear_proveedor = true;
+                            $scope.figuraCrear = "marker";
+                        });
+                  }
+              });
+            
+        }
+        
+        
+        $scope.cancelarAgregarZonaPRoveedor = function(){
             if($scope.figura){
                 $scope.figura.setMap(null);
             }
             $("#modalAddZona").modal("hide");
+            $("#modalAddProveedor").modal("hide");
             $scope.es_crear_zona = false;
+            $scope.es_crear_proveedor = false;
         }
 
         $scope.onMapOverlayCompleted = function(e){
             
-            $scope.dataPerido.coordenadas = [];
-                                                
             $scope.figura = e.overlay;
             
-            if($scope.figura.getPath().getArray().length>=3){
-                $scope.$apply(function () {
-                    $scope.openModalZona();
-                });
+            if(e.type=="polygon"){
                 
-                $scope.figura.getPath().getArray().forEach(function (position) {
-                    $scope.zona.coordenadas.push( { x: position.lat(), y: position.lng() } );
-                });
+                $scope.dataPerido.coordenadas = [];
+                
+                if($scope.figura.getPath().getArray().length>=3){
+                    $scope.$apply(function () {
+                        $scope.openModalZona();
+                    });
+                    
+                    $scope.figura.getPath().getArray().forEach(function (position) {
+                        $scope.zona.coordenadas.push( { x: position.lat(), y: position.lng() } );
+                    });
+                }
+                else{ $scope.figura.setMap(null); }
             }
-            else{ $scope.figura.setMap(null); }
+            
+            else if(e.type=="marker"){
+                $scope.openModalZonaProveedores();
+            }
             
         }
      
+        
+        $scope.openModalZonaProveedores = function (pro) {
+            
+            if(pro){
+                $scope.proveedorInformal = angular.copy(pro);
+                $scope.TipoProveedorInformal.select = $scope.buscarAbjetoInArray( $scope.tiposProveedores, pro.categoria.tipo_proveedores_id );
+            }
+            else{
+                $scope.proveedorInformal = { latitud: $scope.figura.position.lat(),  longitud: $scope.figura.position.lng() };
+            }
+           
+            $scope.formP.$setPristine();
+            $scope.formP.$setUntouched();
+            $scope.formP.$submitted = false;
+            $("#modalAddProveedor").modal({ backdrop: 'static', keyboard: true, show: true });
+        }
         
         
         $scope.openModalZona = function (zona) {
@@ -341,6 +392,52 @@
             $scope.form.$setUntouched();
             $scope.form.$submitted = false;
             $("#modalAddZona").modal({ backdrop: 'static', keyboard: true, show: true });
+        }
+        
+        
+        $scope.guardarProveedorInformal = function () {
+            
+            if (!$scope.formP.$valid) {
+                swal("Error", "Verifique los errores en el formulario", "error"); return;
+            }
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiMuestra.agregarProveedorInformal($scope.proveedorInformal)
+                    .then(function (data) {
+                       
+                        if (data.success) {
+                            if(!$scope.proveedorInformal.id){
+                               $scope.proveedores.push(data.proveedor);
+                            }
+                            else{
+                                for(var i=0; i<$scope.proveedores.length; i++){
+                                    if( $scope.proveedores[i].id==data.proveedor.id && !$scope.proveedores[i].numero_rnt ){
+                                        $scope.proveedores[i].razon_social = data.proveedor.razon_social;
+                                        $scope.proveedores[i].direccion = data.proveedor.direccion; 
+                                        $scope.proveedores[i].telefono = data.proveedor.telefono; 
+                                        $scope.proveedores[i].categoria_proveedor_id = data.proveedor.categoria_proveedor_id; 
+                                        $scope.proveedores[i].categoria = data.proveedor.categoria; 
+                                        $scope.proveedores[i].tipoCategoria = data.proveedor.tipoCategoria;
+                                        break;
+                                    }
+                                }
+                            }
+                            swal("¡Proveedor guardado!", "El proveedor se ha guardado exitosamnete", "success");
+                            $scope.cancelarAgregarZonaPRoveedor();
+                        }
+                        else {
+                                $scope.errores = data.errores;
+                                sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                        }
+                        $("body").attr("class", "cbp-spmenu-push");
+                         
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        $("body").attr("class", "cbp-spmenu-push"); 
+                    });
+            
+            
         }
         
         $scope.guardarZona = function (item) {
@@ -369,7 +466,7 @@
                             data.zona.coordenadas = $scope.getCoordenadas(data.zona.coordenadas);
                             $scope.dataPerido.zonas.push(data.zona);
                             swal("¡Zona guardada!", "La zona se ha guardado exitosamnete", "success");
-                            $scope.cancelarAgregarZona();
+                            $scope.cancelarAgregarZonaPRoveedor();
                         }
                         else {
                             if(data.Error){
@@ -463,7 +560,11 @@
         
         $scope.filterProveedores = function(pro){
             
-            var sw1 = 0; var sw2 = 0; var sw3 = 0;
+            var sw0 = 0; var sw1 = 0; var sw2 = 0; var sw3 = 0; var sw4 = 0;
+            
+            if( $scope.filtro.tipoProveedores!=1){
+                sw0 = (($scope.filtro.tipoProveedores==2 && pro.numero_rnt) || ($scope.filtro.tipoProveedores==3 && !pro.numero_rnt)) ? 1 : -1;
+            }
             
             if($scope.filtro.tipo.length>0){
                 sw1 = $scope.filtro.tipo.indexOf(pro.categoria.tipo_proveedores_id);
@@ -481,53 +582,46 @@
                 sw3 = $scope.filtro.municipios.indexOf(pro.municipio_id);
             }
             
-            
-            return (sw1>=0?true:false) && (sw2>=0?true:false) && (sw3>=0?true:false);
-            
-        }
-        
-        $scope.filterProveedoresSectorMunicipio = function(pro){
-            
             if( $scope.filtro.sectoresProv.length > 0){ 
                 
                 var point = new google.maps.LatLng( pro.latitud , pro.longitud );
-                
+                sw4 = -1;
                 for (var i = 0; i < $scope.dataPerido.zonas.length; i++) { 
                     if( $scope.filtro.sectoresProv.indexOf( $scope.dataPerido.zonas[i].sector_id )!=-1 ){
-                
                         if( google.maps.geometry.poly.containsLocation( point , $scope.map.shapes[i] ) ){
-                            return true;
+                            sw4 = 1; break;
                         }
                         
                     }
                 }
-                return false;
             }
             
-            return true;
+            
+            return (sw0>=0?true:false) && (sw1>=0?true:false) && (sw2>=0?true:false) && (sw3>=0?true:false) && (sw4>=0?true:false);
+            
         }
         
-        $scope.filterZonas = function(item){
+        $scope.filterZonas = function(item, index){
             
             var sw1 = 0;
+            var sw2 = 0;
             
             if($scope.filtro.encargados.length>0){
+                sw1 = -1;
                 for(var i=0; i<item.encargados.length; i++){
                     if($scope.filtro.encargados.indexOf(item.encargados[i].id)!=-1){ sw1 = 1; break; }
                 }
-                sw1 = sw1==1 ? 1 : 2;
             }
             
             if($scope.filtro.sectores.length>0){
-                return sw1==1 ? true && $scope.filtro.sectores.indexOf(item.sector_id)!=-1 : $scope.filtro.sectores.indexOf(item.sector_id)!=-1; 
+                sw2 = $scope.filtro.sectores.indexOf(item.sector_id); 
             }
             
-            
-            return true;
+            return (sw1>=0?true:false) && (sw2>=0?true:false);
         }
         
         $scope.limpiarFiltros = function(){
-            $scope.filtro = { tipo:[], categorias:[], estados:[], sectoresProv:[], verZonas:true, sectores:[], encargados:[] };
+            $scope.filtro = { tipo:[], categorias:[], estados:[], municipios:[], sectoresProv:[], verZonas:true, sectores:[], encargados:[], tipoProveedores:1 };
         }
         
         $scope.getIcono = function( estado ){
@@ -557,8 +651,18 @@
             }
         }
         
-        $scope.showInfoMapa = function(event, proveedor){
+        $scope.showInfoMapa = function(event, proveedor, index){
+            
+            if($scope.proveedor){
+                if($scope.coordenadasProveedorIniciales){
+                    $scope.proveedor.latitud  = $scope.coordenadasProveedorIniciales.latitud,
+                    $scope.proveedor.longitud = $scope.coordenadasProveedorIniciales.longitud,
+                    $scope.proveedor.editar = false;
+                }
+            }
+            
             $scope.proveedor = proveedor;
+            $scope.indexEditarProveedor = index;
             document.getElementById("mySidenav").style.width = "30%";
             $scope.detalleZona = null;
         }  
@@ -607,6 +711,46 @@
             document.getElementById("mySidenav").style.width = "0";
         }
         
+        $scope.editarPosicionProveedor = function(){
+            $scope.proveedor.editar = true;
+            $scope.coordenadasProveedorIniciales = { latitud:$scope.proveedor.latitud, longitud:$scope.proveedor.longitud };
+        }
+        $scope.ChangedPositionsProveedor = function() {
+            $scope.proveedor.latitud  = this.position.lat();
+            $scope.proveedor.longitud = this.position.lng();
+            $scope.$apply();
+        }
+        $scope.cancelarEditarPosicionProveedor = function(){
+            $scope.proveedor.latitud  = $scope.coordenadasProveedorIniciales.latitud,
+            $scope.proveedor.longitud = $scope.coordenadasProveedorIniciales.longitud,
+            $scope.proveedor.editar = false;
+            $scope.filtro.verZonas = false;
+            $timeout(function(){ $scope.filtro.verZonas = true; }, 200);
+        }
+        $scope.guardarEditarPosicionProveedor = function(){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiMuestra.editarPosicionProveedor($scope.proveedor)
+                    .then(function (data) {
+                       
+                        if (data.success) {
+                            swal("¡Proveedor guardado!", "El proveedor se ha guardado exitosamnete", "success");
+                            $scope.proveedor.editar = false;
+                        }
+                        else {
+                            $scope.errores = data.errores;
+                            sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                        }
+                        $("body").attr("class", "cbp-spmenu-push");
+                        
+                    }).catch(function () {
+                        $("#modalAddZona").modal("hide");
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        $("body").attr("class", "cbp-spmenu-push"); 
+                    });
+            
+        }
         
         $scope.editarPosicionZona = function(zona,index){
             $scope.indexEditar = index;
@@ -740,7 +884,13 @@
             
             var s = 0;
             for (var i = 0; i < $scope.proveedores.length; i++) {
-                if( $scope.proveedores[i].categoria.tipo_proveedores_id==id ){  s+=1;  }
+                if(  $scope.proveedores[i].categoria.tipo_proveedores_id==id && 
+                        ( 
+                            ( $scope.filtro.tipoProveedores==1 ) || 
+                            ( $scope.filtro.tipoProveedores==2 &&  $scope.proveedores[i].numero_rnt ) ||
+                            ( $scope.filtro.tipoProveedores==3 && !$scope.proveedores[i].numero_rnt )
+                        ) 
+                ){  s+=1;  }
             }
             return s;
         }
@@ -776,6 +926,14 @@
             });
             
         });
+        
+        
+        $scope.buscarAbjetoInArray = function(array, id){
+            for(var j=0; j<array.length; j++){
+                if( array[j].id==id ){ return array[j]; }
+            }
+            return null;
+         } 
         
     }])
      
@@ -1099,7 +1257,7 @@
         
         NgMap.getMap().then(function(map) { 
             $scope.map = map;
-           
+           /*
             $scope.map.data.loadGeoJson('/js/muestraMaestra/depto.json');
             $scope.map.data.setStyle({
               strokeColor: 'red',
@@ -1107,7 +1265,7 @@
               fillOpacity:0,
               clickable:false
             });
-            
+            */
         });
         
     }]) 

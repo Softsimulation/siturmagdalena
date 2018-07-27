@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Opciones_preguntas_encuestado extends Model
 {
-    //
+    public $timestamps = false;
 }

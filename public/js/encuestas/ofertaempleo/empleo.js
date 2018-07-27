@@ -101,6 +101,11 @@ angular.module('empleo.Empleo', [])
         obj = {};
         obj.tipo_cargo_id = tipo;
         obj.sexo = sexo;
+		obj.docea18 = 0;
+		obj.diecinuevea25 = 0;
+		obj.ventiseisa40 = 0;
+		obj.cuarentayunoa64 = 0;
+		obj.mas65 = 0;
         $scope.empleo.Edad.push(obj);
         
         return obj;
@@ -123,7 +128,12 @@ angular.module('empleo.Empleo', [])
         obj = {};
         obj.tipo_cargo_id = tipo;
         obj.sexo = sexo;
-        
+		obj.ninguno = 0;
+		obj.posgrado = 0;
+		obj.bachiller = 0;
+		obj.universitario = 0;
+		obj.tecnico = 0;
+		obj.tecnologo = 0;
         $scope.empleo.Educacion.push(obj);
         
         return obj;
@@ -146,7 +156,7 @@ angular.module('empleo.Empleo', [])
         obj = {};
         obj.tipo_cargo_id = tipo;
         obj.sexo = sexo;
-        
+        obj.sabeningles = 0;
         $scope.empleo.ingles.push(obj);
         
         return obj;
@@ -169,7 +179,15 @@ angular.module('empleo.Empleo', [])
         obj = {};
         obj.tipo_cargo_id = tipo;
         obj.sexo = sexo;
-        
+        obj.tipo_cargo_id = tipo;
+        obj.sexo = sexo;
+		obj.contrato_direto = 0;
+		obj.personal_permanente = 0;
+		obj.personal_agencia = 0;
+		obj.trabajador_familiar = 0;
+		obj.propietario = 0;
+		obj.aprendiz = 0;
+		obj.cuenta_propia = 0;
         $scope.empleo.Vinculacion.push(obj);
         
         return obj;
@@ -192,7 +210,8 @@ angular.module('empleo.Empleo', [])
         obj = {};
         obj.tipo_cargo_id = tipo;
         obj.sexo = sexo;
-        
+		obj.tiempo_completo = 0;
+		obj.medio_tiempo = 0;
         $scope.empleo.Empleo.push(obj);
         
         return obj;
@@ -214,7 +233,7 @@ angular.module('empleo.Empleo', [])
         obj = {};
         obj.tipo_cargo_id = tipo;
         obj.sexo = sexo;
-        
+		obj.valor = 0;
         $scope.empleo.Remuneracion.push(obj);
         
         return obj;
@@ -426,7 +445,7 @@ $scope.$watch('id', function () {
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                          window.location.href = "/ofertaempleo/encuesta/" + $scope.id;
+                          window.location.href = "/ofertaempleo/encuesta/" + data.idsitio;
                     }, 1000);
     
     

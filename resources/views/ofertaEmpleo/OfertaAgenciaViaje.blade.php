@@ -67,7 +67,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Personas que viajaron según destino</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+            <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -129,7 +129,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Personas que viajaron con planes, cuyo destino fue Santa Marta</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+            <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -200,8 +200,8 @@
        
 
         <div class="row" style="text-align:center">
-            <a href="/ofertaempleo/agenciaviajes/{{$id}}" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="@Resource.EncuestaBtnSiguiente" />
+            <a href="/ofertaempleo/agenciaviajes/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
+            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
         <br />
 
