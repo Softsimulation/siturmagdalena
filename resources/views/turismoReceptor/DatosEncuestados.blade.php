@@ -56,7 +56,7 @@
                 <!-- P1. Grupo de Viaje-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Grupo de Viaje</b></h3>
             </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
+            <div class="panel-footer"><b>Presione aquí para desplegar los grupos de viaje</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -360,7 +360,7 @@
         <div class="panel panel-success" ng-if="pais_residencia != 47">
             <div class="panel-heading p1">
                 <!-- P5. ¿Cual fue su destino principal en colombia?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cual fue su destino principal en colombia?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue su destino principal en Colombia?</b></h3>
             </div>
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
@@ -408,7 +408,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P6. ¿Cuál fué el motivo principal para venir al departamento del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fué el motivo principal para venir al departamento del Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue el motivo principal para venir al departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -470,7 +470,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P7. ¿Quien va a diligenciar la encuesta?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quien va a diligenciar la encuesta?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quién va a diligenciar la encuesta?</b></h3>
             </div>
             <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
             <div class="panel-body">

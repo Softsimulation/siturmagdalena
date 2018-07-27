@@ -58,9 +58,18 @@ use App\Models\Rubro;
 use App\Models\Visitante_Paquete_Turistico;
 use App\Models\Gasto_Visitante;
 use App\Models\Sostenibilidad_Visitante;
+use App\Models\Actividades_Sostenibilidad_Idiomas;
 
 class TurismoReceptorController extends Controller
 {
+    
+    public function __construct()
+	{
+	    //$this->middleware('auth');
+	    $this->middleware('receptor',['only' =>  ['getSeccionestancia','getSecciontransporte','getSecciongrupoviaje','getSecciongastos','getSeccionpercepcionviaje','getSeccionfuentesinformacion'] ]);
+	    //$this->user = Auth::user();
+	}
+    
     public function getDatosencuestados(){
         return view('turismoReceptor.DatosEncuestados');
     }
@@ -115,7 +124,7 @@ class TurismoReceptorController extends Controller
 			'Grupo' => 'required|exists:grupos_viaje,id',
 			'Encuestador' => 'required|exists:digitadores,id',
 			'Llegada' => 'required|date|before:tomorrow',
-			'Salida' => 'required|date|after:Llegada',
+			'Salida' => 'required|date',
 			'Nombre' => 'required|max:150',
 			'Edad' => 'required|numeric|between:15,150',
 			'Sexo' => 'required',
@@ -168,6 +177,10 @@ class TurismoReceptorController extends Controller
        
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if($request->fechaLlegada > $request->fechaSalida){
+		    return ["success"=>false,"errores"=> [ ["La fecha de llegada no debe ser mayor a la de salida."] ] ];
 		}
 		
 		$municipio = Municipio::find($request->Municipio);
@@ -298,7 +311,7 @@ class TurismoReceptorController extends Controller
 			'Grupo' => 'required|exists:grupos_viaje,id',
 			'Encuestador' => 'required|exists:digitadores,id',
 			'Llegada' => 'required|date|before:tomorrow',
-			'Salida' => 'required|date|after:Llegada',
+			'Salida' => 'required|date',
 			'Nombre' => 'required|max:150',
 			'Edad' => 'required|numeric|between:15,150',
 			'Sexo' => 'required',
@@ -348,6 +361,14 @@ class TurismoReceptorController extends Controller
        		'Otro.required_if' => 'Debe ingresar datos en el campo otro.',
        		'Otro.max' => 'El campo otro no debe superar los 150 caracteres.',
     	]);
+    	
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if($request->fechaLlegada > $request->fechaSalida){
+		    return ["success"=>false,"errores"=> [ ["La fecha de llegada no debe ser mayor a la de salida."] ] ];
+		}
     	
     	$municipio = Municipio::find($request->Municipio);
 		if($municipio->departamento->pais_id != 47 && $request->Destino==null){
@@ -413,12 +434,6 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSeccionestancia($id){
-        if(Visitante::find($id) == null){
-            return \Redirect::to('/turismoReceptor/encuestas')
-                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
-                    ->withInput();
-        }
-        
         return view('turismoReceptor.SeccionEstanciayvisitados',["id"=>$id]);
     }
     
@@ -579,9 +594,9 @@ class TurismoReceptorController extends Controller
 		}
 		
 		foreach($request->ActividadesRelizadas as $actividad){
-		    if($actividad['id'] == 19 && !isset($actividad['otroActividad']) ){
-		        return ["success" => false, "errores" => [["Si en las actividades realizadas seleccionó el valor 'Otro' debe ingresar el texto de este."]] ];
-		    }
+		  //  if($actividad['id'] == 19 && !isset($actividad['otroActividad']) ){
+		  //      return ["success" => false, "errores" => [["Si en las actividades realizadas seleccionó el valor 'Otro' debe ingresar el texto de este."]] ];
+		  //  }
 		    
 		    if(count($actividad['opciones']) > 0 && count($actividad['Respuestas']) == 0 ){
 		        return ["success" => false, "errores" => [["Verifique que en las actividades que tengan segundo nivel haya seleccionado alguna opción."]] ];    
@@ -654,15 +669,6 @@ class TurismoReceptorController extends Controller
         $encuestas = Visitante_estado::all();
         
         return $encuestas;
-        
-        /*
-        string id = User.Identity.GetUserId();
-            int digitador = (from u in conexion.digitadores
-                             where u.user_id == id
-                             select u.id).FirstOrDefault();
-            var encuestas = from encuesta in conexion.Visitantes_estados where encuesta.Digitador == digitador || encuesta.Creador == digitador orderby encuesta.id select encuesta;
-            json.MaxJsonLength = 500000000;
-            return json.Serialize(encuestas);*/
     }
     
     public function getListadoencuestas(){
@@ -670,11 +676,6 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSecciontransporte($id){
-        if(Visitante::find($id) == null){
-            return \Redirect::to('/turismoReceptor/encuestas')
-                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
-                    ->withInput();
-        }
         return view('turismoReceptor.SeccionTransporte',["id" => $id]);
     }
     
@@ -796,11 +797,6 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSecciongrupoviaje($id){
-        if(Visitante::find($id) == null){
-            return \Redirect::to('/turismoReceptor/encuestas')
-                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
-                    ->withInput();
-        }
         return view('turismoReceptor.SeccionViajeGrupo',["id" => $id]);
     }
     
@@ -904,11 +900,6 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSecciongastos($id){
-       if(Visitante::find($id) == null){
-            return \Redirect::to('/turismoreceptor/encuestas')
-                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
-                    ->withInput();
-        }
         $data = ["id"=>$id];
         return view('turismoReceptor.Gastos',$data);
     }
@@ -1148,11 +1139,6 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSeccionpercepcionviaje($id){
-        if(Visitante::find($id) == null){
-            return \Redirect::to('/turismoReceptor/encuestas')
-                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
-                    ->withInput();
-        }
         return view('turismoReceptor.PercepcionViaje',["id" => $id]);
     }
     
@@ -1207,6 +1193,13 @@ class TurismoReceptorController extends Controller
         
         $valo = Valoracion_General::where('visitante_id',$visitante->id)->select(["recomendaciones as Recomendacion","calificacion as Calificacion", "volveria as Volveria","recomendaria as Recomienda","veces_visitadas as Veces"])->first();
         
+        $actividades = Actividades_Sostenibilidad_Idiomas::whereHas('idioma',function($q){
+            $q->where('culture','es');
+        })->select('actividades_sostenibilidad_id as id','nombre')->get();
+        
+        
+        $respuestaActividades = $sostenibilidad->actividadesSostenibilidad()->pluck('id')->toArray();
+        
         $retorno = [
             'success' => true,
             'percepcion' => $percepcion,
@@ -1220,6 +1213,9 @@ class TurismoReceptorController extends Controller
             'otroElemento' => $otroElemento,
             'flora'=> isset($flora) ? $flora : null,
             'sost'=> isset($sost) ? $sost : null,
+            'actividades' => $actividades,
+            'respuestaActividades' => $respuestaActividades,
+            'OtroActividad' => in_array(12,$respuestaActividades) ? $sostenibilidad->actividadesSostenibilidad()->wherePivot('nombre','<>',null)->first()->pivot->nombre : null
         ];
         
         return $retorno;
@@ -1238,6 +1234,7 @@ class TurismoReceptorController extends Controller
 			'Recomienda' => 'required|exists:volveria_visitar,id',
 			'VecesVisitadas' => 'required',
 			'OtroElementos' => 'max:100',
+			'Actividades' => 'exists:actividades_sostenibilidad,id',
 			//'Evaluacion' => 'required',
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
@@ -1264,6 +1261,9 @@ class TurismoReceptorController extends Controller
 		}
 		if( (!isset($request->OtroElementos)) && in_array(11,$request->Elementos) ){
 		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro."]]];
+		}
+		if( (!isset($request->OtroActividad)) && in_array(12,$request->Actividades) ){
+		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro en las actividades."]]];
 		}
 		
 		$visitante = Visitante::find($request->Id);
@@ -1307,6 +1307,8 @@ class TurismoReceptorController extends Controller
 	        $sostenibilidad->estado = true;
 	        $sostenibilidad->user_update = "Jhon";
 	        $sostenibilidad->user_create = "Jhon";
+	    }else{
+	        $sostenibilidad->actividadesSostenibilidad()->detach();
 	    }
 	    
 	    if(isset($request->Flora)){
@@ -1318,6 +1320,16 @@ class TurismoReceptorController extends Controller
 	    }
 	
 	    $sostenibilidad->save();
+	    
+	    if(isset($request->Actividades)){
+	        foreach($request->Actividades as $el){
+	            if($el == 12){
+	                $sostenibilidad->actividadesSostenibilidad()->attach($el,['nombre'=>$request->OtroActividad]);
+	            }else{
+	                 $sostenibilidad->actividadesSostenibilidad()->attach($el);
+	            }
+	        }
+	    }
 		
 		$visitante->historialEncuestas()->save(new Historial_Encuesta([
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
@@ -1331,11 +1343,6 @@ class TurismoReceptorController extends Controller
     }
     
     public function getSeccionfuentesinformacion($id){
-        if(Visitante::find($id) == null){
-            return \Redirect::to('/turismoReceptor/encuestas')
-                    ->with('message', 'El visitante seleccionado no se encuentra registrado.')
-                    ->withInput();
-        }
         return view('turismoReceptor.FuentesInformacionVisitante',["id" => $id]);
     }
     
@@ -1384,6 +1391,10 @@ class TurismoReceptorController extends Controller
             'twitter' => $visitante->visitanteCompartirRede != null ? $visitante->visitanteCompartirRede->nombre_twitter : null,
             'invitacion_correo' => $visitante->invitacion_correo != null ? 1 : -1,
             'invitacion' => $visitante->visitanteCompartirRede != null ? 1 : -1,
+            'facilidad' => $visitante->facilidad == 1 ? 1 : ($visitante->ultima_sesion == 7 ? -1 : null),
+            'conoce_marca' => $visitante->conoce_marca ? 1 : ($visitante->ultima_sesion == 7 ? -1 : null),
+            'acepta_autorizacion' => $visitante->acepta_autorizacion == 1 ? 1 : ($visitante->ultima_sesion == 7 ? -1 : null),
+            'acepta_tratamiento' => $visitante->acepta_tratamiento == 1 ? 1 : ($visitante->ultima_sesion == 7 ? -1 : null),
         ];
         
         return $retorno;
@@ -1401,6 +1412,10 @@ class TurismoReceptorController extends Controller
 			'NombreTwitter' => 'max:100',
 			'OtroFuenteAntes' => 'max:100',
 			'OtroFuenteDurante' => 'max:100',
+			'facilidad' => 'required',
+			'conoce_marca' => 'required',
+			'acepta_autorizacion' => 'required',
+			'acepta_tratamiento' => 'required',
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
        		'Id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',
@@ -1421,6 +1436,10 @@ class TurismoReceptorController extends Controller
        		'NombreTwitter.max' => 'EL campo nombre de usuario de Twitter no debe superar los 100 caracteres.',
        		'OtroFuenteAntes.max' => 'EL campo nombre de otro en fuentes de información antes del viaje no debe superar los 100 caracteres.',
        		'OtroFuenteDurante.max' => 'EL campo nombre de otro en fuentes de información durante el viaje no debe superar los 100 caracteres.',
+       		'facilidad.required' => 'Debe seleccionar alguna de las opciones en la pregunta de sostenibilidad.',
+       		'conoce_marca.required' => 'Debe seleccionar alguna de las opciones en la pregunta de conocimiento de marca.',
+       		'acepta_autorizacion.required' => 'Debe seleccionar alguna de las opciones en la pregunta de autorización de contacto nuevamente.',
+       		'acepta_tratamiento.required' => 'Debe seleccionar alguna de las opciones en la pregunta de autorización de tratamiento de datos.',
     	]);
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
@@ -1477,6 +1496,11 @@ class TurismoReceptorController extends Controller
 		}
 		
 		$visitante->invitacion_correo = $request->Correo == 1 ? 1 : 0;
+		$visitante->facilidad = $request->facilidad == 1 ? 1 : 0;
+		$visitante->conoce_marca = $request->conoce_marca == 1 ? 1 : 0;
+		$visitante->acepta_autorizacion = $request->acepta_autorizacion == 1 ? 1 : 0;
+		$visitante->acepta_tratamiento = $request->acepta_tratamiento == 1 ? 1 : 0;
+		
 		
 		$visitante->historialEncuestas()->save(new Historial_Encuesta([
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,

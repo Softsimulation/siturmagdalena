@@ -3,6 +3,7 @@ angular.module('receptor.percepcion_viaje', [])
 .controller('percepcion-crear', ['$scope', 'receptorServi', function ($scope, receptorServi) {
 
     $scope.bandera = false;
+    $scope.banderaAct = false;
     $scope.estadoEncuesta = null;
     $scope.calificacion = {
         'Elementos': []
@@ -52,6 +53,8 @@ angular.module('receptor.percepcion_viaje', [])
                         $scope.calificacion.OtroElementos = data.otroElemento;
                         $scope.calificacion.Flora = data.flora;
                         $scope.calificacion.Sostenibilidad = data.sost;
+                        $scope.calificacion.Actividades = data.respuestaActividades;
+                        $scope.calificacion.OtroActividad = data.OtroActividad;
                         $scope.estadoEncuesta = 1;
                         if (data.restaurante == -1) {
                             $scope.calificacion.Restaurante = 0;
@@ -211,6 +214,22 @@ angular.module('receptor.percepcion_viaje', [])
             if (i !== -1) {
                 $scope.calificacion.Elementos.splice(i, 1);
                 $scope.bandera = false;
+            }
+        }
+    }
+    
+    $scope.verificarOtroActividad = function () {
+        
+        var i = $scope.calificacion.Actividades.indexOf(12)
+        if ($scope.calificacion.OtroActividad != null && $scope.calificacion.OtroActividad != '') {
+            if (i == -1) {
+                $scope.calificacion.Actividades.push(12);
+                $scope.banderaAct = true;
+            }
+        } else {
+            if (i !== -1) {
+                $scope.calificacion.Actividades.splice(i, 1);
+                $scope.banderaAct = false;
             }
         }
     }

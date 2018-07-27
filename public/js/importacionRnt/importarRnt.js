@@ -1,4 +1,4 @@
-angular.module('importarRntApp', ["checklist-model","proveedorService",'angularUtils.directives.dirPagination'])
+angular.module('importarRntApp', ["checklist-model","proveedorService",'angularUtils.directives.dirPagination','ngMap'])
 
 .directive('fileInput', ['$parse', function ($parse) {
 
@@ -160,5 +160,84 @@ angular.module('importarRntApp', ["checklist-model","proveedorService",'angularU
        $scope.registro = angular.copy(item);
        $('#modalVer').modal('show');
    }
+   
+   $scope.getCurrentLocation = function(event,registro){
+        registro.latitud = event.latLng.lat();
+        registro.longitud = event.latLng.lng();
+    }
+    
+    $scope.drawFinish = function(event, registro){
+        registro.latitud = event.overlay.position.lat();
+        registro.longitud = event.overlay.position.lng();
+        event.overlay.setMap(null);
+    }
+    
+    $scope.sobreescribirRegistro = function(){
+        if(!$scope.addForm.$valid){
+            swal("Info", "Verifique que todos los campos estén ingresados.","info");
+            return;
+        }                 
+       
+        $("body").attr("class", "cbp-spmenu-push charging");
+        proveedorServi.EditarProveedor($scope.registro).then(function (data) {
+            if (data.success) {
+                $("body").attr("class", "cbp-spmenu-push");
+                $scope.nuevos[$scope.indexCrear] = data.proveedor;
+                $scope.errores = null;
+                swal({
+                    title: "Realizado",
+                    text: "Se ha editado satisfactoriamente el registro.",
+                    type: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                
+                setTimeout(function () {
+                    $('#modalAgregar').modal('hide');
+                }, 2000);
+                
+            } else {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Por favor corrija los errores", "error");
+                $scope.errores = data.errores;
+            }
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página","error");
+        })
+        
+        
+    }
+    
+    $scope.guardarRegistroHavilitar = function(){
+        $("body").attr("class", "cbp-spmenu-push charging");
+        proveedorServi.CrearHabilitarProveedor($scope.registro).then(function (data) {
+            if (data.success) {
+                $("body").attr("class", "cbp-spmenu-push");
+                $scope.nuevos[$scope.indexCrear] = data.proveedor;
+                $scope.errores = null;
+                swal({
+                    title: "Realizado",
+                    text: "Se ha editado satisfactoriamente el registro.",
+                    type: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                
+                setTimeout(function () {
+                    $('#modalAgregar').modal('hide');
+                }, 2000);
+                
+            } else {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Por favor corrija los errores", "error");
+                $scope.errores = data.errores;
+            }
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página","error");
+        })
+    }
+    
    
 }])
