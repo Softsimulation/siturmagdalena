@@ -56,7 +56,7 @@
                           <button class="dropdown-toggle" type="button" data-toggle="dropdown">
                               <i class="material-icons">menu</i>
                           </button>
-                          <ul class="dropdown-menu">
+                          <ul class="dropdown-menu dropdown-menu-right">
                             <li><a href id="descargarPNG" >Descargar grafica : PNG</a></li>
                            <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
                             <li><a href id="descargarPDF" >Descargar grafica : PDF</a></li>
@@ -209,7 +209,7 @@
     <script src="{{asset('/js/plugins/jspdf.min.js')}}"></script>
     <script src="{{asset('/js/plugins/Chart.min.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-chart.min.js')}}"></script>
-    <script src="{{asset('/js/plugins/chartsjs-plugin-data-labels.js')}}"></script>
+   
     <script src="{{asset('/js/indicadores/appIndicadores.js')}}"></script>
     <script src="{{asset('/js/indicadores/servicios.js')}}"></script> 
     
@@ -255,7 +255,9 @@
                     'width': margins.width, // max width of content on PDF
                     'elementHandlers': { '#bypassme': function (element, renderer) { return true; } }
                 },
-                function (dispose) { pdf.save('datos.pdf'); },
+                function (dispose) { 
+                    pdf.save('datos.pdf');
+                },
                 margins
             );
             

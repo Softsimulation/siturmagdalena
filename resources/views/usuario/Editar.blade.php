@@ -173,3 +173,12 @@
     
 </div>
 @endsection
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
+<script src="{{asset('/js/administrador/usuarios/usuarios.js')}}"></script>
+<script src="{{asset('/js/administrador/usuarios/usuarioServices.js')}}"></script>
+@endsection

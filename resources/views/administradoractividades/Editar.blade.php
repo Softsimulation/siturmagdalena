@@ -104,7 +104,7 @@
 @section('content')
 <div class="container">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <h1 class="title1">Editar actividad</h1>
+    <h1 class="title1">@{{actividadNombre}} - Editar</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">

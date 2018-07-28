@@ -1,3 +1,4 @@
+
 var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination', 'admin.temporadas','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService','ADM-dateTimePicker']);
 situr.config(['ADMdtpProvider', function (ADMdtp) {
     ADMdtp.setOptions({
@@ -7,6 +8,8 @@ situr.config(['ADMdtpProvider', function (ADMdtp) {
         default: 'today'
     });
 }]);
+var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService']);
+
 
 situr.controller('listadoEncuestasCtrl', ['$scope','grupoViajeServi', function ($scope,receptorServi) {
     function formatDate(date) {

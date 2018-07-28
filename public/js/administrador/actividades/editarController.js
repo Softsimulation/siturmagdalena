@@ -15,6 +15,7 @@ angular.module('actividades.editar', [])
         actividadesServi.getDatosactividad($scope.id).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.actividadNombre = data.actividad.actividades_con_idiomas[0].nombre;
                 $scope.actividad.adicional.perfiles = data.perfiles_turista;
                 $scope.actividad.adicional.sitios = data.sitios;
                 $scope.actividad.adicional.categorias = data.categorias_turismo;
@@ -22,10 +23,12 @@ angular.module('actividades.editar', [])
                 $scope.actividad.datosGenerales.valor_minimo = parseInt(data.actividad.valor_min);
                 
                 var portada = null;
-                $http.get("../.." + data.portadaIMG, {responseType: "blob"}).success((data) => {
-                    portada = data;
-                    $scope.previewportadaIMG.push(portada);
-                });
+                if (data.portadaIMG != null){
+                    $http.get("../.." + data.portadaIMG, {responseType: "blob"}).success((data) => {
+                        portada = data;
+                        $scope.previewportadaIMG.push(portada);
+                    });
+                }
                 
                 var imagenes = [];
                 for (var i = 0; i < data.imagenes.length; i++){

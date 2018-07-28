@@ -56,12 +56,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                            <label class="control-label">Fecha de aplicación</label>
-                           <adm-dtp name="fecha" id="fecha" ng-model='social.fecha_aplicacion' options="optionFecha" ng-required="true"></adm-dtp>
+                           <adm-dtp name="fecha" id="fecha" ng-model='social.fecha_aplicacion' mindate="'2017/01/01'" maxdate="@{{fechaActual}}" options="optionFecha" ng-required="true"></adm-dtp>
                         </div>
                         <span ng-show="crearForm.$submitted || crearForm.fecha.$touched">
                             <span class="label label-danger" ng-show="crearForm.fecha.$error.required">*El campo es requerido.</span>
                         </span>
                     </div>
+                   
                     <div class="col-md-6">
                         <div class="form-group">
                            <label class="control-label" for="nombre">Nombre del encuestado</label>

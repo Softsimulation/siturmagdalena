@@ -36,7 +36,7 @@ angular.module('actividades.idioma', [])
                     'nombre': data.actividad.actividades_con_idiomas[0].nombre,
                     'descripcion' : data.actividad.actividades_con_idiomas[0].descripcion
                 };
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                swal('¡Éxito!', 'Actividad modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }

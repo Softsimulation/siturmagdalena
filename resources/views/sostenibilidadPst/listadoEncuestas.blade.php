@@ -116,4 +116,10 @@
 
 @endsection
 
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/administrador/sostenibilidad_proveedores/listado.js')}}"></script>
+<script src="{{asset('/js/administrador/sostenibilidad_proveedores/services.js')}}"></script>
+@endsection
+
 

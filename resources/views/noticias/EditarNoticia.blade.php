@@ -315,3 +315,15 @@
         </div>
     </div>
 @endsection
+@section('javascript')
+<script src="{{asset('/js/plugins/angular-material/angular-animate.min.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-material/angular-aria.min.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-material/angular-messages.min.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-material/angular-material.min.js')}}"></script>
+<script src="{{asset('/js/plugins/material.min.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
+<script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
+@endsection

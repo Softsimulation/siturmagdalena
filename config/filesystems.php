@@ -69,6 +69,12 @@ return [
             'root' => public_path().'/multimedia/actividades',
             'visibility' => 'public',
         ],
+        
+        'multimedia-destino' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/destinos',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',

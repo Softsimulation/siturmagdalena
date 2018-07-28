@@ -9,12 +9,12 @@
    
    <input type="hidden" id="id" value="{{$zona}}" />
    
-    <h1>@{{}}</h1>
+    <h1>@{{zona.nombre}}</h1>
    
     <form name="form" novalidate >
         
         <div class="btn-group">
-            <a href="/MuestraMaestra/periodo/{{$periodo}}"  class="btn btn-primary" >Volver</a>
+            <a href="/MuestraMaestra/periodo/@{{zona.periodo_medicion_id}}"  class="btn btn-primary" >Volver</a>
             <button type="submit" class="btn btn-success" ng-click="guardar()" >Guardar</button>
             <a href="/MuestraMaestra/excelinfozona/{{$zona}}"  class="btn btn-primary" >Descargar excel</a>
         </div>
@@ -68,6 +68,9 @@
                 </td>
               </tr>
               
+              <tr ng-if="proveedores.length==0" >
+                  <td colspan="8" class="alert alert-info" >No se encontraron proveedores en la zona.</td>
+              </tr>
         </table>
        
     </form>

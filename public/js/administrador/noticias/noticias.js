@@ -1,5 +1,5 @@
 
-var app = angular.module("admin.noticia", ['ngMaterial','ngMessages','lfNgMdFileInput','ng.ckeditor','noticiaService','angularUtils.directives.dirPagination']);
+var app = angular.module("admin.noticia", ['ngMaterial','ngMessages','ng.ckeditor','noticiaService','angularUtils.directives.dirPagination']);
 
 app.directive('fileInput', ['$parse', function ($parse) {
 
