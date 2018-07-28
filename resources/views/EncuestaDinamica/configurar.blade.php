@@ -704,7 +704,7 @@
                   </div>
                   <div class="modal-footer center">
                     <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" ng-click="guardarPregunta()" class="btn btn-success">Guardar</button>
+                    <button type="submit" ng-click="guardarDuplicadoPregunta()" class="btn btn-success">Guardar</button>
                   </div>
                 </div>
             

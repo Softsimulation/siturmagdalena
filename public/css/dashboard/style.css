@@ -2443,18 +2443,8 @@ ul.dropdown-menu.dropdown-menu-right {
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
-td span.fam,span.mar,span.ur,span.work {
-    color: #fff;
-    font-size: 0.9em;
-    padding: 4px 7px;
-    font-family: 'Roboto', sans-serif;
-}
-.table td, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    padding: 15px !important;
-    font-size: 0.85em;
-    color: #777;
-    border-top: none !important;
-}
+
+
 /*--graph--*/
 .grid-1{
 	    margin: 2em 0 0 0;
@@ -2629,12 +2619,7 @@ a#myTabDrop1,a#profile-tab,a#home-tab {
 div#home {
     padding: 1em 0 0;
 }
-.table td, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    padding: 15px !important;
-    font-size: 0.85em;
-    color: #999;
-    border-top: none !important;
-}
+
 button.close.second {
     color: #333;
 }

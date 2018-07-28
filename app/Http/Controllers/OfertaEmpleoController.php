@@ -68,7 +68,7 @@ class OfertaEmpleoController extends Controller
         
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
-                                    'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion']]);
+                                    'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
     }
     
     
@@ -237,23 +237,12 @@ class OfertaEmpleoController extends Controller
         ->where("meses_de_anio.mes_id", $request->Mes)
         ->where("anios.anio", $request->Anio)
         ->first();
-       /* 
+     
         if($encuesta != null){
             return ["success" => false, "errores" => [["Ya existe una encuesta creada."]] ];
         }
-        */
-      $encuesta = new Encuesta();
-      if ($request->Comercial == 0)
-        {
-            $encuesta->actividad_comercial = 0;
-            $encuesta->numero_dias = 0;
-            $ruta = "ofertaempleo/encuestas/".$request->Sitio;
-        }
-        else
-        {
-            $encuesta->actividad_comercial = 1;
-            $encuesta->numero_dias = $request->NumeroDias;
-        }
+  
+   
         
        $mesid = Mes_Anio::join("anios","meses_de_anio.anio_id","=","anios.id")
         ->where("meses_de_anio.mes_id", $request->Mes)
@@ -275,12 +264,39 @@ class OfertaEmpleoController extends Controller
             
         }
         
-        
-        $encuesta->meses_anio_id = $mesid->id;
-        $encuesta->sitios_para_encuestas_id = $request->Sitio;
-        $encuesta->save();
+ 
             
        $ruta = null;
+      $encuesta = new Encuesta();
+      if ($request->Comercial == 0)
+        {
+            $encuesta->actividad_comercial = 0;
+            $encuesta->numero_dias = 0;
+            $ruta = "ofertaempleo/encuesta/".$request->Sitio;
+            $encuesta->meses_anio_id = $mesid->id;
+            $encuesta->sitios_para_encuestas_id = $request->Sitio;
+            $encuesta->save();
+    	   Historial_Encuesta_Oferta::create([
+               'encuesta_id' => $encuesta->id,
+               'user_id' => 1,
+               'estado_encuesta_id' => 3,
+               'fecha_cambio' => Carbon::now()
+           ]);
+        }
+        else
+        {
+            $encuesta->actividad_comercial = 1;
+            $encuesta->numero_dias = $request->NumeroDias;
+            $encuesta->meses_anio_id = $mesid->id;
+            $encuesta->sitios_para_encuestas_id = $request->Sitio;
+            $encuesta->save();
+           Historial_Encuesta_Oferta::create([
+               'encuesta_id' => $encuesta->id,
+               'user_id' => 1,
+               'estado_encuesta_id' => 1,
+               'fecha_cambio' => Carbon::now()
+           ]);
+        }
         
      
        $tipo = Sitio_Para_Encuesta::where("id",$encuesta->sitios_para_encuestas_id)->first();
@@ -1038,8 +1054,15 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		}
 		
 		
-
-        return ["success" => true];
+   	   Historial_Encuesta_Oferta::create([
+               'encuesta_id' => $request->Encuesta,
+               'user_id' => 1,
+               'estado_encuesta_id' => 3,
+               'fecha_cambio' => Carbon::now()
+       ]);
+        
+        
+        return ["success" => true, "idsitio"=> $encuesta->sitios_para_encuestas_id ];
     }
     
     public function postGuardarnumeroemp(Request $request){
@@ -2090,7 +2113,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }
        
     
-        $alojamiento = alojamiento::where("encuestas_id",$request->id)->first();
+        $alojamiento = alojamiento::where("encuestas_id",$request->encuesta)->first();
     
         /////////////////////////////////////////////////////////////////////////
         if($request->habitaciones){
@@ -2152,7 +2175,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         
         Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->id,
+           'encuesta_id' => $request->encuesta,
            'user_id' => 1,
            'estado_encuesta_id' => 2,
            'fecha_cambio' => Carbon::now()

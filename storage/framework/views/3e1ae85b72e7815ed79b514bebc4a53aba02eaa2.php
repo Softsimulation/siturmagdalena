@@ -43,12 +43,22 @@
                             </li>
                             <li>
                                 <a href="/encuesta/listar/{{encuesta.id}}" >
-                                    Encuestas
+                                    Listado de encuestas
                                 </a>
                             </li>
                             <li>
                                 <a href="/encuesta/estadisticas/{{encuesta.id}}" >
                                     Estadisticas
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/encuesta/excel/{{encuesta.id}}" download >
+                                    Descargar datos
+                                </a>
+                            </li>
+                            <li>
+                                <a href ng-click="duplicarEncuesta(encuesta.id)" >
+                                    Duplicar encuesta
                                 </a>
                             </li>
                             <li class="divider"></li>

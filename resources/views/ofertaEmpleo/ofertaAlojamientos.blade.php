@@ -27,7 +27,7 @@
 
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Habitaciones</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+            <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -114,7 +114,7 @@
 
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Apartamentos</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+            <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -202,7 +202,7 @@
 
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Casas</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+            <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -290,7 +290,7 @@
 
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Cabañas</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+            <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -379,7 +379,7 @@
 
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Camping</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+            <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -455,8 +455,8 @@
         </div>
 
         <div class="row" style="text-align:center">
-            <a href="/ofertaempleo/caracterizacion/{{$id}}" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="@Resource.EncuestaBtnSiguiente" />
+            <a href="/ofertaempleo/caracterizacion/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
+            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
     </form>
     <div class='carga'>

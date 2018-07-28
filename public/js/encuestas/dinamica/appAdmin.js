@@ -438,9 +438,9 @@
             $("#ModalDuplicarPregunta").modal("show");
         }
         
-        $scope.guardarPregunta = function () {
+        $scope.guardarDuplicadoPregunta = function () {
 
-            if ($scope.preguntDuplicar.seccion) {
+            if (!$scope.preguntDuplicar.seccion) {
                 swal("Error", "Verifique los errores en el formulario", "error");
                 return;
             }
