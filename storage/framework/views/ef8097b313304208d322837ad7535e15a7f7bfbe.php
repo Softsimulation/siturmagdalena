@@ -71,7 +71,7 @@
             <div class="col-xs-12 col-sm-12 col-lg-3 col-md-3">
                 <select class="form-control" ng-model="campoSelected">
                     <option value="" selected>Cualquier campo</option>
-                    <option value="fecha">Fecha de aplicación</option>
+                    <option value="fechaaplicacion">Fecha de aplicación</option>
                     <option value="fechallegada">Fecha de llegada</option>
                 </select>
             </div>
@@ -79,7 +79,7 @@
                 <input type="text" style="margin-bottom: .5em;" ng-model="prop.search" class="form-control" id="inputSearch" placeholder="Buscar encuesta...">
             </div>
             <div class="col-xs-12 col-sm-12 col-lg-2 col-md-12" style="text-align: center;">
-                <span class="chip" style="margin-bottom: .5em;">{{(encuestas|filter:filtrarEncuesta|filter:filtrarCampo|filter:prop.search).length}} resultados</span>
+                <span class="chip" style="margin-bottom: .5em;">{{(encuestas|filter:{Filtro:filtroEstadoEncuesta} | filter:filtrarCampo |filter:prop.search).length}} resultados</span>
             </div>
         </div>
         <br/>
@@ -99,7 +99,7 @@
                             <th style="width: 70px;"></th>
                         
                     </tr>
-                    <tr dir-paginate="item in encuestas|filter:filtrarEncuesta|filter:filtrarCampo|filter:prop.search |itemsPerPage:10 as results" pagination-id="paginacion_encuestas" >
+                    <tr dir-paginate="item in encuestas|filter:{Filtro:filtroEstadoEncuesta}| filter:filtrarCampo | filter:prop.search  |itemsPerPage:10 as results" pagination-id="paginacion_encuestas" >
                         <td>{{$index+1}}</td>
                             <td>{{item.id}}</td>
                             <td>{{item.idgrupo}}</td>
@@ -112,7 +112,7 @@
                             <td style="text-align: center;"><a href="/turismoreceptor/editardatos/{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span></a></td>
                     </tr>
                 </table>
-                <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0 || (encuestas|filter:prop.search).length == 0">No hay resultados disponibles <span ng-show="(encuestas|filter:prop.search).length == 0">para la búsqueda '{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
+                <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0 || (encuestas|filter:prop.search).length == 0 || (encuestas|filter:filtrarCampo).length == 0 || (encuestas|filter:{Filtro:filtroEstadoEncuesta} ).length == 0">No hay resultados disponibles <span ng-show="(encuestas|filter:prop.search).length == 0">para la búsqueda '{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
             </div>
             
         </div>

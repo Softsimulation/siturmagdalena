@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Mes_Indicador;
 use App\Models\Anio;
 use App\Models\Estadisitica_Secundaria;
@@ -17,7 +18,16 @@ use App\Models\Series_estadistica_rotulo;
 class EstadisticasSecundariasCtrl extends Controller
 {
     
-    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:ADmin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+    }
     public function getConfiguracion(){
         return View("EstadisticasSecundarias.configuracion");
     }
@@ -90,13 +100,13 @@ class EstadisticasSecundariasCtrl extends Controller
         
         if(!$indicador){
             $indicador = new Estadisitica_Secundaria();
-            $indicador->user_create = "admin";
+            $indicador->user_create = $this->user->username;
             $indicador->estado = true;
         }
         
         $indicador->nombre = $request->nombre;
         $indicador->name   = $request->name;
-        $indicador->user_update = "admin";
+        $indicador->user_update = $this->user->username;
         $indicador->save();
         
         foreach($request->series as $serie){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Empleo;
 use App\Models\Encuesta;
@@ -64,10 +65,16 @@ class OfertaEmpleoController extends Controller
     
         public function __construct()
     {
-        
+        $this->middleware('auth');
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
                                     'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
+                                    
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }                           
+    
+        
     }
     
     
@@ -229,7 +236,7 @@ class OfertaEmpleoController extends Controller
                 $ruta = "/ProveedorPerfil";
                   Historial_Encuesta_Oferta::create([
                    'encuesta_id' => $encuesta->id,
-                   'user_id' => 1,
+                   'user_id' => $this->user->id,
                    'estado_encuesta_id' => 3,
                    'fecha_cambio' => Carbon::now()
                ]);
@@ -238,7 +245,7 @@ class OfertaEmpleoController extends Controller
             {
                   Historial_Encuesta_Oferta::create([
                    'encuesta_id' => $encuesta->id,
-                   'user_id' => 1,
+                   'user_id' => $this->user->id,
                    'estado_encuesta_id' => 1,
                    'fecha_cambio' => Carbon::now()
                ]);
@@ -348,8 +355,6 @@ class OfertaEmpleoController extends Controller
    
     public function getDatosagencia(){
         $servicios = Servicio_Agencia::all();
-        //$servicios = (from servicio in conexion.servicios_agencias select new { id = servicio.id, nombre = servicio.nombre }).ToList();
-        //return json.Serialize(servicios);
         return $servicios;
     }
     
@@ -859,7 +864,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     }
     Historial_Encuesta_Oferta::create([
            'encuesta_id' => $request->Encuesta,
-           'user_id' => 1,
+           'user_id' => $this->user->id,
            'estado_encuesta_id' => 2,
            'fecha_cambio' => Carbon::now()
        ]);
@@ -1118,7 +1123,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		
 		        Historial_Encuesta_Oferta::create([
                'encuesta_id' => $encuesta->id,
-               'user_id' => 1,
+               'user_id' => $this->user->id,
                'estado_encuesta_id' => 2,
                'fecha_cambio' => Carbon::now()
            ]);
@@ -1134,8 +1139,6 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             }]);
         }])->where('id',$id)->firstOrFail();
         
-        //return $agencia;
-        
         $agenciaRetornar = [];
         $agenciaRetornar["Id"] = $agencia->id;
         if(sizeof($agencia["viajesTurismos"]) != 0){
@@ -1147,78 +1150,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $agenciaRetornar["Planes"] = "";
             $agenciaRetornar["Otro"] = "";
         }
-        
-        /*
-        CaracterizacionAgenciasViewModel enviar = new CaracterizacionAgenciasViewModel();
-            var agencia = (from encuesta in conexion.encuestas
-                           join viajes in conexion.viajes_turismos on encuesta.id equals viajes.encuestas_id
-                           join otro in conexion.viajes_turismos_otro on viajes.id equals otro.viajes_turismo_id into joined
-                           from otro in joined.DefaultIfEmpty()
-                           where encuesta.id == id
-                           select new CaracterizacionAgenciasViewModel
-                           {
-                               Id = encuesta.id,
-                               TipoServicios = viajes.servicios_agencias.Select(x => x.id).ToList(),
-                               Planes = viajes.ofreceplanes,
-                               Otro = otro.otro
-                           }).ToList();
-        return $servicios;*/
         return $agenciaRetornar;
     }
-    /*
-        [HttpPost]
-        public string GetAgencia(int id)
-        {
-
-            CaracterizacionAgenciasViewModel enviar = new CaracterizacionAgenciasViewModel();
-            var agencia = (from encuesta in conexion.encuestas
-                           join viajes in conexion.viajes_turismos on encuesta.id equals viajes.encuestas_id
-                           join otro in conexion.viajes_turismos_otro on viajes.id equals otro.viajes_turismo_id into joined
-                           from otro in joined.DefaultIfEmpty()
-                           where encuesta.id == id
-                           select new CaracterizacionAgenciasViewModel
-                           {
-                               Id = encuesta.id,
-                               TipoServicios = viajes.servicios_agencias.Select(x => x.id).ToList(),
-                               Planes = viajes.ofreceplanes,
-                               Otro = otro.otro
-                           }).ToList();
-            if (agencia.Count == 0)
-            {
-                var usuario = (from e in conexion.encuestas
-                              join s in conexion.sitios_para_encuestas on e.sitios_para_encuestas_id equals s.id
-                              where e.id == id
-                              select s.AspNetUser.Id).FirstOrDefault();
-                var agenciaanterior = (from encuesta in conexion.encuestas
-                                       join viajes in conexion.viajes_turismos on encuesta.id equals viajes.encuestas_id
-                                       join otro in conexion.viajes_turismos_otro on viajes.id equals otro.viajes_turismo_id into joined
-                                       from otro in joined.DefaultIfEmpty()
-                                       where encuesta.id != id && encuesta.sitios_para_encuestas.user_id == usuario
-                                       orderby encuesta.id ascending
-                                       select new CaracterizacionAgenciasViewModel
-                                       {
-                                           Id = encuesta.id,
-                                           TipoServicios = viajes.servicios_agencias.Select(x => x.id).ToList(),
-                                           Planes = viajes.ofreceplanes,
-                                           Otro = otro.otro
-
-                                       }).ToList();
-
-                if (agenciaanterior.Count > 0)
-                {
-                    enviar = agenciaanterior.Last();
-                }
-
-            }
-            else
-            {
-
-                enviar = agencia.First();
-
-            }
-
-            return json.Serialize(enviar);
-        }*/
     
     public function postGuardarcaracterizacion(Request $request)
     {
@@ -1287,19 +1220,12 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return ["success"=>true];
     }
     public function getDatosofertaagencia(){
-        //var destinos = (from destino in conexion.opciones_personas_destinos select new { id = destino.id, nombre = destino.nombre }).ToList();
         $destinos = Opcion_Persona_Destino::all();
-        //$servicios = (from servicio in conexion.servicios_agencias select new { id = servicio.id, nombre = servicio.nombre }).ToList();
-        //return json.Serialize(servicios);
         return $destinos;
     }
     
     public function getOfertaagencia($id)
     {
-       /* $agencia = Persona_Destino_Con_Viaje_Turismo::with(['viajesTurismo'=>function($q) use($id){
-           $q->where('encuestas_id',$id);
-       }])->get();*/
-       //return $agencia;
         $agencia = Viaje_Turismo::with(['planesSantamarta','personasDestinoConViajesTurismos'=>function($q){
             $q->with('opcionesPersonasDestino')->get();
         }])->where('encuestas_id',$id)->first();
@@ -1491,7 +1417,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $historial->encuesta_id = $encuesta->id;
             $historial->estado_encuesta_id = 2;
             $historial->fecha_cambio = Carbon::now();
-            $historial->user_id = 1;
+            $historial->user_id = $this->user->id;
             
             $historial->save();
             
@@ -1717,7 +1643,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		
 		Historial_Encuesta_Oferta::create([
 	        'encuesta_id' => $encuesta->id,
-	        'user_id' => 1,
+	        'user_id' => $this->user->id,
 	        'estado_encuesta_id' => 2,
 	        'fecha_cambio' => Carbon::now()
 	    ]);
@@ -1799,7 +1725,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		
 		Historial_Encuesta_Oferta::create([
 	        'encuesta_id' => $encuesta->id,
-	        'user_id' => 1,
+	        'user_id' => $this->user->id,
 	        'estado_encuesta_id' => 2,
 	        'fecha_cambio' => Carbon::now()
 	    ]);
@@ -1979,7 +1905,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         Historial_Encuesta_Oferta::create([
            'encuesta_id' => $request->encuesta,
-           'user_id' => 1,
+           'user_id' => $this->user->id,
            'estado_encuesta_id' => 2,
            'fecha_cambio' => Carbon::now()
         ]);
@@ -2103,7 +2029,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         Historial_Encuesta_Oferta::create([
            'encuesta_id' => $request->encuesta,
-           'user_id' => 1,
+           'user_id' => $this->user->id,
            'estado_encuesta_id' => 2,
            'fecha_cambio' => Carbon::now()
         ]);
@@ -2236,7 +2162,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $historial->encuesta_id = $request->id;
             $historial->estado_encuesta_id = 2;
             $historial->fecha_cambio = Carbon::now();
-            $historial->user_id = 1;
+            $historial->user_id = $this->user->id;
             $historial->save();
             
             return ["success"=>true];
@@ -2395,7 +2321,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $historial->encuesta_id = $request->id;
         $historial->estado_encuesta_id = 2;
         $historial->fecha_cambio = Carbon::now();
-        $historial->user_id = 1;
+        $historial->user_id = $this->user->id;
         $historial->save();
         
         return ["success"=>true];
@@ -2534,7 +2460,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $historial->encuesta_id = $request->id;
         $historial->estado_encuesta_id = 2;
         $historial->fecha_cambio = Carbon::now();
-        $historial->user_id = 1;
+        $historial->user_id = $this->user->id;
         $historial->save();
         
         return ["success"=>true];

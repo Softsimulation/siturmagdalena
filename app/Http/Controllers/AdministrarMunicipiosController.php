@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use CsvReader;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Municipio;
 use App\Models\Departamento;
 use App\Models\Pais;
@@ -15,7 +16,16 @@ use App\Http\Requests;
 
 class AdministrarMunicipiosController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:ADmin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+    }
     public function getIndex(){
         return view('administrarmunicipios.Index');
     }
@@ -63,8 +73,8 @@ class AdministrarMunicipiosController extends Controller
         $municipio->estado = true;
         $municipio->updated_at = Carbon::now();
         $municipio->created_at = Carbon::now();
-        $municipio->user_update = "Situr";
-        $municipio->user_create = "Situr";
+        $municipio->user_update = $this->user->username;
+        $municipio->user_create = $this->user->username;
         $prueba = $municipio->save();
         
         $municipioReturn = Municipio::where('id', $municipio->id)->select('id', 'departamento_id', 'nombre', 'updated_at', 'user_update')->first();
@@ -107,7 +117,7 @@ class AdministrarMunicipiosController extends Controller
         $municipio->nombre = $request->nombre;
         $municipio->departamento_id = $request->departamento_id;
         $municipio->updated_at = Carbon::now();
-        $municipio->user_update = "Situr";
+        $municipio->user_update = $this->user->username;
         $municipio->save();
         
         return ['success' => true, 'municipio' => $municipio];
@@ -136,8 +146,8 @@ class AdministrarMunicipiosController extends Controller
                         $pais = new Pais();
                         $pais->created_at = Carbon::now();
                         $pais->updated_at = Carbon::now();
-                        $pais->user_create = "Situr";
-                        $pais->user_update = "Situr";
+                        $pais->user_create = $this->user->username;
+                        $pais->user_update = $this->user->username;
                         $pais->estado = true;
                         
                         $pais->save();
@@ -151,8 +161,8 @@ class AdministrarMunicipiosController extends Controller
                         $departamento->pais_id = $paisConIdioma->pais_id;
                         $departamento->created_at = Carbon::now();
                         $departamento->updated_at = Carbon::now();
-                        $departamento->user_create = "Situr";
-                        $departamento->user_update = "Situr";
+                        $departamento->user_create = $this->user->username;
+                        $departamento->user_update = $this->user->username;
                         $departamento->estado = true;
                         
                         $departamento->save();
@@ -164,8 +174,8 @@ class AdministrarMunicipiosController extends Controller
     		            $municipio->estado = true;
     		            $municipio->created_at = Carbon::now();
     		            $municipio->updated_at = Carbon::now();
-    		            $municipio->user_update = "Situr";
-    		            $municipio->user_create = "Situr";
+    		            $municipio->user_update = $this->user->username;
+    		            $municipio->user_create = $this->user->username;
     		            $municipio->departamento_id = $departamento->id;
     		            $municipio->save();
     		        }

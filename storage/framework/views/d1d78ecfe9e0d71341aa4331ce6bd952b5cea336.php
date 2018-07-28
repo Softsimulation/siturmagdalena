@@ -123,9 +123,10 @@
                         <label class="control-label" for="date_apli">Fecha de aplicación</label> <span class="text-error" ng-show="(crearForm.$submitted || crearForm.fechaini.$touched) && crearForm.fechaini.$error.required">(El campo es obligatorio)</span>
                         <div class="input-group" id='date_apli2'>
                             <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <input type="text" id="date_apli" name="date_apli" class="form-control" placeholder="Fecha de aplicación" required autocomplete="off" />
+                            <adm-dtp name="date_apli" id="date_apli" ng-model='grupo.Fecha' full-data="date11_detail" maxdate="{{fechaActual}}"
+                                             options="optionFecha" ng-required="true"></adm-dtp>
                             <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearForm.$submitted || crearForm.fechaini.$touched) && crearForm.fechaini.$error.required"></span>
-                            <div class="input-group-addon" title="Seleccionar fecha"><span class="glyphicon glyphicon-calendar"></span></div>
+                            
                             
                         </div>
 
