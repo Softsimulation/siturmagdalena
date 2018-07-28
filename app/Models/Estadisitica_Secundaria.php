@@ -46,4 +46,9 @@ class Estadisitica_Secundaria extends Model
         return $this->hasMany('App\Models\Series_estadistica', 'estadisticas_secundaria_id');
     }
     
+    public function graficas()
+    {
+        return $this->belongsToMany('App\Models\Tipos_grafica', 'estadistica_secundaria_graficas', 'estadisitica_secundaria_id', 'tipos_grafica_id')->withPivot("principal");
+    }
+    
 }

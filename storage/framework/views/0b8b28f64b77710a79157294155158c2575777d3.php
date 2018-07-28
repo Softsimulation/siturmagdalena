@@ -7,7 +7,7 @@
 
     <div class="row" >
 
-        <input type="hidden" ng-model="id" ng-init="id=<?php echo e($id); ?>" />
+        <input type="hidden" ng-model="id" ng-init="id=<?php echo e(utf8_encode($id)); ?>" />
         
         <div class="col-md-12">
             
@@ -701,7 +701,7 @@
                   </div>
                   <div class="modal-footer center">
                     <button type="submit" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" ng-click="guardarDuplicadoPregunta()" class="btn btn-success">Guardar</button>
+                    <button type="submit" ng-click="guardarPregunta()" class="btn btn-success">Guardar</button>
                   </div>
                 </div>
             
@@ -849,10 +849,10 @@
 
 
 <?php $__env->startSection('javascript'); ?>
-    <script src="<?php echo e(asset('/js/plugins/Chart.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-chart.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-dragdrop.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/encuestas/dinamica/serviAdmin.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/encuestas/dinamica/appAdmin.js')); ?>"></script>
+    <script src="<?php echo e(utf8_encode(asset('/js/plugins/Chart.min.js'))); ?>"></script>
+    <script src="<?php echo e(utf8_encode(asset('/js/plugins/angular-chart.min.js'))); ?>"></script>
+    <script src="<?php echo e(utf8_encode(asset('/js/plugins/angular-dragdrop.min.js'))); ?>"></script>
+    <script src="<?php echo e(utf8_encode(asset('/js/encuestas/dinamica/serviAdmin.js'))); ?>"></script>
+    <script src="<?php echo e(utf8_encode(asset('/js/encuestas/dinamica/appAdmin.js'))); ?>"></script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout._AdminLayout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

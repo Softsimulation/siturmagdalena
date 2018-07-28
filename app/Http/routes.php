@@ -32,6 +32,10 @@ Route::get('/administradoratracciones/datos-idioma/{id}/{idIdioma}', 'Administra
 
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
+Route::controller('/administradoractividades', 'AdministradorActividadesController');
+
+Route::controller('/administradordestinos', 'AdministradorDestinosController');
+
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');

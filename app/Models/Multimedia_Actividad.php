@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,6 +36,6 @@ class Multimedia_Actividad extends Model
      */
     public function actividade()
     {
-        return $this->belongsTo('App\Actividade', 'actividades_id');
+        return $this->belongsTo('App\Models\Actividade', 'actividades_id');
     }
 }

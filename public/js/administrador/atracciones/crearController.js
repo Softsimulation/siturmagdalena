@@ -64,6 +64,7 @@ angular.module('atracciones.crear', [])
                     latlng = results[0].geometry.location;
                     map.setCenter(latlng.lat(), latlng.lng());
                     map.removeMarkers();
+                    map.setZoom(16);
                     marker = map.addMarker({
                         lat: latlng.lat(),
                         lng: latlng.lng(),
@@ -79,14 +80,16 @@ angular.module('atracciones.crear', [])
     }
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.crearAtraccionForm.$valid || $scope.atraccion.id != -1){
+        if (!$scope.crearAtraccionForm.$valid && $scope.atraccion.id != -1){
             return;
         }
         if (marker == null){
             swal('Error', 'No ha colocado un marcador en el mapa.', 'error');
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         atraccionesServi.postCrearatraccion($scope.atraccion.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 $scope.atraccion.id = data.id;
                 swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
@@ -94,6 +97,7 @@ angular.module('atracciones.crear', [])
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
@@ -126,13 +130,16 @@ angular.module('atracciones.crear', [])
         }
         fd.append('id', $scope.atraccion.id);
         fd.append('video_promocional', $("#video_promocional").val());
+        $("body").attr("class", "cbp-spmenu-push charging");
         atraccionesServi.postGuardarmultimedia(fd).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function (){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
@@ -141,14 +148,17 @@ angular.module('atracciones.crear', [])
         if (!$scope.informacionAdicionalForm.$valid || $scope.atraccion.id == -1){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.atraccion.adicional.id = $scope.atraccion.id;
         atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }

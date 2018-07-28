@@ -41,6 +41,6 @@ class Tipo_Destino extends Model
      */
     public function tipoDestinoConIdiomas()
     {
-        return $this->hasMany('App\Models\Tipo_Destino_Con_Idioma');
+        return $this->hasMany('App\Models\Tipo_Destino_Con_Idioma', 'tipo_destino_id');
     }
 }

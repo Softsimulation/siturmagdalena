@@ -10,8 +10,9 @@
                 $scope.anios = data.anios;
                 $scope.meses = data.meses;
                 $scope.data = data.data;
+                $scope.graficas = data.graficas;
             });
-      
+        
        
         $scope.guardarData = function () {
 
@@ -27,8 +28,8 @@
                 .then(function (data) {
                        
                         if (data.success) {
-                           
-                            swal("¡Periodo guardado!", "El perido se ha guardado exitosamnete", "success");
+                            $scope.data = data.data;
+                            swal("¡Datos guardado!", "Los datos se han guardado exitosamnete", "success");
                             $("#modalConfiData").modal("hide");
                         }
                         else {
@@ -60,7 +61,7 @@
         
         $scope.OpenModalIndicador = function (indicador) {
             
-            $scope.indicadorCrearEditar =  indicador ? indicador :{ series:[], rotulos:[] };
+            $scope.indicadorCrearEditar =  indicador ? indicador :{ series:[], rotulos:[], graficas:[] };
             $scope.incluirRorulos =  $scope.indicadorCrearEditar.rotulos.length>0 ? 1: 0;
             $scope.formCrear.$setPristine();
             $scope.formCrear.$setUntouched();
@@ -71,7 +72,7 @@
         
         $scope.guardarIndicador = function () {
 
-            if (!$scope.formCrear.$valid) {
+            if (!$scope.formCrear.$valid || $scope.indicadorCrearEditar.series.length==0 || $scope.indicadorCrearEditar.graficas.length==0 || ( $scope.incluirRorulos==1 && $scope.indicadorCrearEditar.rotulos.length==0) ) {
                 swal("Error", "Verifique los errores en el formulario", "error");
                 return;
             }
@@ -83,9 +84,9 @@
                 .then(function (data) {
                        
                         if (data.success) {
-                           
-                            swal("¡Periodo guardado!", "El perido se ha guardado exitosamnete", "success");
-                            $("#modalConfiData").modal("hide");
+                            $scope.data = data.data;
+                            swal("¡Indicador guardado!", "El indicador se ha guardado exitosamnete", "success");
+                            $("#modalIndicador").modal("hide");
                         }
                         else {
                             $scope.errores = data.errores;
@@ -133,6 +134,89 @@
                    $scope.indicador.series[i].valores[j].anio = $scope.indicador.yearID;
                 }
             }
+        }
+        
+        $scope.agregarTipoGrafica = function(){
+            
+            var esPrincipal = false;
+            
+            for(var i=0; i<$scope.indicadorCrearEditar.graficas.length; i++){
+                if($scope.indicadorCrearEditar.graficas[i].id==$scope.grafica.id){
+                    sweetAlert("La garfica ya existe", "El tipo de grafica que intentas guardar ya se encuentras.", "error");
+                    return;
+                }
+                
+                if($scope.indicadorCrearEditar.graficas[i].pivot.principal && $scope.grafica.pivot){
+                    esPrincipal = $scope.grafica.pivot.principal ?  true : false;
+                }
+            }
+            
+            if(esPrincipal){
+                sweetAlert("Grafica principal ya existe", "El tipo de grafica que intentas guardar como principal ya esta otra como principal.", "error");
+                return;
+            }
+            
+            $scope.indicadorCrearEditar.graficas.push( angular.copy($scope.grafica) );
+            $scope.grafica = null;
+        }
+        
+        
+        $scope.eliminarIndicador = function (indicador,index) {
+            swal({
+                title: "Eliminar indicador",
+                text: "¿Esta seguro de eliminar el indicador: "+ indicador.nombre +"?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                setTimeout(function () {
+                    $('#processing').addClass('process-in');
+                    estadisticasSecundariasServi
+                    .eliminarIndicador( { id:indicador.id } )
+                    .then(function (data) {
+                        if (data.success) {
+                            $scope.data.splice(index,1);
+                            swal("¡Eliminado!", "El se ha eliminado exitosamente", "success");
+                        }
+                        else {
+                            sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                        }
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                    });
+    
+                }, 500);
+            });
+        }
+        
+        $scope.activarDesactivarIndicador = function (indicador) {
+            swal({
+                title: "Cambio de estado",
+                text: "¿Esta seguro de "+( !indicador.es_visible ? "activar":"desactivar" )+" la pregunta?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                setTimeout(function () {
+                    $('#processing').addClass('process-in');
+                    estadisticasSecundariasServi
+                    .cambiarEstadoIndicador( {id:indicador.id} )
+                    .then(function (data) {
+                        if (data.success) {
+                            indicador.es_visible = data.estado;
+                            swal("¡Modificado!", "El estado se ha modificado exitosamente", "success");
+                        }
+                        else {
+                            sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                        }
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                    });
+    
+                }, 500);
+            });
         }
         
         

@@ -27,6 +27,9 @@
         guardarData: function(data){ return http.post("/EstadistivasSecunarias/guardardata", data);  },
         guardarIndicador: function(data){ return http.post("/EstadistivasSecunarias/guardarindicador", data);  },
         
+        eliminarIndicador: function(data){ return http.post("/EstadistivasSecunarias/eliminarindicador", data);  },
+        cambiarEstadoIndicador: function(data){ return http.post("/EstadistivasSecunarias/cambiarestadoindicador", data);  },
+        
       };
       
       

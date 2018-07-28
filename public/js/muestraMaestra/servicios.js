@@ -40,7 +40,7 @@
           eliminarZona: function(data){ return http.post("/MuestraMaestra/eliminarzona", data);  },
           
           
-          getGeoJson: function(data){ return http.post("/MuestraMaestra/geojsonzone", data );  },
+          getGeoJson: function(id){ return http.get("/MuestraMaestra/geojsonzone/"+id );  },
           
           getDataLLenarInfoZona: function(id){ return http.get("/MuestraMaestra/datazonallenarinfo/"+ (id ? id : -1) );  },
           guardarDataInfoZona: function(data){ return http.post("/MuestraMaestra/guardarinfozona", data );  },

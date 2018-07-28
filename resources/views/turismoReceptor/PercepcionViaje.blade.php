@@ -91,6 +91,7 @@
                                     @for ($j = 1; $j <= 10; $j++)
                                         <th> {{$j}} </th>
                                     @endfor
+                                    <th> Sin Respuesta </th>
                                 </tr>
 
                             </thead>
@@ -107,6 +108,13 @@
                                             </div>
                                         </td>
                                     @endfor
+                                    <td>
+                                        <div class="radio radio-primary">
+                                            <label>
+                                                <input type="radio" ng-checked="it.radios==null" ng-click="limpiarFila(it.id)" name="infraestructura_@{{it.id}}" value="0">
+                                            </label>
+                                        </div>
+                                    </td>
                                 </tr>
 
                             </tbody>
@@ -537,27 +545,27 @@
             </div>
         </div>
         
-      <div class="panel panel-success">
-            <div class="panel-heading">
+      <!--<div class="panel panel-success">-->
+      <!--      <div class="panel-heading">-->
                 <!-- ¿Cuál fue el  atractivo y/o el elemento de la ciudad que más llamó su atención?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> F10. ¿Elemento representativo que mas le llamo la atención?</b></h3>
-            </div>
-            <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="item in elementos" >
-                            <label>
-                                <input type="checkbox" ng-disabled="bandera==false && item.id==11" checklist-model="calificacion.Elementos"  checklist-value="item.id"> @{{item.elementos_representativos_con_idiomas[0].nombre}}
-                            </label>
-                            <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_atrativo" placeholder="Escriba su otra opción" ng-model="calificacion.OtroElementos" ng-change="verificarOtro()" ng-if="item.id==11" />
+      <!--          <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> F10. ¿Elemento representativo que mas le llamo la atención?</b></h3>-->
+      <!--      </div>-->
+      <!--      <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>-->
+      <!--      <div class="panel-body">-->
+      <!--          <div class="row">-->
+      <!--              <div class="col-md-12">-->
+      <!--                  <div class="checkbox" ng-repeat="item in elementos" >-->
+      <!--                      <label>-->
+      <!--                          <input type="checkbox" ng-disabled="bandera==false && item.id==11" checklist-model="calificacion.Elementos"  checklist-value="item.id"> @{{item.elementos_representativos_con_idiomas[0].nombre}}-->
+      <!--                      </label>-->
+      <!--                      <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_atrativo" placeholder="Escriba su otra opción" ng-model="calificacion.OtroElementos" ng-change="verificarOtro()" ng-if="item.id==11" />-->
                             
-                        </div>
-                    </div>
-                </div>
+      <!--                  </div>-->
+      <!--              </div>-->
+      <!--          </div>-->
 
-            </div>
-        </div>
+      <!--      </div>-->
+      <!--  </div>-->
         
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -638,7 +646,26 @@
         </div>
 
         
-        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <!-- ¿Cuál fue el  atractivo y/o el elemento de la ciudad que más llamó su atención?-->
+                <h3 class="panel-title"><b> Sostenibilidad ¿Realizó alguna de las siguientes actividades para ayudar a la conservación del medio ambiente en Atlántico?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="checkbox" ng-repeat="item in actividades" >
+                            <label>
+                                <input type="checkbox" ng-disabled="banderaAct==false && item.id==12" checklist-model="calificacion.Actividades"  checklist-value="item.id"> @{{item.nombre}}
+                            </label>
+                            <input type="text" style="display: inline-block;" class="form-control" id="OtroActividad" placeholder="Escriba su otra opción" ng-model="calificacion.OtroActividad" ng-change="verificarOtroActividad()" ng-if="item.id==12" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         
         
         

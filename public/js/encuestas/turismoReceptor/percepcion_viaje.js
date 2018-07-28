@@ -3,6 +3,7 @@ angular.module('receptor.percepcion_viaje', [])
 .controller('percepcion-crear', ['$scope', 'receptorServi', function ($scope, receptorServi) {
 
     $scope.bandera = false;
+    $scope.banderaAct = false;
     $scope.estadoEncuesta = null;
     $scope.calificacion = {
         'Elementos': []
@@ -26,11 +27,11 @@ angular.module('receptor.percepcion_viaje', [])
                     $("body").attr("class", "cbp-spmenu-push");
                     
                     $scope.aspectos = $scope.convertirObjeto(data.percepcion);
-                    $scope.elementos = data.elementos;
+                    //$scope.elementos = data.elementos;
                     $scope.veces = data.veces;
                     $scope.actividades = data.actividades;
     
-                    if (data.respuestaElementos.length ==0 && data.valoracion == null) {
+                    if (data.valoracion == null) {
                         $scope.estadoEncuesta = 0;
                     } else {
                         $scope.calificacion.Alojamiento = data.alojamiento;
@@ -43,15 +44,17 @@ angular.module('receptor.percepcion_viaje', [])
                             document.getElementById("infraestructuraNo").checked = true;
                         }
                         $scope.calificacion.Restaurante = data.restaurante;
-                        $scope.calificacion.Elementos = data.respuestaElementos;
+                        //$scope.calificacion.Elementos = data.respuestaElementos;
                         $scope.calificacion.Recomendaciones = data.valoracion.Recomendacion;
                         $scope.calificacion.Calificacion = data.valoracion.Calificacion;
                         $scope.calificacion.Volveria = data.valoracion.Volveria;
                         $scope.calificacion.Recomienda = data.valoracion.Recomienda;
                         $scope.calificacion.VecesVisitadas = data.valoracion.Veces;
-                        $scope.calificacion.OtroElementos = data.otroElemento;
+                        //$scope.calificacion.OtroElementos = data.otroElemento;
                         $scope.calificacion.Flora = data.flora;
                         $scope.calificacion.Sostenibilidad = data.sost;
+                        $scope.calificacion.Actividades = data.respuestaActividades;
+                        $scope.calificacion.OtroActividad = data.OtroActividad;
                         $scope.estadoEncuesta = 1;
                         if (data.restaurante == -1) {
                             $scope.calificacion.Restaurante = 0;
@@ -211,6 +214,22 @@ angular.module('receptor.percepcion_viaje', [])
             if (i !== -1) {
                 $scope.calificacion.Elementos.splice(i, 1);
                 $scope.bandera = false;
+            }
+        }
+    }
+    
+    $scope.verificarOtroActividad = function () {
+        
+        var i = $scope.calificacion.Actividades.indexOf(12)
+        if ($scope.calificacion.OtroActividad != null && $scope.calificacion.OtroActividad != '') {
+            if (i == -1) {
+                $scope.calificacion.Actividades.push(12);
+                $scope.banderaAct = true;
+            }
+        } else {
+            if (i !== -1) {
+                $scope.calificacion.Actividades.splice(i, 1);
+                $scope.banderaAct = false;
             }
         }
     }
