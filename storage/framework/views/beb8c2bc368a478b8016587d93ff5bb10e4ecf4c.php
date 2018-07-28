@@ -34,14 +34,14 @@
            <td colspan="4" style="text-align:center;" >FECHA DE VERIFICACIÓN BLOQUE</td>
        </tr>
        <tr>
-           <td colspan="4" style="text-align:center;" > <?php echo e($zona->nombre); ?> </td>
+           <td colspan="4" style="text-align:center;" > <?php echo e(utf8_encode($zona->nombre)); ?> </td>
            <td colspan="4" style="text-align:center;" ></td>
        </tr>
        <tr>
            <td colspan="4" >NOMBRE DEL VERIFICADOR/CODIGO:</td>
            <td colspan="4" >
                 <?php foreach($zona['encargados'] as $encargado): ?>
-                    <?php echo e($encargado['codigo'] . ","); ?> 
+                    <?php echo e(utf8_encode($encargado['codigo'] . ",")); ?> 
                 <?php endforeach; ?>        
            </td>
        </tr>
@@ -97,13 +97,13 @@
           
           <?php foreach($proveedores as $proveedor): ?>
               <tr>
-                <td rowspan="2" style="width:10%;" > <?php echo e($proveedor['id']); ?> </td>
-                <td rowspan="2" style="width:10%;" > <?php echo e($proveedor['numero_rnt']); ?> </td>
-                <td rowspan="2" style="width:20%;" > <?php echo e($proveedor['estadop']["nombre"]); ?> </td> <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['razon_social']); ?> </td>                  <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['direccion']); ?> </td>                     <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['tipo']); ?> </td>                          <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > <?php echo e($proveedor['nombreCategoria']); ?> </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td rowspan="2" style="width:10%;" > <?php echo e(utf8_encode($proveedor->id)); ?> </td>
+                <td rowspan="2" style="width:10%;" > <?php echo e(utf8_encode($proveedor->rnt)); ?> </td>
+                <td rowspan="2" style="width:20%;" > <?php echo e(utf8_encode($proveedor->estado)); ?> </td>      <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e(utf8_encode($proveedor->nombre)); ?> </td>                  <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e(utf8_encode($proveedor->direccion)); ?> </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e(utf8_encode($proveedor->categoria)); ?> </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > <?php echo e(utf8_encode($proveedor->subcategoria)); ?> </td>              <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" rowspan="2" ></td>
                 <td style="width:15%;" >FECHA   HORA</td>
                 <td style="width:10%;" >ENTR</td>

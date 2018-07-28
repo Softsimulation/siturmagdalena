@@ -250,20 +250,14 @@
         
         $scope.exportarFileKML = function(){
             
+            
             $("body").attr("class", "cbp-spmenu-push charging");
-            $scope.filtro.periodo = $("#periodo").val();
-            $scope.filtro.tipoProveedor = $scope.tipoPro ? $scope.tipoPro.id : null;
             
-            
-            ServiMuestra.getGeoJson( $scope.filtro )
+            ServiMuestra.getGeoJson( $("#periodo").val() )
                 .then(function(geojson){ 
-                    var kmlDocumentName = tokml(geojson, {
-                                                documentName: geojson.name,
-                                                documentDescription: geojson.description
-                                            });
                     var link = document.createElement("a");
                     link.download = "mapa.kml";
-                    link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(kmlDocumentName);
+                    link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(geojson);
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -653,14 +647,9 @@
         
         $scope.showInfoMapa = function(event, proveedor, index){
             
-            if($scope.proveedor){
-                if($scope.coordenadasProveedorIniciales){
-                    $scope.proveedor.latitud  = $scope.coordenadasProveedorIniciales.latitud,
-                    $scope.proveedor.longitud = $scope.coordenadasProveedorIniciales.longitud,
-                    $scope.proveedor.editar = false;
-                }
+            if( $scope.proveedor ){
+                $scope.cancelarEditarPosicionProveedor();
             }
-            
             $scope.proveedor = proveedor;
             $scope.indexEditarProveedor = index;
             document.getElementById("mySidenav").style.width = "30%";
@@ -721,11 +710,14 @@
             $scope.$apply();
         }
         $scope.cancelarEditarPosicionProveedor = function(){
-            $scope.proveedor.latitud  = $scope.coordenadasProveedorIniciales.latitud,
-            $scope.proveedor.longitud = $scope.coordenadasProveedorIniciales.longitud,
-            $scope.proveedor.editar = false;
-            $scope.filtro.verZonas = false;
-            $timeout(function(){ $scope.filtro.verZonas = true; }, 200);
+            
+            if($scope.proveedor.editar){
+                $scope.proveedor.latitud  = $scope.coordenadasProveedorIniciales.latitud,
+                $scope.proveedor.longitud = $scope.coordenadasProveedorIniciales.longitud,
+                $scope.proveedor.editar = false;
+                $scope.filtro.verZonas = false;
+                $timeout(function(){ $scope.filtro.verZonas = true; }, 200);
+            }
         }
         $scope.guardarEditarPosicionProveedor = function(){
             
@@ -753,6 +745,13 @@
         }
         
         $scope.editarPosicionZona = function(zona,index){
+            
+            if($scope.zona){
+               if($scope.zona.editar){
+                   swal("No se puede editar la zona", "Actualmente existe una zona en edición, por favor cancele y vuelva a intentarlo.", "info"); return;
+               } 
+            }
+            
             $scope.indexEditar = index;
             $scope.zona = zona;
             $scope.coordenadasIniciales = zona.coordenadas;

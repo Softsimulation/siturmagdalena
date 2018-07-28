@@ -8,40 +8,40 @@
     <meta name="description" content="Sistema de Información Turistica del Magdalena y Santa Marta">
     <meta name="author" content="SITUR Magdalena">
     <title><?php echo $__env->yieldContent('Title'); ?></title>
-    <link rel="icon" type="image/ico" href="<?php echo e(asset('Content/icons/favicon-96x96.png')); ?>" />
+    <link rel="icon" type="image/ico" href="<?php echo e(utf8_encode(asset('Content/icons/favicon-96x96.png'))); ?>" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="<?php echo e(asset('/css/bootstrap.min.css')); ?>" rel="stylesheet" type="text/css" />
-    <!--<link href="<?php echo e(asset('/css/bootstrap-material-design.css')); ?>" rel="stylesheet" type="text/css" />-->
-    <link href="<?php echo e(asset('/css/ripples.css')); ?>" rel="stylesheet" type="text/css" />
-    <link href="<?php echo e(asset('/css/sweetalert.min.css')); ?>" rel='stylesheet' type='text/css' />
-    <link href="<?php echo e(asset('/css/ionicons.min.css')); ?>" rel='stylesheet' type='text/css' />
-    <link href="<?php echo e(asset('/css/styleLoading.css')); ?>" rel='stylesheet' type='text/css' />
-    <link href="<?php echo e(asset('/css/object-table-style.css')); ?>" rel='stylesheet' type='text/css' />
-    <link href="<?php echo e(asset('/css/ADM-dateTimePicker.min.css')); ?>" rel='stylesheet' type='text/css' />
-    <link href="<?php echo e(asset('/css/select.min.css')); ?>" rel='stylesheet' type='text/css' />
-    <link href="<?php echo e(asset('/css/select2.css')); ?>" rel='stylesheet' type='text/css' />
-    <link href="<?php echo e(asset('/css/fileinput.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?php echo e(asset('/css/fileinput-rtl.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?php echo e(asset('/css/lf-ng-md-file-input.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?php echo e(asset('/css/mycss.css')); ?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?php echo e(asset('/css/theme.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(utf8_encode(asset('/css/bootstrap.min.css'))); ?>" rel="stylesheet" type="text/css" />
+    <!--<link href="<?php echo e(utf8_encode(asset('/css/bootstrap-material-design.css'))); ?>" rel="stylesheet" type="text/css" />-->
+    <link href="<?php echo e(utf8_encode(asset('/css/ripples.css'))); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(utf8_encode(asset('/css/sweetalert.min.css'))); ?>" rel='stylesheet' type='text/css' />
+    <link href="<?php echo e(utf8_encode(asset('/css/ionicons.min.css'))); ?>" rel='stylesheet' type='text/css' />
+    <link href="<?php echo e(utf8_encode(asset('/css/styleLoading.css'))); ?>" rel='stylesheet' type='text/css' />
+    <link href="<?php echo e(utf8_encode(asset('/css/object-table-style.css'))); ?>" rel='stylesheet' type='text/css' />
+    <link href="<?php echo e(utf8_encode(asset('/css/ADM-dateTimePicker.min.css'))); ?>" rel='stylesheet' type='text/css' />
+    <link href="<?php echo e(utf8_encode(asset('/css/select.min.css'))); ?>" rel='stylesheet' type='text/css' />
+    <link href="<?php echo e(utf8_encode(asset('/css/select2.css'))); ?>" rel='stylesheet' type='text/css' />
+    <link href="<?php echo e(utf8_encode(asset('/css/fileinput.min.css'))); ?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(utf8_encode(asset('/css/fileinput-rtl.min.css'))); ?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(utf8_encode(asset('/css/lf-ng-md-file-input.min.css'))); ?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(utf8_encode(asset('/css/mycss.css'))); ?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(utf8_encode(asset('/css/theme.min.css'))); ?>" media="all" rel="stylesheet" type="text/css" />
    
-<link href="<?php echo e(asset('css/dashboard/style.css')); ?>" rel='stylesheet' type='text/css' />
+<link href="<?php echo e(utf8_encode(asset('css/dashboard/style.css'))); ?>" rel='stylesheet' type='text/css' />
 <!-- Graph CSS 
 
 <!-- jQuery -->
 <link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
 <!-- lined-icons -->
-<link rel="stylesheet" href="<?php echo e(asset('css/dashboard/icon-font.min.css')); ?>" type='text/css' />
+<link rel="stylesheet" href="<?php echo e(utf8_encode(asset('css/dashboard/icon-font.min.css'))); ?>" type='text/css' />
 <!-- //lined-icons -->
-<script src="<?php echo e(asset('js/administrador/dashboard/jquery-1.10.2.min.js')); ?>"></script>
-<script src="<?php echo e(asset('js/administrador/dashboard/amcharts.js')); ?>"></script>	
-<script src="<?php echo e(asset('js/administrador/dashboard/serial.js')); ?>"></script>	
-<script src="<?php echo e(asset('js/administrador/dashboard/light.js')); ?>"></script>	
-<script src="<?php echo e(asset('js/administrador/dashboard/radar.js')); ?>"></script>	
-<link href="<?php echo e(asset('css/dashboard/barChart.css')); ?>" rel='stylesheet' type='text/css' />
-<link href="<?php echo e(asset('css/dashboard/fabochart.css')); ?>" rel='stylesheet' type='text/css' />
+<script src="<?php echo e(utf8_encode(asset('js/administrador/dashboard/jquery-1.10.2.min.js'))); ?>"></script>
+<script src="<?php echo e(utf8_encode(asset('js/administrador/dashboard/amcharts.js'))); ?>"></script>	
+<script src="<?php echo e(utf8_encode(asset('js/administrador/dashboard/serial.js'))); ?>"></script>	
+<script src="<?php echo e(utf8_encode(asset('js/administrador/dashboard/light.js'))); ?>"></script>	
+<script src="<?php echo e(utf8_encode(asset('js/administrador/dashboard/radar.js'))); ?>"></script>	
+<link href="<?php echo e(utf8_encode(asset('css/dashboard/barChart.css'))); ?>" rel='stylesheet' type='text/css' />
+<link href="<?php echo e(utf8_encode(asset('css/dashboard/fabochart.css'))); ?>" rel='stylesheet' type='text/css' />
 <!--clock init-->
 
 
@@ -203,9 +203,9 @@
     <div id="preloader">
         <div>
             <div class="loader"></div>
-            <h1><?php echo e(trans('resources.LabelPreloader')); ?></h1>
+            <h1><?php echo e(utf8_encode(trans('resources.LabelPreloader'))); ?></h1>
             <h4>Por Favor Espere</h4>
-            <img src="<?php echo e(asset('Content/image/logo.min.png')); ?>" width="200" />
+            <img src="<?php echo e(utf8_encode(asset('Content/image/logo.min.png'))); ?>" width="200" />
         </div>
     </div>
     
@@ -243,7 +243,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </header>
         
         
@@ -280,7 +280,7 @@
     
 				<div class="sidebar-menu">
 							<div class="down">	
-									  <a href="#"><img src="<?php echo e(asset('Content/image/user.png')); ?>"></a>
+									  <a href="#"><img src="<?php echo e(utf8_encode(asset('Content/image/user.png'))); ?>"></a>
 									  <a href="#"><span class=" name-caret">Usuario</span></a>
 									 <p>Rol</p>
 									<ul>
@@ -295,15 +295,15 @@
 										
 										 <li id="menu-academico" ><a href="#"><i class="fa fa-table"></i> <span> Turismo Receptor</span></span></a>
 										   <ul id="menu-academico-sub" >
-											<ligv id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('grupoviaje/listadogrupos')); ?>"> Grupo de viajes</a></li>
-											<li id="menu-academico-boletim" ><a href="<?php echo e(asset('turismoreceptor/listadoencuestas')); ?>">Listado de encuestas</a></li>
+											<ligv id="menu-academico-avaliacoes" ><a href="<?php echo e(utf8_encode(asset('grupoviaje/listadogrupos'))); ?>"> Grupo de viajes</a></li>
+											<li id="menu-academico-boletim" ><a href="<?php echo e(utf8_encode(asset('turismoreceptor/listadoencuestas'))); ?>">Listado de encuestas</a></li>
 											
 											
 										  </ul>
 										</li>
 										 <li id="menu-academico" ><a href="#"> <span>Turismo Interno y Emisor</span></a>
 											 <ul id="menu-academico-sub" >
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('temporada')); ?>">Temporada</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(utf8_encode(asset('temporada'))); ?>">Temporada</a></li>
 												
 										
 											  </ul>
@@ -311,23 +311,23 @@
 								
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
-										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administrarpaises')); ?>">Paises</a></li>
-										    <li id="menu-academico-boletim" ><a href="<?php echo e(asset('administrardepartamentos')); ?>">Departamentos</a></li>
-											<li id="menu-academico-boletim" ><a href="<?php echo e(asset('administrarmunicipios')); ?>">Municipios</a></li>
+										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(utf8_encode(asset('administrarpaises'))); ?>">Paises</a></li>
+										    <li id="menu-academico-boletim" ><a href="<?php echo e(utf8_encode(asset('administrardepartamentos'))); ?>">Departamentos</a></li>
+											<li id="menu-academico-boletim" ><a href="<?php echo e(utf8_encode(asset('administrarmunicipios'))); ?>">Municipios</a></li>
 											
 										  </ul>
 									 </li>
 								
 									 	<li id="menu-academico" ><a href="#"><span>Muestra Maestra</span> </span></a>
 										  <ul id="menu-academico-sub" >
-										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('MuestraMaestra/periodos')); ?>">Crear</a></li>
-										    <li id="menu-academico-boletim" ><a href="<?php echo e(asset('importarRnt')); ?>">Importar</a></li>
+										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(utf8_encode(asset('MuestraMaestra/periodos'))); ?>">Crear</a></li>
+										    <li id="menu-academico-boletim" ><a href="<?php echo e(utf8_encode(asset('importarRnt'))); ?>">Importar</a></li>
 									
 											
 										  </ul>
 									 </li>
 									 
-							        <li id="menu-academico" ><a href="<?php echo e(asset('encuesta/listado')); ?>"> <span>Encuetas ADHOC</span></a>
+							        <li id="menu-academico" ><a href="<?php echo e(utf8_encode(asset('encuesta/listado'))); ?>"> <span>Encuetas ADHOC</span></a>
 							
 									 </li>
 								
@@ -349,54 +349,54 @@
     
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="<?php echo e(secure_asset('/js/plugins/angular.min.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(secure_asset('/js/plugins/angular.min.js'))); ?>"></script>
         
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-        <!--<script src="<?php echo e(secure_asset('/Content/bootstrap_material/dist/js/material.min.js')); ?>"></script>
-        <script src="<?php echo e(secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')); ?>"></script>-->
+        <!--<script src="<?php echo e(utf8_encode(secure_asset('/Content/bootstrap_material/dist/js/material.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js'))); ?>"></script>-->
         
         
-        <script src="<?php echo e(secure_asset('/js/moment-with-locales.min.js')); ?>"></script>
-        <script src="<?php echo e(secure_asset('/js/bootstrap-datetimepicker.min.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(secure_asset('/js/moment-with-locales.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(secure_asset('/js/bootstrap-datetimepicker.min.js'))); ?>"></script>
         
         
         <script>
             $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
         </script>
        
-        <script src="<?php echo e(asset('/js/plugins/bootstrap.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/material.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/ripples.min.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/bootstrap.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/material.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/ripples.min.js'))); ?>"></script>
         
-        <script src="<?php echo e(asset('/js/plugins/checklist-model.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/sweetalert.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/selectjp.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/ng-map.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/object-table.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/checklist-model.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/angular-filter.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/angular-repeat-n.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/sweetalert.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/selectjp.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/ng-map.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/object-table.js'))); ?>"></script>
         
-        <script src="<?php echo e(asset('/js/plugins/ADM-dateTimePicker.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/select.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/angular-sanitize.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/lf-ng-md-file-input.min.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/ADM-dateTimePicker.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/select.min.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/dir-pagination.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/angular-sanitize.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/plugins/lf-ng-md-file-input.min.js'))); ?>"></script>
         
-        <script src="<?php echo e(asset('/js/administrador/administrador.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/administrador/temporadas.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/administrador/grupo_viaje.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/administrador/grupoViajeServices.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/administrador/administrador.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/administrador/temporadas.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/administrador/grupo_viaje.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/administrador/grupoViajeServices.js'))); ?>"></script>
         
-        <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/services/receptorServices.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/encuestas/turismoReceptor/listadoEncuestas.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/encuestas/turismoReceptor/services/receptorServices.js'))); ?>"></script>
         
-        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadPst/listado.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadPst/services.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/encuestas/sostenibilidadPst/listado.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/encuestas/sostenibilidadPst/services.js'))); ?>"></script>
         
-        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadHogar/listado.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/encuestas/sostenibilidadHogar/services.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/administrador/noticias/noticias.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/administrador/noticias/noticiaServices.js')); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/encuestas/sostenibilidadHogar/listado.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/encuestas/sostenibilidadHogar/services.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/administrador/noticias/noticias.js'))); ?>"></script>
+        <script src="<?php echo e(utf8_encode(asset('/js/administrador/noticias/noticiaServices.js'))); ?>"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
@@ -410,36 +410,7 @@
         </div>
        
    
-    <script src="<?php echo e(asset('/js/plugins/angular.min.js')); ?>"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="<?php echo e(asset('/Content/bootstrap_material/dist/js/material.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/Content/bootstrap_material/dist/js/ripples.min.js')); ?>"></script>
-    <script>
-        $.material.init();
-    </script>
-    <script src="<?php echo e(asset('/js/plugins/checklist-model.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/select.min.js')); ?>" type="text/javascript"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/plugins/ADM-dateTimePicker.min.js')); ?>" type="text/javascript"></script>
-    <script src="<?php echo e(asset('/js/plugins/angular-sanitize.js')); ?>" type="text/javascript"></script>
-    <script src="<?php echo e(asset('/js/plugins/object-table.js')); ?>" type="text/javascript"></script>
-    <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
-    
-    <script src="<?php echo e(asset('/js/usuarios/usuarios.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/services/usuarioServices.js')); ?>"></script>
-    
-    <script src="<?php echo e(asset('/js/administrador/administrador.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/administrador/grupo_viaje.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/administrador/grupoViajeServices.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/administrador/temporadas.js')); ?>"></script>
-  
-    <script src="<?php echo e(asset('/js/importacionRnt/importarRnt.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/importacionRnt/proveedorService.js')); ?>"></script>
-    
+   
     
     
     <script>

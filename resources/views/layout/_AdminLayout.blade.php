@@ -410,36 +410,7 @@
         </div>
        
    
-    <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="{{asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
-    <script src="{{asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>
-    <script>
-        $.material.init();
-    </script>
-    <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
-    <script src="{{asset('/js/plugins/select.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
-    <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
-    <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('/js/plugins/angular-sanitize.js')}}" type="text/javascript"></script>
-    <script src="{{asset('/js/plugins/object-table.js')}}" type="text/javascript"></script>
-    <script src="{{asset('/js/sweetalert.min.js')}}"></script>
-    <script src="{{asset('/js/dir-pagination.js')}}"></script>
-    
-    <script src="{{asset('/js/usuarios/usuarios.js')}}"></script>
-    <script src="{{asset('/js/services/usuarioServices.js')}}"></script>
-    
-    <script src="{{asset('/js/administrador/administrador.js')}}"></script>
-    <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
-    <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
-    <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
-  
-    <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
-    <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
-    
+   
     
     
     <script>
