@@ -9,6 +9,17 @@ situr.config(['ADMdtpProvider', function (ADMdtp) {
 }]);
 
 situr.controller('listadoEncuestasCtrl', ['$scope','grupoViajeServi', function ($scope,receptorServi) {
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
     $scope.prop = {
         search:''
     }
@@ -16,6 +27,7 @@ situr.controller('listadoEncuestasCtrl', ['$scope','grupoViajeServi', function (
     receptorServi.getEncuestas().then(function (data) {
         $scope.encuestas = data;
         for (var i = 0; i < $scope.encuestas.length; i++) {
+            $scope.encuestas[i].fechaaplicacion = "'"+formatDate($scope.encuestas[i].fechaaplicacion+"'");
               if ($scope.encuestas[i].estadoid > 0 && $scope.encuestas[i].estadoid < 7) {
                   $scope.encuestas[i].Filtro = 'sincalcular';
               } else {

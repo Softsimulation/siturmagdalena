@@ -107,7 +107,7 @@
                             <td>@{{item.id}}</td>
                             <td>@{{item.idgrupo}}</td>
                             <td>@{{item.lugaraplicacion}}</td>
-                            <td>@{{item.fechaaplicacion| date:'dd-MM-yyyy'}}</td>
+                            <td>@{{item.fechaaplicacion | date:'dd-MM-yyyy'}}</td>
                             <td>@{{item.fechallegada | date:'dd-MM-yyyy'}}</td>
                             <td>@{{item.username}}</td>
                             <td>@{{item.estado}}</td>

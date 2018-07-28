@@ -81,7 +81,17 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
 }])
 
 .controller('index_grupo', ['$scope', 'grupoViajeServi','$filter',function ($scope, grupoViajeServi, $filter) {
-    
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [day, month, year ].join('/');
+    }
     $scope.grupos = [];
     $scope.prop = {
         search: '',
@@ -93,6 +103,9 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
     $("body").attr("class", "charging");
     grupoViajeServi.listadoGrupos().then(function (data) {
         $scope.grupos = data;
+        for(var i=0;i<$scope.grupos.length;i++){
+            $scope.grupos[i].fecha_aplicacion = formatDate($scope.grupos[i].fecha_aplicacion);
+        }
         $("body").attr("class", "cbp-spmenu-push");
     }).catch(function () {
         $("body").attr("class", "cbp-spmenu-push");
