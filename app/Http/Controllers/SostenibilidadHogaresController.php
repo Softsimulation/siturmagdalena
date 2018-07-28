@@ -140,8 +140,6 @@ class SostenibilidadHogaresController extends Controller
 		$casa->direccion = $request->direccion;
 		$casa->celular = $request->celular;
 		$casa->email = $request->email;
-		$casa->estado_encuesta_id = 1;
-		$casa->numero_sesion = 1;
 		$casa->save();
 		
 		Historial_Encuesta_Hogar_Sostenibilidad::create([
@@ -501,8 +499,8 @@ class SostenibilidadHogaresController extends Controller
 		
 		$componente->save();
 		
-		if($casa->numero_seccion == 1){
-			$casa->numero_seccion = 2;
+		if($casa->numero_sesion == 1){
+			$casa->numero_sesion = 2;
 			$casa->estado_encuesta_id = 2;
 			$casa->save();
 			
@@ -696,8 +694,8 @@ class SostenibilidadHogaresController extends Controller
 		$casa->save();
 		$componente->save();
 		
-		if($casa->numero_seccion == 2){
-			$casa->numero_seccion = 3;
+		if($casa->numero_sesion == 2){
+			$casa->numero_sesion = 3;
 			$casa->estado_encuesta_id = 2;
 			$casa->save();
 			
@@ -906,8 +904,8 @@ class SostenibilidadHogaresController extends Controller
 		$encuesta->autorizacion = $request->autorizacion;
 		$encuesta->save();
 		
-		if($encuesta->numero_seccion == 3){
-			$encuesta->numero_seccion = 4;
+		if($encuesta->numero_sesion == 3){
+			$encuesta->numero_sesion = 4;
 			$encuesta->estado_encuesta_id = 3;
 			$encuesta->save();
 			

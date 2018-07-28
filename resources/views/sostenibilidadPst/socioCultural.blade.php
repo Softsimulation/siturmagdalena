@@ -431,7 +431,7 @@
         
         <div class="panel panel-success" ng-if="encuesta.esquemasAccesibles.indexOf(7) == -1">
             <div class="panel-heading p3">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.8.2 ¿Conoce usted las herramientas (software) que ha implementado el MinTIC para que las personas con discapacidad visual, auditiva y con sorda ceguera tengan acceso a las tecnologías de información y comunicación (TIC)? </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.8.2 ¿Conoce usted las herramientas (software) que ha implementado el MinTIC para que las personas con discapacidad visual, auditiva y con sordoceguera tengan acceso a las tecnologías de información y comunicación (TIC)? </b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">

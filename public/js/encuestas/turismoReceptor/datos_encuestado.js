@@ -5,6 +5,7 @@ angular.module('encuestas.datos_encuestado', [])
     $scope.departamentod = {};
     
     $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
         receptorServi.informacionCrear().then(function (data) {
             $scope.grupos = data.grupos;
             $scope.encuestadores = data.encuestadores;
@@ -13,7 +14,10 @@ angular.module('encuestas.datos_encuestado', [])
             $scope.motivos = data.motivos;
             $scope.medicos = data.medicos;
             $scope.departamentos_colombia = data.departamentos;
+            $scope.ocupaciones = data.ocupaciones;
+            $("body").attr("class", "");
         }).catch(function () {
+            $("body").attr("class", "");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         });
     })
@@ -140,6 +144,7 @@ angular.module('encuestas.datos_encuestado', [])
                 $scope.pais_residencia = data.visitante.Pais;
                 $scope.departamento = data.visitante.Departamento;
                 $scope.departamentod.id = data.visitante.DepartamentoDestino;
+                $scope.ocupaciones = data.ocupaciones;
                 fechal = data.visitante.Llegada.split('-');
                 fechas = data.visitante.Salida.split('-');
                 $scope.encuesta.Llegada = new Date(fechal[0], (parseInt(fechal[1]) - 1), fechal[2]);

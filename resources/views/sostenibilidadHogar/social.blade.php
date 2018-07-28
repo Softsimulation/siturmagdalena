@@ -340,14 +340,14 @@
                                             @{{item.nombre}} <input type="text" name="otroFactor1" ng-required="verificarOtroTabla(factores,11)" class="form-control" ng-if="item.id==11" ng-model="item.otroFactor1" >
                                              <span class="label label-danger" ng-if="item.id==11"  ng-show="socialForm.otroFactor1.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td ng-repeat="cal in calificacionFactor">
+                                        <td ng-repeat="cal in calificacionFactor" style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_1_@{{item.id}}" value="@{{cal.id}}" ng-model="item.calificacion">       
                                                 </label>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_1_@{{item.id}}" ng-value="null" ng-model="item.calificacion" >       
@@ -563,21 +563,21 @@
                                             @{{item.nombre}} <input type="text" name="otroFactor3" ng-required="verificarOtroTabla(factoresPositivos,36)" class="form-control" ng-if="item.id==36" ng-model="item.otroFactor3" >
                                              <span class="label label-danger" ng-if="item.id==36"  ng-show="socialForm.otroFactor3.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_3_@{{item.id}}" ng-value="true" ng-model="item.calificacion" >       
                                                 </label>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_3_@{{item.id}}" ng-value="false" ng-model="item.calificacion" >       
                                                 </label>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="factor_3_@{{item.id}}" ng-value="null"  ng-model="item.calificacion"  >       
@@ -647,7 +647,7 @@
                                             <span class="label label-danger" ng-show="socialForm.beneficioB@{{item.id}}.$error.required && socialForm.$submitted">* Requerido.</span>
                                             <span class="label label-danger" ng-if="item.id==6"  ng-show="socialForm.otroBB.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td ng-repeat="cal in calificacionFactor">
+                                        <td ng-repeat="cal in calificacionFactor" style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="beneficioB@{{item.id}}" ng-value="cal.id" ng-model="item.calificacion" ng-required="item.id != 6" >       
@@ -675,7 +675,7 @@
                                             <span class="label label-danger" ng-show="socialForm.beneficioA@{{item.id}}.$error.required && socialForm.$submitted">* Requerido.</span>
                                             <span class="label label-danger" ng-if="item.id==12"  ng-show="socialForm.beneficioAlto.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>
-                                        <td ng-repeat="cal in calificacionFactor">
+                                        <td ng-repeat="cal in calificacionFactor" style="text-align: center;">
                                             <div class="radio radio-primary">
                                                 <label>
                                                     <input type="radio" name="beneficioA@{{item.id}}" ng-value="cal.id" ng-model="item.calificacion" ng-required="item.id != 12" >       

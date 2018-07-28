@@ -57,7 +57,7 @@ class SostenibilidadPstController extends Controller
     
     public function postGuardarconfiguracion(Request $request){
         $validator = \Validator::make($request->all(), [
-			'fechaAplicacion' => 'required|date',
+			'fechaAplicacion' => 'required',
 			'lugar_encuesta' => 'required|max:255',
 			'nombre_contacto' => 'required|max:255',
 			'cargo' => 'required|max:255',
@@ -134,7 +134,7 @@ class SostenibilidadPstController extends Controller
     public function postGuardareditarencuesta(Request $request){
     	$validator = \Validator::make($request->all(), [
     		'id' => 'required|exists:encuestas_pst_sostenibilidad,id',
-			'fechaAplicacion' => 'required|date',
+			'fechaAplicacion' => 'required',
 			'lugar_encuesta' => 'required|max:255',
 			'nombre_contacto' => 'required|max:255',
 			'cargo' => 'required|max:255',
@@ -820,7 +820,7 @@ class SostenibilidadPstController extends Controller
 		$validator = \Validator::make($request->all(), [
 			'pst_id' => 'required|exists:encuestas_pst_sostenibilidad,id',
 			'es_positivo' => 'required',
-			'porcentaje' => 'required|numeric',
+			'porcentaje' => 'required|numeric|max:100',
 			'clasificacionesProveedor' => 'required',
 			'clasificacionesProveedor.*' => 'exists:clasificaciones_proveedores,id',
 			'aspectosSeleccion' => 'required',
@@ -850,6 +850,13 @@ class SostenibilidadPstController extends Controller
 		}
 		if(in_array(12,$request->beneficiosEconomicos) && !isset($request->otroEconomico) ){
 			return ["success" => false, "errores" => [["El campo otro en la pregunta 27 es requerido."]] ];
+		}
+		
+		if(count($request->aspectosSeleccion) != 2){
+			return ["success" => false, "errores" => [["En la pregunta 24.2 solo debe seleccionar dos opciones."]] ];
+		}
+		if(count($request->beneficiosEconomicos) != 3){
+			return ["success" => false, "errores" => [["En la pregunta 27 solo debe seleccionar tres opciones."]] ];
 		}
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
