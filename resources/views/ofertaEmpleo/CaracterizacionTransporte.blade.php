@@ -196,7 +196,7 @@
 
         <div class="row" style="text-align:center">
            
-            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="@Resource.EncuestaBtnSiguiente" ng-disabled="(transporte.Aereo == undefined || transporte.Aereo == false) && (transporte.Terrestre == undefined || transporte.Terrestre == false) && (transporte.Maritimo == undefined || transporte.Maritimo == false)"/>
+            <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" ng-disabled="(transporte.Aereo == undefined || transporte.Aereo == false) && (transporte.Terrestre == undefined || transporte.Terrestre == false) && (transporte.Maritimo == undefined || transporte.Maritimo == false)"/>
         </div>
     </form>
     <div class='carga'>

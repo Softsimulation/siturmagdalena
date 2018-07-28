@@ -256,6 +256,7 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
 <script src="{{asset('/js/administrador/municipios/municipiosController.js')}}"></script>
 <script src="{{asset('/js/administrador/municipios/services.js')}}"></script>
 <script src="{{asset('/js/administrador/municipios/app.js')}}"></script>

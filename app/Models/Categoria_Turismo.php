@@ -70,7 +70,7 @@ class Categoria_Turismo extends Model
      */
     public function categoriaTurismoConActividades()
     {
-        return $this->hasMany('App\Models\CategoriaTurismoConActividade');
+        return $this->belongsToMany('App\Models\Categoria_Turismo_Con_Actividad', 'categoria_turismo_con_actividades', 'categoria_turismo_id', 'actividades_id');
     }
 
     /**

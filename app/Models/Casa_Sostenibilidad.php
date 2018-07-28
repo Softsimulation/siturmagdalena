@@ -45,7 +45,7 @@ class Casa_Sostenibilidad extends Model
     /**
      * @var array
      */
-    protected $fillable = ['barrio_id', 'estrato_id', 'fecha_aplicacion', 'nombre_encuestado', 'direccion', 'sexo', 'celular', 'email', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion'];
+    protected $fillable = ['barrio_id', 'estrato_id', 'fecha_aplicacion', 'nombre_encuestado', 'direccion', 'sexo', 'celular', 'email', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion','numero_sesion'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

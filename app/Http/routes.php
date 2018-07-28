@@ -28,15 +28,19 @@ Route::controller('/grupoviaje','GrupoViajeController');
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 
+Route::get('/administradoratracciones/datos-idioma/{id}/{idIdioma}', 'AdministradorAtraccionController@getDatosIdioma');
+
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
+
+Route::controller('/administradoractividades', 'AdministradorActividadesController');
+
+Route::controller('/administradordestinos', 'AdministradorDestinosController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
 Route::controller('/importarRnt','ImportacionRntController');
-
-//Route::resource('administrardepartamentos/importexcel', 'AdministrarDepartamentosController@postImportexcel');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');

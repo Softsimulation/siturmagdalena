@@ -293,7 +293,7 @@
                            <div class="menu">
 									<ul id="menu" >
 										
-										 <li id="menu-academico" ><a href="#"><i class="fa fa-table"></i> <span> Turismo Receptor</span></span></a>
+										 <li id="menu-academico" ><a href="#"> <span>Turismo Receptor</span></span></a>
 										   <ul id="menu-academico-sub" >
 											<ligv id="menu-academico-avaliacoes" ><a href="{{asset('grupoviaje/listadogrupos')}}"> Grupo de viajes</a></li>
 											<li id="menu-academico-boletim" ><a href="{{asset('turismoreceptor/listadoencuestas')}}">Listado de encuestas</a></li>
@@ -301,14 +301,22 @@
 											
 										  </ul>
 										</li>
-										 <li id="menu-academico" ><a href="#"> <span>Turismo Interno y Emisor</span></a>
+										 <!--<li id="menu-academico" ><a href="{{asset('temporada')}}"> <span>Turismo Interno y Emisor</span></a>
+										
+										 </li>-->
+										 
+									<li id="menu-academico" ><a href="#"> <span>Oferta y Empleo</span></a>
 											 <ul id="menu-academico-sub" >
-												<li id="menu-academico-avaliacoes" ><a href="{{asset('temporada')}}">Temporada</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/1')}}">Alojamiento</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/2')}}">Restaurante</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/3')}}">Agencia operadoras</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/4')}}">Agencia de viajes</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/5')}}">Alquiler de vehiculo</a></li>
+												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/6')}}">Transporte</a></li>
 												
 										
 											  </ul>
 										 </li>
-								
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administrarpaises')}}">Paises</a></li>
@@ -349,7 +357,7 @@
     
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="{{secure_asset('/js/plugins/angular.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
         
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
         <!--<script src="{{secure_asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
@@ -365,47 +373,40 @@
         </script>
        
         <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/material.min.js')}}"></script>
         <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>
         
-        <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
-        <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
-        <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/selectjp.js')}}"></script>
-        <script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/object-table.js')}}"></script>
+        <!--<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/angular-filter.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/selectjp.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/object-table.js')}}"></script>-->
         
-        <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
-        <script src="{{asset('/js/plugins/select.min.js')}}"></script>
-        <script src="{{asset('/js/dir-pagination.js')}}"></script>
-        <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
-        <script src="{{asset('/js/plugins/lf-ng-md-file-input.min.js')}}"></script>
+        <!--<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/select.min.js')}}"></script>-->
+        <!--<script src="{{asset('/js/dir-pagination.js')}}"></script>-->
+        <!--<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>-->
+      
         
         <script src="{{asset('/js/administrador/administrador.js')}}"></script>
-        <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
+       
         <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
         <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
         
         <script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
         <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
         
-        <script src="{{asset('/js/encuestas/sostenibilidadPst/listado.js')}}"></script>
-        <script src="{{asset('/js/encuestas/sostenibilidadPst/services.js')}}"></script>
+       
         
-        <script src="{{asset('/js/encuestas/sostenibilidadHogar/listado.js')}}"></script>
-        <script src="{{asset('/js/encuestas/sostenibilidadHogar/services.js')}}"></script>
-        <script src="{{asset('/js/administrador/noticias/noticias.js')}}"></script>
-        <script src="{{asset('/js/administrador/noticias/noticiaServices.js')}}"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+       
+        
+       
+        
     		
     	    
     	    
-    	    <script src="/js/plugins/ckeditor/ckeditor.js"></script>
-		    <script src="/js/plugins/ckeditor/ngCkeditor-v2.0.1.js"></script>
+    	  
 
         </div>
        

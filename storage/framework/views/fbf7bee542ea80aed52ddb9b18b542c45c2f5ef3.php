@@ -67,7 +67,7 @@
                 <!-- P1. Grupo de Viaje-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Grupo de Viaje</b></h3>
             </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
+            <div class="panel-footer"><b>Presione aquí para desplegar los grupos de viaje</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -158,7 +158,7 @@
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-8 col-md-8">
                         <div class="form-group">
                             <!--P4P1. Nombre del Encuestado-->
                             <label for="inputNombreEncuestado" class="col-xs-12 control-label">Nombre del Encuestado</label>
@@ -173,6 +173,17 @@
                             </div>
                         </div>
 
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label for="ocupacion_persona_id" class="col-xs-12 control-label">Ocupación</label>
+                            <div class="col-xs-12">
+                                <select class="form-control" id="ocupacion_persona_id" ng-options="item.id as item.nombre for item in ocupaciones" ng-model="encuesta.ocupacion_persona_id" name="ocupacion_persona_id" required>
+                                    <option value="" disabled>Seleccione ocupación</option>
+                                </select>
+                                <span class="label label-danger" ng-show="(DatosForm.$submitted || DatosForm.ocupacion_persona_id.$touched)  && DatosForm.ocupacion_persona_id.$error.required">*El campo es requerido</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -369,7 +380,7 @@
         <div class="panel panel-success" ng-if="pais_residencia != 47">
             <div class="panel-heading p1">
                 <!-- P5. ¿Cual fue su destino principal en colombia?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cual fue su destino principal en colombia?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue su destino principal en Colombia?</b></h3>
             </div>
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
@@ -416,7 +427,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P6. ¿Cuál fué el motivo principal para venir al departamento del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fué el motivo principal para venir al departamento del Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue el motivo principal para venir al departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">

@@ -36,7 +36,30 @@ class ImportacionRntController extends Controller
         $reader = \CsvReader::open($request->soporte, ';');
         $header = $reader->getHeader();
 		
-		$cabeceras = ["Numero del RNT","Estado","Municipio","Departamento","Nombre Comercial RNT","Nombre Comercial Plataforma","Categoria","Subcategoria","Direccion Comercial","Telefono","Celular","Correo Electronico","Latitud","Longitud"];
+		$cabeceras = [
+			"Numero del RNT",
+			"Estado",
+			"Municipio",
+			"Nombre Comercial RNT",
+			"NIT",
+			"Digito de Verificacion",
+			"Nombre Gerente",
+			"Categoria",
+			"Subcategoria",
+			"Direccion Comercial",
+			"Telefono",
+			"Celular",
+			"Correo Electronico",
+			"Ultimo Anio Act RNT",
+			"Sostenibilidad Turistica",
+			"Turismo Aventura",
+			"hab2",
+			"cam2",
+			"emp2",
+			"Latitud",
+			"Longitud",
+			"Nombre Comercial Plataforma",
+		];
 		
 		if($cabeceras != $header){
 		    return ["success" => false, "errores" => [["Verifique que las cabeceras cumplen con los requisitos del archivo."]] ];
@@ -48,8 +71,6 @@ class ImportacionRntController extends Controller
 		if(count($arreglo) > 2000){
 			return ["success" => false, "errores" => [["El documento debe tener no más de 2000 registros."]] ];
 		}
-		
-		//dd($arreglo[0]);
 		
 		$proveedoresIngresados = ProveedoresRntVista::all();
 		$rntproveedores = $proveedoresIngresados->pluck('numero_rnt')->toArray();
@@ -64,9 +85,17 @@ class ImportacionRntController extends Controller
 		foreach($nuevos as $registro){
 			$registro = $this->MutarRegistro($registro);
 		    $validar = $this->validarRegistro($registro,$estadosProveedor,$subCategorias,$municipios);
-		    if($validar['success']){
-		    	$registro = $validar["registro"];
-		        $proveedorCrear = Proveedores_rnt::create([
+		    $registro = $validar['success'] ? $validar["registro"] : $registro;
+		    
+		    $similar = $proveedoresIngresados->filter(function($value, $key)use($registro){
+		    	return $value['nit'] == $registro['nit'] || ( $value['digito_verificacion'] == $registro['digito_verificacion'] && $value['digito_verificacion'] != 0 && $value['digito_verificacion'] != null ) || ($value['correo'] == $registro['correo'] && strpos($value['correo'], '@') !== false);
+		    })->first();
+		    
+		    $registro['es_correcto'] = $validar['success'] ? 1 : 0;
+		    $registro['campos'] = $validar['campos'];
+		    
+		    if($validar['success'] && !$similar){
+	    		$proveedorCrear = Proveedores_rnt::create([
 	        		"categoria_proveedores_id" => $registro["categoria_proveedores_id"],
 	        		"estados_proveedor_id" => $registro["estados_proveedor_id"],
 	        		"municipio_id" => $registro["municipio_id"],
@@ -78,6 +107,15 @@ class ImportacionRntController extends Controller
 	        		"email" => $registro["correo"],
 	        		"latitud" => isset($registro["latitud"]) ? $registro["latitud"] : null,
 	        		"longitud" => isset($registro["longitud"]) ? $registro["longitud"] : null,
+	        		"nit" => isset($registro["nit"]) ? $registro["nit"] : null,
+	        		"digito_verificacion" => isset($registro["digito_verificacion"]) ? $registro["digito_verificacion"] : null,
+	        		"nombre_gerente" => isset($registro["nombre_gerente"]) ? $registro["nombre_gerente"] : null,
+	        		"ultimo_anio_rnt" => isset($registro["ultimo_anio_rnt"]) ? $registro["ultimo_anio_rnt"] : null,
+	        		"sostenibilidad_rnt" => isset($registro["sostenibilidad_rnt"]) ? $registro["sostenibilidad_rnt"] : null,
+	        		"turismo_aventura" => isset($registro["turismo_aventura"]) ? $registro["turismo_aventura"] : null,
+	        		"hab2" => isset($registro["hab2"]) ? $registro["hab2"] : null,
+	        		"cam2" => isset($registro["cam2"]) ? $registro["cam2"] : null,
+	        		"emp2" => isset($registro["emp2"]) ? $registro["emp2"] : null,
 	        		"estado" => 1,
 	        		"user_create" => "MM",
 	        		"user_update" => "MM",
@@ -95,14 +133,20 @@ class ImportacionRntController extends Controller
 			    			'nombre' => $registro["nombre_comercial_plataforma"]
 			    		]);
 					}	
-	        	}
-	        	
+	        	}	
+		    	
 		        $registro['id'] = $proveedorCrear->id;
-		        $registro['es_correcto'] = 1;
-		    }else{
-		        $registro['es_correcto'] = 0;
-		        $registro['campos'] = $validar['campos'];
 		    }
+		    
+		    
+		    if($similar){
+		    	$registro = $this->MutarEditarRegistro($registro,$similar);
+		    	$registro['id'] = $similar->id;
+	    		$registro['es_similar'] = 1;
+		    }else{
+		    	$registro['es_similar'] = 0;
+		    }
+		    
 		    array_push($nuevos_retornar, $registro);
 		}
         
@@ -129,7 +173,7 @@ class ImportacionRntController extends Controller
 			'numero_rnt' => 'required|max:50|unique:proveedores_rnt,numero_rnt,'.$request->id,
 			'estado' => 'required|max:255',
 			'municipio' => 'required|max:255',
-			'departamento' => 'required|max:255',
+			//'departamento' => 'required|max:255',
 			'nombre_comercial' => 'required|max:455',
 			'nombre_comercial_plataforma' => 'required|max:455',
 			'categoria' => 'required|max:255',
@@ -139,11 +183,19 @@ class ImportacionRntController extends Controller
 			'celular' => 'required|max:255',
 			'correo' => 'required|max:455',
 			'latitud' => 'required',
-			'longitud' => 'required'
+			'longitud' => 'required',
+			'nit' => 'max:150',
+			'nombre_gerente' => 'max:250',
+			'sostenibilidad_rnt' => 'max:50',
+			'turismo_aventura' => 'max:50',
+			'digito_verificacion' => 'required',
+			'ultimo_anio_rnt' => 'required',
+			'hab2' => 'required',
+			'cam2' => 'required',
+			'emp2' => 'required',
     	],[
        		'id.required' => 'Debe seleccionar el registro a editar.',
        		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
-       		
     	]);
        
     	if($validator->fails()){
@@ -175,8 +227,17 @@ class ImportacionRntController extends Controller
 		$proveedor->telefono = $request->telefono;
 		$proveedor->celular = $request->celular;
 		$proveedor->email = $request->correo;
-		$proveedor->latitud = $request->latitud;
-		$proveedor->longitud = $request->longitud;
+		$proveedor->latitud = isset($request->latitud) ? $request->latitud : $proveedor->latitud;
+		$proveedor->longitud = isset($request->longitud) ? $request->longitud : $proveedor->longitud;
+		$proveedor->nit = isset($request->nit) ? $request->nit : null;
+		$proveedor->digito_verificacion = isset($request->digito_verificacion) ? $request->digito_verificacion : null;
+		$proveedor->nombre_gerente = isset($request->nombre_gerente) ? $request->nombre_gerente : null;
+		$proveedor->ultimo_anio_rnt = isset($request->ultimo_anio_rnt) ? $request->ultimo_anio_rnt : null;
+		$proveedor->sostenibilidad_rnt = isset($request->sostenibilidad_rnt) ? $request->sostenibilidad_rnt : null;
+		$proveedor->turismo_aventura = isset($request->turismo_aventura) ? $request->turismo_aventura : null;
+		$proveedor->hab2 = isset($request->hab2) ? $request->hab2 : null;
+		$proveedor->cam2 = isset($request->cam2) ? $request->cam2 : null;
+		$proveedor->emp2 = isset($request->emp2) ? $request->emp2 : null;
 		$proveedor->user_update = "MM";
 		$proveedor->save();
 		
@@ -199,8 +260,8 @@ class ImportacionRntController extends Controller
 		$objeto["estado2"] = $request->estado;
 		$objeto["municipio"] = $request->municipio;
 		$objeto["municipio2"] = $request->municipio;
-		$objeto["departamento"] = $request->departamento;
-		$objeto["departamento2"] = $request->departamento;
+		// $objeto["departamento"] = $request->departamento;
+		// $objeto["departamento2"] = $request->departamento;
 		$objeto["nombre_comercial"] = $request->nombre_comercial;
 		$objeto["nombre_comercial2"] = $request->nombre_comercial;
 		$objeto["nombre_comercial_plataforma"] = $request->nombre_comercial_plataforma;
@@ -222,6 +283,28 @@ class ImportacionRntController extends Controller
 		$objeto["longitud"] = $request->longitud;
 		$objeto["longitud2"] = $request->longitud;
 		
+		$objeto["nit"] = $request->nit;
+		$objeto["nit2"] = $request->nit;
+		$objeto["digito_verificacion"] = $request->digito_verificacion;
+		$objeto["digito_verificacion2"] = $request->digito_verificacion;
+		$objeto["nombre_gerente"] = $request->nombre_gerente;
+		$objeto["nombre_gerente2"] = $request->nombre_gerente;
+		$objeto["ultimo_anio_rnt"] = $request->ultimo_anio_rnt;
+		$objeto["ultimo_anio_rnt2"] = $request->ultimo_anio_rnt;
+		$objeto["sostenibilidad_rnt"] = $request->sostenibilidad_rnt;
+		$objeto["sostenibilidad_rnt2"] = $request->sostenibilidad_rnt;
+		$objeto["turismo_aventura"] = $request->turismo_aventura;
+		$objeto["turismo_aventura2"] = $request->turismo_aventura;
+		$objeto["hab2"] = $request->hab2;
+		$objeto["hab22"] = $request->hab2;
+		$objeto["cam2"] = $request->cam2;
+		$objeto["cam22"] = $request->cam2;
+		$objeto["emp2"] = $request->emp2;
+		$objeto["emp22"] = $request->emp2;
+		
+		$objeto['es_correcto'] = 1;
+		$objeto['es_similar'] = 0;
+		
         return ["success" => true, 'proveedor' => $objeto];
     }
     
@@ -230,7 +313,7 @@ class ImportacionRntController extends Controller
 			'numero_rnt' => 'required|max:50|unique:proveedores_rnt,numero_rnt',
 			'estado' => 'required|max:255',
 			'municipio' => 'required|max:255',
-			'departamento' => 'required|max:255',
+			// 'departamento' => 'required|max:255',
 			'nombre_comercial' => 'required|max:455',
 			'nombre_comercial_plataforma' => 'required|max:455',
 			'categoria' => 'required|max:255',
@@ -240,7 +323,16 @@ class ImportacionRntController extends Controller
 			'celular' => 'required|max:255',
 			'correo' => 'required|max:455',
 			'latitud' => 'required',
-			'longitud' => 'required'
+			'longitud' => 'required',
+			'nit' => 'required|max:150',
+			'nombre_gerente' => 'required|max:250',
+			'sostenibilidad_rnt' => 'required|max:50',
+			'turismo_aventura' => 'required|max:50',
+			'digito_verificacion' => 'required',
+			'ultimo_anio_rnt' => 'required',
+			'hab2' => 'required',
+			'cam2' => 'required',
+			'emp2' => 'required',
     	],[
        		'id.required' => 'Debe seleccionar el registro a editar.',
        		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
@@ -276,8 +368,17 @@ class ImportacionRntController extends Controller
 			"telefono" => $request["telefono"],
 			"celular" => $request["celular"],
 			"email" => $request["correo"],
-			"latitud" => $request["latitud"],
-			"longitud" => $request["longitud"],
+			"latitud" => isset($request["latitud"]) ? $request["latitud"] : null,
+			"longitud" => isset($request["longitud"]) ? $request["longitud"] : null,
+			"nit" => isset($request["nit"]) ? $request["nit"] : null,
+    		"digito_verificacion" => isset($request["digito_verificacion"]) ? $request["digito_verificacion"] : null,
+    		"nombre_gerente" => isset($request["nombre_gerente"]) ? $request["nombre_gerente"] : null,
+    		"ultimo_anio_rnt" => isset($request["ultimo_anio_rnt"]) ? $request["ultimo_anio_rnt"] : null,
+    		"sostenibilidad_rnt" => isset($request["sostenibilidad_rnt"]) ? $request["sostenibilidad_rnt"] : null,
+    		"turismo_aventura" => isset($request["turismo_aventura"]) ? $request["turismo_aventura"] : null,
+    		"hab2" => isset($request["hab2"]) ? $request["hab2"] : null,
+    		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
+    		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
 			"estado" => 1,
 			"user_create" => "MM",
 			"user_update" => "MM",
@@ -289,11 +390,11 @@ class ImportacionRntController extends Controller
 			'nombre' => $request["nombre_comercial_plataforma"]
 		]);
 		
-		
+		$objeto["id"] = $proveedorCrear->id;
 		$objeto["numero_rnt"] = $request->numero_rnt;
 		$objeto["estado"] = $request->estado;
 		$objeto["municipio"] = $request->municipio;
-		$objeto["departamento"] = $request->departamento;
+		// $objeto["departamento"] = $request->departamento;
 		$objeto["nombre_comercial"] = $request->nombre_comercial;
 		$objeto["nombre_comercial_plataforma"] = $request->nombre_comercial_plataforma;
 		$objeto["categoria"] = $request->categoria;
@@ -303,8 +404,134 @@ class ImportacionRntController extends Controller
 		$objeto["celular"] = $request->celular;
 		$objeto["correo"] = $request->correo;
 		$objeto['es_correcto'] = 1;
+		$objeto['es_similar'] = 0;
 		$objeto["latitud"] = $request->latitud;
 		$objeto["longitud"] = $request->longitud;
+		$objeto["nit"] = $request->nit;
+		$objeto["digito_verificacion"] = $request->digito_verificacion;
+		$objeto["nombre_gerente"] = $request->nombre_gerente;
+		$objeto["ultimo_anio_rnt"] = $request->ultimo_anio_rnt;
+		$objeto["sostenibilidad_rnt"] = $request->sostenibilidad_rnt;
+		$objeto["turismo_aventura"] = $request->turismo_aventura;
+		$objeto["hab2"] = $request->hab2;
+		$objeto["cam2"] = $request->cam2;
+		$objeto["emp2"] = $request->emp2;
+		
+        return ["success" => true, 'proveedor' => $objeto];
+    }
+    
+    public function postCrearhabilitarproveedor(Request $request){
+    	$validator = \Validator::make($request->all(), [
+			'id' => 'required|exists:proveedores_rnt,id',
+			'numero_rnt' => 'required|max:50|unique:proveedores_rnt,numero_rnt,'.$request->id,
+			'estado' => 'required|max:255',
+			'municipio' => 'required|max:255',
+			// 'departamento' => 'required|max:255',
+			'nombre_comercial' => 'required|max:455',
+			'nombre_comercial_plataforma' => 'required|max:455',
+			'categoria' => 'required|max:255',
+			'sub_categoria' => 'required|max:255',
+			'direccion_comercial' => 'required|max:455',
+			'telefono' => 'required|max:255',
+			'celular' => 'required|max:255',
+			'correo' => 'required|max:455',
+			'latitud' => 'required',
+			'longitud' => 'required',
+			'nit' => 'max:150',
+			'nombre_gerente' => 'max:250',
+			'sostenibilidad_rnt' => 'max:50',
+			'turismo_aventura' => 'max:50',
+			'digito_verificacion' => 'required',
+			'ultimo_anio_rnt' => 'required',
+			'hab2' => 'required',
+			'cam2' => 'required',
+			'emp2' => 'required',
+    	],[
+       		'id.required' => 'Debe seleccionar el registro a editar.',
+       		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		$categoriaProveedor = Categoria_Proveedor_Con_Idioma::whereRaw('upper(nombre) = ? and idiomas_id = 1',[ $this->MayusculaTilde(utf8_encode(strtoupper($request["sub_categoria"]))) ])->first();
+		if($categoriaProveedor == null){
+			return ["success"=>false,"errores"=> [["La SubCategoría ingresada no se encuentra ingresada en el sistema."]] ];
+		}
+		
+		$municipio = Municipio::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["municipio"])))])->first();
+		if($municipio == null){
+			return ["success"=>false,"errores"=> [["El municipio ingresado no se encuentra ingresado en el sistema."]] ];
+		}
+		
+		$estado = Estado_proveedor::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["estado"])))])->first();
+		if($estado == null){
+			return ["success"=>false,"errores"=> [["El estado ingresado no se encuentra ingresado en el sistema."]] ];
+		}
+		
+		$proveedor = Proveedores_rnt::find($request->id);
+		$proveedor->estado = 0;
+		$proveedor->save();
+		
+		$proveedorCrear = Proveedores_rnt::create([
+			"categoria_proveedores_id" => $categoriaProveedor->categoria_proveedores_id,
+			"estados_proveedor_id" => $estado->id,
+			"municipio_id" => $municipio->id,
+			"razon_social" => $request["nombre_comercial"],
+			"direccion" => $request["direccion_comercial"],
+			"numero_rnt" => $request["numero_rnt"],
+			"telefono" => $request["telefono"],
+			"celular" => $request["celular"],
+			"email" => $request["correo"],
+			"latitud" => isset($request["latitud"]) ? $request["latitud"] : null,
+			"longitud" => isset($request["longitud"]) ? $request["longitud"] : null,
+			"nit" => isset($request["nit"]) ? $request["nit"] : null,
+    		"digito_verificacion" => isset($request["digito_verificacion"]) ? $request["digito_verificacion"] : null,
+    		"nombre_gerente" => isset($request["nombre_gerente"]) ? $request["nombre_gerente"] : null,
+    		"ultimo_anio_rnt" => isset($request["ultimo_anio_rnt"]) ? $request["ultimo_anio_rnt"] : null,
+    		"sostenibilidad_rnt" => isset($request["sostenibilidad_rnt"]) ? $request["sostenibilidad_rnt"] : null,
+    		"turismo_aventura" => isset($request["turismo_aventura"]) ? $request["turismo_aventura"] : null,
+    		"hab2" => isset($request["hab2"]) ? $request["hab2"] : null,
+    		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
+    		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
+			"estado" => 1,
+			"user_create" => "MM",
+			"user_update" => "MM",
+		]);
+		
+		Proveedores_rnt_idioma::create([
+			'idioma_id' => 1,
+			'proveedor_rnt_id' => $proveedorCrear->id,
+			'nombre' => $request["nombre_comercial_plataforma"]
+		]);
+		
+		$objeto["id"] = $proveedorCrear->id;
+		$objeto["numero_rnt"] = $request->numero_rnt;
+		$objeto["estado"] = $request->estado;
+		$objeto["municipio"] = $request->municipio;
+		// $objeto["departamento"] = $request->departamento;
+		$objeto["nombre_comercial"] = $request->nombre_comercial;
+		$objeto["nombre_comercial_plataforma"] = $request->nombre_comercial_plataforma;
+		$objeto["categoria"] = $request->categoria;
+		$objeto["sub_categoria"] = $request->sub_categoria;
+		$objeto["direccion_comercial"] = $request->direccion_comercial;
+		$objeto["telefono"] = $request->telefono;
+		$objeto["celular"] = $request->celular;
+		$objeto["correo"] = $request->correo;
+		$objeto['es_correcto'] = 1;
+		$objeto['es_similar'] = 0;
+		$objeto["latitud"] = $request->latitud;
+		$objeto["longitud"] = $request->longitud;
+		$objeto["nit"] = $request->nit;
+		$objeto["digito_verificacion"] = $request->digito_verificacion;
+		$objeto["nombre_gerente"] = $request->nombre_gerente;
+		$objeto["ultimo_anio_rnt"] = $request->ultimo_anio_rnt;
+		$objeto["sostenibilidad_rnt"] = $request->sostenibilidad_rnt;
+		$objeto["turismo_aventura"] = $request->turismo_aventura;
+		$objeto["hab2"] = $request->hab2;
+		$objeto["cam2"] = $request->cam2;
+		$objeto["emp2"] = $request->emp2;
 		
         return ["success" => true, 'proveedor' => $objeto];
     }
@@ -313,7 +540,7 @@ class ImportacionRntController extends Controller
         $objeto["numero_rnt"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Numero del RNT"]))) ;
         $objeto["estado"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Estado"]))) ;
         $objeto["municipio"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Municipio"]))) ;
-        $objeto["departamento"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Departamento"]))) ;
+        // $objeto["departamento"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Departamento"]))) ;
         $objeto["nombre_comercial"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Nombre Comercial RNT"]))) ;
         $objeto["nombre_comercial_plataforma"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Nombre Comercial Plataforma"]))) ;
         $objeto["categoria"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Categoria"]))) ;
@@ -322,8 +549,22 @@ class ImportacionRntController extends Controller
         $objeto["telefono"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Telefono"]))) ;
         $objeto["celular"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Celular"]))) ;
         $objeto["correo"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Correo Electronico"]))) ;
-        $objeto["longitud"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Longitud"]))) ;
-        $objeto["latitud"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Latitud"]))) ;
+        $objeto["longitud"] = floatval( $this->MayusculaTilde(utf8_encode(strtoupper($registro["Longitud"]))) );
+        $objeto["latitud"] = floatval( $this->MayusculaTilde(utf8_encode(strtoupper($registro["Latitud"]))) );
+        
+        $objeto["digito_verificacion"] = intval( $this->MayusculaTilde(utf8_encode(strtoupper($registro["Digito de Verificacion"]))) );
+        $objeto["nombre_gerente"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Nombre Gerente"])));
+        $objeto["ultimo_anio_rnt"] = intval( $this->MayusculaTilde(utf8_encode(strtoupper($registro["Ultimo Anio Act RNT"]))) );
+        $objeto["sostenibilidad_rnt"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Sostenibilidad Turistica"]))) ;
+        $objeto["turismo_aventura"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["Turismo Aventura"]))) ;
+        $objeto["hab2"] = $registro["hab2"] != "-" ? intval( $this->MayusculaTilde(utf8_encode(strtoupper($registro["hab2"]))) ) : null;
+        $objeto["cam2"] = $registro["cam2"] != "-" ? intval( $this->MayusculaTilde(utf8_encode(strtoupper($registro["cam2"]))) ) : null;
+        $objeto["emp2"] = $registro["emp2"] != "-" ? intval( $this->MayusculaTilde(utf8_encode(strtoupper($registro["emp2"]))) ) : null;
+        $objeto["nit"] = $this->MayusculaTilde(utf8_encode(strtoupper($registro["NIT"]))) ;
+        
+        $objeto["longitud"] = $objeto["longitud"] == 0 ? null : $objeto["longitud"];
+        $objeto["latitud"] = $objeto["latitud"] == 0 ? null : $objeto["latitud"];
+        
         return $objeto;
     }
     
@@ -338,7 +579,7 @@ class ImportacionRntController extends Controller
         $objeto["numero_rnt2"] = $proveedor["numero_rnt"];
         $objeto["estado2"] = $proveedor["estado"];
         $objeto["municipio2"] = $proveedor["municipio"];
-        $objeto["departamento2"] = $proveedor["departamento"];
+        // $objeto["departamento2"] = $proveedor["departamento"];
         $objeto["nombre_comercial2"] = $proveedor["nombre_comercial"];
         $objeto["nombre_comercial_plataforma2"] = $proveedor["nombre_comercial_plataforma"];
         $objeto["categoria2"] = $proveedor["categoria"];
@@ -349,6 +590,16 @@ class ImportacionRntController extends Controller
         $objeto["correo2"] = $proveedor["correo"];
         $objeto["latitud2"] = $proveedor["latitud"];
         $objeto["longitud2"] = $proveedor["longitud"];
+        $objeto["nit2"] = $proveedor["nit"];
+        $objeto["digito_verificacion2"] = $proveedor["digito_verificacion"];
+        $objeto["nombre_gerente2"] = $proveedor["nombre_gerente"];
+        $objeto["ultimo_anio_rnt2"] = $proveedor["ultimo_anio_rnt"];
+        $objeto["sostenibilidad_rnt2"] = $proveedor["sostenibilidad_rnt"];
+        $objeto["turismo_aventura2"] = $proveedor["turismo_aventura"];
+        $objeto["hab22"] = $proveedor["hab2"];
+        $objeto["cam22"] = $proveedor["cam2"];
+        $objeto["emp22"] = $proveedor["emp2"];
+        
         return $objeto;
     }
     
@@ -437,12 +688,24 @@ class ImportacionRntController extends Controller
             $campos .= "Correo Electronico requerido";
         }
         
+        if($registro["latitud"] == null || $registro["latitud"] == ""){
+            $sw = 1;
+            if(strlen($campos)>0){$campos .= ", ";}
+            $campos .= "Latitud requerido";
+        }
+        
+        if($registro["longitud"] == null || $registro["longitud"] == ""){
+            $sw = 1;
+            if(strlen($campos)>0){$campos .= ", ";}
+            $campos .= "Longitud requerido";
+        }
+        
         $campos .= ".";
         if($sw == 1){
             return ["success" => false, 'campos' => $campos];
         }
         
-        return ["success" => true, "registro" => $registro];
+        return ["success" => true, "registro" => $registro, 'campos' => null];
     }
  
     public static function MayusculaTilde($cadena){

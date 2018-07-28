@@ -2,7 +2,7 @@
 /* global swal */
 angular.module('atracciones.crear', [])
 
-.controller('atraccionesCrearController', function($scope, atraccionesServi, FileUploader){
+.controller('atraccionesCrearController', function($scope, atraccionesServi){
     var marker = null;
     var lat;
     var lng;
@@ -16,53 +16,12 @@ angular.module('atracciones.crear', [])
         },
         id: -1
     };
-    $("#portadaIMG").fileinput({
-        language: "es",
-        showUpload: false,
-        required: true,
-        allowedFileExtensions: ["jpg", "png", "gif"]
-    });
-    // $("#imagenes").fileinput({
-    //     maxFileCount: 5,
-    //     showUpload: false,
-    //     validateInitialCount: true,
-    //     autoFitCaption: true,
-    //     autoReplace: true,
-    //     overwriteInitial: false,
-    //     language: "es",
-    //     initialPreview: [
-    //         "<img class='kv-preview-data file-preview-image' src='https://placeimg.com/800/460/nature'>",
-    //         "<img class='kv-preview-data file-preview-image' src='https://placeimg.com/800/460/nature'>",
-    //         "<img class='kv-preview-data file-preview-image' src='https://placeimg.com/800/460/nature'>"
-    //     ],
-    //     initialPreviewConfig: [
-    //         {caption: "Nature-1.jpg", size: 628782, width: "120px", url: "/site/file-delete", key: 1},
-    //         {caption: "Nature-2.jpg", size: 982873, width: "120px", url: "/site/file-delete", key: 2}, 
-    //         {caption: "Nature-3.jpg", size: 567728, width: "120px", url: "/site/file-delete", key: 3} 
-    //     ],
-    //     allowedFileExtensions: ["jpg", "png", "gif"]
-    // });
-    $("#imagenes").fileinput({
-        autoReplace: false,
-        uploadUrl: "",
-        maxFileCount: 5,
-        showUpload: false,
-        language: "es",
-        allowedFileExtensions: ["jpg", "png", "gif"],
-        fileActionSettings: {
-            showUpload: false
-        }
-    });
     
     $scope.groupByDestino = function (item) {
         // by returning this, it will attach this as the group by key
         // and automatically group your items by this
         return item.destino.destino_con_idiomas[0].nombre;
     }
-    
-    $scope.portadaUploader = new FileUploader({
-        queueLimit: 1
-    });
     
     atraccionesServi.getDatoscrear().then(function (data){
         if (data.success){
@@ -105,6 +64,7 @@ angular.module('atracciones.crear', [])
                     latlng = results[0].geometry.location;
                     map.setCenter(latlng.lat(), latlng.lng());
                     map.removeMarkers();
+                    map.setZoom(16);
                     marker = map.addMarker({
                         lat: latlng.lat(),
                         lng: latlng.lng(),
@@ -120,14 +80,16 @@ angular.module('atracciones.crear', [])
     }
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.crearAtraccionForm.$valid || $scope.atraccion.id != -1){
+        if (!$scope.crearAtraccionForm.$valid && $scope.atraccion.id != -1){
             return;
         }
         if (marker == null){
             swal('Error', 'No ha colocado un marcador en el mapa.', 'error');
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         atraccionesServi.postCrearatraccion($scope.atraccion.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 $scope.atraccion.id = data.id;
                 swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
@@ -135,6 +97,7 @@ angular.module('atracciones.crear', [])
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
@@ -167,13 +130,16 @@ angular.module('atracciones.crear', [])
         }
         fd.append('id', $scope.atraccion.id);
         fd.append('video_promocional', $("#video_promocional").val());
+        $("body").attr("class", "cbp-spmenu-push charging");
         atraccionesServi.postGuardarmultimedia(fd).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function (){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
@@ -182,14 +148,17 @@ angular.module('atracciones.crear', [])
         if (!$scope.informacionAdicionalForm.$valid || $scope.atraccion.id == -1){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.atraccion.adicional.id = $scope.atraccion.id;
         atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
