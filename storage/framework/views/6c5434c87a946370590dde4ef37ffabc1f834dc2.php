@@ -398,7 +398,15 @@
                                     <tbody>
                                         <tr ng-repeat="rub in rubros">
                                             
-                                            <td style="width:20%;">{{rub.rubros_con_idiomas[0].nombre}}</td>
+                                            <td style="width:20%;">{{rub.rubros_con_idiomas[0].nombre}}
+                                            <div class="form-group" ng-if="rub.id==16" >
+                                                        <label for="otroRubros" class="col-md-12 control-label">Cuál?</label>
+                                                        <input type="text" class="form-control" name="otroRubros" ng-model="rub.gastos_visitantes[0].otro_rubro_gasto" ng-required="rub.gastos_visitantes[0].cantidad_pagada_magdalena || rub.gastos_visitantes[0].divisas_magdalena ||rub.gastos_visitantes[0].personas_cubrio"  />
+                                                        <span ng-show="GastoForm.$submitted || GastoForm.otroRubros.$touched">
+                                                                <span class="label label-danger" ng-show="GastoForm.otroRubros.$error.required">* El campo es requerido.</span>
+                                                        </span>
+                                                    </div>
+                                            </td>
                                             <td style="width:55%;">
                                                 <div class="row">
                                                     <!--<div class="col-xs-12 col-md-6">

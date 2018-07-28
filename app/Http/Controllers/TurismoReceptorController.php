@@ -966,8 +966,21 @@ class TurismoReceptorController extends Controller
             $encuesta["GastosAparte"] = null;
         }
         $encuesta["Financiadores"] = Visitante::find($id)->financiadoresViajes()->pluck('id');
-         
-        return ["divisas"=>$divisas ,"financiadores"=>$financiadores ,"municipios"=>$municipios,"opciones"=>$opciones,"servicios"=>$servicios,"rubros"=>$rubros,"tipos"=>$tipos,"encuesta"=>$encuesta];
+        
+        $di = collect($divisas)->where('id',39)->first();
+        
+        $div= Divisa_Con_Idioma::whereHas('idioma',function($q){
+                $q->where('culture','es');
+            })->where('id','!=',39)->select('divisas_id as id','nombre')->get()->toArray();
+            
+        $var = array();
+        array_push($var,$di);
+        
+        foreach($div as $d){
+            array_push($var,$d);
+        }
+        
+        return ["divisas"=>$var ,"financiadores"=>$financiadores ,"municipios"=>$municipios,"opciones"=>$opciones,"servicios"=>$servicios,"rubros"=>$rubros,"tipos"=>$tipos,"encuesta"=>$encuesta];
         
     }
     
@@ -1033,7 +1046,10 @@ class TurismoReceptorController extends Controller
         	        return ["success"=>false,"errores"=> [ ["La divisa es requerida en el rubro dentro del magdalena."] ] ];
         	     }
     	    }
-        	     
+    	    
+    	    if($rub["id"]==16 && !isset($rub["gastos_visitantes"][0]["otro_rubro_gasto"])){
+    	               return ["success"=>false,"errores"=> [ ["El campo otro es requerido."] ] ];  
+    	     }    
     	  
     	}
     	
@@ -1106,6 +1122,10 @@ class TurismoReceptorController extends Controller
     	            
     	            if(isset($rub["gastos_visitantes"][0]["gastos_asumidos_otros"])){
     	                $gasto->gastos_asumidos_otros = $rub["gastos_visitantes"][0]["gastos_asumidos_otros"];
+    	            }
+    	            
+    	            if($rub["id"]==16 && isset($rub["gastos_visitantes"][0]["otro_rubro_gasto"])){
+    	                $gasto->otro_rubro_gasto = $rub["gastos_visitantes"][0]["otro_rubro_gasto"];
     	            }
     	            $gasto->save();
     	        }   
