@@ -33,4 +33,9 @@ class LoginController extends Controller
         }
         
     }
+    public function getCerrarsesion(){
+        Auth::logout();
+        return redirect()->intended('/login/login');
+    
+    }
 }

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Http\Requests;
 use App\Models\Lugar_Aplicacion_Encuesta;
 use App\Models\Tipo_Viaje;
@@ -13,6 +14,16 @@ use App\Models\Visitante;
 
 class GrupoViajeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:ADmin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+    }
     public function getGrupoviaje(){
         return view('grupoViaje.CrearGrupoViaje');
     }
@@ -53,7 +64,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             
-            'Fecha'=>'required',
+            'Fecha'=>'required|date',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -116,12 +127,15 @@ class GrupoViajeController extends Controller
         if ($total < $request->PersonasEncuestadas) {
             $errores["Total"][2] = "La cantidad de personas encuestadas no puede ser mayor al tamaño total del grupo.";
         }
-        
+        $date = Carbon::now();
+        if(strtotime($request->Fecha) >  strtotime($date)){
+            $errores["Fecha"][0] = "La fecha de aplicación no puede superar la fecha actual.";
+        }
         if($errores != null || sizeof($errores) > 0){
             return  ["success"=>false,"errores"=>$errores];
         }
         
-        
+        //return $request->all();
 
         $grupo = new Grupo_Viaje();
         $grupo->digitador_id = 1;
@@ -136,8 +150,8 @@ class GrupoViajeController extends Controller
         $grupo->personas_encuestadas = $request->PersonasEncuestadas;
         $grupo->created_at = Carbon::now();
         $grupo->updated_at = Carbon::now();
-        $grupo->user_create = "Situr";
-        $grupo->user_update = "Situr";
+        $grupo->user_create = $this->user->username;
+        $grupo->user_update = $this->user->username;
         $grupo->estado = true;
         
         //return $request->all();
@@ -279,7 +293,7 @@ class GrupoViajeController extends Controller
                 }]);
             }]);
         }])->first();
-        
+        //return $grupo;
         $grupoRetornar = [];
         
         $grupoRetornar["id"] = $grupo->id;
@@ -288,20 +302,24 @@ class GrupoViajeController extends Controller
         $grupoRetornar["PersonasMag"] = $grupo->personas_magdalena;
         $grupoRetornar["Menores15"] = $grupo->menores_quince;
         $grupoRetornar["Menores15No"] = $grupo->menores_quince_no_presentes;
-        $grupoRetornar["Fecha"] = $grupo->fecha_aplicacion;
+        $grupoRetornar["Fecha"] = date('Y-m-d',strtotime($grupo->fecha_aplicacion));;
         $grupoRetornar["Sitio"] = $grupo->lugar_aplicacion_id;
         $grupoRetornar["Tipo"] = $grupo->tipo_viaje_id;
         $grupoRetornar["PersonasEncuestadas"] = $grupo->personas_encuestadas;
         $grupoRetornar["Encuestas"] = [];
         
         for($i=0;$i<sizeof($grupo->visitantes);$i++){
+            //return $grupo->visitantes;
             $visitante = [];
-            $estados_encuesta = $grupo->visitantes[$i]->historialEncuestas[0];
+            //$estados_encuesta = $grupo->visitantes[$i]->historialEncuestas[0];
             $visitante["Id"] = $grupo->visitantes[$i]["id"];
             $visitante["Nombre"] = $grupo->visitantes[$i]["nombre"];
             $visitante["Sexo"] = $grupo->visitantes[$i]["sexo"];
             $visitante["Email"] = $grupo->visitantes[$i]["email"];
-            $visitante["Estado"] = $grupo->visitantes[$i]->historialEncuestas[0];
+            if(sizeof($grupo->visitantes[$i]->historialEncuestas) > 0){
+                $visitante["Estado"] = $grupo->visitantes[$i]->historialEncuestas[0];
+            }
+            
             array_push($grupoRetornar["Encuestas"],$visitante);
         }
         //return $grupoRetornar;
@@ -373,7 +391,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             'id'=>'required|exists:grupos_viaje,id',
-            'Fecha'=>'required',
+            'Fecha'=>'required|date',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -424,6 +442,7 @@ class GrupoViajeController extends Controller
         }
         $errores = [];
         $errores["Total"] = [];
+        $errores["Fecha"] = [];
         
         $total =  $request->Mayores15 + $request->Mayores15No + $request->Menores15 + $request->Menores15No;
         if ($total == 0) {
@@ -449,11 +468,14 @@ class GrupoViajeController extends Controller
         {
             array_push($errores["Total"],"La cantidad de personas mayores de 15 años no debe ser menor que el número de encuestas ya realizadas.");
         }
-        
-        if($errores["Total"] != null || sizeof($errores["Total"]) > 0){
-            return  ["success"=>false,"errores"=>$errores];
+        $date = Carbon::now();
+        if(strtotime($request->Fecha) >  strtotime($date)){
+            $errores["Fecha"][0] = "La fecha de aplicación no puede superar la fecha actual.";
         }
         
+        if($errores["Total"] != null || sizeof($errores["Total"]) > 0 || $errores["Fecha"] != null || sizeof($errores["Fecha"]) > 0){
+            return  ["success"=>false,"errores"=>$errores];
+        }
         $grupo = Grupo_Viaje::where('id',$request->id)->first();
 
         $grupo->fecha_aplicacion = $request->Fecha;
@@ -465,8 +487,7 @@ class GrupoViajeController extends Controller
         $grupo->mayores_quince_no_presentes = $request->Mayores15No;
         $grupo->personas_magdalena = $request->PersonasMag;
         $grupo->personas_encuestadas = $request->PersonasEncuestadas;
-        $grupo->user_update = "Situr";
-        $grupo->estado = true;
+        $grupo->user_update = $this->user->username;
         
         //return $request->all();
         

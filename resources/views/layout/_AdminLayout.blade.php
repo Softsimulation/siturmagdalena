@@ -286,7 +286,7 @@
 									<ul>
 									<li><a class="tooltips" href=""><span>Profile</span><i class="lnr lnr-user"></i></a></li>
 										<li><a class="tooltips" href="#"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
-										<li><a class="tooltips" href="#"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
+										<li><a class="tooltips" href="/login/cerrarsesion"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
 										</ul>
 									</div>
 							   

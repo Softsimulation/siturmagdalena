@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use CsvReader;
 
 use App\Models\Departamento;
@@ -14,7 +16,16 @@ use App\Http\Requests;
 
 class AdministrarDepartamentosController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:ADmin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+    }
     public function getIndex(){
         return view('administrardepartamentos.Index');
     }
@@ -59,8 +70,8 @@ class AdministrarDepartamentosController extends Controller
         $departamento->nombre = $request->nombre;
         $departamento->pais_id = $request->pais_id;
         $departamento->estado = true;
-        $departamento->user_update = "Situr";
-        $departamento->user_create = "Situr";
+        $departamento->user_update = $this->user->username;
+        $departamento->user_create = $this->user->username;
         $departamento->created_at = Carbon::now();
         $departamento->updated_at = Carbon::now();
         $departamento->save();
@@ -107,7 +118,7 @@ class AdministrarDepartamentosController extends Controller
         $departamento = Departamento::find($request->id);
         $departamento->nombre = $request->nombre;
         $departamento->pais_id = $request->pais_id;
-        $departamento->user_update = "Situr";
+        $departamento->user_update = $this->user->username;
         $departamento->updated_at = Carbon::now();
         $departamento->save();
         
@@ -140,8 +151,8 @@ class AdministrarDepartamentosController extends Controller
                         $pais = new Pais();
                         $pais->created_at = Carbon::now();
                         $pais->updated_at = Carbon::now();
-                        $pais->user_create = "Situr";
-                        $pais->user_update = "Situr";
+                        $pais->user_create = $this->user->username;
+                        $pais->user_update = $this->user->username;
                         $pais->estado = true;
                         
                         $pais->save();
@@ -155,8 +166,8 @@ class AdministrarDepartamentosController extends Controller
     		            $departamento->estado = true;
     		            $departamento->created_at = Carbon::now();
     		            $departamento->updated_at = Carbon::now();
-    		            $departamento->user_update = "Situr";
-    		            $departamento->user_create = "Situr";
+    		            $departamento->user_update = $this->user->username;
+    		            $departamento->user_create = $this->user->username;
     		            $departamento->pais_id = $paisConIdioma->pais_id;
     		            $departamento->save();
     		        }
