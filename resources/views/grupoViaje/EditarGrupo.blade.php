@@ -270,7 +270,6 @@
 <script src="{{asset('/js/dir-pagination.js')}}"></script>
 <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
 <script src="{{asset('/js/plugins/select.min.js')}}"></script>
-<script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
 <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
 <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
 @endsection
