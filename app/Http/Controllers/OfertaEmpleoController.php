@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Empleo;
 use App\Models\Encuesta;
 use App\Models\Vacante;
