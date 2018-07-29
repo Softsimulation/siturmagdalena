@@ -6,7 +6,7 @@
 
 <?php $__env->startSection('content'); ?>
     
-    <input type="hidden" id="periodo" value="<?php echo e(utf8_encode($periodo->id)); ?>" />
+    <input type="hidden" id="periodo" value="<?php echo e($periodo->id); ?>" />
     
     
  
@@ -242,7 +242,7 @@
                       </a>
                       <ul class="dropdown-menu">
                         <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
-                        <li><a href="/MuestraMaestra/excelinfoperiodo/<?php echo e(utf8_encode($periodo->id)); ?>" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
+                        <li><a href="/MuestraMaestra/excelinfoperiodo/<?php echo e($periodo->id); ?>" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
                         <li>
                             <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
                         </li>
@@ -813,8 +813,8 @@
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="/js/plugins/ng-map.js"></script>
     <script src="/js/plugins/geoxml3.js"></script>
-    <script src="<?php echo e(utf8_encode(asset('/js/muestraMaestra/servicios.js'))); ?>"></script>
-    <script src="<?php echo e(utf8_encode(asset('/js/muestraMaestra/app.js'))); ?>"></script>
+    <script src="<?php echo e(asset('/js/muestraMaestra/servicios.js')); ?>"></script>
+    <script src="<?php echo e(asset('/js/muestraMaestra/app.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layout._MuestraMaestraLayaoutLayout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
