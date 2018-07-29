@@ -1,7 +1,7 @@
 var app = angular.module('encuestaListado', ['recpetorService','angularUtils.directives.dirPagination'])
 
 
-app.controller('listadoEncuestasCtrl', ['$scope','receptorServi', function ($scope,receptorServi) {
+app.controller('listadoEncuestas2Ctrl', ['$scope','receptorServi', function ($scope,receptorServi) {
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -22,7 +22,6 @@ app.controller('listadoEncuestasCtrl', ['$scope','receptorServi', function ($sco
         
         for (var i = 0; i < $scope.encuestas.length; i++) {
             $scope.encuestas[i].fechaaplicacion = formatDate($scope.encuestas[i].fechaaplicacion);
-            $scope.encuestas[i].fechaaplicacion = $scope.encuestas[i].fechaaplicacion+"";
             $scope.encuestas[i].fechallegada = formatDate($scope.encuestas[i].fechallegada);
               if ($scope.encuestas[i].estadoid > 0 && $scope.encuestas[i].estadoid < 7) {
                   $scope.encuestas[i].Filtro = 'sincalcular';

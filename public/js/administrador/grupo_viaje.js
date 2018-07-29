@@ -1,4 +1,4 @@
-angular.module('receptor.grupo_viaje', ['checklist-model'])
+angular.module('receptor.grupo_viaje', ['ADM-dateTimePicker','grupoViajeService','angularUtils.directives.dirPagination'])
 
 .controller('crear_grupo', ['$scope','grupoViajeServi',function ($scope, grupoViajeServi) {
     $scope.fechaActual = "'" + formatDate(new Date()) + "'";

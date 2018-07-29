@@ -95,7 +95,7 @@
 
 @section('NumSeccion', '0%')
 
-@section('app','ng-app="situr_admin"')
+@section('app','ng-app="receptor.grupo_viaje"')
 
 @section('controller','ng-controller="crear_grupo"')
 
@@ -250,4 +250,9 @@
 
 @endsection
 
-
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
+<script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
+@endsection

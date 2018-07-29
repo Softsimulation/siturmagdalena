@@ -1,17 +1,8 @@
 
-var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination', 'admin.temporadas','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService','ADM-dateTimePicker']);
-situr.config(['ADMdtpProvider', function (ADMdtp) {
-    ADMdtp.setOptions({
-        calType: 'gregorian',
-        format: 'YYYY-MM-DD hh:mm',
-        zIndex: 1060,
-        default: 'today'
-    });
-}]);
-var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService']);
+//var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination', 'admin.temporadas','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService','ADM-dateTimePicker']);
+var situr = angular.module("situr_admin", ['recpetorService','angularUtils.directives.dirPagination']);
 
-
-situr.controller('listadoEncuestasCtrl', ['$scope','grupoViajeServi', function ($scope,receptorServi) {
+situr.controller('listadoEncuestasCtrl', ['$scope','receptorServi', function ($scope,receptorServi) {
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -21,7 +12,7 @@ situr.controller('listadoEncuestasCtrl', ['$scope','grupoViajeServi', function (
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
 
-        return [year, month, day].join('/');
+        return [day, month, year].join('/');
     }
     $scope.prop = {
         search:''
@@ -30,7 +21,8 @@ situr.controller('listadoEncuestasCtrl', ['$scope','grupoViajeServi', function (
     receptorServi.getEncuestas().then(function (data) {
         $scope.encuestas = data;
         for (var i = 0; i < $scope.encuestas.length; i++) {
-            $scope.encuestas[i].fechaaplicacion = "'"+formatDate($scope.encuestas[i].fechaaplicacion+"'");
+            $scope.encuestas[i].fechaaplicacion = formatDate($scope.encuestas[i].fechaaplicacion);
+            $scope.encuestas[i].fechallegada = formatDate($scope.encuestas[i].fechallegada);
               if ($scope.encuestas[i].estadoid > 0 && $scope.encuestas[i].estadoid < 7) {
                   $scope.encuestas[i].Filtro = 'sincalcular';
               } else {

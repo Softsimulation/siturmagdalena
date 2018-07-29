@@ -274,7 +274,6 @@ class OfertaEmpleoController extends Controller
  
             
        $ruta = null;
-<<<<<<< HEAD
          if ($encuesta->actividad_comercial == 0)
             {
                 $ruta = "/ProveedorPerfil";
@@ -295,8 +294,6 @@ class OfertaEmpleoController extends Controller
                ]);
                 
             }
-       
-=======
       $encuesta = new Encuesta();
       if ($request->Comercial == 0)
         {
@@ -328,7 +325,6 @@ class OfertaEmpleoController extends Controller
            ]);
         }
         
->>>>>>> 4b9c56623405b1e647600d27d670c11acca4e86a
      
        $tipo = Sitio_Para_Encuesta::where("id",$encuesta->sitios_para_encuestas_id)->first();
          

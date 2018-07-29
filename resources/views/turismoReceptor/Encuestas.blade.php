@@ -49,7 +49,7 @@
 
 @section('NumSeccion', '0%')
 
-@section('app','ng-app="encuestaListado"')
+@section('app','ng-app="situr_admin"')
 
 @section('controller','ng-controller="listadoEncuestasCtrl"')
 
@@ -131,5 +131,10 @@
 </div>
 
 @endsection
-
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
+<script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
+<script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
+@endsection
 
