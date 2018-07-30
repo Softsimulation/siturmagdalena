@@ -106,7 +106,7 @@
 
 </div>    
 
-
+<div class="container">
        <div class="row">
             <h1 class="title1">Proveedores</h1>
             <br>
@@ -115,7 +115,7 @@
                     <input type="text" style="margin-bottom: .5em;" ng-model="prop.searchAntiguo" class="form-control" id="inputSearch" placeholder="Buscar registro...">
                 </div>
                 <div class="col-xs-12 col-sm-12 col-lg-2 col-md-12" style="text-align: center;">
-                    <span class="chip" style="margin-bottom: .5em;">@{{(proveedores|filter:prop.searchAntiguo).length}} resultados</span>
+                    <span class="chip" style="margin-bottom: .5em;">@{{(antiguos|filter:prop.searchAntiguo).length}} resultados</span>
                 </div>
             </div>
             <div class="row">
@@ -144,7 +144,8 @@
                                 <td>@{{item.proveedor.estadop.nombre}}</td>
                                 <td style="text-align: center;">
                                 <a href="/ofertaempleo/encuesta/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta sin realizar" ><span class = "glyphicon glyphicon-th-list"></span></a>
-                                <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta realizadas"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta realizadas" style="margin: 0;"><i class="material-icons">assignment</i></a>
+                                
                                 </td>
                             </tr>
                          </tbody>
@@ -160,8 +161,17 @@
         </div>
     <div class='carga'>
     </div>
-
+</div>
 
 @endsection
 
 
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/encuestas/ofertaempleo/proveedoresapp.js')}}"></script>
+<script src="{{asset('/js/encuestas/ofertaempleo/servicesproveedor.js')}}"></script>
+        
+@endsection
