@@ -15,9 +15,23 @@ use App\Models\Multimedia_noticia;
 use App\Models\Multimedia_noticia_Idioma;
 use App\Models\Tipo_noticia;
 use App\Models\Tipo_noticia_Idioma;
+use App\Models\User;
 
 class NoticiaController extends Controller
 {
+    public function __construct()
+    {
+        /*
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        */
+        
+        
+    }
+     
     public function getListadonoticias() {
         return view('noticias.ListadoNoticias');
 	}
@@ -94,7 +108,7 @@ class NoticiaController extends Controller
                 $consultaNoticia->enlace_fuente = $request->fuenteNoticia;
                 $consultaNoticia->es_interno = 1;
                 $consultaNoticia->tipos_noticias_id = intval($request->tipoNoticia);
-                $consultaNoticia->user_update = "Luis";
+                $consultaNoticia->user_update = $this->user->username;
                 $consultaNoticia->updated_at = Carbon::now();
                 $consultaNoticia->save();
                 
@@ -104,7 +118,7 @@ class NoticiaController extends Controller
                 $consultaNoticia_Idioma->titulo = $request->tituloNoticia;
                 $consultaNoticia_Idioma->resumen = $request->resumenNoticia;
                 $consultaNoticia_Idioma->texto = $request->texto;
-                $consultaNoticia_Idioma->user_update = "Luis";
+                $consultaNoticia_Idioma->user_update = $this->user->username;
                 $consultaNoticia_Idioma->updated_at = Carbon::now();
                 $consultaNoticia_Idioma->save();
                 
@@ -116,8 +130,8 @@ class NoticiaController extends Controller
             $noticia->enlace_fuente = $request->fuenteNoticia;
             $noticia->es_interno = 1;
             $noticia->tipos_noticias_id = intval($request->tipoNoticia);
-            $noticia->user_create = "Luis";
-            $noticia->user_update = "Luis";
+            $noticia->user_create = $this->user->username;
+            $noticia->user_update = $this->user->username;
             $noticia->created_at = Carbon::now();
             $noticia->updated_at = Carbon::now();
             $noticia->estado = 1;
@@ -130,8 +144,8 @@ class NoticiaController extends Controller
             $noticia_idioma->titulo = $request->tituloNoticia;
             $noticia_idioma->resumen = $request->resumenNoticia;
             $noticia_idioma->texto = $request->texto;
-            $noticia_idioma->user_create = "Luis";
-            $noticia_idioma->user_update = "Luis";
+            $noticia_idioma->user_create = $this->user->username;
+            $noticia_idioma->user_update = $this->user->username;
             $noticia_idioma->created_at = Carbon::now();
             $noticia_idioma->updated_at = Carbon::now();
             $noticia_idioma->estado = 1;
@@ -214,8 +228,8 @@ class NoticiaController extends Controller
         $nombrex = $request->idNoticia."-".date("Ymd-H:i:s").".".$request->Galeria->getClientOriginalExtension();
        \Storage::disk('Noticias')->put($nombrex,  \File::get($request->Galeria));
         $multimedia->ruta = "/Noticias/".$nombrex;
-        $multimedia->user_create = "Luis";
-        $multimedia->user_update = "Luis";
+        $multimedia->user_create = $this->user->username;
+        $multimedia->user_update = $this->user->username;
         $multimedia->updated_at = Carbon::now();
         $multimedia->created_at = Carbon::now();
         $multimedia->save();
@@ -383,7 +397,7 @@ class NoticiaController extends Controller
         $consultaNoticia->enlace_fuente = $request->fuenteNoticia;
         $consultaNoticia->es_interno = 1;
         $consultaNoticia->tipos_noticias_id = intval($request->tipoNoticia);
-        $consultaNoticia->user_update = "Luis";
+        $consultaNoticia->user_update = $this->user->username;
         $consultaNoticia->updated_at = Carbon::now();
         $consultaNoticia->save();
         
@@ -394,7 +408,7 @@ class NoticiaController extends Controller
             $busquedaNoticia->titulo = $request->tituloNoticia;
             $busquedaNoticia->resumen = $request->resumenNoticia;
             $busquedaNoticia->texto = $request->texto;
-            $busquedaNoticia->user_update = "Luis";
+            $busquedaNoticia->user_update = $this->user->username;
             $busquedaNoticia->updated_at = Carbon::now();
             
         }else{
@@ -404,8 +418,8 @@ class NoticiaController extends Controller
             $busquedaNoticia->titulo = $request->tituloNoticia;
             $busquedaNoticia->resumen = $request->resumenNoticia;
             $busquedaNoticia->texto = $request->texto;
-            $busquedaNoticia->user_create = "Luis";
-            $busquedaNoticia->user_update = "Luis";
+            $busquedaNoticia->user_create = $this->user->username;
+            $busquedaNoticia->user_update = $this->user->username;
             $busquedaNoticia->created_at = Carbon::now();
             $busquedaNoticia->updated_at = Carbon::now();
             $busquedaNoticia->estado = 1;
@@ -421,7 +435,7 @@ class NoticiaController extends Controller
             return ["success"=> false];
         }  
         $noticia->estado = !$noticia->estado;
-        $noticia->user_update = "Luis";
+        $noticia->user_update = $this->user->username;
         $noticia->updated_at = Carbon::now();
         $noticia->save();
         return ["success"=> true,"estado"=>$noticia->estado];
@@ -460,9 +474,9 @@ class NoticiaController extends Controller
         $comentario->texto = $request->textoComentario;
         $comentario->calificacion = $request->calificacionNoticia;
         $comentario->noticias_id = $request->idNoticia;
-        $comentario->user_create = "Luis";
+        $comentario->user_create = $this->user->username;
         $comentario->created_at = Carbon::now();
-        $comentario->user_update = "Luis";
+        $comentario->user_update = $this->user->username;
         $comentario->updated_at = Carbon::now();
         $comentario->save();
         
@@ -571,8 +585,8 @@ class NoticiaController extends Controller
             $noticia_idioma->titulo = $request->tituloNoticia;
             $noticia_idioma->resumen = $request->resumenNoticia;
             $noticia_idioma->texto = $request->texto;
-            $noticia_idioma->user_create = "Luis";
-            $noticia_idioma->user_update = "Luis";
+            $noticia_idioma->user_create = $this->user->username;
+            $noticia_idioma->user_update = $this->user->username;
             $noticia_idioma->created_at = Carbon::now();
             $noticia_idioma->updated_at = Carbon::now();
             $noticia_idioma->estado = 1;
@@ -583,7 +597,7 @@ class NoticiaController extends Controller
             $consultaNoticia_Idioma->titulo = $request->tituloNoticia;
             $consultaNoticia_Idioma->resumen = $request->resumenNoticia;
             $consultaNoticia_Idioma->texto = $request->texto;
-            $consultaNoticia_Idioma->user_update = "Luis";
+            $consultaNoticia_Idioma->user_update = $this->user->username;
             $consultaNoticia_Idioma->updated_at = Carbon::now();
             $consultaNoticia_Idioma->save();
         }

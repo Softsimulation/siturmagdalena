@@ -9,12 +9,12 @@
    
    <input type="hidden" id="id" value="{{$zona}}" />
    
-    <h1>@{{}}</h1>
+    <h1>@{{zona.nombre}}</h1>
    
     <form name="form" novalidate >
         
         <div class="btn-group">
-            <a href="/MuestraMaestra/periodo/{{$periodo}}"  class="btn btn-primary" >Volver</a>
+            <a href="/MuestraMaestra/periodo/@{{zona.periodo_medicion_id}}"  class="btn btn-primary" >Volver</a>
             <button type="submit" class="btn btn-success" ng-click="guardar()" >Guardar</button>
             <a href="/MuestraMaestra/excelinfozona/{{$zona}}"  class="btn btn-primary" >Descargar excel</a>
         </div>
@@ -68,6 +68,9 @@
                 </td>
               </tr>
               
+              <tr ng-if="proveedores.length==0" >
+                  <td colspan="8" class="alert alert-info" >No se encontraron proveedores en la zona.</td>
+              </tr>
         </table>
        
     </form>
@@ -102,6 +105,10 @@
 @endsection
 
 @section('javascript')
+    <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+    <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+    <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+    <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.js"></script>
     <script src="{{asset('/js/muestraMaestra/servicios.js')}}"></script>

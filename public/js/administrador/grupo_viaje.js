@@ -1,7 +1,31 @@
-angular.module('receptor.grupo_viaje', ['checklist-model'])
+angular.module('receptor.grupo_viaje', ['ADM-dateTimePicker','grupoViajeService','angularUtils.directives.dirPagination'])
 
 .controller('crear_grupo', ['$scope','grupoViajeServi',function ($scope, grupoViajeServi) {
-    
+    $scope.fechaActual = "'" + formatDate(new Date()) + "'";
+    $scope.optionFecha = {
+        calType: 'gregorian',
+        format: 'YYYY/MM/DD',
+        zIndex: 1060,
+        autoClose: true,
+        default: null,
+        gregorianDic: {
+            title: 'Fecha',
+            monthsNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            daysNames: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            todayBtn: "Hoy"
+        }
+    };
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
     grupoViajeServi.informacionCrear().then(function (data) {
         $scope.lugares_aplicacion = data.lugares_aplicacion;
         $scope.tipos_viajes = data.tipos_viajes;
@@ -26,8 +50,6 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
         if (!$scope.crearForm.$valid || $scope.total == 0 || $scope.grupo.PersonasEncuestadas > $scope.grupo.Mayores15) {
             return;
         }
-
-        $scope.grupo.Fecha = $('#date_apli').val().toString();
         $("body").attr("class", "charging");
         grupoViajeServi.GuardarGrupo($scope.grupo).then(function (data) {
             if (data.success) {
@@ -59,7 +81,17 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
 }])
 
 .controller('index_grupo', ['$scope', 'grupoViajeServi','$filter',function ($scope, grupoViajeServi, $filter) {
-    
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [day, month, year ].join('/');
+    }
     $scope.grupos = [];
     $scope.prop = {
         search: '',
@@ -71,6 +103,9 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
     $("body").attr("class", "charging");
     grupoViajeServi.listadoGrupos().then(function (data) {
         $scope.grupos = data;
+        for(var i=0;i<$scope.grupos.length;i++){
+            $scope.grupos[i].fecha_aplicacion = formatDate($scope.grupos[i].fecha_aplicacion);
+        }
         $("body").attr("class", "cbp-spmenu-push");
     }).catch(function () {
         $("body").attr("class", "cbp-spmenu-push");
@@ -134,7 +169,32 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
     })
 }])
 
-.controller('editar_grupo', ['$scope', 'grupoViajeServi','$filter',function ($scope, grupoViajeServi, $filter) {
+.controller('editar_grupo', ['$scope', 'grupoViajeServi','$filter',function ($scope, grupoViajeServi,$timeout, $filter) {
+    $scope.fechaActual = "'" + formatDate(new Date()) + "'";
+    $scope.optionFecha = {
+        calType: 'gregorian',
+        format: 'YYYY/MM/DD',
+        zIndex: 1060,
+        autoClose: true,
+        default: null,
+        gregorianDic: {
+            title: 'Fecha',
+            monthsNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            daysNames: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            todayBtn: "Hoy"
+        }
+    };
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
     $scope.$watch('id', function () {
         $("body").attr("class", "charging");
         grupoViajeServi.InformacionEditar($scope.id).then(function (data) {
@@ -144,14 +204,15 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
             if(data.grupo != null){
                 $scope.total = $scope.grupo.Mayores15 + $scope.grupo.Mayores15No + $scope.grupo.Menores15 + $scope.grupo.Menores15No;
             }
-            var cadena = $scope.grupo.Fecha.split(" ")
+            
+            /* cadena = $scope.grupo.Fecha.split(" ")
             cadena = $.grep(cadena, function (n) {return (n);});
             var meses = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             var m = meses.indexOf(cadena[0]) + 1
             if (m < 10) {
                 m = "0" + m;
             }
-            $scope.grupo.fecha_aplicacion = cadena[1] + "/" + m + "/" + cadena[2] + " " + cadena[3];
+            $scope.grupo.fecha_aplicacion = cadena[1] + "/" + m + "/" + cadena[2] + " " + cadena[3];*/
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
@@ -169,7 +230,7 @@ angular.module('receptor.grupo_viaje', ['checklist-model'])
             return;
         }
 
-        $scope.grupo.Fecha = $('#date_apli').val().toString()
+        //$scope.grupo.Fecha = $('#date_apli').val().toString()
         swal({
             title: "¿Esta seguro de editar?",
             text: "El registro sera modificado.",

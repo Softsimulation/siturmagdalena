@@ -246,7 +246,9 @@
                       <ul class="dropdown-menu">
                         <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
                         <li><a href="/MuestraMaestra/excelinfoperiodo/{{$periodo->id}}" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
-                        <li><a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a></li>
+                        <li>
+                            <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
+                        </li>
                         <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
                         <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar zona</a></li>
                       </ul>
@@ -809,10 +811,14 @@
 
 
 @section('javascript')
-   
+    <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+    <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+    <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+    <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
     <script src="/js/plugins/tokml.js"></script>
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="/js/plugins/ng-map.js"></script>
+    <script src="/js/plugins/geoxml3.js"></script>
     <script src="{{asset('/js/muestraMaestra/servicios.js')}}"></script>
     <script src="{{asset('/js/muestraMaestra/app.js')}}"></script>
 @endsection

@@ -58,7 +58,7 @@
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret "></span>
                                 </button>
-                                <ul class="dropdown-menu menuTipoGrafica" role="menu">
+                                <ul class="dropdown-menu  menuTipoGrafica" role="menu">
                                     <li ng-repeat="item in indicador.graficas" ng-click="changeTipoGrafica(item)"  >
                                         <a> <i class="material-icons">@{{item.icono}}</i> @{{item.nombre}}</a>
                                     </li>
@@ -73,7 +73,7 @@
                           <button class="dropdown-toggle" type="button" data-toggle="dropdown">
                               <i class="material-icons">menu</i>
                           </button>
-                          <ul class="dropdown-menu">
+                          <ul class="dropdown-menu dropdown-menu-right">
                             <li><a href id="descargarPNG" >Descargar grafica : PNG</a></li>
                            <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
                             <li><a href id="descargarPDF" >Descargar grafica : PDF</a></li>
@@ -281,7 +281,6 @@
         $("#descargarGraficaTabla").on("click", function(){ 
             
             var pdf = new jsPDF('l', 'pt', 'letter');
-            
             
             var canvas = document.getElementById("base");
             var imgData = canvas.toDataURL();

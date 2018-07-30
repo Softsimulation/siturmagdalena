@@ -325,7 +325,7 @@ class MuestraMaestraCtrl extends Controller
         if($zona){
          
             $proveedores = new Collection( DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ) );
-    
+            
             $zona->es_generada = true;
             $zona->save();
             
@@ -375,33 +375,40 @@ class MuestraMaestraCtrl extends Controller
     }
     
     
-    public function postGeojsonzone(Request $request){
+    public function getGeojsonzone($periodo){
         
-        $zonas = [];
-        $proveedores = [];
+        $periodoData = Periodos_medicion::find($periodo);
         
-        $dataZonas = Zona::where("periodo_medicion_id",$request->periodo)->with(["coordenadas"=>function($q){ $q->orderBy('id', 'desc'); } ])->get();
+        $zonas = Zona::where("periodo_medicion_id",$periodo)->with(["coordenadas"=>function($q){ $q->orderBy('id', 'desc'); } ])->get();
         
-        $dataProveedores = [];
+        $proveedores = Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
+                                      ->with([ "estadoP", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])->get();
         
+        $proveedoresInformales = Proveedores_informale::where([ ["latitud","!=",null], ["longitud","!=",null] ])->get();
+        
+        return  View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas, "proveedoresInformales"=>$proveedoresInformales, "periodo"=>$periodoData] )->render();
+        
+        //return View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas ] );
+        /*
         if( $request->tipoProveedor && count($request->categorias)>0 ){
             $dataProveedores = Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
                                           ->whereIn( "categoria_proveedores_id",$request->categorias )
-                                          ->with([ "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
-                                          ->get( ["id", "latitud as lat", "longitud as lng"] );
+                                          ->with([ "estadoP", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])->get();
         }
         else
         if( $request->tipoProveedor && count($request->categorias)==0 ){
             $dataProveedores = Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
                                           ->whereHas('categoria', function ($q) use($request) { $q->where('tipo_proveedores_id', $request->tipoProveedor ); })
-                                          ->with([ "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
-                                          ->get( ["id", "latitud as lat", "longitud as lng"] );
+                                          ->with([ "estadoP", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])->get();
         }
         else{
             $dataProveedores = Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                          ->with([ "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
-                                          ->get( ["id", "latitud as lat", "longitud as lng"] );
+                                          ->with([ "estadoP", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])->get();
         }
+        
+        */
+        
+        
         
         $periodo = Periodos_medicion::find($request->periodo);
         

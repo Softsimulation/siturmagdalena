@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Http\Requests;
 use App\Models\Lugar_Aplicacion_Encuesta;
 use App\Models\Tipo_Viaje;
@@ -13,6 +14,18 @@ use App\Models\Visitante;
 
 class GrupoViajeController extends Controller
 {
+    public function __construct()
+    {
+        /*
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        */
+        
+        
+    }
     public function getGrupoviaje(){
         return view('grupoViaje.CrearGrupoViaje');
     }
@@ -28,7 +41,7 @@ class GrupoViajeController extends Controller
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->where('digitador_id',1)->get();
+            }])->where('digitador_id',$this->user->id)->get();
             
         return $grupos;    
     }
@@ -53,7 +66,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             
-            'Fecha'=>'required',
+            'Fecha'=>'required|date',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -116,15 +129,18 @@ class GrupoViajeController extends Controller
         if ($total < $request->PersonasEncuestadas) {
             $errores["Total"][2] = "La cantidad de personas encuestadas no puede ser mayor al tamaño total del grupo.";
         }
-        
+        $date = Carbon::now();
+        if(strtotime($request->Fecha) >  strtotime($date)){
+            $errores["Fecha"][0] = "La fecha de aplicación no puede superar la fecha actual.";
+        }
         if($errores != null || sizeof($errores) > 0){
             return  ["success"=>false,"errores"=>$errores];
         }
         
-        
+        //return $request->all();
 
         $grupo = new Grupo_Viaje();
-        $grupo->digitador_id = 1;
+        $grupo->digitador_id = $this->user->id;
         $grupo->fecha_aplicacion = $request->Fecha;
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
@@ -136,8 +152,8 @@ class GrupoViajeController extends Controller
         $grupo->personas_encuestadas = $request->PersonasEncuestadas;
         $grupo->created_at = Carbon::now();
         $grupo->updated_at = Carbon::now();
-        $grupo->user_create = "Situr";
-        $grupo->user_update = "Situr";
+        $grupo->user_create = $this->user->username;
+        $grupo->user_update = $this->user->username;
         $grupo->estado = true;
         
         //return $request->all();
@@ -196,67 +212,10 @@ class GrupoViajeController extends Controller
             }]);
         }])->first();
         
-        return $grupo;
-            /*
-            
-        join("tipos_viajes","tipos_viajes.id","=","grupos_viaje.tipo_viaje_id")
-        ->join("tipos_viaje_con_idiomas","tipos_viaje_con_idiomas.tipo_viaje_id","=","tipos_viajes.id")
-        ->join("idiomas","idiomas.id","=","tipos_viaje_con_idiomas.idiomas_id")
-        ->where('idiomas.culture','es')->where('grupos_viaje.id',$id)->get();*/
-        /*
-        
-        (from g in conexion.grupos_viaje
-                     join t in conexion.tipos_viaje on g.tipo_viaje_id equals t.id
-                     join ti in conexion.tipos_viaje_con_idiomas on t.id equals ti.tipo_viaje_id
-                     where ti.idioma.culture == idioma
-                     where g.id == id
-                     select new
-                     {
-                         Id = g.id,
-                         Mayores15 = g.mayores_quince,
-                         Mayores15No = g.mayores_quince_no_presentes,
-                         PersonasMag = g.personas_magdalena,
-                         Menores15 = g.menores_quince,
-                         Menores15No = g.menores_quince_no_presentes,
-                         Fecha = g.fecha_aplicacion.ToString(),
-                         Sitio_id = g.lugar_aplicacion_id,
-                         Sitio_nombre = g.lugares_aplicacion_encuesta.nombre,
-                         Tipo_id = g.tipo_viaje_id,
-                         Tipo_nombre = ti.nombre,
-                         PersonasEncuestadas = g.personas_encuestadas,
-                         Encuestas = (from v in conexion.visitantes
-                                      where v.grupo_viaje_id == id
-                                      select new {
-                                          Id = v.id,
-                                          Nombre = v.nombre,
-                                          Sexo = v.sexo,
-                                          Email = v.email,
-                                          Estado_id = (from h in conexion.historial_encuesta
-                                                       join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                       where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                               join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                where vi.id == v.id
-                                                                                select hi.fecha_cambio).Max()
-                                                       select e.id).FirstOrDefault(),
-                                          Estado_nombre = (from h in conexion.historial_encuesta
-                                                           join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                           where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                                    join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                    where vi.id == v.id
-                                                                                    select hi.fecha_cambio).Max()
-                                                           select e.nombre).FirstOrDefault()
-                                      }).ToList()
-                     }).First();
-        return serializer.Serialize(new { grupo = grupo, sitios = sitios, tipos = tipos });       */                              
+        return $grupo;                        
     }
     
     public function getInformacioneditar($id) {
-        //return $id;
-        //return $id;
-        
-        //string idioma = (string)Session["idioma"];
-
-        //$sitios = Lugar_Aplicacion_Encuesta::
             
         $lugares_aplicacion = Lugar_Aplicacion_Encuesta::all();
     
@@ -279,7 +238,7 @@ class GrupoViajeController extends Controller
                 }]);
             }]);
         }])->first();
-        
+        //return $grupo;
         $grupoRetornar = [];
         
         $grupoRetornar["id"] = $grupo->id;
@@ -288,66 +247,26 @@ class GrupoViajeController extends Controller
         $grupoRetornar["PersonasMag"] = $grupo->personas_magdalena;
         $grupoRetornar["Menores15"] = $grupo->menores_quince;
         $grupoRetornar["Menores15No"] = $grupo->menores_quince_no_presentes;
-        $grupoRetornar["Fecha"] = $grupo->fecha_aplicacion;
+        $grupoRetornar["Fecha"] = date('Y-m-d',strtotime($grupo->fecha_aplicacion));;
         $grupoRetornar["Sitio"] = $grupo->lugar_aplicacion_id;
         $grupoRetornar["Tipo"] = $grupo->tipo_viaje_id;
         $grupoRetornar["PersonasEncuestadas"] = $grupo->personas_encuestadas;
         $grupoRetornar["Encuestas"] = [];
         
         for($i=0;$i<sizeof($grupo->visitantes);$i++){
+            //return $grupo->visitantes;
             $visitante = [];
-            $estados_encuesta = $grupo->visitantes[$i]->historialEncuestas[0];
+            //$estados_encuesta = $grupo->visitantes[$i]->historialEncuestas[0];
             $visitante["Id"] = $grupo->visitantes[$i]["id"];
             $visitante["Nombre"] = $grupo->visitantes[$i]["nombre"];
             $visitante["Sexo"] = $grupo->visitantes[$i]["sexo"];
             $visitante["Email"] = $grupo->visitantes[$i]["email"];
-            $visitante["Estado"] = $grupo->visitantes[$i]->historialEncuestas[0];
+            if(sizeof($grupo->visitantes[$i]->historialEncuestas) > 0){
+                $visitante["Estado"] = $grupo->visitantes[$i]->historialEncuestas[0];
+            }
+            
             array_push($grupoRetornar["Encuestas"],$visitante);
         }
-        //return $grupoRetornar;
-        /*
-        var grupo = (from g in conexion.grupos_viaje
-                         join t in conexion.tipos_viaje on g.tipo_viaje_id equals t.id
-                         join ti in conexion.tipos_viaje_con_idiomas on t.id equals ti.tipo_viaje_id
-                         where ti.idioma.culture == idioma
-                         where g.id == id
-                         select new
-                         {
-                             Id = g.id,
-                             Mayores15 = g.mayores_quince,
-                             Mayores15No = g.mayores_quince_no_presentes,
-                             PersonasMag = g.personas_magdalena,
-                             Menores15 = g.menores_quince,
-                             Menores15No = g.menores_quince_no_presentes,
-                             Fecha = g.fecha_aplicacion.ToString(),
-                             Sitio_id = g.lugar_aplicacion_id,
-                             Sitio_nombre = g.lugares_aplicacion_encuesta.nombre,
-                             Tipo_id = g.tipo_viaje_id,
-                             Tipo_nombre = ti.nombre,
-                             PersonasEncuestadas = g.personas_encuestadas,
-                             Encuestas = (from v in conexion.visitantes
-                                          where v.grupo_viaje_id == id
-                                          select new {
-                                              Id = v.id,
-                                              Nombre = v.nombre,
-                                              Sexo = v.sexo,
-                                              Email = v.email,
-                                              Estado_id = (from h in conexion.historial_encuesta
-                                                           join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                           where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                                   join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                    where vi.id == v.id
-                                                                                    select hi.fecha_cambio).Max()
-                                                           select e.id).FirstOrDefault(),
-                                              Estado_nombre = (from h in conexion.historial_encuesta
-                                                               join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                               where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                                        join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                        where vi.id == v.id
-                                                                                        select hi.fecha_cambio).Max()
-                                                               select e.nombre).FirstOrDefault()
-                                          }).ToList()
-                         }).First();*/
         
         return ["grupo"=>$grupoRetornar, "lugares_aplicacion"=>$lugares_aplicacion, "tipos_viajes"=>$tipos_viajes];                      
     }
@@ -373,7 +292,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             'id'=>'required|exists:grupos_viaje,id',
-            'Fecha'=>'required',
+            'Fecha'=>'required|date',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -424,6 +343,7 @@ class GrupoViajeController extends Controller
         }
         $errores = [];
         $errores["Total"] = [];
+        $errores["Fecha"] = [];
         
         $total =  $request->Mayores15 + $request->Mayores15No + $request->Menores15 + $request->Menores15No;
         if ($total == 0) {
@@ -449,11 +369,14 @@ class GrupoViajeController extends Controller
         {
             array_push($errores["Total"],"La cantidad de personas mayores de 15 años no debe ser menor que el número de encuestas ya realizadas.");
         }
-        
-        if($errores["Total"] != null || sizeof($errores["Total"]) > 0){
-            return  ["success"=>false,"errores"=>$errores];
+        $date = Carbon::now();
+        if(strtotime($request->Fecha) >  strtotime($date)){
+            $errores["Fecha"][0] = "La fecha de aplicación no puede superar la fecha actual.";
         }
         
+        if($errores["Total"] != null || sizeof($errores["Total"]) > 0 || $errores["Fecha"] != null || sizeof($errores["Fecha"]) > 0){
+            return  ["success"=>false,"errores"=>$errores];
+        }
         $grupo = Grupo_Viaje::where('id',$request->id)->first();
 
         $grupo->fecha_aplicacion = $request->Fecha;
@@ -465,8 +388,7 @@ class GrupoViajeController extends Controller
         $grupo->mayores_quince_no_presentes = $request->Mayores15No;
         $grupo->personas_magdalena = $request->PersonasMag;
         $grupo->personas_encuestadas = $request->PersonasEncuestadas;
-        $grupo->user_update = "Situr";
-        $grupo->estado = true;
+        $grupo->user_update = $this->user->username;
         
         //return $request->all();
         
