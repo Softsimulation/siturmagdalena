@@ -82,19 +82,20 @@
         
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.24 ¿Qué porcentaje de proveedores  de su  empresa son de _______ ? Es decir, % de empresas locales que producen su bien o servicio en @{{proveedor.razon_social}}.</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.24 ¿Qué porcentaje de proveedores  de su  empresa son del Magdalena ? Es decir, % de empresas locales que producen su bien o servicio en @{{proveedor.razon_social}}.</b></h3>
             </div>
             <div class="panel-footer"><b>Respuesta abierta</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input type="number" class="form-control" id="porcentaje" name="porcentaje" ng-model="encuesta.porcentaje" required placeholder="Presione aquí para ingresar el porcentaje"  />
+                            <input type="number" class="form-control" id="porcentaje" name="porcentaje" ng-model="encuesta.porcentaje" required placeholder="Presione aquí para ingresar el porcentaje" max="100"  />
                         </div>
                     </div>
                 </div>
                 <span ng-show="datosForm.$submitted || datosForm.porcentaje.$touched">
                     <span class="label label-danger" ng-show="datosForm.porcentaje.$error.required">*El campo es requerido.</span>
+                    <span class="label label-danger" ng-show="datosForm.porcentaje.$error.max">*El campo no debe ser mayor que 100.</span>
                 </span>
             </div>
         </div>
@@ -140,6 +141,7 @@
                 </div>
                 <span ng-show="datosForm.$submitted || datosForm.aspectosSeleccion.$touched">
                     <span class="label label-danger" ng-show="encuesta.aspectosSeleccion.length == 0">* Debe seleccionar alguno de los valores.</span>
+                    <span class="label label-danger" ng-show="encuesta.aspectosSeleccion.length != 2">* Debe seleccionar solo dos opciones.</span>
                     <span class="label label-danger" ng-show="datosForm.otroSeleccion.$error.required">* Debe llenar la casilla otro.</span>
                 </span>
             </div>
@@ -245,6 +247,7 @@
                 </div>
                 <span ng-show="datosForm.$submitted || datosForm.beneficiosEconomicos.$touched">
                     <span class="label label-danger" ng-show="encuesta.beneficiosEconomicos.length == 0">* Debe seleccionar alguno de los valores.</span>
+                    <span class="label label-danger" ng-show="encuesta.beneficiosEconomicos.length != 3">* Debe seleccionar solo 3 opciones.</span>
                     <span class="label label-danger" ng-show="datosForm.otroEconomico.$error.required">* Debe llenar la casilla otro.</span>
                 </span>
             </div>
@@ -280,7 +283,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading p3">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.29 Dando cumplimiento a la ley de Protección de datos personales, solicito su autorización para que ______________ pueda contactarlo nuevamente. ¿Está usted de acuerdo? </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.29 Dando cumplimiento a la ley de Protección de datos personales, solicito su autorización para que SITUR-Magdalena pueda contactarlo nuevamente. ¿Está usted de acuerdo? </b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -308,7 +311,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading p3">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.30 Ya para terminar, le solicito su autorización para que ______________ comparta sus respuestas con las entidades que contrataron el proyecto, ¿Está usted de acuerdo? </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.30 Ya para terminar, le solicito su autorización para que SITUR-Magdalena comparta sus respuestas con las entidades que contrataron el proyecto, ¿Está usted de acuerdo? </b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">

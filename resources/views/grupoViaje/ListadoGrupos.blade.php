@@ -97,7 +97,7 @@
 
 @section('NumSeccion', '0%')
 
-@section('app','ng-app="situr_admin"')
+@section('app','ng-app="receptor.grupo_viaje"')
 
 @section('controller','ng-controller="index_grupo"')
 
@@ -139,7 +139,7 @@
                         </td>
                         <td>@{{g.fecha_aplicacion | date:'dd-MM-yyyy'}}</td>
                         <td>@{{g.lugares_aplicacion_encuestum.nombre}}</td>
-                        <td>@{{g.digitadore.asp_net_user.username}}</td>
+                        <td>@{{g.digitadore.user.nombre}}</td>
                         <td>@{{g.visitantes.length}}/@{{g.personas_encuestadas}}</td>
                         <td><td style="text-align: center;"><a href="/grupoviaje/vergrupo/@{{g.id}}"><span class="glyphicon glyphicon-eye-open" title="Ver información del grupo"></span></a></td></td>
                     </tr>
@@ -161,5 +161,12 @@
 </div>
 
 @endsection
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
+<script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
+<script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
 
+@endsection
 

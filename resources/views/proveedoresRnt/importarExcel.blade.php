@@ -107,7 +107,7 @@
 </div>    
 
 <div class="container">
-  
+    <h1 class="title1">Importar RNT</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row">
@@ -151,6 +151,7 @@
                             <th>Categoría</th>
                             <th>Correo</th>
                             <th>Estado</th>
+                            <th>Similaridad</th>
                             <th style="width: 150px;">Estado carga</th>
                             <th style="width: 70px;"></th>
                         </tr>
@@ -162,9 +163,10 @@
                             <td>@{{item.categoria}}</td>
                             <td>@{{item.correo}}</td>
                             <td>@{{item.estado}}</td>
+                            <td ng-if="item.es_similar == 1">SI</td><td ng-if="item.es_similar != 1">NO</td>
                             <td ng-if="item.es_correcto ==1">Correcto</td><td ng-if="item.es_correcto !=1">Incorrecto</td>
                             <td style="text-align: center;">
-                                <a ng-if="item.es_correcto != 1" title="Agregar registro" ng-click="abrirModalCrear(item)"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a ng-if="item.es_correcto != 1 || item.es_similar == 1 " title="Agregar registro" ng-click="abrirModalCrear(item)"><span class="glyphicon glyphicon-pencil"></span></a>
                                 <a title="Ver registro" ng-click="abrirModalVer(item)"><span class="glyphicon glyphicon-eye-open"></span></a>
                             </td>
                         </tr>
@@ -273,63 +275,123 @@
     									<td><input type="text" class="form-control" ng-model="registro.municipio" required></td>
     									<td>@{{registro.municipio2}}</td>
     								</tr>
-    								<tr ng-class="{'danger': (registro.departamento != registro.departamento2) }">
-    									<td>Departamento</td>
-    									<td><input type="text" class="form-control" ng-model="registro.departamento" required></td>
-    									<td>@{{registro.departamento2}}</td>
-    								</tr>
+    								<!--<tr ng-class="{'danger': (registro.departamento != registro.departamento2) }">-->
+    								<!--	<td>Departamento</td>-->
+    								<!--	<td><input type="text" class="form-control" ng-model="registro.departamento" required></td>-->
+    								<!--	<td>@{{registro.departamento2}}</td>-->
+    								<!--</tr>-->
     								<tr ng-class="{'danger': (registro.nombre_comercial != registro.nombre_comercial2) }">
     									<td>Nombre Comercial RNT</td>
     									<td><input type="text" class="form-control" ng-model="registro.nombre_comercial" required></td>
     									<td>@{{registro.nombre_comercial2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.nombre_comercial_plataforma != registro.nombre_comercial_plataforma2) }">
     									<td>Nombre Comercial Plataforma</td>
     									<td><input type="text" class="form-control" ng-model="registro.nombre_comercial_plataforma" required></td>
     									<td>@{{registro.nombre_comercial_plataforma2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.categoria != registro.categoria2) }">
     									<td>Categoría</td>
     									<td><input type="text" class="form-control" ng-model="registro.categoria" required></td>
     									<td>@{{registro.categoria2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.sub_categoria != registro.sub_categoria2) }">
     									<td>Subcategoría</td>
     									<td><input type="text" class="form-control" ng-model="registro.sub_categoria" required></td>
     									<td>@{{registro.sub_categoria2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.direccion_comercial != registro.direccion_comercial2) }">
     									<td>Dirección Comercial</td>
     									<td><input type="text" class="form-control" ng-model="registro.direccion_comercial" required></td>
     									<td>@{{registro.direccion_comercial2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.telefono != registro.telefono2) }">
     									<td>Teléfono</td>
     									<td><input type="text" class="form-control" ng-model="registro.telefono" required></td>
     									<td>@{{registro.telefono2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.celular != registro.celular2) }">
     									<td>Celular</td>
     									<td><input type="text" class="form-control" ng-model="registro.celular" required></td>
     									<td>@{{registro.celular2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.correo != registro.correo2) }">
     									<td>Correo Electronico</td>
     									<td><input type="text" class="form-control" ng-model="registro.correo" required ></td>
     									<td>@{{registro.correo2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.latitud != registro.latitud2) }">
     									<td>Latitud</td>
-    									<td><input type="text" class="form-control" ng-model="registro.latitud" required ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.latitud" readonly ></td>
     									<td>@{{registro.latitud2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'danger': (registro.longitud != registro.longitud2) }">
     									<td>Longitud</td>
-    									<td><input type="text" class="form-control" ng-model="registro.longitud" required ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.longitud" readonly ></td>
     									<td>@{{registro.longitud2}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.digito_verificacion != registro.digito_verificacion2) }">
+    									<td>Digito verificación</td>
+    									<td><input type="number" class="form-control" ng-model="registro.digito_verificacion" required ></td>
+    									<td>@{{registro.digito_verificacion2}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.nit != registro.nit2) }">
+    									<td>NIT</td>
+    									<td><input type="text" class="form-control" ng-model="registro.nit" required ></td>
+    									<td>@{{registro.nit2}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.nombre_gerente != registro.nombre_gerente2) }">
+    									<td>Nombre gerente</td>
+    									<td><input type="text" class="form-control" ng-model="registro.nombre_gerente" required ></td>
+    									<td>@{{registro.nombre_gerente2}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.ultimo_anio_rnt != registro.ultimo_anio_rnt2) }">
+    									<td>Ultimo año RNT</td>
+    									<td><input type="number" class="form-control" ng-model="registro.ultimo_anio_rnt" required ></td>
+    									<td>@{{registro.ultimo_anio_rnt2}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.sostenibilidad_rnt != registro.sostenibilidad_rnt2) }">
+    									<td>Sostenibilidad RNT</td>
+    									<td><input type="text" class="form-control" ng-model="registro.sostenibilidad_rnt" required ></td>
+    									<td>@{{registro.sostenibilidad_rnt2}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.turismo_aventura != registro.turismo_aventura2) }">
+    									<td>Turísmo aventura</td>
+    									<td><input type="text" class="form-control" ng-model="registro.turismo_aventura" required ></td>
+    									<td>@{{registro.turismo_aventura2}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.hab2 != registro.hab22) }">
+    									<td>Hab2</td>
+    									<td><input type="number" class="form-control" ng-model="registro.hab2" required ></td>
+    									<td>@{{registro.hab22}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.cam2 != registro.cam22) }">
+    									<td>Cam2</td>
+    									<td><input type="number" class="form-control" ng-model="registro.cam2" required ></td>
+    									<td>@{{registro.cam22}}</td>
+    								</tr>
+    								<tr ng-class="{'danger': (registro.emp2 != registro.emp22) }">
+    									<td>Emp2</td>
+    									<td><input type="number" class="form-control" ng-model="registro.emp2" required ></td>
+    									<td>@{{registro.emp22}}</td>
     								</tr>
     							</table>
     						</div>
+                        </div>
+                        
+                        <div class="row">
+                            <ng-map id="mapa" zoom="9" center="[11.24079, -74.19904]" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
+                                <marker ng-if="registro.latitud != undefined && registro.longitud != undefined" draggable="true" on-dragend="getCurrentLocation(registro)" position="[@{{registro.latitud}}, @{{registro.longitud}}]" title="registro.nombre_comercial"></marker>
+                                
+                                <drawing-manager ng-if="registro.latitud == undefined && registro.longitud == undefined"
+                                    on-overlaycomplete="drawFinish(registro)"
+                                    drawing-control-options="{position: 'TOP_CENTER',drawingModes:['marker']}"
+                                    drawingControl="true"
+                                    drawingMode="null"
+                                    rectangleOptions="{fillColor:'red'}" >
+                                </drawing-manager>
+                                
+                            </ng-map>
                         </div>
                         
                         
@@ -351,8 +413,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- Modal agregar registro-->
     <div class="modal fade bs-example-modal-lg" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -378,69 +438,143 @@
                             <div class="col-xs-12">
     							<table class="table table-striped">
     								<tr>
-    									<th style="width: 50px;">Columna</th>
-    									<th>Dato almacenado</th>
+    									<th style="width: 50px;">Columna</th>                           
+    									<th>Nuevo dato</th>
+    									<th ng-if="registro.es_similar == 1">Similar</th>
     								</tr>
     								<tr>
     									<td>Numero del RNT</td>
     									<td><input type="text" class="form-control" ng-model="registro.numero_rnt" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.numero_rnt2}}</td>
     								</tr>
     								<tr>
     									<td>Estado</td>
     									<td><input type="text" class="form-control" ng-model="registro.estado" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.estado2}}</td>
     								</tr>
     								<tr>
     									<td>Municipio</td>
     									<td><input type="text" class="form-control" ng-model="registro.municipio" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.municipio2}}</td>
     								</tr>
-    								<tr>
-    									<td>Departamento</td>
-    									<td><input type="text" class="form-control" ng-model="registro.departamento" required></td>
-    								</tr>
+    								<!--<tr>-->
+    								<!--	<td>Departamento</td>-->
+    								<!--	<td><input type="text" class="form-control" ng-model="registro.departamento" required></td>-->
+    								<!--	<td ng-if="registro.es_similar == 1">@{{registro.departamento2}}</td>-->
+    								<!--</tr>-->
     								<tr>
     									<td>Nombre Comercial RNT</td>
     									<td><input type="text" class="form-control" ng-model="registro.nombre_comercial" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.nombre_comercial2}}</td>
     								</tr>
     								<tr>
     									<td>Nombre Comercial Plataforma</td>
     									<td><input type="text" class="form-control" ng-model="registro.nombre_comercial_plataforma" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.nombre_comercial_plataforma2}}</td>
     								</tr>
     								<tr>
     									<td>Categoría</td>
     									<td><input type="text" class="form-control" ng-model="registro.categoria" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.categoria2}}</td>
     								</tr>
     								<tr>
     									<td>Subcategoría</td>
     									<td><input type="text" class="form-control" ng-model="registro.sub_categoria" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.sub_categoria2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'info': (registro.direccion_comercial == registro.direccion_comercial2 && registro.es_similar == 1) }">
     									<td>Dirección Comercial</td>
     									<td><input type="text" class="form-control" ng-model="registro.direccion_comercial" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.direccion_comercial2}}</td>
     								</tr>
     								<tr>
     									<td>Teléfono</td>
     									<td><input type="text" class="form-control" ng-model="registro.telefono" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.telefono2}}</td>
     								</tr>
     								<tr>
     									<td>Celular</td>
     									<td><input type="text" class="form-control" ng-model="registro.celular" required></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.celular2}}</td>
     								</tr>
-    								<tr>
+    								<tr ng-class="{'info': (registro.correo == registro.correo2 && registro.es_similar == 1 && registro.correo.indexOf('@') > 0 ) }">
     									<td>Correo Electronico</td>
     									<td><input type="text" class="form-control" ng-model="registro.correo" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.correo2}}</td>
     								</tr>
     								<tr>
     									<td>Latitud</td>
-    									<td><input type="text" class="form-control" ng-model="registro.latitud" required ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.latitud" readonly ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.latitud2}}</td>
     								</tr>
     								<tr>
     									<td>Longitud</td>
-    									<td><input type="text" class="form-control" ng-model="registro.longitud" required ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.longitud" readonly ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.longitud2}}</td>
+    								</tr>
+    								<tr ng-class="{'info': (registro.digito_verificacion == registro.digito_verificacion2 && registro.es_similar == 1) }">
+    									<td>Digito verificación</td>
+    									<td><input type="number" class="form-control" ng-model="registro.digito_verificacion" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.digito_verificacion2}}</td>
+    								</tr>
+    								<tr ng-class="{'info': (registro.nit == registro.nit2 && registro.es_similar == 1) }">
+    									<td>NIT</td>
+    									<td><input type="text" class="form-control" ng-model="registro.nit" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.nit2}}</td>
+    								</tr>
+    								<tr>
+    									<td>Nombre gerente</td>
+    									<td><input type="text" class="form-control" ng-model="registro.nombre_gerente" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.nombre_gerente2}}</td>
+    								</tr>
+    								<tr>
+    									<td>Ultimo año RNT</td>
+    									<td><input type="number" class="form-control" ng-model="registro.ultimo_anio_rnt" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.ultimo_anio_rnt2}}</td>
+    								</tr>
+    								<tr>
+    									<td>Sostenibilidad RNT</td>
+    									<td><input type="text" class="form-control" ng-model="registro.sostenibilidad_rnt" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.sostenibilidad_rnt2}}</td>
+    								</tr>
+    								<tr>
+    									<td>Turísmo aventura</td>
+    									<td><input type="text" class="form-control" ng-model="registro.turismo_aventura" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.turismo_aventura2}}</td>
+    								</tr>
+    								<tr>
+    									<td>Hab2</td>
+    									<td><input type="number" class="form-control" ng-model="registro.hab2" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.hab22}}</td>
+    								</tr>
+    								<tr>
+    									<td>Cam2</td>
+    									<td><input type="number" class="form-control" ng-model="registro.cam2" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.cam22}}</td>
+    								</tr>
+    								<tr>
+    									<td>Emp2</td>
+    									<td><input type="number" class="form-control" ng-model="registro.emp2" required ></td>
+    									<td ng-if="registro.es_similar == 1">@{{registro.emp22}}</td>
     								</tr>
     							</table>
     						</div>
                         </div>
                         
+                        <div class="row">
+                            <ng-map id="mapa" zoom="9" center="[11.24079, -74.19904]" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
+                                <marker ng-if="registro.latitud != undefined && registro.longitud != undefined" draggable="true" on-dragend="getCurrentLocation(registro)" position="[@{{registro.latitud}}, @{{registro.longitud}}]" title="registro.nombre_comercial"></marker>
+                                
+                                <drawing-manager ng-if="registro.latitud == undefined && registro.longitud == undefined"
+                                    on-overlaycomplete="drawFinish(registro)"
+                                    drawing-control-options="{position: 'TOP_CENTER',drawingModes:['marker']}"
+                                    drawingControl="true"
+                                    drawingMode="null"
+                                    rectangleOptions="{fillColor:'red'}" >
+                                </drawing-manager>
+                                
+                            </ng-map>
+                        </div>
                         
                         <div class="row" ng-if="registro.es_correcto != 1">
                             <div class="col-xs-12">
@@ -454,7 +588,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success" ng-click="guardarRegistro()">Guardar</button>
+                        <button type="submit" class="btn btn-primary" ng-if="registro.es_similar == 1" ng-click="guardarRegistroHavilitar()">Guardar y deshabilitar similar</button>
+                        <button type="submit" class="btn btn-success" ng-click="guardarRegistro()">Guardar como nuevo</button>
+                        <button type="submit" class="btn btn-info" ng-if="registro.es_similar == 1" ng-click="sobreescribirRegistro()">Sobreescribir similar</button>
                     </div>
                 </form>
             </div>
@@ -491,10 +627,10 @@
     								<td>Municipio</td>
     								<td>@{{registro.municipio}}</td>
     							</tr>
-    							<tr>
-    								<td>Departamento</td>
-    								<td>@{{registro.departamento}}</td>
-    							</tr>
+    							<!--<tr>-->
+    							<!--	<td>Departamento</td>-->
+    							<!--	<td>@{{registro.departamento}}</td>-->
+    							<!--</tr>-->
     							<tr>
     								<td>Nombre Comercial RNT</td>
     								<td>@{{registro.nombre_comercial}}</td>
@@ -535,9 +671,52 @@
     								<td>Longitud</td>
     								<td>@{{registro.longitud}}</td>
     							</tr>
+    							<tr>
+    								<td>NIT</td>
+    								<td>@{{registro.nit}}</td>
+    							</tr>
+    							<tr>
+    								<td>Digito verificación</td>
+    								<td>@{{registro.digito_verificacion}}</td>
+    							</tr>
+    							<tr>
+    								<td>Nombre gerente</td>
+    								<td>@{{registro.nombre_gerente}}</td>
+    							</tr>
+    							<tr>
+    								<td>Ultimo año RNT</td>
+    								<td>@{{registro.ultimo_anio_rnt}}</td>
+    							</tr>
+    							<tr>
+    								<td>Sostenibilidad RNT</td>
+    								<td>@{{registro.sostenibilidad_rnt}}</td>
+    							</tr>
+    							<tr>
+    								<td>Turísmo aventura</td>
+    								<td>@{{registro.turismo_aventura}}</td>
+    							</tr>
+    							<tr>
+    								<td>Hab2</td>
+    								<td>@{{registro.hab2}}</td>
+    							</tr>
+    							<tr>
+    								<td>Cam2</td>
+    								<td>@{{registro.cam2}}</td>
+    							</tr>
+    							<tr>
+    								<td>Emp2</td>
+    								<td>@{{registro.emp2}}</td>
+    							</tr>
     						</table>
     					</div>
     				</div>
+    				
+    				<div class="row" ng-show="registro.latitud != undefined && registro.longitud != undefined">
+                        <ng-map id="mapa" zoom="9" center="[11.24079, -74.19904]" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
+                            <marker ng-if="registro.latitud != undefined && registro.longitud != undefined"  position="[@{{registro.latitud}}, @{{registro.longitud}}]" title="registro.nombre_comercial"></marker>
+                        </ng-map>
+                    </div>
+    				
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -556,6 +735,14 @@
 
 
 @section('javascript')
+
+    <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+    <script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
+    
+    
+    <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
+    <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -602,4 +789,7 @@
         });
 
     </script>
+    <script src="/js/plugins/tokml.js"></script>
+    <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
+    <script src="/js/plugins/ng-map.js"></script>
 @endsection

@@ -24,7 +24,7 @@ class OfertaEmpleo
                  return $next($request);
              }else{
                 \Session::flash('mensaje','Sitio no valido');
-                return redirect('/ofertaempleo/tt/'.$request->one);
+                return redirect('/ofertaempleo/listadoproveedores/'.$request->one);
             }
             
           
@@ -47,15 +47,15 @@ class OfertaEmpleo
         
         
     $encuesta = Encuesta::find($request->one);
+    if($encuesta->actividad_comercial == 0){
+        return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+        
+    }
     
     if($encuesta == null){
          \Session::flash('mensaje','No existe la encuesta');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                return redirect('/ofertaempleo/listadoproveedores');
     }
-    
-
-    
-    
     
     if(strlen(strstr($request->path(),'ofertaempleo/agenciaviajes'))>0){
             $encuesta = Encuesta::find($request->one);

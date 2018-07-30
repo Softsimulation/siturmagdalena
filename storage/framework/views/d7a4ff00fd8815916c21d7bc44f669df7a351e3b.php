@@ -286,7 +286,7 @@
 									<ul>
 									<li><a class="tooltips" href=""><span>Profile</span><i class="lnr lnr-user"></i></a></li>
 										<li><a class="tooltips" href="#"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
-										<li><a class="tooltips" href="#"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
+										<li><a class="tooltips" href="/login/cerrarsesion"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
 										</ul>
 									</div>
 							   
@@ -356,29 +356,23 @@
     -->
     
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="<?php echo e(asset('/js/plugins/angular.min.js')); ?>"></script>
         
+       
+       
+   
+   
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="<?php echo e(asset('/js/plugins/angular.min.js')); ?>"></script>
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
         <!--<script src="<?php echo e(secure_asset('/Content/bootstrap_material/dist/js/material.min.js')); ?>"></script>
         <script src="<?php echo e(secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')); ?>"></script>-->
-        
-        
         <script src="<?php echo e(secure_asset('/js/moment-with-locales.min.js')); ?>"></script>
         <script src="<?php echo e(secure_asset('/js/bootstrap-datetimepicker.min.js')); ?>"></script>
-        
-        
-        <script>
-            $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
-        </script>
-       
         <script src="<?php echo e(asset('/js/plugins/bootstrap.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/ripples.min.js')); ?>"></script>
-        
-        <script src="<?php echo e(asset('/js/plugins/checklist-model.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/angular-filter.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/angular-repeat-n.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/sweetalert.min.js')); ?>"></script>
+<<<<<<< HEAD
         <script src="<?php echo e(asset('/js/plugins/selectjp.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/ng-map.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/object-table.js')); ?>"></script>
@@ -422,6 +416,8 @@
     
     
     
+=======
+>>>>>>> e7cfabba322a89728a452a75d889215e0c41f51a
     <script>
         $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>
