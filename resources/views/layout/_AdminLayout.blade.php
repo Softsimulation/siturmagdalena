@@ -356,53 +356,22 @@
     -->
     
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
         
+       
+       
+   
+   
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
         <!--<script src="{{secure_asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
         <script src="{{secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>-->
-        
-        
         <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
         <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
-        
-        
-        <script>
-            $(window).load(function () { $("#preloader").delay(1e3).fadeOut("slow") });
-        </script>
-       
         <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
         <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>
-        
-        <!--<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/angular-filter.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/selectjp.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/ng-map.min.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/object-table.js')}}"></script>-->
-        
-        <!--<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/select.min.js')}}"></script>-->
-        <!--<script src="{{asset('/js/dir-pagination.js')}}"></script>-->
-        <!--<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>-->
-      
-        
-        <script src="{{asset('/js/administrador/administrador.js')}}"></script>
-       
-        <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
-        <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
-        
-        <script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
-        <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
-        
-        </div>
-       
-   
-   
-    
-    
+        <script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>
     <script>
         $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>

@@ -159,3 +159,12 @@
 @endsection
 
 
+@section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/encuestas/ofertaempleo/proveedoresapp.js')}}"></script>
+<script src="{{asset('/js/encuestas/ofertaempleo/servicesproveedor.js')}}"></script>
+        
+@endsection

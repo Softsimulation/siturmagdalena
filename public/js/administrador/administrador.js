@@ -1,3 +1,5 @@
+//var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination','grupoViajeService','receptor.grupo_viaje']);
+
 
 //var situr = angular.module("situr_admin", ['checklist-model', 'angularUtils.directives.dirPagination', 'admin.temporadas','grupoViajeService','receptor.grupo_viaje','admin.noticia','noticiaService','ADM-dateTimePicker']);
 var situr = angular.module("situr_admin", ['recpetorService','angularUtils.directives.dirPagination']);
