@@ -17,7 +17,7 @@ class GrupoViajeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:ADmin');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -39,7 +39,7 @@ class GrupoViajeController extends Controller
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->where('digitador_id',1)->get();
+            }])->where('digitador_id',$this->user->id)->get();
             
         return $grupos;    
     }
@@ -138,7 +138,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
 
         $grupo = new Grupo_Viaje();
-        $grupo->digitador_id = 1;
+        $grupo->digitador_id = $this->user->id;
         $grupo->fecha_aplicacion = $request->Fecha;
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
@@ -210,67 +210,10 @@ class GrupoViajeController extends Controller
             }]);
         }])->first();
         
-        return $grupo;
-            /*
-            
-        join("tipos_viajes","tipos_viajes.id","=","grupos_viaje.tipo_viaje_id")
-        ->join("tipos_viaje_con_idiomas","tipos_viaje_con_idiomas.tipo_viaje_id","=","tipos_viajes.id")
-        ->join("idiomas","idiomas.id","=","tipos_viaje_con_idiomas.idiomas_id")
-        ->where('idiomas.culture','es')->where('grupos_viaje.id',$id)->get();*/
-        /*
-        
-        (from g in conexion.grupos_viaje
-                     join t in conexion.tipos_viaje on g.tipo_viaje_id equals t.id
-                     join ti in conexion.tipos_viaje_con_idiomas on t.id equals ti.tipo_viaje_id
-                     where ti.idioma.culture == idioma
-                     where g.id == id
-                     select new
-                     {
-                         Id = g.id,
-                         Mayores15 = g.mayores_quince,
-                         Mayores15No = g.mayores_quince_no_presentes,
-                         PersonasMag = g.personas_magdalena,
-                         Menores15 = g.menores_quince,
-                         Menores15No = g.menores_quince_no_presentes,
-                         Fecha = g.fecha_aplicacion.ToString(),
-                         Sitio_id = g.lugar_aplicacion_id,
-                         Sitio_nombre = g.lugares_aplicacion_encuesta.nombre,
-                         Tipo_id = g.tipo_viaje_id,
-                         Tipo_nombre = ti.nombre,
-                         PersonasEncuestadas = g.personas_encuestadas,
-                         Encuestas = (from v in conexion.visitantes
-                                      where v.grupo_viaje_id == id
-                                      select new {
-                                          Id = v.id,
-                                          Nombre = v.nombre,
-                                          Sexo = v.sexo,
-                                          Email = v.email,
-                                          Estado_id = (from h in conexion.historial_encuesta
-                                                       join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                       where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                               join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                where vi.id == v.id
-                                                                                select hi.fecha_cambio).Max()
-                                                       select e.id).FirstOrDefault(),
-                                          Estado_nombre = (from h in conexion.historial_encuesta
-                                                           join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                           where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                                    join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                    where vi.id == v.id
-                                                                                    select hi.fecha_cambio).Max()
-                                                           select e.nombre).FirstOrDefault()
-                                      }).ToList()
-                     }).First();
-        return serializer.Serialize(new { grupo = grupo, sitios = sitios, tipos = tipos });       */                              
+        return $grupo;                        
     }
     
     public function getInformacioneditar($id) {
-        //return $id;
-        //return $id;
-        
-        //string idioma = (string)Session["idioma"];
-
-        //$sitios = Lugar_Aplicacion_Encuesta::
             
         $lugares_aplicacion = Lugar_Aplicacion_Encuesta::all();
     
@@ -322,50 +265,6 @@ class GrupoViajeController extends Controller
             
             array_push($grupoRetornar["Encuestas"],$visitante);
         }
-        //return $grupoRetornar;
-        /*
-        var grupo = (from g in conexion.grupos_viaje
-                         join t in conexion.tipos_viaje on g.tipo_viaje_id equals t.id
-                         join ti in conexion.tipos_viaje_con_idiomas on t.id equals ti.tipo_viaje_id
-                         where ti.idioma.culture == idioma
-                         where g.id == id
-                         select new
-                         {
-                             Id = g.id,
-                             Mayores15 = g.mayores_quince,
-                             Mayores15No = g.mayores_quince_no_presentes,
-                             PersonasMag = g.personas_magdalena,
-                             Menores15 = g.menores_quince,
-                             Menores15No = g.menores_quince_no_presentes,
-                             Fecha = g.fecha_aplicacion.ToString(),
-                             Sitio_id = g.lugar_aplicacion_id,
-                             Sitio_nombre = g.lugares_aplicacion_encuesta.nombre,
-                             Tipo_id = g.tipo_viaje_id,
-                             Tipo_nombre = ti.nombre,
-                             PersonasEncuestadas = g.personas_encuestadas,
-                             Encuestas = (from v in conexion.visitantes
-                                          where v.grupo_viaje_id == id
-                                          select new {
-                                              Id = v.id,
-                                              Nombre = v.nombre,
-                                              Sexo = v.sexo,
-                                              Email = v.email,
-                                              Estado_id = (from h in conexion.historial_encuesta
-                                                           join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                           where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                                   join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                    where vi.id == v.id
-                                                                                    select hi.fecha_cambio).Max()
-                                                           select e.id).FirstOrDefault(),
-                                              Estado_nombre = (from h in conexion.historial_encuesta
-                                                               join e in conexion.estados_encuesta on h.estado_id equals e.id
-                                                               where h.fecha_cambio == (from hi in conexion.historial_encuesta
-                                                                                        join vi in conexion.visitantes on hi.visitante_id equals vi.id
-                                                                                        where vi.id == v.id
-                                                                                        select hi.fecha_cambio).Max()
-                                                               select e.nombre).FirstOrDefault()
-                                          }).ToList()
-                         }).First();*/
         
         return ["grupo"=>$grupoRetornar, "lugares_aplicacion"=>$lugares_aplicacion, "tipos_viajes"=>$tipos_viajes];                      
     }

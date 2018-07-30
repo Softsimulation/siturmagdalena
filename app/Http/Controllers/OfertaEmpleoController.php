@@ -72,6 +72,7 @@ class OfertaEmpleoController extends Controller
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
                                     'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
                                     
+        $this->middleware('role:Admin|CoordinadorOferta|Encuestador|Proveedor');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }                           
@@ -306,7 +307,7 @@ class OfertaEmpleoController extends Controller
             $encuesta->save();
     	   Historial_Encuesta_Oferta::create([
                'encuesta_id' => $encuesta->id,
-               'user_id' => 1,
+               'user_id' => $this->user->id,
                'estado_encuesta_id' => 3,
                'fecha_cambio' => Carbon::now()
            ]);
@@ -320,7 +321,7 @@ class OfertaEmpleoController extends Controller
             $encuesta->save();
            Historial_Encuesta_Oferta::create([
                'encuesta_id' => $encuesta->id,
-               'user_id' => 1,
+               'user_id' => $this->user->id,
                'estado_encuesta_id' => 1,
                'fecha_cambio' => Carbon::now()
            ]);
@@ -1082,7 +1083,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		
    	   Historial_Encuesta_Oferta::create([
                'encuesta_id' => $request->Encuesta,
-               'user_id' => 1,
+               'user_id' => $this->user->id,
                'estado_encuesta_id' => 3,
                'fecha_cambio' => Carbon::now()
        ]);

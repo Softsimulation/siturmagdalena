@@ -22,7 +22,7 @@ class NoticiaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:ADmin');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
