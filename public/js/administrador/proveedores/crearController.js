@@ -1,8 +1,8 @@
 /* global angular */
 /* global swal */
-angular.module('proveedores.crear', [])
+angular.module('atracciones.crear', [])
 
-.controller('proveedoresCrearController', function($scope, proveedoresServi){
+.controller('atraccionesCrearController', function($scope, atraccionesServi){
     var marker = null;
     var lat;
     var lng;
@@ -23,7 +23,7 @@ angular.module('proveedores.crear', [])
         return item.destino.destino_con_idiomas[0].nombre;
     }
     
-    proveedoresServi.getDatoscrear().then(function (data){
+    atraccionesServi.getDatoscrear().then(function (data){
         if (data.success){
             $scope.sectores = data.sectores;
             $scope.perfiles_turista = data.perfiles_turista;
