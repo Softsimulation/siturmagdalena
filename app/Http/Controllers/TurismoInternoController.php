@@ -144,7 +144,7 @@ class TurismoInternoController extends Controller
         
         $hogar=new Hogar();
         $hogar->fecha_realizacion=$request->Fecha_aplicacion;
-        $hogar->digitadores_id= $this->user->id;
+        $hogar->digitadores_id= $this->user->digitador->id;
         $hogar->telefono=$request->Telefono;
         $hogar->edificaciones_id=$edificacion->id;
         $hogar->save();
@@ -239,7 +239,7 @@ class TurismoInternoController extends Controller
         
         $hogar=Hogar::find($request->id);
         $hogar->fecha_realizacion=$request->Fecha_aplicacion;
-        $hogar->digitadores_id=$this->user->id;
+        $hogar->digitadores_id=$this->user->digitador->id;
         $hogar->telefono=$request->Telefono;
         $hogar->save();
         
@@ -603,7 +603,7 @@ class TurismoInternoController extends Controller
 		$historial=new Historial_Encuesta_Interno();
         $historial->viajes_id=$viaje->id;
         $historial->estado_id=($viaje->ultima_sesion != 7)?2:3;
-        $historial->digitador_id=$this->user->id;
+        $historial->digitador_id=$this->user->digitador->id;
         $historial->fecha_cambio=\Carbon\Carbon::now();
         $historial->mensaje=($sw==0)?"Se completó la sección de actividades realizadas":"Se editó la sección de actividades realizadas";
         $historial->save();
@@ -838,7 +838,7 @@ class TurismoInternoController extends Controller
         $historial=new Historial_Encuesta_Interno();
         $historial->viajes_id=$viaje->id;
         $historial->estado_id=($viaje->ultima_sesion!=7)?2:3;
-        $historial->digitador_id=$this->user->id;
+        $historial->digitador_id=$this->user->digitador->id;
         $historial->fecha_cambio=\Carbon\Carbon::now();
         $historial->mensaje=($sw==0)?"Se completó la sección de fuentes de información del viajero":"Se editó la sección de fuentes de información del viajero";
         $historial->save();
@@ -955,7 +955,7 @@ class TurismoInternoController extends Controller
         $viaje->financiadoresViajes()->attach($request->financiadores);
        
         $historial = new Historial_Encuesta_Interno([ 
-                                                      'digitador_id'=>$this->user->id, 
+                                                      'digitador_id'=>$this->user->digitador->id;
                                                       'estado_id'=> ( $viaje->ultima_sesion!=5 ? 2 : 3 ), 
                                                       'viajes_id'=> $viaje->id, 
                                                       'fecha_cambio'=> date("Y-m-d H:i:s"), 
@@ -1028,7 +1028,7 @@ class TurismoInternoController extends Controller
           $historial=new Historial_Encuesta_Interno();
           $historial->viajes_id=$viajero->id;
           $historial->estado_id=($viajero->ultima_sesion != 7)?2:3;
-          $historial->digitador_id=$this->user->id;
+          $historial->digitador_id=$this->user->digitador->id;
           $historial->fecha_cambio=\Carbon\Carbon::now();
           $historial->mensaje=($sw==0)?"Se completó la sección de transporte":"Se editó la sección de transporte";
           $historial->save();
@@ -1206,7 +1206,7 @@ class TurismoInternoController extends Controller
     if($request->Crear){
         $viaje = new Viaje();
         $viaje->creada_por = $this->user->id;
-        $viaje->digitada_por = $this->user->id;
+        $viaje->digitada_por = $this->user->digitador->id;
         $viaje->ultima_sesion = 1;
         $mensaje="Creada seccion de viaje";
     }else{
@@ -1321,7 +1321,7 @@ class TurismoInternoController extends Controller
           $historial=new Historial_Encuesta_Interno();
           $historial->viajes_id=$viaje->id;
           $historial->estado_id=($viaje->ultima_sesion != 7)?2:3;
-          $historial->digitador_id=$this->user->id;
+          $historial->digitador_id=$this->user->digitador->id;
           $historial->fecha_cambio=\Carbon\Carbon::now();
           $historial->mensaje=$mensaje;
           $historial->save();

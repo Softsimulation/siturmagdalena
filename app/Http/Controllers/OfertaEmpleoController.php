@@ -1063,20 +1063,12 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		    
 		}
 		
-<<<<<<< HEAD
 		
    	   Historial_Encuesta_Oferta::create([
                'encuesta_id' => $request->Encuesta,
                'user_id' => $this->user->id,
                'estado_encuesta_id' => 3,
                'fecha_cambio' => Carbon::now()
-=======
-	  Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->Encuesta,
-           'user_id' => 1,
-           'estado_encuesta_id' => 3,
-           'fecha_cambio' => Carbon::now()
->>>>>>> e7cfabba322a89728a452a75d889215e0c41f51a
        ]);
 		
 		

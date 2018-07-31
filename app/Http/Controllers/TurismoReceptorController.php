@@ -207,7 +207,7 @@ class TurismoReceptorController extends Controller
 		$visitante->telefono = isset($request->Telefono) ? $request->Telefono : null;
 		$visitante->celular = isset($request->Celular) ? $request->Celular : null;
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
-		$visitante->digitada = $this->user->id;
+		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
 		$visitante->email = $request->Email;
 		$visitante->encuestador_creada = $request->Encuestador;
@@ -394,7 +394,7 @@ class TurismoReceptorController extends Controller
 		$visitante->telefono = isset($request->Telefono) ? $request->Telefono : null;
 		$visitante->celular = isset($request->Celular) ? $request->Celular : null;
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
-		$visitante->digitada = $this->user->id;
+		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
 		$visitante->email = $request->Email;
 		$visitante->encuestador_creada = $request->Encuestador;
@@ -797,8 +797,8 @@ class TurismoReceptorController extends Controller
 		        $sostenibilidad = new Sostenibilidad_Visitante;
 		        $sostenibilidad->visitante_id = $request->Id;
 		        $sostenibilidad->estado = true;
-		        $sostenibilidad->user_update = "Jhon";
-		        $sostenibilidad->user_create = "Jhon";
+		        $sostenibilidad->user_update = $this->user->username,
+		        $sostenibilidad->user_create = $this->user->username,
 		    }
 		    $sostenibilidad->facil_llegar = $request->Calificacion;
 		    $sostenibilidad->save();
