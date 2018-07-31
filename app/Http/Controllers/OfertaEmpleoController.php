@@ -69,16 +69,13 @@ class OfertaEmpleoController extends Controller
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
                                     'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
-<<<<<<< HEAD
                                     
-        $this->middleware('role:Admin|CoordinadorOferta|Encuestador|Proveedor');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }                           
     
         
-=======
->>>>>>> e7cfabba322a89728a452a75d889215e0c41f51a
     }
     
     
