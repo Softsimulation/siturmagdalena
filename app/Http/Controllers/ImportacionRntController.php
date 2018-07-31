@@ -17,6 +17,7 @@ use App\Models\Proveedores_rnt_idioma;
 
 class ImportacionRntController extends Controller
 {
+	
     public function getIndex(){
         return view('proveedoresRnt.importarExcel');
     }
@@ -253,7 +254,7 @@ class ImportacionRntController extends Controller
     		]);
 		}
 		
-		
+		$objeto["id"] = $proveedor->id;
 		$objeto["numero_rnt"] = $request->numero_rnt;
 		$objeto["numero_rnt2"] = $request->numero_rnt;
 		$objeto["estado"] = $request->estado;

@@ -17,11 +17,13 @@ class AdministrarPaisesController extends Controller
 {
     public function __construct()
     {
+        /*
         $this->middleware('auth');
         $this->middleware('role:ADmin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
+        */
         
         
     }

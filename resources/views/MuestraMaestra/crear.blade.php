@@ -186,6 +186,10 @@
 
 
 @section('javascript')
+    <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+    <script src="{{asset('/js/plugins/select.min.js')}}"></script>
+    <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+    <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="/js/plugins/ng-map.js"></script>
     <script src="{{asset('/js/muestraMaestra/servicios.js')}}"></script>
