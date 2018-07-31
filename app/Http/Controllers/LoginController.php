@@ -21,8 +21,9 @@ class LoginController extends Controller
         }
         $user = User::where('email',$request->userName)->first();
         //return $user->password;
-        if(\Hash::check($request->password,$user->password)){
-            if($user != null){
+        if($user != null){
+            if(\Hash::check($request->password,$user->password)){
+            
                 Auth::login($user);
                 return redirect()->intended('usuario/listadousuarios');    
             }
