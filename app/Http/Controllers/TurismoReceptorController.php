@@ -797,8 +797,8 @@ class TurismoReceptorController extends Controller
 		        $sostenibilidad = new Sostenibilidad_Visitante;
 		        $sostenibilidad->visitante_id = $request->Id;
 		        $sostenibilidad->estado = true;
-		        $sostenibilidad->user_update = $this->user->username,
-		        $sostenibilidad->user_create = $this->user->username,
+		        $sostenibilidad->user_update = $this->user->username;
+		        $sostenibilidad->user_create = $this->user->username;
 		    }
 		    $sostenibilidad->facil_llegar = $request->Calificacion;
 		    $sostenibilidad->save();

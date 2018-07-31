@@ -955,7 +955,7 @@ class TurismoInternoController extends Controller
         $viaje->financiadoresViajes()->attach($request->financiadores);
        
         $historial = new Historial_Encuesta_Interno([ 
-                                                      'digitador_id'=>$this->user->digitador->id;
+                                                      'digitador_id'=>$this->user->digitador->id,
                                                       'estado_id'=> ( $viaje->ultima_sesion!=5 ? 2 : 3 ), 
                                                       'viajes_id'=> $viaje->id, 
                                                       'fecha_cambio'=> date("Y-m-d H:i:s"), 
