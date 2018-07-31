@@ -267,7 +267,7 @@ class ImportacionRntController extends Controller
     		]);
 		}
 		
-		
+		$objeto["id"] = $proveedor->id;
 		$objeto["numero_rnt"] = $request->numero_rnt;
 		$objeto["numero_rnt2"] = $request->numero_rnt;
 		$objeto["estado"] = $request->estado;

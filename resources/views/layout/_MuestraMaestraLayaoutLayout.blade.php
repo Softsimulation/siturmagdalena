@@ -182,7 +182,7 @@
                 background-color: transparent;
             }
             .ui-select-multiple.ui-select-bootstrap .ui-select-match-item{
-                font-size: 16px;
+                font-size: 12px;
             }
              .ADMdtp-box footer .timeSelectIcon, .ADMdtp-box footer .today, .ADMdtp-box footer .calTypeContainer p{
                 fill: darkorange;
@@ -316,15 +316,15 @@
     <script>  $.material.init(); </script>
 
     <script>
-            $(window).on('scroll', function () {
-                if (!$('.alert').hasClass('no-fixed')) {
-                    if ($(this).scrollTop() > 190) {
-                        $('.alert').addClass('alert-fixed');
-                    } else {
-                        $('.alert').removeClass('alert-fixed');
-                    }
-                }
-            });
+            // $(window).on('scroll', function () {
+            //     if (!$('.alert').hasClass('no-fixed')) {
+            //         if ($(this).scrollTop() > 190) {
+            //             $('.alert').addClass('alert-fixed');
+            //         } else {
+            //             $('.alert').removeClass('alert-fixed');
+            //         }
+            //     }
+            // });
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
