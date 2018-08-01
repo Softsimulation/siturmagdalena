@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Http\Requests;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Proveedores_rnt;
 use App\Models\Categoria_Proveedor;
 use App\Models\Zona;
@@ -29,7 +30,18 @@ use Excel;
 
 class MuestraMaestraCtrl extends Controller
 {
-    
+    public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     public function getPeriodo($id){
         
         $periodo = Periodos_medicion::find($id);
@@ -133,7 +145,7 @@ class MuestraMaestraCtrl extends Controller
         $periodo->nombre = $request->nombre;
         $periodo->fecha_inicio = $request->fecha_inicio;
         $periodo->fecha_fin = $request->fecha_fin;
-        $periodo->user_update = "ADMIN";
+        $periodo->user_update = $this->user->username;
         $periodo->save();
         
         return ["success"=>true, "periodo"=>$periodo];
@@ -169,8 +181,8 @@ class MuestraMaestraCtrl extends Controller
         $periodo->nombre = $request->nombre;
         $periodo->fecha_inicio = $request->fecha_inicio;
         $periodo->fecha_fin = $request->fecha_fin;
-        $periodo->user_update = "ADMIN";
-        $periodo->user_create = "ADMIN";
+        $periodo->user_update = $this->user->username;
+        $periodo->user_create = $this->user->username;
         $periodo->estado = true;
         $periodo->save();
         
@@ -179,8 +191,8 @@ class MuestraMaestraCtrl extends Controller
             $zona->periodo_medicion_id = $periodo->id;
             $zona->nombre = $z["nombre"];
             $zona->color =  $z["color"];
-            $zona->user_update = "ADMIN";
-            $zona->user_create = "ADMIN";
+            $zona->user_update = $this->user->username;
+            $zona->user_create = $this->user->username;
             $zona->estado = true;
             $zona->save();
             
@@ -225,8 +237,8 @@ class MuestraMaestraCtrl extends Controller
         $zona->sector_id = $request->sector_id;
         $zona->nombre = $request->nombre;
         $zona->color = $request->color;
-        $zona->user_update = "ADMIN";
-        $zona->user_create = "ADMIN";
+        $zona->user_update = $this->user->username;
+        $zona->user_create = $this->user->username;
         $zona->estado = true;
         $zona->save();
         
@@ -260,7 +272,7 @@ class MuestraMaestraCtrl extends Controller
         $zona->sector_id = $request->sector_id;
         $zona->nombre = $request->nombre;
         $zona->color = $request->color;
-        $zona->user_update = "ADMIN";
+        $zona->user_update = $this->user->username;
         $zona->save();
         
         $zona->encargados()->detach();
@@ -307,7 +319,7 @@ class MuestraMaestraCtrl extends Controller
 		}
         
         
-        $zona->user_update = "ADMIN";
+        $zona->user_update = $this->user->username;
         $zona->coordenadas()->delete();
         
         foreach($request->coordenadas as $coordenada){ 
@@ -515,7 +527,7 @@ class MuestraMaestraCtrl extends Controller
                 $muestra = new Muestra_proveedor();
                 $muestra->zona_id = $request->zona;
                 $muestra->proveedor_rnt_id = $item["id"];
-                $muestra->user_create = "BRCC";
+                $muestra->user_create = $this->user->username;
                 $muestra->estado = true;
             }
             
@@ -525,7 +537,7 @@ class MuestraMaestraCtrl extends Controller
             $muestra->direccion = $item["muestra"]["direccion"];
             $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
             $muestra->observaciones = $item["muestra"]["observaciones"];
-            $muestra->user_update = "BRCC";
+            $muestra->user_update = $this->user->username;
             $muestra->save();
         }
         
@@ -581,7 +593,7 @@ class MuestraMaestraCtrl extends Controller
             $proveedor =  new Proveedores_informale();
             $proveedor->latitud = $request->latitud;
             $proveedor->longitud = $request->longitud;
-            $proveedor->user_create = "Admin";
+            $proveedor->user_create = $this->user->username;
             $proveedor->estado = true;
         }
         
@@ -589,7 +601,7 @@ class MuestraMaestraCtrl extends Controller
         $proveedor->direccion = $request->direccion;
         $proveedor->telefono = $request->telefono;
         $proveedor->categoria_proveedor_id = $request->categoria_proveedor_id;
-        $proveedor->user_update = "Admin";
+        $proveedor->user_update = $this->user->username;
         $proveedor->save();
         
         return [ "success"=>true, "proveedor"=>Proveedores_informale::where("id",$proveedor->id) ->with("categoria")->first() ];

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests;
@@ -69,16 +71,13 @@ class OfertaEmpleoController extends Controller
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
                                     'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
-<<<<<<< HEAD
                                     
-        $this->middleware('role:Admin|CoordinadorOferta|Encuestador|Proveedor');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }                           
     
         
-=======
->>>>>>> e7cfabba322a89728a452a75d889215e0c41f51a
     }
     
     
@@ -1066,20 +1065,12 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		    
 		}
 		
-<<<<<<< HEAD
 		
    	   Historial_Encuesta_Oferta::create([
                'encuesta_id' => $request->Encuesta,
                'user_id' => $this->user->id,
                'estado_encuesta_id' => 3,
                'fecha_cambio' => Carbon::now()
-=======
-	  Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->Encuesta,
-           'user_id' => 1,
-           'estado_encuesta_id' => 3,
-           'fecha_cambio' => Carbon::now()
->>>>>>> e7cfabba322a89728a452a75d889215e0c41f51a
        ]);
 		
 		

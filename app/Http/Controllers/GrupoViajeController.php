@@ -16,13 +16,13 @@ class GrupoViajeController extends Controller
 {
     public function __construct()
     {
-        /*
+        
         $this->middleware('auth');
         $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        */
+        
         
         
     }
@@ -41,7 +41,7 @@ class GrupoViajeController extends Controller
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->where('digitador_id',$this->user->id)->get();
+            }])->where('digitador_id',$this->user->digitador->id)->get();
             
         return $grupos;    
     }
@@ -140,7 +140,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
 
         $grupo = new Grupo_Viaje();
-        $grupo->digitador_id = $this->user->id;
+        $grupo->digitador_id = $this->user->digitador->id;
         $grupo->fecha_aplicacion = $request->Fecha;
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
