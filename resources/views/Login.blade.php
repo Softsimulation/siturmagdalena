@@ -33,8 +33,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 														<h3 class="inner-tittle t-inner">Inicio de Sesión</h3>
 														 @if(Session::has('message'))
                                                             <span class="messages">
-                                                                <span class="color_errores">{{Session::get('message')}}</span>
-                                                            </span>
+                                                                <span style="
+															    color: red;
+															    border-radius: 3px;
+															    padding: 1px;
+															    font-weight: bold;
+															    font-size: 0.6em;">
+                                                                	{{Session::get('message')}}</span>
+                                                            	</span>
                                                         @endif
 																<div class="buttons login">
 																			

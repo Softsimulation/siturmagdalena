@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $estado
  * @property string $user_create
  */
-class Tipo_Transporte extends Model
+class Tipo_Transporte_Oferta extends Model
 {
     /**
      * The table associated with the model.
