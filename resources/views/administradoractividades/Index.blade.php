@@ -192,6 +192,9 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/editarController.js')}}"></script>

@@ -59,7 +59,7 @@
            left: 0;
            height: 100%;
            width: 100%;
-           background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
+           background: rgba(0, 0, 0, 0.57) url(<?php echo e(asset('Content/Cargando.gif')); ?>) 50% 50% no-repeat
         }
         
         body.charging { overflow: hidden; }
@@ -372,57 +372,11 @@
         <script src="<?php echo e(asset('/js/plugins/bootstrap.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/ripples.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/sweetalert.min.js')); ?>"></script>
-<<<<<<< HEAD
-        <script src="<?php echo e(asset('/js/plugins/selectjp.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/ng-map.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/object-table.js')); ?>"></script>
-        
-        <script src="<?php echo e(asset('/js/plugins/ADM-dateTimePicker.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/select.min.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/dir-pagination.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/plugins/angular-sanitize.js')); ?>"></script>
-      
-        
-        <script src="<?php echo e(asset('/js/administrador/administrador.js')); ?>"></script>
-       
-        <script src="<?php echo e(asset('/js/administrador/grupo_viaje.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/administrador/grupoViajeServices.js')); ?>"></script>
-        
-        <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')); ?>"></script>
-        <script src="<?php echo e(asset('/js/encuestas/turismoReceptor/services/receptorServices.js')); ?>"></script>
-        
-       
-        
-       
-        
-       
-        
-    		
-    	    
-    	    
-    	  
-
-        </div>
-    <script>
-        $.material.init();
-    </script>
-   
-    <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/administrador/administrador.js')); ?>"></script>
-    
-  
-    <script src="<?php echo e(asset('/js/importacionRnt/importarRnt.js')); ?>"></script>
-    <script src="<?php echo e(asset('/js/importacionRnt/proveedorService.js')); ?>"></script>
-    
-    
-    
-=======
->>>>>>> e7cfabba322a89728a452a75d889215e0c41f51a
     <script>
         $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>
 
-    <script>  $.material.init(); </script>
+  
 
     <script>
             $(window).on('scroll', function () {

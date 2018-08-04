@@ -88,6 +88,12 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .ui-select-container{
+            width: 100%;
+        }
+        .ui-select-container span{
+            margin-top: 0;
+        }
     </style>
 @endsection
 
@@ -103,7 +109,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="title1">Insertar atracción</h1>
+    <h1 class="title1">Insertar proveedor</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
@@ -114,50 +120,52 @@
         <div class="tab-content">
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">
-                <h2>Datos de la atracción</h2>
+                <h2>Datos del proveedor</h2>
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     Los campos marcados con <strong>*</strong> son obligatorios.
                 </div>
-                <form novalidate role="form" name="crearAtraccionForm">
+                <form novalidate role="form" name="crearProveedorForm">
                     <div class="row">
-                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.nombre.$touched) && crearAtraccionForm.nombre.$error.required}">
+                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.nombre.$touched) && crearProveedorForm.nombre.$error.required}">
                             <label for="nombre">Nombre</label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">*</span>
-                                <input ng-model="atraccion.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                                <input ng-model="proveedor.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.descripcion.$touched) && crearAtraccionForm.descripcion.$error.required}">
+                        <div class="form-group col-sm-12" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.descripcion.$touched) && crearProveedorForm.descripcion.$error.required}">
                             <label for="descripcion">Descripción</label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">*</span>
-                                <textarea style="resize: none;" ng-model="atraccion.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
+                                <textarea style="resize: none;" ng-model="proveedor.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.valor_minimo.$touched) && crearAtraccionForm.valor_minimo.$error.required}">
+                        <div class="form-group col-sm-6" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.valor_minimo.$touched) && crearProveedorForm.valor_minimo.$error.required}">
                             <label for="valor_minimo">Valor mínimo ($)</label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">*</span>
-                                <input ng-model="atraccion.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <input ng-model="proveedor.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
-                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.valor_maximo.$touched) && crearAtraccionForm.valor_maximo.$error.required}">
+                        <div class="form-group col-sm-6" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.valor_maximo.$touched) && crearProveedorForm.valor_maximo.$error.required}">
                             <label for="valor_maximo">Valor máximo ($)</label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">*</span>
-                                <input ng-model="atraccion.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <input ng-model="proveedor.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
-                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.sector.$touched) && crearProveedorForm.sector.$error.required}">
                             <label for="sector">Sector</label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">*</span>
-                                <ui-select theme="bootstrap" ng-required="true" ng-model="atraccion.datosGenerales.sector_id" id="sector" name="sector">
+                                <ui-select theme="bootstrap" ng-required="true" ng-model="proveedor.datosGenerales.sector_id" id="sector" name="sector">
                                    <ui-select-match placeholder="Nombre del sector.">
                                        <span ng-bind="$select.selected.sectores_con_idiomas[0].nombre"></span>
                                    </ui-select-match>
@@ -167,47 +175,39 @@
                                 </ui-select>
                             </div>
                         </div>
+                        <div class="form-group col-sm-6" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.categoria_proveedor.$touched) && crearProveedorForm.categoria_proveedor.$error.required}">
+                            <label for="categoria">Categoría de proveedor</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <ui-select theme="bootstrap" ng-required="true" ng-model="proveedor.datosGenerales.categoria_proveedor" id="categoria_proveedor" name="categoria_proveedor">
+                                   <ui-select-match placeholder="Categoría de proveedor.">
+                                       <span ng-bind="$select.selected.categoria_proveedores_con_idiomas[0].nombre"></span>
+                                   </ui-select-match>
+                                   <ui-select-choices repeat="categoria.id as categoria in (categoria_proveedor| filter: $select.search)">
+                                       <span ng-bind="categoria.categoria_proveedores_con_idiomas[0].nombre" title="@{{sector.categoria_proveedores_con_idiomas[0].nombre}}"></span>
+                                   </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-8">
                             <label for="direccion">Dirección</label>
-                            <input ng-model="atraccion.datosGenerales.direccion" type="text" name="direccion" id="direccion" class="form-control" placeholder="Máximo 150 caracteres."/>
+                            <input ng-model="proveedor.datosGenerales.direccion" type="text" name="direccion" id="direccion" class="form-control" placeholder="Máximo 150 caracteres."/>
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-4">
+                            <label for="telefono">Teléfono</label>
+                            <input ng-model="proveedor.datosGenerales.telefono" type="tel" name="telefono" id="telefono" class="form-control" placeholder="Máximo 100 caracteres."/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-8">
+                            <label for="pagina_web">Página web</label>
+                            <input ng-model="proveedor.datosGenerales.pagina_web" type="text" name="pagina_web" id="pagina_web" class="form-control" placeholder="Máximo 255 caracteres."/>
+                        </div>
+                        <div class="form-group col-sm-4">
                             <label for="horario">Horario</label>
-                            <input ng-model="atraccion.datosGenerales.horario" type="text" name="horario" id="horario" class="form-control" placeholder="Máximo 255 caracteres."/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="telefono">Teléfono</label>
-                                <input ng-model="atraccion.datosGenerales.telefono" type="tel" name="telefono" id="telefono" class="form-control" placeholder="Máximo 100 caracteres."/>
-                            </div>
-                            <div class="form-group">
-                                <label for="pagina_web">Página web</label>
-                                <input ng-model="atraccion.datosGenerales.pagina_web" type="text" name="pagina_web" id="pagina_web" class="form-control" placeholder="Máximo 255 caracteres."/>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="actividad">Periodo de actividad e inactividad</label>
-                                <textarea style="resize: none;" rows="4" class="form-control" id="actividad" name="actividad" ng-model="atraccion.datosGenerales.actividad" placeholder="Máximo 1,000 caracteres."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-4">
-                            <label for="recomendaciones">Recomendaciones</label>
-                            <textarea style="resize: none;" rows="5" class="form-control" id="recomendaciones" name="recomendaciones" ng-model="atraccion.datosGenerales.recomendaciones" placeholder="Máximo 1,000 caracteres."></textarea>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="reglas">Reglas</label>
-                            <textarea style="resize: none;" rows="5" class="form-control" id="reglas" name="reglas" ng-model="atraccion.datosGenerales.reglas" placeholder="Reglas o normas que deben seguir los visitantes. Máximo 1,000 caracteres."></textarea>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="como_llegar">Como llegar</label>
-                            <textarea style="resize: none;" rows="5" class="form-control" id="como_llegar" name="como_llegar" ng-model="atraccion.datosGenerales.como_llegar" placeholder="Pasos o indicaciones para llegar al lugar. Máximo 1,000 caracteres."></textarea>
+                            <input ng-model="proveedor.datosGenerales.horario" type="text" name="horario" id="horario" class="form-control" placeholder="Máximo 255 caracteres."/>
                         </div>
                     </div>
                     <div class="row" style="display: flex;">
@@ -303,19 +303,6 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <label for="tipos"><h4><span class="text-error">*</span> Tipo de atracciones <small>(Seleccione al menos un tipo de atracción)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="atraccion.adicional.tipos" theme="bootstrap" close-on-select="false" >
-                                <ui-select-match placeholder="Seleccione uno o varios tipos de atracciones.">
-                                    <span ng-bind="$item.tipo_atracciones_con_idiomas[0].nombre"></span>
-                                </ui-select-match>
-                                <ui-select-choices repeat="tipo.id as tipo in (tipos_atracciones| filter: $select.search)">
-                                    <div ng-bind="tipo.tipo_atracciones_con_idiomas[0].nombre" title="@{{tipo.tipo_atracciones_con_idiomas[0].nombre}}"></div>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
                             <label for="perfiles"><h4><span class="text-error">*</span> Categorías de turismo <small>(Seleccione al menos una categoría)</small></h4></label>
                             <ui-select multiple ng-required="true" ng-model="atraccion.adicional.categorias" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione una o varias categorías de turismo.">
@@ -355,6 +342,10 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <!--<script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>-->
 <script src="{{asset('/js/administrador/proveedores/crearController.js')}}"></script>
 <!--<script src="{{asset('/js/administrador/atracciones/editarController.js')}}"></script>-->

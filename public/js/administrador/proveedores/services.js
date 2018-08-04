@@ -1,6 +1,6 @@
-var app = angular.module('atraccionesServices', []);
+var app = angular.module('proveedoresServices', []);
 
-app.factory('atraccionesServi', ['$http', '$q', function ($http, $q){
+app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
     return {
         getDatos: function (){
             var defered = $q.defer();
@@ -50,7 +50,7 @@ app.factory('atraccionesServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administradoratracciones/datoscrear').success(function (data) {
+            $http.get('/administradorproveedores/datoscrear').success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

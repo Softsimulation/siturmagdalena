@@ -1,6 +1,6 @@
-var app = angular.module('proveedoresServices', []);
+var app = angular.module('atraccionesServices', []);
 
-app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
+app.factory('atraccionesServi', ['$http', '$q', function ($http, $q){
     return {
         getDatos: function (){
             var defered = $q.defer();

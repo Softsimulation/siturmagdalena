@@ -226,7 +226,7 @@ class AdministradorAtraccionController extends Controller
             
             'como_llegar.max' => 'Se ha excedido el número máximo de caracteres para el campo "Como llegar".',
             
-            'po.requireds' => 'Agregue un marcador en el mapa de Google.'
+            'pos.required' => 'Agregue un marcador en el mapa de Google.'
         ]);
         
         if($validator->fails()){

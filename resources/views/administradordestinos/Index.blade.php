@@ -192,6 +192,11 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/editarController.js')}}"></script>

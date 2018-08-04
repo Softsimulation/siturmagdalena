@@ -54,7 +54,7 @@ class Categoria_Turismo extends Model
      */
     public function categoriaTurismoConEventos()
     {
-        return $this->hasMany('App\Models\CategoriaTurismoConEvento');
+        return $this->belongsToMany('App\Models\Categoria_Turismo_Con_Evento', 'categoria_turismo_con_eventos', 'categoria_turismo_id', 'eventos_id');
     }
 
     /**

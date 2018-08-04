@@ -44,6 +44,8 @@ Route::controller('/importarRnt','ImportacionRntController');
 
 Route::controller('/administradorproveedores', 'AdministradorProveedoresController');
 
+Route::controller('/administradoreventos', 'AdministradorEventosController');
+
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');
 

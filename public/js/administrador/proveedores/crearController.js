@@ -1,13 +1,13 @@
 /* global angular */
 /* global swal */
-angular.module('atracciones.crear', [])
+angular.module('proveedores.crear', [])
 
-.controller('atraccionesCrearController', function($scope, atraccionesServi){
+.controller('proveedoresCrearController', function($scope, proveedoresServi){
     var marker = null;
     var lat;
     var lng;
     var latlng;
-    $scope.atraccion = {
+    $scope.proveedor = {
         datosGenerales: {
             pos: {
                 lat: null,
@@ -23,11 +23,11 @@ angular.module('atracciones.crear', [])
         return item.destino.destino_con_idiomas[0].nombre;
     }
     
-    atraccionesServi.getDatoscrear().then(function (data){
+    proveedoresServi.getDatoscrear().then(function (data){
         if (data.success){
             $scope.sectores = data.sectores;
             $scope.perfiles_turista = data.perfiles_turista;
-            $scope.tipos_atracciones = data.tipos_atracciones;
+            $scope.categoria_proveedor = data.categoria_proveedor;
             $scope.categorias_turismo = data.categorias_turismo;
             $scope.actividades = data.actividades;
         }
@@ -51,8 +51,8 @@ angular.module('atracciones.crear', [])
                     content: '<p><b>Su posición</b></p>'
                 }
             });
-            $scope.atraccion.datosGenerales.pos.lat = angular.copy(lat);
-            $scope.atraccion.datosGenerales.pos.lng = angular.copy(lng);
+            $scope.proveedor.datosGenerales.pos.lat = angular.copy(lat);
+            $scope.proveedor.datosGenerales.pos.lng = angular.copy(lng);
         }
     });
     
@@ -72,15 +72,15 @@ angular.module('atracciones.crear', [])
                             content: '<p><b>'+ $('#address').val() +'</b></p>'
                         }
                     });
-                    $scope.atraccion.datosGenerales.pos.lat = angular.copy(latlng.lat());
-                    $scope.atraccion.datosGenerales.pos.lng = angular.copy(latlng.lng());
+                    $scope.proveedor.datosGenerales.pos.lat = angular.copy(latlng.lat());
+                    $scope.proveedor.datosGenerales.pos.lng = angular.copy(latlng.lng());
                 }
             }
         });
     }
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.crearAtraccionForm.$valid && $scope.atraccion.id != -1){
+        if (!$scope.crearProveedorForm.$valid && $scope.proveedor.id != -1){
             return;
         }
         if (marker == null){
@@ -88,10 +88,10 @@ angular.module('atracciones.crear', [])
             return;
         }
         $("body").attr("class", "cbp-spmenu-push charging");
-        atraccionesServi.postCrearatraccion($scope.atraccion.datosGenerales).then(function(data){
+        proveedoresServi.postCrearproveedor($scope.proveedor.datosGenerales).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                $scope.atraccion.id = data.id;
+                $scope.proveedor.id = data.id;
                 swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
