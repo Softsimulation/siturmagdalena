@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests;
@@ -69,6 +71,13 @@ class OfertaEmpleoController extends Controller
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
                                     'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
+                                    
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }                           
+    
+        
     }
     
     
@@ -277,7 +286,7 @@ class OfertaEmpleoController extends Controller
             $encuesta->save();
     	   Historial_Encuesta_Oferta::create([
                'encuesta_id' => $encuesta->id,
-               'user_id' => 1,
+               'user_id' => $this->user->id,
                'estado_encuesta_id' => 3,
                'fecha_cambio' => Carbon::now()
            ]);
@@ -291,7 +300,7 @@ class OfertaEmpleoController extends Controller
             $encuesta->save();
            Historial_Encuesta_Oferta::create([
                'encuesta_id' => $encuesta->id,
-               'user_id' => 1,
+               'user_id' => $this->user->id,
                'estado_encuesta_id' => 1,
                'fecha_cambio' => Carbon::now()
            ]);
@@ -1056,11 +1065,12 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		    
 		}
 		
-	  Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->Encuesta,
-           'user_id' => 1,
-           'estado_encuesta_id' => 3,
-           'fecha_cambio' => Carbon::now()
+		
+   	   Historial_Encuesta_Oferta::create([
+               'encuesta_id' => $request->Encuesta,
+               'user_id' => $this->user->id,
+               'estado_encuesta_id' => 3,
+               'fecha_cambio' => Carbon::now()
        ]);
 		
 		

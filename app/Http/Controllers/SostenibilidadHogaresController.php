@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Http\Requests;
 use App\Models\Estrato;
 use App\Models\Barrio;
@@ -35,7 +36,18 @@ use App\Models\ListadoEncuestasHogarSostenibilidad;
 class SostenibilidadHogaresController extends Controller
 {
     //
-    
+    public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     public function getCrear(){
     	 return view('sostenibilidadHogar.crear');
     }
@@ -101,8 +113,8 @@ class SostenibilidadHogaresController extends Controller
     		'observacion' => 'Se ha creado la encuesta.',
     		'fecha_cambio' => date('Y-m-d H:i'),
     		'estado' => 1,
-    		'user_create' => 'admin',
-    		'user_update' => 'admin'
+    		'user_create' => $this->user->username,
+    		'user_update' => $this->user->username
     	]);
 			
 		return ["success"=>true,"id"=>$casa->id];
@@ -148,8 +160,8 @@ class SostenibilidadHogaresController extends Controller
     		'observacion' => 'Se ha editado la encuesta.',
     		'fecha_cambio' => date('Y-m-d H:i'),
     		'estado' => 1,
-    		'user_create' => 'admin',
-    		'user_update' => 'admin'
+    		'user_create' => $this->user->username,
+    		'user_update' => $this->user->username
     	]);
 			
 		return ["success"=>true,"id"=>$casa->id];
@@ -368,11 +380,11 @@ class SostenibilidadHogaresController extends Controller
 		if(isset($request->negativo)){
 			$componente->negativo = $request->negativo;
 		}
-		$componente->user_update ='Admin';
+		$componente->user_update = $this->user->username;
 		$componente->estado = true;
 		if(Componente_Social::find($request->id)==null){
 			
-			$componente->user_create = 'Admin';
+			$componente->user_create = $this->user->username;
 			$componente->save();
 		}
 		
@@ -510,8 +522,8 @@ class SostenibilidadHogaresController extends Controller
 	    		'observacion' => 'Se ha creado la encuesta en la sección socio-cultural.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 			
 		}else{
@@ -521,8 +533,8 @@ class SostenibilidadHogaresController extends Controller
 	    		'observacion' => 'Se ha editado la encuesta en la sección socio-cultural.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 		}
 		
@@ -633,11 +645,11 @@ class SostenibilidadHogaresController extends Controller
 		$componente->areas_protegidas = $request->areas_protegidas;
 		$componente->efecto_turismo = $request->efecto_turismo;
 		
-		$componente->user_update ='Admin';
+		$componente->user_update = $this->user->username;
 		$componente->estado = true;
 		if(Componente_Ambiental::find($request->id)==null){
 			
-			$componente->user_create = 'Admin';
+			$componente->user_create = $this->user->username;
 			$componente->save();
 		}
 		
@@ -705,8 +717,8 @@ class SostenibilidadHogaresController extends Controller
 	    		'observacion' => 'Se ha creado la encuesta en la sección ambiental.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 			
 		}else{
@@ -716,8 +728,8 @@ class SostenibilidadHogaresController extends Controller
 	    		'observacion' => 'Se ha editado la encuesta en la sección ambiental.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 		}
 			
@@ -915,8 +927,8 @@ class SostenibilidadHogaresController extends Controller
 	    		'observacion' => 'Se ha creado la encuesta en la sección económico.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 			
 		}else{
@@ -926,8 +938,8 @@ class SostenibilidadHogaresController extends Controller
 	    		'observacion' => 'Se ha editado la encuesta en la sección económico.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 		}
 		

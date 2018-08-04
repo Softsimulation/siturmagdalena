@@ -14,13 +14,13 @@ class UsuarioController extends Controller
 {
     public function __construct()
     {
-        /*
+        
         $this->middleware('auth');
-        $this->middleware('role:ADmin');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        */
+        
         
         
     }
@@ -168,6 +168,7 @@ class UsuarioController extends Controller
         $user->nombre = $request->nombres;
         $user->username = $request->email;
         $user->email = $request->email;
+        $user->password = $request->password1;
         $user->save();
         
         return ['success'=> true];
