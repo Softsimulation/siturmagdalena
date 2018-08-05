@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +18,12 @@ use Illuminate\Database\Eloquent\Model;
 class Evento_Con_Idioma extends Model
 {
     /**
+     * The timestamps.
+     * 
+     * @var bool
+     */   
+    public $timestamps = false;
+    /**
      * The table associated with the model.
      * 
      * @var string
@@ -34,7 +40,7 @@ class Evento_Con_Idioma extends Model
      */
     public function evento()
     {
-        return $this->belongsTo('App\Evento', 'eventos_id');
+        return $this->belongsTo('App\Models\Evento', 'eventos_id');
     }
 
     /**
@@ -42,6 +48,6 @@ class Evento_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }

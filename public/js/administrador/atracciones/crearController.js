@@ -22,8 +22,9 @@ angular.module('atracciones.crear', [])
         // and automatically group your items by this
         return item.destino.destino_con_idiomas[0].nombre;
     }
-    
+    $("body").attr("class", "cbp-spmenu-push charging");
     atraccionesServi.getDatoscrear().then(function (data){
+        $("body").attr("class", "cbp-spmenu-push");
         if (data.success){
             $scope.sectores = data.sectores;
             $scope.perfiles_turista = data.perfiles_turista;
@@ -32,6 +33,7 @@ angular.module('atracciones.crear', [])
             $scope.actividades = data.actividades;
         }
     }).catch(function (errs){
+        $("body").attr("class", "cbp-spmenu-push");
         swal('Error', 'Error al cargar los datos. Por favor recargue la página.', 'error');
     });
     
@@ -153,7 +155,7 @@ angular.module('atracciones.crear', [])
         atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }

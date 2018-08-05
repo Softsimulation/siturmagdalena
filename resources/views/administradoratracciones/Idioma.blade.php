@@ -102,7 +102,7 @@
 @section('controller','ng-controller="atraccionesIdiomaController"')
 
 @section('content')
-<div class="container">
+<div class="col-sm-12">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <input type="hidden" ng-model="idIdioma" ng-init="idIdioma={{$idIdioma}}" />
     <h1 class="title1">Idioma: @{{idioma.nombre}}</h1>
@@ -110,16 +110,20 @@
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <!--Información básica-->
         <h2>Datos de la atracción</h2>
-        <div class="alert alert-warning alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            Los campos marcados con <strong>*</strong> son obligatorios.
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
+                    <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
+                </div>
+            </div>
         </div>
         <form novalidate role="form" name="editarIdiomaForm">
             <div class="row">
                 <div class="form-group col-sm-12" ng-class="{'has-error': (editarIdiomaForm.$submitted || editarIdiomaForm.nombre.$touched) && editarIdiomaForm.nombre.$error.required}">
                     <label for="nombre">Nombre</label>
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">*</span>
+                        <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                         <input ng-model="atraccion.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
                     </div>
                 </div>
@@ -128,7 +132,7 @@
                 <div class="form-group col-sm-6" ng-class="{'has-error': (editarIdiomaForm.$submitted || editarIdiomaForm.descripcion.$touched) && editarIdiomaForm.descripcion.$error.required}">
                     <label for="descripcion">Descripción</label>
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">*</span>
+                        <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                         <textarea style="resize: none;" ng-model="atraccion.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
                     </div>
                 </div>
@@ -170,6 +174,11 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/editarController.js')}}"></script>

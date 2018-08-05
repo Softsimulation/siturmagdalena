@@ -88,6 +88,12 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .ui-select-container{
+            width: 100%;
+        }
+        .ui-select-container span{
+            margin-top: 0;
+        }
     </style>
 @endsection
 
@@ -102,7 +108,7 @@
 @section('controller','ng-controller="atraccionesCrearController"')
 
 @section('content')
-<div class="container">
+<div class="col-sm-12">
     <h1 class="title1">Insertar atracción</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
@@ -115,16 +121,20 @@
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">
                 <h2>Datos de la atracción</h2>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    Los campos marcados con <strong>*</strong> son obligatorios.
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
+                        </div>
+                    </div>
                 </div>
                 <form novalidate role="form" name="crearAtraccionForm">
                     <div class="row">
                         <div class="form-group col-sm-12" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.nombre.$touched) && crearAtraccionForm.nombre.$error.required}">
                             <label for="nombre">Nombre</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="atraccion.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
                             </div>
                         </div>
@@ -133,7 +143,7 @@
                         <div class="form-group col-sm-12" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.descripcion.$touched) && crearAtraccionForm.descripcion.$error.required}">
                             <label for="descripcion">Descripción</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <textarea style="resize: none;" ng-model="atraccion.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
                             </div>
                         </div>
@@ -142,21 +152,21 @@
                         <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.valor_minimo.$touched) && crearAtraccionForm.valor_minimo.$error.required}">
                             <label for="valor_minimo">Valor mínimo ($)</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="atraccion.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.valor_maximo.$touched) && crearAtraccionForm.valor_maximo.$error.required}">
                             <label for="valor_maximo">Valor máximo ($)</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="atraccion.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
                             <label for="sector">Sector</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <ui-select theme="bootstrap" ng-required="true" ng-model="atraccion.datosGenerales.sector_id" id="sector" name="sector">
                                    <ui-select-match placeholder="Nombre del sector.">
                                        <span ng-bind="$select.selected.sectores_con_idiomas[0].nombre"></span>
@@ -241,8 +251,7 @@
             <!--Multimedia-->
             <div id="multimedia" class="tab-pane fade">
                 <h3>Multimedia</h3>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="alert-warning alert-dismissible" role="alert">
                     <strong>Tenga en cuenta que para subir imágenes.</strong>
                     <ul>
                         <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
@@ -253,7 +262,7 @@
                 </div>
                 <form novalidate role="form" name="multimediaForm">
                     <div class="row">
-                        <h4><span class="text-error">*</span> Imagen de portada</h4>
+                        <h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Imagen de portada</h4>
                         <div class="col-sm-12">
                             <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                         </div>
@@ -283,14 +292,18 @@
             <!--Información adicional-->
             <div id="adicional" class="tab-pane fade">
                 <h3>Información adicional</h3>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    Todos los campos marcados con <strong>*</strong> son obligatorios.
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
+                        </div>
+                    </div>
                 </div>
                 <form novalidate role="form" name="informacionAdicionalForm">
                     <div class="row">
                         <div class="col-sm-12">
-                            <label for="perfiles"><h4><span class="text-error">*</span> Perfiles del turista <small>(Seleccione al menos un perfil)</small></h4></label>
+                            <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Perfiles del turista <small>(Seleccione al menos un perfil)</small></h4></label>
                             <ui-select multiple ng-required="true" ng-model="atraccion.adicional.perfiles" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
                                     <span ng-bind="$item.perfiles_usuarios_con_idiomas[0].nombre"></span>
@@ -303,7 +316,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <label for="tipos"><h4><span class="text-error">*</span> Tipo de atracciones <small>(Seleccione al menos un tipo de atracción)</small></h4></label>
+                            <label for="tipos"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Tipo de atracciones <small>(Seleccione al menos un tipo de atracción)</small></h4></label>
                             <ui-select multiple ng-required="true" ng-model="atraccion.adicional.tipos" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione uno o varios tipos de atracciones.">
                                     <span ng-bind="$item.tipo_atracciones_con_idiomas[0].nombre"></span>
@@ -316,7 +329,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <label for="perfiles"><h4><span class="text-error">*</span> Categorías de turismo <small>(Seleccione al menos una categoría)</small></h4></label>
+                            <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Categorías de turismo <small>(Seleccione al menos una categoría)</small></h4></label>
                             <ui-select multiple ng-required="true" ng-model="atraccion.adicional.categorias" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione una o varias categorías de turismo.">
                                     <span ng-bind="$item.categoria_turismo_con_idiomas[0].nombre"></span>
@@ -355,6 +368,11 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/editarController.js')}}"></script>

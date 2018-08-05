@@ -44,7 +44,7 @@ class Perfil_Usuario extends Model
      */
     public function perfilesUsuariosConEventos()
     {
-        return $this->hasMany('App\Models\PerfilesUsuariosConEvento', 'perfiles_usuarios_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_eventos', 'perfiles_usuarios_id', 'eventos_id');
     }
 
     /**
