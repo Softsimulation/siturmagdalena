@@ -49,7 +49,7 @@ class AdministradorActividadesController extends Controller
             return response('Not found.', 404);
         }
         $actividad = Actividad::with(['actividadesConIdiomas' => function($queryActividadesConIdiomas){
-            $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
+            $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre', 'descripcion')->orderBy('idiomas');
         }])->where('id', $id)->select('id', 'valor_min', 'valor_max')->first();
         
         $perfiles_turista = Actividad::find($id)->perfilesUsuariosConActividades()->pluck('perfiles_usuarios_id')->toArray();

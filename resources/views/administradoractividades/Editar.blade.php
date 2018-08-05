@@ -102,7 +102,7 @@
 @section('controller','ng-controller="actividadesEditarController"')
 
 @section('content')
-<div class="container">
+<div class="col-sm-12">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <h1 class="title1">@{{actividadNombre}} - Editar</h1>
     <br />
@@ -116,23 +116,27 @@
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">
                 <h2>Datos de la actividad</h2>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    Los campos marcados con <strong>*</strong> son obligatorios.
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
+                        </div>
+                    </div>
                 </div>
                 <form novalidate role="form" name="editarActividadForm">
                     <div class="row">
                         <div class="form-group col-sm-6" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.valor_minimo.$touched) && crearActividadForm.valor_minimo.$error.required}">
                             <label for="valor_minimo">Valor mínimo ($)</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="actividad.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.valor_maximo.$touched) && crearActividadForm.valor_maximo.$error.required}">
                             <label for="valor_maximo">Valor máximo ($)</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="actividad.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
@@ -150,8 +154,7 @@
             <!--Multimedia-->
             <div id="multimedia" class="tab-pane fade">
                 <h3>Multimedia</h3>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="alert-warning alert-dismissible" role="alert">
                     <strong>Tenga en cuenta que para subir imágenes.</strong>
                     <ul>
                         <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
@@ -162,7 +165,7 @@
                 </div>
                 <form novalidate role="form" name="editarMultimediaForm">
                     <div class="row">
-                        <h4><span class="text-error">*</span> Imagen de portada</h4>
+                        <h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Imagen de portada</h4>
                         <div class="col-sm-12">
                             <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                         </div>
@@ -186,9 +189,13 @@
             <!--Información adicional-->
             <div id="adicional" class="tab-pane fade">
                 <h3>Información adicional</h3>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    Todos los campos marcados con <strong>*</strong> son obligatorios.
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
+                        </div>
+                    </div>
                 </div>
                 <form novalidate role="form" name="informacionAdicionalForm">
                     <div class="row">
@@ -245,6 +252,7 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
 <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
 <script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/indexController.js')}}"></script>

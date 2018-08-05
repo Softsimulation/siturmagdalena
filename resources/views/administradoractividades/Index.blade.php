@@ -102,7 +102,7 @@
 @section('controller','ng-controller="actividadesIndexController"')
 
 @section('content')
-<div class="container">
+<div class="col-sm-12">
     <h1 class="title1">Lista de atracciones</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
