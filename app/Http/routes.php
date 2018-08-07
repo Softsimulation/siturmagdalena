@@ -46,6 +46,8 @@ Route::controller('/administradorproveedores', 'AdministradorProveedoresControll
 
 Route::controller('/administradoreventos', 'AdministradorEventosController');
 
+Route::controller('/administradorrutas', 'AdministradorRutasController');
+
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');
 

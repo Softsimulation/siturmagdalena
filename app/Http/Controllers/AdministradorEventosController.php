@@ -212,7 +212,7 @@ class AdministradorEventosController extends Controller
         
         Multimedia_Evento::where('eventos_id', $request->id)->where('portada', true)->delete();
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
-        if (Storage::disk('multimedia-evento')->exists('evento-'.$request->id.'/'.$portadaNombre)){
+        if (Storage::disk('multimedia-evento')->exists('/evento-'.$request->id.'/'.$portadaNombre)){
             Storage::disk('multimedia-evento')->deleteDirectory('evento-'.$request->id);
         }
         
@@ -336,7 +336,7 @@ class AdministradorEventosController extends Controller
     
     public function getDatosIdioma ($id, $idIdioma){
         $evento = Evento::with(['eventosConIdiomas' => function ($queryEventosConIdiomas) use ($id, $idIdioma){
-            $queryEventosConIdiomas->where('eventos_id', $id)->select('nombre', 'descripcion', 'edicion', 'horario', 'eventos_id', 'idiomas_id');
+            $queryEventosConIdiomas->where('idiomas_id', $idIdioma)->select('nombre', 'descripcion', 'edicion', 'horario', 'eventos_id', 'idiomas_id');
         }])->where('id', $id)->select('id')->first();
         
         $idioma = Idioma::find($idIdioma);

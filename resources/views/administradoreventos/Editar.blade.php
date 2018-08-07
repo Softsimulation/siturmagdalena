@@ -97,7 +97,7 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Editar evenro')
+@section('TitleSection', 'Editar evento')
 
 @section('Progreso', '0%')
 

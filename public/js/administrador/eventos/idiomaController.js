@@ -32,8 +32,8 @@ angular.module('eventos.idioma', [])
         $scope.evento.datosGenerales.id = $scope.id;
         $scope.evento.datosGenerales.idIdioma = $scope.idIdioma;
         eventosServi.postEditaridioma($scope.evento.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                $("body").attr("class", "cbp-spmenu-push");
                 swal('¡Éxito!', 'Evento modificado con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;

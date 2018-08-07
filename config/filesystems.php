@@ -82,6 +82,12 @@ return [
             'visibility' => 'public',
         ],
 
+        'multimedia-ruta' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/rutas',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => 'your-key',

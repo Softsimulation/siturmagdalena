@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +12,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Multimedia_Ruta extends Model
 {
+    /**
+     * The timestamps.
+     * 
+     * @var bool
+     */   
+    public $timestamps = false;
     /**
      * The table associated with the model.
      * 
@@ -29,6 +35,6 @@ class Multimedia_Ruta extends Model
      */
     public function ruta()
     {
-        return $this->belongsTo('App\Ruta');
+        return $this->belongsTo('App\Models\Ruta');
     }
 }
