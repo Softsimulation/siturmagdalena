@@ -97,7 +97,7 @@ angular.module('eventos.editar', [])
             return;
         }
         var fd = new FormData();
-        var input = $('#portadaIMG');
+        var input = $('#files-brcc-portadaIMG');
         if (input[0] != undefined) {
             // check for browser support (may need to be modified)
             if (input[0].files && input[0].files.length == 1) {
@@ -115,7 +115,7 @@ angular.module('eventos.editar', [])
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
-        if ($scope.imagenes != null) {
+        if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (var i in $scope.imagenes){
                 if (Number.isInteger(parseInt(i))){
                     fd.append("image[]", $scope.imagenes[i]);
@@ -128,7 +128,8 @@ angular.module('eventos.editar', [])
         eventosServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Multimedia modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
@@ -146,6 +147,7 @@ angular.module('eventos.editar', [])
         eventosServi.postEditarevento($scope.evento.datosGenerales).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Evento modificado con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
@@ -161,13 +163,17 @@ angular.module('eventos.editar', [])
             return;
         }
         $scope.evento.adicional.id = $scope.id;
+        $("body").attr("class", "cbp-spmenu-push charging");
         eventosServi.postGuardaradicional($scope.evento.adicional).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }

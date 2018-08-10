@@ -1,13 +1,13 @@
 /* global angular */
 /* global swal */
-angular.module('atracciones.index', [])
+angular.module('proveedores.index', [])
 
-.controller('atraccionesIndexController', function($scope, atraccionesServi){
+.controller('proveedoresIndexController', function($scope, proveedoresServi){
     $("body").attr("class", "cbp-spmenu-push charging");
-    atraccionesServi.getDatos().then(function (data){
+    proveedoresServi.getDatos().then(function (data){
         $("body").attr("class", "cbp-spmenu-push");
         if (data.success){
-            $scope.atracciones = data.atracciones;
+            $scope.proveedores = data.proveedores;
             $scope.idiomas = data.idiomas;
         }
     }).catch(function (errs){
@@ -15,31 +15,31 @@ angular.module('atracciones.index', [])
         swal('Error', 'Error al cargar los datos. Por favor recargue la página.', 'error');
     });
     
-    $scope.desactivarActivar = function (atraccion){
+    $scope.desactivarActivar = function (proveedor){
         $("body").attr("class", "cbp-spmenu-push charging");
-        atraccionesServi.postDesactivarActivar(atraccion.id).then(function (data){
+        proveedoresServi.postDesactivarActivar(proveedor.id).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                atraccion.estado = !atraccion.estado;
+                proveedor.estado = !proveedor.estado;
                 swal('¡Éxito!', 'Operación realizada con éxito.', 'success');
             }
         }).catch(function (error){
             $("body").attr("class", "cbp-spmenu-push");
-            swal('Error', 'Error al desactivar la atracción. Por favor, recargue la página.', 'error');
+            swal('Error', 'Error al desactivar el proveedor. Por favor, recargue la página.', 'error');
         });
     }
     
-    $scope.modalIdioma = function (atraccion){
-        $scope.atraccionEdit = atraccion;
-        $("#idiomaModal").modal('show');
-    }
+    // $scope.modalIdioma = function (atraccion){
+    //     $scope.atraccionEdit = atraccion;
+    //     $("#idiomaModal").modal('show');
+    // }
     
-    $scope.nuevoIdioma = function (){
-        if ($scope.idiomaEditSelected == ""){
-            swal("Información", 'Elija un idioma.', 'info');
-            return;
-        }
-        window.location = "/administradoratracciones/idioma/"+ $scope.atraccionEdit.id +"/" + $scope.idiomaEditSelected;
-    }
+    // $scope.nuevoIdioma = function (){
+    //     if ($scope.idiomaEditSelected == ""){
+    //         swal("Información", 'Elija un idioma.', 'info');
+    //         return;
+    //     }
+    //     window.location = "/administradoratracciones/idioma/"+ $scope.atraccionEdit.id +"/" + $scope.idiomaEditSelected;
+    // }
     
 });

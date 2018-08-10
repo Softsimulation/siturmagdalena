@@ -114,7 +114,7 @@ class AdministradorEventosController extends Controller
             'edicion' => 'max:50',
             'horario' => 'max:255',
             'telefono' => 'max:100',
-            'pagina_web' => 'max:255',
+            'pagina_web' => 'max:255|url',
             'fecha_inicio' => 'required|date',
             'fecha_final' => 'required|date'
         ],[
@@ -142,6 +142,7 @@ class AdministradorEventosController extends Controller
             'telefono.max' => 'Se ha excedido el número máximo de caracteres para el campo "Teléfono".',
             
             'pagina_web.max' => 'Se ha excedido el número máximo de caracteres para el campo "Página web".',
+            'pagina_web.url' => 'La página web del evento debe tener la estructura de un enlace externo.',
             
             'fecha_inicio.required' => 'Se necesita una fecha de inicio para el evento.',
             'fecha_inicio.date' => 'No se ha pasado un formato de fecha válido para la fecha de inicio.',
@@ -194,7 +195,8 @@ class AdministradorEventosController extends Controller
         $validator = \Validator::make($request->all(), [
             'portadaIMG' => 'required',
             'id' => 'required|exists:eventos|numeric',
-            'image' => 'array|max:5'
+            'image' => 'array|max:5',
+            'video_promocional' => 'url'
         ],[
             'portadaIMG.required' => 'Se necesita una imagen de portada.',
             
@@ -203,7 +205,9 @@ class AdministradorEventosController extends Controller
             'id.numeric' => 'El identificador del evento debe ser un valor numérico.',
             
             'image.array' => 'Error al enviar los datos. Recargue la página.',
-            'image.max' => 'Máximo se pueden subir 5 imágenes para la atracción.'
+            'image.max' => 'Máximo se pueden subir 5 imágenes para la atracción.',
+            
+            'video_promocional.url' => 'El video promocional debe tener la estructura de enlace.'
         ]);
         
         if($validator->fails()){
@@ -252,25 +256,27 @@ class AdministradorEventosController extends Controller
                 Storage::disk('multimedia-evento')->delete('evento-'.$request->id.'/'.$nombre);
             }
         }
-        foreach($request->image as $key => $file){
-            $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-            $multimedia_evento = new Multimedia_Evento();
-            $multimedia_evento->eventos_id = $request->id;
-            $multimedia_evento->ruta = "/multimedia/eventos/evento-".$request->id."/".$nombre;
-            $multimedia_evento->tipo = false;
-            $multimedia_evento->portada = false;
-            $multimedia_evento->estado = true;
-            $multimedia_evento->user_create = "Situr";
-            $multimedia_evento->user_update = "Situr";
-            $multimedia_evento->created_at = Carbon::now();
-            $multimedia_evento->updated_at = Carbon::now();
-            $multimedia_evento->save();
-            
-            Storage::disk('multimedia-evento')->put('evento-'.$request->id.'/'.$nombre, File::get($file));
-            $cont = $nombre;
+        
+        if ($request->image != null){
+            foreach($request->image as $key => $file){
+                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                $multimedia_evento = new Multimedia_Evento();
+                $multimedia_evento->eventos_id = $request->id;
+                $multimedia_evento->ruta = "/multimedia/eventos/evento-".$request->id."/".$nombre;
+                $multimedia_evento->tipo = false;
+                $multimedia_evento->portada = false;
+                $multimedia_evento->estado = true;
+                $multimedia_evento->user_create = "Situr";
+                $multimedia_evento->user_update = "Situr";
+                $multimedia_evento->created_at = Carbon::now();
+                $multimedia_evento->updated_at = Carbon::now();
+                $multimedia_evento->save();
+                
+                Storage::disk('multimedia-evento')->put('evento-'.$request->id.'/'.$nombre, File::get($file));
+            }
         }
         
-        return ['success' => true, 'cont' => $cont];
+        return ['success' => true];
     }
     
     public function postGuardaradicional (Request $request){
@@ -436,7 +442,7 @@ class AdministradorEventosController extends Controller
             'valor_maximo' => 'required|numeric',
             'tipo_evento' => 'required|numeric|exists:sectores,id',
             'telefono' => 'max:100',
-            'pagina_web' => 'max:255',
+            'pagina_web' => 'max:255|url',
             'fecha_inicio' => 'required|date',
             'fecha_final' => 'required|date'
         ],[
@@ -457,6 +463,7 @@ class AdministradorEventosController extends Controller
             'telefono.max' => 'Se ha excedido el número máximo de caracteres para el campo "Teléfono".',
             
             'pagina_web.max' => 'Se ha excedido el número máximo de caracteres para el campo "Página web".',
+            'pagina_web.url' => 'La página web del evento debe tener la estructura de un enlace.',
             
             'fecha_inicio.required' => 'Se necesita una fecha de inicio para el evento.',
             'fecha_inicio.date' => 'No se ha pasado un formato de fecha válido para la fecha de inicio.',

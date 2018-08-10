@@ -57,13 +57,14 @@ angular.module('eventos.crear', [])
    
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.crearEventoForm.$valid && $scope.evento.id != -1){
+        if (!$scope.crearEventoForm.$valid || $scope.evento.id != -1){
             return;
         }
         $("body").attr("class", "cbp-spmenu-push charging");
         eventosServi.postCrearevento($scope.evento.datosGenerales).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 $scope.evento.id = data.id;
                 swal('¡Éxito!', 'Evento creado con éxito.', 'success');
             }else{
@@ -76,11 +77,11 @@ angular.module('eventos.crear', [])
     }
     
     $scope.guardarMultimedia = function (){
-        if (!$scope.multimediaForm.$valid && $scope.evento.id != -1){
+        if (!$scope.multimediaForm.$valid || $scope.evento.id == -1){
             return;
         }
         var fd = new FormData();
-        var input = $('#portadaIMG');
+        var input = $('#files-brcc-portadaIMG');
         if (input[0] != undefined) {
             // check for browser support (may need to be modified)
             if (input[0].files && input[0].files.length == 1) {
@@ -96,7 +97,7 @@ angular.module('eventos.crear', [])
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
-        if ($scope.imagenes != null) {
+        if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
             }
@@ -107,6 +108,7 @@ angular.module('eventos.crear', [])
         eventosServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
@@ -126,6 +128,7 @@ angular.module('eventos.crear', [])
         eventosServi.postGuardaradicional($scope.evento.adicional).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;

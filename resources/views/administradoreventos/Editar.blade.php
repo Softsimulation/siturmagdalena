@@ -118,6 +118,13 @@
             <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
             <li><a data-toggle="tab" href="#adicional">Información adicional</a></li>
         </ul>
+        <div class="alert alert-danger" ng-if="errores != null">
+            <label><b>Errores:</b></label>
+            <br />
+            <div ng-repeat="error in errores" ng-if="error.length>0">
+                -@{{error[0]}}
+            </div>
+        </div>
         <div class="tab-content">
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">
@@ -136,14 +143,14 @@
                             <label for="valor_minimo">Valor mínimo ($)</label>
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                                <input ng-model="evento.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <input min="0" ng-model="evento.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-4" ng-class="{'has-error': (editarEventoForm.$submitted || editarEventoForm.valor_maximo.$touched) && editarEventoForm.valor_maximo.$error.required}">
                             <label for="valor_maximo">Valor máximo ($)</label>
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                                <input ng-model="evento.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <input min="@{{evento.datosGenerales.valor_minimo}}" ng-model="evento.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-4" ng-class="{'has-error': (editarEventoForm.$submitted || editarEventoForm.tipo_evento.$touched) && editarEventoForm.tipo_evento.$error.required}">

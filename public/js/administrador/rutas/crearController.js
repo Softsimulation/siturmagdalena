@@ -22,13 +22,14 @@ angular.module('rutas.crear', [])
    
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.crearRutaForm.$valid && $scope.ruta.id != -1){
+        if (!$scope.crearRutaForm.$valid || $scope.ruta.id != -1){
             return;
         }
         $("body").attr("class", "cbp-spmenu-push charging");
         rutasServi.postCrearruta($scope.ruta.datosGenerales).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 $scope.ruta.id = data.id;
                 swal('¡Éxito!', 'Ruta creada con éxito.', 'success');
             }else{
@@ -41,7 +42,7 @@ angular.module('rutas.crear', [])
     }
     
     $scope.guardarMultimedia = function (){
-        if (!$scope.multimediaForm.$valid && $scope.evento.id != -1){
+        if (!$scope.multimediaForm.$valid || $scope.evento.id == -1){
             return;
         }
         var fd = new FormData();
@@ -66,6 +67,7 @@ angular.module('rutas.crear', [])
         rutasServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
@@ -85,6 +87,7 @@ angular.module('rutas.crear', [])
         rutasServi.postGuardaradicional($scope.ruta.adicional).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;

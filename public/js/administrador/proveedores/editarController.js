@@ -1,75 +1,36 @@
 /* global angular */
 /* global swal */
-angular.module('atracciones.editar', [])
+angular.module('proveedores.editar', [])
 
-.controller('atraccionesEditarController', function($scope, atraccionesServi, $location, $http){
-    $scope.atraccion = {
+.controller('proveedoresEditarController', function($scope, proveedoresServi, $location, $http){
+    $scope.proveedor = {
         adicional: {},
-        datosGenerales: {
-            pos: {
-                lat,
-                lng
-            }
-        }
+        datosGenerales: {}
     };
     $scope.previewportadaIMG = [];
     $scope.previewImagenes = [];
-    var marker = null;
-    var lat;
-    var lng;
-    var latlng;
-    var map = null;
+    
+    $scope.selectionChanged = function (proveedor){
+        $scope.proveedorNombre = proveedor.razon_social;
+    }
     
     $scope.$watch('id', function(){
         $("body").attr("class", "cbp-spmenu-push charging");
-        atraccionesServi.getDatosatraccion($scope.id).then(function(data){
-            $("body").attr("class", "cbp-spmenu-push");
+        proveedoresServi.getDatosproveedor($scope.id).then(function(data){
             if (data.success){
-                $scope.atraccionNombre = data.atraccion.sitio.sitios_con_idiomas[0].nombre;
-                $scope.atraccion.adicional.perfiles = data.perfiles_turista;
-                $scope.atraccion.adicional.tipos = data.tipo_atracciones;
-                $scope.atraccion.adicional.categorias = data.categorias_turismo;
-                $scope.atraccion.adicional.actividades = data.actividades;
+                $scope.proveedorNombre = data.proveedor.proveedor_rnt.razon_social;
+                $scope.proveedor.adicional.perfiles = data.perfiles_usuarios;
+                $scope.proveedor.adicional.actividades = data.actividades;
+                $scope.proveedor.adicional.categorias = data.categorias_turismo;
                 
-                $scope.atraccion.datosGenerales.valor_minimo = parseInt(data.atraccion.valor_min);
-                $scope.atraccion.datosGenerales.valor_maximo = parseInt(data.atraccion.valor_max);
-                $scope.atraccion.datosGenerales.sector_id = data.atraccion.sitio.sectores_id;
-                $scope.atraccion.datosGenerales.direccion = data.atraccion.sitio.direccion;
-                $scope.atraccion.datosGenerales.telefono = data.atraccion.telefono;
-                $scope.atraccion.datosGenerales.pagina_web = data.atraccion.sitio_web;
-                $scope.atraccion.datosGenerales.pos.lat = data.atraccion.sitio.latitud;
-                $scope.atraccion.datosGenerales.pos.lng = data.atraccion.sitio.longitud;
-                $scope.atraccion.datosGenerales.id = $scope.id;
-                
-                
-                map = new GMaps({
-                    el: '#direccion_map',
-                    lat: data.atraccion.sitio.latitud,
-                    lng: data.atraccion.sitio.longitud,
-                    zoom: 16,
-                    click: function (e){
-                        lat = e.latLng.lat();
-                        lng = e.latLng.lng();
-                        map.removeMarkers();
-                        marker = map.addMarker({
-                            lat: lat,
-                            lng: lng,
-                            infoWindow: {
-                                content: '<p><b>Su posición</b></p>'
-                            }
-                        });
-                        $scope.atraccion.datosGenerales.pos.lat = angular.copy(lat);
-                        $scope.atraccion.datosGenerales.pos.lng = angular.copy(lng);
-                    }
-                });
-                
-                marker = map.addMarker({
-                    lat: $scope.atraccion.datosGenerales.pos.lat,
-                    lng: $scope.atraccion.datosGenerales.pos.lng,
-                    infoWindow: {
-                        content: '<p><b>Su posición</b></p>'
-                    }
-                });
+                $scope.proveedor.datosGenerales.valor_minimo = parseInt(data.proveedor.valor_min);
+                $scope.proveedor.datosGenerales.valor_maximo = parseInt(data.proveedor.valor_max);
+                $scope.proveedor.datosGenerales.proveedor_rnt_id = data.proveedor.proveedor_rnt_id;
+                $scope.proveedor.datosGenerales.descripcion = data.proveedor.proveedor_rnt.proveedor_rnt_idioma.length != 0 ? data.proveedor.proveedor_rnt.proveedor_rnt_idioma[0].descripcion : '';
+                $scope.proveedor.datosGenerales.telefono = data.proveedor.telefono;
+                $scope.proveedor.datosGenerales.pagina_web = data.proveedor.sitio_web;
+                $scope.proveedor.datosGenerales.horario = data.proveedor.proveedores_con_idiomas[0].horario;
+                $scope.proveedor.datosGenerales.id = $scope.id;
                 
                 var portada = null;
                 if (data.portadaIMG != null){
@@ -96,47 +57,25 @@ angular.module('atracciones.editar', [])
         });
     });
     
-    atraccionesServi.getDatoscrear().then(function (data){
+    proveedoresServi.getDatoscrear().then(function (data){
+        $("body").attr("class", "cbp-spmenu-push");
         if (data.success){
-            $scope.sectores = data.sectores;
             $scope.perfiles_turista = data.perfiles_turista;
-            $scope.tipos_atracciones = data.tipos_atracciones;
+            $scope.categoria_proveedor = data.categoria_proveedor;
             $scope.categorias_turismo = data.categorias_turismo;
             $scope.actividades = data.actividades;
+            $scope.proveedores = data.proveedores_rnt;
         }
     }).catch(function (errs){
         swal('Error', 'Error al cargar los datos. Por favor recargue la página.', 'error');
     });
     
-    $scope.searchAdress = function(){
-        GMaps.geocode({
-            address: $('#address').val(),
-            callback: function(results, status) {
-                if (status == 'OK') {
-                    latlng = results[0].geometry.location;
-                    map.setCenter(latlng.lat(), latlng.lng());
-                    map.removeMarkers();
-                    map.setZoom(16);
-                    marker = map.addMarker({
-                        lat: latlng.lat(),
-                        lng: latlng.lng(),
-                        infoWindow: {
-                            content: '<p><b>'+ $('#address').val() +'</b></p>'
-                        }
-                    });
-                    $scope.atraccion.datosGenerales.pos.lat = angular.copy(latlng.lat());
-                    $scope.atraccion.datosGenerales.pos.lng = angular.copy(latlng.lng());
-                }
-            }
-        });
-    }
-    
     $scope.guardarMultimedia = function (){
-        if (!$scope.multimediaForm.$valid && $scope.atraccion.id != -1){
+        if (!$scope.multimediaForm.$valid){
             return;
         }
         var fd = new FormData();
-        var input = $('#portadaIMG');
+        var input = $('#files-brcc-portadaIMG');
         if (input[0] != undefined) {
             // check for browser support (may need to be modified)
             if (input[0].files && input[0].files.length == 1) {
@@ -154,20 +93,20 @@ angular.module('atracciones.editar', [])
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
-        if ($scope.imagenes != null) {
+        if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (var i in $scope.imagenes){
                 if (Number.isInteger(parseInt(i))){
                     fd.append("image[]", $scope.imagenes[i]);
                 }
-                console.log(i);
             }
         }
         fd.append('id', $scope.id);
         fd.append('video_promocional', $("#video_promocional").val());
-        atraccionesServi.postGuardarmultimedia(fd).then(function (data){
+        proveedoresServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Multimedia modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
@@ -178,19 +117,15 @@ angular.module('atracciones.editar', [])
     }
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.editarAtraccionForm.$valid){
-            return;
-        }
-        if (marker == null){
-            swal('Error', 'No ha colocado un marcador en el mapa.', 'error');
+        if (!$scope.editarProveedorForm.$valid){
             return;
         }
         $("body").attr("class", "cbp-spmenu-push charging");
-        atraccionesServi.postEditaratraccion($scope.atraccion.datosGenerales).then(function(data){
+        proveedoresServi.postEditarproveedor($scope.proveedor.datosGenerales).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                $scope.atraccion.id = data.id;
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Proveedor modificado con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
@@ -201,17 +136,21 @@ angular.module('atracciones.editar', [])
     }
     
     $scope.guardarAdicional = function (){
-        if (!$scope.informacionAdicionalForm.$valid || $scope.atraccion.id == -1){
+        if (!$scope.informacionAdicionalForm.$valid){
             return;
         }
-        $scope.atraccion.adicional.id = $scope.id;
-        atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
+        $scope.proveedor.adicional.id = $scope.id;
+        $("body").attr("class", "cbp-spmenu-push charging");
+        proveedoresServi.postGuardaradicional($scope.proveedor.adicional).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }

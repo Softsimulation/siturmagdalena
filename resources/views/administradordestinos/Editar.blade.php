@@ -117,6 +117,13 @@
             <li class="active"><a data-toggle="tab" href="#info">Información básica</a></li>
             <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
         </ul>
+        <div class="alert alert-danger" ng-if="errores != null">
+            <label><b>Errores:</b></label>
+            <br />
+            <div ng-repeat="error in errores" ng-if="error.length>0">
+                -@{{error[0]}}
+            </div>
+        </div>
         <div class="tab-content">
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">

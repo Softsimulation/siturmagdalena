@@ -290,18 +290,22 @@ class AdministradorAtraccionController extends Controller
     
     public function postGuardarmultimedia (Request $request){
         $validator = \Validator::make($request->all(), [
-            'portadaIMG' => 'required',
+            'portadaIMG' => 'required|max:2097152',
             'id' => 'required|exists:atracciones|numeric',
-            'image' => 'array|max:5'
+            'image' => 'array|max:5',
+            'video_promocional' => 'url'
         ],[
             'portadaIMG.required' => 'Se necesita una imagen de portada.',
+            'portadaIMG.max' => 'La imagen de portada no puede ser mayor a 2MB.',
             
             'id.required' => 'Se necesita un identificador para la atracción.',
             'id.exists' => 'El identificador de la atracción no se encuentra registrado en la base de datos.',
             'id.numeric' => 'El identificador de la atracción debe ser un valor numérico.',
             
             'image.array' => 'Error al enviar los datos. Recargue la página.',
-            'image.max' => 'Máximo se pueden subir 5 imágenes para la atracción.'
+            'image.max' => 'Máximo se pueden subir 5 imágenes para la atracción.',
+            
+            'video_promocional.url' => 'El video promocional no tiene la estructura de enlace.'
         ]);
         
         if($validator->fails()){
@@ -332,7 +336,7 @@ class AdministradorAtraccionController extends Controller
         
         Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$portadaNombre, File::get($request->portadaIMG));
         
-        if ($request->video_promocional != null){
+        if ($request->has('video_promocional')){
             Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('tipo', true)->delete();
             $multimedia_sitio = new Multimedia_Sitio();
             $multimedia_sitio->sitios_id = $atraccion->sitios_id;
@@ -354,25 +358,27 @@ class AdministradorAtraccionController extends Controller
                 Storage::disk('multimedia-atraccion')->delete('atraccion-'.$request->id.'/'.$nombre);
             }
         }
-        foreach($request->image as $key => $file){
-            $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-            $multimedia_sitio = new Multimedia_Sitio();
-            $multimedia_sitio->sitios_id = $atraccion->sitios_id;
-            $multimedia_sitio->ruta = "/multimedia/atracciones/atraccion-".$request->id."/".$nombre;
-            $multimedia_sitio->tipo = false;
-            $multimedia_sitio->portada = false;
-            $multimedia_sitio->estado = true;
-            $multimedia_sitio->user_create = "Situr";
-            $multimedia_sitio->user_update = "Situr";
-            $multimedia_sitio->created_at = Carbon::now();
-            $multimedia_sitio->updated_at = Carbon::now();
-            $multimedia_sitio->save();
-            
-            Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$nombre, File::get($file));
-            $cont = $nombre;
+        
+        if ($request->image != null){
+            foreach($request->image as $key => $file){
+                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                $multimedia_sitio = new Multimedia_Sitio();
+                $multimedia_sitio->sitios_id = $atraccion->sitios_id;
+                $multimedia_sitio->ruta = "/multimedia/atracciones/atraccion-".$request->id."/".$nombre;
+                $multimedia_sitio->tipo = false;
+                $multimedia_sitio->portada = false;
+                $multimedia_sitio->estado = true;
+                $multimedia_sitio->user_create = "Situr";
+                $multimedia_sitio->user_update = "Situr";
+                $multimedia_sitio->created_at = Carbon::now();
+                $multimedia_sitio->updated_at = Carbon::now();
+                $multimedia_sitio->save();
+                
+                Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$nombre, File::get($file));
+            }
         }
         
-        return ['success' => true, 'cont' => $cont];
+        return ['success' => true];
     }
     
     public function postGuardaradicional (Request $request){

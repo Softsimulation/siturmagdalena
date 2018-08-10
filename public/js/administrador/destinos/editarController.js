@@ -134,20 +134,24 @@ angular.module('destinos.editar', [])
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
-        if ($scope.imagenes != null) {
+        if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
             }
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         fd.append('id', $scope.id);
         fd.append('video', $("#video").val());
         destinosServi.postGuardarmultimedia(fd).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Multimedia modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function (){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
@@ -156,14 +160,18 @@ angular.module('destinos.editar', [])
         if (!$scope.editarDestinoForm.$valid){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.destino.datosGenerales.id = $scope.id;
         destinosServi.postEditardatosgenerales($scope.destino.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Destino modificado con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }

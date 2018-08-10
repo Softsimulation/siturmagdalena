@@ -33,6 +33,7 @@ angular.module('rutas.idioma', [])
         rutasServi.postEditaridioma($scope.ruta.datosGenerales).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Ruta modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;

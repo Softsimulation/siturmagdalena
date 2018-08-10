@@ -32,11 +32,11 @@ class Perfil_Usuario extends Model
     protected $fillable = ['user_create', 'user_update', 'estado', 'created_at', 'updated_at'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function perfilesUsuariosConProveedores()
     {
-        return $this->hasMany('App\Models\PerfilesUsuariosConProveedore', 'perfiles_usuarios_id');
+        return $this->belongsToMany('App\Models\Proveedor', 'perfiles_usuarios_con_proveedores', 'perfiles_usuarios_id', 'proveedores_id');
     }
 
     /**

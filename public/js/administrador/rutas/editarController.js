@@ -65,7 +65,8 @@ angular.module('rutas.editar', [])
         rutasServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Multimedia modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
@@ -80,13 +81,17 @@ angular.module('rutas.editar', [])
             return;
         }
         $scope.ruta.adicional.id = $scope.id;
+        $("body").attr("class", "cbp-spmenu-push charging");
         rutasServi.postGuardaradicional($scope.ruta.adicional).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Información adicional modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }

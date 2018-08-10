@@ -107,6 +107,13 @@
     <input type="hidden" ng-model="idIdioma" ng-init="idIdioma={{$idIdioma}}" />
     <h1 class="title1">Idioma: @{{idioma.nombre}}</h1>
     <br />
+    <div class="alert alert-danger" ng-if="errores != null">
+        <label><b>Errores:</b></label>
+        <br />
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
+        </div>
+    </div>
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <!--Información básica-->
         <h2>Datos del evento</h2>

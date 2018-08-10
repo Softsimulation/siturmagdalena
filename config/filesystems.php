@@ -87,6 +87,12 @@ return [
             'root' => public_path().'/multimedia/rutas',
             'visibility' => 'public',
         ],
+        
+        'multimedia-proveedor' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/proveedores',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',
