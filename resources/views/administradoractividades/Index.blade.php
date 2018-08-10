@@ -103,7 +103,7 @@
 
 @section('content')
 <div class="col-sm-12">
-    <h1 class="title1">Lista de atracciones</h1>
+    <h1 class="title1">Lista de actividades</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row" style="margin: 0;">
