@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Sistema de Información Turistica del Magdalena y Santa Marta">
     <meta name="author" content="SITUR Magdalena">
-    <title>@yield('Title')</title>
+    <title>@yield('title')</title>
     <link rel="icon" type="image/ico" href="{{asset('Content/icons/favicon-96x96.png')}}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -59,7 +59,7 @@
            left: 0;
            height: 100%;
            width: 100%;
-           background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
+           background: rgba(0, 0, 0, 0.57) url({{asset('Content/Cargando.gif')}}) 50% 50% no-repeat
         }
         
         body.charging { overflow: hidden; }
@@ -376,7 +376,7 @@
         $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>
 
-    <script>  $.material.init(); </script>
+  
 
     <script>
             $(window).on('scroll', function () {

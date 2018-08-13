@@ -42,6 +42,12 @@ Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
 Route::controller('/importarRnt','ImportacionRntController');
 
+Route::controller('/administradorproveedores', 'AdministradorProveedoresController');
+
+Route::controller('/administradoreventos', 'AdministradorEventosController');
+
+Route::controller('/administradorrutas', 'AdministradorRutasController');
+
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');
 

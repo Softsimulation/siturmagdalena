@@ -17,19 +17,20 @@ class LoginController extends Controller
     }
     public function postAutenticacion(Request $request){
         if($request->userName == null || $request->password == null || $request->userName == '' || $request->password == '' ){
-            return redirect()->intended('login/login')->with('message', 'Credenciales no validas');
+            return redirect()->intended('login/login')->with('message', 'Credenciales no válidas');
         }
         $user = User::where('email',$request->userName)->first();
         //return $user->password;
-        if(\Hash::check($request->password,$user->password)){
-            if($user != null){
+        if($user != null){
+            if(\Hash::check($request->password,$user->password)){
+            
                 Auth::login($user);
                 return redirect()->intended('usuario/listadousuarios');    
             }
              
-            
+            return redirect()->intended('login/login')->with('message', 'Credenciales no válidas');
         }else{
-            return redirect()->intended('login/login')->with('message', 'Credenciales no validas');
+            return redirect()->intended('login/login')->with('message', 'Credenciales no válidas');
         }
         
     }

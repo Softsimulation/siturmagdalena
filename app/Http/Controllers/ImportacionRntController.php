@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Proveedores_rnt;
 use App\Models\Departamento;
 use App\Models\Municipio;
@@ -17,7 +19,18 @@ use App\Models\Proveedores_rnt_idioma;
 
 class ImportacionRntController extends Controller
 {
-	
+	public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     public function getIndex(){
         return view('proveedoresRnt.importarExcel');
     }
@@ -118,8 +131,8 @@ class ImportacionRntController extends Controller
 	        		"cam2" => isset($registro["cam2"]) ? $registro["cam2"] : null,
 	        		"emp2" => isset($registro["emp2"]) ? $registro["emp2"] : null,
 	        		"estado" => 1,
-	        		"user_create" => "MM",
-	        		"user_update" => "MM",
+	        		"user_create" => $this->user->username,
+	        		"user_update" => $this->user->username,
 	        	]);
 	        	
 	        	if($registro["nombre_comercial_plataforma"] != null){
@@ -239,7 +252,7 @@ class ImportacionRntController extends Controller
 		$proveedor->hab2 = isset($request->hab2) ? $request->hab2 : null;
 		$proveedor->cam2 = isset($request->cam2) ? $request->cam2 : null;
 		$proveedor->emp2 = isset($request->emp2) ? $request->emp2 : null;
-		$proveedor->user_update = "MM";
+		$proveedor->user_update = $this->user->username;
 		$proveedor->save();
 		
 		$proveedorIdioma = $proveedor->proveedor_rnt_idioma->where('idioma_id',1)->first();
@@ -381,8 +394,8 @@ class ImportacionRntController extends Controller
     		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
     		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
 			"estado" => 1,
-			"user_create" => "MM",
-			"user_update" => "MM",
+			"user_create" => $this->user->username,
+			"user_update" => $this->user->username,
 		]);
 		
 		Proveedores_rnt_idioma::create([
@@ -497,8 +510,8 @@ class ImportacionRntController extends Controller
     		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
     		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
 			"estado" => 1,
-			"user_create" => "MM",
-			"user_update" => "MM",
+			"user_create" => $this->user->username,
+			"user_update" => $this->user->username,
 		]);
 		
 		Proveedores_rnt_idioma::create([

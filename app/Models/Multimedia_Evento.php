@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,6 +36,6 @@ class Multimedia_Evento extends Model
      */
     public function evento()
     {
-        return $this->belongsTo('App\Evento', 'eventos_id');
+        return $this->belongsTo('App\Models\Evento', 'eventos_id');
     }
 }

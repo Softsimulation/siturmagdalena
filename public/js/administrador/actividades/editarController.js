@@ -78,6 +78,7 @@ angular.module('actividades.editar', [])
             fd.append("portadaIMG", $scope.portadaIMG[0]);
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
+            return;
         }
         if ($scope.imagenes != undefined) {
             for (i in $scope.imagenes){
@@ -105,14 +106,17 @@ angular.module('actividades.editar', [])
         if (!$scope.informacionAdicionalForm.$valid){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.actividad.adicional.id = $scope.id;
         actividadesServi.postGuardaradicional($scope.actividad.adicional).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Información adicional editada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
@@ -121,14 +125,17 @@ angular.module('actividades.editar', [])
         if (!$scope.editarActividadForm.$valid){
             return;
         }
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.actividad.datosGenerales.id = $scope.id;
         actividadesServi.postEditardatosgenerales($scope.actividad.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Actividad modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function(err){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }

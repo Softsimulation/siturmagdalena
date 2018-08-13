@@ -88,6 +88,12 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .ui-select-container{
+            width: 100%;
+        }
+        .ui-select-container span{
+            margin-top: 0;
+        }
     </style>
 @endsection
 
@@ -102,7 +108,7 @@
 @section('controller','ng-controller="destinosCrearController"')
 
 @section('content')
-<div class="container">
+<div class="col-sm-12">
     <h1 class="title1">Insertar destino</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
@@ -110,27 +116,38 @@
             <li class="active"><a data-toggle="tab" href="#info">Información básica</a></li>
             <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
         </ul>
+        <div class="alert alert-danger" ng-if="errores != null">
+            <label><b>Errores:</b></label>
+            <br />
+            <div ng-repeat="error in errores" ng-if="error.length>0">
+                -@{{error[0]}}
+            </div>
+        </div>
         <div class="tab-content">
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">
                 <h2>Datos del destino</h2>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    Los campos marcados con <strong>*</strong> son obligatorios.
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
+                        </div>
+                    </div>
                 </div>
                 <form novalidate role="form" name="crearDestinoForm">
                     <div class="row">
                         <div class="form-group col-sm-6" ng-class="{'has-error': (crearDestinoForm.$submitted || crearDestinoForm.nombre.$touched) && crearDestinoForm.nombre.$error.required}">
                             <label for="nombre">Nombre</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="destino.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del destino (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" ng-class="{'has-error': (crearDestinoForm.$submitted || crearDestinoForm.tipo.$touched) && crearDestinoForm.tipo.$error.required}">
                             <label for="sector">Tipo de destino</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <ui-select theme="bootstrap" ng-required="true" ng-model="destino.datosGenerales.tipo" id="tipo" name="tipo">
                                    <ui-select-match placeholder="Tipo de destino.">
                                        <span ng-bind="$select.selected.tipo_destino_con_idiomas[0].nombre"></span>
@@ -146,7 +163,7 @@
                         <div class="form-group col-sm-12" ng-class="{'has-error': (crearDestinoForm.$submitted || crearDestinoForm.descripcion.$touched) && crearDestinoForm.descripcion.$error.required}">
                             <label for="descripcion">Descripción</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">*</span>
+                                <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <textarea style="resize: none;" ng-model="destino.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del destino (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
                             </div>
                         </div>
@@ -182,8 +199,7 @@
             <!--Multimedia-->
             <div id="multimedia" class="tab-pane fade">
                 <h3>Multimedia</h3>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="alert-warning alert-dismissible" role="alert">
                     <strong>Tenga en cuenta que para subir imágenes.</strong>
                     <ul>
                         <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
@@ -194,7 +210,7 @@
                 </div>
                 <form novalidate role="form" name="multimediaForm">
                     <div class="row">
-                        <h4><span class="text-error">*</span> Imagen de portada</h4>
+                        <h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Imagen de portada</h4>
                         <div class="col-sm-12">
                             <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                         </div>
@@ -226,6 +242,11 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/editarController.js')}}"></script>

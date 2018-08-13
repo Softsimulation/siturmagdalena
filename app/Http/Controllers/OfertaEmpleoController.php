@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests;
@@ -70,7 +72,7 @@ class OfertaEmpleoController extends Controller
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
                                     'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
                                     
-        $this->middleware('role:Admin|CoordinadorOferta|Encuestador|Proveedor');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }                           
