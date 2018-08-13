@@ -48,6 +48,7 @@ class SostenibilidadHogaresController extends Controller
         
         
     }
+    
     public function getCrear(){
     	 return view('sostenibilidadHogar.crear');
     }
@@ -880,18 +881,20 @@ class SostenibilidadHogaresController extends Controller
 		}
 		
 		foreach($request->beneficios as $item){
-			$beneficio = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
-			if($beneficio){
-				$beneficio->calificacion_factores_id = $item['califcacion'];
-				$beneficio->otro = ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null ;
-				$beneficio->save();
-			}else{
-				Beneficio_Sociocultural::create([
-					'calificacion_factores_id' => $item['califcacion'],
-					'casas_sostenibilidad_id' => $encuesta->id,
-					'beneficio_id' => $item['id'],
-					'otro' => ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null 
-				]);	
+			if( isset($item['califcacion']) ){
+				$beneficio = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
+				if($beneficio){
+					$beneficio->calificacion_factores_id = $item['califcacion'];
+					$beneficio->otro = ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null ;
+					$beneficio->save();
+				}else{
+					Beneficio_Sociocultural::create([
+						'calificacion_factores_id' => $item['califcacion'],
+						'casas_sostenibilidad_id' => $encuesta->id,
+						'beneficio_id' => $item['id'],
+						'otro' => ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null 
+					]);	
+				}	
 			}
 		}
 		
