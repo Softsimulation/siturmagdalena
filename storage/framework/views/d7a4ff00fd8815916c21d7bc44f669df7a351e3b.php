@@ -26,6 +26,9 @@
     <link href="<?php echo e(asset('/css/lf-ng-md-file-input.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?php echo e(asset('/css/mycss.css')); ?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?php echo e(asset('/css/theme.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
+    
+    <link href="<?php echo e(asset('/css/ng-tags-input.bootstrap.css')); ?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(asset('/css/ng-tags-input.css')); ?>" media="all" rel="stylesheet" type="text/css" />
    
 <link href="<?php echo e(asset('css/dashboard/style.css')); ?>" rel='stylesheet' type='text/css' />
 <!-- Graph CSS 
@@ -336,6 +339,12 @@
 									 </li>
 									 
 							        <li id="menu-academico" ><a href="<?php echo e(asset('encuesta/listado')); ?>"> <span>Encuetas ADHOC</span></a>
+							
+									 </li>
+									 <li id="menu-academico" ><a href="<?php echo e(asset('/publicaciones/listadoadmin')); ?>"> <span>Publicaciones</span></a>
+							
+									 </li>
+									 <li id="menu-academico" ><a href="<?php echo e(asset('/noticias/listadonoticias')); ?>"> <span>Noticias</span></a>
 							
 									 </li>
 								
