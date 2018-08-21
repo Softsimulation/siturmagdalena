@@ -82,7 +82,7 @@ angular.module('atracciones.crear', [])
     }
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.crearAtraccionForm.$valid && $scope.atraccion.id != -1){
+        if (!$scope.crearAtraccionForm.$valid || $scope.atraccion.id != -1){
             return;
         }
         if (marker == null){
@@ -95,6 +95,7 @@ angular.module('atracciones.crear', [])
             if (data.success){
                 $scope.atraccion.id = data.id;
                 swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                $scope.errores = null;
             }else{
                 $scope.errores = data.errores;
             }
@@ -124,8 +125,9 @@ angular.module('atracciones.crear', [])
             fd.append("portadaIMG", $scope.portadaIMG[0]);
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
+            return;
         }
-        if ($scope.imagenes != null) {
+        if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
             }
@@ -136,6 +138,7 @@ angular.module('atracciones.crear', [])
         atraccionesServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
@@ -155,6 +158,7 @@ angular.module('atracciones.crear', [])
         atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;

@@ -117,6 +117,13 @@
             <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
             <li><a data-toggle="tab" href="#adicional">Información adicional</a></li>
         </ul>
+        <div class="alert alert-danger" ng-if="errores != null">
+            <label><b>Errores:</b></label>
+            <br />
+            <div ng-repeat="error in errores" ng-if="error.length>0">
+                -@{{error[0]}}
+            </div>
+        </div>
         <div class="tab-content">
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">
@@ -153,14 +160,14 @@
                             <label for="valor_minimo">Valor mínimo ($)</label>
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                                <input ng-model="atraccion.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <input ng-model="atraccion.datosGenerales.valor_minimo" min="0" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.valor_maximo.$touched) && crearAtraccionForm.valor_maximo.$error.required}">
                             <label for="valor_maximo">Valor máximo ($)</label>
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                                <input ng-model="atraccion.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <input min="@{{atraccion.datosGenerales.valor_minimo}}" ng-model="atraccion.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-4" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.sector.$touched) && crearAtraccionForm.sector.$error.required}">
@@ -216,7 +223,7 @@
                             <textarea style="resize: none;" rows="5" class="form-control" id="reglas" name="reglas" ng-model="atraccion.datosGenerales.reglas" placeholder="Reglas o normas que deben seguir los visitantes. Máximo 1,000 caracteres."></textarea>
                         </div>
                         <div class="form-group col-sm-4">
-                            <label for="como_llegar">Como llegar</label>
+                            <label for="como_llegar">Cómo llegar</label>
                             <textarea style="resize: none;" rows="5" class="form-control" id="como_llegar" name="como_llegar" ng-model="atraccion.datosGenerales.como_llegar" placeholder="Pasos o indicaciones para llegar al lugar. Máximo 1,000 caracteres."></textarea>
                         </div>
                     </div>

@@ -109,7 +109,7 @@
 
 @section('content')
 <div class="col-sm-12">
-    <h1 class="title1">Insertar evento</h1>
+    <h1 class="title1">Insertar ruta</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
@@ -117,6 +117,13 @@
             <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
             <li><a data-toggle="tab" href="#adicional">Información adicional</a></li>
         </ul>
+        <div class="alert alert-danger" ng-if="errores != null">
+            <label><b>Errores:</b></label>
+            <br />
+            <div ng-repeat="error in errores" ng-if="error.length>0">
+                -@{{error[0]}}
+            </div>
+        </div>
         <div class="tab-content">
             <!--Información básica-->
             <div id="info" class="tab-pane fade in active">

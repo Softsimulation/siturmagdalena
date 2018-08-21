@@ -88,6 +88,11 @@ return [
             'visibility' => 'public',
         ],
         
+        'multimedia-proveedor' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/proveedores',
+            'visibility' => 'public',
+        ],
          'Publicaciones' => [
            'driver' => 'local',
            'root' => public_path().'/Publicaciones',

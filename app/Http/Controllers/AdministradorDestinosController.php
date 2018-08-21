@@ -108,15 +108,15 @@ class AdministradorDestinosController extends Controller
             'tipo' => 'required|numeric|exists:tipo_destino,id',
             'pos' => 'required'
         ],[
-            'nombre.required' => 'Se necesita un nombre para la actividad.',
+            'nombre.required' => 'Se necesita un nombre para el destino.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
             
-            'descripcion.required' => 'Se necesita una descripción para la actividad.',
+            'descripcion.required' => 'Se necesita una descripción para el destino.',
             'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
             'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
             
-            'tipo.required' => 'Se requiere ingresar un valor mínimo para la actividad.',
-            'tipo.numeric' => '"Valor mínimo" debe tener un valor numérico.',
+            'tipo.required' => 'Se requiere ingresar un tipo de destino.',
+            'tipo.numeric' => '"Tipo de destino" debe tener un valor numérico.',
             'tipo.exists' => 'El tipo de destino no se encuentra registrado en la base de datos del sistema.',
             
             'pos.required' => 'Agregue un marcador en el mapa de Google.'
@@ -149,18 +149,22 @@ class AdministradorDestinosController extends Controller
     
     public function postGuardarmultimedia (Request $request){
         $validator = \Validator::make($request->all(), [
-            'portadaIMG' => 'required',
+            'portadaIMG' => 'required|max:2097152',
             'id' => 'required|exists:destino|numeric',
-            'image' => 'array|max:5'
+            'image' => 'array|max:5',
+            'video' => 'url'
         ],[
             'portadaIMG.required' => 'Se necesita una imagen de portada.',
+            'portadaIMG.max' => 'La portada debe tener máximo 2MB',
             
             'id.required' => 'Se necesita un identificador para el destino.',
             'id.exists' => 'El identificador del destino no se encuentra registrado en la base de datos.',
             'id.numeric' => 'El identificador del destino debe ser un valor numérico.',
             
             'image.array' => 'Error al enviar los datos. Recargue la página.',
-            'image.max' => 'Máximo se pueden subir 5 imágenes para el destino.'
+            'image.max' => 'Máximo se pueden subir 5 imágenes para el destino.',
+            
+            'video.url' => 'El video debe tener la estructura de un enlace.'
         ]);
         
         if($validator->fails()){
@@ -187,21 +191,6 @@ class AdministradorDestinosController extends Controller
         
         Storage::disk('multimedia-destino')->put('destino-'.$request->id.'/'.$portadaNombre, File::get($request->portadaIMG));
         
-        if ($request->video != null){
-            Multimedia_Destino::where('destino_id', $request->id)->where('tipo', true)->delete();
-            $multimedia_sitio = new Multimedia_Destino();
-            $multimedia_sitio->destino_id = $request->id;
-            $multimedia_sitio->ruta = $request->video;
-            $multimedia_sitio->tipo = true;
-            $multimedia_sitio->portada = false;
-            $multimedia_sitio->estado = true;
-            $multimedia_sitio->user_create = "Situr";
-            $multimedia_sitio->user_update = "Situr";
-            $multimedia_sitio->created_at = Carbon::now();
-            $multimedia_sitio->updated_at = Carbon::now();
-            $multimedia_sitio->save();
-        }
-        
         Multimedia_Destino::where('destino_id', $request->id)->where('tipo', false)->where('portada', false)->delete();
         
         if ($request->video != null){
@@ -225,25 +214,27 @@ class AdministradorDestinosController extends Controller
                 Storage::disk('multimedia-destino')->delete('destino-'.$request->id.'/'.$nombre);
             }
         }
-        foreach($request->image as $key => $file){
-            $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-            $multimedia_sitio = new Multimedia_Destino();
-            $multimedia_sitio->destino_id = $request->id;
-            $multimedia_sitio->ruta = "/multimedia/destinos/destino-".$request->id."/".$nombre;
-            $multimedia_sitio->tipo = false;
-            $multimedia_sitio->portada = false;
-            $multimedia_sitio->estado = true;
-            $multimedia_sitio->user_create = "Situr";
-            $multimedia_sitio->user_update = "Situr";
-            $multimedia_sitio->created_at = Carbon::now();
-            $multimedia_sitio->updated_at = Carbon::now();
-            $multimedia_sitio->save();
-            
-            Storage::disk('multimedia-destino')->put('destino-'.$request->id.'/'.$nombre, File::get($file));
-            $cont = $nombre;
+        
+        if ($request->image != null){
+            foreach($request->image as $key => $file){
+                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                $multimedia_sitio = new Multimedia_Destino();
+                $multimedia_sitio->destino_id = $request->id;
+                $multimedia_sitio->ruta = "/multimedia/destinos/destino-".$request->id."/".$nombre;
+                $multimedia_sitio->tipo = false;
+                $multimedia_sitio->portada = false;
+                $multimedia_sitio->estado = true;
+                $multimedia_sitio->user_create = "Situr";
+                $multimedia_sitio->user_update = "Situr";
+                $multimedia_sitio->created_at = Carbon::now();
+                $multimedia_sitio->updated_at = Carbon::now();
+                $multimedia_sitio->save();
+                
+                Storage::disk('multimedia-destino')->put('destino-'.$request->id.'/'.$nombre, File::get($file));
+            }
         }
         
-        return ['success' => true, 'cont' => $cont];
+        return ['success' => true];
     }
     
     public function postDesactivarActivar (Request $request){

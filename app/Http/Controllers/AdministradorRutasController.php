@@ -75,10 +75,10 @@ class AdministradorRutasController extends Controller
             'nombre' => 'required|max:255',
             'descripcion' => 'required|max:1000|min:100'
         ],[
-            'nombre.required' => 'Se necesita un nombre para la actividad.',
+            'nombre.required' => 'Se necesita un nombre para la ruta turística.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
             
-            'descripcion.required' => 'Se necesita una descripción para la actividad.',
+            'descripcion.required' => 'Se necesita una descripción para la ruta turística.',
             'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
             'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.'
         ]);
@@ -90,7 +90,7 @@ class AdministradorRutasController extends Controller
         $errores = [];
         $evento_con_idioma = Ruta_Con_Idioma::where('idioma_id', 1)->whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->first();
         if ($evento_con_idioma != null){
-            $errores["exists"][0] = "Esta ruta ya se encuentra registrada en el sistema.";
+            $errores["exists"][0] = "Esta ruta turística ya se encuentra registrada en el sistema.";
         }
         if($errores != null || sizeof($errores) > 0){
             return  ["success"=>false, "errores"=>$errores];
@@ -117,12 +117,13 @@ class AdministradorRutasController extends Controller
     
     public function postGuardarmultimedia (Request $request){
         $validator = \Validator::make($request->all(), [
-            'portadaIMG' => 'required',
+            'portadaIMG' => 'required|max:2097152',
             'id' => 'required|exists:rutas|numeric'
         ],[
             'portadaIMG.required' => 'Se necesita una imagen de portada.',
+            'portadaIMG.max' => 'La imagen de portada no puede superar los 2MB de peso.',
             
-            'id.required' => 'Se necesita un identificador para la ruta.',
+            'id.required' => 'Se necesita un identificador para la ruta turística.',
             'id.exists' => 'El identificador de la ruta no se encuentra registrada en la base de datos.',
             'id.numeric' => 'El identificador de la ruta debe ser un valor numérico.'
         ]);
@@ -134,10 +135,8 @@ class AdministradorRutasController extends Controller
         $ruta = Ruta::find($request->id);
         
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
-        if (Storage::disk('multimedia-ruta')->exists('ruta-'.$request->id.'/'.$portadaNombre)){
-            Storage::disk('multimedia-ruta')->delete('ruta-'.$request->id.'/'.$portadaNombre);
-        }
         
+        Storage::disk('multimedia-ruta')->deleteDirectory('ruta-'.$request->id);
         Storage::disk('multimedia-ruta')->put('ruta-'.$request->id.'/'.$portadaNombre, File::get($request->portadaIMG));
         
         $ruta->portada = "/multimedia/rutas/ruta-".$request->id."/".$portadaNombre;
@@ -151,10 +150,10 @@ class AdministradorRutasController extends Controller
             'atracciones' => 'array|required',
             'id' => 'required|exists:rutas|numeric'
         ],[
-            'atracciones.required' => 'Debe especificar por lo menos una atracción para esta ruta.',
+            'atracciones.required' => 'Debe especificar por lo menos una atracción para esta ruta turística.',
             'atracciones.array' => 'Error al ingresar los datos. Recargue la página.',
             
-            'id.required' => 'Se necesita un identificador para la ruta.',
+            'id.required' => 'Se necesita un identificador para la ruta turística.',
             'id.exists' => 'El identificador de la ruta no se encuentra registrada en la base de datos.',
             'id.numeric' => 'El identificador de la ruta debe ser un valor numérico.'
         ]);
@@ -180,7 +179,7 @@ class AdministradorRutasController extends Controller
         $validator = \Validator::make($request->all(), [
             'id' => 'required|numeric|exists:rutas'
         ],[
-            'id.required' => 'Se necesita el identificador de la ruta.',
+            'id.required' => 'Se necesita el identificador de la ruta turística.',
             'id.numeric' => 'El identificador de la ruta debe ser un valor numérico.',
             'id.exists' => 'La ruta no se encuentra registrada en la base de datos.'
         ]);
@@ -216,19 +215,19 @@ class AdministradorRutasController extends Controller
             'descripcion' => 'required|max:1000|min:100',
             'recomendacion' => 'max:1000|min:100'
         ],[
-            'nombre.required' => 'Se necesita un nombre para la ruta.',
+            'nombre.required' => 'Se necesita un nombre para la ruta turística.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
             
-            'id.required' => 'Se necesita el identificador de la ruta.',
-            'id.exists' => 'La ruta no se encuentra registrada en la base de datos.',
-            'id.numeric' => 'El identificador de la ruta debe ser un valor numérico.',
+            'id.required' => 'Se necesita el identificador de la ruta turística.',
+            'id.exists' => 'La ruta turística no se encuentra registrada en la base de datos.',
+            'id.numeric' => 'El identificador de la ruta turística debe ser un valor numérico.',
             
             'idIdioma.required' => 'Se necesita el identificador del idioma.',
             'idIdioma.numeric' => 'El identificador del idioma debe ser un valor numérico.',
             'idIdioma.exists' => 'El idioma especificado no se encuentra registrado en la base de datos.',
             
             
-            'descripcion.required' => 'Se necesita una descripción para la ruta.',
+            'descripcion.required' => 'Se necesita una descripción para la ruta turística.',
             'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
             'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
             

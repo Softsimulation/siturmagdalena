@@ -105,4 +105,12 @@ class Actividades extends Model
     {
         return $this->hasMany('App\PlanificadorActividade', 'actividades_id');
     }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function actividadesProveedores()
+    {
+        return $this->belongsToMany('App\Models\Actividades', 'actividades_proveedores', 'actividad_id', 'proveedor_id');
+    }
 }

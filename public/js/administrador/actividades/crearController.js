@@ -89,7 +89,7 @@ angular.module('actividades.crear', [])
         $scope.actividad.adicional.id = $scope.actividad.id;
         actividadesServi.postGuardaradicional($scope.actividad.adicional).then(function(data){
             if (data.success){
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                swal('¡Éxito!', 'Información adicional agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }

@@ -6,7 +6,7 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administradoratracciones/datos').success(function (data) {
+            $http.get('/administradorproveedores/datos').success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
@@ -17,18 +17,18 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administradoratracciones/desactivar-activar', {'id' : id}).success(function (data) {
+            $http.post('/administradorproveedores/desactivar-activar', {'id' : id}).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
             });
             return promise;
         },
-        getDatosatraccion: function (id){
+        getDatosproveedor: function (id){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administradoratracciones/datosatraccion/'+id).success(function (data) {
+            $http.get('/administradorproveedores/datosproveedor/'+id).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
@@ -57,11 +57,11 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             });
             return promise;
         },
-        postCrearatraccion: function (data){
+        postCrearproveedor: function (data){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administradoratracciones/crearatraccion', data).success(function (data) {
+            $http.post('/administradorproveedores/crearproveedor', data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
@@ -72,7 +72,7 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administradoratracciones/guardarmultimedia', data, {
+            $http.post('/administradorproveedores/guardarmultimedia', data, {
                 transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined
@@ -88,7 +88,7 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administradoratracciones/guardaradicional', data).success(function (data) {
+            $http.post('/administradorproveedores/guardaradicional', data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
@@ -106,11 +106,11 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             });
             return promise;
         },
-        postEditaratraccion: function (data){
+        postEditarproveedor: function (data){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administradoratracciones/editaratraccion', data).success(function (data) {
+            $http.post('/administradorproveedores/editarproveedor', data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

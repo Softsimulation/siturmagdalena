@@ -60,11 +60,11 @@ class Proveedor extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categoriaTurismoConProveedores()
     {
-        return $this->hasMany('App\Models\CategoriaTurismoConProveedore', 'proveedores_id');
+        return $this->belongsToMany('App\Models\Categoria_Turismo', 'categoria_turismo_con_proveedores', 'proveedores_id', 'categoria_turismo_id');
     }
 
     /**
@@ -76,11 +76,11 @@ class Proveedor extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function perfilesUsuariosConProveedores()
     {
-        return $this->hasMany('App\Models\PerfilesUsuariosConProveedore', 'proveedores_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_proveedores', 'proveedores_id', 'perfiles_usuarios_id');
     }
 
     /**
@@ -96,7 +96,7 @@ class Proveedor extends Model
      */
     public function proveedoresConIdiomas()
     {
-        return $this->hasMany('App\Models\Models\Proveedor_Con_Idioma', 'proveedores_id');
+        return $this->hasMany('App\Models\Proveedor_Con_Idioma', 'proveedores_id');
     }
 
     /**
@@ -113,5 +113,29 @@ class Proveedor extends Model
     public function proveedoresCaracteristicas()
     {
         return $this->hasMany('App\Models\ProveedoresCaracteristica', 'proveedores_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function multimediaProveedores()
+    {
+        return $this->hasMany('App\Models\Multimedia_Proveedor', 'proveedor_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function actividadesProveedores()
+    {
+        return $this->belongsToMany('App\Models\Actividades', 'actividades_proveedores', 'proveedor_id', 'actividad_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function proveedorRnt()
+    {
+        return $this->belongsTo('App\Models\Proveedores_rnt', 'proveedor_rnt_id');
     }
 }

@@ -58,11 +58,11 @@ class Categoria_Turismo extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categoriaTurismoConProveedores()
     {
-        return $this->hasMany('App\Models\CategoriaTurismoConProveedore');
+        return $this->belongsToMany('App\Models\Proveedor', 'categoria_turismo_con_proveedores', 'categoria_turismo_id', 'proveedores_id');
     }
 
     /**

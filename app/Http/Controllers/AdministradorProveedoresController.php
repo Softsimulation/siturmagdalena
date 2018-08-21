@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Carbon\Carbon;
+use Storage;
+use File;
 
 use App\Models\Sector;
 use App\Models\Perfil_Usuario;
 use App\Models\Categoria_Turismo;
 use App\Models\Actividades;
 use App\Models\Categoria_Proveedor;
+use App\Models\Proveedor;
 use App\Models\Proveedor_Con_Idioma;
+use App\Models\Proveedores_rnt;
+use App\Models\Proveedores_rnt_idioma;
+use App\Models\Multimedia_Proveedor;
+use App\Models\Idioma;
 
 class AdministradorProveedoresController extends Controller
 {
@@ -20,17 +28,69 @@ class AdministradorProveedoresController extends Controller
         return view('administradorproveedores.Crear');
     }
     
-    public function getDatoscrear(){
-        $sectores = Sector::with(['destino' => function ($queryDestino){
-            $queryDestino->with(['destinoConIdiomas' => function($queryDestinoConIdiomas){
-                $queryDestinoConIdiomas->select('destino_id', 'idiomas_id', 'nombre', 'descripcion');
-            }])->select('latitud', 'longitud', 'id');
-        }])->with(['sectoresConIdiomas' => function ($querySectoresConIdiomas){
-            $querySectoresConIdiomas->with(['idioma' => function($queryIdiomas){
-                $queryIdiomas->select('id' ,'nombre', 'culture');
-            }])->select('idiomas_id', 'sectores_id', 'nombre');
-        }])->select('id', 'destino_id', 'es_urbano')->groupBy('destino_id', 'es_urbano', 'id')->where('estado', true)->get();
+    public function getIndex (){
+        return view('administradorproveedores.Index');
+    }
+    
+    public function getEditar($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Proveedor::find($id) == null){
+            return response('Not found.', 404);
+        }
+        return view('administradorproveedores.Editar', ['id' => $id]);
+    }
+    
+    public function getDatos (){
+        $proveedores = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt){
+            $queryProveedorRnt->with(['proveedor_rnt_idioma' => function ($queyProveedor_rnt_idioma){
+                $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id', 'descripcion');
+            }])->select('id', 'razon_social');
+        }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
+            $queryMultimediaProveedores->where('portada', true)->select('proveedor_id', 'ruta');
+        }])->select('id', 'estado', 'proveedor_rnt_id')->orderBy('id')->get();
         
+        $idiomas = Idioma::select('id', 'culture', 'nombre')->where('estado', true)->get();
+        
+        return ['proveedores' => $proveedores, 'idiomas' => $idiomas, 'success' => true];
+    }
+    
+    public function getProveedoresrnt(){
+        $proveedores = Proveedores_rnt::all();
+        
+        return [$proveedores];
+    }
+    
+    public function getDatosproveedor ($id){
+        $proveedor = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt){
+            $queryProveedorRnt->with(['proveedor_rnt_idioma' => function ($queyProveedor_rnt_idioma){
+                $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->where('idioma_id', 2);
+            }])->select('id', 'razon_social');
+        }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas){
+            $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario')->where('idiomas_id', 2);
+        }])->select('id', 'proveedor_rnt_id', 'telefono', 'sitio_web', 'valor_min', 'valor_max')->where('id', $id)->first();
+        
+        $portadaIMG = Multimedia_Proveedor::where('portada', true)->where('proveedor_id', $id)->pluck('ruta')->first();
+        $imagenes = Multimedia_Proveedor::where('portada', false)->where('tipo', false)->where('proveedor_id', $id)->pluck('ruta')->toArray();
+        $video = Multimedia_Proveedor::where('portada', false)->where('tipo', true)->where('proveedor_id', $id)->pluck('ruta')->first();
+        
+        $perfiles_usuarios = Proveedor::find($id)->perfilesUsuariosConProveedores()->pluck('perfiles_usuarios_id')->toArray();
+        $categorias_turismo = Proveedor::find($id)->categoriaTurismoConProveedores()->pluck('categoria_turismo_id')->toArray();
+        $actividades = Proveedor::find($id)->actividadesProveedores()->pluck('actividad_id')->toArray();
+        
+        return [
+            'proveedor' => $proveedor,
+            'portadaIMG' => $portadaIMG,
+            'imagenes' => $imagenes,
+            'video_promocional' => $video,
+            'perfiles_usuarios' => $perfiles_usuarios,
+            'categorias_turismo' => $categorias_turismo,
+            'actividades' => $actividades,
+            'success' => true
+        ];
+    }
+    
+    public function getDatoscrear(){
         $perfiles_turista = Perfil_Usuario::with(['perfilesUsuariosConIdiomas' => function($queryPerfilesUsuariosConIdioma){
            $queryPerfilesUsuariosConIdioma->with(['idioma' => function ($queryIdioma){
                $queryIdioma->select('id', 'nombre', 'culture');
@@ -61,59 +121,53 @@ class AdministradorProveedoresController extends Controller
                 $queryIdioma->select('id', 'nombre', 'culture');
             }])->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
         }])->where('estado', true)->select('id')->get();
+        
+        $proveedores_rnt = Proveedores_rnt::select('id', 'razon_social')->orderBy('id')->get();
             
-        return ['success' => true, 
-            'sectores' => $sectores, 
+        return ['success' => true,
             'perfiles_turista' => $perfiles_turista, 
             'categoria_proveedor' => $categoria_proveedor,
             'categorias_turismo' => $categorias_turismo,
-            'actividades' => $actividades];
+            'actividades' => $actividades,
+            'proveedores_rnt' => $proveedores_rnt];
     }
     
     public function postCrearproveedor(Request $request){
         $validator = \Validator::make($request->all(), [
-            'nombre' => 'required|max:255',
+            'proveedor_rnt_id' => 'required|numeric|exists:proveedores_rnt,id',
             'descripcion' => 'required|max:1000|min:100',
-            'valor_minimo' => 'required|numeric',
-            'valor_maximo' => 'required|numeric',
-            'sector_id' => 'required|numeric|exists:sectores,id',
-            'categoria_proveedor' => 'required|numeric|exists:categoria_proveedores,id',
-            'direccion' => 'max:150',
+            'valor_minimo' => 'required|numeric|min:0',
+            'valor_maximo' => 'required|numeric|min:0',
             'horario' => 'max:255',
             'telefono' => 'max:100',
-            'pagina_web' => 'max:255',
-            'pos' => 'required'
+            'pagina_web' => 'max:255|url'
         ],[
-            'nombre.required' => 'Se necesita un nombre para la atracción.',
-            'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
+            'proveedor_rnt_id.required' => 'Se necesita el identificador del proveedor.',
+            'proveedor_rnt_id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            'proveedor_rnt_id.exists' => 'El proveedor no se encuentra registrado en la base de datos.',
             
-            'descripcion.required' => 'Se necesita una descripción para la atracción.',
+            'descripcion.required' => 'Se necesita una descripción para el proveedor.',
             'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
             'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
             
-            'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para la atracción.',
+            'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para el proveedor.',
             'valor_minimo.numeric' => '"Valor mínimo" debe tener un valor numérico.',
+            'valor_minimo.min' => '"Valor mínimo" no puede ser menor que 0',
             
-            'valor_maximo.required' => 'Se requiere ingresar un valor máximo para la atracción.',
+            'valor_maximo.required' => 'Se requiere ingresar un valor máximo para el proveedor.',
             'valor_maximo.numeric' => '"Valor máximo" debe tener un valor numérico.',
-            
-            'sector_id.required' => 'Se necesita un identificador para el sector.',
-            'sector_id.numeric' => 'El identificador del sector, debe ser numérico.',
-            'sector_id.exists' => 'El identificador de sector no se encuentra registrado en la base de datos.',
+            'valor_maximo.min' => '"Valor máximo" no puede ser menor que 0',
             
             'categoria_proveedor.required' => 'Se necesita una categoría para el proveedor.',
             'categoria_proveedor.numeric' => 'La categoría del proveedor debe ser un valor numérico.',
             'categoria_proveedor.exists' => 'La categoría del proveedor no se encuentra registrada en la base de datos.',
-            
-            'direccion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Dirección".',
             
             'horario.max' => 'Se ha excedido el número máximo de caracteres para el campo "Horario".',
             
             'telefono.max' => 'Se ha excedido el número máximo de caracteres para el campo "Teléfono".',
             
             'pagina_web.max' => 'Se ha excedido el número máximo de caracteres para el campo "Página web".',
-            
-            'po.requireds' => 'Agregue un marcador en el mapa de Google.'
+            'pagina_web.url' => 'El campo "Página web" debe tener la estructura http://example.com'
         ]);
         
         if($validator->fails()){
@@ -121,57 +175,276 @@ class AdministradorProveedoresController extends Controller
         }
         
         $errores = [];
-        $sitio_nombre = Proveedor_Con_Idioma::where('idiomas_id', 1)->whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->first();
-        if ($sitio_nombre != null){
-            $errores["exists"][0] = "Esta atracción ya se encuentra registrada en el sistema.";
+        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 2)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        if ($proveedor_rnt_con_idioma != null){
+            $errores["exists"][0] = "Este proveedor ya se encuentra registrado en el sistema.";
+        }
+        if ($request->valor_maximo < $request->valor_minimo){
+            $errores["gt"][0] = 'El campo "Valor máximo" debe ser mayor a "Valor mínimo".';
         }
         if($errores != null || sizeof($errores) > 0){
             return  ["success"=>false, "errores"=>$errores];
         }
         
-        $sitio = new Sitio();
-        $sitio->sectores_id = $request->sector_id;
-        $sitio->tipo_sitios_id = 1;
-        $sitio->latitud = $request->pos['lat'];
-        $sitio->longitud = $request->pos['lng'];
-        $sitio->direccion = $request->direccion;
-        $sitio->estado = true;
-        $sitio->created_at = Carbon::now();
-        $sitio->updated_at = Carbon::now();
-        $sitio->user_create = "Situr";
-        $sitio->user_update = "Situr";
-        $sitio->save();
+        $proveedor = new Proveedor();
+        $proveedor->valor_min = $request->valor_minimo;
+        $proveedor->valor_max = $request->valor_maximo;
+        $proveedor->telefono = $request->telefono;
+        $proveedor->sitio_web = $request->pagina_web;
+        $proveedor->proveedor_rnt_id = $request->proveedor_rnt_id;
+        $proveedor->estado = true;
+        $proveedor->created_at = Carbon::now();
+        $proveedor->updated_at = Carbon::now();
+        $proveedor->user_create = "Situr";
+        $proveedor->user_update = "Situr";
+        $proveedor->save();
         
-        $sitio_con_idioma = new Sitio_Con_Idioma();
-        $sitio_con_idioma->idiomas_id = 1;
-        $sitio_con_idioma->sitios_id = $sitio->id;
-        $sitio_con_idioma->nombre = $request->nombre;
-        $sitio_con_idioma->descripcion = $request->descripcion;
-        $sitio_con_idioma->save();
+        $proveedor_con_idioma = new Proveedor_Con_Idioma();
+        $proveedor_con_idioma->idiomas_id = 2;
+        $proveedor_con_idioma->proveedores_id = $proveedor->id;
+        $proveedor_con_idioma->horario = $request->horario;
+        $proveedor_con_idioma->save();
         
-        $atraccion = new Atracciones();
-        $atraccion->sitios_id = $sitio->id;
-        $atraccion->telefono = $request->telefono;
-        $atraccion->sitio_web = $request->pagina_web;
-        $atraccion->valor_min = $request->valor_minimo;
-        $atraccion->valor_max = $request->valor_maximo;
-        $atraccion->estado = true;
-        $atraccion->user_create = "Situr";
-        $atraccion->user_update = "Situr";
-        $atraccion->created_at = Carbon::now();
-        $atraccion->updated_at = Carbon::now();
-        $atraccion->save();
+        $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
+        $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
+        $proveedor_rnt_con_idioma->idioma_id = 2;
+        $proveedor_rnt_con_idioma->nombre = Proveedores_rnt::find($request->proveedor_rnt_id)->razon_social;
+        $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        $proveedor_rnt_con_idioma->save();
         
-        $atraccion_con_idioma = new Atraccion_Con_Idioma();
-        $atraccion_con_idioma->atracciones_id = $atraccion->id;
-        $atraccion_con_idioma->idiomas_id = 1;
-        $atraccion_con_idioma->como_llegar = $request->como_llegar;
-        $atraccion_con_idioma->horario = $request->horario;
-        $atraccion_con_idioma->periodo = $request->actividad;
-        $atraccion_con_idioma->recomendaciones = $request->recomendaciones;
-        $atraccion_con_idioma->reglas = $request->reglas;
-        $atraccion_con_idioma->save();
+        return ['success' => true, 'id' => $proveedor->id];
+    }
+    
+    public function postGuardarmultimedia (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'portadaIMG' => 'required|max:2097152',
+            'id' => 'required|exists:proveedores|numeric',
+            'image' => 'array|max:5',
+            'video_promocional' => 'url'
+        ],[
+            'portadaIMG.required' => 'Se necesita una imagen de portada.',
+            'portadaIMG.max' => 'La imagen de portada no puede ser mayor a 2MB.',
+            
+            'id.required' => 'Se necesita un identificador para el proveedor.',
+            'id.exists' => 'El identificador del proveedor no se encuentra registrado en la base de datos.',
+            'id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            
+            'image.array' => 'Error al enviar los datos. Recargue la página.',
+            'image.max' => 'Máximo se pueden subir 5 imágenes para la atracción.',
+            
+            'video_promocional.url' => 'La estructura del video promocional debe ser un enlace.'
+        ]);
         
-        return ['success' => true, 'id' => $atraccion->id];
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        Multimedia_Proveedor::where('proveedor_id', $request->id)->delete();
+        
+        $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
+        if (Storage::disk('multimedia-proveedor')->exists('proveedor-'.$request->id.'/'.$portadaNombre)){
+            Storage::disk('multimedia-proveedor')->deleteDirectory('proveedor-'.$request->id);
+        }
+        
+        $multimedia_proveedor = new Multimedia_Proveedor();
+        $multimedia_proveedor->proveedor_id = $request->id;
+        $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$portadaNombre;
+        $multimedia_proveedor->tipo = false;
+        $multimedia_proveedor->portada = true;
+        $multimedia_proveedor->estado = true;
+        $multimedia_proveedor->user_create = "Situr";
+        $multimedia_proveedor->user_update = "Situr";
+        $multimedia_proveedor->created_at = Carbon::now();
+        $multimedia_proveedor->updated_at = Carbon::now();
+        $multimedia_proveedor->save();
+        
+        Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$portadaNombre, File::get($request->portadaIMG));
+        
+        if ($request->has('video_promocional') && count($request->video_promocional) != 0){
+            $multimedia_proveedor = new Multimedia_Proveedor();
+            $multimedia_proveedor->proveedor_id = $request->id;
+            $multimedia_proveedor->ruta = $request->video_promocional;
+            $multimedia_proveedor->tipo = true;
+            $multimedia_proveedor->portada = false;
+            $multimedia_proveedor->estado = true;
+            $multimedia_proveedor->user_create = "Situr";
+            $multimedia_proveedor->user_update = "Situr";
+            $multimedia_proveedor->created_at = Carbon::now();
+            $multimedia_proveedor->updated_at = Carbon::now();
+            $multimedia_proveedor->save();
+        }
+        
+        for ($i = 0; $i < 5; $i++){
+            $nombre = "imagen-".$i.".*";
+            if (Storage::disk('multimedia-proveedor')->exists('proveedor-'.$request->id.'/'.$nombre)){
+                Storage::disk('multimedia-proveedor')->delete('proveedor-'.$request->id.'/'.$nombre);
+            }
+        }
+        
+        if ($request->image != null){
+            foreach($request->image as $key => $file){
+                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                $multimedia_proveedor = new Multimedia_Proveedor();
+                $multimedia_proveedor->proveedor_id = $request->id;
+                $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
+                $multimedia_proveedor->tipo = false;
+                $multimedia_proveedor->portada = false;
+                $multimedia_proveedor->estado = true;
+                $multimedia_proveedor->user_create = "Situr";
+                $multimedia_proveedor->user_update = "Situr";
+                $multimedia_proveedor->created_at = Carbon::now();
+                $multimedia_proveedor->updated_at = Carbon::now();
+                $multimedia_proveedor->save();
+                
+                Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$nombre, File::get($file));
+            }
+        }
+        
+        return ['success' => true];
+    }
+    
+    public function postGuardaradicional (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'perfiles' => 'required|array',
+            'actividades' => 'array',
+            'categorias' => 'required|array',
+            'id' => 'required|exists:proveedores'
+        ],[
+            'perfiles.required' => 'Se necesitan los perfiles del turista para este proveedor.',
+            'perfiles.array' => 'Error al enviar los datos. Recargue la página.',
+            
+            'actividades.array' => 'Error al enviar los datos. Recargue la página.',
+            
+            'categorias.required' => 'Se necesitan las categorías de turismo para el proveedor.',
+            'categorias.max' => 'Error al enviar los datos. Recargue la página.',
+            
+            'id.required' => 'Se necesita el identificador del proveedor.',
+            'id.exists' => 'El identificador del evento no se encuentra registrado en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $proveedor = Proveedor::find($request->id);
+        $proveedor->categoriaTurismoConProveedores()->detach();
+        $proveedor->categoriaTurismoConProveedores()->attach($request->categorias);
+        $proveedor->perfilesUsuariosConProveedores()->detach();
+        $proveedor->perfilesUsuariosConProveedores()->attach($request->perfiles);
+        $proveedor->actividadesProveedores()->detach();
+        $proveedor->actividadesProveedores()->attach($request->actividades);
+        
+        $proveedor->save();
+        
+        return ["success" => true];
+    }
+    
+    public function postDesactivarActivar (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:proveedores'
+        ],[
+            'id.required' => 'Se necesita el identificador del proveedor.',
+            'id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            'id.exists' => 'El proveedor no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $proveedor = Proveedor::find($request->id);
+        $proveedor->estado = !$proveedor->estado;
+        $proveedor->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postEditarproveedor (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:proveedores|numeric',
+            'proveedor_rnt_id' => 'required|numeric|exists:proveedores_rnt,id',
+            'descripcion' => 'required|max:1000|min:100',
+            'valor_minimo' => 'required|numeric|min:0',
+            'valor_maximo' => 'required|numeric|min:0',
+            'horario' => 'max:255',
+            'telefono' => 'max:100',
+            'pagina_web' => 'max:255|url'
+        ],[
+            'id.required' => 'Se necesita el indentificador del proveedor.',
+            'id.exists' => 'El identificador del proveedor no se encuentra registrado en el sistema.',
+            'id.numeric' => 'El identificador del proveedor debe ser un dato numérico.',
+            
+            'proveedor_rnt_id.required' => 'Se necesita el identificador del proveedor.',
+            'proveedor_rnt_id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            'proveedor_rnt_id.exists' => 'El proveedor no se encuentra registrado en la base de datos.',
+            
+            'descripcion.required' => 'Se necesita una descripción para el proveedor.',
+            'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
+            'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
+            
+            'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para el proveedor.',
+            'valor_minimo.numeric' => '"Valor mínimo" debe tener un valor numérico.',
+            'valor_minimo.min' => '"Valor mínimo" no puede ser menor que 0',
+            
+            'valor_maximo.required' => 'Se requiere ingresar un valor máximo para el proveedor.',
+            'valor_maximo.numeric' => '"Valor máximo" debe tener un valor numérico.',
+            'valor_maximo.min' => '"Valor máximo" no puede ser menor que 0',
+            
+            'categoria_proveedor.required' => 'Se necesita una categoría para el proveedor.',
+            'categoria_proveedor.numeric' => 'La categoría del proveedor debe ser un valor numérico.',
+            'categoria_proveedor.exists' => 'La categoría del proveedor no se encuentra registrada en la base de datos.',
+            
+            'horario.max' => 'Se ha excedido el número máximo de caracteres para el campo "Horario".',
+            
+            'telefono.max' => 'Se ha excedido el número máximo de caracteres para el campo "Teléfono".',
+            
+            'pagina_web.max' => 'Se ha excedido el número máximo de caracteres para el campo "Página web".',
+            'pagina_web.url' => 'El campo "Página web" debe tener la estructura http://example.com'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $errores = [];
+        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 2)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        if ($proveedor_rnt_con_idioma != null){
+            if ($proveedor_rnt_con_idioma->proveedor_rnt_id != Proveedor::find($request->id)->proveedor_rnt_id){
+                $errores["exists"][0] = "Este proveedor ya se encuentra registrado en el sistema.";
+            }
+        }
+        if ($request->valor_maximo < $request->valor_minimo){
+            $errores["gt"][0] = 'El campo "Valor máximo" debe ser mayor a "Valor mínimo".';
+        }
+        if($errores != null || sizeof($errores) > 0){
+            return  ["success"=>false, "errores"=>$errores];
+        }
+        
+        $proveedor = Proveedor::find($request->id);
+        Proveedores_rnt_idioma::where('proveedor_rnt_id', $proveedor->proveedor_rnt_id)->where('idioma_id', 2)->delete();
+        $proveedor->valor_min = $request->valor_minimo;
+        $proveedor->valor_max = $request->valor_maximo;
+        $proveedor->telefono = $request->telefono;
+        $proveedor->sitio_web = $request->pagina_web;
+        $proveedor->proveedor_rnt_id = $request->proveedor_rnt_id;
+        $proveedor->estado = true;
+        $proveedor->created_at = Carbon::now();
+        $proveedor->updated_at = Carbon::now();
+        $proveedor->user_create = "Situr";
+        $proveedor->user_update = "Situr";
+        $proveedor->save();
+        
+        $proveedor_con_idioma = Proveedor_Con_Idioma::where('proveedores_id', $request->id)->where('idiomas_id', 2)->first();
+        $proveedor_con_idioma->horario = $request->horario;
+        $proveedor_con_idioma->save();
+        
+        $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
+        $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
+        $proveedor_rnt_con_idioma->idioma_id = 2;
+        $proveedor_rnt_con_idioma->nombre = Proveedores_rnt::find($request->proveedor_rnt_id)->razon_social;
+        $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        $proveedor_rnt_con_idioma->save();
+        
+        return ['success' => true];
     }
 }
