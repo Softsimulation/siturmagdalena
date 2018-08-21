@@ -84,7 +84,7 @@ class MuestraMaestraCtrl extends Controller
         
         return [
                 "proveedores"=> Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                      ->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
+                                      ->with([ "estadop", "categoria", "proveedor_rnt_idioma"=>function($q){ $q->where("idioma_id",1); } ])
                                       ->get(),
                                       
                 "proveedoresInformales" => Proveedores_informale::where([ ["latitud","!=",null], ["longitud","!=",null] ])
