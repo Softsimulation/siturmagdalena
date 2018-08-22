@@ -196,6 +196,9 @@
             .ADMdtp-box footer .calTypeContainer p{
                 display: none;
             }
+            .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+                width: 100% !important;
+            }
     </style>
 </head>
 <body @yield('app')  @yield('controller') >

@@ -112,6 +112,9 @@
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <h1 class="title1">@{{proveedorNombre}} - Editar (Inglés)</h1>
     <br />
+    <div class="col-col-sm-12">
+        <a href="{{asset('/administradorproveedores')}}">Volver al listado</a>
+    </div>
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#info">Información básica</a></li>

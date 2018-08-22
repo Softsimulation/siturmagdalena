@@ -183,9 +183,9 @@
 <!--                    <button type="button" ng-click="nuevoIdioma()" class="btn btn-primary">Enviar</button>-->
 <!--                </div>-->
 <!--            </form>-->
-<!--        </div><!-- /.modal-content -->-->
-<!--    </div><!-- /.modal-dialog -->-->
-<!--</div><!-- /.modal -->-->
+<!--        </div><!-- /.modal-content -->
+<!--    </div><!-- /.modal-dialog -->
+<!--</div><!-- /.modal -->
 
 @endsection
 

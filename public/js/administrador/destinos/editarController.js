@@ -12,6 +12,9 @@ angular.module('destinos.editar', [])
             }
         }
     };
+    
+    $scope.orderByField = '';
+    $scope.reverseSort = false;
     var marker = null;
     var lat;
     var lng;
@@ -30,6 +33,8 @@ angular.module('destinos.editar', [])
                 $("#video").val(data.video);
                 $scope.destino.datosGenerales.pos.lat = data.destino.latitud;
                 $scope.destino.datosGenerales.pos.lng = data.destino.longitud;
+                $scope.sectores = data.destino.sectores;
+                $scope.idiomas = data.idiomas;
                 
                 var portada = null;
                 if (data.portadaIMG != null){
@@ -156,6 +161,36 @@ angular.module('destinos.editar', [])
         });
     }
     
+    $scope.modalSector = function (){
+        $scope.sector = {};
+        $scope.sector.destino_id = $scope.id;
+        $scope.sector.es_urbano = true;
+        $scope.nuevoSector.$setPristine();
+        $scope.nuevoSector.$setUntouched();
+        $("#addSector").modal('show');
+    }
+    
+    $scope.crearSector = function (){
+        if (!$scope.nuevoSector.$valid){
+            return;
+        }
+        $("body").attr("class", "cbp-spmenu-push charging");
+        destinosServi.postCrearsector($scope.sector).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
+            if (data.success){
+                $scope.sectores.push(data.sector);
+                swal('¡Éxito!', 'Sector agregado con éxito.', 'success');
+                $("#editIdiomaSector").modal('hide');
+            }else {
+                $scope.errores = data.errores;
+            }
+        }).catch(function (err){
+            $("body").attr("class", "cbp-spmenu-push");
+            swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+        });
+    }
+    
+    
     $scope.guardarDatosGenerales = function (){
         if (!$scope.editarDestinoForm.$valid){
             return;
@@ -173,6 +208,78 @@ angular.module('destinos.editar', [])
         }).catch(function(err){
             $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+        });
+    }
+    
+    $scope.idiomaSectorModal = function (sector, idioma){
+        $scope.sectorIdioma = {};
+        $scope.sectorIdioma.id = sector.id;
+        $scope.sectorIdioma.destino_id = $scope.id;
+        for (var i = 0; i < sector.sectores_con_idiomas.length; i++){
+            if (sector.sectores_con_idiomas[i].idioma.id == idioma){
+                $scope.sectorIdioma.nombre = sector.sectores_con_idiomas[i].nombre;
+                break;
+            }
+        }
+        $scope.sectorIdioma.sectores_con_idiomas = sector.sectores_con_idiomas;
+        $scope.sectorIdioma.idioma_id = idioma;
+        $scope.sectorIdioma.swIdioma = idioma == 0;
+        $scope.editarIdiomaSectorForm.$setPristine();
+        $scope.editarIdiomaSectorForm.$setUntouched();
+        $("#editIdiomaSector").modal('show');
+    }
+    
+    $scope.editarIdiomaSectorController = function (){
+        if (!$scope.editarIdiomaSectorForm.$valid){
+            return;
+        }
+        $("body").attr("class", "cbp-spmenu-push charging");
+        destinosServi.postEditaridiomasector($scope.sectorIdioma).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
+            if (data.success){
+                for (var i = 0; $scope.sectores.length; i++){
+                    if ($scope.sectores[i].id == data.sector.id){
+                        $scope.sectores[i] = data.sector;
+                        break;
+                    }
+                }
+                $scope.errores = null;
+                swal('¡Éxito!', 'Sector modificado con éxito.', 'success');
+                $("#editIdiomaSector").modal('hide');
+            }else{
+                $scope.errores = data.errores;
+            }
+        }).catch(function (error){
+            $("body").attr("class", "cbp-spmenu-push");
+            swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+        });
+    }
+    
+    $scope.deleteSector = function (sector) {
+        swal({
+            title: "Eliminar",
+            text: "¿Desea eliminar el sector de este destino?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function (res) {
+            if (res) {
+                destinosServi.getDeletesector(sector.id).then(function (data){
+                    if (data.success){
+                        for (var i = 0; i < $scope.sectores.length; i++){
+                            if ($scope.sectores[i].id == sector.id){
+                                $scope.sectores.splice(i, 1);
+                                break;
+                            }
+                        }
+                        swal('¡Éxito!', 'Sector eliminado con éxito.', 'success');
+                    }
+                }).catch(function (error){
+                    swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
+                });
+            }
+
         });
     }
 });

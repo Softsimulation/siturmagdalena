@@ -132,7 +132,7 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">@{{evento.eventos_con_idiomas[0].nombre}} - @{{evento.eventos_con_idiomas[0].edicion}}</h4>
+                            <h4 class="media-heading">@{{evento.eventos_con_idiomas[0].nombre}} @{{evento.eventos_con_idiomas[0].edicion != null ? '-':''}} @{{evento.eventos_con_idiomas[0].edicion}}</h4>
                             <p class="text-justify">
                                 @{{evento.eventos_con_idiomas[0].descripcion | limitTo:400}}...
                             </p>
@@ -175,7 +175,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="idioma">Elija un idioma</label>
-                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|filter:{id: idioma.id}:true" class="form-control">
+                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|idiomaFilter:eventoEdit.eventos_con_idiomas" class="form-control">
                             <option value="">Seleccione un idioma</option>
                         </select>
                     </div>
