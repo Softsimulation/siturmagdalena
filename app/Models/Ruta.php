@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,7 +28,7 @@ class Ruta extends Model
      */
     public function multimediaRutas()
     {
-        return $this->hasMany('App\MultimediaRuta');
+        return $this->hasMany('App\Models\Multimedia_Ruta');
     }
 
     /**
@@ -36,7 +36,7 @@ class Ruta extends Model
      */
     public function rutasConAtracciones()
     {
-        return $this->hasMany('App\RutasConAtraccione');
+        return $this->hasMany('App\Models\Ruta_Con_Atraccion');
     }
 
     /**
@@ -44,6 +44,6 @@ class Ruta extends Model
      */
     public function rutasConIdiomas()
     {
-        return $this->hasMany('App\RutasConIdioma');
+        return $this->hasMany('App\Models\Ruta_Con_Idioma');
     }
 }

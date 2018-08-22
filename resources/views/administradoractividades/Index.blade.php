@@ -102,8 +102,8 @@
 @section('controller','ng-controller="actividadesIndexController"')
 
 @section('content')
-<div class="container">
-    <h1 class="title1">Lista de atracciones</h1>
+<div class="col-sm-12">
+    <h1 class="title1">Lista de actividades</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row" style="margin: 0;">
@@ -192,6 +192,9 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/editarController.js')}}"></script>

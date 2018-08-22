@@ -102,7 +102,7 @@
 @section('controller','ng-controller="destinosIndexController"')
 
 @section('content')
-<div class="container">
+<div class="col-sm-12">
     <h1 class="title1">Lista de destinos</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
@@ -192,6 +192,11 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/destinos/editarController.js')}}"></script>

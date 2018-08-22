@@ -154,7 +154,7 @@ angular.module('atracciones.editar', [])
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
-        if ($scope.imagenes != null) {
+        if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (var i in $scope.imagenes){
                 if (Number.isInteger(parseInt(i))){
                     fd.append("image[]", $scope.imagenes[i]);
@@ -167,7 +167,8 @@ angular.module('atracciones.editar', [])
         atraccionesServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Multimedia modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
@@ -189,8 +190,9 @@ angular.module('atracciones.editar', [])
         atraccionesServi.postEditaratraccion($scope.atraccion.datosGenerales).then(function(data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
+                $scope.errores = null;
                 $scope.atraccion.id = data.id;
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                swal('¡Éxito!', 'Atracción modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
@@ -207,7 +209,8 @@ angular.module('atracciones.editar', [])
         $scope.atraccion.adicional.id = $scope.id;
         atraccionesServi.postGuardaradicional($scope.atraccion.adicional).then(function(data){
             if (data.success){
-                swal('¡Éxito!', 'Atracción creada con éxito.', 'success');
+                $scope.errores = null;
+                swal('¡Éxito!', 'Información adicional modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }

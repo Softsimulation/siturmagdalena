@@ -49,7 +49,7 @@
         .carga {
            display: none;
            position: fixed;
-           z-index: 1060;
+           z-index: 1500;
            top: 0;
            left: 0;
            height: 100%;
