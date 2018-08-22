@@ -2161,7 +2161,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $casa->viajeros_colombia = $request->casas[0]["viajeros_colombia"];
             $casa->capacidad_ocupadas = $request->casas[0]["capacidad_ocupadas"];
             $casa->viajeros_extranjeros = $request->casas[0]["viajeros_extranjeros"];
-            $casa->total_huespedes = $request->casas[0]["capacidad_ocupadas"];
+            $casa->total_huespedes = $request->casas[0]["total_huespedes"];
             $casa->save();
         }
         /////////////////////////////////////////////////////////////////////////

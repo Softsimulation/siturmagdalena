@@ -190,7 +190,7 @@
                                     <td ng-repeat="cal in calificacionesFactor" style="text-align: center;">
                                         <div class="radio radio-primary">
                                             <label>
-                                                <input type="radio" name="beneficio_@{{item.id}}" value="@{{cal.id}}" ng-model="item.califcacion" required >       
+                                                <input type="radio" name="beneficio_@{{item.id}}" value="@{{cal.id}}" ng-model="item.califcacion" ng-required="item.id != 18" >       
                                             </label>
                                         </div>
                                     </td>
@@ -217,7 +217,7 @@
                                     <td ng-repeat="cal in calificacionesFactor" style="text-align: center;">
                                         <div class="radio radio-primary">
                                             <label>
-                                                <input type="radio" name="beneficio_@{{item.id}}" value="@{{cal.id}}" ng-model="item.califcacion" required >       
+                                                <input type="radio" name="beneficio_@{{item.id}}" value="@{{cal.id}}" ng-model="item.califcacion" ng-required="item.id != 24" >       
                                             </label>
                                         </div>
                                     </td>

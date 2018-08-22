@@ -99,7 +99,7 @@
                             <th>Encuestador</th>
                             <th style="width: 150px;">Estado</th>
                             <th style="width: 110px;">Última sección</th>
-                            <th style="width: 70px;"></th>
+                            <th style="width: 120px;"></th>
                         
                     </tr>
                     <tr dir-paginate="item in encuestas|filter:{Filtro:filtroEstadoEncuesta}| filter:filtrarCampo | filter:prop.search  |itemsPerPage:10 as results" pagination-id="paginacion_encuestas" >
@@ -111,8 +111,24 @@
                             <td>@{{item.fechallegada | date:'dd-MM-yyyy'}}</td>
                             <td>@{{item.username}}</td>
                             <td>@{{item.estado}}</td>
-                            <td style="text-align: right;">@{{item.ultima}}</td>
-                            <td style="text-align: center;"><a href="/turismoreceptor/editardatos/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td style="text-align: center;">@{{item.ultima}}</td>
+                            <td style="text-align: center;">
+                                <div class="dropdown" style="display: inline-block;">
+                                  <button  id="dLabel" type="button" class="btn btn-xs btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ir a
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                    <li><a href="/turismoreceptor/seccionestancia/@{{item.id}}">Estancia y visitados</a></li>
+                                    <li><a href="/turismoreceptor/secciontransporte/@{{item.id}}">Transporte</a></li>
+                                    <li><a href="/turismoreceptor/secciongrupoviaje/@{{item.id}}">Viaje en grupo</a></li>
+                                    <li><a href="/turismoreceptor/secciongastos/@{{item.id}}">Gastos</a></li>
+                                    <li><a href="/turismoreceptor/seccionpercepcionviaje/@{{item.id}}">Percepcción del viaje</a></li>
+                                    <li><a href="/turismoreceptor/seccionfuentesinformacion/@{{item.id}}">Fuentes de información</a></li>
+                                  </ul>
+                                </div>
+                                <a class="btn btn-xs btn-link" href="/turismoreceptor/editardatos/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </td>
                     </tr>
                 </table>
                 <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0 || (encuestas|filter:prop.search).length == 0 || (encuestas|filter:filtrarCampo).length == 0 || (encuestas|filter:{Filtro:filtroEstadoEncuesta} ).length == 0">No hay resultados disponibles <span ng-show="(encuestas|filter:prop.search).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
