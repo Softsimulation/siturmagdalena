@@ -28,11 +28,11 @@
                 return promise; 
             } 
       };
-      
+     
       return {
           
           
-          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+ (id ? id : -1) );  },
+          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+ (id ? id : -1) ); },
           
           getListadoPeridos: function(){ return http.get("/MuestraMaestra/datalistado");  },
           

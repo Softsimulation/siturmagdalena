@@ -285,6 +285,17 @@
             background: #00954129;
             color: black;
         }
+        
+        #mySidenav .control-label{
+            margin-bottom: 0px;
+        }
+        #mySidenav .form-control-static{
+            padding-top: 0px;
+        }
+        #mySidenav .form-group {
+            margin-bottom: 8px;
+        }
+        #mySidenav .checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline{ margin-left: -2px; }
     </style>
 @endsection
 
@@ -319,13 +330,13 @@
                 <div style="margin-bottom: .5rem;">
                     <label class="control-label" style="margin-left: 5px;" >Proveedores</label><br/>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="1" checked> Todos
+                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="1" checked> Todos<span style="font-size: 9px;">(@{{TotalFormales+TotalInformales}})</span>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="2"> Formales
+                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="2"> Formales<span style="font-size: 9px;">(@{{TotalFormales}})</span>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="3" ng-click="filtro.estados=[]" > Informales
+                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="3" ng-click="filtro.estados=[]" > Informales<span style="font-size: 9px;">(@{{TotalInformales}})</span>
                     </label> 
                 </div>
                 <div class="form-group has-feedback">
@@ -531,7 +542,7 @@
             <ng-map id="mapa" zoom="9" center="[10.4113014,-74.4056612]" styles="@{{styloMapa}}" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
               
                 <marker ng-repeat="pro in proveedores|filter:filtro.busqueda|filter:filterProveedores" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
-                    icon="@{{ getIcono(pro.estados_proveedor_id) }}" on-click="showInfoMapa(event,pro,$index)" 
+                    icon="@{{ getIcono(pro.idestado) }}" on-click="showInfoMapa(event,pro,$index)" 
                     draggable="@{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" >     
                 </marker>
         
@@ -626,15 +637,15 @@
         <div class="contenido" ng-show="proveedor" >
             <div class="form-group">
                 <label class="control-label">Nombre</label>
-                <p class="form-control-static">@{{proveedor.razon_social}}</p>
+                <p class="form-control-static">@{{proveedor.nombre}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">RNT</label>
-                <p class="form-control-static">@{{proveedor.numero_rnt || 'No disponible'}}</p>
+                <p class="form-control-static">@{{proveedor.rnt || 'No tiene'}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Estado</label>
-                <p class="form-control-static">@{{proveedor.estadop.nombre || 'No disponible'}}</p>
+                <p class="form-control-static">@{{proveedor.estado || 'No tiene'}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Dirección</label>
@@ -642,11 +653,11 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Tipo de proveedor</label>
-                <p class="form-control-static">@{{proveedor.tipoCategoria.tipo}}</p>
+                <p class="form-control-static">@{{proveedor.categoria}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Categoria de proveedor</label>
-                <p class="form-control-static">@{{proveedor.tipoCategoria.categoria}}</p>
+                <p class="form-control-static">@{{proveedor.subcategoria}}</p>
             </div>
             
             
@@ -754,8 +765,8 @@
                 
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{'error' : (form.$submitted || form.sector.$touched) && form.sector.$error.required}" >
-                      <label for="name">Sector:</label>
-                      <ui-select ng-model="zona.sector_id" name="sector" id="sector" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <label for="name">Sector:</label>
+                        <ui-select ng-model="zona.sector_id" name="sector" id="sector" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione un sector">
                                 <span>@{{$select.selected.destino.destino_con_idiomas[0].nombre +' - '+ $select.selected.sectores_con_idiomas[0].nombre}}</span>
                             </ui-select-match>
@@ -836,7 +847,7 @@
                       <br>
                       
                       <ul>
-                         <li ng-repeat="it in z.tiposProveedores" > @{{it.nombre}}: @{{it.cantidad}} </li> 
+                         <li ng-repeat="it in z.tiposProveedores" > @{{it.nombre}}: <span style="font-size:11px" >(Formales:@{{it.cantidad[0]}}, informales:@{{it.cantidad[1]}})</span> </li> 
                       </ul>
                   </td>
                   <td>@{{z.es_generada ? "Si" : "No"}}</td>
@@ -878,7 +889,7 @@
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.nombreP.$touched) && formP.nombreP.$error.required}" >
                       <label>Nombre:</label>
-                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.razon_social" placeholder="Nombre del establecimiento" required >
+                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.nombre" placeholder="Nombre del establecimiento" required >
                     </div>
                 </div>
             </div>
@@ -920,7 +931,7 @@
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.tipoP.$touched) && formP.tipoP.$error.required}">
                         <label class="control-label" for="tipoP">Categoría proveedor</label>
-                        <ui-select  ng-model="proveedorInformal.categoria_proveedor_id" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <ui-select  ng-model="proveedorInformal.idcategoria" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione una categoria">
                                 <span ng-bind="$select.selected.categoria_proveedores_con_idiomas[0].nombre"></span>
                             </ui-select-match>
