@@ -83,12 +83,9 @@ class MuestraMaestraCtrl extends Controller
         
         
         return [
-                "proveedores"=> Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                      ->with([ "estadop", "categoria", "proveedor_rnt_idioma"=>function($q){ $q->where("idioma_id",1); } ])
-                                      ->get(),
-                                      
-                "proveedoresInformales" => Proveedores_informale::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                                      ->with("categoria")->get(),
+                "proveedores"=> DB::select("SELECT *from proveedores_formales"),
+                                     
+                "proveedoresInformales" => DB::select("SELECT *from listado_proveedores_informales"),
                 
                 "periodo"=> Periodos_medicion::where("id",$id)
                                              ->with([ "zonas"=>function($q){ $q->with(["encargados","coordenadas"]); } ])->first(),
@@ -96,14 +93,14 @@ class MuestraMaestraCtrl extends Controller
                 "digitadores"=>Digitador::get(),
                 
                 "tiposProveedores"=>Tipo_Proveedor::with([ 
-                                                       "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1)->select("id","tipo_proveedores_id","nombre"); },
+                                                       "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
                                                        "categoriaProveedores"=>function($q){ 
-                                                           $q->select("id","tipo_proveedores_id")
-                                                              ->with([ "categoriaProveedoresConIdiomas"=>function($qq){ 
-                                                                     $qq->where("idiomas_id",1)->select("id","categoria_proveedores_id","nombre");
+                                                            $q->with([ "categoriaProveedoresConIdiomas"=>function($qq){ 
+                                                                     $qq->where("idiomas_id",1);
                                                                 } ]); 
                                                            },
                                             ])->select("id")->get(),
+                                            
                 "sectores"=> Sector::where("estado",true)->with([ 
                                                                  "sectoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
                                                                  "destino"=>function($q){ $q->with( ["destinoConIdiomas"=>function($qq){ $qq->where("idiomas_id",1); }] ); }
@@ -398,8 +395,8 @@ class MuestraMaestraCtrl extends Controller
         
         $proveedoresInformales = Proveedores_informale::where([ ["latitud","!=",null], ["longitud","!=",null] ])->get();
         
-        return  View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas, "proveedoresInformales"=>$proveedoresInformales, "periodo"=>$periodoData] )->render();
-        
+        $vista =  View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas, "proveedoresInformales"=>$proveedoresInformales, "periodo"=>$periodoData] )->render();
+        return  str_replace("&", " ", $vista);
         //return View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas ] );
         /*
         if( $request->tipoProveedor && count($request->categorias)>0 ){
@@ -588,6 +585,18 @@ class MuestraMaestraCtrl extends Controller
     
     public function postGuardarproveedorinformal(Request $request){
         
+        $validator = \Validator::make($request->all(), [
+			'nombre' => 'required|max:250',
+			'idcategoria' => 'required|exists:categoria_proveedores,id',
+			'latitud' => 'required',
+			'longitud' => 'required',
+			'direccion' => 'direccion'
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+        
         $proveedor = Proveedores_informale::find($request->id);
         if(!$proveedor){
             $proveedor =  new Proveedores_informale();
@@ -597,10 +606,10 @@ class MuestraMaestraCtrl extends Controller
             $proveedor->estado = true;
         }
         
-        $proveedor->razon_social = $request->razon_social;
+        $proveedor->razon_social = $request->nombre;
         $proveedor->direccion = $request->direccion;
         $proveedor->telefono = $request->telefono;
-        $proveedor->categoria_proveedor_id = $request->categoria_proveedor_id;
+        $proveedor->categoria_proveedor_id = $request->idcategoria;
         $proveedor->user_update = $this->user->username;
         $proveedor->save();
         
@@ -610,13 +619,23 @@ class MuestraMaestraCtrl extends Controller
     public function postEditarubicacionproveedor(Request $request){
         
         
+        $validator = \Validator::make($request->all(), [
+			'id' => 'required',
+			'latitud' => 'required',
+			'longitud' => 'required'
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+        
         $proveedor = null;
-        if($request->numero_rnt){
+        if($request->rnt){
             $proveedor = Proveedores_rnt::find($request->id);
         }
         else{
             $proveedor = Proveedores_informale::find($request->id);
-        }
+        } 
         $proveedor->latitud  = $request->latitud;
         $proveedor->longitud = $request->longitud;
         $proveedor->save();

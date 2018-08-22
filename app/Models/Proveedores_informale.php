@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Proveedores_informale extends Model
 {
     
-    protected $appends = ['tipoCategoria'];
+    //protected $appends = ['tipoCategoria'];
     
     
     public function categoria(){
         return $this->hasOne('App\Models\Categoria_Proveedor', 'id', 'categoria_proveedor_id'); 
     }
     
+    /*
     public function getTipoCategoriaAttribute()
     {
         if($this->categoria){
@@ -28,5 +29,5 @@ class Proveedores_informale extends Model
         }
         return $this->attributes['tipo_categoria'] = null;
     }
-    
+    */
 }

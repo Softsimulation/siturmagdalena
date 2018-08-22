@@ -224,6 +224,9 @@
                     }
                 }
                 
+                $scope.TotalFormales = data.proveedores.length;
+                $scope.TotalInformales = data.proveedoresInformales.length;
+                
                 $scope.dataPerido = data.periodo;
                 $scope.digitadores = data.digitadores; 
                 $scope.proveedores = data.proveedores.concat(data.proveedoresInformales);
@@ -391,7 +394,7 @@
             
             if(pro){
                 $scope.proveedorInformal = angular.copy(pro);
-                $scope.TipoProveedorInformal.select = $scope.buscarAbjetoInArray( $scope.tiposProveedores, pro.categoria.tipo_proveedores_id );
+                $scope.TipoProveedorInformal.select = $scope.buscarAbjetoInArray( $scope.tiposProveedores, pro.idtipo );
             }
             else{
                 $scope.proveedorInformal = { latitud: $scope.figura.position.lat(),  longitud: $scope.figura.position.lng() };
@@ -591,19 +594,19 @@
             var sw0 = 0; var sw1 = 0; var sw2 = 0; var sw3 = 0; var sw4 = 0;
             
             if( $scope.filtro.tipoProveedores!=1){
-                sw0 = (($scope.filtro.tipoProveedores==2 && pro.numero_rnt) || ($scope.filtro.tipoProveedores==3 && !pro.numero_rnt)) ? 1 : -1;
+                sw0 = (($scope.filtro.tipoProveedores==2 && pro.rnt) || ($scope.filtro.tipoProveedores==3 && !pro.rnt)) ? 1 : -1;
             }
             
             if($scope.filtro.tipo.length>0){
-                sw1 = $scope.filtro.tipo.indexOf(pro.categoria.tipo_proveedores_id);
+                sw1 = $scope.filtro.tipo.indexOf(pro.idtipo);
                 
                 if($scope.filtro.categorias.length>0){
-                    sw1 =  $scope.filtro.categorias.indexOf(pro.categoria_proveedores_id);
+                    sw1 =  $scope.filtro.categorias.indexOf(pro.idcategoria);
                 }
             }
             
             if($scope.filtro.estados.length>0){
-                sw2 = $scope.filtro.estados.indexOf(pro.estados_proveedor_id);
+                sw2 = $scope.filtro.estados.indexOf(pro.idestado);
             }
             
             if($scope.filtro.municipios.length>0){
@@ -707,9 +710,9 @@
                     
                     for(var j=0; j<tiposProveedores.length; j++){ 
                         
-                        if(tiposProveedores[j].id==proveedores[i].categoria.tipo_proveedores_id){
+                        if(tiposProveedores[j].id==proveedores[i].idtipo){
                             
-                            if(proveedores[i].numero_rnt){ tiposProveedores[j].cantidad[0] += 1; numeroPrestadoresFormales!=1; }
+                            if(proveedores[i].rnt){ tiposProveedores[j].cantidad[0] += 1; numeroPrestadoresFormales!=1; }
                             else{ tiposProveedores[j].cantidad[1] += 1; numeroPrestadoresInformales+=1; }
                             break;
                         }
@@ -717,7 +720,7 @@
                     }  
                     
                     for(var j=0; j< estadosProveedores.length; j++){ 
-                        if( estadosProveedores[j].id == $scope.proveedores[i].estados_proveedor_id ){
+                        if( estadosProveedores[j].id == $scope.proveedores[i].idestado ){
                             estadosProveedores[j].cantidad += 1; break;
                         }
                     } 
@@ -892,14 +895,19 @@
                     var point = new google.maps.LatLng( $scope.proveedores[k].latitud , $scope.proveedores[k].longitud );
                     if( google.maps.geometry.poly.containsLocation( point , zona ) ){
                         
+                        
+                        
                         for(var j=0; j< tiposProveedores.length; j++){ 
-                            if( tiposProveedores[j].id == $scope.proveedores[k].categoria.tipo_proveedores_id ){
-                                tiposProveedores[j].cantidad += 1;  break;
+                            if(tiposProveedores[j].id==$scope.proveedores[i].idtipo){
+                            
+                                if($scope.proveedores[k].rnt){ tiposProveedores[j].cantidad[0] += 1; }
+                                else{ tiposProveedores[j].cantidad[1] += 1; }
+                                break;
                             }
                         }  
                         
                         for(var j=0; j< estadosProveedores.length; j++){ 
-                            if( estadosProveedores[j].id == $scope.proveedores[k].estados_proveedor_id ){
+                            if( estadosProveedores[j].id == $scope.proveedores[k].idestado ){
                                 estadosProveedores[j].cantidad += 1; break;
                             }
                         } 
@@ -927,9 +935,9 @@
             var sI = 0;
             
             for (var i = 0; i < $scope.proveedores.length; i++) {
-                if( $scope.proveedores[i].categoria.tipo_proveedores_id==id ){  
+                if( $scope.proveedores[i].idtipo==id ){  
                     sT+=1;  
-                    if($scope.proveedores[i].numero_rnt){ sF+=1; }
+                    if($scope.proveedores[i].rnt){ sF+=1; }
                     else{ sI+=1; }
                 }
             }
@@ -953,9 +961,9 @@
             
             for (var i = 0; i < $scope.proveedores.length; i++) {
                 
-                if( $scope.proveedores[i].categoria_proveedores_id==id ){  
+                if( $scope.proveedores[i].idcategoria==id ){  
                     sT+=1;  
-                    if($scope.proveedores[i].numero_rnt){ sF+=1; }
+                    if($scope.proveedores[i].rnt){ sF+=1; }
                     else{ sI+=1; }
                 }
             }
@@ -976,7 +984,7 @@
             
             var s = 0;
             for (var i = 0; i < $scope.proveedores.length; i++) {
-                if( $scope.proveedores[i].estados_proveedor_id==id ){  s+=1;  }
+                if( $scope.proveedores[i].idestado==id ){  s+=1;  }
             }
             return s;
         }
