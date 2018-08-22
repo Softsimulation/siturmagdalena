@@ -5,6 +5,48 @@
 @section('app','ng-app="appEncuestaAlojamiento"')
 @section('controller','ng-controller="OfertaAlojamientoCtrl"')
 
+@section('estilos')
+    <style>
+        .title-section {
+            background-color: #4caf50 !important;
+        }
+    </style>
+    <style>
+        .carga {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat;
+        }
+        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
+        body.charging {
+            overflow: hidden;
+        }
+
+        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
+        body.charging .carga { 
+            display: block;
+        }
+        .checkbox .form-group {
+            display: inline-block;
+        }
+        label {
+            color: dimgray;
+        }
+        .form-group label {
+            font-size: 1em!important;
+        }
+        .label.label-danger {
+            font-size: .9em;
+            font-weight: 400;
+            padding: .16em .5em;
+        }
+    </style>
+@endsection
 
 @section('content')
 
@@ -13,10 +55,10 @@
     <input type="hidden" id="id" value="{{$id}}" />
     
     <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>@Resource.EncuestaMsgError:</b></label>
+        <label><b>Errores:</b></label>
         <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
-            -@{{error.errores[0].ErrorMessage}}
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
         </div>
     </div>
     
@@ -25,7 +67,9 @@
         <div class="panel panel-success" ng-if="servicios.habitacion">
             <div class="panel-heading">
 
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Habitaciones</b></h3>
+                <h3 class="panel-title">
+                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Habitaciones (@{{alojamiento.habitaciones[0].total}} en total) </b>
+                </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
@@ -112,7 +156,9 @@
         <div class="panel panel-success" ng-if="servicios.apartamento">
             <div class="panel-heading">
 
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Apartamentos</b></h3>
+                <h3 class="panel-title">
+                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Apartamentos (@{{alojamiento.apartamentos[0].total}} en total)</b>
+                </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
@@ -149,7 +195,7 @@
                                     <td><input type="number" name="ApartamentosCamas" id="ApartamentosCamas" class="form-control" ng-model="alojamiento.apartamentos[0].capacidad_ocupada" min="1" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Cuántos viajeros se hospedaron durante el mes?
+                                    <td>¿Cuántos viajeros ingresaron durante el mes?
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.ApartamentosPersonas.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.ApartamentosPersonas.$error.required">*El campo es requerido</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.ApartamentosPersonas.$error.number">*El campo debe ser un número.</span>
@@ -200,7 +246,9 @@
         <div class="panel panel-success" ng-if="servicios.casa">
             <div class="panel-heading">
 
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Casas</b></h3>
+                <h3 class="panel-title">
+                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Casas (@{{alojamiento.casas[0].total}} en total)</b>
+                </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
@@ -237,7 +285,7 @@
                                     <td><input type="number" name="CasaCapacidad" id="CasaCapacidad" class="form-control" ng-model="alojamiento.casas[0].capacidad_ocupadas" min="1" ng-required="true" placeholder="Solo números" /></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Cuántos viajeros se hospedaron durante el mes?
+                                    <td>¿Cuántos viajeros ingresaron durante el mes?
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.CasaPersonas.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.CasaPersonas.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CasaPersonas.$error.number">*El campo debe ser un número.</span>
@@ -288,7 +336,9 @@
         <div class="panel panel-success" ng-if="servicios.cabana">
             <div class="panel-heading">
 
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Cabañas</b></h3>
+                <h3 class="panel-title">
+                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Cabañas(@{{alojamiento.cabanas[0].total}} en total)</b>
+                </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
@@ -326,7 +376,7 @@
                                     <td><input type="number" name="CabaniaCapacidad" id="CabaniaCapacidad" class="form-control" ng-model="alojamiento.cabanas[0].capacidad_ocupada" min="1" ng-required="true" placeholder="Solo números" /></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Cuántos viajeros se hospedaron durante el mes?
+                                    <td>¿Cuántos viajeros ingresaron durante el mes?
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.CabPersonas.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.CabPersonas.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CabPersonas.$error.number">*El campo debe ser un número.</span>
@@ -377,7 +427,9 @@
         <div class="panel panel-success" ng-if="servicios.camping"> 
             <div class="panel-heading">
 
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Camping</b></h3>
+                <h3 class="panel-title">
+                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Camping (@{{alojamiento.campings[0].total_parcelas}} en total)</b>
+                </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
@@ -415,7 +467,7 @@
                                     <td><input type="number" name="CampingCapacidad" id="CampingCapacidad" class="form-control" ng-model="alojamiento.campings[0].capacidad_ocupada" min="1" ng-required="true" placeholder="Solo números" /></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Cuántos viajeros se hospedaron durante el mes?
+                                    <td>¿Cuántos viajeros ingresaron durante el mes?
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.CamPersonas.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.CamPersonas.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CamPersonas.$error.number">*El campo debe ser un número.</span>
@@ -441,7 +493,7 @@
                                             <span class="label label-danger" ng-show="AlojamientoForm.CamTotal.$error.min">*El campo debe ser mayor que 1.</span>
                                         </span>    
                                     </td>
-                                    <td><input type="number" name="CamTotal" id="CamTotal" class="form-control" ng-model="alojamiento.campings[0].capacidad_ocupada" min="1" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="CamTotal" id="CamTotal" class="form-control" ng-model="alojamiento.campings[0].total_huespedes" min="1" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                             </tbody>
 
@@ -463,6 +515,8 @@
 
     </div>
 </div>
+
+<div class='carga'></div>
 
 @endsection
 

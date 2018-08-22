@@ -26,6 +26,9 @@
     <link href="{{asset('/css/lf-ng-md-file-input.min.css')}}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{asset('/css/mycss.css')}}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{asset('/css/theme.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    
+    <link href="{{asset('/css/ng-tags-input.bootstrap.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/css/ng-tags-input.css')}}" media="all" rel="stylesheet" type="text/css" />
    
 <link href="{{asset('css/dashboard/style.css')}}" rel='stylesheet' type='text/css' />
 <!-- Graph CSS 
@@ -196,6 +199,9 @@
             .ADMdtp-box footer .calTypeContainer p{
                 display: none;
             }
+            .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+                width: 100% !important;
+            }
     </style>
 </head>
 <body @yield('app')  @yield('controller') >
@@ -317,6 +323,11 @@
 										
 											  </ul>
 										 </li>
+										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
+    										  <ul id="menu-academico-sub" >
+    										    <li id="menu-academico-avaliacoes" ><a href="{{asset('sostenibilidadhogares/encuestas')}}">Hogares</a></li>
+    										  </ul>
+									     </li>
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administrarpaises')}}">Paises</a></li>
@@ -336,6 +347,12 @@
 									 </li>
 									 
 							        <li id="menu-academico" ><a href="{{asset('encuesta/listado')}}"> <span>Encuetas ADHOC</span></a>
+							
+									 </li>
+									 <li id="menu-academico" ><a href="{{asset('/publicaciones/listadoadmin')}}"> <span>Publicaciones</span></a>
+							
+									 </li>
+									 <li id="menu-academico" ><a href="{{asset('/noticias/listadonoticias')}}"> <span>Noticias</span></a>
 							
 									 </li>
 								

@@ -107,6 +107,9 @@
     <input type="hidden" ng-model="idIdioma" ng-init="idIdioma={{$idIdioma}}" />
     <h1 class="title1">Idioma: @{{idioma.nombre}}</h1>
     <br />
+    <div class="col-col-sm-12">
+        <a href="{{asset('/administradorrutas')}}">Volver al listado</a>
+    </div>
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <!--Información básica-->
         <h2>Datos del evento</h2>

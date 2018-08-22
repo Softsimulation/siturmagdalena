@@ -112,10 +112,14 @@
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <h1 class="title1">@{{destinoNombre}} - Editar</h1>
     <br />
+    <div class="col-col-sm-12">
+        <a href="{{asset('/administradordestinos')}}">Volver al listado</a>
+    </div>
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#info">Información básica</a></li>
             <li><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
+            <li><a data-toggle="tab" href="#sectores">Sectores</a></li>
         </ul>
         <div class="alert alert-danger" ng-if="errores != null">
             <label><b>Errores:</b></label>
@@ -221,9 +225,145 @@
                     </div>
                 </form>
             </div>
+            <!--Sectores-->
+            <div id="sectores" class="tab-pane fade">
+                <h3>Sectores</h3>
+                <div class="row">
+                    <div class="col-xs-10 col-sm-8 col-md-2" style="text-align: center;">
+                        <button class="btn btn-primary" ng-click="modalSector()">Agregar</button>
+                    </div>
+                    <div class="col-xs-12 col-sm-7 col-md-offset-2 col-md-4">
+                        <input type="text" style="margin-bottom: .5em;" ng-model="prop.search" class="form-control" id="inputSearch" placeholder="Buscar sector...">
+
+                    </div>
+                    <div class="col-xs-12 col-sm-5 col-md-3" style="text-align: center;">
+                        <span class="chip" style="margin-bottom: .5em;">@{{results.length}} resultados</span>
+                    </div>
+                </div>
+                <br />
+                <div class="row" style="margin: 0;" ng-show="sectores.length > 0">
+                    <div class="col-xs-12">
+                        <table class="table table-hover" ng-show="sectores.length > 0">
+                            <thead>
+                                <tr style="cursor: pointer;">
+                                    <th ng-click="orderByField='id'; reverseSort = !reverseSort">Id <span ng-show="orderByField == 'id'"><span ng-show="!reverseSort" class="glyphicon glyphicon-menu-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-menu-down"></span></span></th>
+                                    <th ng-click="orderByField='sectores_con_idiomas[0].nombre'; reverseSort = !reverseSort">Nombre <span ng-show="orderByField == 'sectores_con_idiomas[0].nombre'"><span ng-show="!reverseSort" class="glyphicon glyphicon-menu-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-menu-down"></span></span></th>
+                                    <th ng-click="orderByField='es_urbano'; reverseSort = !reverseSort">Urbano <span ng-show="orderByField == 'es_urbano'"><span ng-show="!reverseSort" class="glyphicon glyphicon-menu-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-menu-down"></span></span></th>
+                                    <th> Idiomas </th>
+                                    <th> Eliminar </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="sector in sectores|filter:prop.search|orderBy:orderByField:reverseSort|itemsPerPage:10 as results">
+                                    <td class="text-center">@{{sector.id}}</td>
+                                    <td>@{{sector.sectores_con_idiomas[0].nombre}}</td>
+
+                                    <td class="text-center">@{{sector.es_urbano ? 'Si':'No'}}</td>
+                                    <td class="text-center">
+                                        <button type="button" ng-repeat="i in sector.sectores_con_idiomas" class="btn btn-sm btn-default" ng-click="idiomaSectorModal(sector, i.idioma.id)">
+                                            @{{i.idioma.culture}}
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-default" ng-click="idiomaSectorModal(sector, 0)" ng-if="sector.sectores_con_idiomas.length < idiomas.length" title="Ingresar información con otro idioma"><span class="glyphicon glyphicon-plus"></span></button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-default" ng-click="deleteSector(sector)" title="Eliminar"><span class="glyphicon glyphicon-remove"></span> </button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="alert alert-warning" role="alert" ng-show="exportacion.length == 0 || results.length == 0">No hay resultados disponibles</div>
+                    </div>
+                </div>
+                <div class="row" ng-show="exportacion.length == 0">
+                    <div class="col-xs-12">
+                        <div class="alert alert-warning" role="alert">
+                            No hay sectores ingresados para este destino
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12" style="text-align: center;">
+                        <dir-pagination-controls max-size="8"
+                                                 direction-links="true"
+                                                 boundary-links="true">
+                        </dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addSector">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Nuevo sector</h4>
+            </div>
+            <form name="nuevoSector" novalidate>
+                <div class="modal-body">
+                    <div class="form-group" ng-class="{'has-error': (nuevoSector.$submitted || nuevoSector.nombre.$touched) && nuevoSector.nombre.$error.required}">
+                        <label for="nombre">Nombre</label>
+                        <div class="input-group">
+                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
+                            <input ng-model="sector.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del sector (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="es_urbano">¿Es urbano?</label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="sector.es_urbano" name="es_urbano" id="inlineRadio1" ng-value="true"> Si
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="sector.es_urbano" name="inlineRadioOptions" id="inlineRadio2" ng-value="false"> No
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" ng-click="crearSector()" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="editIdiomaSector">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Editar idioma</h4>
+            </div>
+            <form name="editarIdiomaSectorForm" novalidate>
+                <div class="modal-body">
+                    <div class="form-group" ng-class="{'has-error': (editarIdiomaSectorForm.$submitted || editarIdiomaSectorForm.nombre.$touched) && editarIdiomaSectorForm.nombre.$error.required}">
+                        <label for="nombre">Nombre</label>
+                        <div class="input-group">
+                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
+                            <input ng-model="sectorIdioma.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del sector (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="sectorIdioma.swIdioma" class="modal-body">
+                    <div class="form-group">
+                        <label for="idioma">Elija un idioma</label>
+                        <select ng-required="sectorIdioma.swIdioma" ng-model="sectorIdioma.idioma_id" ng-options="idioma.id as idioma.nombre for idioma in idiomas|idiomaFilter:sectorIdioma.sectores_con_idiomas" class="form-control">
+                            <option value="">Seleccione un idioma</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" ng-click="editarIdiomaSectorController()" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('javascript')

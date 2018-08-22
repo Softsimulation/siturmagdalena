@@ -107,6 +107,9 @@
     <input type="hidden" ng-model="idIdioma" ng-init="idIdioma={{$idIdioma}}" />
     <h1 class="title1">Idioma: @{{idioma.nombre}}</h1>
     <br />
+    <div class="col-col-sm-12">
+        <a href="{{asset('/administradoratracciones')}}">Volver al listado</a>
+    </div>
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>
         <br />
