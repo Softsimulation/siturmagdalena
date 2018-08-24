@@ -180,7 +180,7 @@ angular.module('destinos.editar', [])
             if (data.success){
                 $scope.sectores.push(data.sector);
                 swal('¡Éxito!', 'Sector agregado con éxito.', 'success');
-                $("#editIdiomaSector").modal('hide');
+                $("#addSector ").modal('hide');
             }else {
                 $scope.errores = data.errores;
             }

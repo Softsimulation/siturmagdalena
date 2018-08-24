@@ -29,7 +29,7 @@ angular.module('proveedores.crear', [])
     }
     
     $scope.guardarDatosGenerales = function (){
-        if (!$scope.crearProveedorForm.$valid && $scope.proveedor.id != -1){
+        if (!$scope.crearProveedorForm.$valid || $scope.proveedor.id != -1){
             return;
         }
         $("body").attr("class", "cbp-spmenu-push charging");
