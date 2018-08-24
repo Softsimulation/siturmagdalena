@@ -148,6 +148,33 @@ app.factory("noticiaServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-        
+        eliminarMultimedia: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/noticias/eliminarmultimedia', data)
+            .success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        editarMultimediaNoticia: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/noticias/editarmultimedia', data, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

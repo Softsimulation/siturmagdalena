@@ -142,7 +142,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <label for="fuenteNoticia">Enlace de fuente</label>
-                            <input type="text" class="form-control" name="fuenteNoticia" id="fuenteNoticia" ng-model="noticia.fuenteNoticia"/>
+                            <input type="url" class="form-control" name="fuenteNoticia" id="fuenteNoticia" ng-model="noticia.fuenteNoticia"/>
                             <span ng-show="crearForm.fuenteNoticia.$error.url" class="color_errores">* Url.</span>
                           
                         </div>

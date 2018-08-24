@@ -53,7 +53,7 @@
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>@Resource.EncuestaMsgError:</b></label>
         <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
+        <div ng-repeat="error in errores" ng-if="errores.length>0">
             -@{{error[0]}}
         </div>
     </div>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label" for="tarifaTerrestre">¿Cuál es la tarifa promedio para el alquiler de vehículos?</label>
+                            <label class="control-label" for="tarifaTerrestre">¿Cuál es la tarifa promedio del tiquete más vendido?</label>
                             <input class="form-control" type="number" id="tarifaTerrestre" name="tarifaTerrestre" ng-model="transporte.TarifaTerrestre" min="1000" ng-required="true" placeholder="Digite su respuesta">
                             <span ng-show="ofertaForm.$submitted || ofertaForm.tarifaTerrestre.$touched">
                                 <span class="label label-danger" ng-show="ofertaForm.tarifaTerrestre.$error.required">*El campo es requerido.</span>
