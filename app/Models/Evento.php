@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,7 +39,7 @@ class Evento extends Model
      */
     public function tipoEvento()
     {
-        return $this->belongsTo('App\TipoEvento', 'tipo_eventos_id');
+        return $this->belongsTo('App\Models\Tipo_Evento', 'tipo_eventos_id');
     }
 
     /**
@@ -47,7 +47,7 @@ class Evento extends Model
      */
     public function categoriaTurismoConEventos()
     {
-        return $this->hasMany('App\CategoriaTurismoConEvento', 'eventos_id');
+        return $this->belongsToMany('App\Models\Categoria_Turismo', 'categoria_turismo_con_eventos', 'eventos_id', 'categoria_turismo_id');
     }
 
     /**
@@ -55,7 +55,7 @@ class Evento extends Model
      */
     public function eventosConIdiomas()
     {
-        return $this->hasMany('App\EventosConIdioma', 'eventos_id');
+        return $this->hasMany('App\Models\Evento_Con_Idioma', 'eventos_id');
     }
 
     /**
@@ -63,7 +63,7 @@ class Evento extends Model
      */
     public function aspNetUsers()
     {
-        return $this->belongsToMany('App\AspNetUser', 'eventos_favoritas', 'eventos_id', 'usuario_id');
+        return $this->belongsToMany('App\Models\AspNetUser', 'eventos_favoritas', 'eventos_id', 'usuario_id');
     }
 
     /**
@@ -71,7 +71,7 @@ class Evento extends Model
      */
     public function multimediaEventos()
     {
-        return $this->hasMany('App\MultimediaEvento', 'eventos_id');
+        return $this->hasMany('App\Models\Multimedia_Evento', 'eventos_id');
     }
 
     /**
@@ -79,7 +79,7 @@ class Evento extends Model
      */
     public function perfilesUsuariosConEventos()
     {
-        return $this->hasMany('App\PerfilesUsuariosConEvento', 'eventos_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_eventos', 'eventos_id', 'perfiles_usuarios_id');
     }
 
     /**
@@ -87,7 +87,7 @@ class Evento extends Model
      */
     public function planificadorEventos()
     {
-        return $this->hasMany('App\PlanificadorEvento', 'eventos_id');
+        return $this->hasMany('App\Models\PlanificadorEvento', 'eventos_id');
     }
 
     /**
@@ -95,6 +95,6 @@ class Evento extends Model
      */
     public function sitiosConEventos()
     {
-        return $this->hasMany('App\SitiosConEvento', 'eventos_id');
+        return $this->belongsToMany('App\Models\Sitio', 'sitios_con_eventos', 'eventos_id', 'sitios_id');
     }
 }

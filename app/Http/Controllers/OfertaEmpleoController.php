@@ -1926,12 +1926,12 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		
 		$encuesta = Encuesta::find($request->id);
 		$numeroDias = $encuesta->numero_dias;
-		if($request->TotalTrimestre > ($request->VehiculosAlquiler*$numeroDias) ){
-		    return ["success"=>false,"errores"=> [['El número de vehículos mensuales no puede ser mayor al producto de vehiculos para alquiler x los días de actividad comercial.']] ];
+		if($request->TotalTrimestre > ($request->VehiculosAlquiler*90) ){
+		    return ["success"=>false,"errores"=> [['El número de vehículos trimestrales no puede ser mayor al producto de vehiculos para alquiler x 90 días.']] ];
 		}
 		
 		if($request->TotalTrimestre < ($request->PromedioDia*$numeroDias) ){
-		    return ["success"=>false,"errores"=> [['El número de vehículos mensuales no puede ser menor al producto de promedio de vehículos diarios x los días de actividad comercial.']] ];
+		    return ["success"=>false,"errores"=> [['El número de vehículos trimestrales no puede ser menor al producto de promedio de vehículos diarios x los días de actividad comercial.']] ];
 		}
 		
 		$alquiler = $encuesta->alquilerVehiculos->first();
@@ -2223,7 +2223,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $casa->viajeros_colombia = $request->casas[0]["viajeros_colombia"];
             $casa->capacidad_ocupadas = $request->casas[0]["capacidad_ocupadas"];
             $casa->viajeros_extranjeros = $request->casas[0]["viajeros_extranjeros"];
-            $casa->total_huespedes = $request->casas[0]["capacidad_ocupadas"];
+            $casa->total_huespedes = $request->casas[0]["total_huespedes"];
             $casa->save();
         }
         /////////////////////////////////////////////////////////////////////////

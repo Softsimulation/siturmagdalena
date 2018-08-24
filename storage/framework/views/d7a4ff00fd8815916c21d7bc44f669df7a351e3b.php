@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Sistema de Información Turistica del Magdalena y Santa Marta">
     <meta name="author" content="SITUR Magdalena">
-    <title><?php echo $__env->yieldContent('Title'); ?></title>
+    <title><?php echo $__env->yieldContent('title'); ?></title>
     <link rel="icon" type="image/ico" href="<?php echo e(asset('Content/icons/favicon-96x96.png')); ?>" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -26,6 +26,9 @@
     <link href="<?php echo e(asset('/css/lf-ng-md-file-input.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?php echo e(asset('/css/mycss.css')); ?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?php echo e(asset('/css/theme.min.css')); ?>" media="all" rel="stylesheet" type="text/css" />
+    
+    <link href="<?php echo e(asset('/css/ng-tags-input.bootstrap.css')); ?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(asset('/css/ng-tags-input.css')); ?>" media="all" rel="stylesheet" type="text/css" />
    
 <link href="<?php echo e(asset('css/dashboard/style.css')); ?>" rel='stylesheet' type='text/css' />
 <!-- Graph CSS 
@@ -59,7 +62,7 @@
            left: 0;
            height: 100%;
            width: 100%;
-           background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
+           background: rgba(0, 0, 0, 0.57) url(<?php echo e(asset('Content/Cargando.gif')); ?>) 50% 50% no-repeat
         }
         
         body.charging { overflow: hidden; }
@@ -196,6 +199,9 @@
             .ADMdtp-box footer .calTypeContainer p{
                 display: none;
             }
+            .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+                width: 100% !important;
+            }
     </style>
 </head>
 <body <?php echo $__env->yieldContent('app'); ?>  <?php echo $__env->yieldContent('controller'); ?> >
@@ -317,6 +323,11 @@
 										
 											  </ul>
 										 </li>
+										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
+    										  <ul id="menu-academico-sub" >
+    										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('sostenibilidadhogares/encuestas')); ?>">Hogares</a></li>
+    										  </ul>
+									     </li>
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administrarpaises')); ?>">Paises</a></li>
@@ -336,6 +347,12 @@
 									 </li>
 									 
 							        <li id="menu-academico" ><a href="<?php echo e(asset('encuesta/listado')); ?>"> <span>Encuetas ADHOC</span></a>
+							
+									 </li>
+									 <li id="menu-academico" ><a href="<?php echo e(asset('/publicaciones/listadoadmin')); ?>"> <span>Publicaciones</span></a>
+							
+									 </li>
+									 <li id="menu-academico" ><a href="<?php echo e(asset('/noticias/listadonoticias')); ?>"> <span>Noticias</span></a>
 							
 									 </li>
 								
@@ -376,7 +393,7 @@
         $(window).on('load', function () { $("#preloader").delay(1e3).fadeOut("slow") });
     </script>
 
-    <script>  $.material.init(); </script>
+  
 
     <script>
             $(window).on('scroll', function () {

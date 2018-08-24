@@ -102,35 +102,51 @@
 @section('controller','ng-controller="actividadesIdiomaController"')
 
 @section('content')
-<div class="container">
+<div class="col-sm-12">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <input type="hidden" ng-model="idIdioma" ng-init="idIdioma={{$idIdioma}}" />
     <h1 class="title1">Idioma: @{{idioma.nombre}}</h1>
     <br />
+    <div class="col-col-sm-12">
+        <a href="{{asset('/administradoractividades')}}">Volver al listado</a>
+    </div>
+    <div class="alert alert-danger" ng-if="errores != null">
+        <label><b>Errores:</b></label>
+        <br />
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
+        </div>
+    </div>
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <!--Información básica-->
         <div id="info" class="tab-pane fade in active">
             <h2>Datos de la actividad</h2>
-            <div class="alert alert-warning alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                Los campos marcados con <strong>*</strong> son obligatorios.
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
+                    </div>
+                </div>
             </div>
             <form novalidate role="form" name="editarActividadForm">
                 <div class="row">
-                    <div class="form-group col-sm-12" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.nombre.$touched) && crearActividadForm.nombre.$error.required}">
+                    <div class="form-group col-sm-12" ng-class="{'has-error': (editarActividadForm.$submitted || editarActividadForm.nombre.$touched) && editarActividadForm.nombre.$error.required}">
                         <label for="nombre">Nombre</label>
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">*</span>
+                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                             <input ng-model="actividad.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la actividad (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarActividadForm.$submitted || editarActividadForm.nombre.$touched) && editarActividadForm.nombre.$error.required"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-sm-12" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.descripcion.$touched) && crearActividadForm.descripcion.$error.required}">
+                    <div class="form-group col-sm-12" ng-class="{'has-error': (editarActividadForm.$submitted || editarActividadForm.descripcion.$touched) && editarActividadForm.descripcion.$error.required}">
                         <label for="descripcion">Descripción</label>
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">*</span>
+                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                             <textarea style="resize: none;" ng-model="actividad.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la actividad (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
+                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarActividadForm.$submitted || editarActividadForm.descripcion.$touched) && editarActividadForm.descripcion.$error.required"></span>
                         </div>
                     </div>
                 </div>
@@ -148,6 +164,9 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/editarController.js')}}"></script>

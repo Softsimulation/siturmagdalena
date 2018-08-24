@@ -285,6 +285,9 @@
                         </div>
                     </div>
                 </div>
+                <span ng-show="datosForm.$submitted || datosForm.anio_compromiso.$touched">
+                    <span class="label label-danger" ng-show="datosForm.anio_compromiso.$error.number">* Sólo números.</span>
+                </span>
             </div>
         </div>
         
@@ -301,6 +304,9 @@
                         </div>
                     </div>
                 </div>
+                <span ng-show="datosForm.$submitted || datosForm.anio_normas.$touched">
+                    <span class="label label-danger" ng-show="datosForm.anio_normas.$error.number">* Sólo números.</span>
+                </span>
             </div>
         </div>
         
@@ -347,6 +353,7 @@
                 </div>
                 <span ng-show="datosForm.$submitted || datosForm.numero_habitaciones.$touched">
                     <span class="label label-danger" ng-show="datosForm.numero_habitaciones.$error.required">*El campo es requerido.</span>
+                    <span class="label label-danger" ng-show="datosForm.numero_habitaciones.$error.number">* Sólo números.</span>
                 </span>
             </div>
         </div>

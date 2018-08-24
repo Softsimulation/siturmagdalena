@@ -109,6 +109,6 @@ class Sitio extends Model
      */
     public function sitiosConEventos()
     {
-        return $this->hasMany('App\Models\SitiosConEvento', 'sitios_id');
+        return $this->belongsToMany('App\Models\Sitio', 'sitios_con_eventos', 'sitios_id', 'eventos_id');
     }
 }

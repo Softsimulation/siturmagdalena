@@ -12,7 +12,7 @@ class Proveedores_rnt extends Model
 {
     protected $table = 'proveedores_rnt';
     
-    protected $appends = ['tipoCategoria'];
+    //protected $appends = ['tipoCategoria'];
     
     
     
@@ -34,7 +34,7 @@ class Proveedores_rnt extends Model
     public function municipio(){
         return $this->hasOne('App\Models\Municipio', 'id', 'municipio_id'); 
     }
-    
+    /*
     public function getTipoCategoriaAttribute()
     {
         if($this->categoria){
@@ -49,5 +49,5 @@ class Proveedores_rnt extends Model
         }
         return $this->attributes['tipo_categoria'] = null;
     }
-    
+    */
 }
