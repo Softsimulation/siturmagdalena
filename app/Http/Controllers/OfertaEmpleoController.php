@@ -82,8 +82,7 @@ class OfertaEmpleoController extends Controller
     
     public function getListado(){
       
-      $provedores = Sitio_Para_Encuesta::with(["proveedor"=> function($q1){ $q1->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])->get(); }])->get();
-      
+      $provedores = new Collection(DB::select("SELECT *from listado_sitios_para_encuestas")); 
       return ["success" => true, "proveedores"=> $provedores];
     }
     
@@ -502,7 +501,9 @@ class OfertaEmpleoController extends Controller
     {
             $empleo = collect();
     
-        
+            $empleo["Hubo_capacitacion"] = Capacitacion_Empleo::where("encuesta_id",$id)->pluck("hubo_capacitacion")->first();
+            $empleo["TemaCapacitacion"] = Capacitacion_Empleo::where("encuesta_id",$id)->pluck("temas")->first();
+            
             $empleo["capacitacion"] = Capacitacion_Empleo::where("encuesta_id",$id)->pluck("realiza_proceso")->first();
             $empleo["tematicas"] = Tematica_Capacitacion::where("encuesta_id",$id)->get();
             $empleo["lineasadmin"] = Capacitacion_Empleo::join("tematicas_aplicadas_encuestas",'capacitaciones_empleo.encuesta_id','=','tematicas_aplicadas_encuestas.encuesta_id')->join("lineas_tematicas","id","=","linea_tematica_id")->where("capacitaciones_empleo.encuesta_id",$id)->where("tipo_nivel",true)->pluck("linea_tematica_id as id")->toArray();
@@ -604,8 +605,8 @@ class OfertaEmpleoController extends Controller
      for ($i =0; $i < collect($request->Sexo)->Count(); $i++)
     {
         $cargo = Tipo_Cargo::where("id",$request->Sexo[$i]["tipo_cargo_id"])->first();
-        $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
-       
+        $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
+   
         if($edad){
             
             if(($edad["diecinuevea25"] + $edad["ventiseisa40"] + $edad["cuarentayunoa64"] + $edad["mas65"] + $edad["docea18"] ) !=  $request->Sexo[$i]["hombres"] ){
@@ -614,7 +615,8 @@ class OfertaEmpleoController extends Controller
             }
         }
             
-         $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+         $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
+        
          if($edad){
             if(($edad["diecinuevea25"] + $edad["ventiseisa40"] + $edad["cuarentayunoa64"] + $edad["mas65"] + $edad["docea18"] )  !=  $request->Sexo[$i]["mujeres"] ){
                  
@@ -622,7 +624,7 @@ class OfertaEmpleoController extends Controller
             }
          }
             
-        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($educacion){
             if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["hombres"] ){
                  
@@ -630,7 +632,7 @@ class OfertaEmpleoController extends Controller
             }
         }
         
-        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($educacion){
             if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["mujeres"] ){
                  
@@ -638,7 +640,7 @@ class OfertaEmpleoController extends Controller
             }
         }
         
-        $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+        $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($ingl){
             if($ingl["sabeningles"]   > $request->Sexo[$i]["hombres"] ){
                  
@@ -647,7 +649,7 @@ class OfertaEmpleoController extends Controller
         }
         
         
-           $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+           $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($ingl){
             if($ingl["sabeningles"]  > $request->Sexo[$i]["mujeres"] ){
                  
@@ -656,7 +658,7 @@ class OfertaEmpleoController extends Controller
             
         }
 
-        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($vinculacion){
             if(($vinculacion["personal_permanente"] + $vinculacion["personal_agencia"] + $vinculacion["propietario"] + $vinculacion["contrato_direto"] + $vinculacion["trabajador_familiar"] + $vinculacion["cuenta_propia"] + $vinculacion["aprendiz"] ) !=  $request->Sexo[$i]["hombres"] ){
                  
@@ -665,7 +667,7 @@ class OfertaEmpleoController extends Controller
             
         }
         
-        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($vinculacion){
             if(($vinculacion["personal_permanente"] + $vinculacion["personal_agencia"] + $vinculacion["propietario"] + $vinculacion["contrato_direto"] + $vinculacion["trabajador_familiar"] + $vinculacion["cuenta_propia"] + $vinculacion["aprendiz"] ) !=  $request->Sexo[$i]["mujeres"] ){
                  
@@ -673,7 +675,7 @@ class OfertaEmpleoController extends Controller
             }  
         }
 
-       $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+       $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($vinculacion){
             if(($empleo["tiempo_completo"]  + $empleo["medio_tiempo"] ) !=  $request->Sexo[$i]["hombres"] ){
                  
@@ -681,7 +683,7 @@ class OfertaEmpleoController extends Controller
             }
         }
 
-        $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+        $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($vinculacion){
             if(($empleo["tiempo_completo"]  + $empleo["medio_tiempo"]) !=  $request->Sexo[$i]["mujeres"] ){
                  
@@ -692,6 +694,7 @@ class OfertaEmpleoController extends Controller
         }
         
     }
+    
 
     for ($i =0; $i < collect($request->Sexo)->Count(); $i++)
     {
@@ -933,6 +936,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     public function postGuardarempcaracterizacion(Request $request){
         $validator = \Validator::make($request->all(), [
   	         'Encuesta' => 'required|exists:encuestas,id',
+  	         'Hubo_capacitacion' => 'required|min:0|max:1',
   	         'capacitacion' => 'required|min:0|max:1',
   	         'autorizacion' => 'required|min:0|max:1',
   	         'esta_acuerdo' => 'required|min:0|max:1',
@@ -962,6 +966,15 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     		     }
     	     }
 	
+	         if($request->Hubo_capacitacion == 1 ){
+    		     if($request->TemaCapacitacion == null ){
+    	                return ["success" => false, "errores" => [["Es requerido los temas."]] ];    
+    	    
+    		     }
+    	     }else{
+    	         $request->TemaCapacitacion = null;
+    	     }
+	      
 	         
 	         if(in_array(10,$request->medios )&& $request->otromedio == null){
 	             return ["success" => false, "errores" => [["No se encontro el valor del otro en medios."]] ];    
@@ -975,18 +988,21 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 	 
               $capacitacion = Capacitacion_Empleo::where("encuesta_id", $request->Encuesta)->first();
 
+         
                 if ($capacitacion == null)
                 {
                    $capacitacion = new Capacitacion_Empleo();
                     $capacitacion->encuesta_id = $request->Encuesta;
                     $capacitacion->realiza_proceso = $request->capacitacion;
-                
+                    $capacitacion->hubo_capacitacion = $request->Hubo_capacitacion;
+                    $capacitacion->temas = $request->TemaCapacitacion;
                     $capacitacion->save();
                 }
                 else
                 {
                     $capacitacion->realiza_proceso = $request->capacitacion;
-        
+                    $capacitacion->hubo_capacitacion = $request->Hubo_capacitacion;
+                    $capacitacion->temas = $request->TemaCapacitacion;
                     $capacitacion->save();
                 }
 

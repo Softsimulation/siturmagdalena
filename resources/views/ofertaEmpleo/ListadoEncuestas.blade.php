@@ -139,7 +139,7 @@
                             <td>@{{item.anio}}</td>
                             <td>@{{item.estado}}</td>
                             <td><a ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad==1 )" href="@{{ruta}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-pencil"></span></a></td>   </td>
-                           
+                             
                         </tr>
                     </tbody>
                     </table>
