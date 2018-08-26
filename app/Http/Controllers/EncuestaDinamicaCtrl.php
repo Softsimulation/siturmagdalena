@@ -37,13 +37,13 @@ class EncuestaDinamicaCtrl extends Controller
     /// listado administrativo de encuestas
     public function __construct()
     {
-        /*
+        
         $this->middleware('auth');
-        $this->middleware('role:ADmin');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        */
+        
         
         
     }
@@ -762,7 +762,7 @@ class EncuestaDinamicaCtrl extends Controller
         $index = array_search( $request->id, $secciones );
         $seccion = ($index+1) < count($secciones) ? $secciones[$index+1] : null;
         
-        $ruta = "/encuestaAdHoc/" . ( $seccion==null ? $encuesta->encuestas_id . "/registro" : $encuesta->codigo . "?seccion=".$seccion );
+        $ruta = $seccion==null ?  "/" :  "/encuestaAdHoc/" . $encuesta->codigo . "?seccion=".$seccion;
         $termino = $seccion==null ? true: false;
         
         if($seccion!=null){
@@ -1091,7 +1091,7 @@ class EncuestaDinamicaCtrl extends Controller
         $usuario->estado = true;
         $usuario->save();
         
-        $ruta = "/encuestaAdHoc/" . $encuesta->id . "?cod=" . $usuario->codigo;
+        $ruta = "/encuestaAdHoc/" . $usuario->codigo;
         
         return [ "success"=>true , "ruta"=>$ruta ];
     }

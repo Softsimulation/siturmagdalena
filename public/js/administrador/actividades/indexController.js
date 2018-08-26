@@ -29,8 +29,8 @@ angular.module('actividades.index', [])
         });
     }
     
-    $scope.modalIdioma = function (atraccion){
-        $scope.atraccionEdit = atraccion;
+    $scope.modalIdioma = function (actividad){
+        $scope.actividadEdit = actividad;
         $("#idiomaModal").modal('show');
     }
     
@@ -39,7 +39,7 @@ angular.module('actividades.index', [])
             swal("Información", 'Elija un idioma.', 'info');
             return;
         }
-        window.location = "/administradoractividades/idioma/"+ $scope.atraccionEdit.id +"/" + $scope.idiomaEditSelected;
+        window.location = "/administradoractividades/idioma/"+ $scope.actividadEdit.id +"/" + $scope.idiomaEditSelected;
     }
     
 });

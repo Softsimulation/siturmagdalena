@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Http\Requests;
 use App\Models\Proveedores_rnt;
 use App\Models\Proveedores_rnt_idioma;
@@ -43,7 +45,18 @@ use App\Models\Digitador;
 
 class SostenibilidadPstController extends Controller
 {
-	
+	public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     public function getConfiguracionencuesta(){
         return view('sostenibilidadPst.configurarcionEncuesta');
     }
@@ -104,8 +117,8 @@ class SostenibilidadPstController extends Controller
     		'observacion' => 'Se ha creado la encuesta.',
     		'fecha_cambio' => date('Y-m-d H:i'),
     		'estado' => 1,
-    		'user_create' => 'admin',
-    		'user_update' => 'admin'
+    		'user_create' => $this->user->username,
+    		'user_update' => $this->user->username
     	]);
 		
 		return ["success" => true, 'encuesta' => $encuesta];
@@ -180,8 +193,8 @@ class SostenibilidadPstController extends Controller
     		'observacion' => 'Se ha editado la encuesta en la sección de configuración.',
     		'fecha_cambio' => date('Y-m-d H:i'),
     		'estado' => 1,
-    		'user_create' => 'admin',
-    		'user_update' => 'admin'
+    		'user_create' => $this->user->username,
+    		'user_update' => $this->user->username
     	]);
 		
 		return ["success" => true];
@@ -364,8 +377,8 @@ class SostenibilidadPstController extends Controller
 		$componenteSocial->conoce_herramienta_tic = !in_array(7,$request->esquemasAccesibles) ? ($request->conoce_herramienta_tic == 1 ? 1 : 0) : null;
 		$componenteSocial->implementa_herramienta_tic = !in_array(7,$request->esquemasAccesibles) && $request->conoce_herramienta_tic == 1 ? ($request->implementa_herramienta_tic == 1 ? 1 : 0) : null;
 		$componenteSocial->contribucion_turismo = $request->contribucion_turismo;
-		$componenteSocial->user_create = "admin";
-		$componenteSocial->user_update = "admin";
+		$componenteSocial->user_create = $this->user->username;
+		$componenteSocial->user_update = $this->user->username;
 		$componenteSocial->estado = 1;
 		$componenteSocial->save();
 		
@@ -378,8 +391,8 @@ class SostenibilidadPstController extends Controller
 			foreach($request->tiposDiscapacidad as $item){
 				$espacioAlojamiento->tiposDiscapacidades()->attach($item['id'],[
 					'numero_habitacion' => $item['numero_habitacion'],
-					'user_create' => 'admin',
-					'user_update' => 'admin'
+					'user_create' => $this->user->username,
+					'user_update' => $this->user->username
 				]);
 			}
 			
@@ -390,8 +403,8 @@ class SostenibilidadPstController extends Controller
 				'encuestas_pst_sostenibilidad_id' => $encuesta->id,
 				'anio_compromiso' => isset($request->anio_compromiso) ? $request->anio_compromiso : null,
 				'anio_normas' => isset($request->anio_normas) ? $request->anio_normas : null,
-				'user_update' => 'admin',
-				'user_create' => 'admin',
+				'user_update' => $this->user->username,
+				'user_create' => $this->user->username,
 				'estado' => 1
 			]);
 			
@@ -457,8 +470,8 @@ class SostenibilidadPstController extends Controller
 	    		'observacion' => 'Se ha creado la encuesta en la sección socio-cultural.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 			
 		}else{
@@ -468,8 +481,8 @@ class SostenibilidadPstController extends Controller
 	    		'observacion' => 'Se ha editado la encuesta en la sección socio-cultural.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 		}
 		
@@ -741,8 +754,8 @@ class SostenibilidadPstController extends Controller
 	    		'observacion' => 'Se ha creado la encuesta en la sección ambiental.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 			
 		}else{
@@ -752,8 +765,8 @@ class SostenibilidadPstController extends Controller
 	    		'observacion' => 'Se ha editado la encuesta en la sección ambiental.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 		}
 		
@@ -894,18 +907,20 @@ class SostenibilidadPstController extends Controller
 		}
 		
 		foreach($request->beneficios as $item){
-			$beneficio = Beneficio_Economico_Temporada_Pst::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
-			if($beneficio){
-				$beneficio->calificacion_factores_id = $item['califcacion'];
-				$beneficio->otro = ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null;
-				$beneficio->save();
-			}else{
-				Beneficio_Economico_Temporada_Pst::create([
-					'calificacion_factores_id' => $item['califcacion'],
-					'encuestas_pst_sostenibilidad_id' => $encuesta->id,
-					'beneficio_id' => $item['id'],
-					'otro' => ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null 
-				]);	
+			if( isset($item['califcacion']) ){
+				$beneficio = Beneficio_Economico_Temporada_Pst::where('encuestas_pst_sostenibilidad_id',$encuesta->id)->where('beneficio_id',$item['id'])->first();
+				if($beneficio){
+					$beneficio->calificacion_factores_id = $item['califcacion'];
+					$beneficio->otro = ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null;
+					$beneficio->save();
+				}else{
+					Beneficio_Economico_Temporada_Pst::create([
+						'calificacion_factores_id' => $item['califcacion'],
+						'encuestas_pst_sostenibilidad_id' => $encuesta->id,
+						'beneficio_id' => $item['id'],
+						'otro' => ($item['id'] == 18 && isset($item['otroBeneficio'])) || ($item['id'] == 24 && isset($item['otroBeneficio'])) ? $item['otroBeneficio'] : null 
+					]);	
+				}	
 			}
 		}
 		
@@ -934,8 +949,8 @@ class SostenibilidadPstController extends Controller
 	    		'observacion' => 'Se ha creado la encuesta en la sección económico.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 			
 		}else{
@@ -945,8 +960,8 @@ class SostenibilidadPstController extends Controller
 	    		'observacion' => 'Se ha editado la encuesta en la sección económico.',
 	    		'fecha_cambio' => date('Y-m-d H:i'),
 	    		'estado' => 1,
-	    		'user_create' => 'admin',
-	    		'user_update' => 'admin'
+	    		'user_create' => $this->user->username,
+	    		'user_update' => $this->user->username
 	    	]);
 		}
 		

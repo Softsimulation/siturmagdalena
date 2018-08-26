@@ -17,13 +17,22 @@
                 .success(function (data) {  defered.resolve(data); })
                 .error(function(err){  });  
                 return promise; 
+            } ,
+            
+            getFile: function(url){
+                var defered = $q.defer();
+                var promise = defered.promise;
+                $http({  method : "GET",  url : url, responseType: 'blob'  })
+                .success(function (data) {  defered.resolve(data); })
+                .error(function(err){  });  
+                return promise; 
             } 
       };
-      
+     
       return {
           
           
-          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+ (id ? id : -1) );  },
+          getData: function(id){ return http.get("/MuestraMaestra/datacongiguracion/"+ (id ? id : -1) ); },
           
           getListadoPeridos: function(){ return http.get("/MuestraMaestra/datalistado");  },
           
@@ -41,6 +50,8 @@
           
           
           getGeoJson: function(id){ return http.get("/MuestraMaestra/geojsonzone/"+id );  },
+          getExcel: function(id){ return http.getFile("/MuestraMaestra/excel/"+id );  },
+          getExcelGeneral: function(id){ return http.getFile("/MuestraMaestra/excelinfoperiodo/"+id );  },
           
           getDataLLenarInfoZona: function(id){ return http.get("/MuestraMaestra/datazonallenarinfo/"+ (id ? id : -1) );  },
           guardarDataInfoZona: function(data){ return http.post("/MuestraMaestra/guardarinfozona", data );  },

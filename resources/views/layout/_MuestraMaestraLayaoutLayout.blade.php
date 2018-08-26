@@ -49,7 +49,7 @@
         .carga {
            display: none;
            position: fixed;
-           z-index: 1000;
+           z-index: 1500;
            top: 0;
            left: 0;
            height: 100%;
@@ -182,7 +182,7 @@
                 background-color: transparent;
             }
             .ui-select-multiple.ui-select-bootstrap .ui-select-match-item{
-                font-size: 16px;
+                font-size: 12px;
             }
              .ADMdtp-box footer .timeSelectIcon, .ADMdtp-box footer .today, .ADMdtp-box footer .calTypeContainer p{
                 fill: darkorange;
@@ -316,15 +316,15 @@
     <script>  $.material.init(); </script>
 
     <script>
-            $(window).on('scroll', function () {
-                if (!$('.alert').hasClass('no-fixed')) {
-                    if ($(this).scrollTop() > 190) {
-                        $('.alert').addClass('alert-fixed');
-                    } else {
-                        $('.alert').removeClass('alert-fixed');
-                    }
-                }
-            });
+            // $(window).on('scroll', function () {
+            //     if (!$('.alert').hasClass('no-fixed')) {
+            //         if ($(this).scrollTop() > 190) {
+            //             $('.alert').addClass('alert-fixed');
+            //         } else {
+            //             $('.alert').removeClass('alert-fixed');
+            //         }
+            //     }
+            // });
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });

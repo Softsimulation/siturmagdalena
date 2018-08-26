@@ -102,8 +102,8 @@
 @section('controller','ng-controller="actividadesIndexController"')
 
 @section('content')
-<div class="container">
-    <h1 class="title1">Lista de atracciones</h1>
+<div class="col-sm-12">
+    <h1 class="title1">Lista de actividades</h1>
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row" style="margin: 0;">
@@ -167,7 +167,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Nuevo idioma para la atracción</h4>
+                <h4 class="modal-title">Nuevo idioma para la actividad</h4>
                 </div>
                 <div class="modal-body">
             </div>
@@ -175,7 +175,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="idioma">Elija un idioma</label>
-                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|filter:{id: idioma.id}:true" class="form-control">
+                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|idiomaFilter:actividadEdit.actividades_con_idiomas" class="form-control">
                             <option value="">Seleccione un idioma</option>
                         </select>
                     </div>
@@ -192,6 +192,9 @@
 @endsection
 
 @section('javascript')
+<script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
+<script src="{{asset('/js/plugins/select.min.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/indexController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/crearController.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/editarController.js')}}"></script>

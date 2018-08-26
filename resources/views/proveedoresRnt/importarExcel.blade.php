@@ -1,6 +1,8 @@
 
 @extends('layout._AdminLayout')
 
+@section('Title', 'Muestra maestra')
+
 @section('title', 'Importación RNT')
 
 @section('estilos')
@@ -86,6 +88,9 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .table{
+            font-size: 13px;
+        }
     </style>
 @endsection
 
@@ -121,10 +126,12 @@
                             </span>
                         </label>
                         <input id="nombreArchivoSeleccionado" ng-model="nombreArchivoSeleccionado" type="text" class="form-control" placeholder="Peso máximo 10MB" readonly>
+                        
                     </div>
                 </div>
             </div>
             <div class="col-sm-4">
+                &nbsp;
                 <button class="btn btn-raised btn-primary" ng-click="cargarDocumento()">Cargar</button>
             </div>
         </div>

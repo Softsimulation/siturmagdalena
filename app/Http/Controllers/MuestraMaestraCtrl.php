@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Http\Requests;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Proveedores_rnt;
 use App\Models\Categoria_Proveedor;
 use App\Models\Zona;
@@ -29,7 +30,18 @@ use Excel;
 
 class MuestraMaestraCtrl extends Controller
 {
-    
+    public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     public function getPeriodo($id){
         
         $periodo = Periodos_medicion::find($id);
@@ -71,12 +83,9 @@ class MuestraMaestraCtrl extends Controller
         
         
         return [
-                "proveedores"=> Proveedores_rnt::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                      ->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])
-                                      ->get(),
-                                      
-                "proveedoresInformales" => Proveedores_informale::where([ ["latitud","!=",null], ["longitud","!=",null] ])
-                                                      ->with("categoria")->get(),
+                "proveedores"=> DB::select("SELECT *from proveedores_formales"),
+                                     
+                "proveedoresInformales" => DB::select("SELECT *from listado_proveedores_informales"),
                 
                 "periodo"=> Periodos_medicion::where("id",$id)
                                              ->with([ "zonas"=>function($q){ $q->with(["encargados","coordenadas"]); } ])->first(),
@@ -84,14 +93,14 @@ class MuestraMaestraCtrl extends Controller
                 "digitadores"=>Digitador::get(),
                 
                 "tiposProveedores"=>Tipo_Proveedor::with([ 
-                                                       "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1)->select("id","tipo_proveedores_id","nombre"); },
+                                                       "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
                                                        "categoriaProveedores"=>function($q){ 
-                                                           $q->select("id","tipo_proveedores_id")
-                                                              ->with([ "categoriaProveedoresConIdiomas"=>function($qq){ 
-                                                                     $qq->where("idiomas_id",1)->select("id","categoria_proveedores_id","nombre");
+                                                            $q->with([ "categoriaProveedoresConIdiomas"=>function($qq){ 
+                                                                     $qq->where("idiomas_id",1);
                                                                 } ]); 
                                                            },
                                             ])->select("id")->get(),
+                                            
                 "sectores"=> Sector::where("estado",true)->with([ 
                                                                  "sectoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
                                                                  "destino"=>function($q){ $q->with( ["destinoConIdiomas"=>function($qq){ $qq->where("idiomas_id",1); }] ); }
@@ -133,7 +142,7 @@ class MuestraMaestraCtrl extends Controller
         $periodo->nombre = $request->nombre;
         $periodo->fecha_inicio = $request->fecha_inicio;
         $periodo->fecha_fin = $request->fecha_fin;
-        $periodo->user_update = "ADMIN";
+        $periodo->user_update = $this->user->username;
         $periodo->save();
         
         return ["success"=>true, "periodo"=>$periodo];
@@ -169,8 +178,8 @@ class MuestraMaestraCtrl extends Controller
         $periodo->nombre = $request->nombre;
         $periodo->fecha_inicio = $request->fecha_inicio;
         $periodo->fecha_fin = $request->fecha_fin;
-        $periodo->user_update = "ADMIN";
-        $periodo->user_create = "ADMIN";
+        $periodo->user_update = $this->user->username;
+        $periodo->user_create = $this->user->username;
         $periodo->estado = true;
         $periodo->save();
         
@@ -179,8 +188,8 @@ class MuestraMaestraCtrl extends Controller
             $zona->periodo_medicion_id = $periodo->id;
             $zona->nombre = $z["nombre"];
             $zona->color =  $z["color"];
-            $zona->user_update = "ADMIN";
-            $zona->user_create = "ADMIN";
+            $zona->user_update = $this->user->username;
+            $zona->user_create = $this->user->username;
             $zona->estado = true;
             $zona->save();
             
@@ -225,8 +234,8 @@ class MuestraMaestraCtrl extends Controller
         $zona->sector_id = $request->sector_id;
         $zona->nombre = $request->nombre;
         $zona->color = $request->color;
-        $zona->user_update = "ADMIN";
-        $zona->user_create = "ADMIN";
+        $zona->user_update = $this->user->username;
+        $zona->user_create = $this->user->username;
         $zona->estado = true;
         $zona->save();
         
@@ -260,7 +269,7 @@ class MuestraMaestraCtrl extends Controller
         $zona->sector_id = $request->sector_id;
         $zona->nombre = $request->nombre;
         $zona->color = $request->color;
-        $zona->user_update = "ADMIN";
+        $zona->user_update = $this->user->username;
         $zona->save();
         
         $zona->encargados()->detach();
@@ -307,7 +316,7 @@ class MuestraMaestraCtrl extends Controller
 		}
         
         
-        $zona->user_update = "ADMIN";
+        $zona->user_update = $this->user->username;
         $zona->coordenadas()->delete();
         
         foreach($request->coordenadas as $coordenada){ 
@@ -386,8 +395,8 @@ class MuestraMaestraCtrl extends Controller
         
         $proveedoresInformales = Proveedores_informale::where([ ["latitud","!=",null], ["longitud","!=",null] ])->get();
         
-        return  View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas, "proveedoresInformales"=>$proveedoresInformales, "periodo"=>$periodoData] )->render();
-        
+        $vista =  View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas, "proveedoresInformales"=>$proveedoresInformales, "periodo"=>$periodoData] )->render();
+        return  str_replace("&", " ", $vista);
         //return View("MuestraMaestra.formatoKML", [ "proveedores"=>$proveedores, "zonas"=>$zonas ] );
         /*
         if( $request->tipoProveedor && count($request->categorias)>0 ){
@@ -515,7 +524,7 @@ class MuestraMaestraCtrl extends Controller
                 $muestra = new Muestra_proveedor();
                 $muestra->zona_id = $request->zona;
                 $muestra->proveedor_rnt_id = $item["id"];
-                $muestra->user_create = "BRCC";
+                $muestra->user_create = $this->user->username;
                 $muestra->estado = true;
             }
             
@@ -525,7 +534,7 @@ class MuestraMaestraCtrl extends Controller
             $muestra->direccion = $item["muestra"]["direccion"];
             $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
             $muestra->observaciones = $item["muestra"]["observaciones"];
-            $muestra->user_update = "BRCC";
+            $muestra->user_update = $this->user->username;
             $muestra->save();
         }
         
@@ -576,20 +585,32 @@ class MuestraMaestraCtrl extends Controller
     
     public function postGuardarproveedorinformal(Request $request){
         
+        $validator = \Validator::make($request->all(), [
+			'nombre' => 'required|max:250',
+			'idcategoria' => 'required|exists:categoria_proveedores,id',
+			'latitud' => 'required',
+			'longitud' => 'required',
+			'direccion' => 'direccion'
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+        
         $proveedor = Proveedores_informale::find($request->id);
         if(!$proveedor){
             $proveedor =  new Proveedores_informale();
             $proveedor->latitud = $request->latitud;
             $proveedor->longitud = $request->longitud;
-            $proveedor->user_create = "Admin";
+            $proveedor->user_create = $this->user->username;
             $proveedor->estado = true;
         }
         
-        $proveedor->razon_social = $request->razon_social;
+        $proveedor->razon_social = $request->nombre;
         $proveedor->direccion = $request->direccion;
         $proveedor->telefono = $request->telefono;
-        $proveedor->categoria_proveedor_id = $request->categoria_proveedor_id;
-        $proveedor->user_update = "Admin";
+        $proveedor->categoria_proveedor_id = $request->idcategoria;
+        $proveedor->user_update = $this->user->username;
         $proveedor->save();
         
         return [ "success"=>true, "proveedor"=>Proveedores_informale::where("id",$proveedor->id) ->with("categoria")->first() ];
@@ -598,13 +619,23 @@ class MuestraMaestraCtrl extends Controller
     public function postEditarubicacionproveedor(Request $request){
         
         
+        $validator = \Validator::make($request->all(), [
+			'id' => 'required',
+			'latitud' => 'required',
+			'longitud' => 'required'
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+        
         $proveedor = null;
-        if($request->numero_rnt){
+        if($request->rnt){
             $proveedor = Proveedores_rnt::find($request->id);
         }
         else{
             $proveedor = Proveedores_informale::find($request->id);
-        }
+        } 
         $proveedor->latitud  = $request->latitud;
         $proveedor->longitud = $request->longitud;
         $proveedor->save();

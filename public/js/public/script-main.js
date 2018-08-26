@@ -31,7 +31,7 @@ $(document).ready(function(){
         submenu.removeClass('second-in');
     });
     $('#navbar-mobile button').on('click', function(){
-        var navMain = $('#nav-main');
+        var navMain = $('#nav-menu-main');
         if(navMain.hasClass('show')){
             navMain.removeClass('show');
             return;
