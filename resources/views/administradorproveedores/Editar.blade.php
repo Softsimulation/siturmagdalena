@@ -154,6 +154,7 @@
                                        <span ng-bind="proveedor.razon_social" title="@{{proveedor.razon_social}}"></span>
                                    </ui-select-choices>
                                 </ui-select>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarProveedorForm.$submitted || editarProveedorForm.proveedor.$touched) && editarProveedorForm.proveedor.$error.required"></span>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" >
@@ -167,6 +168,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <textarea style="resize: none;" ng-model="proveedor.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del proveedor (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarProveedorForm.$submitted || editarProveedorForm.descripcion.$touched) && editarProveedorForm.descripcion.$error.required"></span>
                             </div>
                         </div>
                     </div>
@@ -176,13 +178,15 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input min="0" ng-model="proveedor.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarProveedorForm.$submitted || editarProveedorForm.valor_minimo.$touched) && editarProveedorForm.valor_minimo.$error.required"></span>
                             </div>
                         </div>
-                        <div class="form-group col-sm-6" ng-class="{'has-error': (editarProveedorForm.$submitted || editarProveedorForm.valor_maximo.$touched) && editarProveedorForm.valor_maximo.$error.required}">
-                            <label for="valor_maximo">Valor máximo ($)</label>
+                        <div class="form-group col-sm-6" ng-class="{'has-error': (editarProveedorForm.$submitted || editarProveedorForm.valor_maximo.$touched) && (editarProveedorForm.valor_maximo.$error.required || editarProveedorForm.valor_maximo.$error.min)}">
+                            <label for="valor_maximo">Valor máximo ($) <span class="text-error" aria-hidden="true" ng-if="editarProveedorForm.valor_maximo.$error.min">El valor máximo no puede ser menor al valor mínimo</span></label>
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input min="@{{proveedor.datosGenerales.valor_minimo}}" ng-model="proveedor.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarProveedorForm.$submitted || editarProveedorForm.valor_maximo.$touched) && (editarProveedorForm.valor_maximo.$error.required || editarProveedorForm.valor_maximo.$error.min)"></span>
                             </div>
                         </div>
                     </div>
@@ -264,9 +268,9 @@
                 </div>
                 <form novalidate role="form" name="informacionAdicionalForm">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.perfiles.$touched) && informacionAdicionalForm.perfiles.$error.required}">
                             <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Perfiles del turista <small>(Seleccione al menos un perfil)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="proveedor.adicional.perfiles" theme="bootstrap" close-on-select="false" >
+                            <ui-select name="perfiles" id="perfiles" multiple ng-required="true" ng-model="proveedor.adicional.perfiles" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
                                     <span ng-bind="$item.perfiles_usuarios_con_idiomas[0].nombre"></span>
                                 </ui-select-match>
@@ -277,9 +281,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Categorías de turismo <small>(Seleccione al menos una categoría)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="proveedor.adicional.categorias" theme="bootstrap" close-on-select="false" >
+                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.categorias.$touched) && informacionAdicionalForm.categorias.$error.required}">
+                            <label for="categorias"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Categorías de turismo <small>(Seleccione al menos una categoría)</small></h4></label>
+                            <ui-select name="categorias" id="categorias" multiple ng-required="true" ng-model="proveedor.adicional.categorias" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione una o varias categorías de turismo.">
                                     <span ng-bind="$item.categoria_turismo_con_idiomas[0].nombre"></span>
                                 </ui-select-match>

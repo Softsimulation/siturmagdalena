@@ -324,7 +324,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" ng-click="crearSector()" class="btn btn-primary">Enviar</button>
+                    <button type="button" ng-click="crearSector()" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

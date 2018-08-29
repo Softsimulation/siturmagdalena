@@ -145,6 +145,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="destino.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del destino (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearDestinoForm.$submitted || crearDestinoForm.nombre.$touched) && crearDestinoForm.nombre.$error.required"></span>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" ng-class="{'has-error': (crearDestinoForm.$submitted || crearDestinoForm.tipo.$touched) && crearDestinoForm.tipo.$error.required}">
@@ -159,6 +160,7 @@
                                        <span ng-bind="tipo.tipo_destino_con_idiomas[0].nombre" title="@{{tipo.tipo_destino_con_idiomas[0].nombre}}"></span>
                                    </ui-select-choices>
                                 </ui-select>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearDestinoForm.$submitted || crearDestinoForm.tipo.$touched) && crearDestinoForm.tipo.$error.required"></span>
                             </div>
                         </div>
                     </div>
@@ -168,6 +170,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <textarea style="resize: none;" ng-model="destino.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del destino (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearDestinoForm.$submitted || crearDestinoForm.descripcion.$touched) && crearDestinoForm.descripcion.$error.required"></span>
                             </div>
                         </div>
                     </div>

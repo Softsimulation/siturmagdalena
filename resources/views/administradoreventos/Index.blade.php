@@ -123,7 +123,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <ul class="media-list">
-                    <li dir-paginate="evento in eventos | filter:prop.search | itemsPerPage:10" pagination-id="pagination_eventos" class="media">
+                    <li dir-paginate="evento in eventos | filter:busquedaEvento(prop.search) | itemsPerPage:10" pagination-id="pagination_eventos" class="media">
                         <div class="media-left">
                             <a href="/administradoreventos/editar/@{{evento.id}}">
                                 <img class="media-object" style="width: 400px; height: 200px;" 
@@ -146,7 +146,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="alert alert-warning" role="alert" ng-show="eventos.length == 0 || (eventos|filter:prop.search).length == 0">No hay resultados disponibles <span ng-show="(eventos|filter:prop.search).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
+                <div class="alert alert-warning" role="alert" ng-show="eventos.length == 0 || (eventos|filter:busquedaEvento(prop.search)).length == 0">No hay resultados disponibles <span ng-show="(eventos|filter:busquedaEvento(prop.search)).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
             </div>
             
         </div>

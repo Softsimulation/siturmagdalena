@@ -146,6 +146,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="evento.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del evento (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearEventoForm.$submitted || crearEventoForm.nombre.$touched) && crearEventoForm.nombre.$error.required"></span>
                             </div>
                         </div>
                         <div class="form-group col-sm-4">
@@ -159,6 +160,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <textarea style="resize: none;" ng-model="evento.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del evento (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearEventoForm.$submitted || crearEventoForm.descripcion.$touched) && crearEventoForm.descripcion.$error.required"></span>
                             </div>
                         </div>
                     </div>
@@ -168,13 +170,15 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input min="0" ng-model="evento.datosGenerales.valor_minimo" required type="number" name="valor_minimo" id="valor_minimo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearEventoForm.$submitted || crearEventoForm.valor_minimo.$touched) && crearEventoForm.valor_minimo.$error.required"></span>
                             </div>
                         </div>
-                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearEventoForm.$submitted || crearEventoForm.valor_maximo.$touched) && crearEventoForm.valor_maximo.$error.required}">
-                            <label for="valor_maximo">Valor máximo ($)</label>
+                        <div class="form-group col-sm-4" ng-class="{'has-error': (crearEventoForm.$submitted || crearEventoForm.valor_maximo.$touched) && (crearEventoForm.valor_maximo.$error.required || crearEventoForm.valor_maximo.$error.min)}">
+                            <label for="valor_maximo">Valor máximo ($) <span class="text-error" aria-hidden="true" ng-if="crearEventoForm.valor_maximo.$error.min">El valor máximo no puede ser menor al valor mínimo</span></label>
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input min="@{{evento.datosGenerales.valor_minimo}}" ng-model="evento.datosGenerales.valor_maximo" required type="number" name="valor_maximo" id="valor_maximo" class="form-control" placeholder="Sólo números." aria-describedby="basic-addon1"/>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearEventoForm.$submitted || crearEventoForm.valor_maximo.$touched) && (crearEventoForm.valor_maximo.$error.required || crearEventoForm.valor_maximo.$error.min)"></span>
                             </div>
                         </div>
                         <div class="form-group col-sm-4" ng-class="{'has-error': (crearEventoForm.$submitted || crearEventoForm.tipo_evento.$touched) && crearEventoForm.tipo_evento.$error.required}">
@@ -189,6 +193,7 @@
                                        <span ng-bind="tipo.tipo_eventos_con_idiomas[0].nombre" title="@{{tipo.tipo_eventos_con_idiomas[0].nombre}}"></span>
                                    </ui-select-choices>
                                 </ui-select>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearEventoForm.$submitted || crearEventoForm.tipo_evento.$touched) && crearEventoForm.tipo_evento.$error.required"></span>
                             </div>
                         </div>
                     </div>
@@ -199,7 +204,7 @@
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <adm-dtp name="fecha_inicio" id="fecha_inicio" ng-model='evento.datosGenerales.fecha_inicio' full-data="fecha_inicio_detail" mindate="@{{fechaActual}}" maxdate="@{{fecha_final_detail.unix}}"
                                                  options="optionFecha" ng-required="true"></adm-dtp>
-                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearEventoForm.$submitted || crearEventoForm.fechaini.$touched) && crearEventoForm.fechaini.$error.required"></span>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearEventoForm.$submitted || crearEventoForm.fecha_inicio.$touched) && crearEventoForm.fecha_inicio.$error.required"></span>
                             </div>
                         </div>
                         <div class="form-group col-xs-12 col-xs-12 col-md-6" ng-class="{true:'form-group has-error has-feedback',false:'form-group'}[(crearEventoForm.$submitted || crearEventoForm.fecha_final.$touched) && crearEventoForm.fecha_final.$error.required]">
@@ -290,9 +295,9 @@
                 </div>
                 <form novalidate role="form" name="informacionAdicionalForm">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.perfiles.$touched) && informacionAdicionalForm.perfiles.$error.required}">
                             <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Perfiles del turista <small>(Seleccione al menos un perfil)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="evento.adicional.perfiles" theme="bootstrap" close-on-select="false" >
+                            <ui-select name="perfiles" id="perfiles" multiple ng-required="true" ng-model="evento.adicional.perfiles" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
                                     <span ng-bind="$item.perfiles_usuarios_con_idiomas[0].nombre"></span>
                                 </ui-select-match>
@@ -303,9 +308,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.sitios.$touched) && informacionAdicionalForm.sitios.$error.required}">
                             <label for="sitios"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Sitios <small>(Seleccione al menos un sitio)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="evento.adicional.sitios" theme="bootstrap" close-on-select="false" >
+                            <ui-select name="sitios" id="sitios" multiple ng-required="true" ng-model="evento.adicional.sitios" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione uno o varios sitios.">
                                     <span ng-bind="$item.sitios_con_idiomas[0].nombre"></span>
                                 </ui-select-match>
@@ -316,9 +321,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Categorías de turismo <small>(Seleccione al menos una categoría)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="evento.adicional.categorias" theme="bootstrap" close-on-select="false" >
+                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.categorias.$touched) && informacionAdicionalForm.categorias.$error.required}">
+                            <label for="categorias"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Categorías de turismo <small>(Seleccione al menos una categoría)</small></h4></label>
+                            <ui-select name="categorias" id="categorias" multiple ng-required="true" ng-model="evento.adicional.categorias" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione una o varias categorías de turismo.">
                                     <span ng-bind="$item.categoria_turismo_con_idiomas[0].nombre"></span>
                                 </ui-select-match>
