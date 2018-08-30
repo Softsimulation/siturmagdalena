@@ -574,6 +574,7 @@ app.controller('editarNoticiaCtrl', function($scope, noticiaServi) {
        $scope.multimediaEditar = [];
        $scope.multimediaEditar["idMultimedia"] = multimedia.idMultimedia;
        $scope.multimediaEditar["texto_alternativo"] = multimedia.texto;
+       $scope.multimediaEditar["ruta"] = multimedia.ruta;
        $scope.multimediaEditar["portadaNoticia"] = multimedia.portada == true ? 1 : 2;
        $scope.indexMultimediaEditar = $scope.multimediasNoticias.indexOf(multimedia);
         $scope.errores = null;
