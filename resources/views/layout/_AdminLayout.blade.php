@@ -199,6 +199,9 @@
             .ADMdtp-box footer .calTypeContainer p{
                 display: none;
             }
+            .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+                width: 100% !important;
+            }
     </style>
 </head>
 <body @yield('app')  @yield('controller') >
@@ -320,6 +323,11 @@
 										
 											  </ul>
 										 </li>
+										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
+    										  <ul id="menu-academico-sub" >
+    										    <li id="menu-academico-avaliacoes" ><a href="{{asset('sostenibilidadhogares/encuestas')}}">Hogares</a></li>
+    										  </ul>
+									     </li>
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administrarpaises')}}">Paises</a></li>

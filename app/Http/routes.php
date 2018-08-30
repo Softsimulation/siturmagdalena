@@ -28,8 +28,6 @@ Route::controller('/grupoviaje','GrupoViajeController');
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 
-Route::get('/administradoratracciones/datos-idioma/{id}/{idIdioma}', 'AdministradorAtraccionController@getDatosIdioma');
-
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
 Route::controller('/administradoractividades', 'AdministradorActividadesController');

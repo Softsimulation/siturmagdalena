@@ -109,7 +109,7 @@
         <div class="row" style="margin: 0;">
             <div class="col-xs-12 col-sm-6 col-md-5">
                 <a href="/administradorrutas/crear" type="button" class="btn btn-primary" >
-                  Insertar evento
+                  Insertar ruta turística
                 </a>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4">
@@ -132,7 +132,7 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">@{{ruta.rutas_con_idiomas[0].nombre}} - @{{ruta.rutas_con_idiomas[0].edicion}}</h4>
+                            <h4 class="media-heading">@{{ruta.rutas_con_idiomas[0].nombre}} @{{ruta.rutas_con_idiomas[0].edicion != null ? '-' : ''}} @{{ruta.rutas_con_idiomas[0].edicion}}</h4>
                             <p class="text-justify">
                                 @{{ruta.rutas_con_idiomas[0].descripcion | limitTo:400}}...
                             </p>
@@ -175,7 +175,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="idioma">Elija un idioma</label>
-                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|filter:{id: idioma.id}:true" class="form-control">
+                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas | idiomaFilter:rutaEdit.rutas_con_idiomas" class="form-control">
                             <option value="">Seleccione un idioma</option>
                         </select>
                     </div>
