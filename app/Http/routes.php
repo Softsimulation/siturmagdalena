@@ -69,7 +69,11 @@ Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
 
 Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
 Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
+Route::get('/llenarEncuestaAdHoc/{idEncuesta}', 'EncuestaDinamicaCtrl@anonimos' );
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
+
+
+
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
