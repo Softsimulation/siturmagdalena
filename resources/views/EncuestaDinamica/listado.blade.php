@@ -21,6 +21,7 @@
               <tr>
                 <th style="width:50px;" ></th>
                 <th>Encuesta</th>
+                <th>Tipo</th>
                 <th style="width: 20px;" >Estado</th>
                 <th style="width: 70px;" ></th>
               </tr>
@@ -29,6 +30,7 @@
               <tr ng-repeat="encuesta in encuestas" >
                 <td>@{{$index+1}}</td>
                 <td>@{{ (encuesta.idiomas|filter:{ 'idiomas_id':1 })[0].nombre}}</td>
+                <td>@{{ encuesta.tipo.nombre }}</td>
                 <td>@{{ encuesta.estado.nombre }}</td>
                 <td>
                     <a class="btn btn-xs btn-primary" href="/encuesta/configurar/@{{encuesta.id}}" > Ver </a>
@@ -38,6 +40,13 @@
                         </button>
                         
                         <ul class="dropdown-menu" >
+                            
+                            <li ng-if=" (encuesta.tipos_encuestas_dinamica_id==1 || encuesta.tipos_encuestas_dinamica_id==2) && encuesta.estados_encuestas_id>1 ">
+                                <a ng-click="openModalCopiar(encuesta)" >
+                                    Copiar link
+                                </a>
+                            </li>
+                            
                             <li>
                                 <a ng-click="OpenModalCambiarEstado(encuesta)" >
                                     Cambiar estado
@@ -45,7 +54,7 @@
                             </li>
                             <li>
                                 <a href="/encuesta/listar/@{{encuesta.id}}" >
-                                    Listado de encuestas
+                                    Listado de respuestas
                                 </a>
                             </li>
                             <li>
@@ -54,7 +63,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/encuesta/excel/@{{encuesta.id}}" download >
+                                <a href  ng-click="exportarData(encuesta.id)" >
                                     Descargar datos
                                 </a>
                             </li>
@@ -118,6 +127,17 @@
                                 </div>
                             </div>
                             
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{'error' : (formEncuesta.$submitted || formEncuesta.tipoEncuesta.$touched) && formEncuesta.tipoEncuesta.$error.required}">
+                                    <label class="control-label" for="tipoEncuesta">Tipo encuesta</label>
+                                    <select class="form-control" name="tipoEncuesta" id="tipoEncuesta" ng-model="encuesta.tipos_encuestas_dinamica_id" ng-options="item.id as item.nombre for item in tipos" required >
+                                        <option  disabled selected value="" >Selecione un tipo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            
+                            
                         </div>
                         
                     </div>
@@ -130,7 +150,7 @@
         </div>
     </div>
     
-    <!-- Modal agregar encuesta-->
+    <!-- Modal agregar idioma encuesta-->
     <div class="modal fade" id="modalIdiomaEncuesta" tabindex="-1" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -225,6 +245,36 @@
             </div>
         </div>
     </div>
+    
+    
+    
+    <!-- Modal copiar link -->
+    <div class="modal fade" id="modalCopyLink" tabindex="-1" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Copiar Link</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    
+                    <div class="input-group">
+                        <input id="link" type="text" class="form-control" name="link" id="link" ng-model="link" >
+                        <span class="input-group-addon" ng-click="copiarLink()" ><i class="glyphicon glyphicon-duplicate" ></i></span>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer center" >
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
     
 </div>
    

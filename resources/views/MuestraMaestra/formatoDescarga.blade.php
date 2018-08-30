@@ -63,7 +63,7 @@
             <th>ESTADO</th>
           </tr>
           
-          @if (count($proveedores) === 0)
+          @if (count($proveedores) === 0 && count($proveedoresInformales) === 0)
           
             @for ($i = 0; $i < 10; $i++)
                 <tr>
@@ -99,6 +99,32 @@
               <tr>
                 <td rowspan="2" style="width:10%;" > {{$proveedor->id}} </td>
                 <td rowspan="2" style="width:10%;" > {{$proveedor->rnt}} </td>
+                <td rowspan="2" style="width:20%;" > {{$proveedor->estado}} </td>      <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->nombre}} </td>                  <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->direccion}} </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->categoria}} </td>               <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->subcategoria}} </td>              <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" rowspan="2" ></td>
+                <td style="width:15%;" >FECHA   HORA</td>
+                <td style="width:10%;" >ENTR</td>
+              </tr>
+              
+              <tr>
+                <td style="width: 20%;" ></td> <td style=";width: 5%;" >NO</td>
+                <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>       
+                <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                <td style="width: 25%;" ></td> <td style=";width: 5%;" >NO</td>
+                <td style="width: 25%;" ></td> <td style=";width: 25%;">NOMBRE</td>
+                <td style="width:10%;" >RECO</td>
+              </tr>
+          @endforeach
+          
+          @foreach ($proveedoresInformales as $proveedor)
+              <tr>
+                <td rowspan="2" style="width:10%;" > {{$proveedor->id}} </td>
+                <td rowspan="2" style="width:10%;" > No tiene </td>
                 <td rowspan="2" style="width:20%;" > {{$proveedor->estado}} </td>      <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" > {{$proveedor->nombre}} </td>                  <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" > {{$proveedor->direccion}} </td>               <td style="width:5%; background: #85f185;" >SI</td>

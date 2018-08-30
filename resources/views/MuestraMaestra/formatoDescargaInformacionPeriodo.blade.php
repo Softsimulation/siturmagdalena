@@ -34,21 +34,39 @@
           
           @foreach ($proveedores as $proveedor)
               <tr>
-                  <td>{{$proveedor["proveedor"]['numero_rnt']}}</td>  <td>{{$proveedor['rnt']}}</td>
-                  <td>{{$proveedor["proveedor"]['estadop']['nombre']}}</td> <td>{{$proveedor['estadop']['nombre']}}</td>
-                  <td>{{$proveedor["proveedor"]['razon_social']}}</td> <td>{{$proveedor['nombre_proveedor']}}</td>
-                  <td>{{$proveedor["proveedor"]['direccion']}}</td>  <td>{{$proveedor['direccion']}}</td>
+                  <td>{{$proveedor->rnt_proveedor}}</td>        <td>{{$proveedor->rnt_muestra}}</td> 
+                  <td>{{$proveedor->estado_proveedor}}</td>     <td>{{$proveedor->estado_muestra}}</td>
+                  <td>{{$proveedor->nombre_proveedor}}</td>     <td>{{$proveedor->nombre_proveedor_muestra}}</td>
+                  <td>{{$proveedor->direccion_proveedor}}</td>  <td>{{$proveedor->direccion_muestra}}</td>
                   
-                  <td>{{$proveedor["proveedor"]["tipoCategoria"]['tipo']}}</td>  <td>{{$proveedor["tipoCategoria"]['tipo']}}</td>
-                  <td>{{$proveedor["proveedor"]["tipoCategoria"]['categoria']}}</td>  <td>{{$proveedor["tipoCategoria"]['categoria']}}</td>
+                  <td>{{$proveedor->categoria_proveedor}}</td>     <td>{{$proveedor->categoria_muestra}}</td>
+                  <td>{{$proveedor->subcategoria_proveedor}}</td>     <td>{{$proveedor->subcategoria_muestra}}</td>
                   
-                  <td>{{$proveedor["proveedor"]["municipio"]['nombre']}}</td>  <td>municipio</td>
-                  <td>{{$proveedor["observaciones"]}}</td>
+                  <td>municipio</td>  <td>municipio</td>
+                  <td>{{$proveedor->observaciones_muestra}}</td>
                   
-                  <td>{{$proveedor["proveedor"]["latitud"]}} {{$proveedor["proveedor"]["longitud"]}}</td>
-                  
+                  <td>{{$proveedor->latitud}} {{$proveedor->longitud}}</td>
               </tr>
           @endforeach
+          
+          @foreach ($proveedoresInformales as $proveedor)
+              <tr>
+                  <td>---</td>        <td>---</td> 
+                  <td>{{$proveedor->estado_proveedor}}</td>     <td>{{$proveedor->estado_muestra}}</td>
+                  <td>{{$proveedor->nombre_proveedor}}</td>     <td>{{$proveedor->nombre_proveedor_muestra}}</td>
+                  <td>{{$proveedor->direccion_proveedor}}</td>  <td>{{$proveedor->direccion_muestra}}</td>
+                  
+                  <td>{{$proveedor->categoria_proveedor}}</td>     <td>{{$proveedor->categoria_muestra}}</td>
+                  <td>{{$proveedor->subcategoria_proveedor}}</td>     <td>{{$proveedor->subcategoria_muestra}}</td>
+                  
+                  <td>municipio</td>  <td>municipio</td>
+                  <td>{{$proveedor->observaciones_muestra}}</td>
+                  
+                  <td>{{$proveedor->latitud}} {{$proveedor->longitud}}</td>
+              </tr>
+          @endforeach
+          
+          
 
           
     </table>
