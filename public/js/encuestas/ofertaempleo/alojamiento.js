@@ -4,6 +4,7 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
     
     $scope.alojamiento = { habitaciones:{}, apartamentos:{}, casas:{}, cabanas:{}, campins:{} };
     
+    
     $("body").attr("class", "cbp-spmenu-push charging");
     
     OfertaEmpleoServi.getDataAlojamiento( $("#id").val() ).then(function(data){
@@ -13,6 +14,7 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
             }
             
             $scope.servicios = data.servicios;
+            
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
            $("body").attr("class", "cbp-spmenu-push");
@@ -66,7 +68,8 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
 app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
     
     $scope.alojamiento = { habitaciones:[], apartamentos:[], casas:[], cabanas:[], campins:[] };
-    
+    $scope.numero_dias = 0;
+     
     $("body").attr("class", "cbp-spmenu-push charging");
     
     OfertaEmpleoServi.getDataAlojamiento( $("#id").val() ).then(function(data){
@@ -76,6 +79,7 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
             }
             
             $scope.servicios = data.servicios;
+            $scope.numero_dias = data.numeroDias;
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
            $("body").attr("class", "cbp-spmenu-push");

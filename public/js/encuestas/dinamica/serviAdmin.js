@@ -17,6 +17,15 @@
                 .success(function (data) {  defered.resolve(data); })
                 .error(function(err){  });  
                 return promise; 
+            },
+            
+            getFile: function(url){
+                var defered = $q.defer();
+                var promise = defered.promise;
+                $http({  method : "GET",  url : url, responseType: 'blob'  })
+                .success(function (data) {  defered.resolve(data); })
+                .error(function(err){  });  
+                return promise; 
             } 
       };
       
@@ -63,6 +72,10 @@
         
         duplicarEncuesta: function(data){ return http.post("/encuesta/duplicarencuesta", data );  },
         duplicarPregunta: function(data){ return http.post("/encuesta/duplicarpregunta", data );  },
+        
+        
+        
+        getExcel: function(id){ return http.getFile("/encuesta/excel/"+id);  },
         
       };
       

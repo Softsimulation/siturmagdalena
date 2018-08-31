@@ -1402,13 +1402,16 @@
     
     .controller("LlenatInfoZonaCtrl", ["$scope","ServiMuestra", function($scope,ServiMuestra){
         
+        $("body").attr("class", "cbp-spmenu-push charging");
         
         ServiMuestra.getDataLLenarInfoZona( $("#id").val() )
             .then(function(data){ 
                 $scope.zona = data.zona; 
                 $scope.proveedores = data.proveedores; 
+                $scope.proveedoresInformales = data.proveedoresInformales; 
                 $scope.tiposProveedores = data.tiposProveedores;
                 $scope.estados = data.estados;
+                $("body").attr("class", "cbp-spmenu-push");
             });
         
         $scope.openModalEditPeriodo = function (item, index) {
@@ -1432,7 +1435,8 @@
             
             var data = {
                 zona: $("#id").val(),
-                proveedores: $scope.proveedores
+                proveedores: $scope.proveedores,
+                proveedoresInformales: $scope.proveedoresInformales,
             };
             
             ServiMuestra.guardarDataInfoZona(data)
@@ -1461,7 +1465,9 @@
             
             if(id){
                 for(var i=0; i<$scope.tiposProveedores.length; i++){
-                    if($scope.tiposProveedores[i].id==id){ return $scope.tiposProveedores[i]; }
+                    for(var j=0; j<$scope.tiposProveedores[i].categoria_proveedores.length; j++){
+                        if($scope.tiposProveedores[i].categoria_proveedores[j].id==id){ return $scope.tiposProveedores[i]; }
+                    }
                 }
             }
             return null;

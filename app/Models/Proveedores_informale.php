@@ -14,6 +14,14 @@ class Proveedores_informale extends Model
         return $this->hasOne('App\Models\Categoria_Proveedor', 'id', 'categoria_proveedor_id'); 
     }
     
+    public function municipio(){
+        return $this->hasOne('App\Models\Municipio', 'id', 'municipio_id'); 
+    }
+    
+    public function estadop(){
+        return $this->hasOne('App\Models\Estado_proveedor', 'id', 'estados_proveedor_id'); 
+    }
+    
     /*
     public function getTipoCategoriaAttribute()
     {
