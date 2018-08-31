@@ -93,6 +93,7 @@ angular.module('sostenibilidadPst.ambiental', [])
     $scope.guardar = function(){
         
         if( !$scope.datosForm.$valid || $scope.actividadesAmbiente.length == 0 || $scope.programasConservacion.length == 0 || $scope.actividadesResiduos.length == 0 || $scope.accionesAgua.length == 0 || $scope.accionesEnergia.length == 0 || ($scope.encuesta.energias_renovables == 1 && $scope.tiposEnergia.length == 0) ){
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         
