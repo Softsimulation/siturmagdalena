@@ -429,6 +429,87 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.EmpleadosCaracterizacion',array('id'=>$id));
     }
     
+    public function getEmpleo($one){
+        $id = $one;
+        
+        return view('ofertaEmpleo.Empleo',array('id'=>$id));
+    }
+    
+         public function getCargardatosempleo($id = null)  
+    {
+        $empleo = collect();
+  
+        $empleo = collect();
+        $empleo["Sexo"]  =  Sexo_Empleado::where("encuestas_id",$id)->get();
+
+        $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
+            
+
+        
+         $retorno = [
+                'empleo' => $empleo,
+                'url' => ""
+            ];
+            
+            return $retorno;
+    }
+    
+    public function postGuardarempleo (Request $request){
+       
+        $validator = \Validator::make($request->all(), [
+			'Encuesta' => 'required|exists:encuestas,id',
+			'Sexo' => 'required',
+			'Sexo.*.tipo_cargo_id' => 'required|exists:tipos_cargos,id',
+			'Sexo.*.hombres' => 'required|min:0',
+			'Sexo.*.mujeres' => 'required|min:0',
+		    
+    	],[
+       		'Encuesta.required' => 'Error no se encontro la encuesta.',
+       		'Encuesta.exists' => 'La encuesta eleccionado no se encuentra seleccionado en el sistema.',
+ 
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+    
+
+    for ($i =0; $i < collect($request->Sexo)->Count(); $i++)
+    {
+        
+        $sexoBuscado = Sexo_Empleado::where("encuestas_id", $request->Encuesta)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->first();
+        if ($sexoBuscado == null)
+        {
+        
+            $sexoBuscado = new Sexo_Empleado();
+            $sexoBuscado->encuestas_id = $request->Encuesta;
+            $sexoBuscado->mujeres = $request->Sexo[$i]["mujeres"];
+            $sexoBuscado->hombres = $request->Sexo[$i]["hombres"];
+            $sexoBuscado->tipo_cargo_id = $request->Sexo[$i]["tipo_cargo_id"];
+            $sexoBuscado->save();
+        }
+        else
+        {
+            $sexoBuscado->mujeres = $request->Sexo[$i]["mujeres"];
+            $sexoBuscado->hombres = $request->Sexo[$i]["hombres"];
+            $sexoBuscado->save();
+        }
+    }
+
+    $encuesta = Encuesta::find($request->Encuesta);
+
+    Historial_Encuesta_Oferta::create([
+           'encuesta_id' => $request->Encuesta,
+           'user_id' => $this->user->id,
+           'estado_encuesta_id' => 3,
+           'fecha_cambio' => Carbon::now()
+       ]);
+	
+
+        return ["success" => true, "sitio" => $encuesta->sitios_para_encuestas_id];
+    }
+    
     public function getEmpleomensual($one){
         $id = $one;
         $encuesta = Encuesta::find($one);
@@ -955,6 +1036,10 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		     'tipos.*' => 'required|exists:tipos_programas_capacitaciones,id',
 		     'lineasadmin.*' => 'required|exists:lineas_tematicas,id',
 			 'lineasopvt.*' => 'required|exists:lineas_tematicas,id',
+ 			 'medios' => 'required|min:1|max:3',
+		     'tipos' => 'required|min:1|max:3',
+		     'lineasadmin' => 'required|min:1|max:3',
+			 'lineasopvt' => 'required|min:1|max:3',
 		
 		
     	],[

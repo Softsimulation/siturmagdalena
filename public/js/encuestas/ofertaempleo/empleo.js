@@ -487,7 +487,7 @@ $scope.$watch('id', function () {
         $scope.empleo.Encuesta = $scope.id;
 
 
-        if ($scope.empleoForm.$valid || $scope.validar()) {
+        if ($scope.empleoForm.$valid && !$scope.validar()) {
             $("body").attr("class", "cbp-spmenu-push charging")
                 ofertaServi.guardarEmpCaracterizacion($scope.empleo).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push");
@@ -516,4 +516,96 @@ $scope.$watch('id', function () {
             swal("Error", "Formulario incompleto corrige los errores", "error")
         }
     }
+}])
+
+.controller('empleo', ['$scope', 'ofertaServi',function ($scope, ofertaServi){
+    $scope.empleo = {};
+    $scope.url = "";
+    $scope.dataTable = "<th>M</th> <th>F</th>"; 
+
+    $scope.$watch('id', function () {
+        $("body").attr("class", "cbp-spmenu-push charging")
+         ofertaServi.cargarDatosEmplomensual($scope.id).then(function (data) {
+                 $("body").attr("class", "cbp-spmenu-push")
+                $scope.empleo = data.empleo;
+                
+                $scope.url = data.url;
+                  
+        }).catch(function () {
+              $("body").attr("class", "cbp-spmenu-push")
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
+       
+        
+    });
+
+
+    
+
+    $scope.cargo = function(tipo){
+        if($scope.empleo.Sexo){
+        for(i = 0; i < $scope.empleo.Sexo.length ; i ++){
+            
+            if($scope.empleo.Sexo[i].tipo_cargo_id == tipo ){
+                
+                return $scope.empleo.Sexo[i];
+            }
+            
+        }
+        
+        obj = {};
+        obj.tipo_cargo_id = tipo;
+        obj.hombres = 0;
+        obj.mujeres = 0;
+        
+        $scope.empleo.Sexo.push(obj);
+        
+        return obj;
+
+        }        
+    }
+
+     $scope.validacion = function(){
+        
+        
+        return true;
+    }
+    
+        
+    $scope.guardar = function () {
+        $scope.empleo.Encuesta = $scope.id;
+        if ($scope.empleoForm.$valid && $scope.validacion()) {
+            
+            $("body").attr("class", "cbp-spmenu-push charging")
+            
+               ofertaServi.guardarEmpleomensual($scope.empleo).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success == true) {
+                    swal({
+                        title: "Realizado",
+                        text: "Se ha guardado satisfactoriamente la sección.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function () {
+                          window.location.href = "/ofertaempleo/encuestas/" + data.sitio;;
+                    }, 1000);
+    
+    
+                } else {
+                    swal("Error", "Por favor corrija los errores", "error");
+                    $scope.errores = data.errores;
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
+            
+            
+        } else {
+            swal("Error", "Formulario incompleto corrige los errores", "error")
+        }
+    }
+
 }])
