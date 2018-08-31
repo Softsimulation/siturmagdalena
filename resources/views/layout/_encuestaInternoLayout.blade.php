@@ -17,6 +17,7 @@
     <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/styleLoading.css')}}" rel='stylesheet' type='text/css' />
+    <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     @yield('estilos')
     <style>
         .banner {
@@ -213,6 +214,7 @@
     <script>
             $.material.init();
     </script>
+    <script src="{{asset('/js/ADM-dateTimePicker.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-repeat-n.min.js')}}"></script>

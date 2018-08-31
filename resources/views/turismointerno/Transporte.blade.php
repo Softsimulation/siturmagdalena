@@ -87,7 +87,7 @@
         <div ng-if="transporte.Mover == 6" class="panel panel-success">
             <div class="panel-heading">
                 <!-- Nombre de la empresa de transporte-->
-                <h3 class="panel-title"><b> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizados desde una ciudad de Colombia al Atlántico?</b></h3>
+                <h3 class="panel-title"><b> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizados desde una ciudad de Colombia al Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta abierta</b></div>
             <div class="panel-body">
@@ -100,7 +100,7 @@
         </div>
 
         <div class="row" style="text-align:center">
-            <a href="#" class="btn btn-raised btn-default">{{trans('resources.EncuestaBtnAnterior')}}</a>
+             <a href="/turismointerno/actividadesrealizadas/{{$id}}" class="btn btn-raised btn-default">{{trans('resources.EncuestaBtnAnterior')}}</a>
             <input type="submit" class="btn btn-raised btn-success" value="{{trans('resources.EncuestaBtnSiguiente')}}" ng-click="guardar()">
         </div>
         <br />
