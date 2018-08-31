@@ -28,4 +28,8 @@ class Encuestas_dinamica extends Model
         return $this->hasMany( "App\Models\EncuestaDinamica\Encuestas_usuario", 'encuestas_id'); 
     }
     
+    public function tipo(){
+        return $this->hasOne( "App\Models\EncuestaDinamica\Tipos_encuestas_dinamica", 'id', 'tipos_encuestas_dinamica_id'); 
+    }
+    
 }

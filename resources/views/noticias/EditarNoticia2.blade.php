@@ -336,7 +336,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <a href="@{{x.ruta}}" target="_blank">Multimedia actual</a>
+                                <a href="@{{multimediaEditar.ruta}}" target="_blank">Multimedia actual</a>
+                                
                             </div>
                         </div>
                             <div class="row">

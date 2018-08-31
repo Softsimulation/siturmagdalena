@@ -764,15 +764,18 @@ class TurismoReceptorController extends Controller
 		$sw = 0;
 		if($visitante->ultima_sesion >= 3){
 		    $sw =1;
-		    if(count($visitante->opcionesLugares) > 0){
-		        $visitante->opcionesLugares()->detach();
-		    }
-		    if(isset($visitante->visitanteTransporteTerrestre)){
-		        $visitante->visitanteTransporteTerrestre()->delete();
-		    }
 		}else{
 		    $visitante->ultima_sesion = 3;
 		}
+		
+		//--------------------------------------------------------------------------
+		if(count($visitante->opcionesLugares) > 0){
+	        $visitante->opcionesLugares()->detach();
+	    }
+	    if(isset($visitante->visitanteTransporteTerrestre)){
+	        $visitante->visitanteTransporteTerrestre()->delete();
+	    }
+		//--------------------------------------------------------------------------
 		
 		$visitante->transporte_llegada = $request->Llegar;
 		$visitante->transporte_interno = $request->Mover;
@@ -887,17 +890,22 @@ class TurismoReceptorController extends Controller
 		$sw = 0;
 		if($visitante->ultima_sesion >= 4){
 		    $sw =1;
-		    $acompaniantes = $visitante->tiposAcompañantesVisitantes()->pluck('id')->toArray();
-		    if(in_array(9,$acompaniantes)){
-		        $visitante->otrosTurista()->delete();
-		    }
-		    if(in_array(12,$acompaniantes)){
-		        $visitante->otrosAcompañantesViaje()->delete();
-		    }
-		    $visitante->tiposAcompañantesVisitantes()->detach();
 		}else{
 		    $visitante->ultima_sesion = 4;
 		}
+		
+		//--------------------------------------------------------------------------
+		
+		$acompaniantes = $visitante->tiposAcompañantesVisitantes()->pluck('id')->toArray();
+	    if(in_array(9,$acompaniantes)){
+	        $visitante->otrosTurista()->delete();
+	    }
+	    if(in_array(12,$acompaniantes)){
+	        $visitante->otrosAcompañantesViaje()->delete();
+	    }
+	    $visitante->tiposAcompañantesVisitantes()->detach();
+		
+		//--------------------------------------------------------------------------
 		
 		if(in_array(9,$request->Personas)){
 	        $visitante->otrosTurista()->save(new Otro_Turista(['numero_otros'=>$request->Numero_otros]));
@@ -1499,26 +1507,31 @@ class TurismoReceptorController extends Controller
 		$sw = 0;
 		if($visitante->ultima_sesion >= 7){
 		    $sw =1;
-		    $fuentesAntes = $visitante->fuentesInformacionAntesViajes()->pluck('id')->toArray();
-		    $fuentesDurante = $visitante->fuentesInformacionDuranteViajes()->pluck('id')->toArray();
-		    
-		    if(in_array(14,$fuentesAntes)){
-		        $visitante->otrasFuenteInformacionAntesViaje()->delete();
-		    }
-		    if(in_array(14,$fuentesDurante)){
-		        $visitante->otrasFuenteInformacionDuranteViaje()->delete();
-		    }
-		    
-		    if($visitante->visitanteCompartirRede != null){
-		       $visitante->visitanteCompartirRede()->delete(); 
-		    }
-		    
-		    $visitante->fuentesInformacionAntesViajes()->detach();
-		    $visitante->fuentesInformacionDuranteViajes()->detach();
-		    $visitante->redesSociales()->detach();
 		}else{
 		    $visitante->ultima_sesion = 7;
 		}
+		
+		//--------------------------------------------------------------------------
+		
+		$fuentesAntes = $visitante->fuentesInformacionAntesViajes()->pluck('id')->toArray();
+	    $fuentesDurante = $visitante->fuentesInformacionDuranteViajes()->pluck('id')->toArray();
+	    
+	    if(in_array(14,$fuentesAntes)){
+	        $visitante->otrasFuenteInformacionAntesViaje()->delete();
+	    }
+	    if(in_array(14,$fuentesDurante)){
+	        $visitante->otrasFuenteInformacionDuranteViaje()->delete();
+	    }
+	    
+	    if($visitante->visitanteCompartirRede != null){
+	       $visitante->visitanteCompartirRede()->delete(); 
+	    }
+	    
+	    $visitante->fuentesInformacionAntesViajes()->detach();
+	    $visitante->fuentesInformacionDuranteViajes()->detach();
+	    $visitante->redesSociales()->detach();
+		
+		//--------------------------------------------------------------------------
 		
 		$visitante->fuentesInformacionAntesViajes()->attach($request->FuentesAntes);
 		$visitante->fuentesInformacionDuranteViajes()->attach($request->FuentesDurante);

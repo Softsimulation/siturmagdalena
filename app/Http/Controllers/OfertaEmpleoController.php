@@ -2068,32 +2068,40 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     
     public function getDataalojamiento($id){ 
        
-        $idEncuesta = $id;
-      /*
-        if( !alojamiento::where("encuestas_id",$id)->first() ){
-            $encuesta = Encuesta::find($id);
-            $anterior = Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["id","!=",$id] ])
-                                  ->latest("id")->first();
-            if($anterior){ $idEncuesta = $anterior->id;  }
+       
+        $encuesta = Encuesta::find($id);
+        if($encuesta){
+       
+            $idEncuesta = $id;
+          /*
+            if( !alojamiento::where("encuestas_id",$id)->first() ){
+                $encuesta = Encuesta::find($id);
+                $anterior = Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["id","!=",$id] ])
+                                      ->latest("id")->first();
+                if($anterior){ $idEncuesta = $anterior->id;  }
+            }
+            */
+            $alojamiento = alojamiento::where("encuestas_id",$idEncuesta)->with(["casas","campings","habitaciones","apartamentos","cabanas"])->first();
+            
+            $servicios = [ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ];
+            
+            if($alojamiento){
+                $servicios["habitacion"] = count($alojamiento->habitaciones)>0 ? true : false;
+                $servicios["apartamento"] = count($alojamiento->apartamentos)>0 ? true : false;
+                $servicios["casa"] = count($alojamiento->casas)>0 ? true : false;
+                $servicios["camping"] = count($alojamiento->campings)>0 ? true : false;
+                $servicios["cabana"] = count($alojamiento->cabanas)>0 ? true : false;
+            }
+            
+            if( $id!=$idEncuesta ){
+                $alojamiento["id"] = null;
+            }
+            
+            return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios, "numeroDias"=>$encuesta->numero_dias  ];
+            
         }
-        */
-        $alojamiento = alojamiento::where("encuestas_id",$idEncuesta)->with(["casas","campings","habitaciones","apartamentos","cabanas"])->first();
         
-        $servicios = [ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ];
-        
-        if($alojamiento){
-            $servicios["habitacion"] = count($alojamiento->habitaciones)>0 ? true : false;
-            $servicios["apartamento"] = count($alojamiento->apartamentos)>0 ? true : false;
-            $servicios["casa"] = count($alojamiento->casas)>0 ? true : false;
-            $servicios["camping"] = count($alojamiento->campings)>0 ? true : false;
-            $servicios["cabana"] = count($alojamiento->cabanas)>0 ? true : false;
-        }
-        
-        if( $id!=$idEncuesta ){
-            $alojamiento["id"] = null;
-        }
-        
-        return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios ];
+        return ["success"=>false];    
     } 
     
     public function postGuardarcaracterizacionalojamientos(Request $request){ 
@@ -2110,6 +2118,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                       "apartamentos"=>"array|max:1",
                       "apartamentos.*.total" => "required_if:servicios.apartamento,true",
                       "apartamentos.*.capacidad" => "required_if:servicios.apartamento,true",
+                      "apartamentos.*.promedio" => "required_if:servicios.apartamento,true",
                       "apartamentos.*.habitaciones" => "required_if:servicios.apartamento,true",
                       
                       "casas"=>"array|max:1",
@@ -2170,6 +2179,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             }
             $apartamento->total = $request->apartamentos[0]["total"];
             $apartamento->capacidad = $request->apartamentos[0]["capacidad"];
+            $apartamento->promedio = $request->apartamentos[0]["promedio"];
             $apartamento->habitaciones = $request->apartamentos[0]["habitaciones"];
             $apartamento->save();
         }

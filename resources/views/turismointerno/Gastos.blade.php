@@ -112,7 +112,7 @@
     
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Atlántico) y durante su viaje al Atlántico</b></h3>
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Seleccione los gastos realizados por usted antes (gastos de preparación del viaje al Magdalena) y durante su viaje al Magdalena</b></h3>
                 </div>
                 <div class="panel-footer"><b>Pregunta con selección única</b></div>
                 <div class="panel-body">
@@ -388,16 +388,16 @@
                                                 <td style="width:35%;">@{{rub.nombre}}</td>
                                                 <td style="width:25%;">
                                                     <div class="row">
-                                                        <div class="col-xs-12 col-md-6">
-                                                            <label for="cantidadFuera@{{$index}}" class="col-md-12 control-label" style="color:dimgray;">Fuera del Atlántico </label>
+                                                        <div class="col-xs-12 col-md-6" ng-if="(rub.id==12 || rub.id==13 || rub.id==14 || rub.id==15 || rub.id==16 || rub.id==17 || rub.id==18)" >
+                                                            <label for="cantidadFuera@{{$index}}" class="col-md-12 control-label" style="color:dimgray;">Fuera del Magdalena </label>
                                                             <input type="number" class="form-control" name="cantidadFuera@{{$index}}" placeholder="0" min="1000" ng-model="rub.viajes_gastos_internos[0].valor_fuera">
                                                             <span ng-show="GastoForm.$submitted || GastoForm.cantidadFuera@{{$index}}.$touched">
                                                                 <span class="label label-danger" ng-show="GastoForm.cantidadFuera@{{$index}}.$error.min">*El valor mínimo es de 1.000 pesos</span>
                                                                 <span class="label label-danger" ng-show="GastoForm.cantidadFuera@{{$index}}.$error.number">* Solo números.</span>
                                                             </span>
                                                         </div>
-                                                        <div class="col-xs-12 col-md-6">
-                                                            <label for="cantidad@{{$index}}" class="col-md-12 control-label" style="color:dimgray;">Dentro del Atlántico</label>
+                                                        <div ng-class="{ 'col-md-6':(rub.id==12 || rub.id==13 || rub.id==14 || rub.id==15 || rub.id==16 || rub.id==17 || rub.id==18), 'col-md-12':!(rub.id==12 || rub.id==13 || rub.id==14 || rub.id==15 || rub.id==16 || rub.id==17 || rub.id==18) }" >
+                                                            <label for="cantidad@{{$index}}" class="col-md-12 control-label" style="color:dimgray;">Dentro del Magdalena</label>
                                                             <input type="number" class="form-control" name="cantidad@{{$index}}" placeholder="0" min="1000" ng-model="rub.viajes_gastos_internos[0].valor" >
                                                             <span ng-show="GastoForm.$submitted || GastoForm.cantidad@{{$index}}.$touched">
                                                                 <span class="label label-danger" ng-show="GastoForm.cantidad@{{$index}}.$error.min">*El valor mínimo es de 1000 pesos</span>
