@@ -796,7 +796,7 @@ class TurismoInternoController extends Controller
                 'serviciosPaquetes.*'=>'required|numeric|exists:servicios_paquete_interno,id',
                 'lugarAgencia'=>'required_if:viajePaquete,1|exists:opciones_lugares,id',
                 'modalidadPago'=>'required_if:viajeExcursion.divisas_id,39',
-            ]);
+            ], [ "id.required"=>"Error 1", "id.exists"=> "Error 2" ]);
             
         if($validator->fails()){
             return [ "success"=>false,'errores'=>$validator->errors() ];

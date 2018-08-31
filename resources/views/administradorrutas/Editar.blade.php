@@ -112,6 +112,9 @@
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <h1 class="title1">@{{rutaNombre}} - Editar</h1>
     <br />
+    <div class="col-col-sm-12">
+        <a href="{{asset('/administradorrutas')}}">Volver al listado</a>
+    </div>
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
@@ -161,9 +164,9 @@
                 </div>
                 <form novalidate role="form" name="informacionAdicionalForm">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Atracciones de la ruta <small>(Seleccione al menos una atracción)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="ruta.adicional.atracciones" theme="bootstrap" close-on-select="false" >
+                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.atracciones.$touched) && informacionAdicionalForm.atracciones.$error.required}">
+                            <label for="atracciones"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Atracciones de la ruta <small>(Seleccione al menos una atracción)</small></h4></label>
+                            <ui-select name="atracciones" id="atracciones" multiple ng-required="true" ng-model="ruta.adicional.atracciones" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
                                     <span ng-bind="$item.sitio.sitios_con_idiomas[0].nombre"></span>
                                 </ui-select-match>

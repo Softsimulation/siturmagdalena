@@ -329,12 +329,12 @@
     								</tr>
     								<tr ng-class="{'danger': (registro.latitud != registro.latitud2) }">
     									<td>Latitud</td>
-    									<td><input type="number" class="form-control" ng-model="registro.latitud" readonly ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.latitud"  ></td>
     									<td>@{{registro.latitud2}}</td>
     								</tr>
     								<tr ng-class="{'danger': (registro.longitud != registro.longitud2) }">
     									<td>Longitud</td>
-    									<td><input type="number" class="form-control" ng-model="registro.longitud" readonly ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.longitud"  ></td>
     									<td>@{{registro.longitud2}}</td>
     								</tr>
     								<tr ng-class="{'danger': (registro.digito_verificacion != registro.digito_verificacion2) }">
@@ -511,12 +511,12 @@
     								</tr>
     								<tr>
     									<td>Latitud</td>
-    									<td><input type="number" class="form-control" ng-model="registro.latitud" readonly ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.latitud"  ></td>
     									<td ng-if="registro.es_similar == 1">@{{registro.latitud2}}</td>
     								</tr>
     								<tr>
     									<td>Longitud</td>
-    									<td><input type="number" class="form-control" ng-model="registro.longitud" readonly ></td>
+    									<td><input type="number" class="form-control" ng-model="registro.longitud"  ></td>
     									<td ng-if="registro.es_similar == 1">@{{registro.longitud2}}</td>
     								</tr>
     								<tr ng-class="{'info': (registro.digito_verificacion == registro.digito_verificacion2 && registro.es_similar == 1) }">

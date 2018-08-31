@@ -22,3 +22,23 @@ situr.directive('finalizacion', function () {
         }
     };
 });
+
+situr.filter('idiomaFilter', function() {
+    return function( items, condition) {
+    var filtered = [];
+    
+    if(condition === undefined || condition.length == 0){
+      return items;
+    }
+    console.log(condition);
+    angular.forEach(items, function(item) {
+        angular.forEach(condition, function(traduccion){
+            if(traduccion.idioma.id != item.id){
+                filtered.push(item);
+            }
+        });
+    });
+    
+    return filtered;
+    };
+});

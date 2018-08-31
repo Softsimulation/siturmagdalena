@@ -55,7 +55,7 @@ angular.module('social', [])
     $scope.guardar = function(){
         
         if(!$scope.socialForm.$valid){
-            swal("Error","Corrija los errores","error");
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         

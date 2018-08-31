@@ -61,31 +61,23 @@
     <br />
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row">
+            <input type="hidden" ng-init="mostrarFiltro=false"/>
             <div class="col-xs-12 col-sm-4 col-lg-2 col-md-3">
-                <a href="/turismoreceptor/datosencuestados" class="btn btn-primary">Crear encuesta</a>
+                <a href="/turismoreceptor/datosencuestados" class="btn btn-success">Crear encuesta</a>
             </div>
-            <div class="col-xs-12 col-sm-8 col-lg-2 col-md-3">
-                <select class="form-control" ng-model="filtroEstadoEncuesta" ng-init="filtroEstadoEncuesta = ''">
-                    <option value="" selected>Todas las encuestas</option>
-                    <option value="calculadas">Calculadas</option>
-                    <option value="sincalcular">Sin calcular</option>
-                </select>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-lg-3 col-md-3">
-                <select class="form-control" ng-model="campoSelected">
-                    <option value="" selected>Cualquier campo</option>
-                    <option value="fechaaplicacion">Fecha de aplicación</option>
-                    <option value="fechallegada">Fecha de llegada</option>
-                </select>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-lg-3 col-md-3">
-                <input type="text" style="margin-bottom: .5em;" ng-model="prop.search" class="form-control" id="inputSearch" placeholder="Buscar encuesta...">
+            <div class="col-xs-12 col-sm-4 col-lg-2 col-md-3">
+                <a href="" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-default">Filtros</a>
             </div>
             <div class="col-xs-12 col-sm-12 col-lg-2 col-md-12" style="text-align: center;">
-                <span class="chip" style="margin-bottom: .5em;">@{{(encuestas|filter:{Filtro:filtroEstadoEncuesta} | filter:filtrarCampo |filter:prop.search).length}} resultados</span>
+                <span class="chip" style="margin-bottom: .5em;">@{{(encuestas|filter:search).length}} resultados</span>
             </div>
         </div>
         <br/>
+        <div class="row" ng-show="mostrarFiltro == false && (search.id.length > 0 || search.idgrupo.length > 0 || search.lugaraplicacion.length > 0 || search.fechaaplicacion.length > 0 || search.fechallegada.length > 0 || search.username.length > 0 || search.estado.length > 0 || search.ultima.length > 0)">
+            <div class="alert alert-primary" role="alert">
+                Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga click <span><a href="#" ng-click="search = ''">aquí</a></span>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12">
                 <table class="table table-striped">
@@ -102,7 +94,20 @@
                             <th style="width: 120px;"></th>
                         
                     </tr>
-                    <tr dir-paginate="item in encuestas|filter:{Filtro:filtroEstadoEncuesta}| filter:filtrarCampo | filter:prop.search  |itemsPerPage:10 as results" pagination-id="paginacion_encuestas" >
+                    <!--<tr dir-paginate="item in encuestas|filter:{Filtro:filtroEstadoEncuesta}| filter:filtrarCampo | filter:prop.search  |itemsPerPage:10 as results" pagination-id="paginacion_encuestas" >-->
+                    <tr ng-show="mostrarFiltro == true">
+                        <td></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.id" class="form-control" id="inputSearch"></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.idgrupo" class="form-control" id="inputSearch"></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.lugaraplicacion" class="form-control" id="inputSearch"></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.fechaaplicacion" class="form-control" id="inputSearch"></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.fechallegada" class="form-control" id="inputSearch"></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.username" class="form-control" id="inputSearch"></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.estado" class="form-control" id="inputSearch"></td>
+                        <td><input  style="margin-bottom: .5em;" type="text" ng-model="search.ultima" class="form-control" id="inputSearch"></td>
+                        <td></td>
+                    </tr>
+                    <tr dir-paginate="item in encuestas| filter:search  |itemsPerPage:10 as results" pagination-id="paginacion_encuestas" >
                         <td>@{{$index+1}}</td>
                             <td>@{{item.id}}</td>
                             <td>@{{item.idgrupo}}</td>
@@ -131,7 +136,7 @@
                             </td>
                     </tr>
                 </table>
-                <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0 || (encuestas|filter:prop.search).length == 0 || (encuestas|filter:filtrarCampo).length == 0 || (encuestas|filter:{Filtro:filtroEstadoEncuesta} ).length == 0">No hay resultados disponibles <span ng-show="(encuestas|filter:prop.search).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
+                <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0 || (encuestas|filter:search).length == 0">No hay resultados disponibles <span ng-show="(encuestas|filter:search).length == 0"><a href="#" ng-click="search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
             </div>
             
         </div>

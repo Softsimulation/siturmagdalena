@@ -42,4 +42,15 @@ angular.module('eventos.index', [])
         window.location = "/administradoreventos/idioma/"+ $scope.eventoEdit.id +"/" + $scope.idiomaEditSelected;
     }
     
+    $scope.busquedaEvento = function (query){
+        
+        if (query === undefined || query === ''){
+            return;
+        }
+        
+        return function (evento){
+            return (evento.eventos_con_idiomas[0].nombre + ' - ' + evento.eventos_con_idiomas[0].edicion).toLocaleLowerCase().includes(query.toLocaleLowerCase());
+        }
+    }
+    
 });

@@ -38,6 +38,7 @@
         /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
         body.charging .carga {
             display: block;
+            z-index: 1500;
         }
     </style>
 @endsection

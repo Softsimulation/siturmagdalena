@@ -50,7 +50,7 @@ angular.module('crear', [])
     $scope.guardar = function(){
         
         if(!$scope.crearForm.$valid){
-            swal("Error","Corrija los errores","error");
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         
@@ -139,7 +139,7 @@ angular.module('crear', [])
     $scope.guardar = function(){
         
         if(!$scope.crearForm.$valid){
-            swal("Error","Corrija los errores","error");
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         

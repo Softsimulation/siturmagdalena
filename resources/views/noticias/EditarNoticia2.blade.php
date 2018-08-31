@@ -38,6 +38,7 @@
         /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
         body.charging .carga {
             display: block;
+            z-index: 1500;
         }
     </style>
 @endsection
@@ -144,7 +145,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <label for="fuenteNoticia">Enlace de fuente</label>
-                            <input type="text" class="form-control" name="fuenteNoticia" id="fuenteNoticia" ng-model="noticia.fuenteNoticia"/>
+                            <input type="url" class="form-control" name="fuenteNoticia" id="fuenteNoticia" ng-model="noticia.fuenteNoticia"/>
                             <span ng-show="crearForm.fuenteNoticia.$error.url" class="color_errores">* Url.</span>
                           
                         </div>
@@ -181,8 +182,10 @@
                                 <td>@{{x.portada == true ? 'Si' : 'No'}}</td>
                                 
                                 <td>
-                                  <a ng-if="x.texto!=null" href="" ng-click="abrirModalTextoAlternativo(x)" class="btn btn-default" title="Editar texto alternativo" style="float:left"><span class="glyphicon glyphicon-edit"></span></a>
+                                  <!--<a ng-if="x.texto!=null" href="" ng-click="abrirModalTextoAlternativo(x)" class="btn btn-default" title="Editar texto alternativo" style="float:left"><span class="glyphicon glyphicon-edit"></span></a>-->
+                                  <a ng-if="x.texto!=null" href="" ng-click="abrirModalEditarMultimedia(x)" class="btn btn-default" title="Editar texto alternativo" style="float:left"><span class="glyphicon glyphicon-edit"></span></a>
                                   <a ng-if="x.texto==null" href="" ng-click="abrirModalTextoAlternativo(x)" class="btn btn-default" title="Editar texto alternativo" style="float:left"><span class="glyphicon glyphicon-plus"></span></a>
+                                    <a href="" ng-if="noticia.idIdioma == 1" ng-click="eliminarMultimedia(x)" class="btn btn-default" title="Eliminar multimedia" style="float:left"><span class="glyphicon glyphicon-remove"></span></a>
                                 </td>
                             </tr>
                             
@@ -310,6 +313,76 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-success" ng-click="guardarAlternativo()">Guardar</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="modalEditarMultimedia" role="dialog">
+            <div class="modal-dialog">
+                <form role="form" name="editarMultimediaForm"  novalidate>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Guardar multimedia</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" ng-if="errores != null">
+                            <h6>Errores</h6>
+                            <span class="messages" ng-repeat="error in errores">
+                                  <span>*@{{error[0]}}</span><br/>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="@{{multimediaEditar.ruta}}" target="_blank">Multimedia actual</a>
+                                
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    
+                                    <label class="u-block">Subir imagen</label><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="La imagen debe tener un peso de 2MB y debe ser de formato jpeg, jpg o png"></span>
+                                    <div class="input-group">
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary" title="Seleccionar archivo" data-toggle="tooltip" data-placement="right">
+                                                Seleccionar archivo <input type="file" id="Galeria" name="Galeria" file-input='Galeria' style="display: none;" accept="image/jpeg,image/png">
+                                            </span>
+                                        </label>
+                                        <input id="GaleriaNoticia" type="text" class="form-control" placeholder="Peso máximo 2MB" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label for="texto_alternativo"><span class="asterisco">*</span>Texto alternativo</label>
+                                    <textarea class="form-control" name="texto_alternativo" ng-model="multimediaEditar.texto_alternativo" row="3" required></textarea>
+                                    <span class="messages" ng-show="editarMultimediaForm.$submitted || editarMultimediaForm.texto_alternativo.$touched">
+                                        <span ng-show="editarMultimediaForm.texto_alternativo.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                    </span>
+                                  
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <label><span class="asterisco">*</span>¿Es portada?</label><br>
+                                    <input type="radio" ng-model="multimediaEditar.portadaNoticia" name="portadaNoticia" value="1" required>Si
+                                    <input type="radio" ng-model="multimediaEditar.portadaNoticia" name="portadaNoticia" value="2" required>No
+                                </div>
+                                <div class="col-sm-12">
+                                  <span class="messages" ng-show="editarMultimediaForm.$submitted || editarMultimediaForm.portadaNoticia.$touched">
+                                            <span ng-show="editarMultimediaForm.portadaNoticia.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                  </span>  
+                                </div>
+                            </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" ng-click="editarMultimedia()">Guardar</button>
                     </div>
                 </div>
                 </form>
