@@ -298,18 +298,25 @@
 							   
                            <div class="menu">
 									<ul id="menu" >
+									    
+									     <li id="menu-academico" ><a href="#"><span>Promoción</span> </span></a>
+    										  <ul id="menu-academico-sub" >
+    										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administradoractividades')}}">Administrar Actividades</a></li>
+    										     <li id="menu-academico-avaliacoes" ><a href="{{asset('administradoratracciones')}}">Administrar Atracciones</a></li>
+    										  </ul>
+									     </li>
 										
 										 <li id="menu-academico" ><a href="#"> <span>Turismo Receptor</span></span></a>
 										   <ul id="menu-academico-sub" >
-											<ligv id="menu-academico-avaliacoes" ><a href="{{asset('grupoviaje/listadogrupos')}}"> Grupo de viajes</a></li>
+											<li id="menu-academico-avaliacoes" ><a href="{{asset('grupoviaje/listadogrupos')}}"> Grupo de viajes</a></li>
 											<li id="menu-academico-boletim" ><a href="{{asset('turismoreceptor/listadoencuestas')}}">Listado de encuestas</a></li>
 											
 											
 										  </ul>
 										</li>
-										 <!--<li id="menu-academico" ><a href="{{asset('temporada')}}"> <span>Turismo Interno y Emisor</span></a>
+										 <li id="menu-academico" ><a href="{{asset('temporada')}}"> <span>Turismo Interno y Emisor</span></a>
 										
-										 </li>-->
+										 </li>
 										 
 									<li id="menu-academico" ><a href="#"> <span>Oferta y Empleo</span></a>
 											 <ul id="menu-academico-sub" >
@@ -326,6 +333,7 @@
 										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
     										  <ul id="menu-academico-sub" >
     										    <li id="menu-academico-avaliacoes" ><a href="{{asset('sostenibilidadhogares/encuestas')}}">Hogares</a></li>
+    										    <li id="menu-academico-avaliacoes" ><a href="{{asset('sostenibilidadpst/encuestas')}}">PST</a></li>
     										  </ul>
 									     </li>
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>

@@ -206,7 +206,7 @@
         <div class="panel panel-success" ng-if="enteran.Invitacion==1">
             <div class="panel-heading">
                 <!-- ¿Cómo podemos buscarlo en Twitter?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> <span class=""></span> {{trans('resources.EncuestaFuenteInfoP7')}}</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> <span class=""></span> ¿Cómo podemos buscarlo en Twitter?</b></h3>
             </div>
             <div class="panel-body">
                 <div class="row">
