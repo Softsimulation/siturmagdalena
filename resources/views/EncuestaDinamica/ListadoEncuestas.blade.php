@@ -25,7 +25,7 @@
           
           
           <a class="btn btn-link btn-primary" href="/encuesta/listado" >Volver al listado</a>
-          <button class="btn btn-success" ng-click="openModalAddEncuesta()" >+ Agregar</button>
+          <button class="btn btn-success" ng-click="openModalAddEncuesta()" ng-if="encuesta.tipos_encuestas_dinamica_id==3" >+ Agregar</button>
           
           <table class="table table-striped">
             <thead>
@@ -39,14 +39,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="encuesta in encuesta.encuestas" >
+              <tr ng-repeat="item in encuesta.encuestas" >
                 <td>@{{$index+1}}</td>
-                <td>@{{ encuesta.nombres +' '+ encuesta.apellidos}}</td>
-                <td>@{{ encuesta.email}}</td>
-                <td>@{{ encuesta.telefono}}</td>
-                <td>@{{ encuesta.estado.nombre }}</td>
+                <td>@{{ item.nombres +' '+ item.apellidos}}</td>
+                <td>@{{ item.email}}</td>
+                <td>@{{ item.telefono}}</td>
+                <td>@{{ item.estado.nombre }}</td>
                 <td>
-                    <a class="btn btn-xs btn-primary" href="/encuestaAdHoc/@{{encuesta.codigo}}" > ver  </a>
+                    <a class="btn btn-xs btn-primary" href="/encuestaAdHoc/@{{item.codigo}}" > ver  </a>
+                    <a ng-click="copiarLink(item.codigo)" ng-if="encuesta.tipos_encuestas_dinamica_id==3" href >
+                        Copiar link
+                    </a>
                 </td>
               </tr>
             </tbody>

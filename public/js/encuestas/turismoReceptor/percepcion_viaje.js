@@ -151,7 +151,7 @@ angular.module('receptor.percepcion_viaje', [])
     $scope.guardar = function () {
 
         if (!$scope.PercepcionForm.$valid) {
-            swal("Error", "Formulario incompleto corrige los errores", "error");
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
 

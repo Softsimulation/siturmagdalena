@@ -101,7 +101,7 @@
         <div class="row">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#hogares" aria-controls="hogares" role="tab" data-toggle="tab">Hogares</a></li>
-                <li role="presentation"><a href="#personas" aria-controls="personas" role="tab" data-toggle="tab">Personas</a></li>
+                <li role="presentation"><a href="#personas" aria-controls="personas" role="tab" data-toggle="tab">Encuestas</a></li>
             </ul>
         </div>
 
@@ -143,7 +143,7 @@
                                     <td>@{{item.edificacione.barrio.nombre}}</td>
                                     <td>@{{item.edificacione.direccion}}</td>
                                     <td>@{{item.edificacione.estrato.nombre}}</td>
-                                    <td>@{{item.digitadore.asp_net_user.Email}}</td>
+                                    <td>@{{item.digitadore.user.username}}</td>
                                     <td>@{{item.edificacione.nombre_entrevistado}}</td>
                                     <td>@{{item.fecha_realizacion }}</td>
                                     <td>
@@ -184,49 +184,47 @@
             <div role="tabpanel" class="tab-pane fade" id="personas">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6">
-                        <input type="text" style="margin-bottom: .5em;" ng-model="prop.search" class="form-control" id="inputSearch" placeholder="Buscar persona...">
+                        <input type="text" style="margin-bottom: .5em;" ng-model="prop.search" class="form-control" id="inputSearch" placeholder="Buscar encuesta...">
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6" style="text-align: center;">
-                        <span class="chip" style="margin-bottom: .5em;">@{{(temporada.Personas|filter:prop.search).length}} resultados</span>
+                        <span class="chip" style="margin-bottom: .5em;">@{{(temporada.encuestas|filter:prop.search).length}} resultados</span>
                     </div>
                 </div>
-                <div class="row" ng-show="prop.search.length > 0 && (temporada.Personas|filter:prop.search).length != 0">
+                <div class="row" ng-show="prop.search.length > 0 && (temporada.encuestas|filter:prop.search).length != 0">
                     <div class="col-xs-12">
                         <div class="alert alert-success" role="alert" style="padding: .5em; margin-bottom: 0;">
-                            @{{(temporada.Personas|filter:prop.search).length}} personas han sido encontradas para la búsqueda '@{{prop.search}}'
+                            @{{(temporada.encuestas|filter:prop.search).length}} encuestas han sido encontradas para la búsqueda '@{{prop.search}}'
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="temporada.Personas.length > 0">
+                <div class="row" ng-show="temporada.encuestas.length > 0">
                     <div class="col-xs-12" style="overflow-x: auto;">
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th>IdPersona</th>
-                                    <th>IdHogar</th>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Dirección</th>
-                                    <th>Estrato</th>
+                                    <th>Codigo encuesta</th>
+                                    <th>Fecha Realización</th>
+                                    <th>Fecha Inicio</th>
+                                    <th>Fecha Final</th>
                                     <th>Encuestador</th>
-                                    <th>Fecha de Salida</th>
-                                    <th>Última sección</th>
+                                    <th>Municipio</th>
+                                    <th>Barrio</th>
+                                    <th>Ultima sección</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr dir-paginate="item in temporada.Personas|filter:prop.search|itemsPerPage:10 as results" pagination-id="personaP" style="border-bottom: .5px solid lightgray">
+                                <tr dir-paginate="item in temporada.encuestas|filter:prop.search|itemsPerPage:10 as results" pagination-id="personaP" style="border-bottom: .5px solid lightgray">
                                     <td>@{{item.id}}</td>
-                                    <td>@{{item.hogare.id}}</td>
-                                    <td>@{{item.nombre}}</td>
-                                    <td>@{{item.email}}</td>
-                                    <td>@{{item.hogare.direccion}}</td>
-                                    <td>@{{item.hogare.estrato}}</td>
-                                    <td>@{{item.hogare.digitadore.asp_net_user.Email}}</td>
-                                    <td>@{{item.viajes[0].fecha_inicio}}</td>
-                                    <td>@{{item.viajes[0].ultima_sesion}}</td>
+                                    <td>@{{item.persona.hogare.fecha_realizacion }}</td>
+                                    <td>@{{item.fecha_inicio }}</td>
+                                    <td>@{{item.fecha_final }}</td>
+                                    <td>@{{item.persona.hogare.digitadore.user.username}}</td>
+                                    <td>@{{item.persona.hogare.edificacione.barrio.municipio.nombre}}</td>
+                                    <td>@{{item.persona.hogare.edificacione.barrio.nombre}}</td>
+                                    <td>@{{item.ultima_sesion}}</td>
                                     <td>
-                                        <a href="/turismointerno/viajesrealizados/@{{item.id}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}"><span class="glyphicon glyphicon-pencil"></span></a>
                                     </td>
                                 </tr>
 
@@ -259,6 +257,7 @@
 
                 </div>
             </div>
+            
         </div>
 
 
@@ -274,6 +273,8 @@
 </div>
 @endsection
 @section('javascript')
+<script src="{{asset('/js/ADM-dateTimePicker.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('/js/dir-pagination.js')}}"></script>
 <script src="{{asset('/js/administrador/temporada/temporadas.js')}}"></script>
+<script src="{{asset('/js/administrador/temporada/services.js')}}"></script>
 @endsection

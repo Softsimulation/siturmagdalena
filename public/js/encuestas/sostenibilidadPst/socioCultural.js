@@ -67,6 +67,7 @@ angular.module('sostenibilidadPst.socioCultural', [])
     $scope.guardar = function(){
         
         if(!$scope.datosForm.$valid || $scope.encuesta.accionesCulturales.length == 0 || ($scope.encuesta.motivosResponsabilidad.length == 0 && $scope.encuesta.responsabilidad_social == 1) || $scope.encuesta.esquemasAccesibles.length == 0 || ($scope.encuesta.beneficiosEsquema.length == 0 && $scope.encuesta.esquemasAccesibles.indexOf(7) == -1 ) ){
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         

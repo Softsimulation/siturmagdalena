@@ -22,6 +22,7 @@ angular.module('empleo.Empleo', [])
     });
 
 
+    
 
     $scope.cargo = function(tipo){
         if($scope.empleo.Sexo){
@@ -85,7 +86,29 @@ angular.module('empleo.Empleo', [])
 
         }   
 
+    $scope.totalfila = function(obj,tipo,sexo){
+        if(obj){
+                for(i = 0; i < obj.length ; i ++){
+                    
+                    if(obj[i].tipo_cargo_id == tipo && obj[i].sexo == sexo ){
+                        var suma = 0;
+                        for (item in obj[i]) {
+                        if(!(item == "id" || item == "sexo" || item == "tipo_cargo_id" || item == "encuestas_id" || item == "encuesta_id"))
+                                suma = suma + (obj[i][item] == null ? 0 : (obj[i][item] == undefined ? 0 :obj[i][item]));
+                              
+                            
+                        }
+                        return suma;
+                    }
+                    
+                }
+        
+        }
+        return 0;
 
+                
+    }
+    
 
     $scope.edadempleado = function(tipo,sexo){
         if($scope.empleo.Edad){
@@ -100,7 +123,7 @@ angular.module('empleo.Empleo', [])
         
         obj = {};
         obj.tipo_cargo_id = tipo;
-        obj.sexo = sexo;
+        obj.sexo = sexo == 1 ? true : false ;
 		obj.docea18 = 0;
 		obj.diecinuevea25 = 0;
 		obj.ventiseisa40 = 0;
@@ -127,7 +150,7 @@ angular.module('empleo.Empleo', [])
         
         obj = {};
         obj.tipo_cargo_id = tipo;
-        obj.sexo = sexo;
+        obj.sexo = sexo == 1 ? true : false;
 		obj.ninguno = 0;
 		obj.posgrado = 0;
 		obj.bachiller = 0;
@@ -155,7 +178,7 @@ angular.module('empleo.Empleo', [])
         
         obj = {};
         obj.tipo_cargo_id = tipo;
-        obj.sexo = sexo;
+        obj.sexo = sexo == 1 ? true : false ;
         obj.sabeningles = 0;
         $scope.empleo.ingles.push(obj);
         
@@ -177,10 +200,9 @@ angular.module('empleo.Empleo', [])
         }
         
         obj = {};
+        obj.sexo = sexo == 1 ? true : false ;
         obj.tipo_cargo_id = tipo;
-        obj.sexo = sexo;
-        obj.tipo_cargo_id = tipo;
-        obj.sexo = sexo;
+        obj.sexo = sexo == 1 ? true : false ;
 		obj.contrato_direto = 0;
 		obj.personal_permanente = 0;
 		obj.personal_agencia = 0;
@@ -209,7 +231,7 @@ angular.module('empleo.Empleo', [])
         
         obj = {};
         obj.tipo_cargo_id = tipo;
-        obj.sexo = sexo;
+        obj.sexo = sexo == 1 ? true : false ;
 		obj.tiempo_completo = 0;
 		obj.medio_tiempo = 0;
         $scope.empleo.Empleo.push(obj);
@@ -232,7 +254,7 @@ angular.module('empleo.Empleo', [])
         
         obj = {};
         obj.tipo_cargo_id = tipo;
-        obj.sexo = sexo;
+        obj.sexo = sexo == 1 ? true : false ;
 		obj.valor = 0;
         $scope.empleo.Remuneracion.push(obj);
         
@@ -241,7 +263,40 @@ angular.module('empleo.Empleo', [])
         }        
     }
 
-    $scope.validacion = function(){
+    $scope.promedio = function(){
+        
+        if( $scope.remuneracion(1,1) == null){
+            return 0;
+        }
+        var valor =  ($scope.remuneracion(1,1).valor*$scope.cargo(1).hombres) + ($scope.remuneracion(1,0).valor*$scope.cargo(1).mujeres) + ($scope.remuneracion(2,1).valor*$scope.cargo(2).hombres) + ($scope.remuneracion(2,0).valor*$scope.cargo(2).mujeres) + ($scope.remuneracion(3,1).valor*$scope.cargo(3).hombres) + ($scope.remuneracion(3,0).valor*$scope.cargo(3).mujeres) ; 
+        
+        var valor2 =  ( $scope.cargo(1).mujeres + $scope.cargo(1).hombres + $scope.cargo(2).mujeres + $scope.cargo(2).hombres + $scope.cargo(3).mujeres + $scope.cargo(3).hombres)
+        if (valor2 != 0){ 
+        return valor / valor2
+        }
+        return 0
+    }
+
+    $scope.vacantesSi = function(){
+        var vacante  = ( $scope.empleo.VacanteOperativo == null ? 0 : ($scope.empleo.VacanteOperativo  == undefined ? 0 :$scope.empleo.VacanteOperativo ));
+         var vacante2  = ( $scope.empleo.VacanteAdministrativo == null ? 0 : ($scope.empleo.VacanteAdministrativo  == undefined ? 0 :$scope.empleo.VacanteAdministrativo ));
+        var vacante3  = ( $scope.empleo.VacanteGerencial == null ? 0 : ($scope.empleo.VacanteGerencial  == undefined ? 0 :$scope.empleo.VacanteGerencial ));
+       
+        
+        if((  vacante +  vacante2  + vacante3   ) > 0){
+        return true;
+        }else{
+            if($scope.empleo != null){
+                $scope.empleo.Razon = {};
+                $scope.empleo.Razon.apertura = 0;
+                $scope.empleo.Razon.crecimiento = 0;
+                $scope.empleo.Razon.remplazo = 0;
+            }
+            return false;
+        }
+    }
+    
+     $scope.validacion = function(){
         
         
         return true;
@@ -432,7 +487,7 @@ $scope.$watch('id', function () {
         $scope.empleo.Encuesta = $scope.id;
 
 
-        if ($scope.empleoForm.$valid || $scope.validar()) {
+        if ($scope.empleoForm.$valid && !$scope.validar()) {
             $("body").attr("class", "cbp-spmenu-push charging")
                 ofertaServi.guardarEmpCaracterizacion($scope.empleo).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push");
@@ -461,4 +516,96 @@ $scope.$watch('id', function () {
             swal("Error", "Formulario incompleto corrige los errores", "error")
         }
     }
+}])
+
+.controller('empleo', ['$scope', 'ofertaServi',function ($scope, ofertaServi){
+    $scope.empleo = {};
+    $scope.url = "";
+    $scope.dataTable = "<th>M</th> <th>F</th>"; 
+
+    $scope.$watch('id', function () {
+        $("body").attr("class", "cbp-spmenu-push charging")
+         ofertaServi.cargarDatosEmplomensual($scope.id).then(function (data) {
+                 $("body").attr("class", "cbp-spmenu-push")
+                $scope.empleo = data.empleo;
+                
+                $scope.url = data.url;
+                  
+        }).catch(function () {
+              $("body").attr("class", "cbp-spmenu-push")
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
+       
+        
+    });
+
+
+    
+
+    $scope.cargo = function(tipo){
+        if($scope.empleo.Sexo){
+        for(i = 0; i < $scope.empleo.Sexo.length ; i ++){
+            
+            if($scope.empleo.Sexo[i].tipo_cargo_id == tipo ){
+                
+                return $scope.empleo.Sexo[i];
+            }
+            
+        }
+        
+        obj = {};
+        obj.tipo_cargo_id = tipo;
+        obj.hombres = 0;
+        obj.mujeres = 0;
+        
+        $scope.empleo.Sexo.push(obj);
+        
+        return obj;
+
+        }        
+    }
+
+     $scope.validacion = function(){
+        
+        
+        return true;
+    }
+    
+        
+    $scope.guardar = function () {
+        $scope.empleo.Encuesta = $scope.id;
+        if ($scope.empleoForm.$valid && $scope.validacion()) {
+            
+            $("body").attr("class", "cbp-spmenu-push charging")
+            
+               ofertaServi.guardarEmpleomensual($scope.empleo).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success == true) {
+                    swal({
+                        title: "Realizado",
+                        text: "Se ha guardado satisfactoriamente la sección.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function () {
+                          window.location.href = "/ofertaempleo/encuestas/" + data.sitio;;
+                    }, 1000);
+    
+    
+                } else {
+                    swal("Error", "Por favor corrija los errores", "error");
+                    $scope.errores = data.errores;
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
+            
+            
+        } else {
+            swal("Error", "Formulario incompleto corrige los errores", "error")
+        }
+    }
+
 }])

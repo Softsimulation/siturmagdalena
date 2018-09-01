@@ -111,6 +111,9 @@
 <div class="col-sm-12">
     <h1 class="title1">Insertar ruta</h1>
     <br />
+    <div class="col-col-sm-12">
+        <a href="{{asset('/administradorrutas')}}">Volver al listado</a>
+    </div>
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#info">Información básica</a></li>
@@ -143,6 +146,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <input ng-model="ruta.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la ruta (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearRutaForm.$submitted || crearRutaForm.nombre.$touched) && crearRutaForm.nombre.$error.required"></span>
                             </div>
                         </div>
                     </div>
@@ -152,6 +156,7 @@
                             <div class="input-group">
                                 <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
                                 <textarea style="resize: none;" ng-model="ruta.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la ruta (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
+                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearRutaForm.$submitted || crearRutaForm.descripcion.$touched) && crearRutaForm.descripcion.$error.required"></span>
                             </div>
                         </div>
                     </div>
@@ -213,9 +218,9 @@
                 </div>
                 <form novalidate role="form" name="informacionAdicionalForm">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <label for="perfiles"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Atracciones de la ruta <small>(Seleccione al menos una atracción)</small></h4></label>
-                            <ui-select multiple ng-required="true" ng-model="ruta.adicional.atracciones" theme="bootstrap" close-on-select="false" >
+                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.atracciones.$touched) && informacionAdicionalForm.atracciones.$error.required}">
+                            <label for="atracciones"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Atracciones de la ruta <small>(Seleccione al menos una atracción)</small></h4></label>
+                            <ui-select name="atracciones" id="atracciones" multiple ng-required="true" ng-model="ruta.adicional.atracciones" theme="bootstrap" close-on-select="false" >
                                 <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
                                     <span ng-bind="$item.sitio.sitios_con_idiomas[0].nombre"></span>
                                 </ui-select-match>

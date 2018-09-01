@@ -7,12 +7,15 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use Storage;
 use File;
+use DB;
 
 use App\Models\Tipo_Destino;
 use App\Models\Destino;
 use App\Models\Destino_Con_Idioma;
 use App\Models\Multimedia_Destino;
 use App\Models\Idioma;
+use App\Models\Sector;
+use App\Models\Sector_Con_Idioma;
 
 class AdministradorDestinosController extends Controller
 {
@@ -88,17 +91,26 @@ class AdministradorDestinosController extends Controller
         }
         $destino = Destino::with(['destinoConIdiomas' => function($queryDestinoConIdiomas){
             $queryDestinoConIdiomas->select('destino_id', 'idiomas_id', 'nombre', 'descripcion');
+        }, 'sectores' => function ($querySectores){
+            $querySectores->with(['sectoresConIdiomas' => function ($querySectoresConIdiomas){
+                $querySectoresConIdiomas->with(['idioma' => function ($queryIdioma){
+                    $queryIdioma->select('id', 'nombre', 'culture');
+                }])->select('idiomas_id', 'sectores_id', 'nombre');
+            }])->select('id', 'destino_id', 'es_urbano');
         }])->where('id', $id)->select('id', 'tipo_destino_id', 'latitud', 'longitud')->first();
         
         $portadaIMG = Multimedia_Destino::where('portada', true)->where('destino_id', $id)->pluck('ruta')->first();
         $imagenes = Multimedia_Destino::where('portada', false)->where('tipo', false)->where('destino_id', $id)->pluck('ruta')->toArray();
         $video = Multimedia_Destino::where('tipo', true)->where('destino_id', $id)->pluck('ruta')->first();
         
+        $idiomas = Idioma::where('estado', true)->select('id', 'culture', 'nombre')->get();
+        
         return ['destino' => $destino,
             'success' => true,
             'portadaIMG' => $portadaIMG,
             'imagenes' => $imagenes,
-            'video' => $video];
+            'video' => $video,
+            'idiomas' => $idiomas];
     }
     
     public function postCreardestino(Request $request){
@@ -335,5 +347,131 @@ class AdministradorDestinosController extends Controller
         $destino->save();
         
         return ['success' => true];
+    }
+    
+    public function getSectores (){
+        $sectores = Sector::with(['sectoresConIdiomas' => function ($querySectoresConIdiomas){
+            $querySectoresConIdiomas->select('idiomas_id', 'sectores_id', 'nombre');
+        }])->get();
+        
+        return ['sectores' => $sectores];
+    }
+    
+    public function postCrearsector (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'es_urbano' => 'required',
+            'destino_id' => 'required|numeric|exists:destino,id'
+        ],[
+            'nombre.required' => 'Se necesita un nombre para el sector.',
+            'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
+            
+            'es_urbano.required' => 'Se necesita una saber si el sector es urbano.',
+            
+            'destino_id.required' => 'Se necesita saber el identificador del destino para el sector.',
+            'destino_id.numeric' => 'El identificador del destino debe tener un valor numérico.',
+            'destino_id.exists' => 'El destino especificado no se encuentra registrado en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $errores = [];
+        $sector_nombre = DB::select('SELECT * FROM sectores INNER JOIN sectores_con_idiomas ON sectores.id = sectores_con_idiomas.sectores_id WHERE sectores.destino_id = '. $request->destino_id.' AND sectores_con_idiomas.idiomas_id = 1 AND LOWER(sectores_con_idiomas.nombre) = \''.strtolower($request->nombre).'\'');
+        if ($sector_nombre != null){
+            $errores["exists"][0] = "Este sector ya se encuentra registrado en el sistema.";
+        }
+        if($errores != null || sizeof($errores) > 0){
+            return  ["success"=>false, "errores"=>$errores];
+        }
+        
+        $sector = new Sector();
+        $sector->destino_id = $request->destino_id;
+        $sector->es_urbano = $request->es_urbano;
+        $sector->estado = true;
+        $sector->user_create = "Situr";
+        $sector->user_update = "Situr";
+        $sector->created_at = Carbon::now();
+        $sector->updated_at = Carbon::now();
+        $sector->save();
+        
+        $sector_con_idioma = new Sector_Con_Idioma();
+        $sector_con_idioma->idiomas_id = 1;
+        $sector_con_idioma->sectores_id = $sector->id;
+        $sector_con_idioma->nombre = $request->nombre;
+        $sector_con_idioma->save();
+        
+        $sector_dev = Sector::with(['sectoresConIdiomas' => function ($querySectoresConIdiomas){
+                $querySectoresConIdiomas->with(['idioma' => function ($queryIdioma){
+                    $queryIdioma->select('id', 'nombre', 'culture');
+                }])->select('idiomas_id', 'sectores_id', 'nombre');
+            }])->where('id', $sector->id)->select('id', 'destino_id', 'es_urbano')->first();
+        
+        return ['success' => true, 'sector' => $sector_dev];
+        
+    }
+    
+    public function getDeletesector ($id){
+        $sector = Sector::find($id);
+        
+        return ['success' => $sector->delete()];
+    }
+    
+    public function postEditaridiomasector (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'idioma_id' => 'required|numeric|exists:idiomas,id',
+            'id' => 'required|numeric|exists:sectores',
+            'destino_id' => 'required|numeric|exists:destino,id'
+        ],[
+            'nombre.required' => 'Se necesita un nombre para el sector.',
+            'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
+            
+            'idioma_id.required' => 'Se necesita un identificador para el idioma.',
+            'idioma_id.numeric' => 'El identificador del idioma debe ser un valor numérico.',
+            'idioma_id.exists' => 'El idioma especificado no se encuentra registrado en la base de datos.',
+            
+            'destino_id.required' => 'Se necesita saber el identificador del destino para el sector.',
+            'destino_id.numeric' => 'El identificador del destino debe tener un valor numérico.',
+            'destino_id.exists' => 'El destino especificado no se encuentra registrado en la base de datos.',
+            
+            'id.required' => 'Se necesita el identificador del sector.',
+            'id.numeric' => 'El identificador del sector debe tener un valor numérico.',
+            'id.exists' => 'El sector especificado no se encuentra registrado en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $errores = [];
+        $sector_nombre = DB::select('SELECT * FROM sectores INNER JOIN sectores_con_idiomas ON sectores.id = sectores_con_idiomas.sectores_id WHERE sectores.destino_id = '. $request->destino_id.' AND sectores_con_idiomas.idiomas_id = 1 AND LOWER(sectores_con_idiomas.nombre) = \''.strtolower($request->nombre).'\' AND sectores.id <> '.$request->id);
+        if ($sector_nombre != null){
+            $errores["exists"][0] = "Este sector ya se encuentra registrado en el sistema.";
+        }
+        if($errores != null || sizeof($errores) > 0){
+            return  ["success"=>false, "errores"=>$errores];
+        }
+        
+        $sector_con_idioma = Sector_Con_Idioma::where('idiomas_id', $request->idioma_id)->where('sectores_id', $request->id)->first();
+        if ($sector_con_idioma != null){
+            $sector_con_idioma->nombre = $request->nombre;
+            
+        }else{
+            $sector_con_idioma = new Sector_Con_Idioma();
+            $sector_con_idioma->nombre = $request->nombre;
+            $sector_con_idioma->idiomas_id = $request->idioma_id;
+            $sector_con_idioma->sectores_id = $request->id;
+        }
+        $sector_con_idioma->save();
+        
+        $sector_dev = Sector::with(['sectoresConIdiomas' => function ($querySectoresConIdiomas){
+                $querySectoresConIdiomas->with(['idioma' => function ($queryIdioma){
+                    $queryIdioma->select('id', 'nombre', 'culture');
+                }])->select('idiomas_id', 'sectores_id', 'nombre');
+            }])->where('id', $request->id)->select('id', 'destino_id', 'es_urbano')->first();
+        
+        return ['success' => true, 'sector' => $sector_dev];
     }
 }

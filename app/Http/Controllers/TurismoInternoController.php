@@ -12,6 +12,9 @@ use App\Models\Nivel_Educacion;
 use App\Models\Motivo_No_Viaje;
 use App\Models\Estrato;
 use App\Models\Barrio;
+use App\Models\EstadosCiviles;
+use App\Models\Ocupacion;
+
 
 use App\Models\Edificacion;
 use App\Models\Hogar;
@@ -54,6 +57,9 @@ use App\Models\Lugar_Visitado_Interno;
 use App\Models\Actividad_Realizada_Interno;
 use App\Models\Actividad_Realizada_Viajero;
 
+use App\Models\Opcion_Actividad_Realizada;
+use App\Models\Sub_Opcion_Actividad_Realizada_Interno;
+use App\Models\Opcion_Actividad_Realizada_Interno;
 
 use App\Models\Ciudad_Visitada;
 use App\Models\Acompaniante_Viaje_Hogar;
@@ -79,7 +85,7 @@ class TurismoInternoController extends Controller
 {
     public function __construct()
     {
-        
+        $this->middleware('interno', ['only' => ['getViajesrealizados','getActividadesrealizadas']]);
         $this->middleware('auth');
         $this->middleware('role:Admin');
         if(Auth::user() != null){
@@ -95,7 +101,9 @@ class TurismoInternoController extends Controller
         $niveles=Nivel_Educacion::get();
         $motivos=Motivo_No_Viaje::get();
         $estratos=Estrato::get();
-        return ["municipios"=>$municipios,'niveles'=>$niveles,'motivos'=>$motivos,'estratos'=>$estratos];
+        $estados=EstadosCiviles::get();
+        $ocupaciones=Ocupacion::get();
+        return ["municipios"=>$municipios,'niveles'=>$niveles,'motivos'=>$motivos,'estratos'=>$estratos,'estados'=>$estados,'ocupaciones'=>$ocupaciones];
         
     }
     
@@ -113,22 +121,30 @@ class TurismoInternoController extends Controller
     
     public function postGuardarhogar(Request $request){
         
-        $validator=\Validator::make($request->all(),[
+         $validator=\Validator::make($request->all(),[
                 
-                'Fecha_aplicacion'=>'required|date',
-                'Hora_aplicacion'=>'required',
+                'Fecha_aplicacion'=>'required|date|before:tomorrow',
                 'Barrio'=>'required|exists:barrios,id',
                 'Estrato'=>'required|exists:estratos,id',
                 'Direccion'=>'required',
-                'Telefono'=>'required',
+                'Telefono'=>'regex:^([0-9]){7}^',
                 'Nombre_Entrevistado'=>'required',
                 'Celular_Entrevistado'=>'numeric',
                 'Email_Entrevistado'=>'email'
-            ]);
+            ],["Telefono.regex"=>"El telefono debe tener minimos 7 digitos","Fecha_aplicacion.tomorrow"=>"La fecha de aplicacion debe ser menor a la fecha de hoy"]);
             
         if($validator->fails()){
             return ["success"=>false,'errores'=>$validator->errors()];
         }
+             
+         if($request->integrantes[$request->jefe_hogar]["Edad"]<16){
+             
+                 return ["success"=>false,'errores'=>[["El jefe de hogar debe ser mayor a 15 años"]]];
+             
+         }
+             
+         
+        
         
         $edificacion=new Edificacion();
         $edificacion->direccion=$request->Direccion;
@@ -157,13 +173,13 @@ class TurismoInternoController extends Controller
              $persona->jefe_hogar=($i==$request->jefe_hogar)?true:false;
              $persona->sexo=$personaux["Sexo"];
              $persona->edad=$personaux["Edad"];
-             $persona->celular=$personaux["Celular"];
-             $persona->email=$personaux["Email"];
              $persona->es_viajero=$personaux["Viaje"];
              $persona->nivel_educacion=$personaux["Nivel_Educacion"];
+             $persona->estado_civil_id=$personaux["Civil"];
+             $persona->es_residente=$personaux["Vive"];
+             $persona->ocupacion_id=$personaux["Ocupacion"];
              $persona->hogar_id=$hogar->id;
              $persona->save();
-             
              
              if($persona->es_viajero=="0"){
              
@@ -193,6 +209,8 @@ class TurismoInternoController extends Controller
                   ->with('edificacione')
                   ->with('edificacione.barrio')
                   ->first();
+        $encuesta->fecha_realizacion=new \Carbon\Carbon($encuesta->fecha_realizacion);
+        $encuesta->fecha_realizacion=$encuesta->fecha_realizacion->format('Y-m-d h:i');
         $encuesta->personas=Persona::where('hogar_id',$encuesta->id)->with('motivoNoViajes')->get();
         $barrios=Barrio::where('municipio_id',$encuesta->edificacione->barrio->municipio_id)->get();
         return ["datos"=>$datos,"encuesta"=>$encuesta,"barrios"=>$barrios];
@@ -220,22 +238,31 @@ class TurismoInternoController extends Controller
     
     public function postGuardareditarhogar(Request $request){
         
-        $validator=\Validator::make($request->all(),[
+         $validator=\Validator::make($request->all(),[
                 
-                'Fecha_aplicacion'=>'required|date',
-                'Hora_aplicacion'=>'required',
+                'Fecha_aplicacion'=>'required|date|before:tomorrow',
                 'Barrio'=>'required|exists:barrios,id',
                 'Estrato'=>'required|exists:estratos,id',
                 'Direccion'=>'required',
-                'Telefono'=>'required',
+                'Telefono'=>'regex:^([0-9]){7}^',
                 'Nombre_Entrevistado'=>'required',
                 'Celular_Entrevistado'=>'numeric',
                 'Email_Entrevistado'=>'email'
-            ]);
+            ],["Telefono.regex"=>"El telefono debe tener minimos 7 digitos","Fecha_aplicacion.tomorrow"=>"La fecha de aplicacion debe ser menor a la fecha de hoy"]);
             
         if($validator->fails()){
             return ["success"=>false,'errores'=>$validator->errors()];
         }
+        
+        foreach($request->integrantes as $personaux){
+             
+             if($personaux["jefe_hogar"]=="true"){
+                 if($personaux["Edad"]<16){
+                     return ["success"=>false,'errores'=>[["El jefe de hogar debe ser mayor a 15 años"]]];
+                 }
+             }
+             
+         }
         
         $hogar=Hogar::find($request->id);
         $hogar->fecha_realizacion=$request->Fecha_aplicacion;
@@ -274,10 +301,11 @@ class TurismoInternoController extends Controller
              $persona->jefe_hogar=(array_key_exists("jefe_hogar",$personaux))?$personaux["jefe_hogar"]:false;
              $persona->sexo=$personaux["Sexo"];
              $persona->edad=$personaux["Edad"];
-             $persona->celular=$personaux["Celular"];
-             $persona->email=$personaux["Email"];
              $persona->es_viajero=$personaux["Viaje"];
              $persona->nivel_educacion=$personaux["Nivel_Educacion"];
+             $persona->estado_civil_id=$personaux["Civil"];
+             $persona->es_residente=$personaux["Vive"];
+             $persona->ocupacion_id=$personaux["Ocupacion"];
              $persona->hogar_id=$hogar->id;
              $persona->save();
              
@@ -309,112 +337,60 @@ class TurismoInternoController extends Controller
             $q->whereHas('idioma', function($p){
                 $p->where('culture','es');
             })->select('actividad_realizada_id','nombre');
-        }])->get();
+        },"opcionesActividadesRealizadasInternos" =>  function($q){ $q->with(["subOpcionesActividadesRealizadasInternos"]); }])->get();
         
-        $tipoatracciones = Tipo_Atraccion::has('actividadesRealizadas')->where('estado',1)->with(["tipoAtraccionesConIdiomas" => function($q){
-            $q->whereHas('idioma', function($p){
-                $p->where('culture','es');
-            })->select('tipo_atracciones_id','nombre');
-        }, "actividadesRealizadas"])->get();
-        
-        $atracciones = Atraccion_Por_Tipo_Actividad_Realizada::has('atraccione')->with([
-            'atraccione' => function($p){
-                $p->where('estado',1)->with(['sitio'=> function($w){
-                    $w->with(['sitiosConIdiomas' => function($q){
-                        $q->whereHas('idioma', function($x){
-                            $x->where('culture','es');
-                        })->select('sitios_id','nombre');
-                    }]);
-                }]);
-            }
-        ])->get();
-        
-        $atraccionesportal = Atracciones::where('estado',1)->with(['sitio' => function($q){
-            $q->with(['sitiosConIdiomas' => function($p){
-                $p->whereHas('idioma', function($x){
-                    $x->where('culture','es');
-                })->select('sitios_id','nombre');
-            }]);
-        }])->get();
-        
-        $actividades = Actividad_Realizada_Con_Actividad::with([
-            'actividade' => function($p){
-                $p->where('estado',1)->with(["actividadesConIdiomas"=>function($q){
-                    $q->whereHas('idioma', function($x){
-                        $x->where('culture','es');
-                    })->select('actividades_id','nombre');
-                }]);
-            }
-        ])->get();
+    
         
         $viaje = Viaje::where("id","=",$id)->first();
         $encuesta = collect();
+        $datosactividad = [];
+        $datosopciones =  [];
+        $datossub = [];
         if($viaje->ultima_sesion >= 2){
-            $atraccionesP = collect(Atraccion_Visitada_Interno::where('viajes_id', $viaje->id)->where('tipo_atraccion_id',77)->get())->pluck('atraccion_id')->toArray();
-            $atraccionesM = collect(Atraccion_Visitada_Interno::where('viajes_id', $viaje->id)->where('tipo_atraccion_id',117)->get())->pluck('atraccion_id')->toArray();
-            $atraccionesN = collect(Atraccion_Visitada_Interno::where('viajes_id', $viaje->id)->where('tipo_atraccion_id',94)->get())->pluck('atraccion_id')->toArray();
-           
-            $tipoAtraccionesN = collect(Lugar_Visitado_Interno::where('viajes_id',$viaje->id)->where('actividad_realizadas_id',2)->get())->pluck('tipo_atraccion_id')->toArray();
-            $tipoAtraccionesM = collect(Lugar_Visitado_Interno::where('viajes_id',$viaje->id)->where('actividad_realizadas_id',3)->get())->pluck('tipo_atraccion_id')->toArray();
-  
-            $actividadesH = collect(Actividad_Realizada_Viajero::where('viajes_id',$viaje->id)->where('actividades_realizadas_id',8)->get())->pluck('actividad_id')->toArray();
-            $actividadesD = collect(Actividad_Realizada_Viajero::where('viajes_id',$viaje->id)->where('actividades_realizadas_id',10)->get())->pluck('actividad_id')->toArray();
-            $actividadesRelizadas = collect(Actividad_Realizada_Interno::where('viajes_id',$viaje->id)->get())->pluck('actividades_realizadas_id')->toArray();
-            
-            $encuesta = collect();
-            
-            if(count($atraccionesP) > 0){
-                array_push($actividadesRelizadas,1);
-            }
-            
-            if(count($atraccionesN) > 0){
-                array_push($actividadesRelizadas,2);
-                array_push($tipoAtraccionesN,94);
-            }
-            
-            if(count($atraccionesM) > 0){
-                array_push($actividadesRelizadas,3);
-                array_push($tipoAtraccionesM,117);
-            }
-            
-            if(count($actividadesD) > 0){
-                array_push($actividadesRelizadas,10);
-            }
-            
-            if(count($actividadesH) > 0){
-                array_push($actividadesRelizadas,8);
-            }
-            
-            $encuesta['ActividadesRelizadas'] = $actividadesRelizadas;
+
+         $sw = 0;
+         foreach($actividadesrealizadas as $data){
+      
+             if(sizeof($viaje->actividadesRealizadasInternos()->where('id',$data->id)->get()) > 0){
+                     $objeto = $viaje->actividadesRealizadasInternos->where('id',$data->id)->first();
+                      $data["otro"] = $objeto->pivot->otro;
+                 array_push($datosactividad,$data);
+             }
+                
+           if(count($data->opcionesActividadesRealizadasInternos)>0){
+              
+                 $sw = 0;
+                  foreach($data->opcionesActividadesRealizadasInternos as $data2){
+                  
+                       if(sizeof($viaje->opcionesActividadesRealizadasInternos()->where('id',$data2->id)->get())){
+                           $sw = 1;
+                         $objeto = $viaje->opcionesActividadesRealizadasInternos->where('id',$data2->id)->first();
+                         $data2["otro"] = $objeto->pivot->otro;
+                         array_push($datosopciones,$data2);
+                     }
+                      
+                  }
+                 
+                 if($sw == 1){
+
+                      array_push($datosactividad,$data);
+                     
+                 }
+             }
+                   
+             
+         }
          
-            $encuesta['AtraccionesP'] = $atraccionesP;
-            $encuesta['AtraccionesN'] = $atraccionesN;
-            $encuesta['AtraccionesM'] = $atraccionesM;
-            $encuesta['ActividadesD'] = $actividadesD;
-            $encuesta['ActividadesH'] = $actividadesH;
-            $encuesta['TipoAtraccionesN'] = $tipoAtraccionesN;
-            $encuesta['TipoAtraccionesM'] = $tipoAtraccionesM;
-            
-            
-        }else {
-             $encuesta['ActividadesRelizadas'] = [];
          
-            $encuesta['AtraccionesP'] = [];
-            $encuesta['AtraccionesN'] = [];
-            $encuesta['AtraccionesM'] = [];
-            $encuesta['ActividadesD'] = [];
-            $encuesta['ActividadesH'] = [];
-            $encuesta['TipoAtraccionesN'] = [];
-            $encuesta['TipoAtraccionesM'] = [];
+            
+      
         }
         
         $enlaces = collect();
         $enlaces['Actividadesrelizadas'] = $actividadesrealizadas;
-        $enlaces['TipoAtracciones'] = $tipoatracciones;
-        $enlaces['Atracciones'] = $atracciones;
-        $enlaces['AtraccionesPortal'] = $atraccionesportal;
-        $enlaces['Actividades'] = $actividades;
-        
+        $encuesta["ActividadesRelizadas"] = $datosactividad;
+         $encuesta["OpcionesActividades"] = $datosopciones;  
+         $encuesta["SubOpcionesActividades"] = $datossub;  
         $retorno = [
             'Enlaces' => $enlaces,
             'encuesta' => $encuesta
@@ -423,181 +399,100 @@ class TurismoInternoController extends Controller
         return $retorno;
     }
     
-    
     public function postCrearestancia(Request $request){
         
         $validator = \Validator::make($request->all(), [
 			'Id' => 'required|exists:viajes,id',
 			'ActividadesRelizadas' => 'required',
-			'ActividadesRelizadas.*' => 'exists:actividades_realizadas,id',
-			'AtraccionesP.*' => 'exists:atracciones_por_tipo_actividades_realizadas,atraccion_id',
-			'TipoAtraccionesN.*' => 'exists:actividades_realizadas_atraccion,tipo_atraccion_id',
-			'AtraccionesN.*' => 'exists:atracciones_por_tipo_actividades_realizadas,atraccion_id',
-			'TipoAtraccionesM.*' => 'exists:actividades_realizadas_atraccion,tipo_atraccion_id',
-			'AtraccionesM.*' => 'exists:atracciones_por_tipo_actividades_realizadas,atraccion_id',
-			'ActividadesH.*' => 'exists:actividades_realizadas_con_actividades,actividad_id',
-			'ActividadesD.*' => 'exists:actividades_realizadas_con_actividades,actividad_id',
+			'ActividadesRelizadas.id*' => 'exists:actividades_realizadas,id',
+			'OpcionesActividades.id*' => 'exists:opciones_actividades_realizadas_interno,id',
+			'SubOpcionesActividades.id*' => 'exists:sub_opciones_actividades_realizadas_interno,id',
+		
     	],[
        		'Id.required' => 'Debe seleccionar el viaje  a realizar no se encuentra.',
        		'Id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',
        		'ActividadesRelizadas.required' => 'Debe seleccionar por lo menos una actividad realizada.',
        		'ActividadesRelizadas.*.exists' => 'Alguna de las actividades realizadas no se encuentra registrada en el sistema.',
-       		'AtraccionesP.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'TipoAtraccionesN.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'TipoAtraccionesM.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'AtraccionesN.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'AtraccionesM.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'ActividadesH.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
-       		'ActividadesD.*.exists' => 'Alguna de los elementos seleccionados no se encuentra registrado en el sistema.',
+       		'OpcionesActividades.*.exists' => 'Alguna de las opciones actividades realizadas no se encuentra registrada en el sistema.',
+       		'SubOpcionesActividades.*.exists' => 'Alguna de las subopciones actividades realizadas no se encuentra registrada en el sistema.',
+       	
     	]);
        
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
+		
+		
 		$viaje = Viaje::find($request->Id);
 		
-		if(in_array(23,$request->ActividadesRelizadas)){
+
+		if(collect($request->ActividadesRelizadas)->where("id",23)->count() > 0){
 		    if( count($request->ActividadesRelizadas) > 1 ){
 		        return ["success" => false, "errores" => [["Si selecciona la opción ninguna no puede seleccionar otras actividades."]] ];    
 		    }
 		}
 		
-		if(in_array(1,$request->ActividadesRelizadas)){
-		    if(!isset($request->AtraccionesP) || count($request->AtraccionesP)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos una playa."]] ];    
-		    }
+		foreach($request->ActividadesRelizadas as $actividad){
+		    $opciones = Opcion_Actividad_Realizada::where("actividad_realizada_id",$actividad["id"])->get();
+		    
+	            if(sizeof($opciones) > 0 ){
+	                  if(collect($request->OpcionesActividades)->where("actividad_realizada_id",$actividad["id"])->count() == 0){
+    		           
+    		             return ["success" => false, "errores" => [["Si selecciona la opción ".$actividad["actividades_realizadas_con_idiomas"][0]["nombre"]." debe elegir alguna opcíon de segundo nivel"]],"opcion"=>$request->OpcionesActividades,"sd"=> $actividad]; 
+	                }
+	            }
+		    
 		}
-		
-		if(in_array(2,$request->ActividadesRelizadas)){
-		    if(!isset($request->TipoAtraccionesN) || count($request->TipoAtraccionesN)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos uno de los parques,rios."]] ];    
-		    }else if(in_array(94,$request->TipoAtraccionesN)){
-		        if(!isset($request->AtraccionesN) || count($request->AtraccionesN)==0 ){
-		            return ["success" => false, "errores" => [["Debe seleccionar por lo menos un parque."]] ];
-		        }
-		    }
-		}
-		
-		if(in_array(3,$request->ActividadesRelizadas)){
-		    if(!isset($request->TipoAtraccionesM) || count($request->TipoAtraccionesM)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos una visitas a museos, santuarios, ect."]] ];    
-		    }else if(in_array(117,$request->TipoAtraccionesM)){
-		        if(!isset($request->AtraccionesM) || count($request->AtraccionesM)==0 ){
-		            return ["success" => false, "errores" => [["Debe seleccionar por lo menos un museo."]] ];
-		        }
-		    }
-		}
-		
-		if(in_array(8,$request->ActividadesRelizadas)){
-		    if(!isset($request->ActividadesH) || count($request->ActividadesH)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos una hacienda."]] ];    
-		    }
-		}
-		
-		if(in_array(10,$request->ActividadesRelizadas)){
-		    if(!isset($request->ActividadesD) || count($request->ActividadesD)==0 ){
-		        return ["success" => false, "errores" => [["Debe seleccionar por lo menos un deporte."]] ];    
-		    }
-		}
-		
 		
 		$sw = 0;
+	    $viaje->actividadesRealizadasInternos()->detach();
+	    $viaje->opcionesActividadesRealizadasInternos()->detach();
+	    $viaje->subOpcionesActividadesRealizadasInternos()->detach();
+
 		if($viaje->ultima_sesion >= 2){
 		    $sw =1;
-		  
-		    Atraccion_Visitada_Interno::where('viajes_id', $viaje->id)->delete();
-		    Lugar_Visitado_Interno::where('viajes_id', $viaje->id)->delete();
-		    Actividad_Realizada_Viajero::where('viajes_id', $viaje->id)->delete();
-		    Actividad_Realizada_Interno::where('viajes_id', $viaje->id)->delete();
+	
+	         
 		}else{
 		    $viaje->ultima_sesion = 2;
 		}
 		
 		foreach($request->ActividadesRelizadas as $actividad){
-		    switch($actividad){
-		        case 1:
-		            foreach ($request->AtraccionesP as $value) {
-		                Atraccion_Visitada_Interno::create([
-	                        'atraccion_id' => $value,
-	                        'viajes_id' => $viaje->id,
-	                        'actividades_realizadas_id' => $actividad,
-	                        'tipo_atraccion_id' => 77
-	                    ]);
-		            }
-		            break;
-	            case 2:
-	                foreach($request->TipoAtraccionesN as $tipoAtrac){
-	                    if($tipoAtrac == 94){
-	                        foreach($request->AtraccionesN as $value){
-	                            Atraccion_Visitada_Interno::create([
-        	                        'atraccion_id' => $value,
-        	                        'viajes_id' => $viaje->id,
-        	                        'actividades_realizadas_id' => $actividad,
-        	                        'tipo_atraccion_id' => $tipoAtrac
-        	                    ]);
-	                        }
-	                    }else{
-	                       
-	                        Lugar_Visitado_Interno::create([
-                                'actividad_realizadas_id' => $actividad,
-                                'tipo_atraccion_id' => $tipoAtrac,
-                                'viajes_id' => $viaje->id,
-                                'estado' => 1
-                            ]);
-	                    }
-	                }
-	                break;
-                case 3:
-                    foreach($request->TipoAtraccionesM as $tipoAtrac){
-                        if($tipoAtrac == 117){
-                            foreach($request->AtraccionesM as $value){
-                                Atraccion_Visitada_Interno::create([
-        	                        'atraccion_id' => $value,
-        	                        'viajes_id' => $viaje->id,
-        	                        'actividades_realizadas_id' => $actividad,
-        	                        'tipo_atraccion_id' => $tipoAtrac
-        	                    ]);
-                            }
-                        }else{
-                           
-                            Lugar_Visitado_Interno::create([
-                                'actividad_realizadas_id' => $actividad,
-                                'tipo_atraccion_id' => $tipoAtrac,
-                                'viajes_id' => $viaje->id,
-                                'estado' => 1
-                            ]);
-                        }
-                    }
-                    break;
-                case 8:
-                    foreach($request->ActividadesH as $tipoActi){
-                        Actividad_Realizada_Viajero::create([
-                            'actividades_realizadas_id' => $actividad,
-                            'actividad_id' => $tipoActi,
-                            'viajes_id' => $viaje->id
-                        ]);
-                    }
-                    
-                    break;
-                case 10:
-                    foreach($request->ActividadesD as $tipoActi){
-                        Actividad_Realizada_Viajero::create([
-                            'actividades_realizadas_id' => $actividad,
-                            'actividad_id' => $tipoActi,
-                            'viajes_id' => $viaje->id
-                        ]);
-                    }
-                    break;
-                default:
-                    Actividad_Realizada_Interno::create([
-                        'actividades_realizadas_id' => $actividad,
-                        'viajes_id' => $viaje->id,
-                        'estado' => 1
-                    ]);
-                    break;
-		    }
+		  
+	            if(sizeof(Opcion_Actividad_Realizada::where("actividad_realizada_id",$actividad["id"])->get()) == 0 ){
+	                 if(collect($actividad)->has("otro")){
+	                        $viaje->actividadesRealizadasInternos()->attach($actividad["id"],['otro' => $actividad['otro']]);
+	                 }else{
+	                      $viaje->actividadesRealizadasInternos()->attach($actividad["id"]);
+	                 }
+	            }
+		    
 		}
+			if($request->OpcionesActividades != null){
+            		foreach($request->OpcionesActividades as $actividad){
+            	            if(sizeof(Sub_Opcion_Actividad_Realizada_Interno::where("opciones_actividades_realizada_interno_id",$actividad["id"])->get()) == 0 ){
+            	                if(collect($actividad)->has("otro")){
+            	                $viaje->opcionesActividadesRealizadasInternos()->attach($actividad["id"],['otro' => $actividad['otro']]);
+            	            
+            	                }else{
+            	                    
+            	                    $viaje->opcionesActividadesRealizadasInternos()->attach($actividad["id"]);
+            	                        }
+            	                }
+            		    
+            		}
+			}
+		if($request->SubOpcionesActividades != null){
+		
+        foreach($request->SubOpcionesActividades as $actividad){
+	       
+	        $viaje->subOpcionesActividadesRealizadasInternos()->attach($actividad["id"]);
+
+		    
+		}
+		}
+		
 		$viaje->save();
 		
 		$historial=new Historial_Encuesta_Interno();
@@ -901,7 +796,7 @@ class TurismoInternoController extends Controller
                 'serviciosPaquetes.*'=>'required|numeric|exists:servicios_paquete_interno,id',
                 'lugarAgencia'=>'required_if:viajePaquete,1|exists:opciones_lugares,id',
                 'modalidadPago'=>'required_if:viajeExcursion.divisas_id,39',
-            ]);
+            ], [ "id.required"=>"Error 1", "id.exists"=> "Error 2" ]);
             
         if($validator->fails()){
             return [ "success"=>false,'errores'=>$validator->errors() ];
@@ -1311,10 +1206,10 @@ class TurismoInternoController extends Controller
             ->where('viajes_id', $viaje->id)->where("destino_principal",true)
             ->where("departamentos.id",1411)->first();
             if($principal == null){
-                Atraccion_Visitada_Interno::where('viajes_id', $viaje->id)->delete();
-    		    Lugar_Visitado_Interno::where('viajes_id', $viaje->id)->delete();
-    		    Actividad_Realizada_Viajero::where('viajes_id', $viaje->id)->delete();
-    		    Actividad_Realizada_Interno::where('viajes_id', $viaje->id)->delete();
+                
+                 $viaje->actividadesRealizadasInternos()->detach();
+        	     $viaje->opcionesActividadesRealizadasInternos()->detach();
+        	     $viaje->subOpcionesActividadesRealizadasInternos()->detach();
                 
             }
             
