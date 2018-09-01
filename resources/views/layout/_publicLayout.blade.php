@@ -53,6 +53,15 @@
         .tiles.tiles-mini .tile {
             border: 2px solid transparent!important;
         }
+        .icon-lg{
+            font-size: 2rem;
+            margin: 0 .5rem;
+        }
+        footer ul{
+            list-style: none;
+            margin: 0;
+            padding-left: 1rem;
+        }
     </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -369,9 +378,6 @@
 	        <div class="container">
     	        <div class="row">
     	            <div class="col-xs-12 col-sm-6 col-md-4">
-    	                <h3></h3>
-    	            </div>
-    	            <div class="col-xs-12 col-sm-6 col-md-4">
     	                <h3>Información de contacto</h3>
     	                
     	                <ul class="list-footer">
@@ -379,14 +385,23 @@
                             <li><span class="glyphicon glyphicon-map-marker"></span> Calle 24 N° 3-99. Torre empresarial Banco de Bogotá<br>Oficina 9-10</li>
                         </ul>
     	            </div>
-    	            <div class="col-xs-12 col-sm-6 col-md-4">
+    	            <div class="col-xs-12 col-sm-6 col-md-4 text-center">
     	                <h3>Síguenos en nuestras redes sociales</h3>
     	                <div class="text-center">
-    	                    <a href="#" target="_blank" rel="noreferrer noopener"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
-            				<a href="#" target="_blank" rel="noreferrer noopener"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
-            				<a href="#" target="_blank" rel="noreferrer noopener"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
+    	                    <a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
+            				<a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
+            				<a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
     	                </div>
     	                <p>O descarga nuestra aplicación móvil</p>
+    	            </div>
+    	            <div class="col-xs-12 col-sm-6 col-md-4">
+    	                <h3>Enlaces de interés</h3>
+    	                <ul>
+    	                    <li><a href="http://www.citur.gov.co/" target="_blank" rel="noreferrer noopener">Centro de Información Turística de Colombia CITUR</a></li>
+    	                    <li><a href="http://www.mincit.gov.co/" target="_blank" rel="noreferrer noopener">Ministerio de Comercio, Industria y Turismo de Colombia</a></li>
+    	                    <li><a href="http://www.magdalena.gov.co/" target="_blank" rel="noreferrer noopener">Gobernación de Magdalena</a></li>
+    	                    <li><a href="http://www.santamarta.gov.co/" target="_blank" rel="noreferrer noopener">Alcaldía Distrital de Santa Marta</a></li>
+    	                </ul>
     	                
     	            </div>
     	        </div>
@@ -405,6 +420,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{asset('/js/public/script-main.js')}}"></script>
+    <!--<script src="{{asset('/js/vibrant.js')}}"></script>-->
+    <!--<script src="{{asset('/js/public/run_vibrant.js')}}"></script>-->
     @yield("javascript")
     <script type="text/javascript">
         if ('serviceWorker' in navigator) {
