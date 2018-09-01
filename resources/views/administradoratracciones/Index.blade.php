@@ -175,7 +175,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="idioma">Elija un idioma</label>
-                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|filter:{id: idioma.id}:true" class="form-control">
+                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|idiomaFilter:atraccionEdit.sitio.sitios_con_idiomas" class="form-control">
                             <option value="">Seleccione un idioma</option>
                         </select>
                     </div>

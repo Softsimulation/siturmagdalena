@@ -28,8 +28,6 @@ Route::controller('/grupoviaje','GrupoViajeController');
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 
-Route::get('/administradoratracciones/datos-idioma/{id}/{idIdioma}', 'AdministradorAtraccionController@getDatosIdioma');
-
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
 Route::controller('/administradoractividades', 'AdministradorActividadesController');
@@ -69,7 +67,11 @@ Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
 
 Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
 Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
+Route::get('/llenarEncuestaAdHoc/{idEncuesta}', 'EncuestaDinamicaCtrl@anonimos' );
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
+
+
+
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');

@@ -607,4 +607,84 @@ class NoticiaController extends Controller
         
         
     }
+    public function postEliminarmultimedia(Request $request)
+    {
+        //return $request->all();
+        
+        $multimedia_noticia = Multimedia_noticia::where('id',$request[0])->first();
+        if($multimedia_noticia == null){
+            return ["success"=> false];
+        }
+        $multimedia_idioma = Multimedia_noticia_Idioma::where('multimedias_noticias_id',$multimedia_noticia->id)->delete();
+        \File::delete(public_path() . $multimedia_noticia->ruta);
+        return ["success"=> true];
+    }
+    public function postEditarmultimedia(Request $request)
+    {
+        //return $request->all();
+        
+        $validator = \Validator::make($request->all(), [
+            'texto_alternativo' => 'string|min:1|max:255|required',
+            'idMultimedia' => 'required|exists:multimedias_noticias,id',
+            'portadaNoticia' => 'required|numeric|min:1|max:2',
+            'Galeria.*' => 'mimes:jpg,jpeg,png',
+            
+        ],[
+            'texto_alternativo.string' => 'El texto alternativo debe ser de tipo string.',
+            'texto_alternativo.min' => 'El texto alternativo debe ser mínimo de 1 caracter.',
+            'texto_alternativo.max' => 'El texto alternativo debe ser maximo de 255 caracteres.',
+            'texto_alternativo.required' => 'El texto alternativo es requerida.',
+            'idMultimedia.required' => 'No se encuentra registrada en el sistema la multimedia seleccionada.',
+            'idMultimedia.exists' => 'No se encuentra registrada en el sistema la multimedia seleccionada.',
+            'portadaNoticia.required' => 'Debe seleccionar si la imagen es portada.',
+            'portadaNoticia.numeric' => 'Favor recargar la página.',
+            'portadaNoticia.min' => 'Favor recargar la página.',
+            'portadaNoticia.max' => 'Favor recargar la página.',
+            'Galeria.*.mimes' => 'subir solo archivos jpg,png o jgpe',
+            ]
+        );
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        if($request->Galeria != null){
+            $tamaño = filesize($request->Galeria);
+            if($tamaño/1024 > 2000){
+                $error = [];
+                $error["Galeria"][0] = "Tamaño total de los adjuntos exceden los 10MB";
+                return ["success"=>false,"errores"=>$error];
+            } 
+        }
+        
+        $multimedia_noticia = Multimedia_noticia::where('id',$request->idMultimedia)->first();
+        $multimedia_noticia->es_portada = intval($request->portadaNoticia) == 1 ? true : false;
+        if(intval($request->portadaNoticia) == 1){
+            $consultaMultimedia = Multimedia_noticia::where('noticia_id',$multimedia_noticia->noticia_id)->where('es_portada',1)->first();
+            if($consultaMultimedia != null){
+                $consultaMultimedia->es_portada = 0;
+                $consultaMultimedia->save();
+            }
+        }
+        if($request->Galeria != null){
+            \File::delete(public_path() . $multimedia_noticia->ruta);
+            $date = Carbon::now(); 
+            $nombrex = $multimedia_noticia->noticia_id."-".date("Ymd-H:i:s").".".$request->Galeria->getClientOriginalExtension();
+           \Storage::disk('Noticias')->put($nombrex,  \File::get($request->Galeria));
+            $multimedia_noticia->ruta = "/Noticias/".$nombrex;
+            $multimedia_noticia->user_update = $this->user->username;
+            $multimedia_noticia->updated_at = Carbon::now();
+            
+            
+        }
+        $multimedia_noticia->save();
+        $multimedia_idioma = Multimedia_noticia_Idioma::where('multimedias_noticias_id',$multimedia_noticia->id)->where('idiomas_id',1)->first();
+        $multimedia_idioma->texto_alternativo = $request->texto_alternativo;
+        $multimedia_idioma->save();
+        
+        $multimediaRetornar = [];
+        $multimediaRetornar["ruta"] = $multimedia_noticia->ruta;
+        $multimediaRetornar["portada"] = $multimedia_noticia->es_portada;
+        $multimediaRetornar["texto"] = $multimedia_idioma->texto_alternativo;
+        
+        return ["success"=> true, "multimedia"=>$multimediaRetornar];
+    }
 }

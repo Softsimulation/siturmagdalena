@@ -1,6 +1,21 @@
 angular.module('interno.viajesrealizados', [])
 
 .controller('viajes', function ($scope, serviInterno) {
+    
+     
+    $scope.optionFecha = {
+        calType: 'gregorian',
+        format: 'YYYY-MM-DD',
+        zIndex: 1060,
+        autoClose: true,
+        default: null,
+        gregorianDic: {
+            title: 'Fecha',
+            monthsNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            daysNames: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            todayBtn: "Hoy"
+        }
+    };
 
 
     $scope.encuesta = {}

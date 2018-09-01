@@ -116,6 +116,39 @@ app.factory('destinosServi', ['$http', '$q', function ($http, $q){
                 defered.reject(err);
             });
             return promise;
+        },
+        getDeletesector: function (id){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/administradordestinos/deletesector/'+id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
+        postEditaridiomasector: function (data){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administradordestinos/editaridiomasector', data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
+        postCrearsector: function (data){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administradordestinos/crearsector', data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
         }
     }
 }])

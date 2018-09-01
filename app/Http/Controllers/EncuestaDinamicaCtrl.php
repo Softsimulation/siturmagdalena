@@ -28,6 +28,7 @@ use App\Models\EncuestaDinamica\Sub_pregunta;
 use App\Models\EncuestaDinamica\Idiomas_sub_pregunta;
 use App\Models\EncuestaDinamica\Opciones_sub_preguntas_encuestado;
 use App\Models\EncuestaDinamica\Opciones_sub_preguntas_has_sub_pregunta;
+use App\Models\EncuestaDinamica\Tipos_encuestas_dinamica;
 
 use Excel;
 
@@ -47,6 +48,7 @@ class EncuestaDinamicaCtrl extends Controller
         
         
     }
+  
     public function getListado(){ 
         return View("/EncuestaDinamica/listado"); 
     }
@@ -78,7 +80,7 @@ class EncuestaDinamicaCtrl extends Controller
     }
     
     ///////// get listado de encuestas llenas por usuarios
-    public function getListadoencuestas($id){ 
+    public function getListadoencuestas($id, Request $request){ 
         
         $encuesta = Encuestas_dinamica::where("id", $id)->with([
                                                       "idiomas"=>function($q){ $q->where("idiomas_id",1); },
@@ -90,23 +92,33 @@ class EncuestaDinamicaCtrl extends Controller
         }
         
         
-        return [ "success"=>true, "encuesta"=>$encuesta ];
+        return [ "success"=>true, "encuesta"=>$encuesta, "host"=> $request->getSchemeAndHttpHost() ];
     }
     
    ///listado de encuestas dinamicas
-    public function getListadoencuestasdinamicas(){
+    public function getListadoencuestasdinamicas(Request $request){
         return  [ 
-                    "encuestas"=> Encuestas_dinamica::where("estado",true)->with([ "estado", "idiomas"=>function($q){ $q->with("idioma"); }])->orderBy("id")->get(),
+                    "encuestas"=> Encuestas_dinamica::where("estado",true)->orderBy("id","DES")->with([ "estado", "tipo", "idiomas"=>function($q){ $q->with("idioma"); }])->get(),
                     "idiomas"=> Idioma::get(),
-                    "estados"=> Estados_encuesta::where("id","!=",1)->get()
+                    "estados"=> Estados_encuesta::where("id","!=",1)->get(),
+                    "tipos"=> Tipos_encuestas_dinamica::get(),
+                    "host"=> $request->getSchemeAndHttpHost()
                 ];
     }
     
     public function postAgregarencuesta(Request $request){
         
         $validate = \ Validator::make($request->all(),
-                    [ "nombre" => "required" ],
-                    [ "nombre.required"=> "El nombre es  requerido" ]
+                    [ 
+                        "nombre" => "required",
+                        "tipos_encuestas_dinamica_id" => "required|exists:tipos_encuestas_dinamicas,id",
+                    ],
+                    [ 
+                        "nombre.required"=> "El nombre es  requerido",
+                        "tipos_encuestas_dinamica_id.required"=> "El campo tipo de encuesta es  requerido",
+                        "tipos_encuestas_dinamica_id.exists"=> "El campo tipo de encuesta no existe en el sistema."
+                        
+                    ]
                 );
             
         if ($validate->fails())
@@ -116,6 +128,7 @@ class EncuestaDinamicaCtrl extends Controller
         
         $encuesta = new Encuestas_dinamica();
         $encuesta->estados_encuestas_id = 1;
+        $encuesta->tipos_encuestas_dinamica_id = $request->tipos_encuestas_dinamica_id;
         $encuesta->estado = true;
         $encuesta->save();
         
@@ -129,8 +142,9 @@ class EncuestaDinamicaCtrl extends Controller
         
         return [
                  "success"=>true, 
-                 "data"=> Encuestas_dinamica::where([ ["id",$encuesta->id] ])->with([ "estado","idiomas"=>function($q){ $q->with("idioma"); }])->first() 
+                 "data"=> Encuestas_dinamica::where([ ["id",$encuesta->id] ])->with([ "estado", "tipo","idiomas"=>function($q){ $q->with("idioma"); }])->first() 
                 ];
+                
     }
     
     /*
@@ -762,7 +776,7 @@ class EncuestaDinamicaCtrl extends Controller
         $index = array_search( $request->id, $secciones );
         $seccion = ($index+1) < count($secciones) ? $secciones[$index+1] : null;
         
-        $ruta = "/encuestaAdHoc/" . ( $seccion==null ? $encuesta->encuestas_id . "/registro" : $encuesta->codigo . "?seccion=".$seccion );
+        $ruta = $seccion==null ?  "/" :  "/encuestaAdHoc/" . $encuesta->codigo . "?seccion=".$seccion;
         $termino = $seccion==null ? true: false;
         
         if($seccion!=null){
@@ -1031,6 +1045,34 @@ class EncuestaDinamicaCtrl extends Controller
     }
     
     
+    
+    //////////////////////////////  anonimos /////////////////////////////////////////////
+    
+    public function anonimos($idEncuesta){
+        
+        $encuesta = Encuestas_dinamica::where([ ["id",$idEncuesta ], ["tipos_encuestas_dinamica_id",1], ["estados_encuestas_id",2 ],["estado",true] ])->first();
+        
+        if($encuesta){
+            $usuario = new Encuestas_usuario();
+            $usuario->encuestas_id = $encuesta->id;
+            $usuario->estados_encuestas_usuarios_id = 1;
+            $usuario->nombres = "ANONIMO";
+            $usuario->apellidos = "";
+            $usuario->email = "ANONIMO@ANONIMO.COM";
+            $usuario->telefono = "0000000000";
+            $usuario->ultima_seccion = 0;
+            $usuario->codigo = $this->generarCodigo();
+            $usuario->estado = true;
+            $usuario->save();
+            
+            $ruta = "/encuestaAdHoc/" . $usuario->codigo;
+            
+            return redirect($ruta);
+        }
+        
+        return "La encuesta no existe";
+    }
+    
     ////////////////////////////  Registro de usuarios a encuestas ///////////////////////////
     
     
@@ -1038,7 +1080,7 @@ class EncuestaDinamicaCtrl extends Controller
         
         $idIdioma = 1;
         
-        $encuesta = Encuestas_dinamica::where([ ["id",$encuesta], ["estado",true] ])
+        $encuesta = Encuestas_dinamica::where([ ["id",$encuesta], ["tipos_encuestas_dinamica_id",2], ["estado",true] ])
                             ->with(["idiomas"=>function($q) use($idIdioma) { $q->where("idiomas_id",$idIdioma); } ])
                             ->first();
         
@@ -1087,11 +1129,11 @@ class EncuestaDinamicaCtrl extends Controller
         $usuario->email = $request->email;
         $usuario->telefono = $request->telefono;
         $usuario->ultima_seccion = 0;
-        $usuario->codigo = encrypt( $usuario->id ."%%%". $usuario->email );
+        $usuario->codigo = $this->generarCodigo();
         $usuario->estado = true;
         $usuario->save();
         
-        $ruta = "/encuestaAdHoc/" . $encuesta->id . "?cod=" . $usuario->codigo;
+        $ruta = "/encuestaAdHoc/" . $usuario->codigo;
         
         return [ "success"=>true , "ruta"=>$ruta ];
     }
@@ -1443,5 +1485,13 @@ class EncuestaDinamicaCtrl extends Controller
         
     }
     
+    
+    
+    /////////////Generar Codigo Unico/////////////////
+    
+    private function generarCodigo(){
+        $fecha = \Carbon\Carbon::createFromTimestamp(-1)->toDateTimeString();;
+        return encrypt( $fecha );
+    }
     
 }

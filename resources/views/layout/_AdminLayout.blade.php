@@ -199,6 +199,9 @@
             .ADMdtp-box footer .calTypeContainer p{
                 display: none;
             }
+            .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+                width: 100% !important;
+            }
     </style>
 </head>
 <body @yield('app')  @yield('controller') >
@@ -295,18 +298,25 @@
 							   
                            <div class="menu">
 									<ul id="menu" >
+									    
+									     <li id="menu-academico" ><a href="#"><span>Promoción</span> </span></a>
+    										  <ul id="menu-academico-sub" >
+    										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administradoractividades')}}">Administrar Actividades</a></li>
+    										     <li id="menu-academico-avaliacoes" ><a href="{{asset('administradoratracciones')}}">Administrar Atracciones</a></li>
+    										  </ul>
+									     </li>
 										
 										 <li id="menu-academico" ><a href="#"> <span>Turismo Receptor</span></span></a>
 										   <ul id="menu-academico-sub" >
-											<ligv id="menu-academico-avaliacoes" ><a href="{{asset('grupoviaje/listadogrupos')}}"> Grupo de viajes</a></li>
+											<li id="menu-academico-avaliacoes" ><a href="{{asset('grupoviaje/listadogrupos')}}"> Grupo de viajes</a></li>
 											<li id="menu-academico-boletim" ><a href="{{asset('turismoreceptor/listadoencuestas')}}">Listado de encuestas</a></li>
 											
 											
 										  </ul>
 										</li>
-										 <!--<li id="menu-academico" ><a href="{{asset('temporada')}}"> <span>Turismo Interno y Emisor</span></a>
+										 <li id="menu-academico" ><a href="{{asset('temporada')}}"> <span>Turismo Interno y Emisor</span></a>
 										
-										 </li>-->
+										 </li>
 										 
 									<li id="menu-academico" ><a href="#"> <span>Oferta y Empleo</span></a>
 											 <ul id="menu-academico-sub" >
@@ -320,6 +330,12 @@
 										
 											  </ul>
 										 </li>
+										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
+    										  <ul id="menu-academico-sub" >
+    										    <li id="menu-academico-avaliacoes" ><a href="{{asset('sostenibilidadhogares/encuestas')}}">Hogares</a></li>
+    										    <li id="menu-academico-avaliacoes" ><a href="{{asset('sostenibilidadpst/encuestas')}}">PST</a></li>
+    										  </ul>
+									     </li>
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
 										  <ul id="menu-academico-sub" >
 										    <li id="menu-academico-avaliacoes" ><a href="{{asset('administrarpaises')}}">Paises</a></li>
@@ -371,13 +387,10 @@
    
    
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    
         <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
-        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-        <!--<script src="{{secure_asset('/Content/bootstrap_material/dist/js/material.min.js')}}"></script>
-        <script src="{{secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')}}"></script>-->
-        <script src="{{secure_asset('/js/moment-with-locales.min.js')}}"></script>
-        <script src="{{secure_asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
+        <script src="{{asset('/js/moment-with-locales.min.js')}}"></script>
+        <script src="{{asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
         <script src="{{asset('/js/plugins/bootstrap.min.js')}}"></script>
         <script src="{{asset('/js/plugins/ripples.min.js')}}"></script>
         <script src="{{asset('/js/plugins/sweetalert.min.js')}}"></script>

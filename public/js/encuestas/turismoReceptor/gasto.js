@@ -118,7 +118,7 @@ angular.module('receptor.gasto', ['ui.select'])
     $scope.guardar = function(){
         
         if(!$scope.GastoForm.$valid){
-            swal("Error","Corrija los errores","error");
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return ;
         }
         if($scope.encuestaReceptor.ViajoDepartamento ==1){

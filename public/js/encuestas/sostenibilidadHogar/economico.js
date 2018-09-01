@@ -48,6 +48,7 @@ angular.module('sostenibilidadHogar.economico', [])
     $scope.guardar = function(){
         
         if( !$scope.datosForm.$valid || $scope.encuesta.sectoresTurismo.length == 0 || ($scope.encuesta.sectoresEconomia.length == 0 && $scope.encuesta.sectoresTurismo.indexOf(6) == -1 && $scope.encuesta.sectoresTurismo.length > 0 )  ){
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         

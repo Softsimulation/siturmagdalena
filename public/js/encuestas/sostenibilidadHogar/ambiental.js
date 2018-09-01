@@ -63,7 +63,7 @@ angular.module('ambiental', [])
     $scope.guardar = function(){
         
         if(!$scope.ambientalForm.$valid){
-            swal("Error","Corrija los errores","error");
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         

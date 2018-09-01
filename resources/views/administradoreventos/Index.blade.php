@@ -123,7 +123,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <ul class="media-list">
-                    <li dir-paginate="evento in eventos | filter:prop.search | itemsPerPage:10" pagination-id="pagination_eventos" class="media">
+                    <li dir-paginate="evento in eventos | filter:busquedaEvento(prop.search) | itemsPerPage:10" pagination-id="pagination_eventos" class="media">
                         <div class="media-left">
                             <a href="/administradoreventos/editar/@{{evento.id}}">
                                 <img class="media-object" style="width: 400px; height: 200px;" 
@@ -132,7 +132,7 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">@{{evento.eventos_con_idiomas[0].nombre}} - @{{evento.eventos_con_idiomas[0].edicion}}</h4>
+                            <h4 class="media-heading">@{{evento.eventos_con_idiomas[0].nombre}} @{{evento.eventos_con_idiomas[0].edicion != null ? '-':''}} @{{evento.eventos_con_idiomas[0].edicion}}</h4>
                             <p class="text-justify">
                                 @{{evento.eventos_con_idiomas[0].descripcion | limitTo:400}}...
                             </p>
@@ -146,7 +146,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="alert alert-warning" role="alert" ng-show="eventos.length == 0 || (eventos|filter:prop.search).length == 0">No hay resultados disponibles <span ng-show="(eventos|filter:prop.search).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
+                <div class="alert alert-warning" role="alert" ng-show="eventos.length == 0 || (eventos|filter:busquedaEvento(prop.search)).length == 0">No hay resultados disponibles <span ng-show="(eventos|filter:busquedaEvento(prop.search)).length == 0">para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para ver todos los resultados.</span></div>
             </div>
             
         </div>
@@ -175,7 +175,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="idioma">Elija un idioma</label>
-                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|filter:{id: idioma.id}:true" class="form-control">
+                        <select ng-model="idiomaEditSelected" ng-options="idioma.id as idioma.nombre for idioma in idiomas|idiomaFilter:eventoEdit.eventos_con_idiomas" class="form-control">
                             <option value="">Seleccione un idioma</option>
                         </select>
                     </div>
