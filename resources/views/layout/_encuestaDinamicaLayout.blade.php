@@ -163,6 +163,8 @@
     </style>
 </head>
 <body ng-app="appEncuestaDinamicaPublic" @yield('Control')>
+    
+    
     <div id="preloader">
         <div>
             <div class="loader"></div>
@@ -171,6 +173,16 @@
             <img src="{{asset('Content/image/logo.min.png')}}" width="200" />
         </div>
     </div>
+    
+    <div class="alert alert-danger" ng-if="errores != null">
+        <label><b>Errores:</b></label>
+        <br />
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
+        </div>
+    </div>
+    
+    
     <header>
         <div class="banner">
             <div class="container">
@@ -215,16 +227,8 @@
     <div class="container" >
         @yield('contenido')
     </div>
-    <!--
-    if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Digitador"))
-    {
-        <footer id="seccion" ng-controller="seccionCtrl">
-            <select class="selectLenguage" style="margin: 0" ng-options="seccion as seccion.nombre for seccion in secciones track by seccion.id" ng-model="seccionSelected">
-                <option value="" selected disabled>Ir a la sección</option>
-            </select>
-        </footer>
-    }
-    -->
+    
+    
 
    
     <script src="{{asset('/js/plugins/angular.min.js')}}"></script>

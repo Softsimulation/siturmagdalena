@@ -39,8 +39,8 @@ class EncuestaDinamicaCtrl extends Controller
     public function __construct()
     {
         
-        $this->middleware('auth');
-        $this->middleware('role:Admin');
+        $this->middleware('auth')->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        $this->middleware('role:Admin')->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -980,9 +980,9 @@ class EncuestaDinamicaCtrl extends Controller
                     break;
                     
             case 2:   
-                    $validaciones[0]["respuesta"] .=  "min:" .$preg->valor_min. "|max:" . $preg->valor_max;
-                    $validaciones[1]["respuesta.min"] =  "$pregunta, en número minimo es " . $preg->valor_min . ".";
-                    $validaciones[1]["respuesta.max"] =  "$pregunta, en número maximo es " . $preg->valor_max . ".";
+                    $validaciones[0]["respuesta"] .=  "min:" .$preg->valor_min. "|max:" . $preg->valor_max . "|numeric";
+                    $validaciones[1]["respuesta.min"] =  "$pregunta, el número minimo es " . $preg->valor_min . ".";
+                    $validaciones[1]["respuesta.max"] =  "$pregunta, el número maximo es " . $preg->valor_max . ".";
                     break;
             
             case 3:        
@@ -1277,6 +1277,7 @@ class EncuestaDinamicaCtrl extends Controller
         
         $encuestaNueva = new Encuestas_dinamica();
         $encuestaNueva->estados_encuestas_id = 1;
+        $encuestaNueva->tipos_encuestas_dinamica_id = $encuesta->tipos_encuestas_dinamica_id;
         $encuestaNueva->estado = true;
         $encuestaNueva->save();
         
@@ -1299,94 +1300,14 @@ class EncuestaDinamicaCtrl extends Controller
             foreach($seccion->preguntas()->get() as $pregunta){
                 
                 $this->DuplicarPregunta($pregunta,$seccionNueva->id);
-                /*
-                $preguntaNueva = new Pregunta();
-                $preguntaNueva->secciones_encuestas_id = $seccionNueva->id;
-                $preguntaNueva->tipo_campos_id = $pregunta->tipo_campos_id;
-                $preguntaNueva->es_requerido = $pregunta->es_requerido;
-                $preguntaNueva->max_length = $pregunta->max_length;
-                $preguntaNueva->valor_max = $pregunta->valor_max;
-                $preguntaNueva->valor_min = $pregunta->valor_min;
-                $preguntaNueva->orden = $pregunta->orden;
-                $preguntaNueva->es_visible = $pregunta->es_visible;
-                $preguntaNueva->estado = $pregunta->estado;
-                $preguntaNueva->save();
-                
-                foreach($pregunta->idiomas()->get() as $item){
-                    $idioma = new Idiomas_pregunta();
-                    $idioma->idiomas_id = $item->idiomas_id;
-                    $idioma->preguntas_id = $preguntaNueva->id;
-                    $idioma->pregunta = $item->pregunta;
-                    $idioma->save();
-                }
-        
-                foreach($pregunta->opciones()->get() as $opcion){   
-                    
-                    $opcionNueva = new Opciones_pregunta();
-                    $opcionNueva->preguntas_id = $preguntaNueva->id;
-                    $opcionNueva->es_otro = $opcion->es_otro;
-                    $opcionNueva->estado = $opcion->estado;
-                    $opcionNueva->save();
-                    
-                    foreach($opcion->idiomas()->get() as $item){
-                        $idioma = new Idiomas_opciones_pregunta();
-                        $idioma->idiomas_id = $item->idiomas_id;
-                        $idioma->opciones_preguntas_id = $opcionNueva->id;
-                        $idioma->nombre = $item->nombre;
-                        $idioma->save();
-                    }
-                }
-                
-                
-                $idsSubpreguntas = [];
-                foreach($pregunta->subPreguntas()->get() as $subPregunta){
-                    
-                    $subPreguntaNueva = new Sub_pregunta();
-                    $subPreguntaNueva->preguntas_id = $preguntaNueva->id;
-                    $subPreguntaNueva->estado = $subPregunta->estado;
-                    $subPreguntaNueva->save();
-                    array_push($idsSubpreguntas, $subPreguntaNueva->id);
-                    
-                    foreach($subPregunta->idiomas()->get() as $item){
-                        $opcion_idioma = new Idiomas_sub_pregunta();
-                        $opcion_idioma->idiomas_id = $item->idiomas_id;
-                        $opcion_idioma->sub_preguntas_id = $subPreguntaNueva->id;
-                        $opcion_idioma->nombre = $item->nombre;
-                        $opcion_idioma->save();
-                    }
-                }
-                
-                foreach($pregunta->OpcionesSubPreguntas()->get() as $opcion){ 
-                    
-                    $opcionNueva = new Opciones_sub_pregunta();
-                    $opcionNueva->preguntas_id = $preguntaNueva->id;
-                    $opcionNueva->estado = $opcion->estado;
-                    $opcionNueva->save();
-                    
-                    foreach($opcion->idiomas()->get() as $item){
-                        $idioma = new Idiomas_opciones_sub_pregunta();
-                        $idioma->idiomas_id = $item->idiomas_id;
-                        $idioma->opciones_sub_preguntas_id = $opcionNueva->id;
-                        $idioma->nombre = $item->nombre;
-                        $idioma->save();
-                    }
-                    
-                    foreach($idsSubpreguntas as $id){
-                       $Opcion_Pregunta = new Opciones_sub_preguntas_has_sub_pregunta();
-                       $Opcion_Pregunta->opciones_sub_preguntas_id = $opcionNueva->id;
-                       $Opcion_Pregunta->sub_preguntas_id = $id;
-                       $Opcion_Pregunta->save();
-                    }
-                    
-                }
-                */
+
             }
             
         }
             
         return [
                  "success"=>true, 
-                 "data"=> Encuestas_dinamica::where([ ["id",$encuestaNueva->id] ])->with([ "estado","idiomas"=>function($q){ $q->with("idioma"); }])->first() 
+                 "data"=> Encuestas_dinamica::where([ ["id",$encuestaNueva->id] ])->with([ "estado","tipo","idiomas"=>function($q){ $q->with("idioma"); }])->first() 
                 ];
         
     }
@@ -1398,7 +1319,6 @@ class EncuestaDinamicaCtrl extends Controller
         
         return [ "success"=>true, "data"=> $this->getDataEncuesta($request->idEncuesta) ];
     }
-    
     
     private function DuplicarPregunta($pregunta,$idSeccion){
         
