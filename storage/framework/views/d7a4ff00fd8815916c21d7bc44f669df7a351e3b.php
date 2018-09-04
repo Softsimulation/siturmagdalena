@@ -298,18 +298,25 @@
 							   
                            <div class="menu">
 									<ul id="menu" >
+									    
+									     <li id="menu-academico" ><a href="#"><span>Promoción</span> </span></a>
+    										  <ul id="menu-academico-sub" >
+    										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administradoractividades')); ?>">Administrar Actividades</a></li>
+    										     <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administradoratracciones')); ?>">Administrar Atracciones</a></li>
+    										  </ul>
+									     </li>
 										
 										 <li id="menu-academico" ><a href="#"> <span>Turismo Receptor</span></span></a>
 										   <ul id="menu-academico-sub" >
-											<ligv id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('grupoviaje/listadogrupos')); ?>"> Grupo de viajes</a></li>
+											<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('grupoviaje/listadogrupos')); ?>"> Grupo de viajes</a></li>
 											<li id="menu-academico-boletim" ><a href="<?php echo e(asset('turismoreceptor/listadoencuestas')); ?>">Listado de encuestas</a></li>
 											
 											
 										  </ul>
 										</li>
-										 <!--<li id="menu-academico" ><a href="<?php echo e(asset('temporada')); ?>"> <span>Turismo Interno y Emisor</span></a>
+										 <li id="menu-academico" ><a href="<?php echo e(asset('temporada')); ?>"> <span>Turismo Interno y Emisor</span></a>
 										
-										 </li>-->
+										 </li>
 										 
 									<li id="menu-academico" ><a href="#"> <span>Oferta y Empleo</span></a>
 											 <ul id="menu-academico-sub" >
@@ -326,6 +333,7 @@
 										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
     										  <ul id="menu-academico-sub" >
     										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('sostenibilidadhogares/encuestas')); ?>">Hogares</a></li>
+    										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('sostenibilidadpst/encuestas')); ?>">PST</a></li>
     										  </ul>
 									     </li>
 									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
@@ -379,13 +387,10 @@
    
    
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    
         <script src="<?php echo e(asset('/js/plugins/angular.min.js')); ?>"></script>
-        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-        <!--<script src="<?php echo e(secure_asset('/Content/bootstrap_material/dist/js/material.min.js')); ?>"></script>
-        <script src="<?php echo e(secure_asset('/Content/bootstrap_material/dist/js/ripples.min.js')); ?>"></script>-->
-        <script src="<?php echo e(secure_asset('/js/moment-with-locales.min.js')); ?>"></script>
-        <script src="<?php echo e(secure_asset('/js/bootstrap-datetimepicker.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/moment-with-locales.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('/js/bootstrap-datetimepicker.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/bootstrap.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/ripples.min.js')); ?>"></script>
         <script src="<?php echo e(asset('/js/plugins/sweetalert.min.js')); ?>"></script>

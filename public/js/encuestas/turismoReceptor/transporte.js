@@ -32,6 +32,7 @@ angular.module('receptor.transporte', ["checklist-model"])
     $scope.guardar = function () {
 
         if (!$scope.transForm.$valid) {
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
 

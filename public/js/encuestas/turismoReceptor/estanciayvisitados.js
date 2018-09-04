@@ -170,7 +170,7 @@ angular.module('receptor.estanciayvisitados', [])
         
         
         if (!$scope.EstanciaForm.$valid || $scope.Validar()) {
-            swal("Error", "corrija los errores", "error");
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return
         }
 

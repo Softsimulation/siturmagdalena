@@ -26,6 +26,28 @@ app.factory("ofertaServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+          guardarEmpleomensual: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/ofertaempleo/guardarempleo',data).success(function (data) {
+                  defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+         cargarDatosEmplomensual: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/ofertaempleo/cargardatosempleo/'+id).success(function (data) {
+                  defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
         guardarEmpCaracterizacion: function (data) {
             var defered = $q.defer();
             var promise = defered.promise;
