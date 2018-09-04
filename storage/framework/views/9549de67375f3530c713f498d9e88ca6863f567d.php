@@ -246,11 +246,15 @@
             border-right: 0;
             border-color: #eee;
         }
-        #filtrosProveedor, #filtrosZonas {
+        #filtrosProveedor {
             background-color: white;
             border-radius: 2px;
+<<<<<<< HEAD
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+=======
             box-shadow: 0 1px 4px rgba(0,0,0,0.2);
             padding-top: 5px;
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
         }
         .panel-group .panel+.panel {
             margin-top: 0;
@@ -274,8 +278,8 @@
          
             #contentMap{
                 position: fixed;
-                width: calc(100% - 350px);
-                margin-left: 350px;
+                width: calc(100% - 300px);
+                margin-left: 300px;
                 height: 100%;
             }
             #contentMap.showed{
@@ -287,7 +291,7 @@
                 top: 0;
                 left: 0;
                 height: 100%;
-                width: 350px;
+                width: 300px;
             }
         }
         
@@ -343,7 +347,7 @@
             
             <div id="filtrosProveedor">
                 <div style="margin-bottom: .5rem;">
-                    <label class="control-label" style="margin-left: 5px;" >Proveedores</label><br/>
+                    <label class="control-label">Proveedores</label><br/>
                     <label class="radio-inline">
                         <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="1" checked> Todos<span style="font-size: 9px;">({{TotalFormales+TotalInformales}})</span>
                     </label>
@@ -374,8 +378,12 @@
                             <div class="checkbox" ng-repeat="it in tiposProveedores" >
                                <label>  
                                       <input type="checkbox" checklist-model="filtro.tipo" checklist-value="it.id" checklist-change="changeTipoProveedor()" > 
+<<<<<<< HEAD
+                                      {{it.tipo_proveedores_con_idiomas[0].nombre}} ({{ getCantidadPorTipo(it.id) }})
+=======
                                       {{it.tipo_proveedores_con_idiomas[0].nombre}} 
                                       <p style="font-size: 11px;" > ({{ getCantidadPorTipo(it.id) }}) </p>
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
                                 </label>
                             </div>
                       </div>
@@ -444,7 +452,7 @@
                 
                 
                 <div class="form-group" >
-                    <label class="control-label" for="sectorF" style="margin-left: 5px;" >Municipios</label>
+                    <label class="control-label" for="sectorF" >Municipios</label>
                     <ui-select multiple ng-model="filtro.municipios" name="sectorF" id="sectorF" theme="bootstrap" sortable="true"  ng-required="true" >
                         <ui-select-match placeholder="Seleccione un municipio">
                             <span>{{$item.nombre}}</span>
@@ -458,6 +466,50 @@
                 </div>
             </div>
             
+<<<<<<< HEAD
+            
+            <hr style="margin: 3%;">
+            
+                <div class="checkbox">
+                   <label><input type="checkbox" ng-model="filtro.verZonas" ng-change="verOcultarZonas()" >Ver zonas</label>
+                </div>
+            
+            <div class="panel-group" ng-if="filtro.verZonas == true">
+            
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                           <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapse5" >Filtrar zonas</a>
+                        </h4>
+                    </div>
+                    <div id="collapse5" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group" >
+                                <label class="control-label" for="sectorF" >Municipios - sector</label>
+                                <ui-select multiple ng-model="filtro.sectores" name="sectorF" id="sectorF" theme="bootstrap" sortable="true"  ng-required="true" >
+                                    <ui-select-match placeholder="Seleccione un sector o municipio">
+                                        <span>{{$item.destino.destino_con_idiomas[0].nombre +' - '+ $item.sectores_con_idiomas[0].nombre}}</span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="t.id as t in (sectores |filter:$select.search)">
+                                        <div class="item-ui-select" > 
+                                            <p><b>Municipio:</b> {{t.destino.destino_con_idiomas[0].nombre}} </p>
+                                            <p><b>Sector:</b> {{t.sectores_con_idiomas[0].nombre}} </p>
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <br>
+                            <div class="form-group" >
+                                <label class="control-label" for="ms" >Encargados</label>
+                                <ui-select multiple ng-model="filtro.encargados" name="ms" id="ms" theme="bootstrap" sortable="true"  ng-required="true" >
+                                    <ui-select-match placeholder="Seleccione los municipios">
+                                        <span ng-bind="$item.codigo"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="t.id as t in (digitadores |filter:$select.search)">
+                                        <span ng-bind="t.codigo" title="{{t.codigo}}"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+=======
             <hr style="margin: 4%;">
             
             <div id="filtrosZonas" >
@@ -502,12 +554,19 @@
                                     </ui-select>
                                 </div>
                                 
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
                             </div>
+                            
                         </div>
                     </div>
+<<<<<<< HEAD
+                </div>
+            
+=======
                 
                 </div>    
                 
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
             </div>
             
             <button class="btn btn-block btn-danger btn-sm" ng-click="limpiarFiltros()"  >
@@ -529,7 +588,11 @@
                           </a>
                           <ul class="dropdown-menu">
                             <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
+<<<<<<< HEAD
+                            <li><a href="/MuestraMaestra/excelinfoperiodo/<?php echo e($periodo->id); ?>" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
+=======
                             <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
                             <li>
                                 <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
                             </li>
@@ -572,7 +635,11 @@
                                 <li><a href ng-click="openModalZona(item)" ><i class="material-icons">edit</i> Ver/Editar</a></li>
                                 <li><a href ng-click="editarPosicionZona(item,$index)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
                                 <li><a href ng-click="eliminarZona(item,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
+<<<<<<< HEAD
+                                <li><a href="/MuestraMaestra/excel/{{item.id}}?tipo={{tipoPro.id}}&categoria={{ filtro.categorias.join() }}" download ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
+=======
                                 <li><a href ng-click="exportarFileExcelZona(item)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
                                 <li><a href="/MuestraMaestra/llenarinfozona/{{item.id}}" ><i class="material-icons">border_color</i> Cargar datos</a></li>
                               </ul>
                             </div>
@@ -706,10 +773,14 @@
             <br>
             <h4>Categoría</h4>
             <ul class="list-details">
+<<<<<<< HEAD
+                <li ng-repeat="it in detalleZona.tiposProveedores">{{it.nombre}}: {{it.cantidad}}</li>
+=======
                 <li ng-repeat="it in detalleZona.tiposProveedores">
                     {{it.nombre}} 
                     <p style="font-size: 11px;margin: 0;" >((Formales: {{it.cantidad[0]}}), ((Informales: {{it.cantidad[1]}})) </p>
                 </li>
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
             </ul>
             
             <br>
@@ -860,7 +931,11 @@
                   </td>
                   <td>{{z.es_generada ? "Si" : "No"}}</td>
                   <td>
+<<<<<<< HEAD
+                    <a href="/MuestraMaestra/excel/{{z.id}}?tipo={{tipoPro.id}}&categoria={{ filtro.categorias.join() }}" download >
+=======
                     <a href  ng-click="exportarFileExcelZona(item)" >
+>>>>>>> 259e57384a2a63487a632a646eff7765abf36030
                         Descargar
                     </a>
                   </td>

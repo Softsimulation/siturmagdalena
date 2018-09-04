@@ -69,7 +69,7 @@
 
                 <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Habitaciones (@{{alojamiento.habitaciones[0].total}} en total) </b>
-                    <span style="float: right;" >Tasa de ocupacción: @{{ ((alojamiento.habitaciones[0].habitaciones_ocupadas / (alojamiento.habitaciones[0].total*numero_dias))*100) | number:2 }} % </span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].habitaciones_ocupadas / (alojamiento.habitaciones[0].total*numero_dias))*100) | number:2 }} % </span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -162,7 +162,7 @@
 
                 <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Apartamentos (@{{alojamiento.apartamentos[0].total}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupacción: @{{ ((alojamiento.apartamentos[0].capacidad_ocupada / (alojamiento.apartamentos[0].total*numero_dias))*100) | number:2 }} %</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.apartamentos[0].capacidad_ocupada / (alojamiento.apartamentos[0].total*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -257,7 +257,7 @@
 
                 <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Casas (@{{alojamiento.casas[0].total}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupacción: @{{ ((alojamiento.casas[0].capacidad_ocupadas / (alojamiento.casas[0].total*numero_dias))*100) | number:2 }} %</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.casas[0].capacidad_ocupadas / (alojamiento.casas[0].total*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -352,7 +352,7 @@
 
                 <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Cabañas(@{{alojamiento.cabanas[0].total}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupacción: @{{ ((alojamiento.cabanas[0].capacidad_ocupada / (alojamiento.cabanas[0].total*numero_dias))*100) | number:2 }} %</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.cabanas[0].capacidad_ocupada / (alojamiento.cabanas[0].total*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -448,7 +448,7 @@
 
                 <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Camping (@{{alojamiento.campings[0].area}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupacción: @{{ ((alojamiento.campings[0].capacidad_ocupada / (alojamiento.campings[0].area*numero_dias))*100) | number:2 }} %</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.campings[0].capacidad_ocupada / (alojamiento.campings[0].area*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>

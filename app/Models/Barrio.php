@@ -28,7 +28,7 @@ class Barrio extends Model
      */
     public function municipio()
     {
-        return $this->belongsTo('App\Municipio');
+        return $this->belongsTo('App\Models\Municipio');
     }
 
     /**

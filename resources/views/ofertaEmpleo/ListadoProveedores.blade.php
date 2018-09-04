@@ -129,19 +129,19 @@
                             <th>Categoría</th>
                             <th>Tipo</th>
                             <th>Contacto</th>
-                            <th>Estado</th>
+  
                             <th style="width: 70px;"></th>
                         </tr>
                         </thead>
                          <tbody>
                         <tr dir-paginate="item in proveedores|filter:prop.searchAntiguo|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
                                 <td>@{{$index+1}}</td>
-                                <td>@{{item.proveedor.numero_rnt}}</td>
-                                <td>@{{item.proveedor.idiomas[0].nombre}}</td>
-                                <td>@{{item.proveedor.tipoCategoria.categoria}}</td>
-                                <td>@{{item.proveedor.tipoCategoria.tipo}}</td>
+                                <td>@{{item.rnt}}</td>
+                                <td>@{{item.razon_social}}</td>
+                                <td>@{{item.subcategoria}}</td>
+                                <td>@{{item.categoria}}</td>
                                 <td>@{{item.email}}</td>
-                                <td>@{{item.proveedor.estadop.nombre}}</td>
+                      
                                 <td style="text-align: center;">
                                 <a href="/ofertaempleo/encuesta/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta sin realizar" ><span class = "glyphicon glyphicon-th-list"></span></a>
                                 <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta realizadas" style="margin: 0;"><i class="material-icons">assignment</i></a>
