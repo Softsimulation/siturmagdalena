@@ -30,9 +30,9 @@ class AdministradorAtraccionController extends Controller
     public function getListadoinformes(){
         
         $informes = Publicacion::with(["publicacionesIdiomas","categoriaDocumento","tipoDocumento"])->orderBy('fecha_publicacion')->get();
-        $tipos = Tipo_Documento
+        $tipos = Tipo_Documento;
         
-        return ["informes"=>$informes;];
+        return ["informes"=>$informes];
         
     }
     

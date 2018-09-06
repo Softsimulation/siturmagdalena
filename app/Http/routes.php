@@ -71,7 +71,7 @@ Route::get('/llenarEncuestaAdHoc/{idEncuesta}', 'EncuestaDinamicaCtrl@anonimos' 
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 
-
+Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
@@ -97,3 +97,10 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
 });
 
+
+
+Route::group(['middleware' => 'cors'], function(){
+   
+   Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+  
+});

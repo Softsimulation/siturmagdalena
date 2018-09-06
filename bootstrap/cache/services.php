@@ -33,6 +33,7 @@
     29 => 'App\\Providers\\RouteServiceProvider',
     30 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
     31 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+    32 => 'Barryvdh\\Cors\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -54,6 +55,7 @@
     15 => 'App\\Providers\\RouteServiceProvider',
     16 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
     17 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+    18 => 'Barryvdh\\Cors\\ServiceProvider',
   ),
   'deferred' => 
   array (
