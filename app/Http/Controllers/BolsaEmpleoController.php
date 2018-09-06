@@ -84,4 +84,13 @@ class BolsaEmpleoController extends Controller
 		return ["success" => true];
     }
     
+    public function getEditarvacante($id){
+        if(Oferta_Vacante::find($id) == null){
+            return \Redirect::to('/bolsaEmpleo/vacantes')->with('message', 'Verifique que el visitante este en la sección adecuada.')
+                        ->withInput();
+        }
+        
+        return view('bolsaEmpleo.editar', ['id' => $id]);
+    }
+    
 }

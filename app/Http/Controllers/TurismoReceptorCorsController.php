@@ -62,7 +62,7 @@ use App\Models\Sostenibilidad_Visitante;
 use App\Models\Actividades_Sostenibilidad_Idiomas;
 use App\Models\Ocupacion_Persona;
 
-class TurismoReceptorController extends Controller
+class TurismoReceptorCorsController extends Controller
 {
     
     public function __construct()

@@ -2,7 +2,7 @@
 
 @section('title', 'Bolsa de empleo - Vacantes')
 
-@section('TitleSection', 'Creación de vacantes')
+@section('TitleSection', 'Creación de vacante')
 
 @section('app','ng-app="bolsaEmpleoApp"')
 
