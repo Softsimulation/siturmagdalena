@@ -102,7 +102,7 @@ class ImportacionRntController extends Controller
 		    $registro = $validar['success'] ? $validar["registro"] : $registro;
 		    
 		    $similar = $proveedoresIngresados->filter(function($value, $key)use($registro){
-		    	return $value['nit'] == $registro['nit'] || ( $value['digito_verificacion'] == $registro['digito_verificacion'] && $value['digito_verificacion'] != 0 && $value['digito_verificacion'] != null ) || ($value['correo'] == $registro['correo'] && strpos($value['correo'], '@') !== false);
+		    	return ($value['nit'] == $registro['nit'] && $registro['nit'] != null && $registro['nit'] != 0) || ( $value['digito_verificacion'] == $registro['digito_verificacion'] && $value['digito_verificacion'] != 0 && $value['digito_verificacion'] != null ) || ($value['correo'] == $registro['correo'] && strpos($value['correo'], '@') !== false);
 		    })->first();
 		    
 		    $registro['es_correcto'] = $validar['success'] ? 1 : 0;
