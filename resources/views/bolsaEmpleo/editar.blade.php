@@ -6,7 +6,7 @@
 
 @section('app','ng-app="bolsaEmpleoApp"')
 
-@section('controller','ng-controller="EditarVacanteController"')
+@section('controller','ng-controller="editarVacanteController"')
 
 @section('estilos')
     <style>
@@ -34,7 +34,7 @@
                     <div class="col-xs-12">
                         <div class="form-group" ng-class="{'error' : (datosForm.$submitted || datosForm.proveedor.$touched) && datosForm.proveedor.$error.required}">
                             <label for="proveedor" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Empresa</label>
-                            <ui-select id="proveedor"  name="proveedor" ng-model="vacante.proveedor_id"  ng-required="true">
+                            <ui-select id="proveedor"  name="proveedor" ng-model="vacante.proveedores_rnt_id"  ng-required="true">
                                 <ui-select-match placeholder="Seleccione empresa">@{{$select.selected.razon_social}}</ui-select-match>
                                 <ui-select-choices repeat="item.id as item in proveedores | filter:$select.search">
                                     @{{item.razon_social}}
@@ -51,7 +51,7 @@
                     <div class="col-md-8">
                         <div class="form-group" ng-class="{'error' : (datosForm.$submitted || datosForm.nombre_vacante.$touched) && datosForm.nombre_vacante.$error.required}">
                             <label for="nombre_vacante" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Nombre de la vacante</label>
-                            <input type="text" class="form-control" id="nombre_vacante" name="nombre_vacante" ng-model="vacante.nombre_vacante" ng-maxlength="250" placeholder="Presione aquí para ingresar el nombre de la vacante" required />
+                            <input type="text" class="form-control" id="nombre_vacante" name="nombre_vacante" ng-model="vacante.nombre" ng-maxlength="250" placeholder="Presione aquí para ingresar el nombre de la vacante" required />
                             <span ng-show="datosForm.$submitted || datosForm.nombre_vacante.$touched">
                                 <span class="label label-danger" ng-show="datosForm.nombre_vacante.$error.required">*El campo nombre de vacante es requerido</span>
                                 <span class="label label-danger" ng-show="datosForm.nombre_vacante.$error.maxlength">*El campo no debe superar los 250 caracteres.</span>
@@ -128,7 +128,7 @@
                     <div class="col-md-4" ng-class="{'error' : (datosForm.$submitted || datosForm.nivelEducacion.$touched) && datosForm.nivelEducacion.$error.required}">
                         <div class="form-group">
                             <label for="nivelEducacion" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Nivel de educación</label>
-                            <select class="form-control" id="nivelEducacion" name="nivelEducacion" ng-model="vacante.nivelEducacion" ng-options="item.id as item.nombre for item in nivelesEducacion" required>
+                            <select class="form-control" id="nivelEducacion" name="nivelEducacion" ng-model="vacante.nivel_educacion_id" ng-options="item.id as item.nombre for item in nivelesEducacion" required>
                                 <option value="" selected disable>Seleccion nivel de educación</option>
                             </select>
                             <span ng-show="datosForm.$submitted || datosForm.nivelEducacion.$touched">
@@ -161,7 +161,7 @@
                 
                 <br><br>
                 <div class="row" style="text-align:center">
-                    <a  class="btn btn-raised btn-default">Volver</a>
+                    <a href="/bolsaEmpleo/vacantes" class="btn btn-raised btn-default">Volver</a>
                     <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Guardar" />
                 </div>
             </form>
@@ -180,6 +180,7 @@
     <script src="{{asset('/js/ADM-dateTimePicker.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
     <script src="{{asset('/js/administrador/bolsaEmpleo/main.js')}}"></script>
     <script src="{{asset('/js/administrador/bolsaEmpleo/bolsaEmpleoService.js')}}"></script>
 @endsection

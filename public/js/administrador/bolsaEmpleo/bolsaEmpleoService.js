@@ -25,5 +25,49 @@ app.factory("bolsaEmpleoServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        getVacante: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/bolsaEmpleo/cargareditarvacante/' + id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        editarVacante: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/bolsaEmpleo/editarvacante',data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        cargarVacantes: function () {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/bolsaEmpleo/cargarvacantes').success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        cambiarEstado: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/bolsaEmpleo/cambiarestadovacante',data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

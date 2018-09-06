@@ -39,13 +39,15 @@ class Oferta_Vacante extends Model
      * @var array
      */
     protected $fillable = ['proveedores_rnt_id', 'municipio_id', 'nivel_educacion_id', 'nombre', 'perfil', 'anios_experiencia', 'fecha_inicio', 'fecha_fin', 'salario', 'numero_vacantes', 'updated_at', 'created_at', 'estado', 'user_update', 'user_create', 'requisitos'];
+    
 
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function proveedoresRnt()
     {
-        return $this->belongsTo('App\ProveedoresRnt');
+        return $this->belongsTo('App\Models\Proveedores_rnt');
     }
 
     /**
@@ -53,7 +55,7 @@ class Oferta_Vacante extends Model
      */
     public function municipio()
     {
-        return $this->belongsTo('App\Municipio');
+        return $this->belongsTo('App\Models\Municipio');
     }
 
     /**
@@ -61,6 +63,6 @@ class Oferta_Vacante extends Model
      */
     public function nivelEducacion()
     {
-        return $this->belongsTo('App\NivelEducacion');
+        return $this->belongsTo('App\Models\Nivel_Educacion');
     }
 }

@@ -1,4 +1,4 @@
-angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.select'])
+angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.select','angularUtils.directives.dirPagination'])
 
 .controller('crearVacanteController', ['$scope', 'bolsaEmpleoServi',function ($scope, bolsaEmpleoServi) {
     
@@ -66,7 +66,7 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
                 },
                 function(isConfirm) {
                   if (isConfirm) {
-                    //window.location = "/bolsaEmpleo/vacante";
+                    window.location = "/bolsaEmpleo/vacantes";
                   } else {
                     window.location = "/bolsaEmpleo/crear";
                   }
@@ -85,7 +85,7 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
 }])
 
 
-.controller('EditarVacanteController', ['$scope', 'bolsaEmpleoServi',function ($scope, bolsaEmpleoServi) {
+.controller('editarVacanteController', ['$scope', 'bolsaEmpleoServi',function ($scope, bolsaEmpleoServi) {
     
     $scope.fechaActual = "'" + formatDate(new Date()) + "'";
     $scope.optionFecha = {
@@ -115,17 +115,26 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
     }
     
     $scope.vacante = {};
-  
-    $("body").attr("class", "charging");
-    bolsaEmpleoServi.getEmpresas().then(function (data) {
-        $scope.proveedores = data.proveedores;
-        $scope.nivelesEducacion = data.nivelesEducacion;
-        $scope.municipios = data.municipios;
-        $("body").attr("class", "cbp-spmenu-push");
-    }).catch(function () {
-        $("body").attr("class", "cbp-spmenu-push");
-        swal("Error", "Error en la carga, por favor recarga la página.", "error");
-    })
+    $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
+        bolsaEmpleoServi.getVacante($scope.id).then(function (data) {
+            $scope.proveedores = data.proveedores;
+            $scope.nivelesEducacion = data.nivelesEducacion;
+            $scope.municipios = data.municipios;
+            $scope.vacante = data.vacante;
+            
+            $scope.vacante.fecha_inicio = $scope.parsearFecha($scope.vacante.fecha_inicio);
+            if($scope.vacante.fecha_fin != undefined){
+                $scope.vacante.fecha_fin = $scope.parsearFecha($scope.vacante.fecha_fin);    
+            }
+            
+            $("body").attr("class", "cbp-spmenu-push");
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+    });
+    
     
     $scope.guardar = function(){
         
@@ -135,27 +144,19 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
         }
         
         $("body").attr("class", "charging");
-        bolsaEmpleoServi.crearVacante($scope.vacante).then(function (data) {
+        bolsaEmpleoServi.editarVacante($scope.vacante).then(function (data) {
             $("body").attr("class", "");
             if (data.success) {
                 swal({
                     title: "Realizado",
-                    text: "Vacante creada correctamente",
+                    text: "Vacante editada exitosamente",
                     type: "success",
-                    showConfirmButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Volver al listado",
-                    cancelButtonText: "Crear otra vacante",
-                    closeOnConfirm: false,
-                    closeOnCancel: false    
-                },
-                function(isConfirm) {
-                  if (isConfirm) {
-                    //window.location = "/bolsaEmpleo/vacante";
-                  } else {
-                    window.location = "/bolsaEmpleo/crear";
-                  }
+                    timer: 1000,
+                    showConfirmButton: false
                 });
+                setTimeout(function () {
+                    window.location = "/bolsaEmpleo/vacantes";
+                }, 1000);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");
                 $scope.errores = data.errores;
@@ -166,5 +167,65 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
         })
         
     }
-   
+    
+    $scope.parsearFecha = function(fecha){
+        
+        split = fecha.split("-");
+        var fechaAp = new Date(split[0], split[1] - 1, split[2]);
+        return formatDate(fechaAp);
+    }
+    
+}])
+
+
+.controller('listarVacantesController', ['$scope', 'bolsaEmpleoServi',function ($scope, bolsaEmpleoServi) {
+    
+    $("body").attr("class", "charging");
+    bolsaEmpleoServi.cargarVacantes().then(function (data) {
+        $scope.vacantes = data.vacantes;
+        $("body").attr("class", "cbp-spmenu-push");
+    }).catch(function () {
+        $("body").attr("class", "cbp-spmenu-push");
+        swal("Error", "Error en la carga, por favor recarga la página.", "error");
+    })
+    
+    $scope.cambiarEstado = function(item){
+        var indexCambiar = $scope.vacantes.indexOf(item);
+        
+        swal({
+            title: "Cambiar estado",
+            text: "¿Está seguro?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+            setTimeout(function () {
+                $("body").attr("class", "charging");
+                bolsaEmpleoServi.cambiarEstado(item).then(function(data){
+                    if(data.success){
+                        item.estado = !item.estado;
+                        swal({
+                            title: "Estado cambiado",
+                            text: "Se ha cambiado el estado satisfactoriamente.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        $scope.errores = null;
+                    }else{
+                        swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                        $scope.errores = data.errores; 
+                    }
+                     $("body").attr("class", "cbp-spmenu-push");
+                }).catch(function(){
+                    $("body").attr("class", "cbp-spmenu-push");
+                    swal("Error","Error en la petición, recargue la pagina","error");
+                })
+            }, 2000);
+        });
+    }
+    
+    
 }])

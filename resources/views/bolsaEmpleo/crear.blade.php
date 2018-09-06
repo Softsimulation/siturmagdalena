@@ -160,7 +160,7 @@
                 
                 <br><br>
                 <div class="row" style="text-align:center">
-                    <a  class="btn btn-raised btn-default">Volver</a>
+                    <a href="/bolsaEmpleo/vacantes" class="btn btn-raised btn-default">Volver</a>
                     <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Guardar" />
                 </div>
             </form>
@@ -179,6 +179,7 @@
     <script src="{{asset('/js/ADM-dateTimePicker.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
     <script src="{{asset('/js/administrador/bolsaEmpleo/main.js')}}"></script>
     <script src="{{asset('/js/administrador/bolsaEmpleo/bolsaEmpleoService.js')}}"></script>
 @endsection
