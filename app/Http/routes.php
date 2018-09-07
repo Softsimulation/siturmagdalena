@@ -73,6 +73,8 @@ Route::controller('/encuesta','EncuestaDinamicaCtrl');
 Route::controller('/informes','InformesCtrl');
 
 
+Route::controller('/bolsaEmpleo','BolsaEmpleoController');
+
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
 Route::controller('/login','LoginController');
@@ -97,3 +99,10 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
 });
 
+
+
+Route::group(['middleware' => 'cors'], function(){
+   
+   Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+  
+});
