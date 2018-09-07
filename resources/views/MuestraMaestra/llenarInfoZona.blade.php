@@ -16,7 +16,7 @@
         <div class="btn-group">
             <a href="/MuestraMaestra/periodo/@{{zona.periodo_medicion_id}}"  class="btn btn-primary" >Volver</a>
             <button type="submit" class="btn btn-success" ng-click="guardar()" >Guardar</button>
-            <a href="/MuestraMaestra/excelinfozona/{{$zona}}"  class="btn btn-primary" >Descargar excel</a>
+            <a ng-click="exportarFileExcelZona()"  class="btn btn-primary" >Descargar excel</a>
         </div>
         
         <table>

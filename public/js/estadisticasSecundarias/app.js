@@ -29,7 +29,7 @@
                        
                         if (data.success) {
                             $scope.data = data.data;
-                            swal("¡Datos guardado!", "Los datos se han guardado exitosamnete", "success");
+                            swal("¡Datos guardado!", "Los datos se han guardado exitosamente", "success");
                             $("#modalConfiData").modal("hide");
                         }
                         else {
@@ -46,12 +46,45 @@
             
         }
        
-        $scope.OpenModal = function (isCrear, yearID, indicadorEditar) {
+        $scope.OpenModal = function (isCrear, yearID, indicadorEditar, dataValoresTiempo, dataValoresRotulos) {
             
-            var indicador = angular.copy( indicadorEditar );
-            indicador.es_crear = isCrear;
-            indicador.yearID = !isCrear ? yearID : null; 
-            $scope.indicador = indicador;
+            $scope.indicador = angular.copy( indicadorEditar );
+            $scope.indicador.es_crear = isCrear;
+            $scope.indicador.yearID = !isCrear ? yearID : null; 
+          
+            if(isCrear && dataValoresTiempo && dataValoresRotulos){
+                var index = null;
+                $scope.aniosFiltrados = [];
+                if(Object.keys(dataValoresTiempo).length>0){
+                    
+                    for(var i=0; i<$scope.anios.length; i++){
+                        index = -1;
+                        for(var x in dataValoresTiempo){
+                            if(dataValoresTiempo[x][0].anio_id==$scope.anios[i].id){ index = i; break; }
+                        }
+                        if(index == -1){ $scope.aniosFiltrados.push($scope.anios[i]); }
+                    }
+                    
+                }
+                else if(Object.keys(dataValoresRotulos).length>0){ 
+                    
+                    for(var i=0; i<$scope.anios.length; i++){
+                        index = -1;
+                        for(var x in dataValoresRotulos){
+                            if(dataValoresRotulos[x][0].anio_id==$scope.anios[i].id){ index = i; break; }
+                        }
+                        if(index == -1){ $scope.aniosFiltrados.push($scope.anios[i]); }
+                    }
+                    
+                }
+                else{
+                    $scope.aniosFiltrados = $scope.anios;
+                }
+                
+            }
+            else{
+                $scope.aniosFiltrados = $scope.anios;
+            }
             
             $scope.form.$setPristine();
             $scope.form.$setUntouched();
@@ -61,7 +94,8 @@
         
         $scope.OpenModalIndicador = function (indicador) {
             
-            $scope.indicadorCrearEditar =  indicador ? indicador :{ series:[], rotulos:[], graficas:[] };
+            $scope.indicadorCrearEditar =  indicador ? angular.copy(indicador) :{ series:[], rotulos:[], graficas:[] };
+            $scope.indicadorCrearEditar.es_crear =  indicador ? false : true;
             $scope.incluirRorulos =  $scope.indicadorCrearEditar.rotulos.length>0 ? 1: 0;
             $scope.formCrear.$setPristine();
             $scope.formCrear.$setUntouched();
@@ -141,23 +175,22 @@
             var esPrincipal = false;
             
             for(var i=0; i<$scope.indicadorCrearEditar.graficas.length; i++){
+                
                 if($scope.indicadorCrearEditar.graficas[i].id==$scope.grafica.id){
-                    sweetAlert("La garfica ya existe", "El tipo de grafica que intentas guardar ya se encuentras.", "error");
+                    sweetAlert("La gráfica ya existe", "El tipo de gráfica que intentas guardar ya existe.", "error");
                     return;
                 }
                 
-                if($scope.indicadorCrearEditar.graficas[i].pivot.principal && $scope.grafica.pivot){
-                    esPrincipal = $scope.grafica.pivot.principal ?  true : false;
-                }
+                if( $scope.indicadorCrearEditar.graficas[i].pivot.principal && !esPrincipal ){ esPrincipal = true; }
             }
             
-            if(esPrincipal){
-                sweetAlert("Grafica principal ya existe", "El tipo de grafica que intentas guardar como principal ya esta otra como principal.", "error");
+            if(esPrincipal && $scope.grafica.pivot.principal){
+                sweetAlert("Gráfica principal ya existe", "Ya se encuentra un tipo de gráfica como principal.", "error");
                 return;
             }
             
             $scope.indicadorCrearEditar.graficas.push( angular.copy($scope.grafica) );
-            $scope.grafica = null;
+            $scope.grafica = { pivot:{ principal:false } };
         }
         
         
@@ -193,7 +226,7 @@
         $scope.activarDesactivarIndicador = function (indicador) {
             swal({
                 title: "Cambio de estado",
-                text: "¿Esta seguro de "+( !indicador.es_visible ? "activar":"desactivar" )+" la pregunta?",
+                text: "¿Está seguro de "+( !indicador.es_visible ? "activar":"desactivar" )+" la pregunta?",
                 type: "warning",
                 showCancelButton: true,
                 closeOnConfirm: false,
@@ -219,7 +252,7 @@
             });
         }
         
-        
+     
     }])
     
 

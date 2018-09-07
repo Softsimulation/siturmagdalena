@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,6 +41,6 @@ class Tipo_Documento extends Model
      */
     public function tipoDocumentoIdiomas()
     {
-        return $this->hasMany('App\TipoDocumentoIdioma');
+        return $this->hasMany('App\Models\Tipo_Documento_Idioma', 'tipo_documento_id');
     }
 }

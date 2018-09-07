@@ -59,6 +59,7 @@ class AdministrarPaisesController extends Controller
         if($validator->fails()){
             return ["success"=>false,'errores'=>$validator->errors()];
         }
+        
         $errores = [];
         $pais_ = Pais_Con_Idioma::whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->first();
         if ($pais_ != null){

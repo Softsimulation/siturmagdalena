@@ -9,8 +9,9 @@
     
     .controller("ConfigurarEncuestaCtrl", ["$scope","ServiEncuesta", function($scope,ServiEncuesta){
         
-        $scope.tabOpen = { activo:0 } ;
+        $scope.tabOpen = { activo:0 };
         $scope.opcion = {};
+        
         
         $scope.$watch("id", function() {
             if($scope.id){

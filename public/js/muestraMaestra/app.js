@@ -208,7 +208,7 @@
         $scope.dataPerido = { zonas:[] };
         $scope.zona = {};
         $scope.styloMapa = [{featureType:'poi.school',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.business',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.attraction',elementType:'labels',stylers:[{visibility:'off'}]} ];
-         
+        $scope.centro = [10.4113014,-74.4056612];
         
         ServiMuestra.getData($("#periodo").val())
           .then(function(data){ 
@@ -261,6 +261,7 @@
                     var link = document.createElement("a");
                     link.download = "mapa.kml";
                     link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(geojson);
+                    link.download = $scope.dataPerido.nombre + ".kml";
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -277,6 +278,7 @@
                 .then(function(response){ 
                     var link = document.createElement("a");
                     link.href = window.URL.createObjectURL(response);
+                    link.download = zona.nombre;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -294,6 +296,7 @@
                 .then(function(response){ 
                     var link = document.createElement("a");
                     link.href = window.URL.createObjectURL(response);
+                    link.download = $scope.dataPerido.nombre;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -443,13 +446,9 @@
                             }
                             else{
                                 for(var i=0; i<$scope.proveedores.length; i++){
-                                    if( $scope.proveedores[i].id==data.proveedor.id && !$scope.proveedores[i].numero_rnt ){
-                                        $scope.proveedores[i].razon_social = data.proveedor.razon_social;
-                                        $scope.proveedores[i].direccion = data.proveedor.direccion; 
-                                        $scope.proveedores[i].telefono = data.proveedor.telefono; 
-                                        $scope.proveedores[i].categoria_proveedor_id = data.proveedor.categoria_proveedor_id; 
-                                        $scope.proveedores[i].categoria = data.proveedor.categoria; 
-                                        $scope.proveedores[i].tipoCategoria = data.proveedor.tipoCategoria;
+                                    if( $scope.proveedores[i].id==data.proveedor[0].id && !$scope.proveedores[i].rnt ){
+                                        $scope.proveedores[i] = data.proveedor[0];
+                                        $scope.proveedor = $scope.proveedores[i] ;
                                         break;
                                     }
                                 }
@@ -655,15 +654,33 @@
             $scope.filtro = { tipo:[], categorias:[], estados:[], municipios:[], sectoresProv:[], verZonas:true, sectores:[], encargados:[], tipoProveedores:1 };
         }
         
-        $scope.getIcono = function( estado ){
-            var icono = null;
-            switch ( estado ) {
-                case 1: icono = "/Content/IconsMap/green.png";  break;
-                case 2: icono = "/Content/IconsMap/yellow.png"; break;
-                case 3: icono = "/Content/IconsMap/red.png";    break;
-                default: break;
+        $scope.getIcono = function( p ){
+            
+            var ruta = "/Content/IconsMap/";
+            
+            switch ( p.idtipo ) {
+                case 1: ruta += "alojamientos/"; break;
+                case 2: ruta += "gastronomicos/"; break;
+                case 3: ruta += "agencias_viajes/"; break;
+                case 4: ruta += "esparcimiento/"; break;
+                case 5: ruta += "arrendadores_vehiculos/"; break;
+                default: return null;
             }
-            return  icono ? { url: "\""+icono+"\"" } : null;
+            
+            if(p.rnt){
+                switch ( p.idestado ) {
+                    case 1: ruta += "activo.png";     break;  // Activo
+                    case 2: ruta += "cancelado.png";  break;  // Nnulado
+                    case 3: ruta += "cancelado.png";  break;  // Cancelado
+                    case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
+                    case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
+                    case 6: ruta += "cancelado.png";  break;  // Suspendido
+                    default: return null;
+                }
+            }
+            else{ ruta += "informal.png";  }
+            
+            return  ruta;
         }
         
         $scope.getCoordenadas = function(coordenadas){
@@ -712,7 +729,7 @@
                         
                         if(tiposProveedores[j].id==proveedores[i].idtipo){
                             
-                            if(proveedores[i].rnt){ tiposProveedores[j].cantidad[0] += 1; numeroPrestadoresFormales!=1; }
+                            if(proveedores[i].rnt){ tiposProveedores[j].cantidad[0] += 1; numeroPrestadoresFormales+=1; }
                             else{ tiposProveedores[j].cantidad[1] += 1; numeroPrestadoresInformales+=1; }
                             break;
                         }
@@ -943,13 +960,13 @@
             }
             
             if( $scope.filtro.tipoProveedores==1 ){
-                return "(Total: "+sT+") " + " (Formales: "+sF+", Informales: "+sI+")";
+                return "<b>Total: </b>"+sT + ", Formales: "+sF+", Informales: "+sI;
             }
             else if( $scope.filtro.tipoProveedores==2 ){
-                return "(Formales: "+sF+")";
+                return "<b>Formales: </b>"+sF;
             }
             else{
-                return "(Informales: "+sI+")";
+                return "<b>Informales: </b>"+sI;
             }
         }
         
@@ -969,13 +986,13 @@
             }
             
             if( $scope.filtro.tipoProveedores==1 ){
-                return "(Total: "+sT+") " + " (Formales: "+sF+", Informales: "+sI+")";
+                return "<b>Total: </b>"+sT  + ", Formales: "+sF+", Informales: "+sI+"";
             }
             else if( $scope.filtro.tipoProveedores==2 ){
-                return "(Formales: "+sF+")";
+                return "<b>Formales: </b>"+sF;
             }
             else{
-                return "(Informales: "+sI+")";
+                return "<b>Informales: </b>"+sI;
             }
             
         }
@@ -987,6 +1004,31 @@
                 if( $scope.proveedores[i].idestado==id ){  s+=1;  }
             }
             return s;
+        }
+        
+        $scope.getCantidadPorMunicipio = function(id){
+            
+            var sT = 0;
+            var sF = 0;
+            var sI = 0;
+            
+            for (var i = 0; i < $scope.proveedores.length; i++) {
+                if( $scope.proveedores[i].municipio_id==id ){  
+                    sT+=1;  
+                    if($scope.proveedores[i].rnt){ sF+=1; }
+                    else{ sI+=1; }
+                }
+            }
+            
+            if( $scope.filtro.tipoProveedores==1 ){
+                return "<b>Total: </b>"+sT + ", Formales: "+sF+", Informales: "+sI;
+            }
+            else if( $scope.filtro.tipoProveedores==2 ){
+                return "<b>Formales: </b>"+sF;
+            }
+            else{
+                return "<b>Informales: </b>"+sI;
+            }
         }
         
         
@@ -1003,6 +1045,17 @@
             
         });
         
+        
+        $scope.centerMapa = function(){
+            if($scope.proveedoresFiltrados.length>0){
+                $timeout(function() {
+                    if($scope.proveedoresFiltrados.length>0){
+                        $scope.centro = [$scope.proveedoresFiltrados[0].latitud, $scope.proveedoresFiltrados[0].longitud];
+                    }
+                },1000);
+                
+            }
+        }
         
         $scope.buscarAbjetoInArray = function(array, id){
             for(var j=0; j<array.length; j++){
@@ -1031,7 +1084,7 @@
                 for(var i=0; i< data.periodo.zonas.length; i++){
                     data.periodo.zonas[i].coordenadas = $scope.getCoordenadas(data.periodo.zonas[i].coordenadas);
                     
-                    if( $scope.sectoresZonas.indexOf( data.periodo.zonas[i].sector_id )==-1 && data.periodo.zonas[i].sector_id ){
+                    if( $scope.sectoresZonasIDS.indexOf( data.periodo.zonas[i].sector_id )==-1 && data.periodo.zonas[i].sector_id ){
                         $scope.sectoresZonasIDS.push( data.periodo.zonas[i].sector_id );
                         $scope.sectoresZonas.push( $scope.getSector(data.sectores,data.periodo.zonas[i].sector_id) );
                     }
@@ -1156,15 +1209,26 @@
             $scope.filtro = { tipo:[], categorias:[], estados:[], sectoresProv:[], verZonas:true, sectores:[], encargados:[] };
         }
         
-        $scope.getIcono = function( estado ){
-            var icono = null;
-            switch ( estado ) {
-                case 1: icono = "/Content/IconsMap/green.png";  break;
-                case 2: icono = "/Content/IconsMap/yellow.png"; break;
-                case 3: icono = "/Content/IconsMap/red.png";    break;
-                default: break;
+        $scope.getIcono = function( p ){
+            
+            var ruta = "/Content/IconsMap/";
+            
+            switch ( p.idtipo ) {
+                case 1: ruta += "alojamientos/";  break;
+                default: return null;
             }
-            return  icono ? { url: "\""+icono+"\"" } : null;
+            
+            if(!p.rnt){
+                    switch ( p.idestado ) {
+                        case 1: ruta += "activo.png";  break;
+                        case 3: ruta += "cancelado.png";  break;
+                        case 5: ruta += "pendiente.png";  break;
+                        default:return null;
+                    }
+            }
+            else{ ruta += "informal.png";  }
+            
+            return  ruta;
         }
         
         $scope.getCoordenadas = function(coordenadas){
@@ -1472,7 +1536,38 @@
             }
             return null;
         }
-      
+        
+        
+        $scope.exportarFileExcelZona = function(){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiMuestra.getExcelZona( $scope.zona.id )
+                .then(function(response){ 
+                    var link = document.createElement("a");
+                    link.href = window.URL.createObjectURL(response);
+                    link.download = $scope.zona.nombre;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    $("body").attr("class", "cbp-spmenu-push");
+                    zona.es_generada = true;
+                });
+            
+        }
+        
     }]) 
-     
+    
+    .directive('htmldiv', function($compile, $parse) {
+        return {
+          restrict: 'E',
+          link: function(scope, element, attr) {
+            scope.$watch(attr.content, function() {
+              element.html($parse(attr.content)(scope));
+              $compile(element.contents())(scope);
+            }, true);
+          }
+        }
+    });
+    
 }());
