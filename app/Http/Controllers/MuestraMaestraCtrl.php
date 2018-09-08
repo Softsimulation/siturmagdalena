@@ -84,6 +84,7 @@ class MuestraMaestraCtrl extends Controller
         
         
         return [
+               
                 "proveedores"=> DB::select("SELECT *from proveedores_formales"),
                                      
                 "proveedoresInformales" => DB::select("SELECT *from listado_proveedores_informales"),
@@ -108,7 +109,8 @@ class MuestraMaestraCtrl extends Controller
                                                                 ])->get(),
                 "estados"=> Estado_proveedor::where("id","!=",7)->get(),
                 
-                "municipios"=> Proveedores_rnt::join("municipios","municipios.id","=","municipio_id")->select('municipios.id','municipios.nombre')->distinct()->get()
+                "municipios"=> municipio::where("departamento_id",1411)->select('id','nombre')->get() 
+                //Proveedores_rnt::join("municipios","municipios.id","=","municipio_id")->select('municipios.id','municipios.nombre')->distinct()->get()
                 
             ];
     }
@@ -535,7 +537,7 @@ class MuestraMaestraCtrl extends Controller
                                                                                     ]);
                                                                           } 
                                                      ])->get();
-        return View("MuestraMaestra.formatoDescargaInformacionZona", [ "proveedores"=> $proveedores ]);
+        //return View("MuestraMaestra.formatoDescargaInformacionZona", [ "proveedores"=> $proveedores ]);
         Excel::create('Data', function($excel) use($proveedores) {
     
                     $excel->sheet('data', function($sheet) use($proveedores) {
@@ -580,9 +582,9 @@ class MuestraMaestraCtrl extends Controller
         $validator = \Validator::make($request->all(), [
 			'nombre' => 'required|max:250',
 			'idcategoria' => 'required|exists:categoria_proveedores,id',
+			'municipio_id' => 'required|exists:municipios,id',
 			'latitud' => 'required',
 			'longitud' => 'required',
-			'direccion' => 'direccion'
     	]);
        
     	if($validator->fails()){
@@ -603,10 +605,11 @@ class MuestraMaestraCtrl extends Controller
         $proveedor->direccion = $request->direccion;
         $proveedor->telefono = $request->telefono;
         $proveedor->categoria_proveedor_id = $request->idcategoria;
+        $proveedor->municipio_id = $request->municipio_id;
         $proveedor->user_update = $this->user->username;
         $proveedor->save();
         
-        return [ "success"=>true, "proveedor"=>Proveedores_informale::where("id",$proveedor->id) ->with("categoria")->first() ];
+        return [ "success"=>true, "proveedor"=> DB::select("SELECT *from listado_proveedores_informales where id = ". $proveedor->id ) ];
     }
     
     public function postEditarubicacionproveedor(Request $request){

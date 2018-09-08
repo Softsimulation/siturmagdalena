@@ -17,7 +17,7 @@ Route::controller('/indicadores','IndicadoresCtrl');
 
 
 
-Route::controller('/EstadistivasSecunarias','EstadisticasSecundariasCtrl');
+Route::controller('/EstadisticasSecundarias','EstadisticasSecundariasCtrl');
 
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
@@ -70,8 +70,10 @@ Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
 Route::get('/llenarEncuestaAdHoc/{idEncuesta}', 'EncuestaDinamicaCtrl@anonimos' );
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
+Route::controller('/informes','InformesCtrl');
 
 
+Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
@@ -97,3 +99,10 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
 });
 
+
+
+Route::group(['middleware' => 'cors'], function(){
+   
+   Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+  
+});

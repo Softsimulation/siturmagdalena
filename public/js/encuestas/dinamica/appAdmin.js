@@ -9,8 +9,9 @@
     
     .controller("ConfigurarEncuestaCtrl", ["$scope","ServiEncuesta", function($scope,ServiEncuesta){
         
-        $scope.tabOpen = { activo:0 } ;
+        $scope.tabOpen = { activo:0 };
         $scope.opcion = {};
+        
         
         $scope.$watch("id", function() {
             if($scope.id){
@@ -510,8 +511,8 @@
             ServiEncuesta.agregarEncuesta($scope.encuesta).then(function (data) {
                        
                         if (data.success) {
-                            $scope.encuestas.push(data.data);
-                            swal("Encuesta agregada", "LA encuesta se ha creado exitosamente", "success");
+                            $scope.encuestas.unshift(data.data);
+                            swal("Encuesta agregada", "La encuesta se ha creado exitosamente", "success");
                             $("#modalAgregarEncuesta").modal("hide");
                         }
                         else {
@@ -694,7 +695,7 @@
                    
                     ServiEncuesta.duplicarEncuesta( {id:id} ).then(function (data) {
                         if (data.success) {
-                            $scope.encuestas.push(data.data);
+                            $scope.encuestas.unshift(data.data);
                             swal("¡Duplicada!", "LA encuesta se ha duplicado exitosamente", "success");
                         }
                         else {
