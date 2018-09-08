@@ -39,7 +39,7 @@ class OfertaEmpleo
                  return $next($request);
              }else{
                 \Session::flash('mensaje','Sitio no valido');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                return redirect('/ofertaempleo/encuestas/'.$sitio->id);
             }
             
           
@@ -69,7 +69,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -82,7 +82,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
     }
@@ -95,7 +95,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -108,7 +108,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -121,7 +121,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -134,7 +134,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -147,7 +147,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -158,7 +158,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -169,7 +169,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -180,7 +180,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
@@ -191,7 +191,7 @@ class OfertaEmpleo
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
-                return redirect('/ofertaempleo/encuesta/'.$request->one);
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
             }
             
         }
