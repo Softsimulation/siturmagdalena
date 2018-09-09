@@ -41,6 +41,7 @@
                 <th>Nombre</th>
                 <th>Fecha inicio</th>
                 <th>Fecha fin</th>
+                <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -49,7 +50,7 @@
                 <td>@{{item.nombre}}</td>
                 <td>@{{item.fecha_inicio}}</td>
                 <td>@{{item.fecha_fin}}</td>
-                <td>
+                <td class="text-center">
                     <button type="button" class="btn btn-xs btn-default" ng-click="openModalEditPeriodo(item,$index)" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span> <span class="sr-only">Editar</span> </button>
                     <a class="btn btn-xs btn-default" href="/MuestraMaestra/periodo/@{{item.id}}" title="Ver detalles"><span class="glyphicon glyphicon-eye-open"></span> <span class="sr-only">Ver</span> </a>
                 </td>

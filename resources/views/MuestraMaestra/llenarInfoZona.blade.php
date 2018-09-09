@@ -5,13 +5,16 @@
 @section('app','ng-app="appMuestraMaestra"')
 @section('controller','ng-controller="LlenatInfoZonaCtrl"')
 
+@section('titulo','Muestra maestra')
+@section('subtitulo','Ingresar información de zona')
+
 @section('content')
    
    <input type="hidden" id="id" value="{{$zona}}" />
    
     <h1>@{{zona.nombre}}</h1>
    
-    <form name="form" novalidate >
+    <form name="form" novalidate>
         
         <div class="btn-group">
             <a href="/MuestraMaestra/periodo/@{{zona.periodo_medicion_id}}"  class="btn btn-primary" >Volver</a>

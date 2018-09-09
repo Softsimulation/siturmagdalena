@@ -94,7 +94,13 @@
             box-shadow: none;
             background-color: transparent;
         }
-            
+        #nav-menu-main nav>ul li>a, #left-side-menu {
+            background-color: #131a61;
+        }   
+        .title-page{
+            background-color: #dfedf4;
+            color: #131a61;
+        }
     </style>
 </head>
 <body <?php echo $__env->yieldContent('app'); ?>  <?php echo $__env->yieldContent('controller'); ?> >
@@ -174,7 +180,7 @@
                             <a role="menuitem" href="#menuMuestraMaestra" aria-haspopup="true" aria-expanded="false">Muestra maestra</a>
                             <ul role="menu" id="menuMuestraMaestra" aria-label="Muestra maestra">
                                 <li role="none">
-                                    <a role="menuitem" href="<?php echo e(asset('MuestraMaestra/periodos')); ?>">Crear</a>
+                                    <a role="menuitem" href="<?php echo e(asset('MuestraMaestra/periodos')); ?>">Periodos</a>
                                     <a role="menuitem" href="<?php echo e(asset('importarRnt')); ?>">Importar</a>
                                 </li>
                             </ul>
@@ -208,17 +214,17 @@
             
         </aside>
         
-        <div id="content-page">
-            <div class="title-page">
+        <main id="content-page">
+            <header class="title-page">
                 <h2 class="container"><?php echo $__env->yieldContent('titulo'); ?></h2>  
                 <p><?php echo $__env->yieldContent('subtitulo'); ?></p>
-            </div>
+            </header>
             
             <div class="container" style="margin-bottom: 2%;">
                 <?php echo $__env->yieldContent('content'); ?>
             </div>
                 
-        </div>    
+        </main>    
     </div>
         
 
