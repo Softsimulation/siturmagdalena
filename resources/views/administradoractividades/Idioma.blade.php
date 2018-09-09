@@ -5,11 +5,6 @@
 
 @section('estilos')
     <style>
-        .panel-body {
-            max-height: 400px;
-            color: white;
-        }
-
         .image-preview-input {
             position: relative;
             overflow: hidden;
@@ -39,128 +34,66 @@
             color: #FA787E;
         }
 
-        form.ng-submitted input.ng-invalid {
-            border-color: #FA787E;
-        }
-
-        form input.ng-invalid.ng-touched {
-            border-color: #FA787E;
-        }
-
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-        .row {
-            margin: 1em 0 0;
-        }
-        .form-group {
-            margin: 0;
-        }
-        .form-group label, .form-group .control-label, label {
-            font-size: smaller;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        .text-error {
-            color: #a94442;
-            font-style: italic;
-            font-size: .7em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
+        
     </style>
 @endsection
 
 @section('TitleSection', 'Editar idioma de la actividad')
 
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
-
 @section('app', 'ng-app="actividadesApp"')
 
 @section('controller','ng-controller="actividadesIdiomaController"')
 
+@section('titulo','Actividades')
+@section('subtitulo','Formulario para la modificación de información en otro idioma')
+
 @section('content')
-<div class="col-sm-12">
-    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <input type="hidden" ng-model="idIdioma" ng-init="idIdioma={{$idIdioma}}" />
-    <h1 class="title1">Idioma: @{{idioma.nombre}}</h1>
+<div class="text-center">
+    <div class="alert alert-info">
+        <p>Idioma a modificar:</p>
+        <h3 style="margin: 0">@{{idioma.nombre}}</h3>
+    </div>
+    
+</div>
+<input type="hidden" ng-model="id" ng-init="id={{$id}}" />
+<input type="hidden" ng-model="idIdioma" ng-init="idIdioma={{$idIdioma}}" />
+
+<div class="alert alert-danger" ng-if="errores != null">
+    <label><b>Errores:</b></label>
     <br />
-    <div class="col-col-sm-12">
-        <a href="{{asset('/administradoractividades')}}">Volver al listado</a>
-    </div>
-    <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>Errores:</b></label>
-        <br />
-        <div ng-repeat="error in errores" ng-if="error.length>0">
-            -@{{error[0]}}
-        </div>
-    </div>
-    <div class="blank-page widget-shadow scroll" id="style-2 div1">
-        <!--Información básica-->
-        <div id="info" class="tab-pane fade in active">
-            <h2>Datos de la actividad</h2>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
-                    </div>
-                </div>
-            </div>
-            <form novalidate role="form" name="editarActividadForm">
-                <div class="row">
-                    <div class="form-group col-sm-12" ng-class="{'has-error': (editarActividadForm.$submitted || editarActividadForm.nombre.$touched) && editarActividadForm.nombre.$error.required}">
-                        <label for="nombre">Nombre</label>
-                        <div class="input-group">
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <input ng-model="actividad.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la actividad (Máximo 150 caracteres)" aria-describedby="basic-addon1"/>
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarActividadForm.$submitted || editarActividadForm.nombre.$touched) && editarActividadForm.nombre.$error.required"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-12" ng-class="{'has-error': (editarActividadForm.$submitted || editarActividadForm.descripcion.$touched) && editarActividadForm.descripcion.$error.required}">
-                        <label for="descripcion">Descripción</label>
-                        <div class="input-group">
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <textarea style="resize: none;" ng-model="actividad.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la actividad (De 100 a 1,000 caracteres)" aria-describedby="basic-addon1"></textarea>
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(editarActividadForm.$submitted || editarActividadForm.descripcion.$touched) && editarActividadForm.descripcion.$error.required"></span>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <button type="submit" ng-click="guardarDatosGenerales()" class="btn btn-lg btn-success">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <div ng-repeat="error in errores" ng-if="error.length>0">
+        -@{{error[0]}}
     </div>
 </div>
+    <fieldset>
+        <legend>Información básica</legend>
+        <div class="alert alert-info">
+            <p>Los campos marcados con asterisco (*) son obligatorios.</p>
+        </div>
+        <form novalidate role="form" name="editarActividadForm">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': (editarActividadForm.$submitted || editarActividadForm.nombre.$touched) && editarActividadForm.nombre.$error.required}">
+                        <label for="nombre"><span class="asterisk">*</span> Nombre</label>
+                        <input ng-model="actividad.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la actividad (Máximo 150 caracteres)"/>
+                        
+                    </div>    
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': (editarActividadForm.$submitted || editarActividadForm.descripcion.$touched) && editarActividadForm.descripcion.$error.required}">
+                        <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
+                        <textarea style="resize: none;" ng-model="actividad.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la actividad (De 100 a 1,000 caracteres)"></textarea>
+                        
+                    </div>
+                </div>
+                <div class="col-sm-12 text-center">
+                    <hr/>
+                    <button type="submit" ng-click="guardarDatosGenerales()" class="btn btn-lg btn-success">Guardar</button>
+                    <a href="{{asset('/administradoractividades')}}" class="btn btn-lg btn-default">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </fieldset>
 @endsection
 
 @section('javascript')
