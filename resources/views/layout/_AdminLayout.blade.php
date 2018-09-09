@@ -166,7 +166,7 @@
                             <ul role="menu" id="menuSostenibilidad" aria-label="Sostenibilidad">
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('sostenibilidadhogares/encuestas')}}">Hogares</a>
-                                    <a role="menuitem" href="{{asset('sostenibilidadhogares/PST')}}">PST</a>
+                                    <a role="menuitem" href="{{asset('/sostenibilidadpst/encuestas')}}">PST</a>
                                 </li>
                             </ul>
                         </li>
