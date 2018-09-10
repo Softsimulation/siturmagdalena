@@ -35,6 +35,9 @@
         .messages {
             color: #FA787E;
         }
+        
+        
+        
     </style>
 @endsection
 
@@ -398,6 +401,7 @@
                                 
                             </ng-map>
                         </div>
+                        
                         
                         
                         <div class="row" ng-if="registro.es_correcto != 1">
@@ -925,6 +929,8 @@
     <div class='carga'>
 
     </div>
+    
+    
 
 @endsection
 
@@ -984,7 +990,7 @@
         });
 
     </script>
-    <script src="/js/plugins/tokml.js"></script>
+    <!--<script src="/js/plugins/tokml.js"></script>-->
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
-    <script src="/js/plugins/ng-map.js"></script>
+    
 @endsection
