@@ -208,6 +208,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a role="menuitem" href="<?php echo e(asset('/EstadisticasSecundarias/configuracion')); ?>">Estadisticas Secundarias</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -230,114 +233,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     
-<<<<<<< HEAD
-				<div class="sidebar-menu">
-							<div class="down">	
-									  <a href="#"><img src="<?php echo e(asset('Content/image/user.png')); ?>"></a>
-									  <a href="#"><span class=" name-caret">Usuario</span></a>
-									 <p>Rol</p>
-									<ul>
-									<li><a class="tooltips" href=""><span>Profile</span><i class="lnr lnr-user"></i></a></li>
-										<li><a class="tooltips" href="#"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
-										<li><a class="tooltips" href="/login/cerrarsesion"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
-										</ul>
-									</div>
-							   
-                           <div class="menu">
-									<ul id="menu" >
-									    
-									     <li id="menu-academico" ><a href="#"><span>Promoción</span> </span></a>
-    										  <ul id="menu-academico-sub" >
-    										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administradoractividades')); ?>">Administrar Actividades</a></li>
-    										     <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administradoratracciones')); ?>">Administrar Atracciones</a></li>
-    										  </ul>
-									     </li>
-										
-										 <li id="menu-academico" ><a href="#"> <span>Turismo Receptor</span></span></a>
-										   <ul id="menu-academico-sub" >
-											<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('grupoviaje/listadogrupos')); ?>"> Grupo de viajes</a></li>
-											<li id="menu-academico-boletim" ><a href="<?php echo e(asset('turismoreceptor/listadoencuestas')); ?>">Listado de encuestas</a></li>
-											
-											
-										  </ul>
-										</li>
-										 <li id="menu-academico" ><a href="<?php echo e(asset('temporada')); ?>"> <span>Turismo Interno y Emisor</span></a>
-										
-										 </li>
-										 
-									<li id="menu-academico" ><a href="#"> <span>Oferta y Empleo</span></a>
-											 <ul id="menu-academico-sub" >
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/1')); ?>">Alojamiento</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/2')); ?>">Restaurante</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/3')); ?>">Agencia operadoras</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/4')); ?>">Agencia de viajes</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/5')); ?>">Alquiler de vehiculo</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('ofertaempleo/encuesta/6')); ?>">Transporte</a></li>
-												
-										
-											  </ul>
-										 </li>
-										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
-    										  <ul id="menu-academico-sub" >
-    										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('sostenibilidadhogares/encuestas')); ?>">Hogares</a></li>
-    										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('sostenibilidadpst/encuestas')); ?>">PST</a></li>
-    										  </ul>
-									     </li>
-									<li id="menu-academico" ><a href="#"> <span>Administrar paises</span> </span></a>
-										  <ul id="menu-academico-sub" >
-										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('administrarpaises')); ?>">Paises</a></li>
-										    <li id="menu-academico-boletim" ><a href="<?php echo e(asset('administrardepartamentos')); ?>">Departamentos</a></li>
-											<li id="menu-academico-boletim" ><a href="<?php echo e(asset('administrarmunicipios')); ?>">Municipios</a></li>
-											
-										  </ul>
-									 </li>
-								
-									 	<li id="menu-academico" ><a href="#"><span>Muestra Maestra</span> </span></a>
-										  <ul id="menu-academico-sub" >
-										    <li id="menu-academico-avaliacoes" ><a href="<?php echo e(asset('MuestraMaestra/periodos')); ?>">Crear</a></li>
-										    <li id="menu-academico-boletim" ><a href="<?php echo e(asset('importarRnt')); ?>">Importar</a></li>
-									
-											
-										  </ul>
-									 </li>
-									 
-							        <li id="menu-academico" ><a href="<?php echo e(asset('encuesta/listado')); ?>"> <span>Encuetas ADHOC</span></a>
-							
-									 </li>
-									 <li id="menu-academico" ><a href="<?php echo e(asset('/publicaciones/listadoadmin')); ?>"> <span>Publicaciones</span></a>
-							
-									 </li>
-									 <li id="menu-academico" ><a href="<?php echo e(asset('/noticias/listadonoticias')); ?>"> <span>Noticias</span></a>
-							
-									 </li>
-									 <li id="menu-academico" ><a href="<?php echo e(asset('/Estadisticassecundarias')); ?>"> <span>Estadisticas Secundarias</span></a>
-							
-									 </li>
-									 
-								
-								
-								  </ul>
-								</div>
-							  </div>
-							 
-    <!--
-    if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Digitador"))
-    {
-        <footer id="seccion" ng-controller="seccionCtrl">
-            <select class="selectLenguage" style="margin: 0" ng-options="seccion as seccion.nombre for seccion in secciones track by seccion.id" ng-model="seccionSelected">
-                <option value="" selected disabled>Ir a la sección</option>
-            </select>
-        </footer>
-    }
-    -->
-    
-        
-        
-       
-       
-=======
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
->>>>>>> a1218264dcfa01a5616de609f3480ab9c3a6ae6e
    
     <script src="<?php echo e(asset('/js/sweetalert.min.js')); ?>" async></script>
     <script src="/js/public/script-main.js" async></script>

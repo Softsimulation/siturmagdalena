@@ -208,6 +208,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a role="menuitem" href="{{asset('/EstadisticasSecundarias/configuracion')}}">Estadisticas Secundarias</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
