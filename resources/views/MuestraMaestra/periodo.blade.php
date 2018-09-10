@@ -614,45 +614,7 @@
             
     </div>
     
-    <!--<div class="row" >
-        
-        
-        <div class="col-md-9" ng-class="{ 'col-md-12': pantallaCompleta }"  style="padding:0" >
-            
-            <div class="btn-map">
-                
-                <a class="btn btn-default" href title="Ver menu" ng-click="pantallaCompleta=false" style="padding: 0 3px;" ng-show="pantallaCompleta" >
-                    <i class="material-icons">arrow_forward</i>
-                </a>  
-                
-                <div class="dropdown">
-                      <a class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="padding: 0 3px; margin-left: 5px;" >
-                         <i class="material-icons">menu</i>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
-                        <li><a href="/MuestraMaestra/excelinfoperiodo/{{$periodo->id}}" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
-                        <li>
-                            <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
-                        </li>
-                        <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
-                        <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar zona</a></li>
-                      </ul>
-                </div>
-                
-                <button type="button" id="btn-add" class="btn btn-danger btn-sm" ng-click="cancelarAgregarZonaPRoveedor()" ng-show="es_crear_zona" style="margin-left: 5px;" >
-                    Cancelar crear zona
-                </button>
-                
-            </div>
-            
-            
-            
-        </div>
-        
-    </div>-->
-    
-    
+ 
     <div id="mySidenav" class="sidenav">
         <div class="cabecera" >
             <h4> Detalles del @{{ proveedor ? ' prestador' : ' bloque' }} 
