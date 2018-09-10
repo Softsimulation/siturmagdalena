@@ -34,7 +34,7 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/administradoratracciones/crear" type="button" class="btn btn-lg btn-success">
+    <a href="/administradoratracciones/crear" role="button" class="btn btn-lg btn-success">
       Agregar atracciones
     </a> 
     <div class="form-group has-feedback" style="display: inline-block;">
@@ -90,7 +90,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Nuevo idioma para la atracción</h4>
-                </div>
+            </div>
             <form>
                 <div class="modal-body">
                     <div class="form-group">

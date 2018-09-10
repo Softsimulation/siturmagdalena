@@ -1,63 +1,53 @@
 @extends('layout._AdminLayout')
 @section('app','ng-app="appProyect"')
 
+@section('controller','ng-controller="ListadoPublicacionCtrl"')
+
+@section('titulo','Publicaciones')
+@section('subtitulo','El siguiente listado cuenta con @{{publicaciones.length}} registro(s)')
+
 @section('content')
-   
-    <div ng-controller="ListadoPublicacionCtrl" >
-        
+<div class="flex-list">
+    
+    <div class="form-group has-feedback" style="display: inline-block;">
+        <label class="sr-only">Búsqueda de publicaciones</label>
+        <input type="text" ng-model="searchpublicacion" class="form-control input-lg" id="inputEmail3" placeholder="Buscar publicación...">
+        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+    </div>      
+</div>
+<div class="text-center" ng-if="(publicaciones |filter: searchpublicacion).length > 0 && (searchpublicacion != '' && searchpublicacion != undefined)">
+    <p>Hay @{{(publicaciones |filter: searchpublicacion).length}} registro(s) que coinciden con su búsqueda</p>
+</div>
+<div class="alert alert-info" ng-if="publicaciones.length == 0">
+    <p>No hay registros almacenados</p>
+</div>
+<div class="alert alert-warning" ng-if="(publicaciones |filter: searchpublicacion).length == 0 && publicaciones.length > 0">
+    <p>No existen registros que coincidan con su búsqueda</p>
+</div>
 
-          <div class="panel-group Panel-group">
-                <div class="title">
-                    Publicaciones
-
-                </div>
-                <div class="body">
-                    <div class="row">
-                        <div class="col-sm-offset-5 col-sm-4">
-                            <div class="form-group input-group">
-                                <input id="input" class="form-control input-search" type="search" placeholder="Búsqueda" ng-model="searchpublicacion" aria-describedby="iconsearch">
-                                <span class="input-group-addon" id="iconsearch"><i class="glyphicon glyphicon-search"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <span class="chip">@{{( publicaciones |filter: searchpublicacion).length}} Resultados</span>
-                        </div>
-                    </div>
-                    <div class="row">
-     
-                                    <div dir-paginate="publicacion in publicaciones |filter:searchpublicacion|itemsPerPage: 10" pagination-id="pagepublicacion"> 
-                                    <div class="card" style="width: 18rem;" class="col-md-4">
-                                      <img class="card-img-top" src="@{{publicacion.portada}}" alt="Card image cap">
-                                      <div class="card-body">
-                                        <h5 class="card-title">@{{publicacion.titulo}} </h5>
-                                        <p class="card-text">@{{publicacion.descripcion}}.</p>
-                                        <a href="/verPubliacion/@{{publicacion.id}}" class="btn btn-primary"> ver </a>
-                                      </div>
-                                    </div>
-
-                                    </div>
-                                    <div ng-show="( publicaciones |filter: searchpublicacion).length == 0">
-                                        <div colspan="7" style="text-align:center;">
-                                            <div class="well" style="margin:0">
-                                                <p style="margin:0">No se encontraron publicaciones.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                             
-                        </div>
-                        <div class="col-xs-12 text-center">
-                            <dir-pagination-controls pagination-id="pagepublicacion"></dir-pagination-controls>
-                        </div>
-                    </div>
-    </div>
- 
+<div class="tiles">
+    <div class="tile inline-tile" dir-paginate="publicacion in publicaciones |filter:searchpublicacion|itemsPerPage: 10" pagination-id="pagepublicacion">
+        <div class="tile-img">
+            <img ng-src="@{{publicacion.portada.length > 0 ?  publicacion.portada : 'img/app/noimage.jpg'}}" alt="@{{publicacion.titulo}}"/>
+        </div>
+        <div class="tile-body">
+            <div class="tile-caption">
+                <h3>@{{publicacion.titulo}}</h3>
+            </div>
+            <p>@{{publicacion.descripcion}}</p>
+            <div class="inline-buttons">
+                <a href="/verPubliacion/@{{publicacion.id}}" class="btn btn-primary">Ver detalle</a>
+                
+            </div>  
             
-
-    
-    
-    
+        </div>
     </div>
-   
+</div>
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <dir-pagination-controls pagination-id="pagepublicacion"></dir-pagination-controls>
+    </div>
+</div>
 
 @endsection
 @section('javascript')
