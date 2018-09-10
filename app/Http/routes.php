@@ -1,21 +1,9 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+
+
 
 Route::controller('/indicadores','IndicadoresCtrl');
-
-
-
-
 
 Route::controller('/EstadisticasSecundarias','EstadisticasSecundariasCtrl');
 
@@ -35,6 +23,8 @@ Route::controller('/administradoractividades', 'AdministradorActividadesControll
 Route::controller('/administradordestinos', 'AdministradorDestinosController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
+
+
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
@@ -106,3 +96,4 @@ Route::group(['middleware' => 'cors'], function(){
    Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
   
 });
+

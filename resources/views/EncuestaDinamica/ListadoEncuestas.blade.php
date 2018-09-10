@@ -5,11 +5,20 @@
 @section('app','ng-app="appEncuestaDinamica"')
 @section('controller','ng-controller="ListarEncuestasRealizadasCtrl"')
 
-
-
+@section('titulo','Encuestas ADHOC - Respuestas')
+@section('subtitulo','El siguiente listado cuenta con @{{encuesta.encuestas.length}} registro(s)')
 
 @section('content')
-
+<div class="alert alert-info text-center">
+    <p>Encuesta:</p>
+    <h3 style="margin: 0">@{{encuesta.idiomas[0].nombre}}</h3>
+</div>
+<div class="flex-list">
+    <button type="button" class="btn btn-lg btn-success" ng-click="openModalAddEncuesta()" class="btn btn-lg btn-success" ng-if="encuesta.tipos_encuestas_dinamica_id==3">
+      Agregar encuesta
+    </button>
+    <a class="btn btn-lg btn-default" href="/encuesta/listado" >Volver al listado</a>
+</div>
 <div>
 
 
@@ -18,14 +27,6 @@
     <div class="row" >
 
        <div class="col-md-12">
-           
-           
-          <h2><h2>@{{encuesta.idiomas[0].nombre}}</h2></h2>
-          <h4>Listado de encuestas</h4>
-          
-          
-          <a class="btn btn-link btn-primary" href="/encuesta/listado" >Volver al listado</a>
-          <button class="btn btn-success" ng-click="openModalAddEncuesta()" ng-if="encuesta.tipos_encuestas_dinamica_id==3" >+ Agregar</button>
           
           <table class="table table-striped">
             <thead>
@@ -34,8 +35,8 @@
                 <th>Nombres y apellidos</th>
                 <th>Email</th>
                 <th>Teléfono</th>
-                <th style="width: 20px;" >Estado</th>
-                <th style="width: 140px;" ></th>
+                <th style="width: 20px;">Estado</th>
+                <th style="width: 110px;">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -45,11 +46,11 @@
                 <td>@{{ item.email}}</td>
                 <td>@{{ item.telefono}}</td>
                 <td>@{{ item.estado.nombre }}</td>
-                <td>
-                    <a class="btn btn-xs btn-primary" href="/encuestaAdHoc/@{{item.codigo}}" > ver  </a>
-                    <a ng-click="copiarLink(item.codigo)" ng-if="encuesta.tipos_encuestas_dinamica_id==3" href >
-                        Copiar link
-                    </a>
+                <td class="text-center">
+                    <a class="btn btn-xs btn-default" href="/encuestaAdHoc/@{{item.codigo}}" title="Ver detalle"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver detalle</span></a>
+                    <button type="button" class="btn btn-xs btn-default" ng-click="copiarLink(item.codigo)" ng-show="encuesta.tipos_encuestas_dinamica_id==3" title="Copiar enlace">
+                        <span class="glyphicon glyphicon-link"></span><span class="sr-only">Copiar enlace</span>
+                    </button>
                 </td>
               </tr>
             </tbody>
@@ -75,36 +76,36 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Agregar encuesta</h4>
           </div>
-           <form name="form" >
+           <form name="form" novalidate>
               <div class="modal-body">
                  
                  <div class="row" >
                     
-                    <div class="col-md-6">
-                        <div class="form-group" ng-class="{'error' : (form.$submitted || form.nombre.$touched) && form.nombre.$error.required}">
-                            <label class="control-label">Nombres</label><br>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group" ng-class="{'has-error' : (form.$submitted || form.nombre.$touched) && form.nombre.$error.required}">
+                            <label class="control-label"><span class="asterisk">*</span> Nombres</label><br>
                             <input type="text" class="form-control" name="nombre" ng-model="usuario.nombres" placeholder="Nombres" required />
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group" ng-class="{'error' : (form.$submitted || form.apellidos.$touched) && form.apellidos.$error.required}">
-                            <label class="control-label">Apellidos</label><br>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group" ng-class="{'has-error' : (form.$submitted || form.apellidos.$touched) && form.apellidos.$error.required}">
+                            <label class="control-label"><span class="asterisk">*</span> Apellidos</label><br>
                             <input type="text" class="form-control" name="apellidos" ng-model="usuario.apellidos" placeholder="Apellidos" required />
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group" ng-class="{'error' : (form.$submitted || form.correo.$touched) && !form.correo.$valid}">
-                            <label class="control-label">Correo electronico</label><br>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group" ng-class="{'has-error' : (form.$submitted || form.correo.$touched) && !form.correo.$valid}">
+                            <label class="control-label"><span class="asterisk">*</span> Correo electrónico</label><br>
                             <input type="email" class="form-control" name="correo" ng-model="usuario.email" placeholder="Correo electronico" required />
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="form-group" ng-class="{'error' : (form.$submitted || form.telefono.$touched) && form.correo.$error.required}">
-                            <label class="control-label">Teléfono</label><br>
-                            <input type="text" class="form-control" name="telefono" ng-model="usuario.telefono" placeholder="No teléfonico" required />
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group" ng-class="{'has-error' : (form.$submitted || form.telefono.$touched) && form.correo.$error.required}">
+                            <label class="control-label"><span class="asterisk">*</span> Teléfono</label><br>
+                            <input type="text" class="form-control" name="telefono" ng-model="usuario.telefono" placeholder="No. teléfonico" required />
                         </div>
                     </div>
                        
@@ -112,8 +113,9 @@
                 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-success" ng-click="agregarencuestaUSuario()" value="Guardar" />
+                
+                  <input type="submit" class="btn btn-success" ng-click="agregarencuestaUSuario()" value="Guardar" />
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
               </div>
               
             </form>
@@ -152,6 +154,7 @@
 @endsection
 
 @section('javascript')
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}"></script>
     <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
