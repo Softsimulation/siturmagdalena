@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Storage;
 use File;
-
 use App\Models\Atracciones;
 use App\Models\Idioma;
 use App\Models\Tipo_Atraccion;
@@ -23,7 +23,18 @@ use App\Models\Multimedia_Sitio;
 
 class AdministradorAtraccionController extends Controller
 {
-    //
+     public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     
     public function getIndex(){
         return view('administradoratracciones.Index');

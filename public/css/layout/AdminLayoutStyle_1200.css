@@ -1,0 +1,10 @@
+#left-side-menu{
+    width: 250px;
+}
+#content-page{
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+#content-page .container{
+    width: 950px;
+}

@@ -28,9 +28,9 @@ class EstadisticasSecundariasCtrl extends Controller
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
         
-        
-        
     }
+    
+    
     public function getConfiguracion(){
         return View("EstadisticasSecundarias.configuracion");
     }
@@ -41,7 +41,7 @@ class EstadisticasSecundariasCtrl extends Controller
             [
                 "meses"=> Mes_Indicador::get(),
                 "anios"=> Anio::get(),
-                "data"=> Estadisitica_Secundaria::with([ "graficas", "series"=>function($q){ $q->with(["valores_tiempo","valores_rotulo"]); } , "rotulos" ])->where("estado",true)->orderBy('id')->get(),
+                "data"=> $this->getDataEstadisticas(),
                 "graficas"=> Tipos_grafica::get()
             ];
     }
@@ -85,7 +85,7 @@ class EstadisticasSecundariasCtrl extends Controller
         
         return [ 
                   "success"=>true, 
-                  "data"=> Estadisitica_Secundaria::with([ "graficas", "series"=>function($q){ $q->with(["valores_tiempo","valores_rotulo"]); } , "rotulos" ])->get()
+                  "data"=> $this->getDataEstadisticas()
                ];
     }
     
@@ -173,7 +173,7 @@ class EstadisticasSecundariasCtrl extends Controller
         
         return [ 
                   "success"=>true, 
-                  "data"=> Estadisitica_Secundaria::with([ "graficas", "series"=>function($q){ $q->with(["valores_tiempo","valores_rotulo"]); } , "rotulos" ])->get()
+                  "data"=> $this->getDataEstadisticas(),
                ];
         
     }
@@ -208,6 +208,14 @@ class EstadisticasSecundariasCtrl extends Controller
         return [ "success"=>false ];
     }
     
+    
+    private function getDataEstadisticas(){
+        
+        return Estadisitica_Secundaria::with([  "graficas", "rotulos", 
+                                                "series"=>function($q){ $q->with(["valores_tiempo","valores_rotulo"]); }
+                                             ])->where("estado",true)->orderBy('id')->get();
+        
+    }
     
     
     
