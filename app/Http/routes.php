@@ -17,7 +17,7 @@ Route::controller('/indicadores','IndicadoresCtrl');
 
 
 
-Route::controller('/EstadistivasSecunarias','EstadisticasSecundariasCtrl');
+Route::controller('/Estadisticassecundarias','EstadisticasSecundariasCtrl');
 
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');

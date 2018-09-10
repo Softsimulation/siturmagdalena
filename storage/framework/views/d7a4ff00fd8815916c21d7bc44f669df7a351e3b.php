@@ -363,6 +363,10 @@
 									 <li id="menu-academico" ><a href="<?php echo e(asset('/noticias/listadonoticias')); ?>"> <span>Noticias</span></a>
 							
 									 </li>
+									 <li id="menu-academico" ><a href="<?php echo e(asset('/Estadisticassecundarias')); ?>"> <span>Estadisticas Secundarias</span></a>
+							
+									 </li>
+									 
 								
 								
 								  </ul>

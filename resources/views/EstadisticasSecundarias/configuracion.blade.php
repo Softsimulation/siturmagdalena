@@ -409,5 +409,6 @@
 
 @section('javascript')
     <script src="{{asset('/js/estadisticasSecundarias/servicios.js')}}"></script>
+     <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
     <script src="{{asset('/js/estadisticasSecundarias/app.js')}}"></script>
 @endsection
