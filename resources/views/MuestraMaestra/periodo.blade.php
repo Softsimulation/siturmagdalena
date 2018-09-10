@@ -172,7 +172,7 @@
             -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
+            overflow-y: auto; 
             overflow-x: hidden;
         }
         #cont-filtros > h2{
