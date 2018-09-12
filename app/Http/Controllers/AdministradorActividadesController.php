@@ -19,7 +19,23 @@ use Carbon\Carbon;
 
 class AdministradorActividadesController extends Controller
 {
-    //
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }/*
+        $this->middleware('permissions:list-actividad',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-actividad',['only' => ['getCrear','getDatoscrear','getIdioma','getDatoscrearnoticias','postGuardarnoticia',
+        'postGuardarmultimedianoticia','postGuardartextoalternativo','postEliminarmultimedia'] ]);
+        $this->middleware('permissions:read-actividad',['only' => ['getVernoticia','getDatosver','getListadonoticias','getNoticias'] ]);
+        $this->middleware('permissions:edit-actividad',['only' => ['getListadonoticias','getNoticias','getNuevoidioma','postGuardarnoticia','postGuardarmultimedianoticia',
+        'postGuardartextoalternativo','postEliminarmultimedia','getVistaeditar','getDatoseditar','postModificarnoticia' ] ]);
+        $this->middleware('permissions:estado-actividad',['only' => ['getListadonoticias','getNoticias','postCambiarestado'] ]);*/
+    }
     public function getIndex(){
         return view('administradoractividades.Index');
     }

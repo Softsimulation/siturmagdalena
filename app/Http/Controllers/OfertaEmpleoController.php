@@ -76,8 +76,7 @@ class OfertaEmpleoController extends Controller
         $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
-        }                           
-    
+        }
         
     }
     
@@ -1750,6 +1749,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     public function getInfocapalimentos($id)
     {
         $provision = Provision_Alimento::with('capacidadAlimento')->where('encuestas_id',$id)->first();
+        $encuesta = Encuesta::where('id',$id)->first();
         //return $provision;
         $capacidad = [];
         $capacidad["platosMaximo"] = null;
@@ -1769,16 +1769,31 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         if($provision["capacidadAlimento"] != null || sizeof($provision["capacidadAlimento"]) > 0){
             $capacidad["platosMaximo"] = $provision["capacidadAlimento"]->max_platos;
             $capacidad["platoServido"] = $provision["capacidadAlimento"]->platos_servidos;
-            $capacidad["precioPlato"] = intval($provision["capacidadAlimento"]->valor_plato);
+            $capacidad["precioPlato"] = $provision["capacidadAlimento"]->valor_plato == null ? null : intval($provision["capacidadAlimento"]->valor_plato);
             $capacidad["platosPromedio"] = $provision["capacidadAlimento"]->promedio_unidades;
             $capacidad["unidadServida"] = $provision["capacidadAlimento"]->unidades_vendidas;
             
-            $capacidad["precioUnidad"] = intval($provision["capacidadAlimento"]->valor_unidad);
+            $capacidad["precioUnidad"] = $provision["capacidadAlimento"]->valor_unidad == null ? null : intval($provision["capacidadAlimento"]->valor_unidad);
             $capacidad["bebidasMaximo"] = $provision["capacidadAlimento"]->bebidas_promedio;
             $capacidad["bebidasServidas"] = $provision["capacidadAlimento"]->bebidas_servidas;
-            $capacidad["bebidaValor"] = intval($provision["capacidadAlimento"]->valor_bebida);
+            $capacidad["bebidaValor"] = $provision["capacidadAlimento"]->valor_bebida == null ? null : intval($provision["capacidadAlimento"]->valor_bebida);
             //$capacidad["valor_unidad"] = intval($provision["capacidadAlimento"]->valor_unidad);
             $capacidad["porcentajeOtrasRegiones"] = $provision->numero_extranjeros;
+            
+            if($capacidad["bebidasServidas"] == null){
+                $capacidad["porcentajePlato"] = null;
+                $capacidad["porcentajeBebida"] = null;
+            }else{
+                if($capacidad["tipo"] == 2){
+                    $capacidad["porcentajePlato"] = $capacidad["unidadServida"] == null ? null : ($capacidad["unidadServida"] / ($encuesta->numero_dias * $capacidad["platosPromedio"]))*100;
+                    
+                }else{
+                    $capacidad["porcentajePlato"] = $capacidad["platoServido"] == null ? null : ($capacidad["platoServido"] / ($encuesta->numero_dias * $capacidad["platosMaximo"]))*100;
+                }
+                $capacidad["porcentajeBebida"] = ($capacidad["bebidasServidas"] / ($encuesta->numero_dias * $capacidad["bebidasMaximo"]))*100;
+            }
+            
+            
         }
         return ["capacidad"=>$capacidad];
     }
@@ -2374,7 +2389,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 
     public function postGuardarofertaalimentos(Request $request)
     {
-        //return $request->all();
+        return $request->all();
         $validator = \Validator::make($request->all(),[
         
             'id' => 'required|exists:encuestas,id',

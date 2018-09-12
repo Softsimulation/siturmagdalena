@@ -33,11 +33,14 @@
         }
         /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
         body.charging {
+            z-index: 1000;
+            display: block;
             overflow: hidden;
         }
 
         /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
         body.charging .carga {
+            z-index: 1000;
             display: block;
         }
     </style>
@@ -108,6 +111,7 @@
                                     <a href="/usuario/editar/@{{usuario.id}}" type="button" title="Editar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
                                     <a href="" ng-if="usuario.estado == true" ng-click="cambiarEstado(usuario)" type="button" title="Desactivar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ban-circle"></span></a>
                                     <a href="" ng-if="usuario.estado != true" ng-click="cambiarEstado(usuario)" type="button" title="Activar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                                    <a href="" ng-click="asignarPermisosModal(usuario)" type="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></a>
                                 </td>
                             </tr>
 
@@ -124,6 +128,44 @@
                         <dir-pagination-controls></dir-pagination-controls>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalAsignacionPermiso" role="dialog">
+            <div class="modal-dialog">
+                <form role="form" name="asignarPermisosForm"  novalidate>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Asignación de permisos</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" ng-if="errores != null">
+                            <h6>Errores</h6>
+                            <span class="messages" ng-repeat="error in errores">
+                                  <span>*@{{error[0]}}</span><br/>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label class="form-group">Permisos</label>
+                                <ui-select multiple sortable="true" ng-model="asignarPermiso.permisos" theme="select2" title="Escoja permisos" style="width:100%;">
+                                    <ui-select-match placeholder="Seleccione permisos">@{{$item.display_name}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in permisos | filter: $select.search">
+                                      <div ng-bind-html="item.display_name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                  </ui-select>
+                    
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" ng-click="asignacionPermisos()">Asignar</button>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
     </div>
