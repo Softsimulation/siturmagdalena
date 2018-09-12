@@ -1,7 +1,9 @@
 <?php
 
 
-
+Route::get('/Mapa', 'MapaCtrl@getIndex');
+Route::get('/Mapa/getData', 'MapaCtrl@getData');
+//Route::controller('/Mapa', 'MapaCtrl');
 
 Route::controller('/indicadores','IndicadoresCtrl');
 
@@ -50,6 +52,7 @@ Route::get('/CrearGrupoViaje', function () {
 Route::get('/', function () {
     return view('home.index');
 });
+
 
 
 Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
