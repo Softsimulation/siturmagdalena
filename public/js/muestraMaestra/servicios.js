@@ -55,6 +55,7 @@
           
           getDataLLenarInfoZona: function(id){ return http.get("/MuestraMaestra/datazonallenarinfo/"+ (id ? id : -1) );  },
           guardarDataInfoZona: function(data){ return http.post("/MuestraMaestra/guardarinfozona", data );  },
+          getExcelZona: function(id){ return http.getFile("/MuestraMaestra/excelinfozona/"+id );  },
           
           
           agregarProveedorInformal: function(data){ return http.post("/MuestraMaestra/guardarproveedorinformal", data );  },
@@ -92,7 +93,7 @@
                     }
                     
                     if(sw==false){
-                        proveedoresFuera.push( proveedores[k].razon_social );
+                        proveedoresFuera.push( proveedores[k].nombre );
                     }
                     
                 }

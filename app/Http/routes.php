@@ -1,23 +1,13 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+
+Route::get('/Mapa', 'MapaCtrl@getIndex');
+Route::get('/Mapa/getData', 'MapaCtrl@getData');
+//Route::controller('/Mapa', 'MapaCtrl');
 
 Route::controller('/indicadores','IndicadoresCtrl');
 
-
-
-
-
-Route::controller('/EstadistivasSecunarias','EstadisticasSecundariasCtrl');
+Route::controller('/EstadisticasSecundarias','EstadisticasSecundariasCtrl');
 
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
@@ -35,6 +25,8 @@ Route::controller('/administradoractividades', 'AdministradorActividadesControll
 Route::controller('/administradordestinos', 'AdministradorDestinosController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
+
+
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
@@ -62,6 +54,7 @@ Route::get('/', function () {
 });
 
 
+
 Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
 
 
@@ -70,8 +63,10 @@ Route::get('/encuestaAdHoc/{encuesta}', 'EncuestaDinamicaCtrl@encuesta' );
 Route::get('/llenarEncuestaAdHoc/{idEncuesta}', 'EncuestaDinamicaCtrl@anonimos' );
 Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
+Route::controller('/informes','InformesCtrl');
 
 
+Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
@@ -95,5 +90,13 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     Route::get('/getPublicacionEdit/{id}', 'PublicacionController@getPublicacionEdit');
     Route::post('/EstadoPublicacion', 'PublicacionController@EstadoPublicacion' );
     
+});
+
+
+
+Route::group(['middleware' => 'cors'], function(){
+   
+   Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+  
 });
 

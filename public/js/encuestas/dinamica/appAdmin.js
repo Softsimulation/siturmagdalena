@@ -1,6 +1,6 @@
 (function(){
 
-    angular.module("appEncuestaDinamica", [ 'ngSanitize', 'ui.select', 'checklist-model', "ADM-dateTimePicker", "dndLists", "chart.js", "serviciosAdmin" ] )
+    angular.module("appEncuestaDinamica", [ 'ngSanitize', 'angularUtils.directives.dirPagination', 'ui.select', 'checklist-model', "ADM-dateTimePicker", "dndLists", "chart.js", "serviciosAdmin" ] )
     
     .config(["ADMdtpProvider", "ChartJsProvider", function(ADMdtpProvider,ChartJsProvider) {
          ADMdtpProvider.setOptions({ calType: "gregorian", format: "YYYY/MM/DD", default: "today" });
@@ -9,8 +9,9 @@
     
     .controller("ConfigurarEncuestaCtrl", ["$scope","ServiEncuesta", function($scope,ServiEncuesta){
         
-        $scope.tabOpen = { activo:0 } ;
+        $scope.tabOpen = { activo:0 };
         $scope.opcion = {};
+        
         
         $scope.$watch("id", function() {
             if($scope.id){

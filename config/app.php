@@ -166,6 +166,8 @@ return [
         //models generator
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        
+        Barryvdh\Cors\ServiceProvider::class,
     ],
 
     /*

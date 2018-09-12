@@ -1,20 +1,24 @@
 @extends('layout._AdminLayout')
 @section('app','ng-app="appProyect"')
 
+@section('controller','ng-controller="publicacionEditarCtrl"')
+
+@section('titulo','Publicaciones')
+@section('subtitulo','Formulario de edición de publicaciones')
+
 @section('content')
-    <div ng-controller="publicacionEditarCtrl" >
-             <input type="hidden" name="id" ng-model="id" ng-init="id={{$id}}"/>
-        <h2>Editar Publicacion</h2>
-        <div class="alert alert-danger" ng-if="errores != null">
-                    <h6>Errores</h6>
-                    <span class="messages" ng-repeat="error in errores">
-                          <span>@{{error}}</span>
-                    </span>
-                </div>  
+ <input type="hidden" name="id" ng-model="id" ng-init="id={{$id}}"/>
+       
+<div class="alert alert-danger" ng-if="errores != null">
+    <h6>Errores</h6>
+    <span class="messages" ng-repeat="error in errores">
+          <span>@{{error}}</span>
+    </span>
+</div>  
         <form role="form" name="formEditar" novalidate>
     
                <div class = "row">
-                    <div class="col-md-6  col-xs- 6 col-sm-6">
+                    <div class="col-md-6 col-xs-6 col-sm-6">
                           <label>Titulo</label>
                           <input type="text" name="titulo" class="form-control" ng-model="publicacion.titulo" required/>
                           <span ng-show= "formEditar.$submitted || formEditar.titulo.$touched">
@@ -192,10 +196,6 @@
        
         </form>
     
-    
-    </div>
-   
-
 @endsection
 @section('javascript')
     <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>

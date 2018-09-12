@@ -37,7 +37,17 @@ app.factory("OfertaEmpleoServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-        
+        guardarAlojamientoMensual: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/ofertaempleo/guardaralojamientomensual', data ).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
         
     }
 }]);

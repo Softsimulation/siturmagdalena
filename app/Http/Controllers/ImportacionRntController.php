@@ -102,7 +102,7 @@ class ImportacionRntController extends Controller
 		    $registro = $validar['success'] ? $validar["registro"] : $registro;
 		    
 		    $similar = $proveedoresIngresados->filter(function($value, $key)use($registro){
-		    	return $value['nit'] == $registro['nit'] || ( $value['digito_verificacion'] == $registro['digito_verificacion'] && $value['digito_verificacion'] != 0 && $value['digito_verificacion'] != null ) || ($value['correo'] == $registro['correo'] && strpos($value['correo'], '@') !== false);
+		    	return ($value['nit'] == $registro['nit'] && $registro['nit'] != null && $registro['nit'] != 0) || ( $value['digito_verificacion'] == $registro['digito_verificacion'] && $value['digito_verificacion'] != 0 && $value['digito_verificacion'] != null ) || ($value['correo'] == $registro['correo'] && strpos($value['correo'], '@') !== false);
 		    })->first();
 		    
 		    $registro['es_correcto'] = $validar['success'] ? 1 : 0;
@@ -728,6 +728,13 @@ class ImportacionRntController extends Controller
 		$cadena = str_replace("í", "Í", $cadena); 
 		$cadena = str_replace("ó", "Ó", $cadena); 
 		$cadena = str_replace("ú", "Ú", $cadena); 
+		
+		$cadena = str_replace("á", "A", $cadena); 
+		$cadena = str_replace("é", "E", $cadena); 
+		$cadena = str_replace("í", "I", $cadena); 
+		$cadena = str_replace("ó", "O", $cadena); 
+		$cadena = str_replace("ú", "U", $cadena); 
+		
         return trim($cadena);
     }
     
