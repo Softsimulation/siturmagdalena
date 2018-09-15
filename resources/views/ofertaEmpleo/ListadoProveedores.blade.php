@@ -145,7 +145,8 @@
                                 <td style="text-align: center;">
                                 <a href="/ofertaempleo/encuesta/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta sin realizar" ><span class = "glyphicon glyphicon-th-list"></span></a>
                                 <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-raised btn-default btn-sm" title="Encuesta realizadas" style="margin: 0;"><i class="material-icons">assignment</i></a>
-                                
+                                <a  href="/ofertaempleo/activar/@{{item.proveedor_rnt_id}}" class="btn btn-default btn-sm" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
+                          
                                 </td>
                             </tr>
                          </tbody>

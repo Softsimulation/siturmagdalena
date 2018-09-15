@@ -31,7 +31,7 @@ class OfertaEmpleo
           
             
         }    
-    
+
     
      if(strlen(strstr($request->path(),'ofertaempleo/actividadcomercial'))>0){
             $sitio = Sitio_Para_Encuesta::find($request->three);

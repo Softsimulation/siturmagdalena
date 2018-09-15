@@ -154,6 +154,7 @@ angular.module('empleo.Empleo', [])
 		obj.ninguno = 0;
 		obj.posgrado = 0;
 		obj.bachiller = 0;
+		obj.primaria = 0;
 		obj.universitario = 0;
 		obj.tecnico = 0;
 		obj.tecnologo = 0;
@@ -565,6 +566,25 @@ $scope.$watch('id', function () {
         }        
     }
 
+        $scope.vacantesSi = function(){
+        var vacante  = ( $scope.empleo.VacanteOperativo == null ? 0 : ($scope.empleo.VacanteOperativo  == undefined ? 0 :$scope.empleo.VacanteOperativo ));
+         var vacante2  = ( $scope.empleo.VacanteAdministrativo == null ? 0 : ($scope.empleo.VacanteAdministrativo  == undefined ? 0 :$scope.empleo.VacanteAdministrativo ));
+        var vacante3  = ( $scope.empleo.VacanteGerencial == null ? 0 : ($scope.empleo.VacanteGerencial  == undefined ? 0 :$scope.empleo.VacanteGerencial ));
+       
+        
+        if((  vacante +  vacante2  + vacante3   ) > 0){
+        return true;
+        }else{
+            if($scope.empleo != null){
+                $scope.empleo.Razon = {};
+                $scope.empleo.Razon.apertura = 0;
+                $scope.empleo.Razon.crecimiento = 0;
+                $scope.empleo.Razon.remplazo = 0;
+            }
+            return false;
+        }
+    }
+
      $scope.validacion = function(){
         
         
@@ -589,7 +609,7 @@ $scope.$watch('id', function () {
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                          window.location.href = "/ofertaempleo/encuestas/" + data.sitio;;
+                          window.location.href = "/ofertaempleo/encuestas/" + data.sitio;
                     }, 1000);
     
     

@@ -86,6 +86,85 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.Crearencuesta');
     }
     
+        public function getActivar($one){
+        return view('ofertaEmpleo.Activar',['id'=>$one]);
+    }
+    
+      public function getProveedor($id){
+      $establecimiento = Sitio_Para_Encuesta::where("proveedor_rnt_id",$id)->first();
+      return ["success" => true, "establecimiento"=> $establecimiento];
+    }
+    
+     public function postGuardaractivar(Request $request)
+    {
+    
+        
+        $validator = \Validator::make($request->all(),[
+        
+            'proveedor_rnt_id' => 'required|exists:proveedores_rnt,id',
+            'nombre_contacto' => 'required|string|min:1|max:255',
+            'cargo_contacto' => 'required|string|min:1|max:255',
+            'email'=>'required|email',
+            'telefono_fijo' => 'required|string|min:1|max:255',
+            'celular' => 'required|string|min:1|max:255',
+            'camara_comercio' => 'required|numeric|min:0|max:1',
+            'registro_turismo' => 'required|numeric|min:0|max:1',
+          
+            
+        ],[
+           
+            ]
+        );
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        
+    
+        $data = Sitio_Para_Encuesta::where("proveedor_rnt_id",$request->proveedor_rnt_id)->first();
+        
+        if($data == null){
+            $data = new Sitio_Para_Encuesta();
+            $data->proveedor_rnt_id = $request->proveedor_rnt_id ;
+            $data->nombre_contacto = $request->nombre_contacto ;
+            $data->cargo_contacto = $request->cargo_contacto ;
+            $data->email = $request->email ;
+            $data->celular = $request->celular ;
+            $data->telefono_fijo = $request->telefono_fijo ;
+            $data->camara_comercio = $request->camara_comercio ;
+            $data->registro_turismo = $request->registro_turismo ;
+            $data->ano_fundacion = $request->ano_fundacion ;
+            $data->extension = $request->extension;
+            $data->user_id = 1;
+            $data->es_verificado = true;
+            $data->save();
+        }else{
+            $data->nombre_contacto = $request->nombre_contacto ;
+            $data->cargo_contacto = $request->cargo_contacto ;
+            $data->email = $request->email ;
+            $data->celular = $request->celular ;
+            $data->telefono_fijo = $request->telefono_fijo ;
+            $data->camara_comercio = $request->camara_comercio ;
+            $data->registro_turismo = $request->registro_turismo ;
+            $data->ano_fundacion = $request->ano_fundacion ;
+            $data->extension = $request->extension ;
+            $data->save();
+        }
+       
+       
+       return ["success"=>true, "id"=> $data->id];
+            
+    }
+    
+      public function getListadoproveedoresrnt(){
+        return view('ofertaEmpleo.ListadoProveedoresRnt');
+    }
+    
+     public function getListadornt(){
+     $provedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
+      return ["success" => true, "proveedores"=> $provedores];
+    }
+    
+    
     public function getListadoproveedores(){
         return view('ofertaEmpleo.ListadoProveedores');
     }
@@ -435,12 +514,19 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.Empleo',array('id'=>$id));
     }
     
-         public function getCargardatosempleo($id = null)  
-    {
+  public function getCargardatosempleo($id = null)  {
         $empleo = collect();
   
         $empleo = collect();
         $empleo["Sexo"]  =  Sexo_Empleado::where("encuestas_id",$id)->get();
+        $vac = Vacante::where("encuestas_id",$id)->first(); 
+        if($vac != null){
+            $empleo["VacanteOperativo"] = $vac->operativo;
+            $empleo["VacanteAdministrativo"] = $vac->administrativo;
+            $empleo["VacanteGerencial"]  = $vac->gerencial;
+        }
+        $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$id)->first();
+
 
         $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
             
@@ -498,6 +584,45 @@ class OfertaEmpleoController extends Controller
     }
 
     $encuesta = Encuesta::find($request->Encuesta);
+
+    $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first(); 
+
+    if ($vacRazon == null)
+    {
+        $vacRazon = new Razon_Vacante();
+        $vacRazon->encuesta_id = $request->Encuesta;
+        $vacRazon->apertura = $request->Razon["apertura"];
+        $vacRazon->crecimiento =  $request->Razon["crecimiento"];
+        $vacRazon->remplazo =  $request->Razon["remplazo"];
+        $vacRazon->save();
+    }
+    else
+    {
+        $vacRazon->apertura = $request->Razon["apertura"];
+        $vacRazon->crecimiento =  $request->Razon["crecimiento"];
+        $vacRazon->remplazo =  $request->Razon["remplazo"];
+        $vacRazon->save();
+    }
+
+    $vacBuscado = Vacante::where("encuestas_id",$request->Encuesta)->first(); 
+
+    if ($vacBuscado == null)
+    {
+        $vacBuscado = new vacante();
+        $vacBuscado->encuestas_id = $request->Encuesta;
+        $vacBuscado->administrativo = $request->VacanteAdministrativo;
+        $vacBuscado->gerencial = $request->VacanteGerencial;
+        $vacBuscado->operativo = $request->VacanteOperativo;
+        $vacBuscado->save();
+    }
+    else
+    {
+        $vacBuscado->administrativo = $request->VacanteAdministrativo;
+        $vacBuscado->gerencial = $request->VacanteGerencial;
+        $vacBuscado->operativo = $request->VacanteOperativo;
+        $vacBuscado->save();
+    }
+
 
     Historial_Encuesta_Oferta::create([
            'encuesta_id' => $request->Encuesta,
@@ -664,6 +789,7 @@ class OfertaEmpleoController extends Controller
 			'Educacion' => 'required',
 			'Educacion.*.tipo_cargo_id' => 'required|exists:tipos_cargos,id',
 			'Educacion.*.ninguno' => 'required|min:0',
+			'Educacion.*.primaria' => 'required|min:0',
 			'Educacion.*.posgrado' => 'required|min:0',
 			'Educacion.*.bachiller' => 'required|min:0',
 			'Educacion.*.universitario' => 'required|min:0',
@@ -717,7 +843,7 @@ class OfertaEmpleoController extends Controller
             
         $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($educacion){
-            if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["hombres"] ){
+            if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["primaria"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["hombres"] ){
                  
                  return ["success" => false, "errores" => [["error en el numero de hombres por eduacion en el cargo ".$cargo->nombre]] ];    
             }
@@ -725,7 +851,7 @@ class OfertaEmpleoController extends Controller
         
         $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($educacion){
-            if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["mujeres"] ){
+            if(($educacion["ninguno"] + $educacion["bachiller"]+ $educacion["primaria"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["mujeres"] ){
                  
                  return ["success" => false, "errores" => [["error en el numero de mujeres por eduacion en el cargo ".$cargo->nombre]] ];    
             }
@@ -850,6 +976,7 @@ class OfertaEmpleoController extends Controller
             $educacionempleo = new Educacion_Empleado();
             $educacionempleo->encuestas_id = $request->Encuesta;
             $educacionempleo->ninguno = $request->Educacion[$i]["ninguno"];
+            $educacionempleo->primaria = $request->Educacion[$i]["primaria"];
             $educacionempleo->bachiller = $request->Educacion[$i]["bachiller"];
             $educacionempleo->posgrado = $request->Educacion[$i]["posgrado"]; 
             $educacionempleo->tecnico = $request->Educacion[$i]["tecnico"];
@@ -862,6 +989,7 @@ class OfertaEmpleoController extends Controller
         else
         {               
             $educacionempleo->ninguno = $request->Educacion[$i]["ninguno"];
+            $educacionempleo->primaria = $request->Educacion[$i]["primaria"];
             $educacionempleo->bachiller = $request->Educacion[$i]["bachiller"];
             $educacionempleo->posgrado = $request->Educacion[$i]["posgrado"]; 
             $educacionempleo->tecnico = $request->Educacion[$i]["tecnico"];
@@ -1016,7 +1144,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
   
 	
 
-                   $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->Encuesta));
+            $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->Encuesta));
             if($data[0]->estado_id < 3){
                 Historial_Encuesta_Oferta::create([
                    'encuesta_id' => $request->Encuesta, 
@@ -1033,7 +1161,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                ]);
             }
             
-            $encuesta = Encuesta::where('id',$request->id)->first();
+            $encuesta = Encuesta::where('id',$request->Encuesta)->first();
             return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
     
