@@ -6,39 +6,42 @@
 @section('app','ng-app="appMuestraMaestra"')
 @section('controller','ng-controller="CrearPeriodoCtrl"')
 
+@section('titulo','Muestra maestra')
+@section('subtitulo','Formulario de registro de periodo en muestra maestra')
 
 @section('content')
    
     <input type="hidden" id="periodo" value="{{$ultipoPeriodoID}}" />
    
-    <div class="row"  >
-        <form name="formCrear" >
-            <div class="col-md-4">
-                <div class="form-group" ng-class="{'error' : (form.$submitted || form.nombre.$touched) && form.nombre.$error.required}">
-                    <label class="control-label" for="pregunta">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" ng-model="dataPerido.nombre" required />
+        <form name="formCrear" novalidate>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : (formCrear.$submitted || formCrear.nombre.$touched) && formCrear.nombre.$error.required}">
+                        <label class="control-label" for="pregunta"><span class="asterisk">*</span> Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" ng-model="dataPerido.nombre" required maxlength="255"/>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error' : (formCrear.$submitted || formCrear.fechaInicio.$touched) && formCrear.fechaInicio.$error.required}">
+                        <label class="control-label" for="fechaInicio"><span class="asterisk">*</span> Fecha inicio</label>
+                        <adm-dtp full-data="date1" maxdate="@{{date2.unix}}" name="fechaInicio" id="fechaInicio" ng-model='dataPerido.fecha_inicio' options="optionFecha" ng-required="true"></adm-dtp>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error' : (formCrear.$submitted || formCrear.fechaFin.$touched) && formCrear.fechaFin.$error.required}">
+                        <label class="control-label" for="fechaFin"><span class="asterisk">*</span> Fecha fin</label>
+                        <adm-dtp full-data="date2" mindate="@{{date1.unix}}" name="fechaFin" id="fechaFin" ng-model='dataPerido.fecha_fin' options="optionFecha" ng-required="true"></adm-dtp>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <br>
+                   <button type="submit" class="btn btn-block btn-success" ng-click="guardar()" >Guardar</button>
                 </div>
             </div>
             
-            <div class="col-md-3">
-                <div class="form-group" ng-class="{'error' : (form.$submitted || form.fechaInicio.$touched) && form.fechaInicio.$error.required}">
-                    <label class="control-label" for="fechaInicio">Fecha inicio</label>
-                    <adm-dtp full-data="date1" maxdate="@{{date2.unix}}" name="fechaInicio" id="fechaInicio" ng-model='dataPerido.fecha_inicio' options="optionFecha" ng-required="true"></adm-dtp>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="form-group" ng-class="{'error' : (form.$submitted || form.fechaFin.$touched) && form.fechaFin.$error.required}">
-                    <label class="control-label" for="fechaFin">Fecha fin</label>
-                    <adm-dtp full-data="date2" mindate="@{{date1.unix}}" name="fechaFin" id="fechaFin" ng-model='dataPerido.fecha_fin' options="optionFecha" ng-required="true"></adm-dtp>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <br>
-               <button type="submit" class="btn btn-block btn-success" ng-click="guardar()" >Guardar</button>
-            </div>
         </form>
-    </div>
     
     <br>
     
@@ -69,8 +72,8 @@
                                  @{{item.nombre}} <span class="caret"></span>
                               </button>
                               <ul class="dropdown-menu">
-                                <li><a href ng-click="openModalZona(item)" ><i class="material-icons">border_color</i> Ver/Editar</a></li>
-                                <li><a href ng-click="eliminarZona(item.nombre,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
+                                <li><a href ng-click="openModalZona(item)" ><span class="glyphicon glyphicon-pencil"></span> Ver/Editar</a></li>
+                                <li><a href ng-click="eliminarZona(item.nombre,$index)" ><span class="glyphicon glyphicon-trash"></span>  Eliminar</a></li>
                               </ul>
                             </div>
                         </div>
@@ -100,20 +103,15 @@
           <div class="modal-body">
             
             <div class="row">    
-                <div class="col-md-12">
+                <div class="col-xs-12 col-md-12">
                     <div class="form-group" ng-class="{'error' : (form.$submitted || form.nombre.$touched) && form.nombre.$error.required}" >
-                      <label for="name">Nombre:</label>
+                      <label for="name"><span class="asterisk">*</span> Nombre</label>
                       <input type="text" class="form-control" id="name" name="nombre" ng-model="zona.nombre" required >
                     </div>
                 </div>
-            </div>
-            
-            <br>
-        
-            <div class="row">    
-                <div class="col-md-12">
+                <div class="col-xs-12 col-md-12">
                     <div class="form-group" ng-class="{'error' : (form.$submitted || form.encargado.$touched) && form.encargado.$error.required}">
-                        <label class="control-label" for="encargado">Encargados</label>
+                        <label class="control-label" for="encargado"><span class="asterisk">*</span> Encargados</label>
                         <ui-select multiple ng-model="zona.encargados" name="encargado" id="encargado" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione un tipo">
                                 <span ng-bind="$item.codigo"></span>
@@ -124,14 +122,9 @@
                         </ui-select>
                     </div>
                 </div>
-            </div>
-            
-            <br>
-            
-            <div class="row">    
-                <div class="col-md-12">
+                <div class="col-xs-12 col-md-12">
                     <div class="form-group" ng-class="{'error' : (form.$submitted || form.color.$touched) && form.color.$error.required}" >
-                      <label for="name">Color: @{{zona.color}} </label>
+                      <label for="name"><span class="asterisk">*</span>  Color: @{{zona.color}} </label>
                       <input type="color" class="form-control" id="color" name="color" ng-model="zona.color" required >
                     </div>
                 </div>
@@ -139,8 +132,8 @@
             
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close" >Cancelar</button>
-            <button type="submit" class="btn btn-primary" ng-click="guardarzona()" >Guardar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Cerrar" >Cancelar</button>
+            <button type="submit" class="btn btn-success" ng-click="guardarzona()" >Guardar</button>
           </div>
           
       </form>
@@ -161,11 +154,7 @@
             bottom: -30px;
             left: 28px; 
         }
-        .container, .container .row, .container .col-md-12{
-            padding: 0px !important;
-            margin:0 !important;
-            width: 100% !important;
-        }
+        
         .btn-map{
             position: absolute;
             z-index: 100;
@@ -186,6 +175,7 @@
 
 
 @section('javascript')
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}"></script>
     <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>

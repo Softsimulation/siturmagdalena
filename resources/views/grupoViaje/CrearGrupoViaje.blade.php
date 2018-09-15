@@ -3,106 +3,18 @@
 
 @section('title', 'Crear grupo de viaje')
 
-@section('estilos')
-    <style>
-        .panel-body {
-            max-height: 400px;
-            color: white;
-        }
-
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-            .image-preview-input input[type=file] {
-                position: absolute;
-                top: 0;
-                right: 0;
-                margin: 0;
-                padding: 0;
-                font-size: 20px;
-                cursor: pointer;
-                opacity: 0;
-                filter: alpha(opacity=0);
-            }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-        .form-group {
-            margin: 0;
-        }
-        .form-group label, .form-group .control-label, label {
-            font-size: smaller;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        .text-error {
-            color: #a94442;
-            font-style: italic;
-            font-size: .7em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-        p {
-            font-size: 1em;
-        }
-        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-            font-size: .9em;
-        }
-        .row {
-            margin: 1em 0 0;
-        }
-    </style>
-@endsection
-
 @section('TitleSection', 'Crear grupo de viaje')
-
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
 
 @section('app','ng-app="receptor.grupo_viaje"')
 
 @section('controller','ng-controller="crear_grupo"')
 
+@section('titulo','Grupos de viaje')
+@section('subtitulo','Formulario de creación de grupo de viaje')
+
 @section('content')
     
 
-<div class="container">
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>
         <br />
@@ -112,90 +24,59 @@
 
     </div>
     <form role="form" name="crearForm" novalidate>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>La información marcada con asterisco debe ser ingresada obligatoriamente</strong> </div>
-                    </div>
-                </div>
+            <div class="alert alert-info">
+                <p>Los campos marcados con asterisco (*) son obligatorios. <strong>Debe ingresar por lo menos uno de los valores solicitados en la tabla de tamaño de grupo de viaje.</strong></p>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-xs-12 col-md-4">
-                    <div class="form-group" ng-class="{true:'form-group has-error has-feedback',false:'form-group'}[(crearForm.$submitted || crearForm.fechaini.$touched) && crearForm.fechaini.$error.required]">
-                        <label class="control-label" for="date_apli">Fecha de aplicación</label> <span class="text-error" ng-show="(crearForm.$submitted || crearForm.fechaini.$touched) && crearForm.fechaini.$error.required">(El campo es obligatorio)</span>
-                        <div class="input-group" id='date_apli2'>
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <adm-dtp name="date_apli" id="date_apli" ng-model='grupo.Fecha' full-data="date11_detail" maxdate="@{{fechaActual}}"
+                <div class="col-xs-12 col-sm-4">
+                    <div class="form-group" ng-class="{'has-error':(crearForm.$submitted || crearForm.date_apli.$touched) && crearForm.date_apli.$error.required}">
+                        <label class="control-label" for="date_apli"><span class="asterisk">*</span> Fecha de aplicación</label>
+                        <adm-dtp name="date_apli" id="date_apli" ng-model='grupo.Fecha' full-data="date11_detail" maxdate="@{{fechaActual}}"
                                              options="optionFecha" ng-required="true"></adm-dtp>
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearForm.$submitted || crearForm.fechaini.$touched) && crearForm.fechaini.$error.required"></span>
-                            
-                            
-                        </div>
+                         <span class="text-error" ng-show="(crearForm.$submitted || crearForm.date_apli.$touched) && crearForm.date_apli.$error.required">El campo es obligatorio</span>
 
                     </div>
                 </div>
-                <div class="col-xs-12 col-xs-12 col-md-5">
-                    <div class="form-group" ng-class="{true:'form-group has-error has-feedback',false:'form-group'}[(crearForm.$submitted || crearForm.sitio.$touched) && crearForm.sitio.$error.required]">
-                        <label class="control-label" for="sitio">Lugar de aplicación</label> <span class="text-error" ng-show="(crearForm.$submitted || crearForm.sitio.$touched) && crearForm.sitio.$error.required">(El campo es obligatorio)</span>
-                        <div class="input-group">
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <select ng-model="grupo.Sitio" name="sitio" id="sitio" class="form-control" ng-options="lugar_aplicacion.id as lugar_aplicacion.nombre for lugar_aplicacion in lugares_aplicacion" required>
+                <div class="col-xs-12 col-sm-5">
+                    <div class="form-group" ng-class="{'has-error':(crearForm.$submitted || crearForm.sitio.$touched) && crearForm.sitio.$error.required}">
+                        <label class="control-label" for="sitio"><span class="asterisk">*</span> Lugar de aplicación</label> 
+                        <select ng-model="grupo.Sitio" name="sitio" id="sitio" class="form-control" ng-options="lugar_aplicacion.id as lugar_aplicacion.nombre for lugar_aplicacion in lugares_aplicacion" required>
                                 <option value="" disabled>Selecione un sitio</option>
                             </select>
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearForm.$submitted || crearForm.sitio.$touched) && crearForm.sitio.$error.required"></span>
-                        </div>
-
+                        
                     </div>
                 </div>
                 <div class="col-xs-12 col-xs-12 col-md-3">
-                    <div class="form-group" ng-class="{true:'form-group has-error has-feedback',false:'form-group'}[(crearForm.$submitted || crearForm.personas.$touched) && (crearForm.personas.$error.required || crearForm.personas.$error.number || crearForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)]">
-                        <label class="control-label" for="personas">Personas encuestadas</label>
-                        <div class="input-group">
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <input type="number" class="form-control" name="personas" id="personas" min="1" ng-model="grupo.PersonasEncuestadas" placeholder="Solo números" required />
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(crearForm.$submitted || crearForm.personas.$touched) && (crearForm.personas.$error.required || crearForm.personas.$error.number || crearForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)"></span>
-                        </div>
-
+                    <div class="form-group" ng-class="{'has-error':(crearForm.$submitted || crearForm.personas.$touched) && (crearForm.personas.$error.required || crearForm.personas.$error.number || crearForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)}">
+                        <label class="control-label" for="personas"><span class="asterisk">*</span> Personas encuestadas</label>
+                        <input type="number" class="form-control" name="personas" id="personas" min="1" ng-model="grupo.PersonasEncuestadas" placeholder="Solo números" required />
+                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.personas.$touched) && crearForm.personas.$error.min">Valor mínimo: 1</span>                        
+                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.personas.$touched) && grupo.PersonasEncuestadas > grupo.Mayores15">El valor debe ser menor a cant. de personas mayores a 15 años PRES</span>
                     </div>
                 </div>
             </div>
-            <div class="row" ng-show="(crearForm.$submitted || crearForm.personas.$touched) && (crearForm.personas.$error.required || crearForm.personas.$error.number || crearForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)">
-                <div class="col-xs-12">
-                    <div class="alert alert-danger" role="alert">
-                        <h3>Recuerde que...</h3>
-                        <p ng-show="crearForm.personas.$error.required">El campo <b>Personas encuestadas</b> es requerido.</p>
-                        <p ng-show="crearForm.personas.$error.number">En el campo <b>Personas encuestadas</b> debe introducir solo números.</p>
-                        <p ng-show="crearForm.personas.$error.min">En el campo <b>Personas encuestadas</b> debe ingresar solo números iguales o mayores que 1.</p>
-                        <p ng-show="grupo.PersonasEncuestadas > grupo.Mayores15">La cantidad de personas encuestadas NO puede ser mayor a la cantidad de personas mayores a 15 años presentes.</p>
-                    </div>
-                </div>
-            </div>
+            
 
             <hr />
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        <label for="tipo"class="col-xs-12 control-label" style="padding-left: 0;">Tipo de viaje (Obligatorio) <span class="label label-danger" ng-show="(crearForm.$submitted || crearForm.tipo.$touched) && crearForm.tipo.$error.required">El campo es requerido.</span></label>
+                        <label for="tipo"class="col-xs-12 control-label" style="padding-left: 0;"><span class="asterisk">*</span> Tipo de viaje </label>
                         <div class="col-xs-12" style="padding-left: 0;">
 
                                 <label class="checkbox-inline" ng-repeat="tipo in tipos_viajes">
                                     <input ng-show="tipo.tipos_viaje_con_idiomas.length > 0" type="radio" name="tipo" value="@{{tipo.id}}" ng-model="grupo.Tipo" ng-required="true" /> @{{tipo.tipos_viaje_con_idiomas[0].nombre}}
                                 </label>
                         </div>
-
+                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.tipo.$touched) && crearForm.tipo.$error.required">El campo es requerido.</span>
                     </div>
                     
                 </div>
             </div>
             <hr />
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="alert alert-info" role="alert" style="padding: .5em;">
-                        Complete los siguientes campos de información
-                    </div>
-                </div>
-                <div class="col-xs-12">
+                
+                <div class="col-xs-12 table-overflow">
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
@@ -206,23 +87,23 @@
                         <tbody>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Mayores de 15 años PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Mayores15" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Mayores15" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Menores de 15 años PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Menores15" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Menores15" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Mayores de 15 años NO PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Mayores15No" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Mayores15No" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Menores de 15 años NO PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Menores15No" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Menores15No" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Personas del Magdalena</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.PersonasMag" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.PersonasMag" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td><span style="color:black;font-weight:bold">Total</span></td>
@@ -230,23 +111,22 @@
                             </tr>
                         </tbody>
                     </table>
-                    <span class="label label-danger" ng-show="crearForm.$submitted && total == 0">
-                        Debe introducir alguno de los valores.
-                    </span>
+                    
                 </div>
                 
             </div>
-
-            <div class="row" style="text-align: center;">
-                <a href="/grupoviaje/listadogrupos" class="btn btn-default">Cancelar</a>
-                <input type="submit" ng-click="guardar()" value="Guardar" class="btn btn-success">
-                
+            <div class="alert alert-danger" ng-show="crearForm.$submitted && total == 0">
+                <p>Debe introducir alguno de los valores de la tabla de tamaño de grupo.</p>
             </div>
+            <div class="text-center">
+                <input type="submit" ng-click="guardar()" value="Guardar" class="btn btn-lg btn-success">
+                <a href="/grupoviaje/listadogrupos" class="btn btn-lg btn-default">Cancelar</a>
+            </div>
+            <br>
         </form>
     <div class='carga'>
 
     </div>
-</div>
 
 @endsection
 

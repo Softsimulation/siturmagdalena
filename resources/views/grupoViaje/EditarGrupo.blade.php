@@ -5,11 +5,6 @@
 
 @section('estilos')
     <style>
-        .panel-body {
-            max-height: 400px;
-            color: white;
-        }
-
         .image-preview-input {
             position: relative;
             overflow: hidden;
@@ -39,82 +34,23 @@
             color: #FA787E;
         }
 
-        form.ng-submitted input.ng-invalid {
-            border-color: #FA787E;
-        }
-
-        form input.ng-invalid.ng-touched {
-            border-color: #FA787E;
-        }
-
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-        .form-group {
-            margin: 0;
-        }
-        .form-group label, .form-group .control-label, label {
-            font-size: smaller;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        .text-error {
-            color: #a94442;
-            font-style: italic;
-            font-size: .7em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-        p {
-            font-size: 1em;
-        }
-        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-            font-size: .9em;
-        }
-        .row {
-            margin: 1em 0 0;
-        }
 
     </style>
 @endsection
 
 @section('TitleSection', 'Editar grupo de viaje')
 
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
-
 @section('app','ng-app="receptor.grupo_viaje"')
 
 @section('controller','ng-controller="editar_grupo"')
 
+@section('titulo','Grupos de viaje')
+@section('subtitulo','Formulario de edición de grupo de viaje')
+
 @section('content')
     
-
-<div class="container">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <h1 class="title1">Editar grupo de viaje</h1><br/>
-    <div class="blank-page widget-shadow scroll" id="style-2 div1">
+    
         <div class="alert alert-danger" ng-if="errores != null">
             <label><b>Corrige los errores:</b></label>
             <br />
@@ -123,67 +59,40 @@
             </div>
         </div>
         <form role="form" name="ediForm" novalidate>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>La información marcada con asterisco debe ser ingresada obligatoriamente</strong> </div>
-                    </div>
-                </div>
+            <div class="alert alert-info">
+                <p>Los campos marcados con asterisco (*) son obligatorios. <strong>Debe ingresar por lo menos uno de los valores solicitados en la tabla de tamaño de grupo de viaje.</strong></p>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-xs-12 col-md-4">
-                    <div class="form-group" ng-class="{true:'form-group has-error has-feedback',false:'form-group'}[(ediForm.$submitted || ediForm.fechaini.$touched) && ediForm.fechaini.$error.required]">
-                        <label class="control-label" for="date_apli">Fecha de aplicación</label> <span class="text-error" ng-show="(ediForm.$submitted || ediForm.fechaini.$touched) && ediForm.fechaini.$error.required">(El campo es obligatorio)</span>
-                        <div class="input-group" id='date_apli2'>
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <adm-dtp name="fechaini" id="fechaini" ng-model='grupo.Fecha' full-data="date11_detail" maxdate="@{{fechaActual}}"
+                    <div class="form-group" ng-class="{'has-error':(ediForm.$submitted || ediForm.date_apli.$touched) && ediForm.date_apli.$error.required}">
+                        <label class="control-label" for="date_apli"><span class="asterisk">*</span> Fecha de aplicación</label>
+                        <adm-dtp name="fechaini" id="fechaini" ng-model='grupo.Fecha' full-data="date11_detail" maxdate="@{{fechaActual}}"
                                              options="optionFecha" ng-required="true"></adm-dtp>
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(ediForm.$submitted || ediForm.fechaini.$touched) && ediForm.fechaini.$error.required"></span>
-                            
-
-                        </div>
+                        <span class="text-error" ng-show="(ediForm.$submitted || ediForm.date_apli.$touched) && ediForm.date_apli.$error.required">El campo es obligatorio</span>
 
                     </div>
                 </div>
                 <div class="col-xs-12 col-xs-12 col-md-5">
-                    <div class="form-group" ng-class="{true:'form-group has-error has-feedback',false:'form-group'}[(ediForm.$submitted || ediForm.sitio.$touched) && ediForm.sitio.$error.required]">
-                        <label class="control-label" for="sitio">Lugar de aplicación</label> <span class="text-error" ng-show="(ediForm.$submitted || ediForm.sitio.$touched) && ediForm.sitio.$error.required">(El campo es obligatorio)</span>
-                        <div class="input-group">
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <select ng-model="grupo.Sitio" name="sitio" id="sitio" class="form-control" ng-options="sitio.id as sitio.nombre for sitio in lugares_aplicacion" required>
+                    <div class="form-group" ng-class="{'has-error':(ediForm.$submitted || ediForm.sitio.$touched) && ediForm.sitio.$error.required}">
+                        <label class="control-label" for="sitio"><span class="asterisk">*</span> Lugar de aplicación</label>
+                        <select ng-model="grupo.Sitio" name="sitio" id="sitio" class="form-control" ng-options="sitio.id as sitio.nombre for sitio in lugares_aplicacion" required>
                                 <option value="" disabled>Selecione un sitio</option>
                                 
-                            </select>
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(ediForm.$submitted || ediForm.sitio.$touched) && ediForm.sitio.$error.required"></span>
-                        </div>
+                        </select>
+                        
 
                     </div>
                 </div>
                 <div class="col-xs-12 col-xs-12 col-md-3">
-                    <div class="form-group" ng-class="{true:'form-group has-error has-feedback',false:'form-group'}[(ediForm.$submitted || ediForm.personas.$touched) && (ediForm.personas.$error.required || ediForm.personas.$error.number || ediForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)]">
-                        <label class="control-label" for="personas">Personas encuestadas</label>
-                        <div class="input-group">
-                            <div class="input-group-addon" title="Campo requerido"><span class="glyphicon glyphicon-asterisk"></span></div>
-                            <input type="number" class="form-control" name="personas" id="personas" min="1" ng-model="grupo.PersonasEncuestadas" placeholder="Solo números" required />
-                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" ng-if="(ediForm.$submitted || ediForm.personas.$touched) && (ediForm.personas.$error.required || ediForm.personas.$error.number || ediForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)"></span>
-                        </div>
+                    <div class="form-group" ng-class="{'has-error':(ediForm.$submitted || ediForm.personas.$touched) && (ediForm.personas.$error.required || ediForm.personas.$error.number || ediForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)}">
+                        <label class="control-label" for="personas"><span class="asterisk">*</span> Personas encuestadas</label>
+                        <input type="number" class="form-control" name="personas" id="personas" min="1" ng-model="grupo.PersonasEncuestadas" placeholder="Solo números" required />
+                        <span class="text-error" ng-show="(ediForm.$submitted || ediForm.personas.$touched) && ediForm.personas.$error.min">Valor mínimo: 1</span>                        
+                        <span class="text-error" ng-show="(ediForm.$submitted || ediForm.personas.$touched) && grupo.PersonasEncuestadas > grupo.Mayores15">El valor debe ser menor a cant. de personas mayores a 15 años PRES</span>
 
                     </div>
                 </div>
             </div>
-            <div class="row" ng-show="(ediForm.$submitted || ediForm.personas.$touched) && (ediForm.personas.$error.required || ediForm.personas.$error.number || ediForm.personas.$error.min || grupo.PersonasEncuestadas > grupo.Mayores15)">
-                <div class="col-xs-12">
-                    <div class="alert alert-danger" role="alert">
-                        <h3>Recuerde que...</h3>
-                        <p ng-show="ediForm.personas.$error.required">El campo <b>Personas encuestadas</b> es requerido.</p>
-                        <p ng-show="ediForm.personas.$error.number">En el campo <b>Personas encuestadas</b> debe introducir solo números.</p>
-                        <p ng-show="ediForm.personas.$error.min">En el campo <b>Personas encuestadas</b> debe ingresar solo números iguales o mayores que 1.</p>
-                        <p ng-show="grupo.PersonasEncuestadas > grupo.Mayores15">La cantidad de personas encuestadas NO puede ser mayor a la cantidad de personas mayores a 15 años presentes.</p>
-                    </div>
-                </div>
-            </div>
-
             <hr />
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -204,12 +113,8 @@
             <hr />
 
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="alert alert-info" role="alert" style="padding: .5em;">
-                        Complete los siguientes campos de información
-                    </div>
-                </div>
-                <div class="col-xs-12">
+                
+                <div class="col-xs-12 table-overflow">
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
@@ -220,49 +125,47 @@
                         <tbody>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Mayores de 15 años PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Mayores15" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Mayores15" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Menores de 15 años PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Menores15" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Menores15" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Mayores de 15 años NO PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Mayores15No" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Mayores15No" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Menores de 15 años NO PRES</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.Menores15No" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.Menores15No" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
                                 <td>Personas del Magdalena</td>
-                                <td><input type="number" class="form-control" ng-model="grupo.PersonasMag" ng-change="calcular()" /></td>
+                                <td><input type="number" class="form-control input-sm" ng-model="grupo.PersonasMag" ng-change="calcular()" /></td>
                             </tr>
                             <tr style="border-bottom: .5px solid lightgray">
-                                <td><span style="color:black;font-weight:bold">Total</span></td>
+                                <td><strong>Total</strong></td>
                                 <td>@{{total}}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <span class="label label-danger" ng-show="crearForm.$submitted && total == 0">
-                        Debe introducir alguno de los valores
-                    </span>
+                    <div class="alert alert-danger" ng-show="editForm.$submitted && total == 0">
+                        <p>Debe introducir alguno de los valores de la tabla de tamaño de grupo.</p>
+                    </div>
                 </div>
 
             </div>
 
-            <div class="row" style="text-align: center;">
-                <a href="/grupoviaje/listadogrupos" class="btn btn-default">Cancelar</a>
-                <input type="submit" ng-click="editar()" value="Guardar" class="btn btn-success">
+            <div class="text-center">
                 
+                <input type="submit" ng-click="editar()" value="Guardar" class="btn btn-lg btn-success">
+                <a href="/grupoviaje/listadogrupos" class="btn btn-lg btn-default">Cancelar</a>
             </div>
         </form>
-    </div>
     
     <div class='carga'>
 
     </div>
-</div>
 
 @endsection
 

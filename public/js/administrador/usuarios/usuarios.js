@@ -3,11 +3,22 @@ var situr = angular.module("admin.usuario", ['ngSanitize','ADM-dateTimePicker','
 situr.controller('listadoUsuariosCtrl', ['$scope','usuarioServi', function ($scope,usuarioServi) {
     
     $scope.usuariosCorreos = { ids:[] };
-    
+    $scope.asignarPermiso = { permisos:[] };
+    $scope.permisos = [];
     $("body").attr("class", "charging");
     usuarioServi.getUsuarios().then(function (data) {
         $scope.usuarios = data.usuarios;
+        for(var i=0; i<$scope.usuarios.length; i++){
+            $scope.usuarios[i].permisos = [];
+            for(var j=0; j<$scope.usuarios[i].permissions.length > 0; j++){
+                
+                $scope.usuarios[i].permisos.push($scope.usuarios[i].permissions[j].id);
+            }
+            
+            
+        }
         $scope.roles = data.roles;
+        $scope.permisos = data.permisos;
         $("body").attr("class", "cbp-spmenu-push");
         
     }).catch(function () {
@@ -45,7 +56,44 @@ situr.controller('listadoUsuariosCtrl', ['$scope','usuarioServi', function ($sco
 
 
     }
-    
+    $scope.asignarPermisosModal = function (usuario) {
+        $scope.asignarPermiso = {};
+        $scope.asignarPermisosForm.$setPristine();
+        $scope.asignarPermisosForm.$setUntouched();
+        $scope.asignarPermisosForm.$submitted = false;
+        
+        $scope.errores = null;
+        $scope.usuarioAsignacion = usuario;
+        $scope.asignarPermiso.idUsuario=usuario.id;
+        $scope.asignarPermiso.permisos=usuario.permisos;
+        $('#modalAsignacionPermiso').modal('show');
+    }
+    $scope.asignacionPermisos = function (usuario) {
+        $("body").attr("class", "charging");
+        usuarioServi.asignacionPermisos($scope.asignarPermiso).then(function (data) {
+            if (data.success) {
+                $scope.usuarios[$scope.usuarios.indexOf($scope.usuarioAsignacion)].permisos = data.permisos;
+                swal({
+                    title: "Realizado",
+                    text: "Acción realizada satisfactoriamente.",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    $('#modalAsignacionPermiso').modal('hide');
+                    //window.location.href = "/usuario/listadousuarios"
+                }, 1000);
+            } else {
+                swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                $scope.errores = data.errores;
+            }
+            $("body").attr("class", "cbp-spmenu-push");
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+    }
     $scope.enviarCorreos = function () {
         $("body").attr("class", "charging");
         usuarioServi.envioCorreos( { usuarios:$scope.usuariosCorreos.ids } ).then(function (data) {
