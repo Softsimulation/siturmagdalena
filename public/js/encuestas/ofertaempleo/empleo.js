@@ -321,7 +321,7 @@ angular.module('empleo.Empleo', [])
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                          window.location.href = "/ofertaempleo/empleadoscaracterizacion/" + $scope.id;;
+                          window.location.href = data.ruta;
                     }, 1000);
     
     
@@ -501,7 +501,7 @@ $scope.$watch('id', function () {
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                          window.location.href = "/ofertaempleo/encuesta/" + data.idsitio;
+                           window.location.href = data.ruta;
                     }, 1000);
     
     

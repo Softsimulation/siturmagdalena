@@ -153,7 +153,9 @@ class OfertaEmpleo
         }
         
     if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalimentos'))>0){
-            
+           if($data[0]->mes_id%3 != 0){
+                        return redirect('/ofertaempleo/empleo/'.$request->one);
+            }         
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11 ){
                          return $next($request);
             }else{
@@ -164,7 +166,9 @@ class OfertaEmpleo
         }
      
     if(strlen(strstr($request->path(),'ofertaempleo/capacidadalimentos'))>0){
-            
+             if($data[0]->mes_id%3 != 0){
+                        return redirect('/ofertaempleo/empleo/'.$request->one);
+            }                 
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11){
                          return $next($request);
             }else{
@@ -174,9 +178,28 @@ class OfertaEmpleo
             
         }
         
+    if(strlen(strstr($request->path(),'ofertaempleo/alojamientomensual'))>0){
+            
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1){
+                      if($data[0]->mes_id%3 == 0){
+                        return redirect('/ofertaempleo/caracterizacion/'.$request->one);
+                      }
+            
+                         return $next($request);
+            }else{
+                \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+            }
+            
+        }
+    
     if(strlen(strstr($request->path(),'ofertaempleo/caracterizacion'))>0){
             
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1){
+                      if($data[0]->mes_id%3 != 0){
+                        return redirect('/ofertaempleo/alojamientomensual/'.$request->one);
+                      }
+             
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
@@ -185,9 +208,13 @@ class OfertaEmpleo
             
         }
      
+     
     if(strlen(strstr($request->path(),'ofertaempleo/oferta'))>0){
             
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1 ){
+                                  if($data[0]->mes_id%3 != 0){
+                        return redirect('/ofertaempleo/alojamientomensual/'.$request->one);
+                      }
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');

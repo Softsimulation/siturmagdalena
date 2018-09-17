@@ -521,7 +521,7 @@
                                     </tr>
                                     
                                     <tr>
-                                            <td colspan="3"  rowspan="6" >
+                                            <td colspan="3"  rowspan="7" >
                                                 El título educativo más alto alcanzado por cada nivel es:
                                             </td>
                                               <td >
@@ -582,9 +582,7 @@
                                             <td style="text-align: right"><strong>@{{Total('Educacion','ninguno')}}</strong></td>
                                         </tr>
                                     <tr>
-                                            <td colspan="3"  rowspan="6" >
-                                                El título educativo más alto alcanzado por cada nivel es:
-                                            </td>
+                                           
                                               <td >
                                                    2. Primaria 
                                             </td>

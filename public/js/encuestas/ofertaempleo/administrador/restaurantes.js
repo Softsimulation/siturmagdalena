@@ -83,16 +83,25 @@ situr.controller('capacidadAlimentosCtrl', ['$scope','restauranteServi', functio
         restauranteServi.GuardarOfertaAlimentos($scope.alimentos).then(function (data) {
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success) {
-                swal({
-                    title: "Realizado",
-                    text: "Se ha guardado satisfactoriamente la sección.",
-                    type: "success",
-                    timer: 1000,
-                    showConfirmButton: false
+                    swal({
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                  } else {
+                    window.location.href = data.ruta;
+                  }
                 });
-                setTimeout(function () {
-                    window.location.href = "/ofertaempleo/empleomensual/" + $scope.id;
-                }, 1000);
             } else {
                 $scope.errores = data.errores
                 swal("Error", "Verifique la información.", "error")
