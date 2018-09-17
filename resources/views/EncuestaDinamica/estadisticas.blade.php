@@ -5,54 +5,58 @@
 @section('app','ng-app="appEncuestaDinamica"')
 @section('controller','ng-controller="EstadisticasrEncuestasCtrl"')
 
+@section('titulo','Encuestas ADHOC')
+@section('subtitulo','Estadísticas de resultados de una pregunta')
+
 @section('content')
+<div class="flex-list">
+    <a class="btn btn-link" href="/encuesta/listado">Volver al listado</a>
+</div>
+
+<div class="flex-list">
+        <div class="form-group" >
+            <select class="form-control" ng-model="selectPregunta" ng-change="changePregunta()"  >
+                <option value="" selected disabled >Selecione una pregunta para cargar los resultados</option>
+                {{$index = 1}}
+                @foreach ($encuesta->secciones as $secccion)
+                    <option value=""  disabled >Seccion {{$index++}}</option>
+                    @foreach ($secccion->preguntas as $pregunta)
+                        <option value="{{$pregunta->id}}">{{$pregunta->idiomas[0]->pregunta}}</option>
+                    @endforeach
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group" >
+            <select class="form-control" ng-model="tipoGrafica" >
+                <option value="bar">Barras</option>
+                <option value="line">Área</option>
+            </select>
+        </div>
+        <div class="form-group" >
+            <button class="btn btn-success" ng-click="descargarGrafica()" ng-disabled="!(data && data.length>0)" >
+                Descargar
+            </button>
+        </div>
+</div>
 
 <div>
-   <a class="btn btn-link btn-primary" href="/encuesta/listado" >Volver al listado</a>
+   
     
     <div class="row" >
-       <div class="col-md-9">
-            
-            <div class="row" style="margin-bottom:15px" >
-                <div class="col-md-7" >
-                    <div class="form-group" >
-                        <select class="form-control" ng-model="selectPregunta" ng-change="changePregunta()"  >
-                            <option value="" selected disabled >Selecione una pregunta para cargar los resultados</option>
-                            {{$index = 1}}
-                            @foreach ($encuesta->secciones as $secccion)
-                                <option value=""  disabled >Seccion {{$index++}}</option>
-                                @foreach ($secccion->preguntas as $pregunta)
-                                    <option value="{{$pregunta->id}}">{{$pregunta->idiomas[0]->pregunta}}</option>
-                                @endforeach
-                            @endforeach
-                        </select>
-                    </div>
-                </div>   
-                <div class="col-md-3" >
-                    <div class="form-group" >
-                        <select class="form-control" ng-model="tipoGrafica" >
-                            <option value="bar" >Barras</option>
-                            <option value="line">Área</option>
-                        </select>
-                    </div>
-                </div>  
-                <div class="col-md-2" >
-                    <div class="form-group" >
-                        <button class="btn btn-success" ng-click="descargarGrafica()" ng-disabled="!(data && data.length>0)" >
-                            Descargar
-                        </button>
-                    </div>
-                </div>  
+       <div class="col-xs-12 col-md-9">
+            <div class="well" ng-if="!data || data.length==0">
+                <p><strong>Para generar los resultados:</strong></p>
+                <ol>
+                    <li>Seleccione la pregunta de la cual desea conocer los resultados.</li>
+                    <li>Seleccione el tipo de grafico con el cual desea visualizar los resultados.</li>
+                    <li>Si desea, presione el botón Descargar para descargar los resultados.</li>
+                </ol>
+                <img src="/Content/icons/estadisticas/estadisticas.png" alt="" role="presentation" class="img-responsive" style="height: 200px; margin: 0 auto;" >
             </div>
+            <canvas id="base" class="chart-base" chart-type="tipoGrafica"
+              chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colores">
+            </canvas>    
             
-            <div class="row" style="margin-bottom:15px"  >
-                <div class="col-md-12 text-center" >
-                    <img src="/Content/icons/estadisticas/estadisticas.png" ng-if="!data || data.length==0" style="width: 220px;margin-left: 25%;margin-top: 50px;" >
-                    <canvas id="base" class="chart-base" chart-type="tipoGrafica"
-                      chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colores">
-                    </canvas>
-                </div>
-             </div>  
              <div class="row" style="margin-bottom:15px"  >
                 <div class="col-md-12" >
                     <table class="table table-striped" ng-show="data.length>0" >
@@ -64,7 +68,7 @@
                           </tr>
                         </thead>
                         <tbody ng-if="!isTablaContingencia" >
-                          <tr  ng-repeat="label in labels" >
+                          <tr ng-repeat="label in labels">
                             <td>@{{label}}</td>
                             <td class="text-center" >@{{data[$index]}}</td>
                           </tr>
@@ -81,9 +85,9 @@
             </div>
     
        </div>
-       <div class="col-md-3" >
+       <div class="col-xs-12 col-md-3">
            
-            <p>{{$encuesta->idiomas[0]->descripcion}}</p>
+            <p class="text-center">{{$encuesta->idiomas[0]->descripcion}}</p>
             
             <canvas id="polar-area" class="chart chart-polar-area" width="400" height="400"
               chart-data="[{{$terminadas}},{{$noTerminadas}}]" chart-labels="['Terminadas','No terminadas']" 
@@ -129,6 +133,7 @@
 @endsection
 
 @section('javascript')
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}"></script>
     <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>

@@ -31,7 +31,7 @@ class Sitio_Para_Encuesta extends Model
      * @var string
      */
     protected $table = 'sitios_para_encuestas';
-
+    public $timestamps = false;
     /**
      * @var array
      */

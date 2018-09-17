@@ -1,0 +1,38 @@
+#content-page .container{
+    width: 762px;
+}
+
+/*Tiles*/
+.tile .tile-img .text-overlap p, .tile .tile-img .text-overlap h3{
+    font-size: 0.8125rem;
+}
+.tiles .tile.tile-lg .tile-img{
+    height: 200px;
+}
+.tiles .tile:not(.inline-tile){
+    width: calc(33.3% - 1rem);
+}
+.tiles.tile-list .tile:not(.inline-tile){
+    width: calc(50% - 1rem);
+}
+.tile.inline-tile {
+   align-items:center;
+   padding: .5rem 1rem;
+}
+
+.tile.inline-tile .tile-img {
+    height: 140px;
+    width:30%;
+    vertical-align: top;
+    display:inline-block;
+}
+.tile.inline-tile .tile-img img {
+    height: 100%;    
+    width: auto;
+}
+.tile.inline-tile .tile-body {
+    width: calc(70% - 1rem);
+    padding: .5rem 0 .5rem 1rem;
+    display: inline-block;
+
+}
