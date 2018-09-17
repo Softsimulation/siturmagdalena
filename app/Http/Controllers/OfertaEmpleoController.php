@@ -2769,7 +2769,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 
     public function postGuardarofertaalimentos(Request $request)
     {
-        return $request->all();
+        
         $validator = \Validator::make($request->all(),[
         
             'id' => 'required|exists:encuestas,id',
