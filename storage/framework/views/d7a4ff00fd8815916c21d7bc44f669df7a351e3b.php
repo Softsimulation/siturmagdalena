@@ -156,16 +156,8 @@
                             <a role="menuitem" href="<?php echo e(asset('temporada')); ?>">Turismo interno y emisor</a>
                         </li>
                         <li>
-                            <a role="menuitem" href="#menuOfertaEmpleo" aria-haspopup="true" aria-expanded="false">Oferta y empleo</a>
-                            <ul role="menu" id="menuOfertaEmpleo" aria-label="Oferta y empleo">
-                                
-                                <li role="none"><a role="menuitem" href="<?php echo e(asset('ofertaempleo/encuesta/1')); ?>">Alojamiento</a></li>
-        					    <li role="none"><a role="menuitem" href="<?php echo e(asset('ofertaempleo/encuesta/2')); ?>">Restaurante</a></li>
-        					    <li role="none"><a role="menuitem" href="<?php echo e(asset('ofertaempleo/encuesta/3')); ?>">Agencia de operadores</a></li>
-        					    <li role="none"><a role="menuitem" href="<?php echo e(asset('ofertaempleo/encuesta/4')); ?>">Agencia de viajes</a></li>
-        					    <li role="none"><a role="menuitem" href="<?php echo e(asset('ofertaempleo/encuesta/5')); ?>">Alquiler de vehículos</a></li>
-        					    <li role="none"><a role="menuitem" href="<?php echo e(asset('ofertaempleo/encuesta/6')); ?>">Transporte</a></li>
-        					</ul>
+                            <a role="menuitem" href="<?php echo e(asset('/ofertaempleo/listadoproveedores')); ?>">Oferta y empleo</a>
+                        
                         </li>
                         <li>
                             <a role="menuitem" href="#menuSostenibilidad" aria-haspopup="true" aria-expanded="false">Sostenibilidad</a>
