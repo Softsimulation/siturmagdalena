@@ -42,12 +42,14 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
         swal("Error", "Error en la carga, por favor recarga la página.", "error");
     })
     
-    $scope.guardar = function(){
+    $scope.guardar = function(banderPublicar){
         
         if(!$scope.datosForm.$valid){
             swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
+        
+        $scope.banderPublicar = banderPublicar;
         
         $("body").attr("class", "charging");
         bolsaEmpleoServi.crearVacante($scope.vacante).then(function (data) {

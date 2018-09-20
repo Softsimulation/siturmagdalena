@@ -38,7 +38,7 @@ class Oferta_Vacante extends Model
     /**
      * @var array
      */
-    protected $fillable = ['proveedores_rnt_id', 'municipio_id', 'nivel_educacion_id', 'nombre', 'perfil', 'anios_experiencia', 'fecha_inicio', 'fecha_fin', 'salario', 'numero_vacantes', 'updated_at', 'created_at', 'estado', 'user_update', 'user_create', 'requisitos'];
+    protected $fillable = ['proveedores_rnt_id', 'municipio_id', 'nivel_educacion_id', 'nombre', 'descripcion', 'anios_experiencia', 'fecha_fin', 'salario', 'numero_vacantes', 'updated_at', 'created_at', 'estado', 'user_update', 'user_create', 'requisitos'];
     
 
     

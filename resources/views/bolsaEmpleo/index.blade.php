@@ -63,7 +63,7 @@
                             <td style="text-align: center;">
                                 <a class="btn" title="Activar" ng-click="cambiarEstado(item)" ng-if="!item.estado"><span class="glyphicon glyphicon-eye-open"></span></a>
                                 <a class="btn" title="Desactivar" ng-click="cambiarEstado(item)" ng-if="item.estado"><span class="glyphicon glyphicon-eye-close"></span></a>
-                                <a href="/bolsaEmpleo/editarvacante/@{{item.id}}" title="Editar vacnte" ><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a class="btn" href="/bolsaEmpleo/editarvacante/@{{item.id}}" title="Editar vacnte" ><span class="glyphicon glyphicon-pencil"></span></a>
                             </td>
                         </tr>
                     </table>

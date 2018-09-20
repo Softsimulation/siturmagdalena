@@ -43,12 +43,15 @@ class BolsaEmpleoController extends Controller
 			'proveedor_id' => 'required|exists:proveedores_rnt,id',
 			'nombre_vacante' => 'required|max:250',
 			'numero_vacantes' => 'required|min:1',
-			'perfil' => 'required',
-			'fecha_inicio' => 'required',
+			'descripcion' => 'required|max:1000',
 			'anios_experiencia' => 'required|min:0',
 			'municipio_id' => 'required|exists:municipios,id',
 			'nivelEducacion' => 'required|exists:nivel_educacion,id',
-			'salario' => 'min:0'
+			'tipo_cargo_vacante_id' => 'required|exists:tipos_cargos_vacantes,id',
+			'salario_minimo' => 'min:0',
+			'banderPublicar' => 'required|between:0,1',
+			'requisitos' => 'required|max:3000',
+			'numero_maximo_postulaciones' => 'min:1'
     	],[
        		
     	]);
@@ -68,15 +71,18 @@ class BolsaEmpleoController extends Controller
 	        'proveedores_rnt_id' => $request->proveedor_id,
 	        'municipio_id' => $request->municipio_id,
 	        'nivel_educacion_id' => $request->nivelEducacion,
+	        'tipo_cargo_vacante_id' => $request->tipo_cargo_vacante_id,
 	        'nombre' => $request->nombre_vacante,
-	        'perfil' => $request->perfil,
+	        'descripcion' => $request->descripcion,
 	        'anios_experiencia' => $request->anios_experiencia,
-	        'fecha_inicio' => $request->fecha_inicio,
-	        'fecha_fin' => isset($request->fecha_fin) ? $request->fecha_fin : null,
-	        'salario' => isset($request->salario) ? $request->salario : null,
+	        'numero_maximo_postulaciones' => isset($request->numero_maximo_postulaciones) ? $request->numero_maximo_postulaciones : null,
+	        'fecha_vencimiento' => isset($request->fecha_vencimiento) ? $request->fecha_vencimiento : null,
+	        'salario_minimo' => isset($request->salario_minimo) ? $request->salario_minimo : null,
+	        'salario_maximo' => isset($request->salario_maximo) ? $request->salario_maximo : null,
 	        'numero_vacantes' => $request->numero_vacantes,
 	        'requisitos' => $request->requisitos,
 	        'estado' => 1,
+	        'es_publico' => $request->banderPublicar,
 	        'user_create' => $this->user->username,
     		'user_update' => $this->user->username
 	    ]);
@@ -111,12 +117,13 @@ class BolsaEmpleoController extends Controller
 			'proveedores_rnt_id' => 'required|exists:proveedores_rnt,id',
 			'nombre' => 'required|max:250',
 			'numero_vacantes' => 'required|min:1',
-			'perfil' => 'required',
+			'perfil' => 'required|max:1000',
 			'fecha_inicio' => 'required',
 			'anios_experiencia' => 'required|min:0',
 			'municipio_id' => 'required|exists:municipios,id',
 			'nivel_educacion_id' => 'required|exists:nivel_educacion,id',
-			'salario' => 'min:0'
+			'salario' => 'min:0',
+			'requisitos' => 'required|max:3000'
     	],[
        		
     	]);
@@ -136,6 +143,7 @@ class BolsaEmpleoController extends Controller
 		$vacante->nombre = $request->nombre;
 		$vacante->numero_vacantes = $request->numero_vacantes;
 		$vacante->perfil = $request->perfil;
+		$vacante->requisitos = $request->requisitos;
 		$vacante->fecha_inicio = $request->fecha_inicio;
 		$vacante->fecha_fin = isset($request->fecha_fin) ? $request->fecha_fin : null;
 		$vacante->anios_experiencia = $request->anios_experiencia;
@@ -170,6 +178,25 @@ class BolsaEmpleoController extends Controller
 		
 		$vacante = Oferta_Vacante::find($request->id);
 		$vacante->estado = !$vacante->estado;
+		$vacante->save();
+		
+		return ["success" => true];
+    }
+    
+    public function postCambiarestadopublicovacante(){
+    	$validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:ofertas_vacantes,id',
+    	],[
+       		
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		
+		$vacante = Oferta_Vacante::find($request->id);
+		$vacante->es_publico = !$vacante->es_publico;
 		$vacante->save();
 		
 		return ["success" => true];

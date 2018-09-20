@@ -387,7 +387,7 @@
         			        </div>
         				</div>
     				    
-                        <div class="row">
+                        <div class="row" style="display: block;">
                             <ng-map id="mapa" zoom="9" center="[11.24079, -74.19904]" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
                                 <marker ng-if="registro.latitud != undefined && registro.longitud != undefined" draggable="true" on-dragend="getCurrentLocation(registro)" position="[@{{registro.latitud}}, @{{registro.longitud}}]" title="registro.nombre_comercial"></marker>
                                 
@@ -730,7 +730,7 @@
     						<!--</div>-->
           <!--              </div>-->
                         
-                        <div class="row">
+                        <div class="row" style="display: block;">
                             <ng-map id="mapa" zoom="9" center="[11.24079, -74.19904]" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
                                 <marker ng-if="registro.latitud != undefined && registro.longitud != undefined" draggable="true" on-dragend="getCurrentLocation(registro)" position="[@{{registro.latitud}}, @{{registro.longitud}}]" title="registro.nombre_comercial"></marker>
                                 
@@ -929,8 +929,7 @@
     <div class='carga'>
 
     </div>
-    
-    
+   
 
 @endsection
 
@@ -990,7 +989,5 @@
         });
 
     </script>
-    <!--<script src="/js/plugins/tokml.js"></script>-->
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
-    
 @endsection
