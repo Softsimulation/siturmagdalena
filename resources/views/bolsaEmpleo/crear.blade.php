@@ -138,9 +138,12 @@
                     <div class="col-md-4" ng-class="{'error' : (datosForm.$submitted || datosForm.tipo_cargo_vacante_id.$touched) && datosForm.tipo_cargo_vacante_id.$error.required}">
                         <div class="form-group">
                             <label for="tipo_cargo_vacante_id" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Tipo de cargo</label>
-                            <select class="form-control" id="tipo_cargo_vacante_id" name="tipo_cargo_vacante_id" ng-model="vacante.tipo_cargo_vacante_id" ng-options="item.id as item.nombre for item in tiposCargo" required>
-                                <option value="" selected disable>Seleccion tipo de cargo</option>
-                            </select>
+                            <ui-select id="tipo_cargo_vacante_id"  name="tipo_cargo_vacante_id" ng-model="vacante.tipo_cargo_vacante_id"  ng-required="true">
+                                <ui-select-match placeholder="Seleccione tipo de cargo">@{{$select.selected.nombre}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in tiposCargos | filter:$select.search">
+                                    @{{item.nombre}}
+                                </ui-select-choices>
+                            </ui-select>
                             <span ng-show="datosForm.$submitted || datosForm.tipo_cargo_vacante_id.$touched">
                                 <span class="label label-danger" ng-show="datosForm.tipo_cargo_vacante_id.$error.required">*El campo es requerido</span>
                             </span>
