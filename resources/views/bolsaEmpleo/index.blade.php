@@ -50,7 +50,8 @@
                             <th>Empresa</th>
                             <th>Nombre vacante</th>
                             <th>Municipio</th>
-                            <th>Experiencia (Años)</th>
+                            <th>Categoria</th>
+                            <th>Estado</th>
                             <th></th>
                         </tr>
                         <tr dir-paginate="item in vacantes|filter:prop.search |itemsPerPage:10 as results" pagination-id="paginacion_vacantes" >
@@ -58,12 +59,12 @@
                             <td>@{{item.proveedores_rnt.razon_social}}</td>
                             <td>@{{item.nombre}}</td>
                             <td>@{{item.municipio.nombre}}</td>
-                            <td>@{{item.anios_experiencia}}</td>
-                            
+                            <td>@{{item.tipos_cargos_vacante.nombre}}</td>
+                            <td ng-if="item.es_publico">Publicado</td><td ng-if="!item.es_publico">NO Publicado</td>
                             <td style="text-align: center;">
-                                <a class="btn" title="Activar" ng-click="cambiarEstado(item)" ng-if="!item.estado"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                <a class="btn" title="Desactivar" ng-click="cambiarEstado(item)" ng-if="item.estado"><span class="glyphicon glyphicon-eye-close"></span></a>
-                                <a href="/bolsaEmpleo/editarvacante/@{{item.id}}" title="Editar vacnte" ><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a class="btn" title="Activar" ng-click="cambiarEstado(item)" ng-if="!item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                <a class="btn" title="Desactivar" ng-click="cambiarEstado(item)" ng-if="item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-close"></span></a>
+                                <a class="btn" href="/bolsaEmpleo/editarvacante/@{{item.id}}" title="Editar vacnte" ><span class="glyphicon glyphicon-pencil"></span></a>
                             </td>
                         </tr>
                     </table>

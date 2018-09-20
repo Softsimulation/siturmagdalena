@@ -1233,9 +1233,11 @@ class TurismoReceptorController extends Controller
         
         
         $sostenibilidad = Sostenibilidad_Visitante::find($id);
+        $respuestaActividades = array();
         if($sostenibilidad != null){
             $flora = $sostenibilidad->es_informado?1:0;
             $sost = $sostenibilidad->trato_turista;
+            $respuestaActividades = $sostenibilidad->actividadesSostenibilidad()->pluck('id')->toArray();
         }
         
         $valo = Valoracion_General::where('visitante_id',$visitante->id)->select(["recomendaciones as Recomendacion","calificacion as Calificacion", "volveria as Volveria","recomendaria as Recomienda","veces_visitadas as Veces"])->first();
@@ -1245,7 +1247,7 @@ class TurismoReceptorController extends Controller
         })->select('actividades_sostenibilidad_id as id','nombre')->get();
         
         
-        $respuestaActividades = $sostenibilidad->actividadesSostenibilidad()->pluck('id')->toArray();
+        
         
         $retorno = [
             'success' => true,

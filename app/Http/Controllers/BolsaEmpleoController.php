@@ -12,6 +12,7 @@ use App\Models\Proveedores_rnt;
 use App\Models\Nivel_Educacion;
 use App\Models\Municipio;
 use App\Models\Oferta_Vacante;
+use App\Models\Tipo_Cargo_Vacante;
 
 class BolsaEmpleoController extends Controller
 {
@@ -33,9 +34,10 @@ class BolsaEmpleoController extends Controller
     public function getEmpresas(){
         $proveedores = Proveedores_rnt::all();
         $nivelesEducacion = Nivel_Educacion::all();
+        $tiposCargos = Tipo_Cargo_Vacante::all();
         $municipio = Municipio::where('departamento_id', 1411)->get();
         
-        return ["proveedores" => $proveedores, 'nivelesEducacion' => $nivelesEducacion, 'municipios' => $municipio];
+        return ["proveedores" => $proveedores, 'nivelesEducacion' => $nivelesEducacion, 'municipios' => $municipio, 'tiposCargos' => $tiposCargos];
     }
     
     public function postCrearvacante(Request $request){
@@ -43,12 +45,15 @@ class BolsaEmpleoController extends Controller
 			'proveedor_id' => 'required|exists:proveedores_rnt,id',
 			'nombre_vacante' => 'required|max:250',
 			'numero_vacantes' => 'required|min:1',
-			'perfil' => 'required',
-			'fecha_inicio' => 'required',
+			'descripcion' => 'required|max:1000',
 			'anios_experiencia' => 'required|min:0',
 			'municipio_id' => 'required|exists:municipios,id',
 			'nivelEducacion' => 'required|exists:nivel_educacion,id',
-			'salario' => 'min:0'
+			'tipo_cargo_vacante_id' => 'required|exists:tipos_cargos_vacantes,id',
+			'salario_minimo' => 'min:0',
+			'banderPublicar' => 'required|between:0,1',
+			'requisitos' => 'required|max:3000',
+			'numero_maximo_postulaciones' => 'min:1'
     	],[
        		
     	]);
@@ -57,10 +62,16 @@ class BolsaEmpleoController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		if(isset($request->fecha_fin)){
-		    if($request->fecha_inicio > $request->fecha_fin){
-    		    return ["success"=>false,"errores"=> [ ["La fecha de inicio no debe ser mayor a la de fin."] ] ];
+		if(isset($request->fecha_vencimiento)){
+		    if($request->fecha_vencimiento < date('d-m-Y') ){
+    		    return ["success"=>false,"errores"=> [ ["La fecha de vencimiento no puede ser menor a la fecha actual."] ] ];
     		}
+		}
+		
+		if(isset($request->salario_minimo) && isset($request->salario_maximo)){
+			if($request->salario_minimo > $request->salario_maximo){
+				return ["success"=>false,"errores"=> [ ["El salario mínimo no puede ser mayor al salario máximo."] ] ];
+			}
 		}
 		
 		
@@ -68,15 +79,19 @@ class BolsaEmpleoController extends Controller
 	        'proveedores_rnt_id' => $request->proveedor_id,
 	        'municipio_id' => $request->municipio_id,
 	        'nivel_educacion_id' => $request->nivelEducacion,
+	        'tipo_cargo_vacante_id' => $request->tipo_cargo_vacante_id,
 	        'nombre' => $request->nombre_vacante,
-	        'perfil' => $request->perfil,
+	        'descripcion' => $request->descripcion,
 	        'anios_experiencia' => $request->anios_experiencia,
-	        'fecha_inicio' => $request->fecha_inicio,
-	        'fecha_fin' => isset($request->fecha_fin) ? $request->fecha_fin : null,
-	        'salario' => isset($request->salario) ? $request->salario : null,
+	        'numero_maximo_postulaciones' => isset($request->numero_maximo_postulaciones) ? $request->numero_maximo_postulaciones : null,
+	        'fecha_vencimiento' => isset($request->fecha_vencimiento) ? $request->fecha_vencimiento : null,
+	        'salario_minimo' => isset($request->salario_minimo) ? $request->salario_minimo : null,
+	        'salario_maximo' => isset($request->salario_maximo) ? $request->salario_maximo : null,
 	        'numero_vacantes' => $request->numero_vacantes,
 	        'requisitos' => $request->requisitos,
+	        'fecha_publicacion' => $request->banderPublicar == 1 ? date('Y-m-d') : null,
 	        'estado' => 1,
+	        'es_publico' => $request->banderPublicar,
 	        'user_create' => $this->user->username,
     		'user_update' => $this->user->username
 	    ]);
@@ -94,14 +109,15 @@ class BolsaEmpleoController extends Controller
     }
     
     public function getCargareditarvacante($id){
-        $vacante = Oferta_Vacante::find($id);
+        $vacante = Oferta_Vacante::where('id',$id)->with(['proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante'])->first();
         $vacante['salario'] = floatval($vacante->salario);
     
         $proveedores = Proveedores_rnt::all();
         $nivelesEducacion = Nivel_Educacion::all();
         $municipio = Municipio::where('departamento_id', 1411)->get();
+        $tiposCargos = Tipo_Cargo_Vacante::all();
         
-        return ['vacante' => $vacante,"proveedores" => $proveedores, 'nivelesEducacion' => $nivelesEducacion, 'municipios' => $municipio];
+        return ['vacante' => $vacante,"proveedores" => $proveedores, 'tiposCargos' => $tiposCargos ,'nivelesEducacion' => $nivelesEducacion, 'municipios' => $municipio];
         
     }
     
@@ -111,12 +127,14 @@ class BolsaEmpleoController extends Controller
 			'proveedores_rnt_id' => 'required|exists:proveedores_rnt,id',
 			'nombre' => 'required|max:250',
 			'numero_vacantes' => 'required|min:1',
-			'perfil' => 'required',
-			'fecha_inicio' => 'required',
+			'descripcion' => 'required|max:1000',
 			'anios_experiencia' => 'required|min:0',
 			'municipio_id' => 'required|exists:municipios,id',
 			'nivel_educacion_id' => 'required|exists:nivel_educacion,id',
-			'salario' => 'min:0'
+			'tipo_cargo_vacante_id' => 'required|exists:tipos_cargos_vacantes,id',
+			'salario_minimo' => 'min:0',
+			'requisitos' => 'required|max:3000',
+			'numero_maximo_postulaciones' => 'min:1'
     	],[
        		
     	]);
@@ -125,23 +143,32 @@ class BolsaEmpleoController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		if(isset($request->fecha_fin)){
-		    if($request->fecha_inicio > $request->fecha_fin){
-    		    return ["success"=>false,"errores"=> [ ["La fecha de inicio no debe ser mayor a la de fin."] ] ];
+		if(isset($request->fecha_vencimiento)){
+		    if($request->fecha_vencimiento < date('d-m-Y') ){
+    		    return ["success"=>false,"errores"=> [ ["La fecha de vencimiento no puede ser menor a la fecha actual."] ] ];
     		}
+		}
+		
+		if(isset($request->salario_minimo) && isset($request->salario_maximo)){
+			if($request->salario_minimo > $request->salario_maximo){
+				return ["success"=>false,"errores"=> [ ["El salario mínimo no puede ser mayor al salario máximo."] ] ];
+			}
 		}
 		
 		$vacante = Oferta_Vacante::find($request->id);
 		$vacante->proveedores_rnt_id = $request->proveedores_rnt_id;
 		$vacante->nombre = $request->nombre;
 		$vacante->numero_vacantes = $request->numero_vacantes;
-		$vacante->perfil = $request->perfil;
-		$vacante->fecha_inicio = $request->fecha_inicio;
-		$vacante->fecha_fin = isset($request->fecha_fin) ? $request->fecha_fin : null;
+		$vacante->descripcion = $request->descripcion;
+		$vacante->numero_maximo_postulaciones = isset($request->numero_maximo_postulaciones) ? $request->numero_maximo_postulaciones : null;
+		$vacante->fecha_vencimiento = isset($request->fecha_vencimiento) ? $request->fecha_vencimiento : null;
 		$vacante->anios_experiencia = $request->anios_experiencia;
 		$vacante->municipio_id = $request->municipio_id;
 		$vacante->nivel_educacion_id = $request->nivel_educacion_id;
-		$vacante->salario = isset($request->salario) ? $request->salario : null;
+		$vacante->tipo_cargo_vacante_id = $request->tipo_cargo_vacante_id;
+		$vacante->salario_minimo = isset($request->salario_minimo) ? $request->salario_minimo : null;
+		$vacante->salario_maximo = isset($request->salario_maximo) ? $request->salario_maximo : null;
+		$vacante->requisitos = $request->requisitos;
 		$vacante->save();
 		
 		return ['success' => true];
@@ -152,7 +179,7 @@ class BolsaEmpleoController extends Controller
     }
     
     public function getCargarvacantes(){
-        $vacantes = Oferta_Vacante::with(['proveedoresRnt','municipio','nivelEducacion'])->get();
+        $vacantes = Oferta_Vacante::with(['proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante'])->get();
         return ['vacantes' => $vacantes];
     }
     
@@ -170,6 +197,25 @@ class BolsaEmpleoController extends Controller
 		
 		$vacante = Oferta_Vacante::find($request->id);
 		$vacante->estado = !$vacante->estado;
+		$vacante->save();
+		
+		return ["success" => true];
+    }
+    
+    public function postCambiarestadopublicovacante(){
+    	$validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:ofertas_vacantes,id',
+    	],[
+       		
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		
+		$vacante = Oferta_Vacante::find($request->id);
+		$vacante->es_publico = !$vacante->es_publico;
 		$vacante->save();
 		
 		return ["success" => true];
