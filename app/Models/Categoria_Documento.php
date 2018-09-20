@@ -41,6 +41,6 @@ class Categoria_Documento extends Model
      */
     public function categoriaDocumentoIdiomas()
     {
-        return $this->hasMany('App\Models\CategoriaDocumentoIdioma');
+        return $this->hasMany('App\Models\Categoria_Documento_Idioma', 'categoria_documento_id');
     }
 }

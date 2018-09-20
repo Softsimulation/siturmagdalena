@@ -108,6 +108,7 @@ angular.module('receptor.enteran', [])
     $scope.guardar = function () {
 
         if (!$scope.inForm.$valid) {
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
 

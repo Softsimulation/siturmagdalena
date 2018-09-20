@@ -66,7 +66,11 @@
     <form role="form" name="capacidadForm" novalidate>
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Capacidad del establecimiento</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Capacidad del establecimiento</b>
+                    <span style="float: right;" ng-if="alimentos.tipo == 1">Tasa de platos: @{{ alimentos.porcentajePlato != null ? alimentos.porcentajePlato : 0| number:2 }} % </span>
+                    <span style="float: right;" ng-if="alimentos.tipo == 2">Tasa de unidades: @{{ alimentos.porcentajePlato != null ? alimentos.porcentajePlato : 0| number:2 }} % </span>
+                    <span style="float: right;" >Tasa de bebidas: @{{ alimentos.porcentajeBebida| number:2 }} % - </span>
+                </h3>
             </div>
             <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
@@ -174,6 +178,38 @@
                                 </td>
                                 <td><input type="number" min="1" name="bebidaValor" class="form-control" ng-model="alimentos.bebidaValor" ng-required="true" placeholder="Solo números"/></td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Atención a visitantes no residentes en Magdalena</b></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>¿Qué porcentaje de sus clientes del mes anterior considera son de otras regiones fuera del Atlántico? (%)
+                                    <span ng-show="capacidadForm.$submitted || capacidadForm.porcentajeOtrasRegiones.$touched">
+                                        <span class="label label-danger" ng-show="capacidadForm.porcentajeOtrasRegiones.$error.number">* El campo recibe solo números.</span>
+                                        <span class="label label-danger" ng-show="capacidadForm.porcentajeOtrasRegiones.$error.min">* El campo recibe solo números iguales o mayores que 0.</span>
+                                    </span>
+                                </td>
+                                <td><input type="number" min="0" name="porcentajeOtrasRegiones" class="form-control" ng-model="alimentos.porcentajeOtrasRegiones" placeholder="Solo números"/></td>
+                            </tr>
+
+
                         </tbody>
                     </table>
                 </div>

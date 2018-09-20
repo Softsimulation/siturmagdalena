@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests;
 use Carbon\Carbon;
 use App\Models\Empleo;
+
 use App\Models\Encuesta;
 use App\Models\Vacante;
 use App\Models\Empleado_Vinculacion;
@@ -70,13 +71,13 @@ class OfertaEmpleoController extends Controller
         
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
-                                    'getCaracterizacionagenciasoperadoras','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
+                                    'getCaracterizacionagenciasoperadoras','getAlojamientomensual','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
                                     
+        $this->middleware('auth');
         $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
-        }                           
-    
+        }
         
     }
     
@@ -85,14 +86,92 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.Crearencuesta');
     }
     
+        public function getActivar($one){
+        return view('ofertaEmpleo.Activar',['id'=>$one]);
+    }
+    
+      public function getProveedor($id){
+      $establecimiento = Sitio_Para_Encuesta::where("proveedor_rnt_id",$id)->first();
+      return ["success" => true, "establecimiento"=> $establecimiento];
+    }
+    
+     public function postGuardaractivar(Request $request)
+    {
+    
+        
+        $validator = \Validator::make($request->all(),[
+        
+            'proveedor_rnt_id' => 'required|exists:proveedores_rnt,id',
+            'nombre_contacto' => 'required|string|min:1|max:255',
+            'cargo_contacto' => 'required|string|min:1|max:255',
+            'email'=>'required|email',
+            'telefono_fijo' => 'required|string|min:1|max:255',
+            'celular' => 'required|string|min:1|max:255',
+            'camara_comercio' => 'required|numeric|min:0|max:1',
+            'registro_turismo' => 'required|numeric|min:0|max:1',
+          
+            
+        ],[
+           
+            ]
+        );
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        
+    
+        $data = Sitio_Para_Encuesta::where("proveedor_rnt_id",$request->proveedor_rnt_id)->first();
+        
+        if($data == null){
+            $data = new Sitio_Para_Encuesta();
+            $data->proveedor_rnt_id = $request->proveedor_rnt_id ;
+            $data->nombre_contacto = $request->nombre_contacto ;
+            $data->cargo_contacto = $request->cargo_contacto ;
+            $data->email = $request->email ;
+            $data->celular = $request->celular ;
+            $data->telefono_fijo = $request->telefono_fijo ;
+            $data->camara_comercio = $request->camara_comercio ;
+            $data->registro_turismo = $request->registro_turismo ;
+            $data->ano_fundacion = $request->ano_fundacion ;
+            $data->extension = $request->extension;
+            $data->user_id = 1;
+            $data->es_verificado = true;
+            $data->save();
+        }else{
+            $data->nombre_contacto = $request->nombre_contacto ;
+            $data->cargo_contacto = $request->cargo_contacto ;
+            $data->email = $request->email ;
+            $data->celular = $request->celular ;
+            $data->telefono_fijo = $request->telefono_fijo ;
+            $data->camara_comercio = $request->camara_comercio ;
+            $data->registro_turismo = $request->registro_turismo ;
+            $data->ano_fundacion = $request->ano_fundacion ;
+            $data->extension = $request->extension ;
+            $data->save();
+        }
+       
+       
+       return ["success"=>true, "id"=> $data->id];
+            
+    }
+    
+      public function getListadoproveedoresrnt(){
+        return view('ofertaEmpleo.ListadoProveedoresRnt');
+    }
+    
+     public function getListadornt(){
+     $provedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
+      return ["success" => true, "proveedores"=> $provedores];
+    }
+    
+    
     public function getListadoproveedores(){
         return view('ofertaEmpleo.ListadoProveedores');
     }
     
     public function getListado(){
       
-      $provedores = Sitio_Para_Encuesta::with(["proveedor"=> function($q1){ $q1->with([ "estadop", "categoria", "idiomas"=>function($q){ $q->where("idioma_id",1); } ])->get(); }])->get();
-      
+      $provedores = new Collection(DB::select("SELECT *from listado_sitios_para_encuestas")); 
       return ["success" => true, "proveedores"=> $provedores];
     }
     
@@ -320,7 +399,7 @@ class OfertaEmpleoController extends Controller
                     if($tipo->proveedor->categoria->id == 15){
                          $ruta = "/ofertaempleo/agenciaviajes";
                     }
-                     if($tipo->proveedor->categoria->id == 14){
+                     if($tipo->proveedor->catgugoria->id == 14){
                          $ruta = "/ofertaempleo/caracterizacionagenciasoperadoras";
                     }
                      if($tipo->proveedor->categoria->id == 21){
@@ -429,6 +508,144 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.EmpleadosCaracterizacion',array('id'=>$id));
     }
     
+    public function getEmpleo($one){
+        $id = $one;
+        
+        return view('ofertaEmpleo.Empleo',array('id'=>$id));
+    }
+    
+  public function getCargardatosempleo($id = null)  {
+        $empleo = collect();
+  
+        $empleo = collect();
+        $empleo["Sexo"]  =  Sexo_Empleado::where("encuestas_id",$id)->get();
+        $vac = Vacante::where("encuestas_id",$id)->first(); 
+        if($vac != null){
+            $empleo["VacanteOperativo"] = $vac->operativo;
+            $empleo["VacanteAdministrativo"] = $vac->administrativo;
+            $empleo["VacanteGerencial"]  = $vac->gerencial;
+        }
+        $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$id)->first();
+
+
+        $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
+            
+
+        
+         $retorno = [
+                'empleo' => $empleo,
+                'url' => ""
+            ];
+            
+            return $retorno;
+    }
+    
+    public function postGuardarempleo (Request $request){
+       
+        $validator = \Validator::make($request->all(), [
+			'Encuesta' => 'required|exists:encuestas,id',
+			'Sexo' => 'required',
+			'Sexo.*.tipo_cargo_id' => 'required|exists:tipos_cargos,id',
+			'Sexo.*.hombres' => 'required|min:0',
+			'Sexo.*.mujeres' => 'required|min:0',
+		    
+    	],[
+       		'Encuesta.required' => 'Error no se encontro la encuesta.',
+       		'Encuesta.exists' => 'La encuesta eleccionado no se encuentra seleccionado en el sistema.',
+ 
+    	]);
+       
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+    
+
+    for ($i =0; $i < collect($request->Sexo)->Count(); $i++)
+    {
+        
+        $sexoBuscado = Sexo_Empleado::where("encuestas_id", $request->Encuesta)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->first();
+        if ($sexoBuscado == null)
+        {
+        
+            $sexoBuscado = new Sexo_Empleado();
+            $sexoBuscado->encuestas_id = $request->Encuesta;
+            $sexoBuscado->mujeres = $request->Sexo[$i]["mujeres"];
+            $sexoBuscado->hombres = $request->Sexo[$i]["hombres"];
+            $sexoBuscado->tipo_cargo_id = $request->Sexo[$i]["tipo_cargo_id"];
+            $sexoBuscado->save();
+        }
+        else
+        {
+            $sexoBuscado->mujeres = $request->Sexo[$i]["mujeres"];
+            $sexoBuscado->hombres = $request->Sexo[$i]["hombres"];
+            $sexoBuscado->save();
+        }
+    }
+
+    $encuesta = Encuesta::find($request->Encuesta);
+
+    $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first(); 
+
+    if ($vacRazon == null)
+    {
+        $vacRazon = new Razon_Vacante();
+        $vacRazon->encuesta_id = $request->Encuesta;
+        $vacRazon->apertura = $request->Razon["apertura"];
+        $vacRazon->crecimiento =  $request->Razon["crecimiento"];
+        $vacRazon->remplazo =  $request->Razon["remplazo"];
+        $vacRazon->save();
+    }
+    else
+    {
+        $vacRazon->apertura = $request->Razon["apertura"];
+        $vacRazon->crecimiento =  $request->Razon["crecimiento"];
+        $vacRazon->remplazo =  $request->Razon["remplazo"];
+        $vacRazon->save();
+    }
+
+    $vacBuscado = Vacante::where("encuestas_id",$request->Encuesta)->first(); 
+
+    if ($vacBuscado == null)
+    {
+        $vacBuscado = new vacante();
+        $vacBuscado->encuestas_id = $request->Encuesta;
+        $vacBuscado->administrativo = $request->VacanteAdministrativo;
+        $vacBuscado->gerencial = $request->VacanteGerencial;
+        $vacBuscado->operativo = $request->VacanteOperativo;
+        $vacBuscado->save();
+    }
+    else
+    {
+        $vacBuscado->administrativo = $request->VacanteAdministrativo;
+        $vacBuscado->gerencial = $request->VacanteGerencial;
+        $vacBuscado->operativo = $request->VacanteOperativo;
+        $vacBuscado->save();
+    }
+
+
+             $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->Encuesta));
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            $encuesta = Encuesta::where('id',$request->Encuesta)->first();
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
+
+    }
+    
     public function getEmpleomensual($one){
         $id = $one;
         $encuesta = Encuesta::find($one);
@@ -511,7 +728,9 @@ class OfertaEmpleoController extends Controller
     {
             $empleo = collect();
     
-        
+            $empleo["Hubo_capacitacion"] = Capacitacion_Empleo::where("encuesta_id",$id)->pluck("hubo_capacitacion")->first();
+            $empleo["TemaCapacitacion"] = Capacitacion_Empleo::where("encuesta_id",$id)->pluck("temas")->first();
+            
             $empleo["capacitacion"] = Capacitacion_Empleo::where("encuesta_id",$id)->pluck("realiza_proceso")->first();
             $empleo["tematicas"] = Tematica_Capacitacion::where("encuesta_id",$id)->get();
             $empleo["lineasadmin"] = Capacitacion_Empleo::join("tematicas_aplicadas_encuestas",'capacitaciones_empleo.encuesta_id','=','tematicas_aplicadas_encuestas.encuesta_id')->join("lineas_tematicas","id","=","linea_tematica_id")->where("capacitaciones_empleo.encuesta_id",$id)->where("tipo_nivel",true)->pluck("linea_tematica_id as id")->toArray();
@@ -581,6 +800,7 @@ class OfertaEmpleoController extends Controller
 			'Educacion' => 'required',
 			'Educacion.*.tipo_cargo_id' => 'required|exists:tipos_cargos,id',
 			'Educacion.*.ninguno' => 'required|min:0',
+			'Educacion.*.primaria' => 'required|min:0',
 			'Educacion.*.posgrado' => 'required|min:0',
 			'Educacion.*.bachiller' => 'required|min:0',
 			'Educacion.*.universitario' => 'required|min:0',
@@ -613,8 +833,8 @@ class OfertaEmpleoController extends Controller
      for ($i =0; $i < collect($request->Sexo)->Count(); $i++)
     {
         $cargo = Tipo_Cargo::where("id",$request->Sexo[$i]["tipo_cargo_id"])->first();
-        $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
-       
+        $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
+   
         if($edad){
             
             if(($edad["diecinuevea25"] + $edad["ventiseisa40"] + $edad["cuarentayunoa64"] + $edad["mas65"] + $edad["docea18"] ) !=  $request->Sexo[$i]["hombres"] ){
@@ -623,7 +843,8 @@ class OfertaEmpleoController extends Controller
             }
         }
             
-         $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+         $edad = collect($request->Edad)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
+        
          if($edad){
             if(($edad["diecinuevea25"] + $edad["ventiseisa40"] + $edad["cuarentayunoa64"] + $edad["mas65"] + $edad["docea18"] )  !=  $request->Sexo[$i]["mujeres"] ){
                  
@@ -631,23 +852,23 @@ class OfertaEmpleoController extends Controller
             }
          }
             
-        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($educacion){
-            if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["hombres"] ){
+            if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["primaria"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["hombres"] ){
                  
                  return ["success" => false, "errores" => [["error en el numero de hombres por eduacion en el cargo ".$cargo->nombre]] ];    
             }
         }
         
-        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+        $educacion = collect($request->Educacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($educacion){
-            if(($educacion["ninguno"] + $educacion["bachiller"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["mujeres"] ){
+            if(($educacion["ninguno"] + $educacion["bachiller"]+ $educacion["primaria"] + $educacion["posgrado"] + $educacion["tecnico"] + $educacion["tecnologo"] + $educacion["universitario"] ) !=  $request->Sexo[$i]["mujeres"] ){
                  
                  return ["success" => false, "errores" => [["error en el numero de mujeres por eduacion en el cargo ".$cargo->nombre]] ];    
             }
         }
         
-        $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+        $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($ingl){
             if($ingl["sabeningles"]   > $request->Sexo[$i]["hombres"] ){
                  
@@ -656,7 +877,7 @@ class OfertaEmpleoController extends Controller
         }
         
         
-           $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+           $ingl = collect($request->ingles)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($ingl){
             if($ingl["sabeningles"]  > $request->Sexo[$i]["mujeres"] ){
                  
@@ -665,7 +886,7 @@ class OfertaEmpleoController extends Controller
             
         }
 
-        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($vinculacion){
             if(($vinculacion["personal_permanente"] + $vinculacion["personal_agencia"] + $vinculacion["propietario"] + $vinculacion["contrato_direto"] + $vinculacion["trabajador_familiar"] + $vinculacion["cuenta_propia"] + $vinculacion["aprendiz"] ) !=  $request->Sexo[$i]["hombres"] ){
                  
@@ -674,7 +895,7 @@ class OfertaEmpleoController extends Controller
             
         }
         
-        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+        $vinculacion = collect($request->Vinculacion)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($vinculacion){
             if(($vinculacion["personal_permanente"] + $vinculacion["personal_agencia"] + $vinculacion["propietario"] + $vinculacion["contrato_direto"] + $vinculacion["trabajador_familiar"] + $vinculacion["cuenta_propia"] + $vinculacion["aprendiz"] ) !=  $request->Sexo[$i]["mujeres"] ){
                  
@@ -682,7 +903,7 @@ class OfertaEmpleoController extends Controller
             }  
         }
 
-       $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",1)->first();
+       $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",true)->first();
         if($vinculacion){
             if(($empleo["tiempo_completo"]  + $empleo["medio_tiempo"] ) !=  $request->Sexo[$i]["hombres"] ){
                  
@@ -690,7 +911,7 @@ class OfertaEmpleoController extends Controller
             }
         }
 
-        $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",0)->first();
+        $empleo = collect($request->Empleo)->where("tipo_cargo_id",$request->Sexo[$i]["tipo_cargo_id"])->where("sexo",false)->first();
         if($vinculacion){
             if(($empleo["tiempo_completo"]  + $empleo["medio_tiempo"]) !=  $request->Sexo[$i]["mujeres"] ){
                  
@@ -701,6 +922,7 @@ class OfertaEmpleoController extends Controller
         }
         
     }
+    
 
     for ($i =0; $i < collect($request->Sexo)->Count(); $i++)
     {
@@ -765,6 +987,7 @@ class OfertaEmpleoController extends Controller
             $educacionempleo = new Educacion_Empleado();
             $educacionempleo->encuestas_id = $request->Encuesta;
             $educacionempleo->ninguno = $request->Educacion[$i]["ninguno"];
+            $educacionempleo->primaria = $request->Educacion[$i]["primaria"];
             $educacionempleo->bachiller = $request->Educacion[$i]["bachiller"];
             $educacionempleo->posgrado = $request->Educacion[$i]["posgrado"]; 
             $educacionempleo->tecnico = $request->Educacion[$i]["tecnico"];
@@ -777,6 +1000,7 @@ class OfertaEmpleoController extends Controller
         else
         {               
             $educacionempleo->ninguno = $request->Educacion[$i]["ninguno"];
+            $educacionempleo->primaria = $request->Educacion[$i]["primaria"];
             $educacionempleo->bachiller = $request->Educacion[$i]["bachiller"];
             $educacionempleo->posgrado = $request->Educacion[$i]["posgrado"]; 
             $educacionempleo->tecnico = $request->Educacion[$i]["tecnico"];
@@ -928,20 +1152,34 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $vacBuscado->operativo = $request->VacanteOperativo;
         $vacBuscado->save();
     }
-    Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->Encuesta,
-           'user_id' => 1,
-           'estado_encuesta_id' => 2,
-           'fecha_cambio' => Carbon::now()
-       ]);
+  
 	
 
-        return ["success" => true];
+            $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->Encuesta));
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            $encuesta = Encuesta::where('id',$request->Encuesta)->first();
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
     
     public function postGuardarempcaracterizacion(Request $request){
         $validator = \Validator::make($request->all(), [
   	         'Encuesta' => 'required|exists:encuestas,id',
+  	         'Hubo_capacitacion' => 'required|min:0|max:1',
   	         'capacitacion' => 'required|min:0|max:1',
   	         'autorizacion' => 'required|min:0|max:1',
   	         'esta_acuerdo' => 'required|min:0|max:1',
@@ -950,6 +1188,10 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		     'tipos.*' => 'required|exists:tipos_programas_capacitaciones,id',
 		     'lineasadmin.*' => 'required|exists:lineas_tematicas,id',
 			 'lineasopvt.*' => 'required|exists:lineas_tematicas,id',
+ 			 'medios' => 'required|min:1|max:3',
+		     'tipos' => 'required|min:1|max:3',
+		     'lineasadmin' => 'required|min:1|max:3',
+			 'lineasopvt' => 'required|min:1|max:3',
 		
 		
     	],[
@@ -971,6 +1213,15 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     		     }
     	     }
 	
+	         if($request->Hubo_capacitacion == 1 ){
+    		     if($request->TemaCapacitacion == null ){
+    	                return ["success" => false, "errores" => [["Es requerido los temas."]] ];    
+    	    
+    		     }
+    	     }else{
+    	         $request->TemaCapacitacion = null;
+    	     }
+	      
 	         
 	         if(in_array(10,$request->medios )&& $request->otromedio == null){
 	             return ["success" => false, "errores" => [["No se encontro el valor del otro en medios."]] ];    
@@ -984,18 +1235,21 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 	 
               $capacitacion = Capacitacion_Empleo::where("encuesta_id", $request->Encuesta)->first();
 
+         
                 if ($capacitacion == null)
                 {
                    $capacitacion = new Capacitacion_Empleo();
                     $capacitacion->encuesta_id = $request->Encuesta;
                     $capacitacion->realiza_proceso = $request->capacitacion;
-                
+                    $capacitacion->hubo_capacitacion = $request->Hubo_capacitacion;
+                    $capacitacion->temas = $request->TemaCapacitacion;
                     $capacitacion->save();
                 }
                 else
                 {
                     $capacitacion->realiza_proceso = $request->capacitacion;
-        
+                    $capacitacion->hubo_capacitacion = $request->Hubo_capacitacion;
+                    $capacitacion->temas = $request->TemaCapacitacion;
                     $capacitacion->save();
                 }
 
@@ -1066,17 +1320,26 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		}
 		
 		
-   	   Historial_Encuesta_Oferta::create([
-               'encuesta_id' => $request->Encuesta,
-               'user_id' => $this->user->id,
-               'estado_encuesta_id' => 3,
-               'fecha_cambio' => Carbon::now()
-       ]);
-		
-		
-        
-        
-        return ["success" => true, "idsitio"=> $encuesta->sitios_para_encuestas_id ];
+            $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->Encuesta));
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            $encuesta = Encuesta::where('id',$request->Encuesta)->first();
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
+
     }
     
     public function postGuardarnumeroemp(Request $request){
@@ -1203,15 +1466,25 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }
 
 		
-		        Historial_Encuesta_Oferta::create([
-               'encuesta_id' => $encuesta->id,
-               'user_id' => 1,
-               'estado_encuesta_id' => 2,
-               'fecha_cambio' => Carbon::now()
-           ]);
-		
-
-        return ["success" => true];
+         $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->Encuesta));
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->Encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            $encuesta = Encuesta::where('id',$request->Encuesta)->first();
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
 
     public function getAgencia($id){
@@ -1329,13 +1602,13 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $agencia = Encuesta::with(['viajesTurismos'=>function($q){
             $q->with('viajesTurismosOtro');
         }])->where('id',$request->id)->first();
-        
+        $ventaPlanesTuristicos = 0;
         if(sizeof($agencia["viajesTurismos"]) == 0){
             $viajes_turismos = Viaje_Turismo::create([
                 'encuestas_id'=>$request->id,  
                 'ofreceplanes'=>$request->Planes  
             ]);
-            
+            $ventaPlanesTuristicos = 0;
             foreach ($request->TipoServicios as $servi)
             {
                 $viajes_turismos->serviciosAgencias()->attach($servi);
@@ -1346,6 +1619,9 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                     $viajes_turismos_otro->viajes_turismo_id = $viajes_turismos->id;
                     $viajes_turismos_otro->otro = $request->Otro;
                     $viajes_turismos_otro->save();
+                }
+                if($servi == 1){
+                    $ventaPlanesTuristicos = 1;
                 }
             }
         }else{
@@ -1368,10 +1644,31 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                     $viajes_turismos_otro->otro = $request->Otro;
                     $viajes_turismos_otro->save();
                 }
+                if($servi == 1){
+                    $ventaPlanesTuristicos = 1;
+                }
                 
             }
         }
-        return ["success"=>true];
+        $redireccion = false;
+        if($ventaPlanesTuristicos != 1 && intval($request->Planes) == 0){
+            Historial_Encuesta_Oferta::create([
+               'encuesta_id' => $request->id, 
+               'user_id' => $this->user->id,
+               'estado_encuesta_id' => 7,
+               'fecha_cambio' => Carbon::now()
+           ]);
+        }else{
+            Historial_Encuesta_Oferta::create([
+               'encuesta_id' => $request->id, 
+               'user_id' => $this->user->id,
+               'estado_encuesta_id' => 2,
+               'fecha_cambio' => Carbon::now()
+           ]);
+           $redireccion = true;
+        }
+        
+        return ["success"=>true, "redireccion"=>$redireccion,"sitio"=>$agencia->sitios_para_encuestas_id];
     }
     public function getDatosofertaagencia(){
         //var destinos = (from destino in conexion.opciones_personas_destinos select new { id = destino.id, nombre = destino.nombre }).ToList();
@@ -1387,9 +1684,10 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
            $q->where('encuestas_id',$id);
        }])->get();*/
        //return $agencia;
-        $agencia = Viaje_Turismo::with(['planesSantamarta','personasDestinoConViajesTurismos'=>function($q){
+        $agencia = Viaje_Turismo::with(['serviciosAgencias','planesSantamarta','personasDestinoConViajesTurismos'=>function($q){
             $q->with('opcionesPersonasDestino')->get();
         }])->where('encuestas_id',$id)->first();
+        
         
 
         return $agencia;
@@ -1409,14 +1707,14 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             ],[
                 'id.required' => 'Tuvo primero que haber creado una encuesta.',
                 'id.exists' => 'Tuvo primero que haber creado una encuesta.',
-                'numero.required' => 'El número total de personas que viajaron con planes a Santa Marta es requerido.',
-                'numero.double' => 'El número total de personas que viajaron con planes a Santa Marta debe ser de valor numérico.',
-                'magdalena.required' => 'El porcentaje comprado por residentes en el magdalena es requerido.',
-                'magdalena.double' => 'El porcentaje comprado por residentes en el magdalena debe ser de valor numérico.',
-                'magdalena.between' => 'El porcentaje comprado por residentes en el magdalena debe ser menor o igual a 100.',
-                'nacional.required' => 'El porcentaje comprado por residentes fuera del magdalena es requerido.',
-                'nacional.double' => 'El porcentaje comprado por residentes fuera del magdalena debe ser de valor numérico.',
-                'nacional.between' => 'El porcentaje comprado por residentes fuera del magdalena debe ser menor o igual a 100.',
+                'numero.required' => 'El número total de personas que viajaron con planes a Atlántico es requerido.',
+                'numero.double' => 'El número total de personas que viajaron con planes a Atlántico debe ser de valor numérico.',
+                'magdalena.required' => 'El porcentaje comprado por residentes en el Atlántico es requerido.',
+                'magdalena.double' => 'El porcentaje comprado por residentes en el Atlántico debe ser de valor numérico.',
+                'magdalena.between' => 'El porcentaje comprado por residentes en el Atlántico debe ser menor o igual a 100.',
+                'nacional.required' => 'El porcentaje comprado por residentes fuera del Atlántico es requerido.',
+                'nacional.double' => 'El porcentaje comprado por residentes fuera del Atlántico debe ser de valor numérico.',
+                'nacional.between' => 'El porcentaje comprado por residentes fuera del Atlántico debe ser menor o igual a 100.',
                 'internacional.required' => 'El porcentaje comprado por residentes en el extranjero es requerido.',
                 'internacional.double' => 'El porcentaje comprado por residentes en el extranjero debe ser de valor numérico.',
                 'internacional.between' => 'El porcentaje comprado por residentes en el extramjero debe ser menor o igual a 100.',
@@ -1424,19 +1722,24 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             ); 
             $errores = [];
             //return $request->personas;
-            foreach ($request->personas as $fila)
-            {
-                if(intval($fila["internacional"]) + intval($fila["nacional"]) != 100){
-                    $errores["Porcentajes"][0] = "Todo los porcentajes en la seccion personas que viajaron segun destinos deben sumar 100.";
-                }
-                //return $fila;
-                if(Opcion_Persona_Destino::where('id',intval($fila["opciones_personas_destino_id"]))->first() == null){
-                    $errores["Opciones"][0] = "Una de las opciones cargadas no esta disponible.";
+            if($request->ventaPlanes == true){
+                foreach ($request->personas as $fila)
+                {
+                    if(intval($fila["internacional"]) + intval($fila["nacional"]) != 100){
+                        $errores["Porcentajes"][0] = "Todo los porcentajes en la seccion personas que viajaron segun destinos deben sumar 100.";
+                    }
+                    //return $fila;
+                    if(Opcion_Persona_Destino::where('id',intval($fila["opciones_personas_destino_id"]))->first() == null){
+                        $errores["Opciones"][0] = "Una de las opciones cargadas no esta disponible.";
+                    }
                 }
             }
-            if($request->magdalena + $request->nacional + $request->internacional != 100){
-                $errores["PorcentajeMagdalena"][0] = "Los porcentajes en los viajes en el magdalena deben sumar 100.";
+            if($request->ofrecePlanesConDestino == true){
+                if($request->magdalena + $request->nacional + $request->internacional != 100){
+                    $errores["PorcentajeMagdalena"][0] = "Los porcentajes en los viajes en el Atlántico deben sumar 100.";
+                }
             }
+            
             if(sizeof($errores) > 0){
                 return ['success'=>false, 'errores'=>$errores];
             }
@@ -1446,53 +1749,94 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             {
                 //$agencia->personasDestinoConViajesTurismos()->detach();
                 $personas = Persona_Destino_Con_Viaje_Turismo::where('viajes_turismos_id',$agencia->id)->delete();
-                foreach ($request->personas as $fila)
-                {
-                    //return $fila;
-                    //return $agencia;
-                    //return $agencia->opcionesPersonasDestino;
-                    
-                    $personaDestino = new Persona_Destino_Con_Viaje_Turismo();
-                    $personaDestino->viajes_turismos_id = $agencia->id;
-                    $personaDestino->opciones_personas_destino_id = $fila["opciones_personas_destino_id"];
-                    $personaDestino->internacional = $fila["internacional"];
-                    $personaDestino->nacional = $fila["nacional"];
-                    $personaDestino->numerototal = $fila["numerototal"];
-                    $personaDestino->save();
+                if($request->ventaPlanes == true){
+                    foreach ($request->personas as $fila)
+                    {
+                        //return $fila;
+                        //return $agencia;
+                        //return $agencia->opcionesPersonasDestino;
+                        
+                        $personaDestino = new Persona_Destino_Con_Viaje_Turismo();
+                        $personaDestino->viajes_turismos_id = $agencia->id;
+                        $personaDestino->opciones_personas_destino_id = $fila["opciones_personas_destino_id"];
+                        $personaDestino->internacional = $fila["internacional"];
+                        $personaDestino->nacional = $fila["nacional"];
+                        $personaDestino->numerototal = $fila["numerototal"];
+                        $personaDestino->save();
+                    }
                 }
-                $planSantaMarta = Plan_Santamarta::where('viajes_turismos_id',$agencia->id)->first();
-                $planSantaMarta->numero = $request->numero;
-                $planSantaMarta->residentes = $request->magdalena;
-                $planSantaMarta->noresidentes = $request->nacional;
-                $planSantaMarta->extrajeros = $request->internacional;
-                $planSantaMarta->save();
+                if($request->ofrecePlanesConDestino == true){
+                    $planSantaMarta = Plan_Santamarta::where('viajes_turismos_id',$agencia->id)->first();
+                    if($planSantaMarta == null){
+                        $planSantaMarta = new Plan_Santamarta();
+                        $planSantaMarta->viajes_turismos_id = $agencia->id;
+                    }
+                    $planSantaMarta->numero = $request->numero;
+                    $planSantaMarta->residentes = $request->magdalena;
+                    $planSantaMarta->noresidentes = $request->nacional;
+                    $planSantaMarta->extrajeros = $request->internacional;
+                    $planSantaMarta->save();
+                }else{
+                    $planSantaMarta = Plan_Santamarta::where('viajes_turismos_id',$agencia->id)->delete();
+                }
+                
             }
             else
             {
-                foreach ($request->personas as $fila)
-                {
-                    //return $fila;
-                    //return $agencia;
-                    //return $agencia->opcionesPersonasDestino;
-                    
-                    $personaDestino = new Persona_Destino_Con_Viaje_Turismo();
-                    $personaDestino->viajes_turismos_id = $agencia->id;
-                    $personaDestino->opciones_personas_destino_id = $fila["opciones_personas_destino_id"];
-                    $personaDestino->internacional = $fila["internacional"];
-                    $personaDestino->nacional = $fila["nacional"];
-                    $personaDestino->numerototal = $fila["numerototal"];
-                    $personaDestino->save();
+                if($request->ventaPlanes == true){
+                    foreach ($request->personas as $fila)
+                    {
+                        //return $fila;
+                        //return $agencia;
+                        //return $agencia->opcionesPersonasDestino;
+                        
+                        $personaDestino = new Persona_Destino_Con_Viaje_Turismo();
+                        $personaDestino->viajes_turismos_id = $agencia->id;
+                        $personaDestino->opciones_personas_destino_id = $fila["opciones_personas_destino_id"];
+                        $personaDestino->internacional = $fila["internacional"];
+                        $personaDestino->nacional = $fila["nacional"];
+                        $personaDestino->numerototal = $fila["numerototal"];
+                        $personaDestino->save();
+                    }
                 }
-                $planSantaMarta = new Plan_Santamarta();
-                $planSantaMarta->viajes_turismos_id = $agencia->id;
-                $planSantaMarta->numero = $request->numero;
-                $planSantaMarta->residentes = $request->magdalena;
-                $planSantaMarta->noresidentes = $request->nacional;
-                $planSantaMarta->extrajeros = $request->internacional;
-                $planSantaMarta->save();
+                if($request->ofrecePlanesConDestino == true){
+                    $planSantaMarta = Plan_Santamarta::where('viajes_turismos_id',$agencia->id)->first();
+                    if($planSantaMarta == null){
+                        $planSantaMarta = new Plan_Santamarta();
+                        $planSantaMarta->viajes_turismos_id = $agencia->id;
+                    }
+                    
+                    $planSantaMarta->numero = $request->numero;
+                    $planSantaMarta->residentes = $request->magdalena;
+                    $planSantaMarta->noresidentes = $request->nacional;
+                    $planSantaMarta->extrajeros = $request->internacional;
+                    $planSantaMarta->save();
+                }else{
+                    $planSantaMarta = Plan_Santamarta::where('viajes_turismos_id',$agencia->id)->delete();
+                }
+                
 
             }
-            return ["success"=>true];
+          $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->id));
+          $encuesta = Encuesta::where('id',$request->id)->first();
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
         
         
@@ -1578,7 +1922,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $historial->encuesta_id = $encuesta->id;
             $historial->estado_encuesta_id = 2;
             $historial->fecha_cambio = Carbon::now();
-            $historial->user_id = 1;
+            $historial->user_id = $this->user->id;
             
             $historial->save();
             
@@ -1589,6 +1933,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     public function getInfocapalimentos($id)
     {
         $provision = Provision_Alimento::with('capacidadAlimento')->where('encuestas_id',$id)->first();
+        $encuesta = Encuesta::where('id',$id)->first();
         //return $provision;
         $capacidad = [];
         $capacidad["platosMaximo"] = null;
@@ -1602,20 +1947,37 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $capacidad["bebidasServidas"] = null;
         $capacidad["bebidaValor"] = null;
         $capacidad["precioUnidad"] = null;
+        $capacidad["porcentajeOtrasRegiones"] = null;
         
         $capacidad["tipo"] = $provision->actividades_servicio_id;
         if($provision["capacidadAlimento"] != null || sizeof($provision["capacidadAlimento"]) > 0){
             $capacidad["platosMaximo"] = $provision["capacidadAlimento"]->max_platos;
             $capacidad["platoServido"] = $provision["capacidadAlimento"]->platos_servidos;
-            $capacidad["precioPlato"] = intval($provision["capacidadAlimento"]->valor_plato);
+            $capacidad["precioPlato"] = $provision["capacidadAlimento"]->valor_plato == null ? null : intval($provision["capacidadAlimento"]->valor_plato);
             $capacidad["platosPromedio"] = $provision["capacidadAlimento"]->promedio_unidades;
             $capacidad["unidadServida"] = $provision["capacidadAlimento"]->unidades_vendidas;
             
-            $capacidad["precioUnidad"] = $provision["capacidadAlimento"]->valor_unidad;
+            $capacidad["precioUnidad"] = $provision["capacidadAlimento"]->valor_unidad == null ? null : intval($provision["capacidadAlimento"]->valor_unidad);
             $capacidad["bebidasMaximo"] = $provision["capacidadAlimento"]->bebidas_promedio;
             $capacidad["bebidasServidas"] = $provision["capacidadAlimento"]->bebidas_servidas;
-            $capacidad["bebidaValor"] = intval($provision["capacidadAlimento"]->valor_bebida);
-            $capacidad["valor_unidad"] = $provision["capacidadAlimento"]->valor_unidad;
+            $capacidad["bebidaValor"] = $provision["capacidadAlimento"]->valor_bebida == null ? null : intval($provision["capacidadAlimento"]->valor_bebida);
+            //$capacidad["valor_unidad"] = intval($provision["capacidadAlimento"]->valor_unidad);
+            $capacidad["porcentajeOtrasRegiones"] = $provision->numero_extranjeros;
+            
+            if($capacidad["bebidasServidas"] == null){
+                $capacidad["porcentajePlato"] = null;
+                $capacidad["porcentajeBebida"] = null;
+            }else{
+                if($capacidad["tipo"] == 2){
+                    $capacidad["porcentajePlato"] = $capacidad["unidadServida"] == null ? null : ($capacidad["unidadServida"] / ($encuesta->numero_dias * $capacidad["platosPromedio"]))*100;
+                    
+                }else{
+                    $capacidad["porcentajePlato"] = $capacidad["platoServido"] == null ? null : ($capacidad["platoServido"] / ($encuesta->numero_dias * $capacidad["platosMaximo"]))*100;
+                }
+                $capacidad["porcentajeBebida"] = ($capacidad["bebidasServidas"] / ($encuesta->numero_dias * $capacidad["bebidasMaximo"]))*100;
+            }
+            
+            
         }
         return ["capacidad"=>$capacidad];
     }
@@ -1728,14 +2090,26 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		$agencia->actividadesDeportivas()->attach($request->actividades);
 		$agencia->tours()->attach($request->toures);
 		
-		Historial_Encuesta_Oferta::create([
-	        'encuesta_id' => $encuesta->id,
-	        'user_id' => 1,
-	        'estado_encuesta_id' => 2,
-	        'fecha_cambio' => Carbon::now()
-	    ]);
-		
-        return ["success" => true];
+	         $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$encuesta->id));
+        
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
     
     public function getOcupacionagenciasoperadoras($id){
@@ -1802,14 +2176,26 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		$prestamo->personas_magdalena = $request->porcentajeM;
 		$prestamo->save();
 		
-		Historial_Encuesta_Oferta::create([
-	        'encuesta_id' => $encuesta->id,
-	        'user_id' => 1,
-	        'estado_encuesta_id' => 2,
-	        'fecha_cambio' => Carbon::now()
-	    ]);
-		
-		return ["success" => true];
+	         $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$encuesta->id));
+        
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
     
     public function getCaracterizacionalquilervehiculo($id){
@@ -1884,14 +2270,26 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 		$alquiler->tarifa_promedio = $request->Tarifa;
 		$alquiler->save();
 		
-		Historial_Encuesta_Oferta::create([
-	        'encuesta_id' => $encuesta->id,
-	        'user_id' => 1,
-	        'estado_encuesta_id' => 2,
-	        'fecha_cambio' => Carbon::now()
-	    ]);
-		
-		return ["success" => true];
+         $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$encuesta->id));
+    
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
     
     public function getCaracterizacion($id){
@@ -1902,35 +2300,46 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return View('ofertaEmpleo.ofertaAlojamientos', ["id"=>$id] );
     }
     
+    public function getAlojamientomensual($id){
+        return View('ofertaEmpleo.alojamientoMensual', ["id"=>$id] );
+    }
     
     public function getDataalojamiento($id){ 
        
-        $idEncuesta = $id;
-      /*
-        if( !alojamiento::where("encuestas_id",$id)->first() ){
-            $encuesta = Encuesta::find($id);
-            $anterior = Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["id","!=",$id] ])
-                                  ->latest("id")->first();
-            if($anterior){ $idEncuesta = $anterior->id;  }
+       
+        $encuesta = Encuesta::find($id);
+        if($encuesta){
+       
+            $idEncuesta = $id;
+          /*
+            if( !alojamiento::where("encuestas_id",$id)->first() ){
+                $encuesta = Encuesta::find($id);
+                $anterior = Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["id","!=",$id] ])
+                                      ->latest("id")->first();
+                if($anterior){ $idEncuesta = $anterior->id;  }
+            }
+            */
+            $alojamiento = alojamiento::where("encuestas_id",$idEncuesta)->with(["casas","campings","habitaciones","apartamentos","cabanas"])->first();
+            
+            $servicios = [ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ];
+            
+            if($alojamiento){
+                $servicios["habitacion"] = count($alojamiento->habitaciones)>0 ? true : false;
+                $servicios["apartamento"] = count($alojamiento->apartamentos)>0 ? true : false;
+                $servicios["casa"] = count($alojamiento->casas)>0 ? true : false;
+                $servicios["camping"] = count($alojamiento->campings)>0 ? true : false;
+                $servicios["cabana"] = count($alojamiento->cabanas)>0 ? true : false;
+            }
+            
+            if( $id!=$idEncuesta ){
+                $alojamiento["id"] = null;
+            }
+            
+            return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios, "numeroDias"=>$encuesta->numero_dias  ];
+            
         }
-        */
-        $alojamiento = alojamiento::where("encuestas_id",$idEncuesta)->with(["casas","campings","habitaciones","apartamentos","cabanas"])->first();
         
-        $servicios = [ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ];
-        
-        if($alojamiento){
-            $servicios["habitacion"] = count($alojamiento->habitaciones)>0 ? true : false;
-            $servicios["apartamento"] = count($alojamiento->apartamentos)>0 ? true : false;
-            $servicios["casa"] = count($alojamiento->casas)>0 ? true : false;
-            $servicios["camping"] = count($alojamiento->campings)>0 ? true : false;
-            $servicios["cabana"] = count($alojamiento->cabanas)>0 ? true : false;
-        }
-        
-        if( $id!=$idEncuesta ){
-            $alojamiento["id"] = null;
-        }
-        
-        return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios ];
+        return ["success"=>false];    
     } 
     
     public function postGuardarcaracterizacionalojamientos(Request $request){ 
@@ -1947,6 +2356,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                       "apartamentos"=>"array|max:1",
                       "apartamentos.*.total" => "required_if:servicios.apartamento,true",
                       "apartamentos.*.capacidad" => "required_if:servicios.apartamento,true",
+                      "apartamentos.*.promedio" => "required_if:servicios.apartamento,true",
                       "apartamentos.*.habitaciones" => "required_if:servicios.apartamento,true",
                       
                       "casas"=>"array|max:1",
@@ -2007,6 +2417,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             }
             $apartamento->total = $request->apartamentos[0]["total"];
             $apartamento->capacidad = $request->apartamentos[0]["capacidad"];
+            $apartamento->promedio = $request->apartamentos[0]["promedio"];
             $apartamento->habitaciones = $request->apartamentos[0]["habitaciones"];
             $apartamento->save();
         }
@@ -2064,14 +2475,26 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             if($cabana){ $cabana->delete(); }
         }
         
-        Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->encuesta,
-           'user_id' => 1,
-           'estado_encuesta_id' => 2,
-           'fecha_cambio' => Carbon::now()
-        ]);
-        
-        return [ "success"=>true ];
+            $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->encuesta));
+          $encuesta = Encuesta::where('id',$request->encuesta)->first();
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
     
     public function postGuardarofertaalojamientos(Request $request){
@@ -2188,20 +2611,165 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }
         
         
-        Historial_Encuesta_Oferta::create([
-           'encuesta_id' => $request->encuesta,
-           'user_id' => 1,
-           'estado_encuesta_id' => 2,
-           'fecha_cambio' => Carbon::now()
-        ]);
+            $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->encuesta));
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            $encuesta = Encuesta::where('id',$request->encuesta)->first();
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
+
+    }
+    
+    public function postGuardaralojamientomensual(Request $request){
+    
+        $validate = \ Validator::make($request->all(),
+                    [ 
+                      "encuesta" => "required|exists:encuestas,id",
+                      
+                      "habitaciones"=>"array|max:1",
+                      "habitaciones.*.tarifa" => "required_if:servicios.habitacion,true",
+                      "habitaciones.*.habitaciones_ocupadas" => "required_if:servicios.habitacion,true",
+                      
+                      "apartamentos"=>"array|max:1",
+                      "apartamentos.*.tarifa" => "required_if:servicios.apartamento,true",
+                      "apartamentos.*.capacidad_ocupada" => "required_if:servicios.apartamento,true",
+                      
+                      "casas"=>"array|max:1",
+                      "casas.*.tarifa" => "required_if:servicios.casa,true",
+                      "casas.*.capacidad_ocupadas" => "required_if:servicios.casa,true",
+                      
+                      "campings"=>"array|max:1",
+                      "campings.*.tarifa" => "required_if:servicios.camping,true",
+                      "campings.*.capacidad_ocupada" => "required_if:servicios.camping,true",
+                      
+                      "cabanas"=>"array|max:1",
+                      "cabanas.*.tarifa" => "required_if:servicios.cabana,true",
+                      "cabanas.*.capacidad_ocupada" => "required_if:servicios.cabana,true",
+                      
+                    ]);
+            
+        if ($validate->fails())
+        {
+            return [ "success"=>false, "errores"=>$validate->errors() ];
+        }
+       
+    
+        $alojamiento = alojamiento::where("encuestas_id",$request->encuesta)->first();
+    
+        if(!$alojamiento){
+           $alojamiento = new alojamiento();
+           $alojamiento->encuestas_id = $request->encuesta;
+           $alojamiento->save();
+        }
+      
+    
+        /////////////////////////////////////////////////////////////////////////
+        if($request->habitaciones){
+            $habitacion = Habitacion::where("alojamientos_id", $alojamiento->id)->first();
+            if(!$habitacion){
+                $habitacion = new Habitacion();
+                $habitacion->alojamientos_id = $alojamiento->id;
+            }
+            
+            if( array_key_exists("total_camas", $request->habitaciones[0]) ){
+                $habitacion->total_camas = $request->habitaciones[0]["total_camas"];
+            }
+            else if( array_key_exists("total", $request->habitaciones[0]) ){
+                $habitacion->total = $request->habitaciones[0]["total"];
+            }
+            
+            $habitacion->tarifa = $request->habitaciones[0]["tarifa"];
+            $habitacion->habitaciones_ocupadas = $request->habitaciones[0]["habitaciones_ocupadas"];
+            $habitacion->save();
+        }
         
-        return [ "success"=>true ];
+        /////////////////////////////////////////////////////////////////////////
+        if($request->apartamentos){
+            $apartamento = Apartamento::where("alojamientos_id", $alojamiento->id)->first();
+            if(!$apartamento){
+                $apartamento = new Apartamento();
+                $apartamento->alojamientos_id = $alojamiento->id;
+            }
+            $apartamento->tarifa = $request->apartamentos[0]["tarifa"];
+            $apartamento->capacidad_ocupada = $request->apartamentos[0]["capacidad_ocupada"];
+            $apartamento->save();
+        }
+        
+        /////////////////////////////////////////////////////////////////////////
+        if($request->casas){
+            $casa = Casa::where("alojamientos_id", $alojamiento->id)->first();
+            if(!$casa){
+                $casa = new Casa();
+                $casa->alojamientos_id = $alojamiento->id;
+            }
+            $casa->tarifa = $request->casas[0]["tarifa"];
+            $casa->capacidad_ocupadas = $request->casas[0]["capacidad_ocupadas"];
+            $casa->save();
+        }
+        /////////////////////////////////////////////////////////////////////////
+        if($request->campings){
+            $camping = Camping::where("alojamientos_id", $alojamiento->id)->first();
+            if(!$camping){
+                $camping = new Camping();
+                $camping->alojamientos_id = $alojamiento->id;
+            }
+            $camping->tarifa = $request->campings[0]["tarifa"];
+            $camping->capacidad_ocupada = $request->campings[0]["capacidad_ocupada"];
+            $camping->save();
+        }
+        
+        /////////////////////////////////////////////////////////////////////////
+        if($request->cabanas){
+            $cabana = Cabana::where("alojamientos_id", $alojamiento->id)->first();
+            if(!$cabana){
+                $cabana = new Cabana();
+                $cabana->alojamientos_id = $alojamiento->id;
+            }
+            $cabana->tarifa = $request->cabanas[0]["tarifa"];
+            $cabana->capacidad_ocupada = $request->cabanas[0]["capacidad_ocupada"];
+            $cabana->save();
+        }
+        
+        
+                 $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->encuesta));
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $request->encuesta, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            $encuesta = Encuesta::where('id',$request->encuesta)->first();
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
+
     }
     
 
     public function postGuardarofertaalimentos(Request $request)
     {
-        //return $request->all();
+        
         $validator = \Validator::make($request->all(),[
         
             'id' => 'required|exists:encuestas,id',
@@ -2209,7 +2777,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
             'platosMaximo' => 'numeric|min:1',
             'platoServido' => 'numeric|min:1',
-            'precioPlato' => 'numeric|min:1',
+            'precioPlato' => 'numeric',
             
             'platosPromedio' => 'numeric|min:1',
             'unidadServida' => 'numeric|min:1',
@@ -2232,7 +2800,6 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             'platoServido.min' => 'El número de platos servidos debe ser mayor a cero.',
             
             'precioPlato.numeric' => 'El precio del plato solo puede ser numérico.',
-            'precioPlato.min' => 'El precio del plato debe ser mayor a cero.',
             
             'platosPromedio.numeric' => 'El número de unidades promedio solo puede ser numérico.',
             'platosPromedio.min' => 'El número de unidades promedio debe ser mayor que cero.',
@@ -2262,12 +2829,13 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         //return $request->all();
         $errores = [];
         if($request->tipo == 1){
-            if($request->platosMaximo == 0 || $request->platoServido == 0  || $request->precioPlato == 0){
-                $errores["InformacionCompleta"][0] = "Complete la información.";
+            if($request->platosMaximo <= 0 || $request->platoServido <= 0  || $request->precioPlato <= 0){
+                array_push($errores, ["Complete la información."]);
+                
             }
         }else{
-            if($request->unidadServida == 0 || $request->precioUnidad == 0 || $request->platosPromedio == 0){
-                $errores["InformacionCompleta"][0] = "Complete la información.";
+            if($request->unidadServida <= 0 || $request->precioUnidad <= 0 || $request->platosPromedio <= 0){
+                array_push($errores, ["Complete la información."]);
             }
         }
         
@@ -2276,14 +2844,16 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         if($provision->actividades_servicio_id == 1){
             if(($request->platosMaximo * $encuesta->numero_dias) < $request->platoServido){
-                $errores["PromedioPlatos"][0] = "El promedio de platos servido multiplicado por los días de actividad comercial no puede ser mayor que el número de platos servidos efectivamente. El número de días de actividad comercial es ".$encuesta->numero_dias.".";
+                array_push($errores, ["El promedio de platos servido multiplicado por los días de actividad comercial no puede ser mayor que el número de platos servidos efectivamente. El número de días de actividad comercial es ".$encuesta->numero_dias."."]);
             }
         }else{
             if(($request->platosPromedio * $encuesta->numero_dias) < $request->unidadServida){
-                $errores["PromedioPlatos"][0] = "El promedio de platos servido multiplicado por los días de actividad comercial no puede ser mayor que el número de platos servidos efectivamente. El número de días de actividad comercial es ".$encuesta->numero_dias.".";
+                array_push($errores, ["El promedio de platos servido multiplicado por los días de actividad comercial no puede ser mayor que el número de platos servidos efectivamente. El número de días de actividad comercial es ".$encuesta->numero_dias."."]);
             }
         }
-        
+        if(($request->bebidasMaximo * $encuesta->numero_dias) < $request->bebidasServidas){
+            array_push($errores, ["El promedio de bebidas servidas multiplicado por los días de actividad comercial no puede ser mayor que el número de bebidas servidos efectivamente. El número de días de actividad comercial es ".$encuesta->numero_dias."."]);
+        }
         if(sizeof($errores) > 0){
             return ['success'=>false, 'errores'=>$errores];
         }
@@ -2294,6 +2864,13 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         if($provision == null){
             return ["success"=>false];
         }else{
+            if($request->porcentajeOtrasRegiones != null){
+                $provision->numero_extranjeros = $request->porcentajeOtrasRegiones;
+                $provision->save();
+            }else{
+                $provision->numero_extranjeros = null;
+                $provision->save();
+            }
             if($provision["capacidadAlimento"] == null || sizeof($provision["capacidadAlimento"]) == 0 || $capacidad == null){
                 $capacidad_alimento = new Capacidad_Alimento();
                 $capacidad_alimento->id_alimento = $provision->id;
@@ -2308,25 +2885,48 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                 $capacidad_alimento->valor_bebida = $request->bebidaValor;
                 $capacidad_alimento->save();
             }else{
-                $capacidad->max_platos = $request->platosMaximo;
-                $capacidad->platos_servidos = $request->platoServido;
-                $capacidad->valor_plato = $request->precioPlato;
-                $capacidad->promedio_unidades = $request->platosPromedio;
-                $capacidad->unidades_vendidas = $request->unidadServida;
-                $capacidad->valor_unidad = $request->precioUnidad;
+                if($provision->actividades_servicio_id == 1){
+                    $capacidad->promedio_unidades = null;
+                    $capacidad->unidades_vendidas = null;
+                    $capacidad->valor_unidad = null;
+                    
+                    $capacidad->max_platos = $request->platosMaximo;
+                    $capacidad->platos_servidos = $request->platoServido;
+                    $capacidad->valor_plato = $request->precioPlato;
+                }else{
+                    $capacidad->max_platos = null;
+                    $capacidad->platos_servidos = null;
+                    $capacidad->valor_plato = null;
+                    
+                    $capacidad->promedio_unidades = $request->platosPromedio;
+                    $capacidad->unidades_vendidas = $request->unidadServida;
+                    $capacidad->valor_unidad = $request->precioUnidad;
+                }
                 $capacidad->bebidas_promedio = $request->bebidasMaximo;
                 $capacidad->bebidas_servidas = $request->bebidasServidas;
                 $capacidad->valor_bebida = $request->bebidaValor;
                 $capacidad->save();
             }
-            $historial = new Historial_Encuesta_Oferta();
-            $historial->encuesta_id = $request->id;
-            $historial->estado_encuesta_id = 2;
-            $historial->fecha_cambio = Carbon::now();
-            $historial->user_id = 1;
-            $historial->save();
+      $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->id));
+          $encuesta = Encuesta::where('id',$request->id)->first();
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
             
-            return ["success"=>true];
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
         }
 
     }
@@ -2358,24 +2958,24 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         //return $request->all();
         $errores = [];
         if($request->Terrestre == null && $request->Aereo == null && $request->Maritimo == null){
-            $errores["VehiculosTerrestre"][0] = "No se ha diligenciado el formulario correctamente.";    
+            array_push($errores, ["No se ha diligenciado el formulario correctamente."]);   
         }
         if($request->Terrestre != 1 && $request->Aereo != 2 && $request->Maritimo != 3){
-            $errores["VehiculosTerrestre"][0] = "Se ha manipulado la información, favor recargar la página.";    
+            array_push($errores, ["Se ha manipulado la información, favor recargar la página."]);  
         }else{
             if($request->Terrestre != null && $request->Terrestre == 1){
                 if($request->VehiculosTerrestre == null || $request->PersonasVehiculosTerrestre == null){
-                    $errores["VehiculosTerrestre"][0] = "Por favor complete la sección de transporte terrestre.";    
+                    array_push($errores, ["Por favor complete la sección de transporte terrestre."]);  
                 }
             }
             if($request->Aereo != null && $request->Aereo == 2){
                 if($request->VehiculosAereo == null || $request->PersonasVehiculosAereo == null){
-                    $errores["VehiculosAereo"][0] = "Por favor complete la sección de transporte aéreo.";    
+                    array_push($errores, ["Por favor complete la sección de transporte aéreo."]);    
                 }
             }
             if($request->Maritimo != null && $request->Maritimo == 3){
                 if($request->VehiculosMaritimo == null || $request->PersonasVehiculosMaritimo == null){
-                    $errores["VehiculosMaritimo"][0] = "Por favor complete la sección de transporte marítimo.";    
+                    array_push($errores, ["Por favor complete la sección de transporte marítimo."]);    
                 }
             }    
         }
@@ -2478,14 +3078,26 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             }
         }
             
-        $historial = new Historial_Encuesta_Oferta();
-        $historial->encuesta_id = $request->id;
-        $historial->estado_encuesta_id = 2;
-        $historial->fecha_cambio = Carbon::now();
-        $historial->user_id = 1;
-        $historial->save();
-        
-        return ["success"=>true];
+          $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->id));
+          $encuesta = Encuesta::where('id',$request->id)->first();
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
             
     }
     
@@ -2556,30 +3168,30 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         //return $request->all();
         $errores = [];
         if($request->Terrestre == null && $request->Aereo == null && $request->Maritimo == null){
-            $errores["VehiculosTerrestre"][0] = "No se ha diligenciado el formulario correctamente.";    
+            array_push($errores,["No se ha diligenciado el formulario correctamente."]);
         }
         if($request->Terrestre != 1 && $request->Aereo != 2 && $request->Maritimo != 3){
-            $errores["VehiculosTerrestre"][0] = "Se ha manipulado la información, favor recargar la página.";    
+            array_push($errores, ["Se ha manipulado la información, favor recargar la página."]);  
         }else{
             if($request->Terrestre != null && $request->Terrestre == 1){
                  $capacidadTotal = Transporte::where('encuestas_id',$request->id)->where('tipos_transporte_oferta_id',intval($request->Terrestre))->first();
                 //return $capacidadTotal;
                 if ($request->TotalTerrestre > $capacidadTotal->personas) {
-                    $errores["TotalTerrestre"][0] ="Por favor el campo total de personas transportadas el mes anterior no puede superar la capacidad total de transporte";
+                    array_push($errores, ["Por favor el campo total de personas transportadas el mes anterior no puede superar la capacidad total de transporte"]);
                 }
             }
             if($request->Aereo != null && $request->Aereo == 2){
                 $capacidadTotal = Transporte::where('encuestas_id',$request->id)->where('tipos_transporte_oferta_id',intval($request->Aereo))->first();
                 
                 if ($request->TotalAereo > $capacidadTotal->personas) {
-                    $errores["TotalAereo"][0] ="Por favor el campo total de personas transportadas el mes anterior no puede superar la capacidad total de transporte";
+                    array_push($errores, ["Por favor el campo total de personas transportadas el mes anterior no puede superar la capacidad total de transporte"]);
                 }
             }
             if($request->Maritimo != null && $request->Maritimo == 3){
                 $capacidadTotal = Transporte::where('encuestas_id',$request->id)->where('tipos_transporte_oferta_id',intval($request->Maritimo))->first();
                 
                 if ($request->TotalMaritimo > $capacidadTotal->personas) {
-                    $errores["TotalTerrestre"][0] ="Por favor el campo total de personas transportadas el mes anterior no puede superar la capacidad total de transporte";
+                    array_push($errores, ["Por favor el campo total de personas transportadas el mes anterior no puede superar la capacidad total de transporte"]);
                 }
             }    
         }
@@ -2617,16 +3229,29 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                 $ofertaTransporte->save();
         }
             
-        $historial = new Historial_Encuesta_Oferta();
-        $historial->encuesta_id = $request->id;
-        $historial->estado_encuesta_id = 2;
-        $historial->fecha_cambio = Carbon::now();
-        $historial->user_id = 1;
-        $historial->save();
-        
-        return ["success"=>true];
+         $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->id));
+          $encuesta = Encuesta::where('id',$request->id)->first();
+            if($data[0]->estado_id < 3){
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => 2,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }else{
+                Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id, 
+                   'user_id' => $this->user->id,
+                   'estado_encuesta_id' => $data[0]->estado_id,
+                   'fecha_cambio' => Carbon::now()
+               ]);
+            }
+            
+            
+            return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
         
     }
+    
     
     public function getProveedoresactivos()
     {

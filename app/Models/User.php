@@ -42,4 +42,7 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Digitador');
         //return $this->belongsToMany('App\Models\Role');
     }
+    public function permissions(){
+        return $this->belongsToMany('App\Models\Permission');
+    }
 }

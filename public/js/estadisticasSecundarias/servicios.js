@@ -22,13 +22,13 @@
       
       return {
             
-        getDataConfiguracion: function(){ return http.get("/EstadistivasSecunarias/dataconfiguracion");  },
+        getDataConfiguracion: function(){ return http.get("/EstadisticasSecundarias/dataconfiguracion");  },
         
-        guardarData: function(data){ return http.post("/EstadistivasSecunarias/guardardata", data);  },
-        guardarIndicador: function(data){ return http.post("/EstadistivasSecunarias/guardarindicador", data);  },
+        guardarData: function(data){ return http.post("/EstadisticasSecundarias/guardardata", data);  },
+        guardarIndicador: function(data){ return http.post("/EstadisticasSecundarias/guardarindicador", data);  },
         
-        eliminarIndicador: function(data){ return http.post("/EstadistivasSecunarias/eliminarindicador", data);  },
-        cambiarEstadoIndicador: function(data){ return http.post("/EstadistivasSecunarias/cambiarestadoindicador", data);  },
+        eliminarIndicador: function(data){ return http.post("/EstadisticasSecundarias/eliminarindicador", data);  },
+        cambiarEstadoIndicador: function(data){ return http.post("/EstadisticasSecundarias/cambiarestadoindicador", data);  },
         
       };
       

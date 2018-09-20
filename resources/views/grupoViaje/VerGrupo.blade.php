@@ -3,117 +3,24 @@
 
 @section('title', 'Ver grupo de viaje')
 
-@section('estilos')
-    <style>
-        .panel-body {
-            max-height: 400px;
-            color: white;
-        }
-
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-            .image-preview-input input[type=file] {
-                position: absolute;
-                top: 0;
-                right: 0;
-                margin: 0;
-                padding: 0;
-                font-size: 20px;
-                cursor: pointer;
-                opacity: 0;
-                filter: alpha(opacity=0);
-            }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-
-        form.ng-submitted input.ng-invalid {
-            border-color: #FA787E;
-        }
-
-        form input.ng-invalid.ng-touched {
-            border-color: #FA787E;
-        }
-
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-        .form-group {
-            margin: 0;
-        }
-        .form-group label, .form-group .control-label, label {
-            font-size: smaller;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        .text-error {
-            color: #a94442;
-            font-style: italic;
-            font-size: .7em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-        p {
-            font-size: 1em;
-        }
-        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-            font-size: .9em;
-        }
-        .row {
-            margin: 1em 0 0;
-        }
-    </style>
-@endsection
-
 @section('TitleSection', 'Ver grupo de viaje')
-
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
 
 @section('app','ng-app="receptor.grupo_viaje"')
 
 @section('controller','ng-controller="ver_grupo"')
 
+@section('titulo','Grupos de viaje')
+@section('subtitulo','Visualización de detalles de un grupo de viaje')
+
 @section('content')
     
 
-<div class="container">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <h1 class="title1">Ver grupo de viaje</h1><br />
-    <div class="blank-page widget-shadow scroll" id="style-2 div1">
+    <div class="text-center">
+        <a href="/turismoreceptor/datosencuestados" class="btn btn-lg btn-success">Crear encuesta</a>
+        <a href="/grupoviaje/editar/{{$id}}" class="btn btn-lg btn-warning">Editar grupo</a>
+    </div>
+    <hr/>
         <div class="row">
             <div class="col-md-3 col-xs-12 col-sm-6">
                 <label>Fecha de aplicación</label>
@@ -134,80 +41,83 @@
         </div>
 
         <div class="row">
+            <div class="col-xs-12 table-overflow">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tamaño del grupo de viaje</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mayores de 15 años PRES</td>
+                            <td>@{{grupo.mayores_quince}}</td>
+                        </tr>
+                        <tr>
+                            <td>Menores de 15 años PRES</td>
+                            <td>@{{grupo.menores_quince}}</td>
+                        </tr>
+                        <tr>
+                            <td>Mayores de 15 años NO PRES</td>
+                            <td>@{{grupo.mayores_quince_no_presentes}}</td>
+                        </tr>
+                        <tr>
+                            <td>Menores de 15 años NO PRES</td>
+                            <td>@{{grupo.menores_quince_no_presentes}}</td>
+                        </tr>
+                        <tr>
+                            <td>Personas del Magdalena</td>
+                            <td>@{{grupo.personas_magdalena}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td>@{{total}}</td>
+                        </tr>
+                    </tbody> 
+                </table>
+            </div>
             
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>Tamaño del grupo de viaje</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Mayores de 15 años PRES</td>
-                        <td>@{{grupo.mayores_quince}}</td>
-                    </tr>
-                    <tr>
-                        <td>Menores de 15 años PRES</td>
-                        <td>@{{grupo.menores_quince}}</td>
-                    </tr>
-                    <tr>
-                        <td>Mayores de 15 años NO PRES</td>
-                        <td>@{{grupo.mayores_quince_no_presentes}}</td>
-                    </tr>
-                    <tr>
-                        <td>Menores de 15 años NO PRES</td>
-                        <td>@{{grupo.menores_quince_no_presentes}}</td>
-                    </tr>
-                    <tr>
-                        <td>Personas del Magdalena</td>
-                        <td>@{{grupo.personas_magdalena}}</td>
-                    </tr>
-                    <tr>
-                        <td><span style="color:black;font-weight:bold">Total</span></td>
-                        <td>@{{total}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            
         </div>
 
-        <div class="row">
-            <label>Encuestas del grupo</label><br />
-            <table class="table table-hover" ng-if="grupo.visitantes.length != 0">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Sexo</th>
-                        <th>Email</th>
-                        <th>Estado</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="e in grupo.visitantes">
-                        <td>@{{e.id}}</td>
-                        <td>@{{e.nombre}}</td>
-                        <td ng-if="e.sexo">M</td><td ng-if="!e.sexo">F</td>
-                        <td>@{{e.email}}</td>
-                        <td>@{{e.historial_encuestas[0].estados_encuesta.nombre}}</td>
-                        <td><a href="/turismoreceptor/editardatos/@{{e.id}}">Editar</a></td>
-                    </tr>
-                </tbody>
-            </table><br />
-            <p ng-if="grupo.visitantes.length == 0">No hay encuestas digitadas</p><br />
-            
-        </div>
-        <div class="row" style="text-align: center;">
-            <a href="/turismoreceptor/datosencuestados" class="btn btn-primary">Crear encuesta</a>
-            <a href="/grupoviaje/editar/{{$id}}" class="btn btn-success">Editar grupo</a>
-        </div>
-    </div>
+            <fieldset>
+                <legend>Encuestas del grupo</legend>
+                <div class="row">
+                    <div class="col-xs-12 table-overflow">
+                        <table class="table table-hover table-striped" ng-if="grupo.visitantes.length != 0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Sexo</th>
+                                    <th>Email</th>
+                                    <th>Estado</th>
+                                    <th style="width: 100px;">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="e in grupo.visitantes">
+                                    <td>@{{e.id}}</td>
+                                    <td>@{{e.nombre}}</td>
+                                    <td ng-if="e.sexo">M</td><td ng-if="!e.sexo">F</td>
+                                    <td>@{{e.email}}</td>
+                                    <td>@{{e.historial_encuestas[0].estados_encuesta.nombre}}</td>
+                                    <td class="text-center"><a href="/turismoreceptor/editardatos/@{{e.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="alert alert-info" ng-if="grupo.visitantes.length == 0">
+                            <p>No hay encuestas digitadas</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        
     
     <div class='carga'>
 
     </div>
-</div>
 
 @endsection
 

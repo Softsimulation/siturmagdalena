@@ -212,6 +212,19 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        Número promedio de personas por apartamento
+                                        <span ng-show="carForm.$submitted || carForm.promedioApart.$touched">
+                                            <span class="label label-danger" ng-show="carForm.promedioApart.$error.required">* Número promedio de personas es requerido.</span>
+                                            <span class="label label-danger" ng-show="carForm.promedioApart.$error.number">* Número promedio de personas debe ser un número.</span>
+                                            <span class="label label-danger" ng-show="carForm.promedioApart.$error.min">*  Número promedio de personas debe ser mayor o igual que 1.</span>
+                                        </span>
+                                    </td>
+                                    <td style="width: 15%;min-width: 50px">
+                                        <input type="number" name="promedioApart" class="form-control" min="1" ng-model="alojamiento.apartamentos[0].promedio" ng-required="servicios.apartamento" placeholder="Ingrese aquí la capacidad máxima de alojamiento en personas" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         Habitaciones promedio por apartamento
                                         <span ng-show="carForm.$submitted || carForm.habitacionesApto.$touched">
                                             <span class="label label-danger" ng-show="carForm.habitacionesApto.$error.required">* El campo habitaciones por promedio es requerido.</span>
@@ -434,7 +447,7 @@
         </div>
     </form>
 
-    <div class='carga'> </div>
+
 </div>
 
 <div class='carga'></div>

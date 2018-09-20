@@ -86,6 +86,18 @@ app.factory("usuarioServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        asignacionPermisos: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/usuario/asignacionpermisos', data)
+            .success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
         
     }
 }]);

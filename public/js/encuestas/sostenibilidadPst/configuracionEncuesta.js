@@ -42,6 +42,7 @@ angular.module('sostenibilidadPst.configuracion', [])
     
     $scope.guardar = function(){
         if(!$scope.datosForm.$valid){
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         
@@ -125,6 +126,7 @@ angular.module('sostenibilidadPst.configuracion', [])
     
     $scope.guardar = function(){
         if(!$scope.datosForm.$valid){
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         

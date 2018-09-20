@@ -46,7 +46,7 @@
     @endforeach 
       
     <Folder>  
-        <name>Zonas</name>
+        <name>Bloques</name>
         @foreach ($zonas as $zona)
           <Placemark>
              <name>{!! html_entity_decode($zona['nombre']) !!}</name>
@@ -71,7 +71,7 @@
     </Folder>
     
     <Folder>
-      <name>Proveedores formales</name>
+      <name>Prestadores formales</name>
       @foreach ($proveedores as $proveedor)
         <Placemark>
           <name>{!! html_entity_decode($proveedor['razon_social']) !!}</name>
@@ -93,7 +93,7 @@
     </Folder>
     
     <Folder>
-      <name>Proveedores informales</name>
+      <name>Prestadores informales</name>
       @foreach ($proveedoresInformales as $proveedor)
         <Placemark>
           <name>{!! html_entity_decode($proveedor['razon_social']) !!}</name>
