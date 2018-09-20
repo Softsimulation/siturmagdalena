@@ -521,7 +521,7 @@
                                     </tr>
                                     
                                     <tr>
-                                            <td colspan="3"  rowspan="6" >
+                                            <td colspan="3"  rowspan="7" >
                                                 El título educativo más alto alcanzado por cada nivel es:
                                             </td>
                                               <td >
@@ -582,8 +582,67 @@
                                             <td style="text-align: right"><strong>@{{Total('Educacion','ninguno')}}</strong></td>
                                         </tr>
                                     <tr>
+                                           
+                                              <td >
+                                                   2. Primaria 
+                                            </td>
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="primaria" ng-model="eduacionempleado(1,1).primaria" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.primaria.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="primariaf" ng-model="eduacionempleado(1,0).primaria" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.primariaf.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.primariaf.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primariaf.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primariaf.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="primaria2" ng-model="eduacionempleado(2,1).primaria" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.primaria2.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria2.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria2.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria2.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                                   <td>
+                                                <input type="number" min="0" class="form-control" name="primaria2f" ng-model="eduacionempleado(2,0).primaria" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.primaria2f.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria2f.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria2f.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria2f.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            
+                                           <td>
+                                                <input type="number" min="0" class="form-control" name="primaria3" ng-model="eduacionempleado(3,1).primaria" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.primaria3.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria3.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria3.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria3.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            
+                                           <td>
+                                                <input type="number" min="0" class="form-control" name="primaria3f" ng-model="eduacionempleado(3,0).primaria" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.primaria3f.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria3f.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria3f.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.primaria3f.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            
+                                            
+                                            <td style="text-align: right"><strong>@{{Total('Educacion','primaria')}}</strong></td>
+                                        </tr>                                        
+                                    <tr>
                                              <td>
-                                                 2. Bachiller
+                                                 3. Bachiller
                                             </td>
                                        <td>
                                                 <input type="number" min="0" class="form-control" name="bachiller" ng-model="eduacionempleado(1,1).bachiller" placeholder="0" ng-required="true"/>
@@ -640,7 +699,7 @@
                                         </tr>
                                     <tr>
                                              <td>
-                                                3. Técnico 
+                                                4. Técnico 
                                             </td>
                                             <td>
                                                 <input type="number" min="0" class="form-control" name="tecnico" ng-model="eduacionempleado(1,1).tecnico" placeholder="0" ng-required="true"/>
@@ -697,7 +756,7 @@
                                         </tr>
                                     <tr>
                                          <td>
-                                              4. Tecnológico 
+                                              5. Tecnológico 
                                         </td>
                                          <td>
                                                 <input type="number" min="0" class="form-control" name="tecnologo" ng-model="eduacionempleado(1,1).tecnologo" placeholder="0" ng-required="true"/>
@@ -754,7 +813,7 @@
                                     </tr>
                                     <tr>
                                          <td>
-                                            5. Universitario 
+                                            6. Universitario 
                                         </td>
                                        <td>
                                                 <input type="number" min="0" class="form-control" name="universitario" ng-model="eduacionempleado(1,1).universitario" placeholder="0" ng-required="true"/>
@@ -811,7 +870,7 @@
                                     </tr>
                                     <tr>
                                          <td>
-                                           6. Posgrado  (Especialización, maestría, doctorado)
+                                           7. Posgrado  (Especialización, maestría, doctorado)
                                         </td>
                                         <td>
                                                 <input type="number" min="0" class="form-control" name="posgrado" ng-model="eduacionempleado(1,1).posgrado" placeholder="0" ng-required="true"/>
@@ -1669,10 +1728,7 @@
             </div>
         </div>
         
-        
-        
-        
-
+    
         
         
         

@@ -223,6 +223,120 @@
             </div>
         </div>
 
+           <div class="numVacantes">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Número de vacantes </b></h3>
+                </div>
+                <div class="panel-footer"><b>¿En el mes cuantas vacantes se generaron por cada nivel?</b></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div style="overflow-x: auto;">
+                                <table id="tgastos" class="table table-condensed table-bordered table-hover">
+                                    <thead id="head-tgastos">
+                                        <tr>
+                                            <th class="text-center">Directivos</th>
+                                            <th class="text-center">Mandos medios</th>
+                                            <th class="text-center">Operativo</th>
+                                            <th class="text-center">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                           <td>
+                                                <input type="number" min="0" class="form-control" name="VacanteGerencial" ng-model="empleo.VacanteGerencial" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.VacanteGerencial.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteGerencial.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteGerencial.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteGerencial.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                              
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="VacanteAdministrativo" ng-model="empleo.VacanteAdministrativo" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.VacanteAdministrativo.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteAdministrativo.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteAdministrativo.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteAdministrativo.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                               
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="VacanteOperativo" ng-model="empleo.VacanteOperativo" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.VacanteOperativo.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteOperativo.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteOperativo.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.VacanteOperativo.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            <td style="text-align: right"><strong> @{{empleo.VacanteOperativo+empleo.VacanteAdministrativo+empleo.VacanteGerencial}}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+         <div class="razonVacantes" ng-show="vacantesSi()">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Razón de vacantes </b></h3>
+                </div>
+                <div class="panel-footer"><b>De las vacantes mencionadas anteriormente, cuantas fueron por la siguiente razón</b></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div style="overflow-x: auto;">
+                                <table id="tgastos" class="table table-condensed table-bordered table-hover">
+                                    <thead id="head-tgastos">
+                                        <tr>
+                                            <th class="text-center">Apertura de nueva sucursal(es) o ampliación de las actuales</th>
+                                            <th class="text-center">Crecimiento en ventas de la empresa </th>
+                                            <th class="text-center">Reemplazo de empleado</th>
+                                            <th class="text-center">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="apertura" ng-model="empleo.Razon.apertura" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.apertura.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.apertura.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.apertura.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.apertura.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="crecimiento" ng-model="empleo.Razon.crecimiento" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.crecimiento.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.crecimiento.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.crecimiento.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.crecimiento.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <input type="number" min="0" class="form-control" name="remplazo" ng-model="empleo.Razon.remplazo" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.remplazo.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.remplazo.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.remplazo.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.remplazo.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                            <td style="text-align: right"><strong> @{{empleo.Razon.apertura+empleo.Razon.crecimiento+empleo.Razon.remplazo}}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         
         <div class="row" style="text-align:center">
             
