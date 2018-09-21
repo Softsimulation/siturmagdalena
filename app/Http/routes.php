@@ -75,7 +75,9 @@ Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 Route::controller('/usuario','UsuarioController');
 /*
 Route::controller('/email','EmailController');
+*/
 Route::controller('/login','LoginController');
+/*
 Route::controller('/noticias','NoticiaController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
