@@ -12,7 +12,7 @@ class Muestra_proveedor extends Model
     
     protected $table = 'muestra_proveedores';
     
-    protected $appends = ['tipoCategoria'];
+    //protected $appends = ['tipoCategoria'];
     
     public function proveedor()
     {
@@ -34,6 +34,7 @@ class Muestra_proveedor extends Model
         return $this->hasOne('App\Models\Categoria_Proveedor', 'id', 'categoria_proveedor_id'); 
     }
     
+    /*
     public function getTipoCategoriaAttribute()
     {
         $idCategoria = $this->categoria->id;
@@ -45,7 +46,7 @@ class Muestra_proveedor extends Model
                                                                                       ->where("tipo_proveedores.id", $idTipo )->pluck("nombre")->first()
                                                         ];
     }
-    
+    */
     
     
 }

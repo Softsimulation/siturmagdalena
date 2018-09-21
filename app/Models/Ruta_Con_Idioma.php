@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +16,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Ruta_Con_Idioma extends Model
 {
+    /**
+     * The timestamps.
+     * 
+     * @var bool
+     */   
+    public $timestamps = false;
     /**
      * The table associated with the model.
      * 
@@ -33,7 +39,7 @@ class Ruta_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma');
+        return $this->belongsTo('App\Models\Idioma');
     }
 
     /**
@@ -41,6 +47,6 @@ class Ruta_Con_Idioma extends Model
      */
     public function ruta()
     {
-        return $this->belongsTo('App\Ruta');
+        return $this->belongsTo('App\Models\Ruta');
     }
 }

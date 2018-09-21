@@ -5,6 +5,48 @@
 @section('app','ng-app="appEncuestaAlojamiento"')
 @section('controller','ng-controller="CaracterizacionAlojamientoCtrl"')
 
+@section('estilos')
+    <style>
+        .title-section {
+            background-color: #4caf50 !important;
+        }
+    </style>
+    <style>
+        .carga {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat;
+        }
+        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
+        body.charging {
+            overflow: hidden;
+        }
+
+        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
+        body.charging .carga { 
+            display: block;
+        }
+        .checkbox .form-group {
+            display: inline-block;
+        }
+        label {
+            color: dimgray;
+        }
+        .form-group label {
+            font-size: 1em!important;
+        }
+        .label.label-danger {
+            font-size: .9em;
+            font-weight: 400;
+            padding: .16em .5em;
+        }
+    </style>
+@endsection
 
 @section('content')
 
@@ -13,10 +55,10 @@
     <input type="hidden" id="id" value="{{$id}}" />
     
     <div class="alert alert-danger" ng-if="errores != null">
-        <label><b>@Resource.EncuestaMsgError:</b></label>
+        <label><b>Errores:</b></label>
         <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
-            -@{{error.errores[0].ErrorMessage}}
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
         </div>
     </div>
 
@@ -166,6 +208,19 @@
                                     </td>
                                     <td style="width: 15%;min-width: 50px">
                                         <input type="number" name="capacidadMaxA" class="form-control" min="1" ng-model="alojamiento.apartamentos[0].capacidad" ng-required="servicios.apartamento" placeholder="Ingrese aquí la capacidad máxima de alojamiento en personas" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Número promedio de personas por apartamento
+                                        <span ng-show="carForm.$submitted || carForm.promedioApart.$touched">
+                                            <span class="label label-danger" ng-show="carForm.promedioApart.$error.required">* Número promedio de personas es requerido.</span>
+                                            <span class="label label-danger" ng-show="carForm.promedioApart.$error.number">* Número promedio de personas debe ser un número.</span>
+                                            <span class="label label-danger" ng-show="carForm.promedioApart.$error.min">*  Número promedio de personas debe ser mayor o igual que 1.</span>
+                                        </span>
+                                    </td>
+                                    <td style="width: 15%;min-width: 50px">
+                                        <input type="number" name="promedioApart" class="form-control" min="1" ng-model="alojamiento.apartamentos[0].promedio" ng-required="servicios.apartamento" placeholder="Ingrese aquí la capacidad máxima de alojamiento en personas" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -392,8 +447,10 @@
         </div>
     </form>
 
-    <div class='carga'> </div>
+
 </div>
+
+<div class='carga'></div>
 
 @endsection
 

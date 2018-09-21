@@ -1,0 +1,5 @@
+
+/*Tiles*/
+.tiles.tile-list .tile:not(.inline-tile){
+    width: calc(33.3% - 1rem);
+}

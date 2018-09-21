@@ -67,7 +67,7 @@
     <form name="AlquilerForm" novalidate>
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Con cuantos vehículos cuenta el establecimiento para el alquiler?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Con cuántos vehículos cuenta el establecimiento para alquilar diariamente?</b></h3>
             </div>
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">

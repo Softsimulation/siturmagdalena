@@ -58,6 +58,12 @@ return [
             'visibility' => 'public',
         ],
         
+        'multimedia-informes' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/informes',
+            'visibility' => 'public',
+        ],
+        
         'multimedia-atraccion' => [
             'driver' => 'local',
             'root' => public_path().'/multimedia/atracciones',
@@ -75,6 +81,29 @@ return [
             'root' => public_path().'/multimedia/destinos',
             'visibility' => 'public',
         ],
+        
+        'multimedia-evento' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/eventos',
+            'visibility' => 'public',
+        ],
+
+        'multimedia-ruta' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/rutas',
+            'visibility' => 'public',
+        ],
+        
+        'multimedia-proveedor' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/proveedores',
+            'visibility' => 'public',
+        ],
+         'Publicaciones' => [
+           'driver' => 'local',
+           'root' => public_path().'/Publicaciones',
+           'visibility' => 'public',
+       ],
 
         's3' => [
             'driver' => 's3',

@@ -156,15 +156,24 @@ situr.controller('ofertaTransporteCtrl', ['$scope','transporteServi', function (
             if (data.success == true) {
                 $("body").attr("class", "cbp-spmenu-push")
                 swal({
-                    title: "Realizado",
-                    text: "Se ha guardado satisfactoriamente la sección.",
-                    type: "success",
-                    timer: 1000,
-                    showConfirmButton: false
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                  } else {
+                    window.location.href = data.ruta;
+                  }
                 });
-                setTimeout(function () {
-                    window.location.href = "/ofertaempleo/empleomensual/" + $scope.id;
-                }, 1000);
             } else {
                 $("body").attr("class", "cbp-spmenu-push")
                 $scope.errores = data.errores;

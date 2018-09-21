@@ -1,4 +1,4 @@
-@extends('layout._encuestaLayout')
+@extends('layout._encuestaLayout',['saltoSeccion' => $id])
 
 @section('title', 'Encuesta turismo receptor')
 
@@ -38,6 +38,8 @@
 @section('NumSeccion', '0%')
 
 @section('controller','ng-controller="editar"')
+
+
 
 @section('content')
     <div class="container">

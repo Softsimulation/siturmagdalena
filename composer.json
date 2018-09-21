@@ -14,7 +14,8 @@
         "laravelcollective/html": "^5.2.0",
         "zizaco/entrust": "dev-master",
         "alexpechkarev/geometry-library": "1.0",
-        "wilgucki/csv": "^0.6.2"
+        "wilgucki/csv": "^0.6.2",
+        "barryvdh/laravel-cors": "^0.8.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

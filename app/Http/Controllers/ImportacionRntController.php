@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Proveedores_rnt;
 use App\Models\Departamento;
 use App\Models\Municipio;
@@ -17,6 +19,18 @@ use App\Models\Proveedores_rnt_idioma;
 
 class ImportacionRntController extends Controller
 {
+	public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     public function getIndex(){
         return view('proveedoresRnt.importarExcel');
     }
@@ -77,9 +91,9 @@ class ImportacionRntController extends Controller
 		$antiguos = $arreglo->whereIn('Numero del RNT',$rntproveedores)->toArray();
 		$nuevos = $this->compare($arreglo->toArray(),$antiguos);
 		
-		$estadosProveedor = Estado_proveedor::select(\DB::raw('upper(nombre) as nombre, id'))->get();
-		$subCategorias = Categoria_Proveedor_Con_Idioma::where('idiomas_id',1)->select(\DB::raw('upper(nombre) as nombre, categoria_proveedores_id as id'))->get();
-		$municipios = Municipio::where('departamento_id',1411)->select(\DB::raw('upper(nombre) as nombre, id'))->get();
+		$estadosProveedor = Estado_proveedor::select(\DB::raw('cambia_caracter(upper(nombre)) as nombre, id'))->get();
+		$subCategorias = Categoria_Proveedor_Con_Idioma::where('idiomas_id',1)->select(\DB::raw('cambia_caracter(upper(nombre)) as nombre, categoria_proveedores_id as id'))->get();
+		$municipios = Municipio::where('departamento_id',1411)->select(\DB::raw('cambia_caracter(upper(nombre)) as nombre, id'))->get();
 		
  		$nuevos_retornar = array();
 		foreach($nuevos as $registro){
@@ -88,7 +102,7 @@ class ImportacionRntController extends Controller
 		    $registro = $validar['success'] ? $validar["registro"] : $registro;
 		    
 		    $similar = $proveedoresIngresados->filter(function($value, $key)use($registro){
-		    	return $value['nit'] == $registro['nit'] || ( $value['digito_verificacion'] == $registro['digito_verificacion'] && $value['digito_verificacion'] != 0 && $value['digito_verificacion'] != null ) || ($value['correo'] == $registro['correo'] && strpos($value['correo'], '@') !== false);
+		    	return ($value['nit'] == $registro['nit'] && $registro['nit'] != null && $registro['nit'] != 0) || ( $value['digito_verificacion'] == $registro['digito_verificacion'] && $value['digito_verificacion'] != 0 && $value['digito_verificacion'] != null ) || ($value['correo'] == $registro['correo'] && strpos($value['correo'], '@') !== false);
 		    })->first();
 		    
 		    $registro['es_correcto'] = $validar['success'] ? 1 : 0;
@@ -117,8 +131,8 @@ class ImportacionRntController extends Controller
 	        		"cam2" => isset($registro["cam2"]) ? $registro["cam2"] : null,
 	        		"emp2" => isset($registro["emp2"]) ? $registro["emp2"] : null,
 	        		"estado" => 1,
-	        		"user_create" => "MM",
-	        		"user_update" => "MM",
+	        		"user_create" => $this->user->username,
+	        		"user_update" => $this->user->username,
 	        	]);
 	        	
 	        	if($registro["nombre_comercial_plataforma"] != null){
@@ -202,17 +216,17 @@ class ImportacionRntController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		$categoriaProveedor = Categoria_Proveedor_Con_Idioma::whereRaw('upper(nombre) = ? and idiomas_id = 1',[ $this->MayusculaTilde(utf8_encode(strtoupper($request["sub_categoria"]))) ])->first();
+		$categoriaProveedor = Categoria_Proveedor_Con_Idioma::whereRaw('cambia_caracter(upper(nombre)) = ? and idiomas_id = 1',[ $this->MayusculaTilde(utf8_encode(strtoupper($request["sub_categoria"]))) ])->first();
 		if($categoriaProveedor == null){
 			return ["success"=>false,"errores"=> [["La SubCategoría ingresada no se encuentra ingresada en el sistema."]] ];
 		}
 		
-		$municipio = Municipio::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["municipio"])))])->first();
+		$municipio = Municipio::whereRaw('cambia_caracter(upper(nombre)) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["municipio"])))])->first();
 		if($municipio == null){
 			return ["success"=>false,"errores"=> [["El municipio ingresado no se encuentra ingresado en el sistema."]] ];
 		}
 		
-		$estado = Estado_proveedor::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["estado"])))])->first();
+		$estado = Estado_proveedor::whereRaw('cambia_caracter(upper(nombre)) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["estado"])))])->first();
 		if($estado == null){
 			return ["success"=>false,"errores"=> [["El estado ingresado no se encuentra ingresado en el sistema."]] ];
 		}
@@ -238,7 +252,7 @@ class ImportacionRntController extends Controller
 		$proveedor->hab2 = isset($request->hab2) ? $request->hab2 : null;
 		$proveedor->cam2 = isset($request->cam2) ? $request->cam2 : null;
 		$proveedor->emp2 = isset($request->emp2) ? $request->emp2 : null;
-		$proveedor->user_update = "MM";
+		$proveedor->user_update = $this->user->username;
 		$proveedor->save();
 		
 		$proveedorIdioma = $proveedor->proveedor_rnt_idioma->where('idioma_id',1)->first();
@@ -253,7 +267,7 @@ class ImportacionRntController extends Controller
     		]);
 		}
 		
-		
+		$objeto["id"] = $proveedor->id;
 		$objeto["numero_rnt"] = $request->numero_rnt;
 		$objeto["numero_rnt2"] = $request->numero_rnt;
 		$objeto["estado"] = $request->estado;
@@ -343,17 +357,17 @@ class ImportacionRntController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		$categoriaProveedor = Categoria_Proveedor_Con_Idioma::whereRaw('upper(nombre) = ? and idiomas_id = 1',[ $this->MayusculaTilde(utf8_encode(strtoupper($request["sub_categoria"]))) ])->first();
+		$categoriaProveedor = Categoria_Proveedor_Con_Idioma::whereRaw('cambia_caracter(upper(nombre)) = ? and idiomas_id = 1',[ $this->MayusculaTilde(utf8_encode(strtoupper($request["sub_categoria"]))) ])->first();
 		if($categoriaProveedor == null){
 			return ["success"=>false,"errores"=> [["La SubCategoría ingresada no se encuentra ingresada en el sistema."]] ];
 		}
 		
-		$municipio = Municipio::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["municipio"])))])->first();
+		$municipio = Municipio::whereRaw('cambia_caracter(upper(nombre)) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["municipio"])))])->first();
 		if($municipio == null){
 			return ["success"=>false,"errores"=> [["El municipio ingresado no se encuentra ingresado en el sistema."]] ];
 		}
 		
-		$estado = Estado_proveedor::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["estado"])))])->first();
+		$estado = Estado_proveedor::whereRaw('cambia_caracter(upper(nombre)) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["estado"])))])->first();
 		if($estado == null){
 			return ["success"=>false,"errores"=> [["El estado ingresado no se encuentra ingresado en el sistema."]] ];
 		}
@@ -380,8 +394,8 @@ class ImportacionRntController extends Controller
     		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
     		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
 			"estado" => 1,
-			"user_create" => "MM",
-			"user_update" => "MM",
+			"user_create" => $this->user->username,
+			"user_update" => $this->user->username,
 		]);
 		
 		Proveedores_rnt_idioma::create([
@@ -455,17 +469,17 @@ class ImportacionRntController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		$categoriaProveedor = Categoria_Proveedor_Con_Idioma::whereRaw('upper(nombre) = ? and idiomas_id = 1',[ $this->MayusculaTilde(utf8_encode(strtoupper($request["sub_categoria"]))) ])->first();
+		$categoriaProveedor = Categoria_Proveedor_Con_Idioma::whereRaw('cambia_caracter(upper(nombre)) = ? and idiomas_id = 1',[ $this->MayusculaTilde(utf8_encode(strtoupper($request["sub_categoria"]))) ])->first();
 		if($categoriaProveedor == null){
 			return ["success"=>false,"errores"=> [["La SubCategoría ingresada no se encuentra ingresada en el sistema."]] ];
 		}
 		
-		$municipio = Municipio::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["municipio"])))])->first();
+		$municipio = Municipio::whereRaw('cambia_caracter(upper(nombre)) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["municipio"])))])->first();
 		if($municipio == null){
 			return ["success"=>false,"errores"=> [["El municipio ingresado no se encuentra ingresado en el sistema."]] ];
 		}
 		
-		$estado = Estado_proveedor::whereRaw('upper(nombre) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["estado"])))])->first();
+		$estado = Estado_proveedor::whereRaw('cambia_caracter(upper(nombre)) = ?',[$this->MayusculaTilde(utf8_encode(strtoupper($request["estado"])))])->first();
 		if($estado == null){
 			return ["success"=>false,"errores"=> [["El estado ingresado no se encuentra ingresado en el sistema."]] ];
 		}
@@ -496,8 +510,8 @@ class ImportacionRntController extends Controller
     		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
     		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
 			"estado" => 1,
-			"user_create" => "MM",
-			"user_update" => "MM",
+			"user_create" => $this->user->username,
+			"user_update" => $this->user->username,
 		]);
 		
 		Proveedores_rnt_idioma::create([
@@ -714,6 +728,13 @@ class ImportacionRntController extends Controller
 		$cadena = str_replace("í", "Í", $cadena); 
 		$cadena = str_replace("ó", "Ó", $cadena); 
 		$cadena = str_replace("ú", "Ú", $cadena); 
+		
+		$cadena = str_replace("á", "A", $cadena); 
+		$cadena = str_replace("é", "E", $cadena); 
+		$cadena = str_replace("í", "I", $cadena); 
+		$cadena = str_replace("ó", "O", $cadena); 
+		$cadena = str_replace("ú", "U", $cadena); 
+		
         return trim($cadena);
     }
     

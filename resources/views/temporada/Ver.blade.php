@@ -4,11 +4,6 @@
 
 @section ('estilos')
      <style>
-        .panel-body {
-            max-height: 400px;
-            color: white;
-        }
-
         .image-preview-input {
             position: relative;
             overflow: hidden;
@@ -37,35 +32,18 @@
         .messages {
             color: #FA787E;
         }
-
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat;
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
     </style>
 @endsection
 @section('app','ng-app="admin.temporadas"')
+@section('titulo','Detalle de la temporada')
 @section('content')
 
 <div class="main-page" ng-controller="verTemporadaCtrl">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <h1 class="title1">Ver temporada</h1><br />
-    <a href="/turismointerno/hogar/@{{id}}" class="btn btn-primary">Crear hogar</a><br /><br />
+    <div class="text-center">
+        <a href="/turismointerno/hogar/@{{id}}" class="btn btn-lg btn-success">Crear hogar</a><br /><br />    
+    </div>
+    
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>@Resource.EncuestaMsgError:</b></label>
         <br />
@@ -77,8 +55,12 @@
     <div class="blank-page widget-shadow scroll" id="style-2 div1">
         <div class="row">
             <div class="col-md-6 col-xs-12 col-sm-12">
-                <label>Nombre en español</label>
-                <p>@{{temporada.Nombre}}</p>
+                <div class="form-group form-group-lang">
+                    <label>Nombre en español</label> <!--<button type="button" class="btn btn-xs btn-link" data-lang="en">Ver en idioma <span class="langToShow">Inglés</span></button>-->
+                    <p class="langSelected" data-lang="es">@{{temporada.Nombre}}</p>
+                    <p class="langSelected hidden" data-lang="en">@{{temporada.Name}}</p>
+                </div>
+                
             </div>
             
             <div class="col-md-6 col-xs-12 col-sm-12">
@@ -88,12 +70,12 @@
 
             <div class="col-md-6 col-xs-12 col-sm-12">
                 <label>Fecha inicial</label>
-                <p>@{{temporada.Fecha_ini}}</p>
+                <p>@{{temporada.Fecha_ini | date:'dd/MM/yyyy'}}</p>
             </div>
             
             <div class="col-md-6 col-xs-12 col-sm-12">
                 <label>Fecha final</label>
-                <p>@{{temporada.Fecha_fin}}</p>
+                <p>@{{temporada.Fecha_fin | date:'dd/MM/yyyy'}}</p>
             </div>
 
         </div>
@@ -127,7 +109,6 @@
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th></th>
                                     <th>Barrio</th>
                                     <th>Dirección</th>
                                     <th>Estrato</th>
@@ -139,15 +120,14 @@
                             </thead>
                             <tbody>
                                 <tr dir-paginate="item in temporada.Hogares|filter:prop.search1|itemsPerPage:10 as results" pagination-id="hogarP" style="border-bottom: .5px solid lightgray">
-                                    <td>@{{$index+1}}</td>
                                     <td>@{{item.edificacione.barrio.nombre}}</td>
                                     <td>@{{item.edificacione.direccion}}</td>
                                     <td>@{{item.edificacione.estrato.nombre}}</td>
-                                    <td>@{{item.digitadore.asp_net_user.Email}}</td>
+                                    <td>@{{item.digitadore.user.username}}</td>
                                     <td>@{{item.edificacione.nombre_entrevistado}}</td>
                                     <td>@{{item.fecha_realizacion }}</td>
                                     <td>
-                                        <a href="/turismointerno/editarhogar/@{{item.id}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="/turismointerno/editarhogar/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                     </td>
                                 </tr>
 
@@ -202,10 +182,9 @@
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th>IdPersona</th>
-                                    <th>IdHogar</th>
+                                    <th>ID persona</th>
+                                    <th>ID Hogar</th>
                                     <th>Nombre</th>
-                                    <th>Correo</th>
                                     <th>Dirección</th>
                                     <th>Estrato</th>
                                     <th>Encuestador</th>
@@ -219,14 +198,13 @@
                                     <td>@{{item.id}}</td>
                                     <td>@{{item.hogare.id}}</td>
                                     <td>@{{item.nombre}}</td>
-                                    <td>@{{item.email}}</td>
-                                    <td>@{{item.hogare.direccion}}</td>
-                                    <td>@{{item.hogare.estrato}}</td>
-                                    <td>@{{item.hogare.digitadore.asp_net_user.Email}}</td>
+                                    <td>@{{item.hogare.edificacione.direccion}}</td>
+                                    <td>@{{item.hogare.edificacione.estrato.nombre}}</td>
+                                    <td>@{{item.hogare.digitadore.user.username}}</td>
                                     <td>@{{item.viajes[0].fecha_inicio}}</td>
                                     <td>@{{item.viajes[0].ultima_sesion}}</td>
                                     <td>
-                                        <a href="/turismointerno/viajesrealizados/@{{item.id}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="/turismointerno/viajesrealizados/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                     </td>
                                 </tr>
 
@@ -259,6 +237,7 @@
 
                 </div>
             </div>
+           
         </div>
 
 
@@ -275,5 +254,12 @@
 @endsection
 @section('javascript')
 <script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/ADM-dateTimePicker.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('/js/administrador/temporada/temporadas.js')}}"></script>
+<script src="{{asset('/js/administrador/temporada/services.js')}}"></script>
+<script>
+    $('.showLang').on('click',function(){
+        var lang = $(this)
+    });
+</script>
 @endsection

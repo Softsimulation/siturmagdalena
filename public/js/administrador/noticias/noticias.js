@@ -500,6 +500,141 @@ app.controller('editarNoticiaCtrl', function($scope, noticiaServi) {
             swal("Error", "Hubo un error en la petición intentalo nuevamente", "error");
         });
     }
+    $scope.cambiarEstado = function (obj) {
+        swal({
+            title: "Cambiar estado",
+            text: "¿Está seguro que desea cambiar el estado?",
+            type: "warning",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+            
+            $scope.errores = null;
+            $("body").attr("class", "charging");
+            noticiaServi.cambiarEstadoNoticia(obj.idNoticia).then(function (data) {
+                if(data.success == true){
+                    $scope.noticias[$scope.noticias.indexOf(obj)].estado = !$scope.noticias[$scope.noticias.indexOf(obj)].estado;
+                    swal("Exito", "Se realizó la operación exitosamente", "success");
+                }else {
+                    swal("Error", "Se ha manipulado la información, intente de nuevo", "error");
+                }
+                $("body").attr("class", "cbp-spmenu-push");
+                
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Hubo un error en la petición intentalo nuevamente", "error");
+            });
+
+        })
+
+
+    }
+    
+    $scope.eliminarMultimedia = function (obj) {
+        swal({
+            title: "Eliminar",
+            text: "¿Está seguro que desea eliminar la multimedia?. Se eliminará automaticamente en los idiomas donde se encuentre la multimedia seleccionada.",
+            type: "warning",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+            
+            $scope.errores = null;
+            $("body").attr("class", "charging");
+            noticiaServi.eliminarMultimedia(obj.idMultimedia).then(function (data) {
+                if(data.success == true){
+                    $scope.multimediasNoticias.splice($scope.multimediasNoticias.indexOf(obj), 1);
+                    swal("Exito", "Se realizó la operación exitosamente", "success");
+                }else {
+                    swal("Error", "Se ha manipulado la información, intente de nuevo", "error");
+                }
+                $("body").attr("class", "cbp-spmenu-push");
+                
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Hubo un error en la petición intentalo nuevamente", "error");
+            });
+
+        })
+
+
+    }
+    $scope.abrirModalEditarMultimedia = function (multimedia) {
+        $scope.editarMultimediaForm.$setPristine();
+       $scope.editarMultimediaForm.$setUntouched();
+       $scope.editarMultimediaForm.$submitted = false;
+       $scope.multimediaEditar = [];
+       $scope.multimediaEditar["idMultimedia"] = multimedia.idMultimedia;
+       $scope.multimediaEditar["texto_alternativo"] = multimedia.texto;
+       $scope.multimediaEditar["ruta"] = multimedia.ruta;
+       $scope.multimediaEditar["portadaNoticia"] = multimedia.portada == true ? 1 : 2;
+       $scope.indexMultimediaEditar = $scope.multimediasNoticias.indexOf(multimedia);
+        $scope.errores = null;
+        $('#modalEditarMultimedia').modal('show');
+    }
+    $scope.editarMultimedia= function () {
+        if (!$scope.editarMultimediaForm.$valid) {
+            return;
+        }
+        var input = $('#GaleriaNoticia');
+        // check for browser support (may need to be modified)
+        if (input[0].files && input[0].files.length == 1) {
+            if (input[0].files[0].size > 2097152) {
+                swal("Error", "Por favor la imagen debe tener un peso menor de " + (5242880 / 1024 / 1024) + " MB", "error");
+                // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
+                return;
+            }
+        }
+        var fd = new FormData();
+         $scope.errores = null;
+        for (nombre in $scope.multimediaEditar) {
+            if ($scope.multimediaEditar[nombre] != null && $scope.multimediaEditar[nombre] != "") {
+                fd.append(nombre, $scope.multimediaEditar[nombre])
+            }
+        }
+        if ($scope.Galeria != null) {
+            fd.append("Galeria", $scope.Galeria[0]);
+        }
+        $("body").attr("class", "charging");
+        noticiaServi.editarMultimediaNoticia(fd).then(function (data) {
+            if(data.success == true){
+               $scope.multimediasNoticias[$scope.indexMultimediaEditar].texto =  data.multimedia["texto"];
+            $scope.multimediasNoticias[$scope.indexMultimediaEditar].portada =  data.multimedia["portada"];
+            $scope.multimediasNoticias[$scope.indexMultimediaEditar].ruta =  data.multimedia["ruta"];
+                swal({
+                  title: "Éxito",
+                  text: "Multimedia creada satisfactoriamente",
+                  type: "success",
+                  confirmButtonText: "",
+                },
+                function(){
+                    
+                  $('#modalEditarMultimedia').modal('hide');
+                    //location.reload();
+                });
+                //window.location.href="/bandeja";
+                
+              }else{
+                  swal("Error", "la multimedia no se pudo agregar", "error");
+                  $scope.errores = data.errores;
+                  
+              }
+            $("body").attr("class", "cbp-spmenu-push");
+            
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Hubo un error en la petición intentalo nuevamente", "error");
+        });
+
+    }
 });
 app.controller('crearIdiomaCtrl', function($scope, noticiaServi) {
     $scope.multimediasNoticias = [];

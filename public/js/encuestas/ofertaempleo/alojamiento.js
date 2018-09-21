@@ -4,6 +4,7 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
     
     $scope.alojamiento = { habitaciones:{}, apartamentos:{}, casas:{}, cabanas:{}, campins:{} };
     
+    
     $("body").attr("class", "cbp-spmenu-push charging");
     
     OfertaEmpleoServi.getDataAlojamiento( $("#id").val() ).then(function(data){
@@ -13,6 +14,7 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
             }
             
             $scope.servicios = data.servicios;
+            
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
            $("body").attr("class", "cbp-spmenu-push");
@@ -36,10 +38,12 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
             $scope.ErrorServicio = true;
             swal("Error","Corrija los errores","error");  return;
         }
-      
+        
         var data = angular.copy($scope.alojamiento);
         data.encuesta = $("#id").val();
         data.servicios = angular.copy($scope.servicios);
+        
+        $("body").attr("class", "cbp-spmenu-push charging");
         
         OfertaEmpleoServi.guardarCaracterizacionAlojamiento( data ).then(function(data){
             
@@ -64,7 +68,8 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
 app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
     
     $scope.alojamiento = { habitaciones:[], apartamentos:[], casas:[], cabanas:[], campins:[] };
-    
+    $scope.numero_dias = 0;
+     
     $("body").attr("class", "cbp-spmenu-push charging");
     
     OfertaEmpleoServi.getDataAlojamiento( $("#id").val() ).then(function(data){
@@ -74,6 +79,7 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
             }
             
             $scope.servicios = data.servicios;
+            $scope.numero_dias = data.numeroDias;
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
            $("body").attr("class", "cbp-spmenu-push");
@@ -91,17 +97,117 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
         data.encuesta = $("#id").val();
         data.servicios = angular.copy($scope.servicios);
         
+        $("body").attr("class", "cbp-spmenu-push charging");
+        
         OfertaEmpleoServi.guardarOfertaAlojamiento( data ).then(function(data){
             
             if(data.success){
-                window.location.href = "/ofertaempleo/empleomensual/" + $("#id").val();
+                      swal({
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                  } else {
+                    window.location.href = data.ruta;
+                  }
+                });
             }
             else{
                 $scope.errores = data.errores;
                 swal("Error","Corrija los errores","error");
             }
             
+            $("body").attr("class", "cbp-spmenu-push");
+        }).catch(function(){
+           $("body").attr("class", "cbp-spmenu-push");
+           swal("Error","Error en la carga de pagina","error"); 
+        });
+        
+    }
+    
+});
+
+app.controller("AlojamientoMensualCtrl", function($scope, OfertaEmpleoServi){
+    
+    $scope.alojamiento = { habitaciones:[], apartamentos:[], casas:[], cabanas:[], campins:[] };
+    $scope.numero_dias = 0;
+     
+    $("body").attr("class", "cbp-spmenu-push charging");
+    
+    OfertaEmpleoServi.getDataAlojamiento( $("#id").val() ).then(function(data){
+            
+            if(data.alojamiento){
+                $scope.alojamiento = data.alojamiento;
+                
+                if( $scope.alojamiento.habitaciones.length>0 ){
+                    if( $scope.alojamiento.habitaciones[0].total_camas ){
+                        $scope.mideOcupacion = 0;
+                    }
+                    else if( $scope.alojamiento.habitaciones[0].total ){
+                        $scope.mideOcupacion = 1;
+                    }
+                }
+            }
+            
             $scope.servicios = data.servicios;
+            $scope.numero_dias = data.numeroDias;
+            $("body").attr("class", "cbp-spmenu-push");
+        }).catch(function(){
+           $("body").attr("class", "cbp-spmenu-push");
+           swal("Error","Error en la carga de pagina","error"); 
+        });
+    
+    
+    $scope.guardar = function(){
+        
+        if(!$scope.AlojamientoForm.$valid){
+            swal("Error","Corrija los errores","error");  return;
+        }
+        
+        var data = angular.copy($scope.alojamiento);
+        data.encuesta = $("#id").val();
+        data.servicios = angular.copy($scope.servicios);
+        
+        $("body").attr("class", "cbp-spmenu-push charging");
+        
+        OfertaEmpleoServi.guardarAlojamientoMensual( data ).then(function(data){
+            
+            if(data.success){
+                          swal({
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                  } else {
+                    window.location.href = data.ruta;
+                  }
+                });
+            }
+            else{
+                $scope.errores = data.errores;
+                swal("Error","Corrija los errores","error");
+            }
+            
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
            $("body").attr("class", "cbp-spmenu-push");

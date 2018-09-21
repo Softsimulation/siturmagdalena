@@ -9,18 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Role_User;
+use App\Models\Permission;
 
 class UsuarioController extends Controller
 {
     public function __construct()
     {
-        /*
+        
         $this->middleware('auth');
-        $this->middleware('role:ADmin');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        */
+        
         
         
     }
@@ -34,11 +35,17 @@ class UsuarioController extends Controller
     public function getEditar($id){
         return view('usuario.Editar',array('id' => $id));
     }
+    public function getAsignarpermisos(){
+        return view('usuario.AsignarPermisos');
+    }
     public function getUsuarios(){
         
-        $usuarios = User::with('roles')->get();
+        $usuarios = User::with(['roles','permissions'=>function($q){
+            $q->select('id');
+        }])->get();
         $roles = Role::all();
-        return ['usuarios'=>$usuarios,'roles'=>$roles];
+        $permisos = Permission::all();
+        return ['usuarios'=>$usuarios,'roles'=>$roles, 'permisos'=>$permisos];
     }
     public function getInformacionguardar(){
         
@@ -168,6 +175,7 @@ class UsuarioController extends Controller
         $user->nombre = $request->nombres;
         $user->username = $request->email;
         $user->email = $request->email;
+        $user->password = $request->password1;
         $user->save();
         
         return ['success'=> true];
@@ -181,7 +189,6 @@ class UsuarioController extends Controller
         ],[
             'id.required' => 'El usuario es requerido.',
             'id.exists' => 'El usuario seleccionado no se encuentra en registrado en el sistema.',
-            
             ]
         );
         
@@ -194,5 +201,48 @@ class UsuarioController extends Controller
         $user->estado = !$user->estado;
         $user->save();
         return ['success'=> true];
+    }
+    public function getDatosasignarpermisos(){
+        
+        $usuarios = User::with('roles')->get();
+        $permisos = Permission::all();
+        return ['usuarios'=>$usuarios,'permisos'=>$permisos];
+    }
+    public function postAsignacionpermisos(Request $request){
+        $validator = \Validator::make($request->all(),[
+        
+            'idUsuario' => 'required|exists:users,id',
+            'permisos' => 'required',
+            
+            
+        ],[
+            'idUsuario.required' => 'El usuario es requerido.',
+            'idUsuario.exists' => 'El usuario seleccionado no se encuentra en registrado en el sistema.',
+            'permisos.required' => 'Es necesario haber seleccionar por lo menos un permiso.',
+            ]
+        );
+        
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        $errores = [];
+        foreach($request->permisos as $permisoSeleccionado){
+            if(Permission::where('id',$permisoSeleccionado)->first() == null){
+                $errores["permission"][0] = "Uno de los permisos seleccionados no se encuentran registrados en el sistema";
+            }
+        }
+        
+        if(sizeof($errores) > 0){
+            return ['success'=>false, 'errores'=>$errores];
+        }
+        $user = User::where('id',$request->idUsuario)->first();
+        $user->permissions()->detach();
+        $permisos = [];
+        foreach($request->permisos as $permiso){
+            $user->permissions()->attach($permiso);
+            array_push($permisos, $permiso);
+        }
+        return ['success'=> true, 'permisos'=>$permisos];
+        
     }
 }

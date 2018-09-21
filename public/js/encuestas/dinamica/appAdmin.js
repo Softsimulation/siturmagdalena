@@ -1,6 +1,6 @@
 (function(){
 
-    angular.module("appEncuestaDinamica", [ 'ngSanitize', 'ui.select', 'checklist-model', "ADM-dateTimePicker", "dndLists", "chart.js", "serviciosAdmin" ] )
+    angular.module("appEncuestaDinamica", [ 'ngSanitize', 'angularUtils.directives.dirPagination', 'ui.select', 'checklist-model', "ADM-dateTimePicker", "dndLists", "chart.js", "serviciosAdmin" ] )
     
     .config(["ADMdtpProvider", "ChartJsProvider", function(ADMdtpProvider,ChartJsProvider) {
          ADMdtpProvider.setOptions({ calType: "gregorian", format: "YYYY/MM/DD", default: "today" });
@@ -9,8 +9,9 @@
     
     .controller("ConfigurarEncuestaCtrl", ["$scope","ServiEncuesta", function($scope,ServiEncuesta){
         
-        $scope.tabOpen = { activo:0 } ;
+        $scope.tabOpen = { activo:0 };
         $scope.opcion = {};
+        
         
         $scope.$watch("id", function() {
             if($scope.id){
@@ -482,6 +483,8 @@
                 $scope.encuestas = data.encuestas;
                 $scope.idiomas = data.idiomas;
                 $scope.estados = data.estados;
+                $scope.tipos = data.tipos;
+                $scope.host = data.host;
             });
         
         
@@ -508,8 +511,8 @@
             ServiEncuesta.agregarEncuesta($scope.encuesta).then(function (data) {
                        
                         if (data.success) {
-                            $scope.encuestas.push(data.data);
-                            swal("Encuesta agregada", "LA encuesta se ha creado exitosamente", "success");
+                            $scope.encuestas.unshift(data.data);
+                            swal("Encuesta agregada", "La encuesta se ha creado exitosamente", "success");
                             $("#modalAgregarEncuesta").modal("hide");
                         }
                         else {
@@ -692,7 +695,7 @@
                    
                     ServiEncuesta.duplicarEncuesta( {id:id} ).then(function (data) {
                         if (data.success) {
-                            $scope.encuestas.push(data.data);
+                            $scope.encuestas.unshift(data.data);
                             swal("¡Duplicada!", "LA encuesta se ha duplicado exitosamente", "success");
                         }
                         else {
@@ -706,7 +709,41 @@
             });
         }
         
-                        
+        $scope.openModalCopiar = function(item){
+            
+            if(item.tipos_encuestas_dinamica_id==1){
+                $scope.link = $scope.host +  "/llenarEncuestaAdHoc/" +item.id;
+            }
+            else if(item.tipos_encuestas_dinamica_id==2){
+                $scope.link = $scope.host +  "/encuestaAdHoc/" +item.id+ "/registro" ;
+            }
+            else{ return; }
+            
+            $("#modalCopyLink").modal("show");
+        }
+        
+        $scope.copiarLink = function(){
+            var copyText = document.getElementById("link");
+            copyText.select();
+            document.execCommand("copy");
+        }  
+        
+        $scope.exportarData = function(id){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiEncuesta.getExcel( id )
+                .then(function(response){ 
+                    var link = document.createElement("a");
+                    link.href = window.URL.createObjectURL(response);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    $("body").attr("class", "cbp-spmenu-push");
+                    zona.es_generada = true;
+                });
+            
+        }
         
     }])
     
@@ -716,6 +753,7 @@
         ServiEncuesta.getListadoEncuestasRealidadas( $("#id").val() )
             .then(function(data){  
                 $scope.encuesta = data.encuesta;
+                $scope.host = data.host;
             });
         
         $scope.openModalAddEncuesta = function( ){
@@ -756,6 +794,14 @@
             });
             
         }
+        
+        $scope.copiarLink = function(codigo){
+            var $tempInput =  $("<textarea>");
+            $("body").append($tempInput);
+            $tempInput.val( $scope.host + "/encuestaAdHoc/" + codigo  ).select();
+            document.execCommand("copy");
+            $tempInput.remove();
+        }        
         
     }])
     

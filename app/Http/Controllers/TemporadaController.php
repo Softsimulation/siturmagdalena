@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Temporada;
 use App\Models\Hogar;
 use App\Models\Persona;
@@ -12,6 +14,18 @@ use App\Models\Viaje;
 
 class TemporadaController extends Controller
 {
+    public function __construct()
+    {
+        
+        $this->middleware('auth');
+        $this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        
+        
+    }
     public function getIndex(){
         
         return view('temporada.Index');
@@ -39,13 +53,13 @@ class TemporadaController extends Controller
                   
         $temporada->Hogares=Hogar::whereHas('edificacione',function($q)use($temporada){
             $q->where('temporada_id',$temporada->id);
-        })->with('edificacione.barrio')->with('edificacione.estrato')->with('digitadore.aspNetUser')->get();
-        /*
-        $encuestas=Viaje::where('es_principal',true)->whereHas('hogare.edificacione',function($q)use($temporada){
+        })->with('edificacione.barrio')->with('edificacione.estrato')->with('digitadore.user')->get();
+        
+        $encuestas=Viaje::where('es_principal',true)->whereHas('persona.hogare.edificacione',function($q)use($temporada){
             $q->where('temporada_id',$temporada->id);
-        })->with('hogare.digitadore.aspNetUser')->with('hogare.edificacione.barrio.municipio')->orderby('codigo_encuesta')->get();
-        */
-        return ['temporada'=>$temporada];
+        })->with('persona.hogare.digitadore.user')->with('persona.hogare.edificacione.barrio.municipio')->orderby('id')->get();
+        
+        return ['temporada'=>$temporada,'encuestas'=>$encuestas];
         
     }
     
@@ -149,8 +163,8 @@ class TemporadaController extends Controller
         $temporada->name = $request->Name;
         $temporada->fecha_ini = $request->Fecha_ini;
         $temporada->fecha_fin = $request->Fecha_fin;
-        $temporada->user_create = "Situr";
-        $temporada->user_update = "Situr";
+        $temporada->user_create = $this->user->username;
+        $temporada->user_update = $this->user->username;
         $temporada->save();
         
         return ['success' => true, 'temporada' => $temporada ];

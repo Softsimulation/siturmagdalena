@@ -5,72 +5,97 @@
 @section('app','ng-app="appEncuestaDinamica"')
 @section('controller','ng-controller="ListarEncuestasCtrl"')
 
+@section('titulo','Encuestas ADHOC')
+@section('subtitulo','El siguiente listado cuenta con @{{encuestas.length}} registro(s)')
+
 @section('content')
-
+<div class="flex-list">
+    <button type="button" class="btn btn-lg btn-success" ng-click="openModalAddEncuesta()" class="btn btn-lg btn-success">
+      Agregar encuesta
+    </button> 
+    <div class="form-group has-feedback" style="display: inline-block;">
+        <label class="sr-only">Búsqueda de encuestas</label>
+        <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar encuesta...">
+        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+    </div>      
+</div>
+<div class="text-center" ng-if="(encuestas | filter:prop.search).length > 0 && (prop.search != '' && prop.search != undefined)">
+    <p>Hay @{{(encuestas | filter:prop.search).length}} registro(s) que coinciden con su búsqueda</p>
+</div>
+<div class="alert alert-info" ng-if="encuestas.length == 0">
+    <p>No hay registros almacenados</p>
+</div>
+<div class="alert alert-warning" ng-if="(encuestas | filter:prop.search).length == 0 && encuestas.length > 0">
+    <p>No existen registros que coincidan con su búsqueda</p>
+</div>
 <div>
-   <a class="btn btn-link btn-primary" href="/encuesta/listado" >Volver al listado</a>
-    <button class="btn btn-success" ng-click="openModalAddEncuesta()" >+ Agregar</button>
-
+    
     <div class="row" >
 
        <div class="col-md-12">
-          <h2>Listado de encuestas</h2>
           
           <table class="table table-striped">
             <thead>
               <tr>
-                <th style="width:50px;" ></th>
                 <th>Encuesta</th>
+                <th>Tipo</th>
                 <th style="width: 20px;" >Estado</th>
-                <th style="width: 70px;" ></th>
+                <th style="width: 152px;">Opciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="encuesta in encuestas" >
-                <td>@{{$index+1}}</td>
+              <tr dir-paginate="encuesta in encuestas | filter:prop.search | itemsPerPage:10">
                 <td>@{{ (encuesta.idiomas|filter:{ 'idiomas_id':1 })[0].nombre}}</td>
+                <td>@{{ encuesta.tipo.nombre }}</td>
                 <td>@{{ encuesta.estado.nombre }}</td>
                 <td>
-                    <a class="btn btn-xs btn-primary" href="/encuesta/configurar/@{{encuesta.id}}" > Ver </a>
-                    <div class="dropdown" style="float: right;" >
+                    <a class="btn btn-xs btn-default" href="/encuesta/configurar/@{{encuesta.id}}" role="button" title="Ver encuesta"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver encuesta</span></a>
+                    <div class="dropdown" style="display: inline-block" >
                         <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"  >
+                            Más opciones
                          <span class="caret"></span>
                         </button>
                         
                         <ul class="dropdown-menu" >
+                            
+                            <li ng-if=" (encuesta.tipos_encuestas_dinamica_id==1 || encuesta.tipos_encuestas_dinamica_id==2) && encuesta.estados_encuestas_id>1 ">
+                                <a href="javascript:void(0)" ng-click="openModalCopiar(encuesta)" >
+                                    Copiar enlace
+                                </a>
+                            </li>
+                            
                             <li>
-                                <a ng-click="OpenModalCambiarEstado(encuesta)" >
+                                <a href="javascript:void(0)" ng-click="OpenModalCambiarEstado(encuesta)" >
                                     Cambiar estado
                                 </a>
                             </li>
                             <li>
                                 <a href="/encuesta/listar/@{{encuesta.id}}" >
-                                    Listado de encuestas
+                                    Listado de respuestas
                                 </a>
                             </li>
                             <li>
                                 <a href="/encuesta/estadisticas/@{{encuesta.id}}" >
-                                    Estadisticas
+                                    Estadísticas
                                 </a>
                             </li>
                             <li>
-                                <a href="/encuesta/excel/@{{encuesta.id}}" download >
+                                <a href="javascript:void(0)" ng-click="exportarData(encuesta.id)" >
                                     Descargar datos
                                 </a>
                             </li>
                             <li>
-                                <a href ng-click="duplicarEncuesta(encuesta.id)" >
+                                <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta.id)" >
                                     Duplicar encuesta
                                 </a>
                             </li>
                             <li class="divider"></li>
                             <li ng-repeat="item in encuesta.idiomas" >
-                              <a href ng-click="OpenModalIdiomaEncuesta(encuesta,item)" >  @{{item.idioma.nombre}} </a>
+                              <a href="javascript:void(0)" ng-click="OpenModalIdiomaEncuesta(encuesta,item)">Información en @{{item.idioma.nombre}} </a>
                             </li>
                             <li ng-if="encuesta.estados_encuestas_id==1" >
-                                <a href ng-click="OpenModalIdiomaEncuesta(encuesta)" >+ Agregar</a>
+                                <a href="javascript:void(0)" ng-click="OpenModalIdiomaEncuesta(encuesta)" >Agregar información en otro idioma</a>
                             </li>
-                            <li class="divider"></li>
                             
                         </ul> 
                     </div>
@@ -78,13 +103,15 @@
               </tr>
             </tbody>
           </table>
-          
-          <div class="alert alert-info" ng-if="encuestas.length==0"  >
-              No se encontraron registros almacenados
-          </div>
+         
           
         </div>
 
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+          <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        </div>
     </div>
     
     
@@ -94,90 +121,91 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Encuesta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Agregar encuesta</h4>
                 </div>
                 <form name="formEncuesta" novalidate>
                     <div class="modal-body">
     
                         <div class="row">
                           
-                            <div class="col-md-12">
-                                <div class="form-group" ng-class="{'error' : (formEncuesta.$submitted || formEncuesta.nombre.$touched) && formEncuesta.nombre.$error.required}">
-                                    <label class="control-label" for="pregunta">Nombre</label>
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formEncuesta.$submitted || formEncuesta.nombre.$touched) && formEncuesta.nombre.$error.required}">
+                                    <label class="control-label" for="pregunta"><span class="asterisk">*</span> Nombre</label>
                                     <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" ng-model="encuesta.nombre" required />
                                 </div>
                             </div>
                             
-                            <div class="col-md-12">
-                                <div class="form-group" ng-class="{'error' : (formEncuesta.$submitted || formEncuesta.descripcion.$touched) && formEncuesta.descripcion.$error.required}">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formEncuesta.$submitted || formEncuesta.descripcion.$touched) && formEncuesta.descripcion.$error.required}">
                                     <label class="control-label" for="descripcion">Descripcion</label>
-                                    <textarea class="form-control" id="descripcion" name="descripcion" ng-model="encuesta.descripcion" placeholder="Descripción" ></textarea>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" ng-model="encuesta.descripcion" placeholder="Descripción" rows="5" style="resize: none;"></textarea>
                                 </div>
                             </div>
                             
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formEncuesta.$submitted || formEncuesta.tipoEncuesta.$touched) && formEncuesta.tipoEncuesta.$error.required}">
+                                    <label class="control-label" for="tipoEncuesta"><span class="asterisk">*</span>  Tipo encuesta</label>
+                                    <select class="form-control" name="tipoEncuesta" id="tipoEncuesta" ng-model="encuesta.tipos_encuestas_dinamica_id" ng-options="item.id as item.nombre for item in tipos" required >
+                                        <option  disabled selected value="" >Selecione un tipo</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         
                     </div>
                     <div class="modal-footer center" >
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        
                         <button type="submit" ng-click="guardarEncuesta()" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     
-    <!-- Modal agregar encuesta-->
+    <!-- Modal agregar idioma encuesta-->
     <div class="modal fade" id="modalIdiomaEncuesta" tabindex="-1" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Encuesta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Idioma de encuesta</h4>
                 </div>
+               
                 <form name="formEncuestaI" novalidate>
                     <div class="modal-body">
                         
                         <div class="row">
                             
-                            <div class="col-md-12">
-                                <div class="form-group" ng-class="{'error' : (formEncuestaI.$submitted || formEncuestaI.idioma.$touched) && formEncuestaI.idioma.$error.required}">
-                                    <label class="control-label" for="idioma">Idioma</label>
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formEncuestaI.$submitted || formEncuestaI.idioma.$touched) && formEncuestaI.idioma.$error.required}">
+                                    <label class="control-label" for="idioma"><span class="asterisk">*</span> Idioma</label>
                                     <select class="form-control" id="idioma" name="idioma" ng-model="idomaEncuesta.idiomas_id" ng-options="item.id as item.nombre for item in idiomas" ng-disabled="es_editar" required>
                                         <option value="" disabled selected >Idioma</option>
                                     </select>
                                 </div>
                             </div>
-                            
-                        </div>
-    
-                        <div class="row">
-                          
-                            <div class="col-md-12">
-                                <div class="form-group" ng-class="{'error' : (formEncuestaI.$submitted || formEncuestaI.preguntaI.$touched) && formEncuestaI.preguntaI.$error.required}">
-                                    <label class="control-label" for="preguntaI">Nombre</label>
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formEncuestaI.$submitted || formEncuestaI.preguntaI.$touched) && formEncuestaI.preguntaI.$error.required}">
+                                    <label class="control-label" for="preguntaI"><span class="asterisk">*</span> Nombre</label>
                                     <input type="text" class="form-control" id="preguntaI" name="preguntaI" placeholder="Nombre" ng-model="idomaEncuesta.nombre" required />
                                 </div>
                             </div>
                             
-                            <div class="col-md-12">
-                                <div class="form-group" ng-class="{'error' : (formEncuestaI.$submitted || formEncuestaI.descripcionI.$touched) && formEncuestaI.descripcionI.$error.required}">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formEncuestaI.$submitted || formEncuestaI.descripcionI.$touched) && formEncuestaI.descripcionI.$error.required}">
                                     <label class="control-label" for="descripcionI">Descripcion</label>
-                                    <textarea class="form-control" id="descripcionI" name="descripcionI" ng-model="idomaEncuesta.descripcion" placeholder="Descripción" ></textarea>
+                                    <textarea class="form-control" id="descripcionI" name="descripcionI" ng-model="idomaEncuesta.descripcion" placeholder="Descripción" rows="5" style="resize: none;"></textarea>
                                 </div>
                             </div>
-                            
                         </div>
                         
                     </div>
                     <div class="modal-footer center" >
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        
                         <button type="submit" ng-click="guardarIdiomaEncuesta()" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -190,10 +218,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Encuesta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Estados de encuesta</h4>
                 </div>
                 <form name="formEncuestaE" novalidate>
                     <div class="modal-body">
@@ -205,10 +231,10 @@
                             </div>
                             
                             <div class="col-md-12">
-                                <div class="form-group" ng-class="{'error' : (formEncuestaE.$submitted || formEncuestaE.idioma.$touched) && formEncuestaE.idioma.$error.required}">
-                                    <label class="control-label" for="idioma">Estado encuesta</label>
+                                <div class="form-group" ng-class="{'has-error' : (formEncuestaE.$submitted || formEncuestaE.idioma.$touched) && formEncuestaE.idioma.$error.required}">
+                                    <label class="control-label" for="idioma"><span class="asterisk">*</span> Estado de encuesta</label>
                                     <select class="form-control" id="idioma" name="idioma" ng-model="CambiarEstado.estados_encuestas_id" ng-options="item.id as item.nombre for item in estados" required>
-                                        <option value="" disabled selected >Estados</option>
+                                        <option value="" disabled selected >Selecciones un estado</option>
                                     </select>
                                 </div>
                             </div>
@@ -218,13 +244,42 @@
                         
                     </div>
                     <div class="modal-footer center" >
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        
                         <button type="submit" ng-click="guardarEstadoEncuesta()" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    
+    
+    
+    <!-- Modal copiar link -->
+    <div class="modal fade" id="modalCopyLink" tabindex="-1" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Copiar enlace</h4>
+                </div>
+                
+                <div class="modal-body">
+                    
+                    <div class="input-group">
+                        <input id="link" type="text" class="form-control" name="link" id="link" ng-model="link" >
+                        <span class="input-group-addon" ng-click="copiarLink()" ><i class="glyphicon glyphicon-duplicate" ></i></span>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer center" >
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
     
 </div>
    
@@ -245,11 +300,16 @@
        .list-group-item>.badge { background: red; }
        #openModalOrdenPreguntas .list-group-item>.badge { background: black; }
        .center{ text-align:center; }
+       .table .dropdown-menu{
+           left: auto;
+           right: 0;
+       }
     </style>
 
 @endsection
 
 @section('javascript')
+    <script src="{{asset('/js/dir-pagination.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}"></script>
     <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>

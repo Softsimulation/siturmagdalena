@@ -63,7 +63,7 @@
     </div>
     <input type="hidden" ng-model="encuesta.id" ng-init="encuesta.id={{$id}}" />
     <form role="form" name="DatosForm" novalidate>
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-show="encuesta.ventaPlanes == true">
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Personas que viajaron según destino</b></h3>
             </div>
@@ -84,13 +84,13 @@
                                 <input type="hidden" ng-model="encuesta.personas[$index].opciones_personas_destino_id" ng-init="encuesta.personas[$index].opciones_personas_destino_id=i.id" />
                                 </td>
                                 <td>   
-                                    <input type="number" class="form-control" min="0" name="numerototal@{{$index}}" ng-model="encuesta.personas[$index].numerototal" ng-required="true" placeholder="Solo números"/>
+                                    <input type="number" class="form-control" min="0" name="numerototal@{{$index}}" ng-model="encuesta.personas[$index].numerototal" ng-required="encuesta.ventaPlanes == true" placeholder="Solo números"/>
                                 </td>
                                 <td>                                    
-                                    <input type="number" class="form-control" min="0" max="100" name="nacional@{{$index}}" ng-model="encuesta.personas[$index].nacional" ng-required="true" placeholder="Solo números"/>
+                                    <input type="number" class="form-control" min="0" max="100" name="nacional@{{$index}}" ng-model="encuesta.personas[$index].nacional" ng-required="encuesta.ventaPlanes == true" placeholder="Solo números"/>
                                 </td>
                                 <td>                                    
-                                    <input type="number" class="form-control" min="0" max="100" name="internacional@{{$index}}" ng-model="encuesta.personas[$index].internacional" ng-required="true" placeholder="Solo números"/>
+                                    <input type="number" class="form-control" min="0" max="100" name="internacional@{{$index}}" ng-model="encuesta.personas[$index].internacional" ng-required="encuesta.ventaPlanes == true" placeholder="Solo números"/>
                                 </td>
 
                             </tr>                          
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-show="encuesta.ofrecePlanesConDestino == true">
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Personas que viajaron con planes, cuyo destino fue Santa Marta</b></h3>
             </div>

@@ -17,13 +17,13 @@ class AdministrarPaisesController extends Controller
 {
     public function __construct()
     {
-        /*
+        
         $this->middleware('auth');
-        $this->middleware('role:ADmin');
+        $this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        */
+        
         
         
     }
@@ -59,6 +59,7 @@ class AdministrarPaisesController extends Controller
         if($validator->fails()){
             return ["success"=>false,'errores'=>$validator->errors()];
         }
+        
         $errores = [];
         $pais_ = Pais_Con_Idioma::whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->first();
         if ($pais_ != null){

@@ -19,7 +19,23 @@ use Carbon\Carbon;
 
 class AdministradorActividadesController extends Controller
 {
-    //
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }/*
+        $this->middleware('permissions:list-actividad',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-actividad',['only' => ['getCrear','getDatoscrear','getIdioma','getDatoscrearnoticias','postGuardarnoticia',
+        'postGuardarmultimedianoticia','postGuardartextoalternativo','postEliminarmultimedia'] ]);
+        $this->middleware('permissions:read-actividad',['only' => ['getVernoticia','getDatosver','getListadonoticias','getNoticias'] ]);
+        $this->middleware('permissions:edit-actividad',['only' => ['getListadonoticias','getNoticias','getNuevoidioma','postGuardarnoticia','postGuardarmultimedianoticia',
+        'postGuardartextoalternativo','postEliminarmultimedia','getVistaeditar','getDatoseditar','postModificarnoticia' ] ]);
+        $this->middleware('permissions:estado-actividad',['only' => ['getListadonoticias','getNoticias','postCambiarestado'] ]);*/
+    }
     public function getIndex(){
         return view('administradoractividades.Index');
     }
@@ -49,7 +65,7 @@ class AdministradorActividadesController extends Controller
             return response('Not found.', 404);
         }
         $actividad = Actividad::with(['actividadesConIdiomas' => function($queryActividadesConIdiomas){
-            $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
+            $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre', 'descripcion')->orderBy('idiomas');
         }])->where('id', $id)->select('id', 'valor_min', 'valor_max')->first();
         
         $perfiles_turista = Actividad::find($id)->perfilesUsuariosConActividades()->pluck('perfiles_usuarios_id')->toArray();
@@ -161,7 +177,10 @@ class AdministradorActividadesController extends Controller
         $errores = [];
         $actividad_con_idioma = Actividad_Con_Idioma::where('idiomas', 1)->whereRaw("LOWER(nombre) = '".strtolower($request->nombre)."'")->first();
         if ($actividad_con_idioma != null){
-            $errores["exists"][0] = "Esta atracción ya se encuentra registrada en el sistema.";
+            $errores["exists"][0] = "Esta actividad ya se encuentra registrada en el sistema.";
+        }
+        if ($request->valor_maximo < $request->valor_minimo){
+            $errores["gt"][0] = 'El campo "Valor máximo" debe ser mayor a "Valor mínimo".';
         }
         if($errores != null || sizeof($errores) > 0){
             return  ["success"=>false, "errores"=>$errores];
@@ -189,18 +208,19 @@ class AdministradorActividadesController extends Controller
     
     public function postGuardarmultimedia (Request $request){
         $validator = \Validator::make($request->all(), [
-            'portadaIMG' => 'required',
-            'id' => 'required|exists:atracciones|numeric',
+            'portadaIMG' => 'required|max:2097152',
+            'id' => 'required|exists:actividades|numeric',
             'image' => 'array|max:5'
         ],[
             'portadaIMG.required' => 'Se necesita una imagen de portada.',
+            'portadaIMG.max' => 'La imagen de portada debe pesar menos de 2MB',
             
-            'id.required' => 'Se necesita un identificador para la atracción.',
-            'id.exists' => 'El identificador de la atracción no se encuentra registrado en la base de datos.',
-            'id.numeric' => 'El identificador de la atracción debe ser un valor numérico.',
+            'id.required' => 'Se necesita un identificador para la actividad.',
+            'id.exists' => 'El identificador de la actividad no se encuentra registrado en la base de datos.',
+            'id.numeric' => 'El identificador de la actividad debe ser un valor numérico.',
             
             'image.array' => 'Error al enviar los datos. Recargue la página.',
-            'image.max' => 'Máximo se pueden subir 5 imágenes para la atracción.'
+            'image.max' => 'Máximo se pueden subir 5 imágenes para la actividad.'
         ]);
         
         if($validator->fails()){
@@ -236,21 +256,23 @@ class AdministradorActividadesController extends Controller
             }
         }
         //return ['success' => $request->image];
-        foreach($request->image as $key => $file){
-            $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-            $multimedia_actividad = new Multimedia_Actividad();
-            $multimedia_actividad->actividades_id = $actividad->id;
-            $multimedia_actividad->ruta = "/multimedia/actividades/actividad-".$request->id."/".$nombre;
-            $multimedia_actividad->tipo = false;
-            $multimedia_actividad->portada = false;
-            $multimedia_actividad->estado = true;
-            $multimedia_actividad->user_create = "Situr";
-            $multimedia_actividad->user_update = "Situr";
-            $multimedia_actividad->created_at = Carbon::now();
-            $multimedia_actividad->updated_at = Carbon::now();
-            $multimedia_actividad->save();
-            
-            Storage::disk('multimedia-actividad')->put('actividad-'.$request->id.'/'.$nombre, File::get($file));
+        if ($request->image != null){
+            foreach($request->image as $key => $file){
+                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                $multimedia_actividad = new Multimedia_Actividad();
+                $multimedia_actividad->actividades_id = $actividad->id;
+                $multimedia_actividad->ruta = "/multimedia/actividades/actividad-".$request->id."/".$nombre;
+                $multimedia_actividad->tipo = false;
+                $multimedia_actividad->portada = false;
+                $multimedia_actividad->estado = true;
+                $multimedia_actividad->user_create = "Situr";
+                $multimedia_actividad->user_update = "Situr";
+                $multimedia_actividad->created_at = Carbon::now();
+                $multimedia_actividad->updated_at = Carbon::now();
+                $multimedia_actividad->save();
+                
+                Storage::disk('multimedia-actividad')->put('actividad-'.$request->id.'/'.$nombre, File::get($file));
+            }
         }
         
         return ['success' => true];

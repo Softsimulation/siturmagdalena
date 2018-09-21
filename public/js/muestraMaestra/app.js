@@ -1,7 +1,7 @@
 
 (function(){
 
-    angular.module("appMuestraMaestra", [ 'ngSanitize', 'ui.select', 'checklist-model', "ADM-dateTimePicker",  "serviciosMuestraMaestra", "ngMap" ] )
+    angular.module("appMuestraMaestra", [ 'ngSanitize', 'angularUtils.directives.dirPagination', 'ui.select', 'checklist-model', "ADM-dateTimePicker",  "serviciosMuestraMaestra", "ngMap" ] )
     
     .config(["ADMdtpProvider", function(ADMdtpProvider) {
          ADMdtpProvider.setOptions({ calType: "gregorian", format: "YYYY/MM/DD", default: "today" });
@@ -208,7 +208,7 @@
         $scope.dataPerido = { zonas:[] };
         $scope.zona = {};
         $scope.styloMapa = [{featureType:'poi.school',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.business',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.attraction',elementType:'labels',stylers:[{visibility:'off'}]} ];
-         
+        $scope.centro = [10.4113014,-74.4056612];
         
         ServiMuestra.getData($("#periodo").val())
           .then(function(data){ 
@@ -224,6 +224,9 @@
                     }
                 }
                 
+                $scope.TotalFormales = data.proveedores.length;
+                $scope.TotalInformales = data.proveedoresInformales.length;
+                
                 $scope.dataPerido = data.periodo;
                 $scope.digitadores = data.digitadores; 
                 $scope.proveedores = data.proveedores.concat(data.proveedoresInformales);
@@ -234,7 +237,7 @@
                 
                 $scope.tiposProveedoresInfo = [];
                 for(var i=0; i<data.tiposProveedores.length; i++){
-                    $scope.tiposProveedoresInfo.push( { id:data.tiposProveedores[i].id , nombre:data.tiposProveedores[i].tipo_proveedores_con_idiomas[0].nombre, cantidad:0 } );
+                    $scope.tiposProveedoresInfo.push( { id:data.tiposProveedores[i].id , nombre:data.tiposProveedores[i].tipo_proveedores_con_idiomas[0].nombre, cantidad:[0,0] } );
                 }
                 $("body").attr("class", "cbp-spmenu-push");
                 
@@ -258,6 +261,7 @@
                     var link = document.createElement("a");
                     link.download = "mapa.kml";
                     link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(geojson);
+                    link.download = $scope.dataPerido.nombre + ".kml";
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -265,6 +269,42 @@
                 });
             
         }
+        
+        $scope.exportarFileExcelZona = function(zona){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiMuestra.getExcel( zona.id )
+                .then(function(response){ 
+                    var link = document.createElement("a");
+                    link.href = window.URL.createObjectURL(response);
+                    link.download = zona.nombre;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    $("body").attr("class", "cbp-spmenu-push");
+                    zona.es_generada = true;
+                });
+            
+        }
+        
+        $scope.exportarFileExcelGeneral = function(){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiMuestra.getExcelGeneral( $("#periodo").val() )
+                .then(function(response){ 
+                    var link = document.createElement("a");
+                    link.href = window.URL.createObjectURL(response);
+                    link.download = $scope.dataPerido.nombre;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    $("body").attr("class", "cbp-spmenu-push");
+                });
+            
+        }
+        
         
         $scope.openMensajeAddZona = function(){
             
@@ -295,7 +335,7 @@
             
             swal({ 
                     title: "Agregar proveedor informal", 
-                    text: "Por favor primero seleccione la unicación en el mapa.", 
+                    text: "Por favor primero seleccione la ubicación en el mapa.", 
                     type: "info", 
                     showCancelButton: true,
                     confirmButtonText: "Ok",
@@ -357,7 +397,7 @@
             
             if(pro){
                 $scope.proveedorInformal = angular.copy(pro);
-                $scope.TipoProveedorInformal.select = $scope.buscarAbjetoInArray( $scope.tiposProveedores, pro.categoria.tipo_proveedores_id );
+                $scope.TipoProveedorInformal.select = $scope.buscarAbjetoInArray( $scope.tiposProveedores, pro.idtipo );
             }
             else{
                 $scope.proveedorInformal = { latitud: $scope.figura.position.lat(),  longitud: $scope.figura.position.lng() };
@@ -406,13 +446,9 @@
                             }
                             else{
                                 for(var i=0; i<$scope.proveedores.length; i++){
-                                    if( $scope.proveedores[i].id==data.proveedor.id && !$scope.proveedores[i].numero_rnt ){
-                                        $scope.proveedores[i].razon_social = data.proveedor.razon_social;
-                                        $scope.proveedores[i].direccion = data.proveedor.direccion; 
-                                        $scope.proveedores[i].telefono = data.proveedor.telefono; 
-                                        $scope.proveedores[i].categoria_proveedor_id = data.proveedor.categoria_proveedor_id; 
-                                        $scope.proveedores[i].categoria = data.proveedor.categoria; 
-                                        $scope.proveedores[i].tipoCategoria = data.proveedor.tipoCategoria;
+                                    if( $scope.proveedores[i].id==data.proveedor[0].id && !$scope.proveedores[i].rnt ){
+                                        $scope.proveedores[i] = data.proveedor[0];
+                                        $scope.proveedor = $scope.proveedores[i] ;
                                         break;
                                     }
                                 }
@@ -463,7 +499,7 @@
                             $scope.cancelarAgregarZonaPRoveedor();
                         }
                         else {
-                            if(data.Error){
+                            if(data.error){
                                 swal("Error", data.error, "error"); 
                             }
                             else{
@@ -557,19 +593,19 @@
             var sw0 = 0; var sw1 = 0; var sw2 = 0; var sw3 = 0; var sw4 = 0;
             
             if( $scope.filtro.tipoProveedores!=1){
-                sw0 = (($scope.filtro.tipoProveedores==2 && pro.numero_rnt) || ($scope.filtro.tipoProveedores==3 && !pro.numero_rnt)) ? 1 : -1;
+                sw0 = (($scope.filtro.tipoProveedores==2 && pro.rnt) || ($scope.filtro.tipoProveedores==3 && !pro.rnt)) ? 1 : -1;
             }
             
             if($scope.filtro.tipo.length>0){
-                sw1 = $scope.filtro.tipo.indexOf(pro.categoria.tipo_proveedores_id);
+                sw1 = $scope.filtro.tipo.indexOf(pro.idtipo);
                 
                 if($scope.filtro.categorias.length>0){
-                    sw1 =  $scope.filtro.categorias.indexOf(pro.categoria_proveedores_id);
+                    sw1 =  $scope.filtro.categorias.indexOf(pro.idcategoria);
                 }
             }
             
             if($scope.filtro.estados.length>0){
-                sw2 = $scope.filtro.estados.indexOf(pro.estados_proveedor_id);
+                sw2 = $scope.filtro.estados.indexOf(pro.idestado);
             }
             
             if($scope.filtro.municipios.length>0){
@@ -618,15 +654,33 @@
             $scope.filtro = { tipo:[], categorias:[], estados:[], municipios:[], sectoresProv:[], verZonas:true, sectores:[], encargados:[], tipoProveedores:1 };
         }
         
-        $scope.getIcono = function( estado ){
-            var icono = null;
-            switch ( estado ) {
-                case 1: icono = "/Content/IconsMap/green.png";  break;
-                case 2: icono = "/Content/IconsMap/yellow.png"; break;
-                case 3: icono = "/Content/IconsMap/red.png";    break;
-                default: break;
+        $scope.getIcono = function( p ){
+            
+            var ruta = "/Content/IconsMap/";
+            
+            switch ( p.idtipo ) {
+                case 1: ruta += "alojamientos/"; break;
+                case 2: ruta += "gastronomicos/"; break;
+                case 3: ruta += "agencias_viajes/"; break;
+                case 4: ruta += "esparcimiento/"; break;
+                case 5: ruta += "arrendadores_vehiculos/"; break;
+                default: return null;
             }
-            return  icono ? { url: "\""+icono+"\"" } : null;
+            
+            if(p.rnt){
+                switch ( p.idestado ) {
+                    case 1: ruta += "activo.png";     break;  // Activo
+                    case 2: ruta += "cancelado.png";  break;  // Nnulado
+                    case 3: ruta += "cancelado.png";  break;  // Cancelado
+                    case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
+                    case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
+                    case 6: ruta += "cancelado.png";  break;  // Suspendido
+                    default: return null;
+                }
+            }
+            else{ ruta += "informal.png";  }
+            
+            return  ruta;
         }
         
         $scope.getCoordenadas = function(coordenadas){
@@ -652,13 +706,14 @@
             }
             $scope.proveedor = proveedor;
             $scope.indexEditarProveedor = index;
-            document.getElementById("mySidenav").style.width = "30%";
+            document.getElementById("mySidenav").style.width = "350px";
             $scope.detalleZona = null;
         }  
         
         $scope.showInfoNumeroPS = function(event, zona, proveedores){
             
-            var numeroPrestadores = 0 ;
+            var numeroPrestadoresFormales = 0 ;
+            var numeroPrestadoresInformales = 0 ;
             
             var tiposProveedores = angular.copy($scope.tiposProveedoresInfo);
             var estadosProveedores =  angular.copy($scope.estados);
@@ -669,15 +724,20 @@
                 
                 var point = new google.maps.LatLng( proveedores[i].latitud , proveedores[i].longitud );
                 if( google.maps.geometry.poly.containsLocation( point , this) ){
-                    numeroPrestadores++;
+                    
                     for(var j=0; j<tiposProveedores.length; j++){ 
-                        if(tiposProveedores[j].id==proveedores[i].categoria.tipo_proveedores_id){
-                            tiposProveedores[j].cantidad += 1; 
+                        
+                        if(tiposProveedores[j].id==proveedores[i].idtipo){
+                            
+                            if(proveedores[i].rnt){ tiposProveedores[j].cantidad[0] += 1; numeroPrestadoresFormales+=1; }
+                            else{ tiposProveedores[j].cantidad[1] += 1; numeroPrestadoresInformales+=1; }
+                            break;
                         }
+                        
                     }  
                     
                     for(var j=0; j< estadosProveedores.length; j++){ 
-                        if( estadosProveedores[j].id == $scope.proveedores[i].estados_proveedor_id ){
+                        if( estadosProveedores[j].id == $scope.proveedores[i].idestado ){
                             estadosProveedores[j].cantidad += 1; break;
                         }
                     } 
@@ -688,9 +748,10 @@
             $scope.detalleZona = angular.copy(zona);
             $scope.detalleZona.tiposProveedores = tiposProveedores;
             $scope.detalleZona.estadosProveedores = estadosProveedores;
-            $scope.detalleZona.total = numeroPrestadores;
+            $scope.detalleZona.numeroPrestadoresFormales = numeroPrestadoresFormales;
+            $scope.detalleZona.numeroPrestadoresInformales = numeroPrestadoresInformales;
             
-            document.getElementById("mySidenav").style.width = "30%";
+            document.getElementById("mySidenav").style.width = "350px";
             $scope.proveedor = null;
         }  
         
@@ -851,14 +912,19 @@
                     var point = new google.maps.LatLng( $scope.proveedores[k].latitud , $scope.proveedores[k].longitud );
                     if( google.maps.geometry.poly.containsLocation( point , zona ) ){
                         
+                        
+                        
                         for(var j=0; j< tiposProveedores.length; j++){ 
-                            if( tiposProveedores[j].id == $scope.proveedores[k].categoria.tipo_proveedores_id ){
-                                tiposProveedores[j].cantidad += 1;  break;
+                            if(tiposProveedores[j].id==$scope.proveedores[i].idtipo){
+                            
+                                if($scope.proveedores[k].rnt){ tiposProveedores[j].cantidad[0] += 1; }
+                                else{ tiposProveedores[j].cantidad[1] += 1; }
+                                break;
                             }
                         }  
                         
                         for(var j=0; j< estadosProveedores.length; j++){ 
-                            if( estadosProveedores[j].id == $scope.proveedores[k].estados_proveedor_id ){
+                            if( estadosProveedores[j].id == $scope.proveedores[k].idestado ){
                                 estadosProveedores[j].cantidad += 1; break;
                             }
                         } 
@@ -881,35 +947,88 @@
         
         $scope.getCantidadPorTipo = function(id){
             
-            var s = 0;
+            var sT = 0;
+            var sF = 0;
+            var sI = 0;
+            
             for (var i = 0; i < $scope.proveedores.length; i++) {
-                if(  $scope.proveedores[i].categoria.tipo_proveedores_id==id && 
-                        ( 
-                            ( $scope.filtro.tipoProveedores==1 ) || 
-                            ( $scope.filtro.tipoProveedores==2 &&  $scope.proveedores[i].numero_rnt ) ||
-                            ( $scope.filtro.tipoProveedores==3 && !$scope.proveedores[i].numero_rnt )
-                        ) 
-                ){  s+=1;  }
+                if( $scope.proveedores[i].idtipo==id ){  
+                    sT+=1;  
+                    if($scope.proveedores[i].rnt){ sF+=1; }
+                    else{ sI+=1; }
+                }
             }
-            return s;
+            
+            if( $scope.filtro.tipoProveedores==1 ){
+                return "<b>Total: </b>"+sT + ", Formales: "+sF+", Informales: "+sI;
+            }
+            else if( $scope.filtro.tipoProveedores==2 ){
+                return "<b>Formales: </b>"+sF;
+            }
+            else{
+                return "<b>Informales: </b>"+sI;
+            }
         }
         
         $scope.getCantidadPorCategoria = function(id){
             
-            var s = 0;
+            var sT = 0;
+            var sF = 0;
+            var sI = 0;
+            
             for (var i = 0; i < $scope.proveedores.length; i++) {
-                if( $scope.proveedores[i].categoria_proveedores_id==id ){  s+=1;  }
+                
+                if( $scope.proveedores[i].idcategoria==id ){  
+                    sT+=1;  
+                    if($scope.proveedores[i].rnt){ sF+=1; }
+                    else{ sI+=1; }
+                }
             }
-            return s;
+            
+            if( $scope.filtro.tipoProveedores==1 ){
+                return "<b>Total: </b>"+sT  + ", Formales: "+sF+", Informales: "+sI+"";
+            }
+            else if( $scope.filtro.tipoProveedores==2 ){
+                return "<b>Formales: </b>"+sF;
+            }
+            else{
+                return "<b>Informales: </b>"+sI;
+            }
+            
         }
         
         $scope.getCantidadPorEstado = function(id){
             
             var s = 0;
             for (var i = 0; i < $scope.proveedores.length; i++) {
-                if( $scope.proveedores[i].estados_proveedor_id==id ){  s+=1;  }
+                if( $scope.proveedores[i].idestado==id ){  s+=1;  }
             }
             return s;
+        }
+        
+        $scope.getCantidadPorMunicipio = function(id){
+            
+            var sT = 0;
+            var sF = 0;
+            var sI = 0;
+            
+            for (var i = 0; i < $scope.proveedores.length; i++) {
+                if( $scope.proveedores[i].municipio_id==id ){  
+                    sT+=1;  
+                    if($scope.proveedores[i].rnt){ sF+=1; }
+                    else{ sI+=1; }
+                }
+            }
+            
+            if( $scope.filtro.tipoProveedores==1 ){
+                return "<b>Total: </b>"+sT + ", Formales: "+sF+", Informales: "+sI;
+            }
+            else if( $scope.filtro.tipoProveedores==2 ){
+                return "<b>Formales: </b>"+sF;
+            }
+            else{
+                return "<b>Informales: </b>"+sI;
+            }
         }
         
         
@@ -926,6 +1045,17 @@
             
         });
         
+        
+        $scope.centerMapa = function(){
+            if($scope.proveedoresFiltrados.length>0){
+                $timeout(function() {
+                    if($scope.proveedoresFiltrados.length>0){
+                        $scope.centro = [$scope.proveedoresFiltrados[0].latitud, $scope.proveedoresFiltrados[0].longitud];
+                    }
+                },1000);
+                
+            }
+        }
         
         $scope.buscarAbjetoInArray = function(array, id){
             for(var j=0; j<array.length; j++){
@@ -954,7 +1084,7 @@
                 for(var i=0; i< data.periodo.zonas.length; i++){
                     data.periodo.zonas[i].coordenadas = $scope.getCoordenadas(data.periodo.zonas[i].coordenadas);
                     
-                    if( $scope.sectoresZonas.indexOf( data.periodo.zonas[i].sector_id )==-1 && data.periodo.zonas[i].sector_id ){
+                    if( $scope.sectoresZonasIDS.indexOf( data.periodo.zonas[i].sector_id )==-1 && data.periodo.zonas[i].sector_id ){
                         $scope.sectoresZonasIDS.push( data.periodo.zonas[i].sector_id );
                         $scope.sectoresZonas.push( $scope.getSector(data.sectores,data.periodo.zonas[i].sector_id) );
                     }
@@ -1079,15 +1209,26 @@
             $scope.filtro = { tipo:[], categorias:[], estados:[], sectoresProv:[], verZonas:true, sectores:[], encargados:[] };
         }
         
-        $scope.getIcono = function( estado ){
-            var icono = null;
-            switch ( estado ) {
-                case 1: icono = "/Content/IconsMap/green.png";  break;
-                case 2: icono = "/Content/IconsMap/yellow.png"; break;
-                case 3: icono = "/Content/IconsMap/red.png";    break;
-                default: break;
+        $scope.getIcono = function( p ){
+            
+            var ruta = "/Content/IconsMap/";
+            
+            switch ( p.idtipo ) {
+                case 1: ruta += "alojamientos/";  break;
+                default: return null;
             }
-            return  icono ? { url: "\""+icono+"\"" } : null;
+            
+            if(!p.rnt){
+                    switch ( p.idestado ) {
+                        case 1: ruta += "activo.png";  break;
+                        case 3: ruta += "cancelado.png";  break;
+                        case 5: ruta += "pendiente.png";  break;
+                        default:return null;
+                    }
+            }
+            else{ ruta += "informal.png";  }
+            
+            return  ruta;
         }
         
         $scope.getCoordenadas = function(coordenadas){
@@ -1108,7 +1249,7 @@
         
         $scope.showInfoMapa = function(event, proveedor){
             $scope.proveedor = proveedor;
-            document.getElementById("mySidenav").style.width = "30%";
+            document.getElementById("mySidenav").style.width = "350px";
             $scope.detalleZona = null;
         }  
         
@@ -1146,7 +1287,7 @@
             $scope.detalleZona.estadosProveedores = estadosProveedores;
             $scope.detalleZona.total = numeroPrestadores;
             
-            document.getElementById("mySidenav").style.width = "30%";
+            document.getElementById("mySidenav").style.width = "350px";
             $scope.proveedor = null;
         }  
         
@@ -1325,13 +1466,16 @@
     
     .controller("LlenatInfoZonaCtrl", ["$scope","ServiMuestra", function($scope,ServiMuestra){
         
+        $("body").attr("class", "cbp-spmenu-push charging");
         
         ServiMuestra.getDataLLenarInfoZona( $("#id").val() )
             .then(function(data){ 
                 $scope.zona = data.zona; 
                 $scope.proveedores = data.proveedores; 
+                $scope.proveedoresInformales = data.proveedoresInformales; 
                 $scope.tiposProveedores = data.tiposProveedores;
                 $scope.estados = data.estados;
+                $("body").attr("class", "cbp-spmenu-push");
             });
         
         $scope.openModalEditPeriodo = function (item, index) {
@@ -1355,7 +1499,8 @@
             
             var data = {
                 zona: $("#id").val(),
-                proveedores: $scope.proveedores
+                proveedores: $scope.proveedores,
+                proveedoresInformales: $scope.proveedoresInformales,
             };
             
             ServiMuestra.guardarDataInfoZona(data)
@@ -1384,12 +1529,45 @@
             
             if(id){
                 for(var i=0; i<$scope.tiposProveedores.length; i++){
-                    if($scope.tiposProveedores[i].id==id){ return $scope.tiposProveedores[i]; }
+                    for(var j=0; j<$scope.tiposProveedores[i].categoria_proveedores.length; j++){
+                        if($scope.tiposProveedores[i].categoria_proveedores[j].id==id){ return $scope.tiposProveedores[i]; }
+                    }
                 }
             }
             return null;
         }
-      
+        
+        
+        $scope.exportarFileExcelZona = function(){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiMuestra.getExcelZona( $scope.zona.id )
+                .then(function(response){ 
+                    var link = document.createElement("a");
+                    link.href = window.URL.createObjectURL(response);
+                    link.download = $scope.zona.nombre;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    $("body").attr("class", "cbp-spmenu-push");
+                    zona.es_generada = true;
+                });
+            
+        }
+        
     }]) 
-     
+    
+    .directive('htmldiv', function($compile, $parse) {
+        return {
+          restrict: 'E',
+          link: function(scope, element, attr) {
+            scope.$watch(attr.content, function() {
+              element.html($parse(attr.content)(scope));
+              $compile(element.contents())(scope);
+            }, true);
+          }
+        }
+    });
+    
 }());
