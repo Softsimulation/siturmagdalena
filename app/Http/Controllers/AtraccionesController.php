@@ -33,17 +33,35 @@ class AtraccionesController extends Controller
     public function getVer($id){
         $atraccion = Atracciones::with(['sitio' => function ($querySitio){
             $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
-                $querySitiosConIdiomas->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');
+                $querySitiosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');
             }, 'multimediaSitios' => function($queryMultimediaSitios){
-                $queryMultimediaSitios->select('sitios_id', 'ruta');
-            }])->select('id');
+                $queryMultimediaSitios->select('sitios_id', 'ruta')->orderBy('portada')->where('tipo', false);
+            }, 'sitiosConActividades' => function ($querySitiosConActividades){
+                $querySitiosConActividades->with(['actividadesConIdiomas' => function($queryActividadesConIdiomas){
+                    $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre');
+                }, 'multimediasActividades' => function($queryMultimediasActividades){
+                    $queryMultimediasActividades->where('portada', true)->select('actividades_id', 'ruta');
+                }])->select('actividades.id');
+            }])->select('id', 'longitud', 'latitud');
         }, 'atraccionesConIdiomas' => function ($queryAtraccionesConIdiomas){
-            $queryAtraccionesConIdiomas->select('atracciones_id', 'idiomas_id'  , 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
+            $queryAtraccionesConIdiomas->orderBy('idiomas_id')->select('atracciones_id', 'idiomas_id'  , 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
         }])->where('id', $id)->select('id', 'sitios_id', 'calificacion_legusto')->first();
         
-        //return ['atraccion' => $atraccion];
+        $video_promocional = Atracciones::where('id', $id)->with(['sitio' => function($querySitio){
+            $querySitio->with(['multimediaSitios' => function ($queryMultimediaSitios){
+                $queryMultimediaSitios->where('tipo', true);
+            }]);
+        }])->first()->sitio->multimediaSitios;
         
-        return view('atracciones.Ver', ['atraccion' => $atraccion]);
+        if (count($video_promocional) > 0){
+            $video_promocional = $video_promocional[0]->ruta;
+        }else {
+            $video_promocional = null;
+        }
+        
+        //return ['atraccion' => $atraccion, 'video_promocional' => $video_promocional];
+        
+        return view('atracciones.Ver', ['atraccion' => $atraccion, 'video_promocional' => $video_promocional]);
     }
     
 }
