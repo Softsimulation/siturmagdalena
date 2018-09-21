@@ -48,6 +48,8 @@ Route::controller('/administrarpaises', 'AdministrarPaisesController');
 // Public Jáder
 Route::controller('/atracciones', 'AtraccionesController');
 
+Route::controller('/actividades', 'ActividadesController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
