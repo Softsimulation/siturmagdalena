@@ -136,6 +136,7 @@
             <div id="nav-menu-main">
                 <nav role="navigation">
                     <ul role="menubar">
+                        <!--
                         <li>
                             <a role="menuitem" href="#menuPromocion" aria-haspopup="true" aria-expanded="false">Promoción</a>
                             <ul role="menu" id="menuPromocion" aria-label="Promoción">
@@ -160,6 +161,8 @@
                             <a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedores')}}">Oferta y empleo</a>
                         
                         </li>
+                        -->
+                        
                         <li>
                             <a role="menuitem" href="#menuSostenibilidad" aria-haspopup="true" aria-expanded="false">Sostenibilidad</a>
                             <ul role="menu" id="menuSostenibilidad" aria-label="Sostenibilidad">
@@ -169,6 +172,7 @@
                                 </li>
                             </ul>
                         </li>
+                        <!--
                         <li>
                             <a role="menuitem" href="#menuMuestraMaestra" aria-haspopup="true" aria-expanded="false">Muestra maestra</a>
                             <ul role="menu" id="menuMuestraMaestra" aria-label="Muestra maestra">
@@ -204,6 +208,7 @@
                         <li>
                             <a role="menuitem" href="{{asset('/EstadisticasSecundarias/configuracion')}}">Estadisticas Secundarias</a>
                         </li>
+                        -->
                     </ul>
                 </nav>
             </div>
