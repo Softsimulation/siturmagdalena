@@ -27,7 +27,8 @@ class UsuarioController extends Controller
     }
     public function getListadousuarios(){
         //return $this->user;
-        return view('usuario.Listado');
+        //return view('usuario.Listado');
+        return redirect('/sostenibilidadhogares/encuestas');
     }
     public function getGuardar(){
         return view('usuario.Guardar');

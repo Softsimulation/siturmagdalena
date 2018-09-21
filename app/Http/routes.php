@@ -1,5 +1,5 @@
 <?php
-
+/*
 
 Route::get('/Mapa', 'MapaCtrl@getIndex');
 Route::get('/Mapa/getData', 'MapaCtrl@getData');
@@ -15,8 +15,10 @@ Route::controller('/turismointerno','TurismoInternoController');
 Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
+*/
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
+/*
 
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
@@ -26,9 +28,11 @@ Route::controller('/administradordestinos', 'AdministradorDestinosController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
-
+*/
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
+
+/*
 
 Route::controller('/importarRnt','ImportacionRntController');
 
@@ -67,8 +71,9 @@ Route::controller('/informes','InformesCtrl');
 
 
 Route::controller('/bolsaEmpleo','BolsaEmpleoController');
-
+*/
 Route::controller('/usuario','UsuarioController');
+/*
 Route::controller('/email','EmailController');
 Route::controller('/login','LoginController');
 Route::controller('/noticias','NoticiaController');
@@ -99,4 +104,4 @@ Route::group(['middleware' => 'cors'], function(){
    Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
   
 });
-
+*/
