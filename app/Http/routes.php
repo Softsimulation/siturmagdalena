@@ -50,6 +50,8 @@ Route::controller('/atracciones', 'AtraccionesController');
 
 Route::controller('/actividades', 'ActividadesController');
 
+Route::controller('/destinos', 'DestinosController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
