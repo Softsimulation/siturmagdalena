@@ -19,6 +19,10 @@ class DestinosController extends Controller
             $queryDestinoConIdiomas->orderBy('idiomas_id')->select('destino_id', 'idiomas_id', 'nombre', 'descripcion');
         }, 'multimediaDestinos' => function ($queryMultimediaDestinos){
             $queryMultimediaDestinos->where('tipo', false)->orderBy('portada')->select('destino_id', 'ruta');
+        }, 'sectores' => function($querySectores){
+            $querySectores->with(['sectoresConIdiomas' => function($querySectoresConIdiomas){
+                $querySectoresConIdiomas->select('idiomas_id', 'sectores_id', 'nombre');
+            }])->select('id', 'destino_id', 'es_urbano');
         }])->select('id', 'tipo_destino_id', 'latitud', 'longitud')->first();
         
         $video_promocional = Destino::where('id', $id)->with(['multimediaDestinos' => function($queryMultimediaDestinos){

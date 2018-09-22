@@ -32,4 +32,13 @@
         Longitud: {{$destino->longitud}} <br/>
         Latitud: {{$destino->latitud}}
     </div>
+    <br/>
+    <h4>Sectores: </h4>
+    <div class="row">
+        @foreach ($destino->sectores as $sector)
+        <div class="col-sm-12 col-md-12 col-xs-12">
+            {{$sector->sectoresConIdiomas[0]->nombre}}
+        </div>
+        @endforeach
+    </div>
 @endsection
