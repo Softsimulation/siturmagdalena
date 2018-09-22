@@ -21,7 +21,7 @@ class RutasTuristicasController extends Controller
             }])->select('atracciones.id', 'atracciones.sitios_id');
         }])->select('id', 'portada')->first();
         
-        //return ['ruta' => $ruta];
+        //it statusreturn ['ruta' => $ruta];
         return view('rutas.Ver', ['ruta' => $ruta]);
     }
 }
