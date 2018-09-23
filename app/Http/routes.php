@@ -54,6 +54,8 @@ Route::controller('/destinos', 'DestinosController');
 
 Route::controller('/rutas', 'RutasTuristicasController');
 
+Route::controller('/eventos', 'EventosController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
