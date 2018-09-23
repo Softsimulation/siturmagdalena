@@ -70,7 +70,7 @@ angular.module('sostenibilidadHogar.economico', [])
                 });
                 setTimeout(function () {
                     window.location = "/sostenibilidadhogares/encuestas";
-                }, 1000);
+                }, 500);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");
                 $scope.errores = data.errores;

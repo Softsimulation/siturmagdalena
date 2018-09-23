@@ -62,6 +62,8 @@
                             <td>@{{item.tipos_cargos_vacante.nombre}}</td>
                             <td ng-if="item.es_publico">Publicado</td><td ng-if="!item.es_publico">NO Publicado</td>
                             <td style="text-align: center;">
+                                <a class="btn" title="Publicar" ng-click="cambiarEstadoPublicar(item)" ng-if="!item.es_publico"><span class="glyphicon glyphicon-ok"></span></a>
+                                <a class="btn" title="Quitar publicación" ng-click="cambiarEstadoPublicar(item)" ng-if="item.es_publico"><span class="glyphicon glyphicon-remove"></span></a>
                                 <a class="btn" title="Activar" ng-click="cambiarEstado(item)" ng-if="!item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-open"></span></a>
                                 <a class="btn" title="Desactivar" ng-click="cambiarEstado(item)" ng-if="item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-close"></span></a>
                                 <a class="btn" href="/bolsaEmpleo/editarvacante/@{{item.id}}" title="Editar vacnte" ><span class="glyphicon glyphicon-pencil"></span></a>

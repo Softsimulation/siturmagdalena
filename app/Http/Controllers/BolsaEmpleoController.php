@@ -202,7 +202,7 @@ class BolsaEmpleoController extends Controller
 		return ["success" => true];
     }
     
-    public function postCambiarestadopublicovacante(){
+    public function postCambiarestadopublicovacante(Request $request){
     	$validator = \Validator::make($request->all(), [
             'id' => 'required|exists:ofertas_vacantes,id',
     	],[
@@ -213,8 +213,14 @@ class BolsaEmpleoController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		
 		$vacante = Oferta_Vacante::find($request->id);
+		
+		if(isset($vacante->fecha_vencimiento)){
+		    if($vacante->fecha_vencimiento < date('d-m-Y') ){
+    		    return ["success"=>false,"errores"=> [ ["No se puede publicar una vacante cuya fecha de vencimiento es menor a la actual."] ] ];
+    		}
+		}
+		
 		$vacante->es_publico = !$vacante->es_publico;
 		$vacante->save();
 		

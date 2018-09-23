@@ -69,5 +69,16 @@ app.factory("bolsaEmpleoServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        cambiarEstadoPublicar: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/bolsaEmpleo/cambiarestadopublicovacante',data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

@@ -40,7 +40,7 @@ app.factory("sostenibilidadHogarServi", ["$http", "$q", function ($http, $q) {
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/sostenibilidadhogares/guardarencuesta',data).success(function (data) {
+            $http.post('/sostenibilidadhogares/editarencuesta',data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
