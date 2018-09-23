@@ -273,7 +273,7 @@ class TurismoReceptorCorsController extends Controller
             $visitante['Destino'] = $visitanteCargar->destino_principal;
             $visitante['ocupacion_persona_id'] = $visitanteCargar->ocupacion_persona_id;
             $visitante['DepartamentoDestino'] = $visitanteCargar->municipioPrincipal!=null?$visitanteCargar->municipioPrincipal->departamento_id : null;
-            $visitante['Salud'] = count($visitanteCargar->tiposAtencionSaluds) > 0 ? $visitanteCargar->tiposAtencionSaluds->take(1)->id : null;
+            $visitante['Salud'] = count($visitanteCargar->tiposAtencionSaluds) > 0 ? $visitanteCargar->tiposAtencionSaluds->first()->id : null;
             $visitante['Horas'] = $visitanteCargar->visitantesTransito != null ? $visitanteCargar->visitantesTransito->horas_transito : null ;
             $visitante['Otro'] = $visitanteCargar->otrosMotivo != null ? $visitanteCargar->otrosMotivo->otro_motivo : null ;
             
@@ -1239,7 +1239,7 @@ class TurismoReceptorCorsController extends Controller
 			'Recomienda' => 'required|exists:volveria_visitar,id',
 			'VecesVisitadas' => 'required',
 			'OtroElementos' => 'max:100',
-			'Actividades' => 'exists:actividades_sostenibilidad,id',
+			'Actividades' => 'array|exists:actividades_sostenibilidad,id',
 			//'Evaluacion' => 'required',
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',

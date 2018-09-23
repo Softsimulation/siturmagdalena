@@ -41,12 +41,7 @@ class SostenibilidadHogaresController extends Controller
         
         $this->middleware('auth');
         $this->middleware('role:Admin');
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
-        }
-        
-        
-        
+        $this->user = Auth::user();
     }
     
     public function getCrear(){
@@ -178,21 +173,21 @@ class SostenibilidadHogaresController extends Controller
         $estratos = Estrato::all();
         $barrios = Barrio::all();
         $criterios = Criterio_Calificacion::all();
-        $culturales = Accion_Cultural::where('estado',true)->get();
+        $culturales = Accion_Cultural::where('estado',true)->where('es_hogar', true)->get();
         $social = Componente_Social::find($id);
         $casa = Casa_Sostenibilidad::find($id);
         $factores = Factor_Calidad::where('estado',true)->where('tipo_factor_id','!=',3)->get();
         $riesgos = Tipo_Riesgo::where('categorias_riesgo_id',1)->get();
         $factoresPositivos = Factor_Calidad::where('estado',true)->where('tipo_factor_id',3)->get();
         $calificacionFactor = Calificacion_Factor::where('estado',true)->get();
-        $beneficios = Beneficio::where('tipo_beneficio',false)->orderBy('peso')->get();
+        $beneficios = Beneficio::where('tipo_beneficio',false)->where('id', '<>',25)->where('id', '<>',27)->orderBy('peso')->get();
         
         
         
         if($social != null){
         	$social["culturales"]= $casa->accionesCulturales()->pluck('id')->toArray();
 	        $social["otroCultura"]=null;
-	        if(in_array(8,$social["culturales"])){
+	        if(in_array(9,$social["culturales"])){
 	           $social["otroCultura"]= $casa->accionesCulturales()->wherePivot('otro','!=',null)->first() != null ? $casa->accionesCulturales()->wherePivot('otro','!=',null)->first()->pivot->otro : null;
 	        }
 	        
@@ -292,7 +287,7 @@ class SostenibilidadHogaresController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		if(in_array(8,$request->culturales) && !isset($request->otroCultura) ){
+		if(in_array(9,$request->culturales) && !isset($request->otroCultura) ){
 			return ["success" => false, "errores" => [["El campo otro en las acciones culturales es requerido."]] ];
 		}
 		
@@ -392,7 +387,7 @@ class SostenibilidadHogaresController extends Controller
 		$casa->accionesCulturales()->detach();
 		
 		foreach($request->culturales as $it){
-			if($it==8){
+			if($it==9){
 				$casa->accionesCulturales()->attach($it,['otro'=>$request->otroCultura]);
 			}else{
 				$casa->accionesCulturales()->attach($it);
@@ -550,7 +545,7 @@ class SostenibilidadHogaresController extends Controller
     public function getInfocomponenteambiental($id){
     	
     	 $criterios = Criterio_Calificacion::all();
-    	 $actividades = Actividad_Medio_Ambiente::all();
+    	 $actividades = Actividad_Medio_Ambiente::where('es_hogar', true)->get();
     	 $acciones = Accion_Ambiental::where('estado',true)->get();
     	 $riesgos = Tipo_Riesgo::where('categorias_riesgo_id',2)->get();
     	 $casa = Casa_Sostenibilidad::find($id);
@@ -560,7 +555,7 @@ class SostenibilidadHogaresController extends Controller
     	 	
     	 	$ambiente["actividades"]= $casa->actividadesAmbientales()->pluck('id')->toArray();
 	        $ambiente["otroActividad"]=null;
-	        if(in_array(7,$ambiente["actividades"])){
+	        if(in_array(6,$ambiente["actividades"])){
 	           $ambiente["otroActividad"]= $casa->actividadesAmbientales()->wherePivot('otro','!=',null)->first() != null ? $casa->actividadesAmbientales()->wherePivot('otro','!=',null)->first()->pivot->otro : null;
 	        }
 	        
@@ -613,7 +608,7 @@ class SostenibilidadHogaresController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		if(in_array(7,$request->actividades) && !isset($request->otroActividad) ){
+		if(in_array(6,$request->actividades) && !isset($request->otroActividad) ){
 			return ["success" => false, "errores" => [["El campo otro en las actividades de medio ambiente es requerido."]] ];
 		}
 		if(in_array(15,$request->residuos) && !isset($request->otroAccion1) ){
@@ -657,7 +652,7 @@ class SostenibilidadHogaresController extends Controller
 		$casa->actividadesAmbientales()->detach();
 		
 		foreach($request->actividades as $it){
-			if($it==7){
+			if($it==6){
 				$casa->actividadesAmbientales()->attach($it,['otro'=>$request->otroActividad]);
 			}else{
 				$casa->actividadesAmbientales()->attach($it);
@@ -749,7 +744,7 @@ class SostenibilidadHogaresController extends Controller
     public function getCargardatoseconomico($id){
     	$sectoresTurismo = Sectores_Turismo::all();
     	$sectoresEconomia = Sectores_Economia::all();
-    	$beneficios = Beneficio::where('tipo_beneficio',true)->orderBy('peso')->get();
+    	$beneficios = Beneficio::where('tipo_beneficio',true)->where('id', '<>',26)->where('id', '<>',28)->orderBy('peso')->get();
     	$calificacionesFactor = Calificacion_Factor::all();
     	$tiposRiesgos = Tipo_Riesgo::where('categorias_riesgo_id',3)->get();
     	$criteriosCalificacion = Criterio_Calificacion::all();

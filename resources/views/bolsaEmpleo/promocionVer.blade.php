@@ -14,18 +14,18 @@
     <br><br>
     <div class="row">
         <div class="col-md-4">
-            <p>Apertura: {{$vacante->fecha_inicio}}</p>
-            @if(isset($vacante->fecha_fin))<p>Cierre: {{$vacante->fecha_fin}}</p>@endif
+            @if(isset($vacante->fecha_vencimiento))<p>Cierre: {{$vacante->fecha_vencimiento}}</p>@endif
             <p>Lugar: {{$vacante->municipio->nombre}}, {{$vacante->municipio->departamento->nombre}}</p>
             <p>Nivel de educación: {{$vacante->nivelEducacion->nombre}}</p>
             <p>No. de vacantes: {{$vacante->numero_vacantes}}</p>
-            @if(isset($vacante->salario))<p>Salario: {{$vacante->salario}}</p>@endif
+            @if(isset($vacante->salario_minimo))<p>Salario mínimo: {{$vacante->salario_minimo}}</p>@endif
+            @if(isset($vacante->salario_maximo))<p>Salario mínimo: {{$vacante->salario_maximo}}</p>@endif
             <p>Años de experiencia: {{$vacante->anios_experiencia}}</p>
         </div>
         <div class="col-md-4">
             <p>
                 Perfil:
-                {{$vacante->perfil}}
+                {{$vacante->descripcion}}
             </p>
             <p>
                 Requisitos:
@@ -39,6 +39,7 @@
         @foreach($otrasVacantes as $otraVacante)
             <div class="col-md-4">
                 <p>{{$otraVacante->nombre}}</p>
+                <p>{{$otraVacante->descripcion}}</p>
             </div>
         @endforeach
     </div>
