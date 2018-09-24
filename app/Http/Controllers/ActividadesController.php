@@ -14,7 +14,7 @@ class ActividadesController extends Controller
         $actividad = Actividades::with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas){
             $queryActividadesConIdiomas->orderBy('idiomas')->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
         }, 'multimediasActividades' => function($queryMultimediasActividades){
-            $queryMultimediasActividades->orderBy('portada')->select('actividades_id', 'ruta');
+            $queryMultimediasActividades->orderBy('portada', 'desc')->select('actividades_id', 'ruta');
         }])->where('id', $id)->select('id', 'valor_min', 'valor_max')->first();
         
         return view('actividades.Ver', ['actividad' => $actividad]);

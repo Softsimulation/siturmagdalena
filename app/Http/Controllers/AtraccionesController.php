@@ -35,7 +35,7 @@ class AtraccionesController extends Controller
             $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
                 $querySitiosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');
             }, 'multimediaSitios' => function($queryMultimediaSitios){
-                $queryMultimediaSitios->select('sitios_id', 'ruta')->orderBy('portada')->where('tipo', false);
+                $queryMultimediaSitios->select('sitios_id', 'ruta')->orderBy('portada', 'desc')->where('tipo', false);
             }, 'sitiosConActividades' => function ($querySitiosConActividades){
                 $querySitiosConActividades->with(['actividadesConIdiomas' => function($queryActividadesConIdiomas){
                     $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre');
