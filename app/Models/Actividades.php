@@ -55,7 +55,7 @@ class Actividades extends Model
      */
     public function multimediasActividades()
     {
-        return $this->hasMany('App\MultimediasActividade', 'actividades_id');
+        return $this->hasMany('App\Models\Multimedia_Actividad', 'actividades_id');
     }
 
     /**

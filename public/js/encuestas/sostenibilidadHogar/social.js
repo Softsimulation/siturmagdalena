@@ -99,7 +99,7 @@ angular.module('social', [])
                   });
                   setTimeout(function () {
                       window.location.href = "/sostenibilidadhogares/componenteambiental/" + $scope.id;
-                    }, 1000);
+                    }, 500);
             }else{
                 $scope.errores = data.errores;
                 swal("Error","Corrija los errores","error")

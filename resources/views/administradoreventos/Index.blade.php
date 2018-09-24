@@ -1,7 +1,7 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Listado de atracciones')
+@section('title', 'Listado de eventos')
 
 @section('estilos')
     <style>

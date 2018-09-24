@@ -68,7 +68,7 @@ angular.module('crear', [])
                   });
                   setTimeout(function () {
                       window.location.href = "/sostenibilidadhogares/componentesocial/" + data.id;
-                    }, 1000);
+                    }, 500);
             }else{
                 $scope.errores = data.errores;
                 swal("Error","Corrija los errores","error")
@@ -157,7 +157,7 @@ angular.module('crear', [])
                   });
                   setTimeout(function () {
                       window.location.href = "/sostenibilidadhogares/componentesocial/" + $scope.social.id;
-                    }, 1000);
+                    }, 500);
             }else{
                 $scope.errores = data.errores;
                 swal("Error","Corrija los errores","error")

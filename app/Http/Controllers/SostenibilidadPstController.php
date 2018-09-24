@@ -50,12 +50,7 @@ class SostenibilidadPstController extends Controller
         
         $this->middleware('auth');
         $this->middleware('role:Admin');
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
-        }
-        
-        
-        
+        $this->user = Auth::user();
     }
     public function getConfiguracionencuesta(){
         return view('sostenibilidadPst.configurarcionEncuesta');
@@ -137,7 +132,7 @@ class SostenibilidadPstController extends Controller
         
         $encuesta = Encuesta_Pst_Sostenibilidad::find($id);
         
-        $encuesta['establecimiento'] = Proveedores_rnt::find($encuesta->id);
+        $encuesta['establecimiento'] = Proveedores_rnt::find($encuesta->proveedores_rnt_id);
         
         $encuestadores = Digitador::with([ 'user'])->get();
         
@@ -212,7 +207,7 @@ class SostenibilidadPstController extends Controller
     	$encuesta = Encuesta_Pst_Sostenibilidad::find($id);
     	$proveedor = $encuesta->proveedoresRnt;
     	$criteriosCalificacion = Criterio_Calificacion::all();
-    	$accionesCulturales = Accion_Cultural::all();
+    	$accionesCulturales = Accion_Cultural::where('es_hogar', false)->get();
     	$motivosResponsabilidad = Motivo_Responsabilidad::all();
     	$tiposDiscapacidad = Tipo_Discapacidad::all();
     	$esquemasAccesibles = Esquema_Accesible::all();
@@ -229,7 +224,7 @@ class SostenibilidadPstController extends Controller
     		$objeto['criterios_calificacion_id'] = $encuesta->componenteSocialPst->criterios_calificacion_id;
     		$objeto['ofrece_informacion'] = $encuesta->componenteSocialPst->ofrece_informacion;
     		$objeto['accionesCulturales'] = $encuesta->accionesCulturalesPsts->pluck('id')->toArray();
-    		$objeto['otroCultural'] = in_array(8,$objeto['accionesCulturales']) ? $encuesta->accionesCulturalesPsts->where('id',8)->first()->pivot->otro : null;
+    		$objeto['otroCultural'] = in_array(17,$objeto['accionesCulturales']) ? $encuesta->accionesCulturalesPsts->where('id',17)->first()->pivot->otro : null;
     		$objeto['nivel_importancia'] = $encuesta->componenteSocialPst->nivel_importancia;
     		$objeto['responsabilidad_social'] = $encuesta->componenteSocialPst->responsabilidad_social;
     		$objeto['motivosResponsabilidad'] = $encuesta->responsabilidadesSociale ? $encuesta->responsabilidadesSociale->motivosResponsabilidadesPsts->pluck('id')->toArray() : array();
@@ -314,7 +309,7 @@ class SostenibilidadPstController extends Controller
 			return ["success" => false, "errores" => [["El campo ofrece informacion es obligatorio cuando criterios calificacion id es diferente de No conoce."]] ];
 		}
 		
-		if(in_array(8,$request->accionesCulturales) && !isset($request->otroCultural) ){
+		if(in_array(17,$request->accionesCulturales) && !isset($request->otroCultural) ){
 			return ["success" => false, "errores" => [["El campo otro en las acciones culturales es requerido."]] ];
 		}
 		
@@ -418,7 +413,7 @@ class SostenibilidadPstController extends Controller
 		}
 		
 		foreach($request->accionesCulturales as $item){
-			if($item != 8){
+			if($item != 17){
 				$encuesta->accionesCulturalesPsts()->attach($item);	
 			}else{
 				$encuesta->accionesCulturalesPsts()->attach($item,['otro' => $request->otroCultural]);
@@ -501,7 +496,7 @@ class SostenibilidadPstController extends Controller
     	$encuesta = Encuesta_Pst_Sostenibilidad::find($id);
     	$proveedor = $encuesta->proveedoresRnt;
     	$criteriosCalificacion = Criterio_Calificacion::all();
-    	$actividadesAmbiente = Actividad_Medio_Ambiente::all();
+    	$actividadesAmbiente = Actividad_Medio_Ambiente::where('es_hogar', false)->get();
     	$programasConservacion = Programa_Conservacion::all();
     	$tiposRiesgos = Tipo_Riesgo::where('categorias_riesgo_id',2)->get();
     	$planesMitigacion = Plan_Mitigacion::all();
@@ -517,7 +512,7 @@ class SostenibilidadPstController extends Controller
     		$objeto['criterios_calificacion_id'] = $encuesta->componenteAmbientalPst->criterios_calificacion_id;
     		$objeto['tiene_guia'] = $encuesta->componenteAmbientalPst->tiene_guia;
     		$objeto['actividadesAmbiente'] = $encuesta->actividadesAmbientalesPsts->pluck('id')->toArray();
-    		$objeto['otroActividad'] = in_array(7,$objeto['actividadesAmbiente']) ? $encuesta->actividadesAmbientalesPsts->where('id',7)->first()->pivot->otro : null;
+    		$objeto['otroActividad'] = in_array(13,$objeto['actividadesAmbiente']) ? $encuesta->actividadesAmbientalesPsts->where('id',13)->first()->pivot->otro : null;
     		$objeto['programasConservacion'] = $encuesta->programasConservacionPsts->pluck('id')->toArray();
     		$objeto['otroPrograma'] = in_array(8,$objeto['programasConservacion']) ? $encuesta->programasConservacionPsts->where('id',8)->first()->pivot->otro : null;
     		$objeto['planesMitigacion'] = $encuesta->planesMitigacionPsts->pluck('id')->toArray();
@@ -605,7 +600,7 @@ class SostenibilidadPstController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		if(in_array(7,$request->actividadesAmbiente) && !isset($request->otroActividad) ){
+		if(in_array(13,$request->actividadesAmbiente) && !isset($request->otroActividad) ){
 			return ["success" => false, "errores" => [["El campo otro en la pregunta 13 es requerido."]] ];
 		}
 		if(in_array(8,$request->programasConservacion) && !isset($request->otroPrograma) ){
@@ -655,7 +650,7 @@ class SostenibilidadPstController extends Controller
 		$ambiental->save();
 		
 		foreach($request->actividadesAmbiente as $item){
-			if($item != 7){
+			if($item != 13){
 				$encuesta->actividadesAmbientalesPsts()->attach($item);	
 			}else{
 				$encuesta->actividadesAmbientalesPsts()->attach($item,['otro' => $request->otroActividad]);

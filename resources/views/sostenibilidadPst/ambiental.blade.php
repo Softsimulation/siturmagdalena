@@ -137,11 +137,11 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="it in actividadesAmbiente">
+                        <div class="checkbox" ng-repeat="it in actividadesAmbiente| orderBy: 'peso'">
                             <label>
                                 <input type="checkbox" name="actividadesAmbiente" checklist-model="encuesta.actividadesAmbiente"  checklist-value="it.id" > @{{it.nombre}}
                             </label>
-                            <span ng-if="it.id==7">:<input type="text" name="otroActividad" style="display: inline-block;" class="form-control" id="otroActividad" placeholder="Escriba su otra opción" ng-model="encuesta.otroActividad" ng-change="validarOtro(1)" ng-required="encuesta.actividadesAmbiente.indexOf(7) !== -1"/></span>
+                            <span ng-if="it.id==13">:<input type="text" name="otroActividad" style="display: inline-block;" class="form-control" id="otroActividad" placeholder="Escriba su otra opción" ng-model="encuesta.otroActividad" ng-change="validarOtro(1)" ng-required="encuesta.actividadesAmbiente.indexOf(13) !== -1"/></span>
                         </div>
                     </div>
                 </div>

@@ -35,6 +35,9 @@
         .messages {
             color: #FA787E;
         }
+        
+        
+        
     </style>
 @endsection
 
@@ -398,6 +401,7 @@
                                 
                             </ng-map>
                         </div>
+                        
                         
                         
                         <div class="row" ng-if="registro.es_correcto != 1">
