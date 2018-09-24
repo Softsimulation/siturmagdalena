@@ -25,7 +25,7 @@ angular.module('receptor.percepcion_viaje', [])
             receptorServi.getDatosSeccionPercepcion($scope.Id).then(function (data) {
                 if(data.success){
                     $("body").attr("class", "cbp-spmenu-push");
-                    
+                    console.log(data);
                     $scope.aspectos = $scope.convertirObjeto(data.percepcion);
                     //$scope.elementos = data.elementos;
                     $scope.veces = data.veces;
@@ -263,7 +263,7 @@ angular.module('receptor.percepcion_viaje', [])
                 $scope.aspectos = data.percepcion;
                 $scope.elementos = data.elementos;
                 $scope.veces = data.veces;
-
+                
                 if (data.respuestaElementos == null && data.valoracion == null || data.respuestaElementos.length == 0) {
                     $scope.estadoEncuesta = 0;
                 } else {
