@@ -227,5 +227,43 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
         });
     }
     
+    $scope.cambiarEstadoPublicar = function(item){
+        var indexCambiar = $scope.vacantes.indexOf(item);
+        
+        swal({
+            title: "Cambiar estado de publicación",
+            text: "¿Está seguro?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+            setTimeout(function () {
+                $("body").attr("class", "charging");
+                bolsaEmpleoServi.cambiarEstadoPublicar(item).then(function(data){
+                    if(data.success){
+                        item.es_publico = !item.es_publico;
+                        swal({
+                            title: "Estado cambiado",
+                            text: "Se ha cambiado el estado de publicación satisfactoriamente.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        $scope.errores = null;
+                    }else{
+                        swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                        $scope.errores = data.errores; 
+                    }
+                     $("body").attr("class", "cbp-spmenu-push");
+                }).catch(function(){
+                    $("body").attr("class", "cbp-spmenu-push");
+                    swal("Error","Error en la petición, recargue la pagina","error");
+                })
+            }, 2000);
+        });
+    }
+    
     
 }])

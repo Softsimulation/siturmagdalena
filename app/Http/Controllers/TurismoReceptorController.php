@@ -70,9 +70,8 @@ class TurismoReceptorController extends Controller
 	    $this->middleware('auth');
 	    $this->middleware('receptor',['only' =>  ['getSeccionestancia','getSecciontransporte','getSecciongrupoviaje','getSecciongastos','getSeccionpercepcionviaje','getSeccionfuentesinformacion'] ]);
 	    $this->middleware('role:Admin');
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
-        }
+	    $this->user = Auth::user();
+        
 	}
     
     public function getDatosencuestados(){

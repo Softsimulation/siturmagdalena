@@ -45,6 +45,17 @@ Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
+// Public Jáder
+Route::controller('/atracciones', 'AtraccionesController');
+
+Route::controller('/actividades', 'ActividadesController');
+
+Route::controller('/destinos', 'DestinosController');
+
+Route::controller('/rutas', 'RutasTuristicasController');
+
+Route::controller('/eventos', 'EventosController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });

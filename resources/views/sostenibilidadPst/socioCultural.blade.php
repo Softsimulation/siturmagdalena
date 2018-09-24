@@ -180,7 +180,7 @@
                             <label>
                                 <input type="checkbox" name="accionesCulturales" checklist-model="encuesta.accionesCulturales"  checklist-value="it.id" > @{{it.nombre}}
                             </label>
-                            <span ng-if="it.id==8">:<input type="text" name="otroCultural" style="display: inline-block;" class="form-control" id="otroCultural" placeholder="Escriba su otra opción" ng-model="encuesta.otroCultural" ng-change="validarOtro(1)" ng-required="encuesta.accionesCulturales.indexOf(8) !== -1"/></span>
+                            <span ng-if="it.id==17">:<input type="text" name="otroCultural" style="display: inline-block;" class="form-control" id="otroCultural" placeholder="Escriba su otra opción" ng-model="encuesta.otroCultural" ng-change="validarOtro(1)" ng-required="encuesta.accionesCulturales.indexOf(17) !== -1"/></span>
                         </div>
                     </div>
                 </div>

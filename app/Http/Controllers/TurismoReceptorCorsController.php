@@ -1239,7 +1239,7 @@ class TurismoReceptorCorsController extends Controller
 			'Recomienda' => 'required|exists:volveria_visitar,id',
 			'VecesVisitadas' => 'required',
 			'OtroElementos' => 'max:100',
-			'Actividades' => 'exists:actividades_sostenibilidad,id',
+			'Actividades' => 'array|exists:actividades_sostenibilidad,id',
 			//'Evaluacion' => 'required',
     	],[
        		'Id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',

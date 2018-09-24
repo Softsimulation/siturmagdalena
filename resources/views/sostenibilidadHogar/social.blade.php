@@ -205,11 +205,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             
-                            <div class="checkbox" ng-repeat="ite in culturales">
+                            <div class="checkbox" ng-repeat="ite in culturales| orderBy : 'peso'">
                                 <label>
-                                    <input type="checkbox" ng-disabled="bandera==false && ite.id==8" checklist-model="social.culturales" name ="cultural" checklist-value="ite.id" > @{{ite.nombre}}
+                                    <input type="checkbox" ng-disabled="bandera==false && ite.id==9" checklist-model="social.culturales" name ="cultural" checklist-value="ite.id" > @{{ite.nombre}}
                                 </label>
-                                <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_cultura" placeholder="Escriba su otra opción" ng-model="social.otroCultura" ng-blur="verificarOtro(social.culturales,8,social.otroCultura)" ng-if="ite.id==8" />
+                                <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_cultura" placeholder="Escriba su otra opción" ng-model="social.otroCultura" ng-blur="verificarOtro(social.culturales,9,social.otroCultura)" ng-if="ite.id==9" />
                             </div>
                             <span ng-show="socialForm.$submitted || socialForm.cultural.$touched">
                                 <span class="label label-danger" ng-show="social.culturales.length==0">Campo requerido</span>
@@ -529,13 +529,13 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <input type="number" name="cuantas_rnt" class="form-control" min="1"  ng-model="social.cuantas_rnt" placeholder="Presione aquí para ingresar la cantidad de RNT" ng-required="social.viviendas_turisticas == true"/>
+                            <input type="number" name="cuantas_rnt" class="form-control" min="0"  ng-model="social.cuantas_rnt" placeholder="Presione aquí para ingresar la cantidad de RNT" ng-required="social.viviendas_turisticas == true"/>
                         </div>
                     </div>
                     <span ng-show="socialForm.$submitted || socialForm.cuantas_rnt.$touched">
                         <span class="label label-danger" ng-show="socialForm.cuantas_rnt.$error.required">* El campo es requerido.</span>
                         <span class="label label-danger" ng-show="socialForm.cuantas_rnt.$error.number">* Debe introducir solo numeros.</span>
-                        <span class="label label-danger" ng-show="!socialForm.cuantas_rnt.$valid">* Solo numeros iguales o mayores que uno.</span>
+                        <span class="label label-danger" ng-show="!socialForm.cuantas_rnt.$valid">* Solo numeros iguales o mayores que cero.</span>
                     </span>
                 </div>
         </div>
