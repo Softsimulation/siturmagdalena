@@ -33,7 +33,13 @@ class EventosController extends Controller
         
         $video_promocional = Evento::where('id', $id)->with(['multimediaEventos' => function ($queryMultimediaEventos){
             $queryMultimediaEventos->where('tipo', true)->select('eventos_id', 'ruta');
-        }])->first()->multimediaEventos[0]->ruta;
+        }])->first()->multimediaEventos;
+        
+        if (count($video_promocional) > 0){
+            $video_promocional = $video_promocional[0]->ruta;
+        }else {
+            $video_promocional = null;
+        }
         
         //return ['evento' => $evento, 'video_promocional' => $video_promocional];
         return view('eventos.Ver', ['evento' => $evento, 'video_promocional' => $video_promocional]);

@@ -33,7 +33,13 @@ class ProveedoresController extends Controller
         
         $video_promocional = Proveedor::with(['multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('tipo', true)->select('proveedor_id', 'ruta');
-        }])->first()->multimediaProveedores[0]->ruta;
+        }])->first()->multimediaProveedores;
+        
+        if (count($video_promocional) > 0){
+            $video_promocional = $video_promocional[0]->ruta;
+        }else {
+            $video_promocional = null;
+        }
         
         //return ['proveedor' => $proveedor, 'video_promocional' => $video_promocional];
         return view('proveedor.Ver', ['proveedor' => $proveedor, 'video_promocional' => $video_promocional]);
