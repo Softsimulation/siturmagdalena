@@ -56,7 +56,7 @@ Route::controller('/rutas', 'RutasTuristicasController');
 
 Route::controller('/eventos', 'EventosController');
 
-Route::controller('/proveedores', 'ProveedoresController');
+Route::controller('/proveedor', 'ProveedoresController');
 
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');

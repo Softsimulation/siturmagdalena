@@ -11,6 +11,12 @@ class DestinosController extends Controller
 {
     //
     public function getVer($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Destino::find($id) == null){
+            return response('Not found.', 404);
+        }
+        
         $destino = Destino::where('id', $id)->with(['tipoDestino' => function ($queryTipoDestino){
             $queryTipoDestino->with(['tipoDestinoConIdiomas' => function($queryTipoDestinoConIdiomas){
                 $queryTipoDestinoConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'tipo_destino_id', 'nombre');

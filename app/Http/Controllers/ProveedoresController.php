@@ -11,6 +11,12 @@ class ProveedoresController extends Controller
 {
     //
     public function getVer($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Proveedor::find($id) == null){
+            return response('Not found.', 404);
+        }
+        
         $proveedor = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt){
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma){
                 $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');

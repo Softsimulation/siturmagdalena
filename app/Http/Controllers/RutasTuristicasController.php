@@ -11,6 +11,12 @@ class RutasTuristicasController extends Controller
 {
     //
     public function getVer($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Ruta::find($id) == null){
+            return response('Not found.', 404);
+        }
+        
         $ruta = Ruta::where('id', $id)->with(['rutasConIdiomas' => function ($queryRutasConIdiomas){
             $queryRutasConIdiomas->orderBy('idioma_id')->select('idioma_id', 'ruta_id', 'nombre', 'descripcion', 'recomendacion');
         }, 'rutasConAtracciones' => function ($queryRutasConAtracciones){
@@ -21,7 +27,7 @@ class RutasTuristicasController extends Controller
             }])->select('atracciones.id', 'atracciones.sitios_id');
         }])->select('id', 'portada')->first();
         
-        //it statusreturn ['ruta' => $ruta];
+        //return ['ruta' => $ruta];
         return view('rutas.Ver', ['ruta' => $ruta]);
     }
 }

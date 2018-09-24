@@ -11,6 +11,12 @@ class EventosController extends Controller
 {
     //
     public function getVer($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Evento::find($id) == null){
+            return response('Not found.', 404);
+        }
+        
         $evento = Evento::where('id', $id)->with(['eventosConIdiomas' => function ($queryEventosConIdiomas){
             $queryEventosConIdiomas->orderBy('idiomas_id')->select('eventos_id', 'idiomas_id', 'nombre', 'descripcion', 'horario', 'edicion');
         }, 'tipoEvento' => function ($queryTipoEvento){

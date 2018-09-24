@@ -31,6 +31,12 @@ class AtraccionesController extends Controller
     }
     
     public function getVer($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Atracciones::find($id) == null){
+            return response('Not found.', 404);
+        }
+        
         $atraccion = Atracciones::with(['sitio' => function ($querySitio){
             $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
                 $querySitiosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');
