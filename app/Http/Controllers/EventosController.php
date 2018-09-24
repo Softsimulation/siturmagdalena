@@ -18,7 +18,7 @@ class EventosController extends Controller
                 $queryTipoEventosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'tipo_evento_id', 'nombre');
             }])->select('id');
         }, 'multimediaEventos' => function ($queryMultimediaEventos){
-            $queryMultimediaEventos->where('tipo', false)->orderBy('portada')->select('eventos_id', 'ruta');
+            $queryMultimediaEventos->where('tipo', false)->orderBy('portada', 'desc')->select('eventos_id', 'ruta');
         }, 'sitiosConEventos' =>function ($querySitiosConEventos){
             $querySitiosConEventos->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
                 $querySitiosConIdiomas->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');

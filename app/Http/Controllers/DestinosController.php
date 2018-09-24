@@ -18,7 +18,7 @@ class DestinosController extends Controller
         }, 'destinoConIdiomas' => function($queryDestinoConIdiomas){
             $queryDestinoConIdiomas->orderBy('idiomas_id')->select('destino_id', 'idiomas_id', 'nombre', 'descripcion');
         }, 'multimediaDestinos' => function ($queryMultimediaDestinos){
-            $queryMultimediaDestinos->where('tipo', false)->orderBy('portada')->select('destino_id', 'ruta');
+            $queryMultimediaDestinos->where('tipo', false)->orderBy('portada', 'desc')->select('destino_id', 'ruta');
         }, 'sectores' => function($querySectores){
             $querySectores->with(['sectoresConIdiomas' => function($querySectoresConIdiomas){
                 $querySectoresConIdiomas->select('idiomas_id', 'sectores_id', 'nombre');
