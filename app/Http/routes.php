@@ -49,6 +49,19 @@ Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
+// Public Jáder
+Route::controller('/atracciones', 'AtraccionesController');
+
+Route::controller('/actividades', 'ActividadesController');
+
+Route::controller('/destinos', 'DestinosController');
+
+Route::controller('/rutas', 'RutasTuristicasController');
+
+Route::controller('/eventos', 'EventosController');
+
+Route::controller('/proveedores', 'ProveedoresController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
@@ -71,6 +84,9 @@ Route::controller('/informes','InformesCtrl');
 
 
 Route::controller('/bolsaEmpleo','BolsaEmpleoController');
+
+Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
+
 */
 Route::controller('/usuario','UsuarioController');
 /*
@@ -102,8 +118,9 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
 
 
 Route::group(['middleware' => 'cors'], function(){
-   
-   Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
-  
+   Route::controller('/authapi', 'ApiAuthController');
+   Route::group(['middleware'=> 'jwt.auth'], function () {
+        Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+   });
 });
 */

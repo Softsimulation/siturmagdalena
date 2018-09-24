@@ -70,9 +70,8 @@ class TurismoReceptorController extends Controller
 	    $this->middleware('auth');
 	    $this->middleware('receptor',['only' =>  ['getSeccionestancia','getSecciontransporte','getSecciongrupoviaje','getSecciongastos','getSeccionpercepcionviaje','getSeccionfuentesinformacion'] ]);
 	    $this->middleware('role:Admin');
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
-        }
+	    $this->user = Auth::user();
+        
 	}
     
     public function getDatosencuestados(){
@@ -292,7 +291,7 @@ class TurismoReceptorController extends Controller
             $visitante['Destino'] = $visitanteCargar->destino_principal;
             $visitante['ocupacion_persona_id'] = $visitanteCargar->ocupacion_persona_id;
             $visitante['DepartamentoDestino'] = $visitanteCargar->municipioPrincipal!=null?$visitanteCargar->municipioPrincipal->departamento_id : null;
-            $visitante['Salud'] = count($visitanteCargar->tiposAtencionSaluds) > 0 ? $visitanteCargar->tiposAtencionSaluds->take(1)->id : null;
+            $visitante['Salud'] = count($visitanteCargar->tiposAtencionSaluds) > 0 ? $visitanteCargar->tiposAtencionSaluds->first()->id : null;
             $visitante['Horas'] = $visitanteCargar->visitantesTransito != null ? $visitanteCargar->visitantesTransito->horas_transito : null ;
             $visitante['Otro'] = $visitanteCargar->otrosMotivo != null ? $visitanteCargar->otrosMotivo->otro_motivo : null ;
             
@@ -1233,9 +1232,11 @@ class TurismoReceptorController extends Controller
         
         
         $sostenibilidad = Sostenibilidad_Visitante::find($id);
+        $respuestaActividades = array();
         if($sostenibilidad != null){
             $flora = $sostenibilidad->es_informado?1:0;
             $sost = $sostenibilidad->trato_turista;
+            $respuestaActividades = $sostenibilidad->actividadesSostenibilidad()->pluck('id')->toArray();
         }
         
         $valo = Valoracion_General::where('visitante_id',$visitante->id)->select(["recomendaciones as Recomendacion","calificacion as Calificacion", "volveria as Volveria","recomendaria as Recomienda","veces_visitadas as Veces"])->first();
@@ -1245,7 +1246,7 @@ class TurismoReceptorController extends Controller
         })->select('actividades_sostenibilidad_id as id','nombre')->get();
         
         
-        $respuestaActividades = $sostenibilidad->actividadesSostenibilidad()->pluck('id')->toArray();
+        
         
         $retorno = [
             'success' => true,
