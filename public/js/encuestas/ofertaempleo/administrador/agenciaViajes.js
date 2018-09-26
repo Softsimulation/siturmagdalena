@@ -157,19 +157,24 @@ situr.controller('ofertaAgenciaViajesCtrl', ['$scope','agenciaViajeServi', funct
                 if (data.success) {
     
                     swal({
-                        title: "Realizado",
-                        text: "Sección guardada exitosamente",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-                    setTimeout(function () {
-    
-    
-                        window.location = "/ofertaempleo/empleomensual/"+$scope.encuesta.id;
-    
-    
-                    }, 1000);
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                  } else {
+                    window.location.href = data.ruta;
+                  }
+                });
     
     
     

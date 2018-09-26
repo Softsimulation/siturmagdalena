@@ -166,8 +166,11 @@ return [
         //models generator
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
-        
         Barryvdh\Cors\ServiceProvider::class,
+        
+        //Auth token
+        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider'
+
     ],
 
     /*
@@ -221,7 +224,8 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'CsvReader' => Wilgucki\Csv\Facades\Reader::class,
         'CsvWriter' => Wilgucki\Csv\Facades\Writer::class,
-
+        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
+        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory'
     ],
 
 ];

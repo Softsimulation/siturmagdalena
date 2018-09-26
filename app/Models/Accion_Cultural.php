@@ -28,7 +28,7 @@ class Accion_Cultural extends Model
     /**
      * @var array
      */
-    protected $fillable = ['nombre', 'created_at', 'user_create', 'estado', 'user_update', 'updated_at', 'peso'];
+    protected $fillable = ['nombre', 'created_at', 'user_create', 'estado', 'user_update', 'updated_at', 'peso','es_hogar'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -39,10 +39,10 @@ angular.module('sostenibilidadPst.ambiental', [])
     
     $scope.validarOtro = function (sw) {
         if (sw == 1) {
-            var i = $scope.encuesta.actividadesAmbiente.indexOf(7);
+            var i = $scope.encuesta.actividadesAmbiente.indexOf(13);
             if ($scope.encuesta.otroActividad != null && $scope.encuesta.otroActividad != '') {
                 if (i == -1) {
-                    $scope.encuesta.actividadesAmbiente.push(7);
+                    $scope.encuesta.actividadesAmbiente.push(13);
                 }
             }
         } else if (sw == 2) {
@@ -113,7 +113,7 @@ angular.module('sostenibilidadPst.ambiental', [])
                 });
                 setTimeout(function () {
                     window.location = "/sostenibilidadpst/economico/"+$scope.id;
-                }, 1000);
+                }, 500);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");
                 $scope.errores = data.errores;

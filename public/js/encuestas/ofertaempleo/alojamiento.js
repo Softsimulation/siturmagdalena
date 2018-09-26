@@ -102,7 +102,25 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
         OfertaEmpleoServi.guardarOfertaAlojamiento( data ).then(function(data){
             
             if(data.success){
-                window.location.href = "/ofertaempleo/empleomensual/" + $("#id").val();
+                      swal({
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                  } else {
+                    window.location.href = data.ruta;
+                  }
+                });
             }
             else{
                 $scope.errores = data.errores;
@@ -165,7 +183,25 @@ app.controller("AlojamientoMensualCtrl", function($scope, OfertaEmpleoServi){
         OfertaEmpleoServi.guardarAlojamientoMensual( data ).then(function(data){
             
             if(data.success){
-                window.location.href = "/ofertaempleo/empleomensual/" + $("#id").val();
+                          swal({
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                  } else {
+                    window.location.href = data.ruta;
+                  }
+                });
             }
             else{
                 $scope.errores = data.errores;

@@ -27,7 +27,7 @@ class Actividad_Medio_Ambiente extends Model
     /**
      * @var array
      */
-    protected $fillable = ['nombre', 'user_create', 'estado', 'updated_at', 'created_at', 'user_update'];
+    protected $fillable = ['es_hogar','nombre', 'user_create', 'estado', 'updated_at', 'created_at', 'user_update'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
