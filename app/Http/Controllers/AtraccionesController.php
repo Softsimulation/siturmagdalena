@@ -51,7 +51,7 @@ class AtraccionesController extends Controller
             }])->select('id', 'longitud', 'latitud');
         }, 'atraccionesConIdiomas' => function ($queryAtraccionesConIdiomas){
             $queryAtraccionesConIdiomas->orderBy('idiomas_id')->select('atracciones_id', 'idiomas_id'  , 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
-        }])->where('id', $id)->select('id', 'sitios_id', 'calificacion_legusto')->first();
+        }])->where('id', $id)->select('id', 'sitios_id', 'calificacion_legusto', 'calificacion_recomendar', 'calificacion_volveria', 'sitio_web')->first();
         
         $video_promocional = Atracciones::where('id', $id)->with(['sitio' => function($querySitio){
             $querySitio->with(['multimediaSitios' => function ($queryMultimediaSitios){

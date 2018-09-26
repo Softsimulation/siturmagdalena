@@ -29,12 +29,12 @@ class ProveedoresController extends Controller
             $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas){
                 $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre');
             }])->select('actividades.id');
-        }])->select('id', 'proveedor_rnt_id', 'telefono', 'sitio_web', 'valor_min', 'valor_max')->where('id', $id)->first();
+        }])->select('id', 'proveedor_rnt_id',  'telefono', 'sitio_web', 'valor_min', 'valor_max', 'calificacion_legusto')->where('id', $id)->first();
         
         $video_promocional = Proveedor::with(['multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('tipo', true)->select('proveedor_id', 'ruta');
         }])->first()->multimediaProveedores;
-        
+
         if (count($video_promocional) > 0){
             $video_promocional = $video_promocional[0]->ruta;
         }else {
