@@ -2324,6 +2324,16 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
             $servicios = [ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ];
             
+            
+            if(!$alojamiento){
+                
+                $ultimaEncuesta =  Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["caracterizacion",true] ])->orderby("id", "DES")->first();
+                if($ultimaEncuesta){
+                    $alojamiento = alojamiento::where("encuestas_id",$ultimaEncuesta->id)->with(["casas","campings","habitaciones","apartamentos","cabanas"])->first();
+                }
+                
+            }
+            
             if($alojamiento){
                 $servicios["habitacion"] = count($alojamiento->habitaciones)>0 ? true : false;
                 $servicios["apartamento"] = count($alojamiento->apartamentos)>0 ? true : false;
@@ -2390,6 +2400,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $encuesta = Encuesta::find($request->encuesta["id"]); 
         $encuesta->actividad_comercial = $request->encuesta["actividad_comercial"];
         $encuesta->numero_dias = $request->encuesta["numero_dias"];
+        $encuesta->caracterizacion = true;
         $encuesta->save();
 	
     
@@ -2485,8 +2496,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             if($cabana){ $cabana->delete(); }
         }
         
-            $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->encuesta));
-          $encuesta = Encuesta::where('id',$request->encuesta)->first();
+            $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where id =".$request->encuesta["id"]));
+           
             if($data[0]->estado_id < 3){
                 Historial_Encuesta_Oferta::create([
                    'encuesta_id' => $encuesta->id, 

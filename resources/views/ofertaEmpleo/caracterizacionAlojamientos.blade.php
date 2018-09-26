@@ -487,7 +487,7 @@
 
         </div>
 
-        <div class="panel panel-success" ng-if="encuesta.actividad_comercia==1">
+        <div class="panel panel-success" ng-if="encuesta.actividad_comercial==1">
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúantos días en el mes?</b></h3>
             </div>
