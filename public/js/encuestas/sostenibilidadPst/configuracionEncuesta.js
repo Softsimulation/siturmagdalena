@@ -59,7 +59,7 @@ angular.module('sostenibilidadPst.configuracion', [])
                 });
                 setTimeout(function () {
                     window.location = "/sostenibilidadpst/sociocultural/"+data.encuesta.id;
-                }, 1000);
+                }, 500);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");
                 $scope.errores = data.errores;
@@ -144,7 +144,7 @@ angular.module('sostenibilidadPst.configuracion', [])
                 });
                 setTimeout(function () {
                     window.location = "/sostenibilidadpst/sociocultural/"+$scope.encuesta.id;
-                }, 1000);
+                }, 500);
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");
                 $scope.errores = data.errores;

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use JWTAuth;
+
 
 class User extends Authenticatable
 {
@@ -41,5 +43,14 @@ class User extends Authenticatable
     public function digitador(){
         return $this->hasOne('App\Models\Digitador');
         //return $this->belongsToMany('App\Models\Role');
+    }
+    public function permissions(){
+        return $this->belongsToMany('App\Models\Permission');
+    }
+    
+    public static function resolveUser()
+    {   
+        $user = JWTAuth::parseToken()->authenticate();
+        return $user;
     }
 }

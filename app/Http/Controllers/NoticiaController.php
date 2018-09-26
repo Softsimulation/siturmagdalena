@@ -23,17 +23,65 @@ class NoticiaController extends Controller
     {
        
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        
+        //$this->middleware('role:Admin');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        
-        
-        
+        $this->middleware('permissions:list-noticia',['only' => ['getListadonoticias','getNoticias'] ]);
+        $this->middleware('permissions:create-noticia',['only' => ['getCrearnoticia','getDatoscrearnoticias','postGuardarnoticia',
+        'postGuardarmultimedianoticia','postGuardartextoalternativo','postEliminarmultimedia'] ]);
+        $this->middleware('permissions:read-noticia',['only' => ['getVernoticia','getDatosver'] ]);
+        $this->middleware('permissions:edit-noticia',['only' => ['getNuevoidioma','postGuardarnoticia','postGuardarmultimedianoticia',
+        'postGuardartextoalternativo','postEliminarmultimedia','getVistaeditar','getDatoseditar','postModificarnoticia' ] ]);
+        $this->middleware('permissions:estado-noticia',['only' => ['postCambiarestado'] ]);
     }
      
     public function getListadonoticias() {
         return view('noticias.ListadoNoticias');
+	}
+	public function getListado($idiomaId) {
+	    $noticias = Noticia::
+        join('noticias_has_idiomas', 'noticias_has_idiomas.noticias_id', '=', 'noticias.id')
+        ->join('tipos_noticias', 'tipos_noticias.id', '=', 'noticias.tipos_noticias_id')
+        ->join('tipos_noticias_has_idiomas', 'tipos_noticias_has_idiomas.tipos_noticias_id', '=', 'tipos_noticias.id')
+        ->where('noticias_has_idiomas.idiomas_id',$idiomaId)->where('tipos_noticias_has_idiomas.idiomas_id',$idiomaId)
+        ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado",
+        "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
+        "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia")->get();
+        return view('noticias.ListadoNoticiasPublico',array('noticias' => $noticias));
+	}
+	public function getVer($idNoticia,$idiomaId){
+	    $noticia = Noticia::
+        join('noticias_has_idiomas', 'noticias_has_idiomas.noticias_id', '=', 'noticias.id')
+        ->join('tipos_noticias', 'tipos_noticias.id', '=', 'noticias.tipos_noticias_id')
+        ->join('tipos_noticias_has_idiomas', 'tipos_noticias_has_idiomas.tipos_noticias_id', '=', 'tipos_noticias.id')
+        
+        ->where('noticias.id',$idNoticia)
+        ->select("noticias.id as id","noticias.enlace_fuente as enlaceFuente","noticias.es_interno as interno","noticias.estado",
+        "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen as resumenNoticia","noticias_has_idiomas.texto",
+        "tipos_noticias.id as tipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia")->first();
+        
+        
+        if($noticia == null){
+            $error = [];
+            $error["Ver"][0] = "Vuelva a intentar, noticia seleccionado no se encuentra registrado.";
+            return ["success"=>false,"errores"=>$error];
+        }
+        
+        $portada = Multimedia_noticia::
+        join('multimedias_noticias_has_idiomas', 'multimedias_noticias_has_idiomas.multimedias_noticias_id', '=', 'multimedias_noticias.id')
+        ->where('multimedias_noticias.noticia_id',$idNoticia)->where('multimedias_noticias.es_portada',1)->where('multimedias_noticias_has_idiomas.idiomas_id',1)
+        ->select("multimedias_noticias.id as idMultimedia","multimedias_noticias.ruta as ruta","multimedias_noticias.es_portada as portada",
+        "multimedias_noticias_has_idiomas.idiomas_id as idiomas_id", "multimedias_noticias_has_idiomas.texto_alternativo as texto")->first();
+        
+        $multimediaNoticia = Multimedia_noticia::
+        join('multimedias_noticias_has_idiomas', 'multimedias_noticias_has_idiomas.multimedias_noticias_id', '=', 'multimedias_noticias.id')
+        ->where('multimedias_noticias.noticia_id',$idNoticia)
+        ->select("multimedias_noticias.id as idMultimedia","multimedias_noticias.ruta as ruta","multimedias_noticias.es_portada as portada",
+        "multimedias_noticias_has_idiomas.idiomas_id as idiomas_id", "multimedias_noticias_has_idiomas.texto_alternativo as texto")->get();
+        
+        return view('noticias.Ver',array('noticia' => $noticia,"multimedias"=>$multimediaNoticia,"portada"=>$portada ));
 	}
 	public function getCrearnoticia() {
         return view('noticias.CrearNoticia');

@@ -543,7 +543,11 @@
                              <i class="material-icons">menu</i>
                           </a>
                           <ul class="dropdown-menu">
+<<<<<<< HEAD
                             <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
+=======
+                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
+>>>>>>> dd95048d365cc119937e02216d6e02f5c432ce93
                             <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
                             <li>
                                 <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
@@ -588,7 +592,11 @@
                                 <li><a href ng-click="editarPosicionZona(item,$index)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
                                 <li><a href ng-click="eliminarZona(item,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
                                 <li><a href ng-click="exportarFileExcelZona(item)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
+<<<<<<< HEAD
                                 <li><a href="/MuestraMaestra/llenarinfozona/{{item.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
+=======
+                                <li><a href="/MuestraMaestra/llenarinfozona/{{item.id}}" ><i class="material-icons">border_color</i> Cargar datos</a></li>
+>>>>>>> dd95048d365cc119937e02216d6e02f5c432ce93
                               </ul>
                             </div>
                             <button class="btn btn-xs btn-success" type="button" ng-if="item.editar" ng-click="guardarEditarPosicion()" > 

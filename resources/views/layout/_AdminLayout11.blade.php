@@ -318,17 +318,8 @@
 										
 										 </li>
 										 
-									<li id="menu-academico" ><a href="#"> <span>Oferta y Empleo</span></a>
-											 <ul id="menu-academico-sub" >
-												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/1')}}">Alojamiento</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/2')}}">Restaurante</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/3')}}">Agencia operadoras</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/4')}}">Agencia de viajes</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/5')}}">Alquiler de vehiculo</a></li>
-												<li id="menu-academico-avaliacoes" ><a href="{{asset('ofertaempleo/encuesta/6')}}">Transporte</a></li>
-												
-										
-											  </ul>
+									<li id="menu-academico" ><a href="{{asset('/ofertaempleo/listadoproveedores')}}"> <span>Oferta y Empleo</span></a>
+									
 										 </li>
 										 <li id="menu-academico" ><a href="#"><span>Sostenibilidad</span> </span></a>
     										  <ul id="menu-academico-sub" >

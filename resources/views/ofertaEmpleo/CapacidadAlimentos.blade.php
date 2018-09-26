@@ -66,7 +66,11 @@
     <form role="form" name="capacidadForm" novalidate>
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Capacidad del establecimiento</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Capacidad del establecimiento</b>
+                    <span style="float: right;" ng-if="alimentos.tipo == 1">Tasa de platos: @{{ alimentos.porcentajePlato != null ? alimentos.porcentajePlato : 0| number:2 }} % </span>
+                    <span style="float: right;" ng-if="alimentos.tipo == 2">Tasa de unidades: @{{ alimentos.porcentajePlato != null ? alimentos.porcentajePlato : 0| number:2 }} % </span>
+                    <span style="float: right;" >Tasa de bebidas: @{{ alimentos.porcentajeBebida| number:2 }} % - </span>
+                </h3>
             </div>
             <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
@@ -183,7 +187,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Atención a visitantes no residentes en Atlántico</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Atención a visitantes no residentes en Magdalena</b></h3>
             </div>
             <div class="panel-body">
                 <div class="row">

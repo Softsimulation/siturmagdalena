@@ -88,7 +88,7 @@ angular.module('ambiental', [])
                   });
                   setTimeout(function () {
                       window.location.href = "/sostenibilidadhogares/economico/" + $scope.id;
-                    }, 1000);
+                    }, 500);
             }else{
                 $scope.errores = data.errores;
                 swal("Error","Corrija los errores","error")

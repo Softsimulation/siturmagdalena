@@ -74,7 +74,7 @@
             <div class="col-xs-12">
                 <div class="form-group" ng-class="{'has-error': (editarIdiomaForm.$submitted || editarIdiomaForm.nombre.$touched) && editarIdiomaForm.nombre.$error.required}">
                     <label for="nombre"><span class="asterisk">*</span> Nombre</label>
-                    <input ng-model="atraccion.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)"/>
+                    <input max="150" ng-model="atraccion.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la atracción (Máximo 150 caracteres)"/>
                      
                 </div>
             </div>
@@ -141,4 +141,5 @@
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="/js/plugins/ng-map.js"></script>
 @endsection

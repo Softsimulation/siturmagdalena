@@ -30,7 +30,7 @@ class Sitio_Con_Actividad extends Model
      */
     public function actividade()
     {
-        return $this->belongsTo('App\Models\Actividade', 'actividades_id');
+        return $this->belongsTo('App\Models\Actividades', 'actividades_id');
     }
 
     /**

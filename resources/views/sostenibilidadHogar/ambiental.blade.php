@@ -132,9 +132,9 @@
                             
                             <div class="checkbox" ng-repeat="ite in actividades">
                                 <label>
-                                    <input type="checkbox" ng-disabled="bandera==false && ite.id==7" checklist-model="ambiental.actividades" name ="actividad" checklist-value="ite.id" > @{{ite.nombre}}
+                                    <input type="checkbox" ng-disabled="bandera==false && ite.id==6" checklist-model="ambiental.actividades" name ="actividad" checklist-value="ite.id" > @{{ite.nombre}}
                                 </label>
-                                <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_ambiental" placeholder="Escriba su otra opción" ng-model="ambiental.otroActividad" ng-blur="verificarOtro(ambiental.actividades,7,ambiental.otroActividad,bandera)" ng-if="ite.id==7" />
+                                <input type="text" style="display: inline-block;" class="form-control" id="inputOtro_ambiental" placeholder="Escriba su otra opción" ng-model="ambiental.otroActividad" ng-blur="verificarOtro(ambiental.actividades,6,ambiental.otroActividad,bandera)" ng-if="ite.id==6" />
                             </div>
                             <span ng-show="ambientalForm.$submitted || ambientalForm.actividad.$touched">
                                 <span class="label label-danger" ng-show="ambiental.actividades.length==0">Campo requerido</span>

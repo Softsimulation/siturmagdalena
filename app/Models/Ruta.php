@@ -28,15 +28,15 @@ class Ruta extends Model
      */
     public function multimediaRutas()
     {
-        return $this->hasMany('App\Models\Multimedia_Ruta');
+        return $this->hasMany('App\Models\Multimedia_Ruta', 'ruta_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function rutasConAtracciones()
     {
-        return $this->hasMany('App\Models\Ruta_Con_Atraccion');
+        return $this->belongsToMany('App\Models\Atracciones', 'rutas_con_atracciones', 'ruta_id', 'atraccion_id');
     }
 
     /**
