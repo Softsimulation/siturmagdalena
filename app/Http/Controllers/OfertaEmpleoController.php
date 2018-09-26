@@ -1535,14 +1535,14 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             ],[
                 'id.required' => 'Tuvo primero que haber creado una encuesta.',
                 'id.exists' => 'Tuvo primero que haber creado una encuesta.',
-                'numero.required' => 'El número total de personas que viajaron con planes a Atlántico es requerido.',
-                'numero.double' => 'El número total de personas que viajaron con planes a Atlántico debe ser de valor numérico.',
-                'magdalena.required' => 'El porcentaje comprado por residentes en el Atlántico es requerido.',
-                'magdalena.double' => 'El porcentaje comprado por residentes en el Atlántico debe ser de valor numérico.',
-                'magdalena.between' => 'El porcentaje comprado por residentes en el Atlántico debe ser menor o igual a 100.',
-                'nacional.required' => 'El porcentaje comprado por residentes fuera del Atlántico es requerido.',
-                'nacional.double' => 'El porcentaje comprado por residentes fuera del Atlántico debe ser de valor numérico.',
-                'nacional.between' => 'El porcentaje comprado por residentes fuera del Atlántico debe ser menor o igual a 100.',
+                'numero.required' => 'El número total de personas que viajaron con planes a Magdalena es requerido.',
+                'numero.double' => 'El número total de personas que viajaron con planes a Magdalena debe ser de valor numérico.',
+                'magdalena.required' => 'El porcentaje comprado por residentes en el Magdalena es requerido.',
+                'magdalena.double' => 'El porcentaje comprado por residentes en el Magdalena debe ser de valor numérico.',
+                'magdalena.between' => 'El porcentaje comprado por residentes en el Magdalena debe ser menor o igual a 100.',
+                'nacional.required' => 'El porcentaje comprado por residentes fuera del Magdalena es requerido.',
+                'nacional.double' => 'El porcentaje comprado por residentes fuera del Magdalena debe ser de valor numérico.',
+                'nacional.between' => 'El porcentaje comprado por residentes fuera del Magdalena debe ser menor o igual a 100.',
                 'internacional.required' => 'El porcentaje comprado por residentes en el extranjero es requerido.',
                 'internacional.double' => 'El porcentaje comprado por residentes en el extranjero debe ser de valor numérico.',
                 'internacional.between' => 'El porcentaje comprado por residentes en el extramjero debe ser menor o igual a 100.',
@@ -1564,7 +1564,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             }
             if($request->ofrecePlanesConDestino == true){
                 if($request->magdalena + $request->nacional + $request->internacional != 100){
-                    $errores["PorcentajeMagdalena"][0] = "Los porcentajes en los viajes en el Atlántico deben sumar 100.";
+                    $errores["PorcentajeMagdalena"][0] = "Los porcentajes en los viajes en el Magdalena deben sumar 100.";
                 }
             }
             
@@ -2513,7 +2513,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 
     public function postGuardarofertaalimentos(Request $request)
     {
-        return $request->all();
+        //return $request->all();
         $validator = \Validator::make($request->all(),[
         
             'id' => 'required|exists:encuestas,id',

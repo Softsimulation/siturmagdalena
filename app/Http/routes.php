@@ -97,6 +97,7 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
 Route::group(['middleware' => 'cors'], function(){
    
    Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+   Route::controller('/grupoviajeapi','GrupoViajeCorsController');
   
 });
 
