@@ -169,7 +169,7 @@
             -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            overflow-y: auto; 
+            overflow-y: auto;
             overflow-x: hidden;
         }
         #cont-filtros > h2{
@@ -246,10 +246,11 @@
             border-right: 0;
             border-color: #eee;
         }
-        #filtrosProveedor {
+        #filtrosProveedor, #filtrosZonas {
             background-color: white;
             border-radius: 2px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            padding-top: 5px;
         }
         .panel-group .panel+.panel {
             margin-top: 0;
@@ -273,8 +274,8 @@
          
             #contentMap{
                 position: fixed;
-                width: calc(100% - 300px);
-                margin-left: 300px;
+                width: calc(100% - 350px);
+                margin-left: 350px;
                 height: 100%;
             }
             #contentMap.showed{
@@ -286,9 +287,30 @@
                 top: 0;
                 left: 0;
                 height: 100%;
-                width: 300px;
+                width: 350px;
             }
         }
+        
+        .activo{
+            background: #00954129;
+            color: black;
+        }
+        
+        #mySidenav .control-label{
+            margin-bottom: 0px;
+        }
+        #mySidenav .form-control-static{
+            padding-top: 0px;
+        }
+        #mySidenav .form-group {
+            margin-bottom: 8px;
+        }
+        #mySidenav .checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline{ margin-left: -2px; }
+        
+        .list-details li {
+            padding: .3rem 0;
+        }
+        
     </style>
 <?php $__env->stopSection(); ?>
 
@@ -305,7 +327,9 @@
            <details>
               <summary>Clic para ver prestadores</summary>
               <ul style="max-height: 300px; overflow: auto;">
-                  <li ng-repeat="it in proveedoresFuera track by $index">{{it}}</li>
+                  <li ng-repeat="it in proveedoresFuera track by $index">
+                     <a ng-click="centrarMapaAlProveedor(it)" href > {{it.nombre}}</a>
+                  </li>
               </ul>
             </details>
           
@@ -323,13 +347,13 @@
                 <div style="margin-bottom: .5rem;">
                     <label class="control-label" style="margin-left: 5px;" >Prestadores</label><br/>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="1" checked> Todos
+                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="1" checked> Todos<span style="font-size: 9px;">({{TotalFormales+TotalInformales}})</span>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="2"> Formales
+                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="2"> Formales<span style="font-size: 9px;">({{TotalFormales}})</span>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="3"> Informales
+                        <input type="radio" name="optionsRadios" ng-model="filtro.tipoProveedores" value="3" ng-click="filtro.estados=[]" > Informales<span style="font-size: 9px;">({{TotalInformales}})</span>
                     </label> 
                 </div>
                 <div class="form-group has-feedback">
@@ -415,7 +439,8 @@
                             <div class="checkbox" ng-repeat="it in sectoresZonas" >
                                <label>
                                    <input type="checkbox" checklist-model="filtro.sectoresProv" checklist-value="it.id" > 
-                                   {{it.destino.destino_con_idiomas[0].nombre +' - '+ it.sectores_con_idiomas[0].nombre}}
+                                       {{it.destino.destino_con_idiomas[0].nombre +' - '+ it.sectores_con_idiomas[0].nombre}}
+                                       <p style="font-size: 11px;" > <htmldiv content="getCantidadPorSector(it.id)"></htmldiv> </p>
                                 </label>
                             </div>
                         </div>
@@ -448,11 +473,14 @@
                 
             </div>
             
+            <hr style="margin: 4%;">
             
             <div id="filtrosZonas" >
                 <div class="checkbox" style="margin:5px;" >
                    <label><input type="checkbox" ng-model="filtro.verZonas" ng-change="verOcultarZonas()" >Ver bloques</label>
                 </div>
+                
+                <div class="panel-group" ng-if="filtro.verZonas == true">
             
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -490,16 +518,17 @@
                                 </div>
                                 
                             </div>
-                            
                         </div>
                     </div>
-                </div>
-            
+                
+                </div>    
+                
             </div>
             
             <button class="btn btn-block btn-danger btn-sm" ng-click="limpiarFiltros()"  >
                 Limpiar todos los filtros
             </button>
+            
         </div>
         <div id="contentMap" ng-class="{ 'showed': pantallaCompleta }">
             <div id="filtros-buttons">
@@ -514,18 +543,18 @@
                              <i class="material-icons">menu</i>
                           </a>
                           <ul class="dropdown-menu">
-                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
-                            <li><a href="/MuestraMaestra/excelinfoperiodo/<?php echo e($periodo->id); ?>" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
+                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
+                            <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
                             <li>
                                 <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
                             </li>
                             <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
-                            <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar zona</a></li>
+                            <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar bloque</a></li>
                           </ul>
                     </div>
                     
-                    <button type="button" id="btn-add" class="btn btn-danger btn-sm" ng-click="cancelarAgregarZonaPRoveedor()" ng-show="es_crear_zona" style="margin-left: 5px;position: absolute; left: 100%;" >
-                        Cancelar crear zona
+                    <button type="button" id="btn-add" class="btn btn-danger btn-sm" ng-click="cancelarAgregarZonaPRoveedor()" ng-show="es_crear_zona || es_crear_proveedor" style="margin-left: 5px;position: absolute; left: 100%;" >
+                        Cancelar
                     </button>
                     
                 </div>
@@ -558,8 +587,8 @@
                                 <li><a href ng-click="openModalZona(item)" ><i class="material-icons">edit</i> Ver/Editar</a></li>
                                 <li><a href ng-click="editarPosicionZona(item,$index)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
                                 <li><a href ng-click="eliminarZona(item,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
-                                <li><a href="/MuestraMaestra/excel/{{item.id}}?tipo={{tipoPro.id}}&categoria={{ filtro.categorias.join() }}" download ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
-                                <li><a href="/MuestraMaestra/llenarinfozona/{{item.id}}" ><i class="material-icons">border_color</i> Cargar datos</a></li>
+                                <li><a href ng-click="exportarFileExcelZona(item)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
+                                <li><a href="/MuestraMaestra/llenarinfozona/{{item.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
                               </ul>
                             </div>
                             <button class="btn btn-xs btn-success" type="button" ng-if="item.editar" ng-click="guardarEditarPosicion()" > 
@@ -634,27 +663,27 @@
         <div class="contenido" ng-show="proveedor" >
             <div class="form-group">
                 <label class="control-label">Nombre</label>
-                <p class="form-control-static">{{proveedor.razon_social}}</p>
+                <p class="form-control-static">{{proveedor.nombre}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">RNT</label>
-                <p class="form-control-static">{{proveedor.numero_rnt || 'No disponible'}}</p>
+                <p class="form-control-static">{{proveedor.rnt || 'No tiene'}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Estado</label>
-                <p class="form-control-static">{{proveedor.estadop.nombre || 'No disponible'}}</p>
+                <p class="form-control-static">{{proveedor.estado || 'No tiene'}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Dirección</label>
                 <p class="form-control-static">{{proveedor.direccion}}</p>
             </div>
             <div class="form-group">
-                <label class="control-label">Tipo de proveedor</label>
-                <p class="form-control-static">{{proveedor.tipoCategoria.tipo}}</p>
+                <label class="control-label">Categoría</label>
+                <p class="form-control-static">{{proveedor.categoria}}</p>
             </div>
             <div class="form-group">
-                <label class="control-label">Categoria de proveedor</label>
-                <p class="form-control-static">{{proveedor.tipoCategoria.categoria}}</p>
+                <label class="control-label">Subcategoría</label>
+                <p class="form-control-static">{{proveedor.subcategoria}}</p>
             </div>
             
             
@@ -691,7 +720,7 @@
             </div>
             
             <br>
-            <h4>Tipos de proveedores</h4>
+            <h4>Categoría</h4>
             <ul class="list-details">
                 <li ng-repeat="it in detalleZona.tiposProveedores">
                     {{it.nombre}} 
@@ -720,8 +749,8 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
-        <h4 class="modal-title">Zona</h4>
+        <button type="button" ng-click="cancelarAgregarZonaPRoveedor()" class="close" data-dismiss="modal" >&times;</button>
+        <h4 class="modal-title">Bloque</h4>
       </div>
       <form name="form" >
       
@@ -760,8 +789,8 @@
                 
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{'error' : (form.$submitted || form.sector.$touched) && form.sector.$error.required}" >
-                      <label for="name">Sector:</label>
-                      <ui-select ng-model="zona.sector_id" name="sector" id="sector" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <label for="name">Sector:</label>
+                        <ui-select ng-model="zona.sector_id" name="sector" id="sector" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione un sector">
                                 <span>{{$select.selected.destino.destino_con_idiomas[0].nombre +' - '+ $select.selected.sectores_con_idiomas[0].nombre}}</span>
                             </ui-select-match>
@@ -815,6 +844,75 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th>Detalles</th>
+                  <th>PRESTADORES (Estado – Categoría)</th>
+                  <th>PLANILLA</th>
+                  <th>TABULACIÓN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" ng-model="busquedaZonas" placeholder="Busqueda por nombre, sector y Encargado."  />
+                    </td>
+                    <td></td>
+                    <td>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada"  name="optradio1">Todas</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada" value="true" name="optradio1">Si</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada" value="false" name="optradio1">No</label>
+                    </td>
+                    <td>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.tabulada" name="optradio2">Todas</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.tabulada" value="true" name="optradio2">Si</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.tabulada" value="false" name="optradio2">No</label>
+                    </td>
+                </tr>
+                <tr ng-repeat="z in detalle|filter:busquedaZonas|filter:{ 'es_generada':filterTabla.planillada, 'es_tabulada':filterTabla.tabulada } " >
+                  <td>
+                      <p>  <b>BLOQUE:</b> {{z.nombre}} </p>
+                      <p>  <b>SECTOR:</b> {{(sectores|filter:{id:z.sector_id}:true)[0].sectores_con_idiomas[0].nombre}} </p>
+                      <p>  
+                            <b>ENCARGADOS:</b> 
+                            <ul>
+                                <li ng-repeat="it in z.encargados" > {{it.codigo}} </li> 
+                            </ul>
+                      </p>
+                  </td>
+                  <td>
+                      <ul>
+                         <li ng-repeat="it in z.estadosProveedores" > {{it.nombre}}: {{it.cantidad}} </li> 
+                      </ul>
+                      
+                      <br>
+                      
+                      <ul>
+                         <li ng-repeat="it in z.tiposProveedores" > {{it.nombre}}: {{it.cantidad[0]+it.cantidad[1]}}
+                         <p style="font-size:11px" >Formales:{{it.cantidad[0]}}, informales:{{it.cantidad[1]}}</p> </li> 
+                      </ul>
+                  </td>
+                  <td>
+                        <p>  <b>GENERADA:</b> {{z.es_generada ? "Si" : "No"}} </p>
+                        <a href  ng-click="exportarFileExcelZona(z)" >
+                            Descargar
+                        </a>
+                        
+                        ( {{z.es_generada}} == {{filterTabla.planillada}}} ): {{ filterTabla.planillada==z.es_generada}}
+                  </td>
+                  <td>
+                        <p>  <b>TABULADA:</b> {{z.es_tabulada ? "Si" : "No"}} </p>
+                        <p>  <b>TABULADOR:</b> {{z.tabulador || '-'}} </p>
+                        <a href  ng-click="exportarFileExcelZona(z)" >
+                            TABULAR
+                        </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!--
+            <table class="table table-striped">
+              <thead>
+                <tr>
                   <th>#</th>
                   <th>SECTOR</th>
                   <th>BLOQUE</th>
@@ -855,7 +953,7 @@
                 </tr>
               </tbody>
             </table>
-            
+            -->
             
         </div>
         <div class="modal-footer">
@@ -875,7 +973,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
-        <h4 class="modal-title">Proveedor informal</h4>
+        <h4 class="modal-title">Proveedor</h4>
       </div>
       <form name="formP" >
       
@@ -885,7 +983,7 @@
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.nombreP.$touched) && formP.nombreP.$error.required}" >
                       <label>Nombre:</label>
-                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.razon_social" placeholder="Nombre del establecimiento" required >
+                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.nombre" placeholder="Nombre del establecimiento" required >
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -940,8 +1038,8 @@
                 
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.tipoP.$touched) && formP.tipoP.$error.required}">
-                        <label class="control-label" for="tipoP">Categoría proveedor</label>
-                        <ui-select  ng-model="proveedorInformal.categoria_proveedor_id" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <label class="control-label" for="tipoP">Subcategoría</label>
+                        <ui-select  ng-model="proveedorInformal.idcategoria" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione una categoria">
                                 <span ng-bind="$select.selected.categoria_proveedores_con_idiomas[0].nombre"></span>
                             </ui-select-match>

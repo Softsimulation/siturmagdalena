@@ -14,6 +14,10 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
             }
             
             $scope.servicios = data.servicios;
+            $scope.encuesta = data.encuesta;
+            if($scope.encuesta.actividad_comercial==0 || $scope.encuesta.actividad_comercial==1){
+                $scope.encuesta.actividad_comercial = $scope.encuesta.actividad_comercial+"";
+            }
             
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
@@ -40,7 +44,7 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
         }
         
         var data = angular.copy($scope.alojamiento);
-        data.encuesta = $("#id").val();
+        data.encuesta = angular.copy($scope.encuesta);
         data.servicios = angular.copy($scope.servicios);
         
         $("body").attr("class", "cbp-spmenu-push charging");
@@ -48,7 +52,8 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
         OfertaEmpleoServi.guardarCaracterizacionAlojamiento( data ).then(function(data){
             
             if(data.success){
-                window.location.href = "/ofertaempleo/oferta/" + $("#id").val();
+                
+                
             }
             else{
                 $scope.errores = data.errores;
@@ -79,7 +84,7 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
             }
             
             $scope.servicios = data.servicios;
-            $scope.numero_dias = data.numeroDias;
+            $scope.numero_dias = data.encuesta.numero_dias;
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
            $("body").attr("class", "cbp-spmenu-push");
@@ -130,19 +135,10 @@ app.controller("AlojamientoMensualCtrl", function($scope, OfertaEmpleoServi){
             
             if(data.alojamiento){
                 $scope.alojamiento = data.alojamiento;
-                
-                if( $scope.alojamiento.habitaciones.length>0 ){
-                    if( $scope.alojamiento.habitaciones[0].total_camas ){
-                        $scope.mideOcupacion = 0;
-                    }
-                    else if( $scope.alojamiento.habitaciones[0].total ){
-                        $scope.mideOcupacion = 1;
-                    }
-                }
             }
             
             $scope.servicios = data.servicios;
-            $scope.numero_dias = data.numeroDias;
+            $scope.numero_dias = data.encuesta.numero_dias;
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(){
            $("body").attr("class", "cbp-spmenu-push");
