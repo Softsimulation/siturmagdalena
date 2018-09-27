@@ -125,4 +125,5 @@
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="/js/plugins/ng-map.js"></script>
 @endsection
