@@ -10,6 +10,8 @@ situr.controller('caracterizacionAlimentosCtrl', ['$scope','restauranteServi', f
             $scope.especialidades = dato.especialidades;
             if (dato.provision != null) {
                 $scope.alimentos = dato.provision;
+                $scope.alimentos.Comercial = dato.encuesta.Comercial+"";
+                $scope.alimentos.NumeroDias = dato.encuesta.NumeroDias;
             }
             $("body").attr("class", "cbp-spmenu-push");
             
@@ -30,15 +32,29 @@ situr.controller('caracterizacionAlimentosCtrl', ['$scope','restauranteServi', f
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success) {
                 swal({
-                    title: "Realizado",
-                    text: "Se ha guardado satisfactoriamente la sección.",
-                    type: "success",
-                    timer: 1000,
-                    showConfirmButton: false
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: data.oferta == true ? "Oferta" : "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                      if(!data.oferta){
+                          window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                      }else{
+                          window.location.href = '/ofertaempleo/capacidadalimentos/'+$scope.id;
+                      }
+                    
+                  } else {
+                    window.location = "/ofertaempleo/encuestas/"+data.sitio;
+                  }
                 });
-                setTimeout(function () {
-                    window.location.href = "/ofertaempleo/capacidadalimentos/" + $scope.id;
-                }, 1000);
             } else {
                 $scope.errores = data.errores
                 swal("Error", "Verifique la información.", "error")

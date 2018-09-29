@@ -101,7 +101,7 @@ class Sitio extends Model
      */
     public function sitiosConActividades()
     {
-        return $this->belongsToMany('App\Models\Sitio', 'sitios_con_actividades', 'sitios_id', 'actividades_id');
+        return $this->belongsToMany('App\Models\Actividad', 'sitios_con_actividades', 'sitios_id', 'actividades_id');
     }
 
     /**

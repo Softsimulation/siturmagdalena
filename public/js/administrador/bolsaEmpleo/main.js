@@ -36,41 +36,39 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
         $scope.proveedores = data.proveedores;
         $scope.nivelesEducacion = data.nivelesEducacion;
         $scope.municipios = data.municipios;
+        $scope.tiposCargos = data.tiposCargos;
         $("body").attr("class", "cbp-spmenu-push");
     }).catch(function () {
         $("body").attr("class", "cbp-spmenu-push");
         swal("Error", "Error en la carga, por favor recarga la página.", "error");
     })
     
-    $scope.guardar = function(){
+    $scope.guardar = function(banderPublicar){
         
         if(!$scope.datosForm.$valid){
             swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
         
+        $scope.vacante.banderPublicar = banderPublicar;
+        
         $("body").attr("class", "charging");
         bolsaEmpleoServi.crearVacante($scope.vacante).then(function (data) {
             $("body").attr("class", "");
             if (data.success) {
+                
                 swal({
                     title: "Realizado",
-                    text: "Vacante creada correctamente",
+                    text: "Vacante creada correctamente.",
                     type: "success",
-                    showConfirmButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Volver al listado",
-                    cancelButtonText: "Crear otra vacante",
-                    closeOnConfirm: false,
-                    closeOnCancel: false    
-                },
-                function(isConfirm) {
-                  if (isConfirm) {
-                    window.location = "/bolsaEmpleo/vacantes";
-                  } else {
-                    window.location = "/bolsaEmpleo/crear";
-                  }
+                    timer: 1000,
+                    showConfirmButton: false
                 });
+                
+                setTimeout(function () {
+                    window.location = "/bolsaEmpleo/vacantes";
+                }, 2000);
+                
             } else {
                 swal("Error", "Hay errores en el formulario corrigelos", "error");
                 $scope.errores = data.errores;
@@ -122,11 +120,13 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
             $scope.nivelesEducacion = data.nivelesEducacion;
             $scope.municipios = data.municipios;
             $scope.vacante = data.vacante;
+            $scope.tiposCargos = data.tiposCargos;
             
-            $scope.vacante.fecha_inicio = $scope.parsearFecha($scope.vacante.fecha_inicio);
-            if($scope.vacante.fecha_fin != undefined){
-                $scope.vacante.fecha_fin = $scope.parsearFecha($scope.vacante.fecha_fin);    
+            if($scope.vacante.fecha_vencimiento != undefined){
+                $scope.vacante.fecha_vencimiento = $scope.parsearFecha($scope.vacante.fecha_vencimiento);    
             }
+            
+            
             
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function () {
@@ -209,6 +209,44 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
                         swal({
                             title: "Estado cambiado",
                             text: "Se ha cambiado el estado satisfactoriamente.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        $scope.errores = null;
+                    }else{
+                        swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                        $scope.errores = data.errores; 
+                    }
+                     $("body").attr("class", "cbp-spmenu-push");
+                }).catch(function(){
+                    $("body").attr("class", "cbp-spmenu-push");
+                    swal("Error","Error en la petición, recargue la pagina","error");
+                })
+            }, 2000);
+        });
+    }
+    
+    $scope.cambiarEstadoPublicar = function(item){
+        var indexCambiar = $scope.vacantes.indexOf(item);
+        
+        swal({
+            title: "Cambiar estado de publicación",
+            text: "¿Está seguro?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+            setTimeout(function () {
+                $("body").attr("class", "charging");
+                bolsaEmpleoServi.cambiarEstadoPublicar(item).then(function(data){
+                    if(data.success){
+                        item.es_publico = !item.es_publico;
+                        swal({
+                            title: "Estado cambiado",
+                            text: "Se ha cambiado el estado de publicación satisfactoriamente.",
                             type: "success",
                             timer: 1000,
                             showConfirmButton: false
