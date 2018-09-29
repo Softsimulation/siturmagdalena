@@ -86,11 +86,11 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.Crearencuesta');
     }
     
-        public function getActivar($one){
+    public function getActivar($one){
         return view('ofertaEmpleo.Activar',['id'=>$one]);
     }
     
-      public function getProveedor($id){
+    public function getProveedor($id){
       $establecimiento = Sitio_Para_Encuesta::where("proveedor_rnt_id",$id)->first();
       return ["success" => true, "establecimiento"=> $establecimiento];
     }
@@ -155,11 +155,11 @@ class OfertaEmpleoController extends Controller
             
     }
     
-      public function getListadoproveedoresrnt(){
+    public function getListadoproveedoresrnt(){
         return view('ofertaEmpleo.ListadoProveedoresRnt');
     }
     
-     public function getListadornt(){
+    public function getListadornt(){
      $provedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
       return ["success" => true, "proveedores"=> $provedores];
     }

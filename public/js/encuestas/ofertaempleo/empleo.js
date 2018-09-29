@@ -598,7 +598,7 @@ $scope.$watch('id', function () {
             
             $("body").attr("class", "cbp-spmenu-push charging")
             
-               ofertaServi.guardarEmpleomensual($scope.empleo).then(function (data) {
+               ofertaServi.guardarEmpleo($scope.empleo).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push");
                 if (data.success == true) {
                     swal({
@@ -609,7 +609,7 @@ $scope.$watch('id', function () {
                         showConfirmButton: false
                     });
                     setTimeout(function () {
-                          window.location.href = "/ofertaempleo/encuestas/" + data.sitio;
+                          window.location.href = data.ruta;
                     }, 1000);
     
     

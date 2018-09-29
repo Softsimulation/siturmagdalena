@@ -26,7 +26,7 @@ app.factory("ofertaServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-          guardarEmpleomensual: function (data) {
+          guardarEmpleo: function (data) {
             var defered = $q.defer();
             var promise = defered.promise;
 
