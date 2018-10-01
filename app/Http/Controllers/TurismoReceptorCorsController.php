@@ -67,7 +67,7 @@ class TurismoReceptorCorsController extends Controller
     
     public function __construct()
 	{
-	   $this->user = User::first();
+	   $this->user = User::resolveUser(); 
 	}
     
     public function getInformaciondatoscrear(){
