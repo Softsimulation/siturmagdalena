@@ -54,6 +54,10 @@ Route::controller('/destinos', 'DestinosController');
 
 Route::controller('/rutas', 'RutasTuristicasController');
 
+Route::controller('/eventos', 'EventosController');
+
+Route::controller('/proveedor', 'ProveedoresController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
@@ -110,6 +114,11 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
 Route::group(['middleware' => 'cors'], function(){
    
    Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+   Route::controller('/grupoviajeapi','GrupoViajeCorsController');
   
+   Route::controller('/authapi', 'ApiAuthController');
+   Route::group(['middleware'=> 'jwt.auth'], function () {
+        Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+   });
 });
 

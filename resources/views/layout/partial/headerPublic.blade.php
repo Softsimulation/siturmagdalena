@@ -42,7 +42,12 @@
     						<option value="en">Inglés</option>
     					</select>
     				</form>
-    				<a href="#" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="hidden-xs">Iniciar sesión</span></a>
+    				@if(Auth::check())
+                    <a href="/login/cerrarsesion" class="btn btn-xs btn-link" title="Cerrar sesión"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <span class="sr-only">Cerrar sesión</span></a>
+                    @else
+                    <a href="/login/login" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="hidden-xs">Iniciar sesión</span></a>
+                    @endif
+    				
     			</div>
     			<div id="navbar-mobile" class="text-center">
                     <button type="button" class="btn btn-block btn-primary" title="Menu de navegación"><span aria-hidden="true" class="ion-navicon-round"></span><span class="sr-only">Menú de navegación</span></button>

@@ -62,9 +62,6 @@ class OfertaEmpleo
     
     if(strlen(strstr($request->path(),'ofertaempleo/agenciaviajes'))>0){
             
-            if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/empleo/'.$request->one);
-            }
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 15){
                          return $next($request);
             }else{
@@ -126,10 +123,7 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizaciontransporte'))>0){
-               if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/empleo/'.$request->one);
-            }        
+    if(strlen(strstr($request->path(),'ofertaempleo/caracterizaciontransporte'))>0){       
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 22){
                          return $next($request);
             }else{
@@ -152,10 +146,7 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalimentos'))>0){
-           if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/empleo/'.$request->one);
-            }         
+    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalimentos'))>0){        
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11 ){
                          return $next($request);
             }else{
