@@ -14,7 +14,7 @@
         var color, colorHolder, colorName, colors, j, len1, panel, profile, profileName, profiles, results1, vibrant;
         vibrant = new Vibrant(this);
         panel = e.target;
-        
+        panel.parentElement.style.backgroundColor = vibrant.VibrantSwatch.getHex();
         panel.style.backgroundColor = vibrant.VibrantSwatch.getHex();
         panel.style.color = vibrant.VibrantSwatch.getTitleTextColor();
         //colors = document.createElement('div');
