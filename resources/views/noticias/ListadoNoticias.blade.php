@@ -48,6 +48,9 @@
 
 @section('controller','ng-controller="listadoNoticiasCtrl"')
 
+@section('titulo','Noticias')
+@section('subtitulo','El siguiente listado cuenta con @{{noticias.length}} registro(s)')
+
 @section('content')
     <div class="container">
         <div class="row">

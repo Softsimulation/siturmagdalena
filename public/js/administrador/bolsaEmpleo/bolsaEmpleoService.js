@@ -80,5 +80,16 @@ app.factory("bolsaEmpleoServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        PostulacionesVacante: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/bolsaEmpleo/vacantepostulados/'+id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

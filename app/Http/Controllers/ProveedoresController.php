@@ -11,6 +11,12 @@ class ProveedoresController extends Controller
 {
     //
     public function getVer($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Proveedor::find($id) == null){
+            return response('Not found.', 404);
+        }
+        
         $proveedor = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt){
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma){
                 $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');
@@ -23,11 +29,17 @@ class ProveedoresController extends Controller
             $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas){
                 $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre');
             }])->select('actividades.id');
-        }])->select('id', 'proveedor_rnt_id', 'telefono', 'sitio_web', 'valor_min', 'valor_max')->where('id', $id)->first();
+        }])->select('id', 'proveedor_rnt_id',  'telefono', 'sitio_web', 'valor_min', 'valor_max', 'calificacion_legusto')->where('id', $id)->first();
         
         $video_promocional = Proveedor::with(['multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('tipo', true)->select('proveedor_id', 'ruta');
-        }])->first()->multimediaProveedores[0]->ruta;
+        }])->first()->multimediaProveedores;
+
+        if (count($video_promocional) > 0){
+            $video_promocional = $video_promocional[0]->ruta;
+        }else {
+            $video_promocional = null;
+        }
         
         //return ['proveedor' => $proveedor, 'video_promocional' => $video_promocional];
         return view('proveedor.Ver', ['proveedor' => $proveedor, 'video_promocional' => $video_promocional]);

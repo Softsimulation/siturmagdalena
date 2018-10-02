@@ -65,58 +65,6 @@
     <form name="AlojamientoForm" novalidate>
         
         
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Selecciones las modalidades de alojamiento que ofrece su establecimiento</b></h3>
-            </div>
-            <div class="panel-footer"><b>Seleccione una opción</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-xs-12 col-md-offset-1 col-md-2">
-                        <div class="checkbox" style="display: inline-block; margin-right: 1em" >
-                            <label>
-                                <input type="checkbox"  ng-model="servicios.habitacion" ng-true-value="true" ng-false-value="false"  > Habitaciones
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-2">
-                        <div class="checkbox" style="display: inline-block; margin-right: 1em">
-                            <label>
-                                <input type="checkbox"  ng-model="servicios.apartamento" ng-true-value="true" ng-false-value="false" > Apartamentos
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-2">
-                        <div class="checkbox" style="display: inline-block; margin-right: 1em">
-                            <label>
-                                <input type="checkbox"  ng-model="servicios.casa" ng-true-value="true" ng-false-value="false"  > Casas
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-2">
-                        <div class="checkbox" style="display: inline-block; margin-right: 1em">
-                            <label>
-                                <input type="checkbox"  ng-model="servicios.cabana" ng-true-value="true" ng-false-value="false" > Cabañas
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-2">
-                        <div class="checkbox" style="display: inline-block; margin-right: 1em">
-                            <label>
-                                <input type="checkbox"  ng-model="servicios.camping" ng-true-value="true" ng-false-value="false" > Camping
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-12">
-                        <span ng-show="ErrorServicio && !servicios.habitacion && !servicios.apartamento && !servicios.casa && !servicios.cabana && !servicios.camping">
-                            <span class="label label-danger" >* Selecione por lo menos un servicio.</span>
-                        </span>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-        
         <div class="panel panel-success" ng-if="servicios.habitacion">
             <div class="panel-heading">
 
@@ -140,23 +88,6 @@
                             <tbody>
                                 
                                 <tr>
-                                    <td > 
-                                        ¿En que mide su porcentaje de ocupación?  
-                                        <div style="display: inline-flex;align-items: baseline;" >
-                                            <div class="radio radio-inline radio-primary">
-                                                <label>
-                                                    <input type="radio" value="1" name="mideOcupacion" ng-model="mideOcupacion" ng-required="servicios.habitacion"> Habitaciones
-                                                </label>
-                                            </div>
-                                            <div class="radio radio-inline radio-primary">
-                                                <label>
-                                                    <input type="radio" value="0" name="mideOcupacion" ng-model="mideOcupacion" ng-required="servicios.habitacion"> Camas
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr ng-if="mideOcupacion==0" >
                                     <td>
                                         Número total de camas que posee el establecimiento
                                         <span ng-show="carForm.$submitted || carForm.numeroCamas.$touched">
@@ -169,7 +100,7 @@
                                         <input type="number" name="numeroCamas" class="form-control" min="0" ng-model="alojamiento.habitaciones[0].total_camas" ng-required="servicios.habitacion" placeholder="Ingrese aquí el número total de camas" />
                                     </td>
                                 </tr>
-                                <tr ng-if="mideOcupacion==1" >
+                                <tr>
                                     <td>
                                         Total habitaciones (Por favor no incluir habitaciones para el personal de la empresa)
                                         <span ng-show="carForm.$submitted || carForm.totalH.$touched">
@@ -180,8 +111,8 @@
                                     </td>
                                     <td style="width: 15%;min-width: 50px">
                                         <input type="number" name="totalH" class="form-control" min="0" ng-model="alojamiento.habitaciones[0].total" ng-required="servicios.habitacion" placeholder="Ingrese aquí el número total de habitaciones" />
-                                </td>
-
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>Tarifa de habitación doble estándar incluido impuestos ($) en el mes
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.HabitacionTarifa.$touched">
@@ -193,7 +124,7 @@
                                     <td><input name="HabitacionTarifa" id="HabitacionTarifa" class="form-control" ng-model="alojamiento.habitaciones[0].tarifa" min="1000"  type="number" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                                 <tr>
-                                <td>¿Cuántas habitaciones se ocuparon durante el mes? (Es la suma de habitaciones vendidas cada noche del mes)
+                                    <td>¿Cuántas habitaciones se ocuparon durante el mes? (Es la suma de habitaciones vendidas cada noche del mes)
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.HabitacionOcupa.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionOcupa.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionOcupa.$error.number">*El campo debe ser un número.</span>
@@ -440,10 +371,9 @@
             <a href="/ofertaempleo/caracterizacion/{{$id}}" class="btn btn-raised btn-default">Anterior</a>
             <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>
+        
     </form>
-    <div class='carga'>
-
-    </div>
+    
 </div>
 
 <div class='carga'></div>

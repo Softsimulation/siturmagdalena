@@ -17,9 +17,9 @@ class PublicoBolsaEmpleoController extends Controller
     public function getVer($id){
         $vacante = Oferta_Vacante::find($id);
         if($vacante == null){
-            // return \Redirect::to('/bolsaEmpleo/vacantes')->with('message', 'Verifique que el visitante este en la sección adecuada.')
-            //             ->withInput();
-            return "No existe vacante";
+            return \Redirect::to('/promocionBolsaEmpleo/vacantes')->with('message', 'Verifique que la vacante se encuentre registrada en el sistema.')
+                        ->withInput();
+            // return "No existe vacante";
         }
         
         
@@ -31,15 +31,9 @@ class PublicoBolsaEmpleoController extends Controller
     
     public function getVacantes(Request $request){
         
-        
-        
         $vacantes = Oferta_Vacante::where('estado',1)
-                    ->where(function($q){$q->where('fecha_vencimiento','>=',date('Y-m-d'))->orWhereNull('fecha_vencimiento');})
-                    ->where(function($q)use($request){ if( isset($request->proveedor) && $request->proveedor != null ){$q->where('proveedores_rnt_id',$request->proveedor);}})
-                    ->where(function($q)use($request){ if( isset($request->municipio) && $request->municipio != null ){$q->where('municipio_id',$request->municipio);}})
-                    ->where(function($q)use($request){ if( isset($request->tipoCargo) && $request->tipoCargo != null ){$q->where('tipo_cargo_vacante_id',$request->tipoCargo);}})
-                    ->where(function($q)use($request){ if( isset($request->nivelEducacion) && $request->nivelEducacion != null ){$q->where('nivel_educacion_id',$request->nivelEducacion);}})
-                    ->get();
+                    ->search($request)
+                    ->paginate(5);
         
         $proveedores = Proveedores_rnt::whereHas('vacantes',function($q){
             $q->where('estado',1)->where(function($q){$q->where('fecha_vencimiento','>=',date('Y-m-d'))->orWhereNull('fecha_vencimiento');});

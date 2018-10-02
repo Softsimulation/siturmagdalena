@@ -31,6 +31,12 @@ class AtraccionesController extends Controller
     }
     
     public function getVer($id){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Atracciones::find($id) == null){
+            return response('Not found.', 404);
+        }
+        
         $atraccion = Atracciones::with(['sitio' => function ($querySitio){
             $querySitio->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
                 $querySitiosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');
@@ -42,10 +48,10 @@ class AtraccionesController extends Controller
                 }, 'multimediasActividades' => function($queryMultimediasActividades){
                     $queryMultimediasActividades->where('portada', true)->select('actividades_id', 'ruta');
                 }])->select('actividades.id');
-            }])->select('id', 'longitud', 'latitud');
+            }])->select('id', 'longitud', 'latitud', 'direccion');
         }, 'atraccionesConIdiomas' => function ($queryAtraccionesConIdiomas){
             $queryAtraccionesConIdiomas->orderBy('idiomas_id')->select('atracciones_id', 'idiomas_id'  , 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
-        }])->where('id', $id)->select('id', 'sitios_id', 'calificacion_legusto')->first();
+        }])->where('id', $id)->select('id', 'sitios_id', 'calificacion_legusto', 'calificacion_recomendar', 'calificacion_volveria', 'sitio_web')->first();
         
         $video_promocional = Atracciones::where('id', $id)->with(['sitio' => function($querySitio){
             $querySitio->with(['multimediaSitios' => function ($queryMultimediaSitios){

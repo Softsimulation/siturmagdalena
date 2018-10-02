@@ -414,8 +414,67 @@ class MuestraMaestraCtrl extends Controller
         return $list;
     }
     
+    ////////////////////////////////////////////////////
     
+    public function getDetallezonas($id){
+        $periodo = Periodos_medicion::find($id);
+        
+        if($periodo){
+            
+            return View( "MuestraMaestra.DetalleZonas", [ "periodo"=> $id ] );
+        }
+        
+        return "Error periodo no encontrada"; 
+    }
     
+    public function getDatadetallezonas($id){
+        
+        $periodo = Periodos_medicion::where("id",$id)->with([ "zonas"=>function($q){ $q->with("encargados"); } ])->first();
+        
+        foreach($periodo->zonas as $zona){
+            
+            return $proveedores = new Collection(DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ));
+            $proveedoresInformales = new Collection(DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) ));
+            
+            $zona["formales"] = count($proveedores);
+            $zona["informales"] = count($proveedoresInformales);
+            $zona["categorias"] = $this->getCantidadProveedorPorCategoria($zona->id,$proveedores,$proveedoresInformales);
+            $zona["estados"] = $this->getCantidadProveedorPorEstado($zona->id,$proveedores,$proveedoresInformales);
+            
+        }
+        return $periodo;
+        
+    }
+    
+    private function getCantidadProveedorPorCategoria($id, $prov1, $prov2){
+        $categorias = Tipo_Proveedor::with([ "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); } ])->select("id")->get();
+        $data = [];
+        
+        foreach($categorias as $ctg){
+            $d = [
+                   "id" => $ctg->id,
+                   "nombre"=> $ctg->tipoProveedoresConIdiomas[0]->nombre,
+                   "formales"=> $prov1,
+                   "informales"=> $prov2->where("idcategoria", $ctg->id )->count(),
+                ];
+            array_push($data,$d);
+        }
+        return $data;
+    }
+    private function getCantidadProveedorPorEstado($id, $prov1, $prov2){
+        $estados = Estado_proveedor::where("id","!=",7)->get(); 
+        $data = [];
+        
+        foreach($estados as $std){
+            $d = [
+                   "id" => $std->id,
+                   "nombre"=> $std->nombre,
+                   "formales"=> $prov1->where("idestado", $std->id )->count()
+                ];
+            array_push($data,$d);
+        }
+        return $data;
+    }
     ////////////////////////////////////////////////////
     
     public function getLlenarinfozona($id){
@@ -609,7 +668,7 @@ class MuestraMaestraCtrl extends Controller
         $proveedor->user_update = $this->user->username;
         $proveedor->save();
         
-        return [ "success"=>true, "proveedor"=> DB::select("SELECT *from listado_proveedores_informales where id = ". $proveedor->id ) ];
+        return [ "success"=>true, "proveedor"=> DB::select("SELECT *from listado_proveedores_informales where id = ". $proveedor->id )[0] ];
     }
     
     public function postEditarubicacionproveedor(Request $request){

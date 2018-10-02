@@ -140,11 +140,11 @@
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.HabitacionTotal.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionTotal.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionTotal.$error.number">*El campo debe ser un número.</span>
-                                            <span class="label label-danger" ng-show="AlojamientoForm.HabitacionTotal.$error.min">*El campo debe ser mayor que 1</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.HabitacionTotal.$error.min">*El campo debe ser mayor oigual que las personas realizaron Check in o ingresaron</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionTotal.$error.max">*Este campo no debe ser mayor a la capacidad maxima en alojamiento.</span>
                                         </span>   
                                     </td>
-                                    <td><input type="number" name="HabitacionTotal" id="HabitacionTotal" class="form-control" ng-model="alojamiento.habitaciones[0].total_huespedes" min="1" max="@{{alojamiento.habitaciones[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="HabitacionTotal" id="HabitacionTotal" class="form-control" ng-model="alojamiento.habitaciones[0].total_huespedes" min="@{{alojamiento.habitaciones[0].numero_personas}}" max="@{{alojamiento.habitaciones[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                             </tbody>
 
@@ -235,11 +235,11 @@
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.ApartamentosTotal.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.ApartamentosTotal.$error.required">*El campo es requerido</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.ApartamentosTotal.$error.number">*El campo debe ser un número.</span>
-                                            <span class="label label-danger" ng-show="AlojamientoForm.ApartamentosTotal.$error.min">*El campo debe ser mayor que 1.</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.ApartamentosTotal.$error.min">*El campo debe ser mayor o igual a los viajeros ingresaron durante el mes.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.ApartamentosTotal.$error.max">*Este campo no debe ser mayor a la capacidad maxima en alojamiento.</span>
                                         </span>    
                                     </td>
-                                    <td><input type="number" name="ApartamentosTotal" id="ApartamentosTotal" class="form-control" ng-model="alojamiento.apartamentos[0].total_huespedes" min="1" max="@{{alojamiento.apartamentos[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="ApartamentosTotal" id="ApartamentosTotal" class="form-control" ng-model="alojamiento.apartamentos[0].total_huespedes" min="@{{alojamiento.apartamentos[0].viajeros}}" max="@{{alojamiento.apartamentos[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                             </tbody>
 
@@ -330,11 +330,11 @@
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.CasaTotal.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.CasaTotal.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CasaTotal.$error.number">*El campo debe ser un número.</span>
-                                            <span class="label label-danger" ng-show="AlojamientoForm.CasaTotal.$error.min">*El campo debe ser mayor que 1.</span>
-                                            <span class="label label-danger" ng-show="AlojamientoForm.CasaTotal.$error.max">*Este campo no debe ser mayor a la capacidad maxima en alojamiento.</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CasaTotal.$error.min">*El campo debe ser mayor o igual a los viajeros ingresaron durante el mes.</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CasaTotal.$error.max">*Este campo no debe ser mayor o igual a la capacidad maxima en alojamiento.</span>
                                         </span>    
                                     </td>
-                                    <td><input type="number" name="CasaTotal" id="CasaTotal" class="form-control" ng-model="alojamiento.casas[0].total_huespedes" min="1" max="@{{alojamiento.casas[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="CasaTotal" id="CasaTotal" class="form-control" ng-model="alojamiento.casas[0].total_huespedes" min="@{{alojamiento.casas[0].viajeros}}" max="@{{alojamiento.casas[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                             </tbody>
 
@@ -426,11 +426,11 @@
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.CabTotal.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.CabTotal.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CabTotal.$error.number">*El campo debe ser un número.</span>
-                                            <span class="label label-danger" ng-show="AlojamientoForm.CabTotal.$error.min">*El campo debe ser mayor que 1.</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CabTotal.$error.min">*El campo debe ser mayor o igual a los viajeros ingresaron durante el mes.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CabTotal.$error.max">*Este campo no debe ser mayor a la capacidad maxima en alojamiento.</span>
                                         </span>     
                                     </td>
-                                    <td><input type="number" name="CabTotal" id="CabTotal" class="form-control" ng-model="alojamiento.cabanas[0].total_huespedes" min="1" max="@{{alojamiento.cabanas[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="CabTotal" id="CabTotal" class="form-control" ng-model="alojamiento.cabanas[0].total_huespedes" min="@{{alojamiento.cabanas[0].viajeros}}" max="@{{alojamiento.cabanas[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                             </tbody>
 
@@ -513,11 +513,11 @@
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.CamTotal.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.CamTotal.$error.required">*El campo es requerido.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CamTotal.$error.number">*El campo debe ser un número.</span>
-                                            <span class="label label-danger" ng-show="AlojamientoForm.CamTotal.$error.min">*El campo debe ser mayor que 1.</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CamTotal.$error.min">*El campo debe ser mayor o igual a los viajeros ingresaron durante el mes.</span>
                                             <span class="label label-danger" ng-show="AlojamientoForm.CamTotal.$error.max">*Este campo no debe ser mayor a la capacidad maxima en alojamiento.</span>
                                         </span>    
                                     </td>
-                                    <td><input type="number" name="CamTotal" id="CamTotal" class="form-control" ng-model="alojamiento.campings[0].total_huespedes" min="1" max="@{{alojamiento.campings[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="CamTotal" id="CamTotal" class="form-control" ng-model="alojamiento.campings[0].total_huespedes" min="@{{alojamiento.campings[0].viajeros}}" max="@{{alojamiento.campings[0].capacidad*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                             </tbody>
 
