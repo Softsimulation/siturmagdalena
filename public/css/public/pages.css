@@ -1,6 +1,5 @@
 .carousel-inner>.item {
     height: 320px;
-    position:relative;
 }
 .carousel-inner>.item>img{
     position: absolute;
@@ -59,6 +58,7 @@
 }
 #menu-page {
     background-color: whitesmoke;
+    box-shadow: 0px 1px 6px 0px rgba(0,0,0,.45);
     color: dodgerblue;
     
     position: fixed;
@@ -66,6 +66,7 @@
     left: 0;
     width: 100%;
     z-index: 100;
+    
 }
 #menu-page-list li {
     width: 25%;
@@ -82,10 +83,15 @@
     margin: 0;
     padding: 0;
 }
+#content-map{
+    position:relative;
+}
 #map{
     width: 100%;
-    height: 350px;
+    height: 320px;
+    margin-bottom: 1rem;
 }
+
 #puntajes{
     margin: 1rem 0;
 }
@@ -131,6 +137,57 @@
 .form-check .ion-android-star:hover,.form-check .ion-android-star-outline:hover{
     text-shadow: 0px 1px 2px rgba(0,0,0,.45);
 }
+section{
+    padding-bottom: 1rem;
+}
+section .title-section{
+    font-size: 2.375rem;
+    margin: 1rem 0;
+    margin-bottom: 2rem;
+    color: #004A87;
+    text-align: center;
+    position:relative;
+}
+section .title-section:before {
+    content: "";
+    position: absolute;
+    top: calc(100% + .5rem);
+    left: calc(50% - 16.65%);
+    width: 33.3%;
+    border-bottom: 1px dotted orange;
+}
+section h4{
+    font-size: 1.875rem;
+    color: #004A87;
+    margin-bottom: 1rem;
+}
+/*section .title-section:first-child{*/
+/*    background: dodgerblue;*/
+/*    margin: 0;*/
+/*    padding: .5rem 3rem;*/
+/*    border-bottom-left-radius: 3rem;*/
+/*    border-bottom-right-radius: 3rem;*/
+/*    display: inline-block;*/
+/*    color: white;*/
+/*}*/
+section p{
+    margin-bottom: 1rem;
+}
+.list{
+    list-style: none;
+    padding: 0;
+}
+.list p, .list .form-group{
+    margin: 0;
+}
+.list li {
+    padding-bottom: .5rem;
+}
+
+.list li:not(:first-child) {
+    border-top: 1px solid #eee;
+    padding-top: .5rem;
+}
 @media only screen and (min-width: 768px) {
     .carousel-inner>.item {
         height: 400px;
@@ -139,6 +196,9 @@
         font-size: 2.25rem;
         width: 60px;
         height: 60px;
+    }
+    #map{
+        height: 400px;
     }
 }
 @media only screen and (min-width: 992px) {
@@ -149,6 +209,8 @@
         position:static;
         color: white;
         background-color: dodgerblue;
+        box-shadow: none;
+        margin-bottom: 1rem;
     }
     #menu-page a {
         color: white;
@@ -157,9 +219,18 @@
     #menu-page-list li a{
         padding: 1rem 0;
     }
+    #map{
+        height: 450px;
+    }
+    #features-map{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        margin-bottom: 1rem;
+    }
 }
 @media only screen and (min-width: 1200px) {
-    .carousel-inner>.item {
+    .carousel-inner>.item, #map {
         height: 500px;
     }
     .tiles .tile:not(.inline-tile){

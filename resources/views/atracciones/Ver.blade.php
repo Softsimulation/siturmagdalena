@@ -12,7 +12,14 @@ function parse_yturl($url)
 
 @section ('estilos')
     <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
-    
+    <style>
+        .section{
+            display: none;
+        }
+        .section.active{
+            display:block;
+        }
+    </style>
 @endsection
 
 @section('meta_og')
@@ -86,27 +93,27 @@ function parse_yturl($url)
         <div class="container">
             <ul id="menu-page-list">
                 <li>
-                    <a href="#informacionGeneral">
+                    <a href="#informacionGeneral" class="toSection">
 						<i class="ionicons ion-information-circled" aria-hidden="true"></i>
 						<span class="hidden-xs">Información general</span>
 					</a>
                 </li>
                 <li>
-                    <a href="#caracteristicas">
-						<i class="ionicons ionicons ion-android-apps" aria-hidden="true"></i>
-						<span class="hidden-xs">Características</span>
+                    <a href="#caracteristicas" class="toSection">
+						<i class="ionicons ionicons ion-android-pin" aria-hidden="true"></i>
+						<span class="hidden-xs">Ubicación</span>
 					</a>
                 </li>
                 @if($paraTenerEnCuentaContieneAlgo)
                 <li>
-                    <a href="#paraTenerEnCuenta">
+                    <a href="#paraTenerEnCuenta" class="toSection">
 						<i class="ionicons ion-help-circled" aria-hidden="true"></i>
 						<span class="hidden-xs">¿Qué debo tener en cuenta?</span>
 					</a>
                 </li>
                 @endif
                 <li>
-                    <a href="#comentarios">
+                    <a href="#comentarios" class="toSection">
 						<i class="ionicons ion-chatbubbles" aria-hidden="true"></i>
 						<span class="hidden-xs">Comentarios</span>
 					</a>
@@ -115,58 +122,111 @@ function parse_yturl($url)
         </div>
     </div>
      
-    <section id="informacionGeneral">
+    <section id="informacionGeneral" class="section active">
         <div class="container">
-            <h3 class="text-center">{{$atraccion->sitio->sitiosConIdiomas[0]->nombre}}</h3>
-            @if($video_promocional != null)
-            <iframe src="https://www.youtube.com/embed/{{print(parse_yturl($video_promocional))}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;"></iframe>
-            @endif
-            <p style="white-space: pre-line;">{{$atraccion->sitio->sitiosConIdiomas[0]->descripcion}}</p>
-        </div>
-        
-    </section>
-    <section id="caracteristicas">
-        <div class="container">
-            <h3 class="text-center">Características</h3>
-            <!--<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam porttitor, augue quis tempus dictum, augue dui molestie sem, vitae molestie augue ipsum id turpis. Fusce feugiat vestibulum ante. Sed a consequat eros, finibus luctus nisl. In ut diam congue, condimentum sem vel, sagittis dolor. Nunc ut vestibulum ex, vitae eleifend metus. Proin id ex eu erat aliquet egestas. Fusce id suscipit velit, ut sodales turpis. Aliquam turpis risus, luctus vitae lobortis finibus, condimentum in felis. Pellentesque vel erat tellus. Suspendisse potenti. Integer porta sed lorem ac iaculis. Pellentesque pretium ex et convallis condimentum. In luctus leo nulla, eu finibus justo volutpat quis.</p>-->
+            <h3 class="title-section">{{$atraccion->sitio->sitiosConIdiomas[0]->nombre}}</h3>
             <div class="row">
+                <div class="col-xs-12">
+                    @if($video_promocional != null)
+                    <iframe src="https://www.youtube.com/embed/{{print(parse_yturl($video_promocional))}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;margin-bottom: 1rem;"></iframe>
+                    @endif
+                </div>
                 <div class="col-xs-12 col-md-8">
-                    <div id="map"></div>
+                    
+                    <p style="white-space: pre-line;">{{$atraccion->sitio->sitiosConIdiomas[0]->descripcion}}</p>
                 </div>
                 <div class="col-xs-12 col-md-4">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item active text-uppercase"><strong>Detalles</strong></li>
-                        
-                        <li class="list-group-item">
-                            <div class="row">
+                    <ul class="list">
+                        <li>
+                            <div class="row align-items-center">
                                 <div class="col-xs-2">
-                                    <span class="ion-android-time" aria-hidden="true"></span> <span class="sr-only">Horario</span>
+                                    <span class="ionicons ion-android-time" aria-hidden="true"></span> <span class="sr-only">Horario</span>
                                 </div>
-                                <div class="col">
-                                    {{$atraccion->atraccionesConIdiomas[0]->horario}}. {{$atraccion->atraccionesConIdiomas[0]->periodo}}
+                                <div class="col-xs-10">
+                                    <div class="form-group">
+                                        <label>Horario</label>
+                                        <p class="form-control-static">
+                                            {{$atraccion->atraccionesConIdiomas[0]->horario}} <em>{{$atraccion->atraccionesConIdiomas[0]->periodo}}</em>
+                                        </p>
+                                    </div>
+                                    
                                 </div>
                                 
                             </div>
-                            @if($atraccion->sitio_web != null)
-                            <div class="row">
+                        </li>
+                        @if($atraccion->sitio->direccion != null)
+                        <li>
+                            <div class="row align-items-center">
                                 <div class="col-xs-2">
-                                    <span class="ion-android-globe" aria-hidden="true"></span> <span class="sr-only">Sitio web</span>
+                                    <span class="ionicons ion-android-pin" aria-hidden="true"></span> <span class="sr-only">Dirección</span>
                                 </div>
-                                <div class="col">
-                                    <a href="{{$atraccion->sitio_web}}" target="_blank" rel="noopener noreferrer">Clic para ir al sitio web</a>
+                                <div class="col-xs-10">
+                                    <div class="form-group">
+                                        <label>Dirección</label>
+                                        <p class="form-control-static">{{$atraccion->sitio->direccion}}</p>
+                                    </div>
+                                    
                                 </div>
                             </div>
-                            @endif
                         </li>
-                    </ul>
+                        @endif
+                        @if($atraccion->sitio_web != null)
+                        <li>
+                            <div class="row align-items-center">
+                                <div class="col-xs-2">
+                                    <span class="ionicons ion-android-globe" aria-hidden="true"></span> <span class="sr-only">Sitio web</span>
+                                </div>
+                                <div class="col-xs-10">
+                                    <div class="form-group">
+                                        <label>Sitio web</label>
+                                        <p class="form-control-static">
+                                            <a href="{{$atraccion->sitio_web}}" target="_blank" rel="noopener noreferrer">Clic para ir al sitio web</a>
+                                        </p>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </li>
+                        @endif
+                        
+                    </ul>    
+                </div>
+            </div>
+            
+        </div>
+        
+    </section>
+    <section id="caracteristicas" class="section">
+        <div class="container  text-center">
+            <h3 class="title-section">Ubicación</h3>
+        </div>
+        <div id="content-map">
+            <div id="map"></div>
+            <div id="features-map" class="container">
+                
+                <div class="tiles justify-content-center">
+                    
+                    @if($atraccion->sitio->direccion != null)
+                    <div class="tile inline-tile tile-50">
+                        <div class="row align-items-center">
+                            <div class="col-xs-2">
+                                <span class="ionicons ion-android-pin" aria-hidden="true"></span> <span class="sr-only">Dirección</span>
+                            </div>
+                            <div class="col-xs-10">
+                                {{$atraccion->sitio->direccion}}
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
+        
     </section>
     @if($paraTenerEnCuentaContieneAlgo)
-    <section id="paraTenerEnCuenta">
+    <section id="paraTenerEnCuenta" class="section">
         <div class="container">
-            <h3 class="text-center">¿Qué debo tener en cuenta?</h3>
+            <h3 class="title-section">¿Qué debo tener en cuenta?</h3>
             @if($atraccion->atraccionesConIdiomas[0]->recomendaciones != "" || $atraccion->atraccionesConIdiomas[0]->reglas != "" || $atraccion->atraccionesConIdiomas[0]->como_llegar != "")
             <div class="row">
                 <div class="col-xs-12 col-md-4">
@@ -189,6 +249,7 @@ function parse_yturl($url)
                     <div class="col-xs-12">
                         <h4 class="text-center">Actividades que puedes realizar</h4>
                         <div class="tiles justify-content-center">
+                            
                             @foreach ($atraccion->sitio->sitiosConActividades as $actividad)
                                
                                 <div class="tile">
@@ -220,8 +281,8 @@ function parse_yturl($url)
     @endif
     <section id="comentarios">
         <div class="container">
-            <h3 class="text-center">Comentarios</h3>
-            <p class="text-center">Te invitamos a que compartas tu opinión acerca de {{$atraccion->atraccionesConIdiomas[0]->nombre}}.</p>   
+            <h3 class="title-section">Comentarios</h3>
+            <p class="text-center">Te invitamos a que compartas tu opinión acerca de {{$atraccion->sitio->sitiosConIdiomas[0]->nombre}}.</p>   
             <div class="text-center">
                 <div class="text-center">
                 <a id="btn-share-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{\Request::url()}}" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><span class="ion-social-facebook" aria-hidden="true"></span> Facebook</a>
@@ -436,6 +497,10 @@ function parse_yturl($url)
             $(this).find('.checks .ionicons-inline').removeClass('ion-android-star');
             $(this).find('.checks .ionicons-inline').addClass('ion-android-star-outline');
         })
+    });
+    $('.toSection').on('click', function(e){
+       $('.section').removeClass('active');
+       $($(this).attr('href')).addClass('active');
     });
 </script>
 <script async defer
