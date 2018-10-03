@@ -56,9 +56,9 @@
         </div>
         <div class="tile-body">
             <div class="tile-caption">
-                <h3>@{{proveedor.proveedor_rnt.razon_social}}</h3>
+                <h3>@{{proveedor.proveedor_rnt.razon_social}} <small ng-if="proveedor.proveedor_rnt.idiomas[0].nombre">(@{{proveedor.proveedor_rnt.idiomas[0].nombre}})</small></h3>
             </div>
-            <p>@{{proveedor.proveedor_rnt.proveedor_rnt_idioma[0].descripcion}}</p>
+            <p>@{{proveedor.proveedor_rnt.idiomas[0].descripcion | limitTo:255}}<span ng-if="proveedor.proveedor_rnt.idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
                 <a href="/administradorproveedores/editar/@{{proveedor.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{proveedor.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(proveedor)">@{{proveedor.estado ? 'Desactivar' : 'Activar'}}</button>
