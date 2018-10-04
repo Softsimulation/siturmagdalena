@@ -83,6 +83,8 @@ Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 
 Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
 
+Route::controller('/postulado','PostuladoController');
+
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
 Route::controller('/login','LoginController');

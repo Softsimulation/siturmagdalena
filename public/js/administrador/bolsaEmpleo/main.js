@@ -267,3 +267,66 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
     
     
 }])
+
+
+
+.controller('postuladosVacanteController', ['$scope', 'bolsaEmpleoServi',function ($scope, bolsaEmpleoServi) {
+    
+    $scope.fechaActual = "'" + formatDate(new Date()) + "'";
+    $scope.optionFecha = {
+        calType: 'gregorian',
+        format: 'DD/MM/YYYY',
+        zIndex: 1060,
+        autoClose: true,
+        default: null,
+        gregorianDic: {
+            title: 'Fecha',
+            monthsNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            daysNames: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            todayBtn: "Hoy"
+        }
+    };
+    
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [day,month,year].join('/');
+    }
+    
+    $scope.vacante = {};
+    $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
+        bolsaEmpleoServi.PostulacionesVacante($scope.id).then(function (data) {
+            
+            $scope.vacante = data.vacante;
+            
+            if($scope.vacante.fecha_vencimiento != undefined){
+                $scope.vacante.fecha_vencimiento = $scope.parsearFecha($scope.vacante.fecha_vencimiento);    
+            }
+            
+            
+            
+            $("body").attr("class", "cbp-spmenu-push");
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+    });
+    
+    
+    
+    $scope.parsearFecha = function(fecha){
+        
+        split = fecha.split("-");
+        var fechaAp = new Date(split[0], split[1] - 1, split[2]);
+        return formatDate(fechaAp);
+    }
+    
+}])
+

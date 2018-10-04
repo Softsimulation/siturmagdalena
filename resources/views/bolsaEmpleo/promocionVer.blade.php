@@ -3,6 +3,13 @@
 @section('Title', 'Vacante')
 
 @section('content')
+    
+    @if(Session::has('message'))
+        <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
+    @endif
+    
+    
+    
     <h1>Vacante - {{$vacante->nombre}}</h1>
     
     <div class="row">
@@ -31,6 +38,15 @@
                 Requisitos:
                 {{$vacante->requisitos}}
             </p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="/postulado/postular/{{$vacante->id}}">Postularme</a>
+        </div>
+        <div class="col-xs-12">
+            <a href="/promocionBolsaEmpleo/vacantes">Volver</a>
         </div>
     </div>
     
