@@ -14,6 +14,8 @@ use App\Models\Actividad_Con_Idioma;
 use App\Models\Actividad;
 use App\Models\Multimedia_Actividad;
 use App\Models\Idioma;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 use Carbon\Carbon;
 

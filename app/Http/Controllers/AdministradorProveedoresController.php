@@ -74,7 +74,7 @@ class AdministradorProveedoresController extends Controller
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma){
                 $queyProveedor_rnt_idioma->with(['idioma' => function ($queryIdioma){
                     $queryIdioma->select('id', 'nombre', 'culture');
-                }])->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');
+                }])->select('proveedor_rnt_id', 'idioma_id', 'nombre', 'descripcion')->orderBy('idioma_id');
             }])->select('id', 'razon_social');
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('portada', true)->select('proveedor_id', 'ruta');
@@ -162,7 +162,7 @@ class AdministradorProveedoresController extends Controller
         $validator = \Validator::make($request->all(), [
             'proveedor_rnt_id' => 'required|numeric|exists:proveedores_rnt,id',
             'descripcion' => 'required|max:1000|min:100',
-            'nombre' => 'max:255',
+            'nombre' => 'max:255|required',
             'valor_minimo' => 'required|numeric|min:0',
             'valor_maximo' => 'required|numeric|min:0',
             'horario' => 'max:255',
@@ -178,6 +178,7 @@ class AdministradorProveedoresController extends Controller
             'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
             
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
+            'nombre.required' => 'El nombre público del proveedor es requerido.',
             
             'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para el proveedor.',
             'valor_minimo.numeric' => '"Valor mínimo" debe tener un valor numérico.',

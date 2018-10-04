@@ -95,7 +95,7 @@
                                 <div class="form-group" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.proveedor.$touched) && crearProveedorForm.proveedor.$error.required}">
                                     <label for="proveedor"><span class="asterisk">*</span> Proveedor</label>
                                     
-                                    <ui-select theme="bootstrap" ng-change="selectionChanged($select.selected)" ng-required="true" ng-model="proveedor.datosGenerales.proveedor_rnt_id" id="proveedor" name="proveedor">
+                                    <ui-select theme="bootstrap" ng-change="selectionChanged($select.selected); proveedor.datosGenerales.nombre = $select.selected.razon_social" ng-required="true" ng-model="proveedor.datosGenerales.proveedor_rnt_id" id="proveedor" name="proveedor">
                                        <ui-select-match placeholder="Nombre del proveedor.">
                                            <span ng-bind="$select.selected.razon_social"></span>
                                        </ui-select-match>
@@ -107,9 +107,9 @@
                                 </div>        
                             </div>
                             <div class="col-xs-12 col-sm-12">
-                                <div class="form-group">
-                                    <label for="nombre">Nombre</label>
-                                    <input ng-model="proveedor.datosGenerales.nombre" type="text" name="horario" id="horario" class="form-control" placeholder="Máximo 255 caracteres."/>
+                                <div class="form-group" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.nombre.$touched) && crearProveedorForm.nombre.$error.required}">
+                                    <label for="nombre"><span class="asterisk">*</span> Nombre</label>
+                                    <input max="255" required ng-model="proveedor.datosGenerales.nombre" type="text" name="nombre" id="nombre" class="form-control" placeholder="Máximo 255 caracteres."/>
                                 </div>
                             </div>
                             <!--<div class="col-xs-12 col-sm-6">-->
