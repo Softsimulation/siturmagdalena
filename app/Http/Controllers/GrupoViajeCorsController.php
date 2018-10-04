@@ -166,7 +166,7 @@ class GrupoViajeCorsController extends Controller
             })->select('tipo_viaje_id','nombre');
         }])->get();
 
-        $grupo = Grupo_Viaje::where('id',$id)->with(['tiposViaje'=>function($q){
+        $grupo = Grupo_Viaje::where('id',$id)->with(['lugaresAplicacionEncuestum','tiposViaje'=>function($q){
             $q->with(['tiposViajeConIdiomas'=>function($r){
                 $r->whereHas('idioma', function($p){
                     $p->where('culture','es');
