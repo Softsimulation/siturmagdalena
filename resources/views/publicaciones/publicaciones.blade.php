@@ -56,8 +56,8 @@
                    <td>@{{publicacion.tipopublicacion.idiomas[0].nombre}}</td>
                     <td>@{{publicacion.descripcion}}</td>
                     <td>@{{publicacion.estado_publicacion.nombre}}</td>
-                    <td ng-show="publicacion.estado == 1">Si</td>
-                    <td ng-show="publicacion.estado == 0">No</td>
+                    <td ng-show="publicacion.estado">Si</td>
+                    <td ng-show="!publicacion.estado">No</td>
                     <td>
                         <a href="/publicaciones/editar/@{{publicacion.id}}" type="button" title="Editar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>  
                         <button ng-click="cambiarEstado(publicacion)" type="button" title="Cambiar visualización publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-transfer"></span></button>    
