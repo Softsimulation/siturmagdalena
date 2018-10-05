@@ -55,6 +55,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 																			<div class="clearfix"></div>
 																		</div>
 																	</form>
+																	<div>
+																		<a href="/postulado/crear">Registrar usuario</a>
+																	</div>
 														</div>
 
 														

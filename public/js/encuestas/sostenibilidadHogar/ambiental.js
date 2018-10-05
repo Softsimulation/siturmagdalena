@@ -78,7 +78,7 @@ angular.module('ambiental', [])
         sostenibilidadHogarServi.postGuardarAmbiental($scope.ambiental).then(function(data){
              $("body").attr("class", "cbp-spmenu-push");
             if(data.success){
-                swal("Éxito","Se ha guardado con exito","success");
+                
                 swal({
                      title: "Realizado",
                      text: "Se ha guardado satisfactoriamente la sección.",
