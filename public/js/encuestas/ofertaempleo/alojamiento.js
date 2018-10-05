@@ -52,7 +52,30 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
         OfertaEmpleoServi.guardarCaracterizacionAlojamiento( data ).then(function(data){
             
             if(data.success){
+                   $("body").attr("class", "cbp-spmenu-push")
                 
+                swal({
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: "Oferta",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                
+                          window.location.href = '/ofertaempleo/oferta/'+$scope.encuesta.id;
+                      
+                    
+                  } else {
+                    window.location = "ruta";
+                  }
+                });
                 
             }
             else{

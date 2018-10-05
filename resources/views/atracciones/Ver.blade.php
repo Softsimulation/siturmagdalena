@@ -23,7 +23,7 @@ function parse_yturl($url)
 @endsection
 
 @section('meta_og')
-<meta property="og:title" content="Conoce {{$atraccion->sitio->sitiosConIdiomas[0]->nombre}} en el departamento del Cesar" />
+<meta property="og:title" content="Conoce {{$atraccion->sitio->sitiosConIdiomas[0]->nombre}} en el departamento del Magdalena" />
 <meta property="og:image" content="{{asset('/res/img/brand/128.png')}}" />
 <meta property="og:description" content="{{$atraccion->sitio->sitiosConIdiomas[0]->descripcion}}"/>
 @endsection
