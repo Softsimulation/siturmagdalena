@@ -481,6 +481,14 @@
         ServiEncuesta.getListadoEncuestas()
             .then(function(data){  
                 $scope.encuestas = data.encuestas;
+                for(var i=0;i<$scope.encuestas.length;i++){
+                    for(var j=0;j<$scope.encuestas[i].idiomas.length;j++){
+                        $scope.encuestas[i].nombreEsp = null;
+                        if($scope.encuestas[i].idiomas[j].idiomas_id == 1){
+                            $scope.encuestas[i].nombreEsp = $scope.encuestas[i].idiomas[j].nombre;
+                        }
+                    }
+                }
                 $scope.idiomas = data.idiomas;
                 $scope.estados = data.estados;
                 $scope.tipos = data.tipos;

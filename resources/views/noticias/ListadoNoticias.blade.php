@@ -53,65 +53,61 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <a href="/noticias/crearnoticia" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Agregar</a>
-            </div>
+        <div class="flex-list">
+            <a href="/noticias/crearnoticia" class="btn btn-lg btn-success" class="btn btn-lg btn-success">
+                Crear noticia
+            </a>
+            <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
         </div>
-        
-        <div class="row">
-            <div class="col-sm-offset-5 col-sm-4">
-                <div class="form-group input-group">
-                    <input id="input" class="form-control input-search" type="search" placeholder="Búsqueda" ng-model="search" aria-describedby="iconsearch">
-                    <span class="input-group-addon" id="iconsearch"><i class="glyphicon glyphicon-search"></i></span>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <span class="chip">@{{( noticias |filter: search).length}} Resultados</span>
-            </div>
+        <br/>
+        <div class="text-center" ng-if="(noticias | filter:search).length > 0 && (search != undefined)">
+            <p>Hay @{{(noticias | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
         </div>
-      <div class="row">
-        <div class="col-md-3">
-          <h5>Filtrar por tipo de noticia</h5>
-          <select class="form-control" name="accion" id="accion" ng-options="tipo.id as tipo.nombre for tipo in tiposNoticias" ng-model="tipoNoticia" ng-required="true">
-            <option value="">Seleccione una acción</option>
-          </select>
+        <div class="alert alert-info" ng-if="noticias.length == 0">
+            <p>No hay registros almacenados</p>
         </div>
-        
-      </div>
-      <br>
+        <div class="alert alert-warning" ng-if="(noticias | filter:search).length == 0 && proveedores.length > 0">
+            <p>No existen registros que coincidan con su búsqueda</p>
+        </div>
+        <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.tituloNoticia.length > 0 || search.nombreTipoNoticia.length > 0 || search.estado.length > 0 )">
+            Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
+        </div>
               
       <table class="table table-hover">
-          <tr>
-              <th>Título</th>
-              <th>Tipo de noticia</th>
-              <th>Estado</th>
-              <th>Acción</th>
-              
-          </tr>
+          <thead>
+              <tr>
+                  <th>Título</th>
+                  <th>Tipo de noticia</th>
+                  <th>Estado</th>
+                  <th>Acción</th>
+                  
+              </tr>
+              <tr ng-show="mostrarFiltro == true">
+                                        
+                    <td><input type="text" ng-model="search.tituloNoticia" name="tituloNoticia" id="tituloNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.nombreTipoNoticia" name="nombreTipoNoticia" id="nombreTipoNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.estadoNoticia" name="estadoNoticia" id="estadoNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td></td>
+                </tr>
+          </thead>
+          <tbody>
+              <tr dir-paginate="x in noticias | filter:search | itemsPerPage:10" pagination-id="paginacion_noticias">
+                  <td>@{{x.tituloNoticia}}</td>
+                  <td>@{{x.nombreTipoNoticia}}</td>
+                  <td >@{{x.estado == true ? 'Activo' : 'Inactivo'}}</td>
+                  <td>
+                    <!--<a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-default" title="Editar noticia" style="float:left"><span class="glyphicon glyphicon-pencil"></span></a>-->
+                    <a href="/noticias/vernoticia/@{{x.idNoticia}}" class="btn btn-default" title="Ver noticia" style="float:left"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    <a href="" ng-click="cambiarEstado(x)" class="btn btn-default" title="Cambiar estado" style="float:left"><span class="glyphicon glyphicon-transfer"></span></a>
+                    <!--<a href="" ng-click="eliminarNoticia(x)" class="btn btn-default" title="Eliminar noticia" style="float:left"><span class="glyphicon glyphicon-remove"></span></a>-->
+                    <a ng-repeat="idioma in x.idiomas[0].idiomas" href="/noticias/vistaeditar/@{{x.idNoticia}}/@{{idioma.id}}" class="btn btn-default" title="Editar @{{idioma.nombre}}" style="float:left">@{{idioma.culture}}</a>
+                      <a ng-if="x.idiomas[0].idiomas.length < cantIdiomas" href="/noticias/nuevoidioma/@{{x.idNoticia}}" class="btn btn-default" title="Agregar idioma" style="float:left"><span class="glyphicon glyphicon-plus"></span></a>
+                  </td>
+              </tr>
+          </tbody>
           
-          <tr dir-paginate="x in noticias | filter:{idTipoNoticia:tipoNoticia} | filter:search | itemsPerPage:10" pagination-id="paginacion_noticias">
-              <td>@{{x.tituloNoticia}}</td>
-              <td>@{{x.nombreTipoNoticia}}</td>
-              <td >@{{x.estado == true ? 'Activo' : 'Inactivo'}}</td>
-              <td>
-                <!--<a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-default" title="Editar noticia" style="float:left"><span class="glyphicon glyphicon-pencil"></span></a>-->
-                <a href="/noticias/vernoticia/@{{x.idNoticia}}" class="btn btn-default" title="Ver noticia" style="float:left"><span class="glyphicon glyphicon-eye-open"></span></a>
-                <a href="" ng-click="cambiarEstado(x)" class="btn btn-default" title="Cambiar estado" style="float:left"><span class="glyphicon glyphicon-transfer"></span></a>
-                <!--<a href="" ng-click="eliminarNoticia(x)" class="btn btn-default" title="Eliminar noticia" style="float:left"><span class="glyphicon glyphicon-remove"></span></a>-->
-                <a ng-repeat="idioma in x.idiomas[0].idiomas" href="/noticias/vistaeditar/@{{x.idNoticia}}/@{{idioma.id}}" class="btn btn-default" title="Editar @{{idioma.nombre}}" style="float:left">@{{idioma.culture}}</a>
-                  <a ng-if="x.idiomas[0].idiomas.length < cantIdiomas" href="/noticias/nuevoidioma/@{{x.idNoticia}}" class="btn btn-default" title="Agregar idioma" style="float:left"><span class="glyphicon glyphicon-plus"></span></a>
-              </td>
-          </tr>
           
       </table>
-      
-       <div class="row" ng-if="(noticias | filter:{idTipoNoticia:tipoNoticia} | filter:buscar).length==0 || noticias==null">
-         <div class="alert alert-warning" style="text-align:center"><h5>No se encontró noticias</h5></div>
-       </div> 
-       <div class="row" ng-if="noticias.length > 0 && (noticias|filter:search).length == 0">
-         <div class="alert alert-info" style="text-align:center"><h5>No hay elementos para la búsqueda realizada</h5></div>
-       </div>
         <div class="row">
           <div class="col-6" style="text-align:center;">
           <dir-pagination-controls pagination-id="paginacion_noticias"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>

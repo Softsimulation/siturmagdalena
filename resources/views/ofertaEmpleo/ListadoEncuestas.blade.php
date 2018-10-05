@@ -111,14 +111,23 @@
 <div class="container">
        <div class="row">
             <h1 class="title1">Encuestas</h1>
+            <div class="flex-list">
+                <div class="form-group has-feedback" style="display: inline-block;">
+                    <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
+                </div>      
+            </div>
             <br>
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-lg-3 col-md-3">
-                    <input type="text" style="margin-bottom: .5em;" ng-model="prop.searchAntiguo" class="form-control" id="inputSearch" placeholder="Buscar registro...">
-                </div>
-                <div class="col-xs-12 col-sm-12 col-lg-2 col-md-12" style="text-align: center;">
-                    <span class="chip" style="margin-bottom: .5em;">@{{(encuestas|filter:prop.searchAntiguo).length}} resultados</span>
-                </div>
+            <div class="text-center" ng-if="(encuestas | filter:search).length > 0 && (search != undefined)">
+                <p>Hay @{{(encuestas | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
+            </div>
+            <div class="alert alert-info" ng-if="encuestas.length == 0">
+                <p>No hay registros almacenados</p>
+            </div>
+            <div class="alert alert-warning" ng-if="(encuestas | filter:search).length == 0 && encuestas.length > 0">
+                <p>No existen registros que coincidan con su búsqueda</p>
+            </div>
+            <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.id.length > 0 || search.mes.length > 0 || search.anio.length > 0 || search.estado.length > 0 )">
+                Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
             </div>
             <div class="row">
                 <div class="col-xs-12">
@@ -131,9 +140,17 @@
                             <th>Estado</th>
                             <th style="width: 80px;"></th>
                         </tr>
+                        <tr ng-show="mostrarFiltro == true">
+                                    
+                            <td><input type="text" ng-model="search.id" name="id" id="id" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.mes" name="mes" id="mes" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.anio" name="anio" id="anio" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td></td>
+                        </tr>
                     </thead>
                      <tbody>
-                        <tr dir-paginate="item in encuestas|filter:prop.searchAntiguo|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
+                        <tr dir-paginate="item in encuestas|filter:search|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
                             <td>@{{item.id}}</td>
                             <td>@{{item.mes}}</td>
                             <td>@{{item.anio}}</td>
@@ -147,7 +164,6 @@
                         </tr>
                     </tbody>
                     </table>
-                    <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0 || (encuestas|filter:prop.searchAntiguo).length == 0">No hay resultados disponibles <span ng-show="(encuestas|filter:prop.searchAntiguo).length == 0">para la búsqueda '@{{prop.searchAntiguo}}'. <a href="#" ng-click="prop.searchAntiguo = ''">Presione aquí</a> para ver todos los resultados.</span></div>
                 </div>
             </div>
             <div class="row">

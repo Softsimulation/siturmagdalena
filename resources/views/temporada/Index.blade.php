@@ -60,9 +60,22 @@
         <div class="row">
             <div class="col-xs-12 text-center">
                 <input type="button" ng-click="pasarC()" class="btn btn-lg btn-success" value="Crear temporada" />
+                <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
             </div>
         </div>
         <br/>
+        <div class="text-center" ng-if="(temporadas | filter:search).length > 0 && (search != undefined)">
+            <p>Hay @{{(temporadas | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
+        </div>
+        <div class="alert alert-info" ng-if="temporadas.length == 0">
+            <p>No hay registros almacenados</p>
+        </div>
+        <div class="alert alert-warning" ng-if="(temporadas | filter:search).length == 0 && temporadas.length > 0">
+            <p>No existen registros que coincidan con su búsqueda</p>
+        </div>
+        <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.Nombre.length > 0 || search.Name.length > 0 || search.Fecha_ini.length > 0 || search.Fecha_fin.length > 0 )">
+            Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
+        </div>
         <div class="row">
             <div class="col-xs-12" style="overflow-x: auto;">
                 <table class="table table-hover" ng-show="temporadas.length > 0">
@@ -75,9 +88,18 @@
                             <th>Estado</th>
                             <th style="width: 130px;"></th>
                         </tr>
+                        <tr ng-show="mostrarFiltro == true">
+                                    
+                            <td><input type="text" ng-model="search.Nombre" name="Nombre" id="Nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.Name" name="Name" id="Name" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.Fecha_ini" name="Fecha_ini" id="Fecha_ini" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.Fecha_fin" name="Fecha_fin" id="Fecha_fin" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.Estado" name="Estado" id="Estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td></td>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr dir-paginate="item in temporadas | itemsPerPage: 10">
+                        <tr dir-paginate="item in temporadas | filter:search | itemsPerPage: 10">
                             <td>@{{item.Nombre}}</td>
                             <td>@{{item.Name}}</td>
                             <td>@{{item.Fecha_ini |date: "dd/MM/yyyy"}}</td>
