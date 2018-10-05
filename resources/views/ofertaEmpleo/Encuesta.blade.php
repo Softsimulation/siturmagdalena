@@ -39,9 +39,20 @@
 
 @section('NumSeccion', '0')
 
+@section('app','ng-app="ofertaempleo"')
+
+@section('controller','ng-controller="seccionActividadComercialAdmin"')
+
 @section('content')
 <div class="container">
-  
+   <input type="hidden" ng-model="Id" ng-init="Id={{$Id}}" />
+       <div class="alert alert-danger" ng-if="errores != null">
+        <label><b>Errores:</b></label>
+        <br />
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
+        </div>
+    </div>
     <div class='carga'>
 
     </div>
@@ -52,24 +63,34 @@
                 <h3 class="panel-title"><b>Encuestas sin llenar</b></h3>
             </div>           
             <div class="panel-body">
+       
                 <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-bordered table-striped">
-                            <tr>
+                <div class="col-xs-12" ng-if="encuestas.length > 0">
+                    <table class="table table-striped">
+                  <thead>
+                        <tr>
                                 <th>Mes</th>
                                 <th>Año</th>
                                 <th></th>
-                            </tr>
-                            @foreach ($meses as $mes)
-                            
-                            <tr>
-                                <td align="center">{{$mes["mes"]}}</td>
-                                <td align="center">{{$mes["anio"]}}</td>
-                                <td style="width: 180px;"><a href="/ofertaempleo/actividadcomercial/{{$mes['mesId']}}/{{$mes['anio']}}/{{$id}}" class="btn btn-raised btn-default btn-sm" title="Llenar encuesta" style="margin: 0;"><i class="material-icons">assignment</i> Llenar encuesta</a></td>
-                            </tr>
-                            @endforeach
-                        </table>
+                        </tr>
+                    </thead>
+                     <tbody>
+                       
+                        <tr ng-repeat="item in encuestas" >
+                          
+                          <td align="center">@{{item.mes}}</td>
+                          <td align="center">@{{item.anio}}</td>
+                          <td style="width: 180px;"><a ng-click="guardar(item)" class="btn btn-raised btn-default btn-sm" title="Llenar encuesta" style="margin: 0;"><i class="material-icons">assignment</i> Llenar encuesta</a>
+                          </td>
+                        
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0">No hay resultados disponibles</div>
                     </div>
+                    </div>
+      
+            </div>
                 </div>
             </div>
         </div>

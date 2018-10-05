@@ -46,22 +46,33 @@
         var input = $('#soporte_publicacion');
         // check for browser support (may need to be modified)
         if (input[0].files && input[0].files.length == 1) {
-            if (input[0].files[0].size > 2097152) {
-                swal("Error", "Por favor el soporte debe tener un peso menor de " + (2097152 / 1024 / 1024) + " MB", "error");
+            if (input[0].files[0].size > 15728640) {
+                swal("Error", "Por favor el soporte debe tener un peso menor de " + (15728640 / 1024 / 1024) + " MB", "error");
                 // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
                 return;
             }
         }
      
-        var input = $('#soporte_carta');
+        var input = $('#portada');
         // check for browser support (may need to be modified)
         if (input[0].files && input[0].files.length == 1) {
-            if (input[0].files[0].size > 2097152) {
-                swal("Error", "Por favor el soporte debe tener un peso menor de " + (2097152 / 1024 / 1024) + " MB", "error");
+            if (input[0].files[0].size > 15728640) {
+                swal("Error", "Por favor el soporte debe tener un peso menor de " + (15728640 / 1024 / 1024) + " MB", "error");
                 // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
                 return;
             }
         }
+     
+          var input = $('#soporte_carta');
+        // check for browser support (may need to be modified)
+        if (input[0].files && input[0].files.length == 1) {
+            if (input[0].files[0].size > 15728640) {
+                swal("Error", "Por favor el soporte debe tener un peso menor de " + (15728640 / 1024 / 1024) + " MB", "error");
+                // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
+                return;
+            }
+        }
+     
      
         var fd = new FormData();
         for (item in $scope.publicacion) {
@@ -93,9 +104,10 @@
          if ($scope.portada != null) {
             fd.append("portada", $scope.portada[0]);
         }    
-            
+           $("body").attr("class", "charging");
          ServiPublicacion.agregarPublicacion(fd).then(function (data) {
             if (data.success) {
+                $("body").attr("class", "cbp-spmenu-push")
                 swal({
                     title: "Realizado",
                     text: "Se ha guardado satisfactoriamente la correspondencia.",
@@ -110,10 +122,10 @@
                 swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
                 $scope.errores = data.errores;
             }
-            $('#processing').removeClass('process-in');
+           $("body").attr("class", "cbp-spmenu-push")
         }).catch(function () {
             $('#processing').removeClass('process-in');
-            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+             $("body").attr("class", "cbp-spmenu-push")
         })
             
             
@@ -159,9 +171,15 @@
     
      .controller("ListadoPublicacionCtrl", ["$scope","ServiPublicacion", function($scope,ServiPublicacion){
 
+$("body").attr("class", "charging");
     ServiPublicacion.getListado()
                             .then(function(data){
+                                 $("body").attr("class", "cbp-spmenu-push")
                                 $scope.publicaciones = data.Publicaciones;
+                                for(var i=0;i<$scope.publicaciones.length;i++){
+                                    $scope.publicaciones[i].estado = $scope.publicaciones[i].estado_publicacion.nombre;
+                                    $scope.publicaciones[i].tipoPublicacion = $scope.publicaciones[i].tipopublicacion.idiomas[0].nombre;
+                                }
                                 $scope.estados = data.estados;
                             });   
                             
@@ -178,8 +196,9 @@
             showLoaderOnConfirm: true,
         },
         function () {
-
+            $("body").attr("class", "charging");
             ServiPublicacion.cambiarEstadoPublicacion(obj).then(function (data) {
+                 $("body").attr("class", "cbp-spmenu-push")
                 if (data.success) {
                     obj.estado = !obj.estado;
                     swal("Exito", "Se realizó la operación exitosamente", "success");
@@ -210,8 +229,9 @@
             return;
         }
        $scope.erroresEstado = null;
-        $('#processing').addClass('process-in');
+         $("body").attr("class", "charging");
         ServiPublicacion.EstadoPublicacion($scope.estado).then(function (data) {
+             $("body").attr("class", "cbp-spmenu-push")
             if (data.success) {
                $scope.errores = null;
                 $scope.publicaciones[$scope.indexitem] = data.publicacion;
@@ -248,8 +268,9 @@
             showLoaderOnConfirm: true,
         },
         function () {
-
+             $("body").attr("class", "charging");
             ServiPublicacion.eliminarPublicacion(obj).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push")
                 if (data.success) {
                     $scope.publicaciones.splice($scope.publicaciones.indexOf(obj),1)
                     swal("Exito", "Se realizó la operación exitosamente", "success");
@@ -271,9 +292,11 @@
      .controller("publicacionEditarCtrl", ["$scope","ServiPublicacion", function($scope,ServiPublicacion){
 
         $scope.$watch("id", function() {
+              $("body").attr("class", "charging");
         if($scope.id){
                 ServiPublicacion.getEncuesta($scope.id)
                             .then(function(data){
+                                $("body").attr("class", "cbp-spmenu-push")
                                 $scope.tipos = data.tipos;
                                 $scope.paises = data.paises;
                                 $scope.personas = data.personas;
@@ -292,25 +315,36 @@
             return;
         }
             
-        var input = $('#soporte_publicacion');
+           var input = $('#soporte_publicacion');
         // check for browser support (may need to be modified)
         if (input[0].files && input[0].files.length == 1) {
-            if (input[0].files[0].size > 2097152) {
-                swal("Error", "Por favor el soporte debe tener un peso menor de " + (2097152 / 1024 / 1024) + " MB", "error");
+            if (input[0].files[0].size > 15728640) {
+                swal("Error", "Por favor el soporte debe tener un peso menor de " + (15728640 / 1024 / 1024) + " MB", "error");
                 // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
                 return;
             }
         }
      
-        var input = $('#soporte_carta');
+        var input = $('#portada');
         // check for browser support (may need to be modified)
         if (input[0].files && input[0].files.length == 1) {
-            if (input[0].files[0].size > 2097152) {
-                swal("Error", "Por favor el soporte debe tener un peso menor de " + (2097152 / 1024 / 1024) + " MB", "error");
+            if (input[0].files[0].size > 15728640) {
+                swal("Error", "Por favor el soporte debe tener un peso menor de " + (15728640 / 1024 / 1024) + " MB", "error");
                 // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
                 return;
             }
         }
+     
+          var input = $('#soporte_carta');
+        // check for browser support (may need to be modified)
+        if (input[0].files && input[0].files.length == 1) {
+            if (input[0].files[0].size > 15728640) {
+                swal("Error", "Por favor el soporte debe tener un peso menor de " + (15728640 / 1024 / 1024) + " MB", "error");
+                // alert("The file must be less than " + (1572864/ 1024 / 1024) + "MB");
+                return;
+            }
+        }
+     
      
         var fd = new FormData();
         for (item in $scope.publicacion) {
@@ -342,8 +376,9 @@
          if ($scope.portada != null) {
             fd.append("portada", $scope.portada[0]);
         }    
-            
+           $("body").attr("class", "charging");    
          ServiPublicacion.editarPublicacion(fd).then(function (data) {
+              $("body").attr("class", "cbp-spmenu-push")
             if (data.success) {
                 swal({
                     title: "Realizado",

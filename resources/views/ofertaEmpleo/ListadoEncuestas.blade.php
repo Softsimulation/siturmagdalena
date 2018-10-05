@@ -138,23 +138,29 @@
                             <td>@{{item.mes}}</td>
                             <td>@{{item.anio}}</td>
                             <td>@{{item.estado}}</td>
-                             <td><a ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad ==1 &&((item.mes_id%3 == 0) || (ruta == '/ofertaempleo/caracterizacion')) )" href="@{{ruta}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta oferta" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-edit"></span></a>
-                               <a ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )" href="/ofertaempleo/empleomensual/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-pencil"></span></a>  
-                                <a ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )" href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo capacitaciones" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-lock"></span></a>  
-                              
+                             <td><a ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' )" href="@{{ruta}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta caracterizacion" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)"><span class="glyphicon glyphicon-edit"></span></a><p ng-show="item.caracterizacion == true">Realizó</p><p ng-show="item.caracterizacion != true">No realizó</p>
+                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad ==1 &&((item.mes_id%3 == 0) || (ruta == '/ofertaempleo/caracterizacion')) )">
+                                    <a  href="@{{ruta2}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta oferta" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-edit"></span></a><p   ng-show="item.oferta == true">Realizó</p><p ng-show="item.oferta != true">No realizó</p>
+                                </div>
+                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
+                                    <a  href="/ofertaempleo/empleomensual/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-pencil"></span></a>  <p ng-show="item.empleo == true">Realizó</p><p ng-show="item.empleo != true">No realizó</p>
+                                </div>
+                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
+                                    <a  href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo capacitaciones" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-lock"></span></a><p ng-show="item.capacitacion == true">Realizó</p><p ng-show="item.capacitacion != true">No realizó</p>  
+                                </div>
                                </td>
                         
                         </tr>
                     </tbody>
                     </table>
                     <div class="alert alert-warning" role="alert" ng-show="encuestas.length == 0 || (encuestas|filter:prop.searchAntiguo).length == 0">No hay resultados disponibles <span ng-show="(encuestas|filter:prop.searchAntiguo).length == 0">para la búsqueda '@{{prop.searchAntiguo}}'. <a href="#" ng-click="prop.searchAntiguo = ''">Presione aquí</a> para ver todos los resultados.</span></div>
-                </div>
-            </div>
-            <div class="row">
-              <div class="col-6" style="text-align:center;">
-              <dir-pagination-controls pagination-id="paginacion_antiguos"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
-              </div>
-            </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6" style="text-align:center;">
+                      <dir-pagination-controls pagination-id="paginacion_antiguos"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                      </div>
+                    </div>
         </div>
     <div class='carga'>
     </div>

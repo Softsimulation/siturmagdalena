@@ -540,33 +540,49 @@ $scope.$watch('id', function () {
         
     });
 
-
-    
-
-    $scope.cargo = function(tipo){
-        if($scope.empleo.Sexo){
-        for(i = 0; i < $scope.empleo.Sexo.length ; i ++){
+   $scope.tiempoempleado = function(tipo,sexo){
+        if($scope.empleo.Empleo){
+        for(i = 0; i < $scope.empleo.Empleo.length ; i ++){
             
-            if($scope.empleo.Sexo[i].tipo_cargo_id == tipo ){
+            if($scope.empleo.Empleo[i].tipo_cargo_id == tipo && $scope.empleo.Empleo[i].sexo == sexo ){
                 
-                return $scope.empleo.Sexo[i];
+                return $scope.empleo.Empleo[i];
             }
             
         }
         
         obj = {};
         obj.tipo_cargo_id = tipo;
-        obj.hombres = 0;
-        obj.mujeres = 0;
-        
-        $scope.empleo.Sexo.push(obj);
+        obj.sexo = sexo == 1 ? true : false ;
+		obj.tiempo_completo = 0;
+		obj.medio_tiempo = 0;
+        $scope.empleo.Empleo.push(obj);
         
         return obj;
 
         }        
     }
 
-        $scope.vacantesSi = function(){
+   $scope.Total = function(item,item2){
+        if($scope.empleo[item]){
+            
+            var    total = 0;
+            for(i = 0; i < $scope.empleo[item].length ; i ++){
+                total =  total + ($scope.empleo[item][i][item2] == null ? 0 : ($scope.empleo[item][i][item2] == undefined ? 0 : $scope.empleo[item][i][item2]));
+                
+                }
+                
+            }else{
+                
+                return 0;
+            }
+        
+            return total;    
+     
+
+        }  
+
+   $scope.vacantesSi = function(){
         var vacante  = ( $scope.empleo.VacanteOperativo == null ? 0 : ($scope.empleo.VacanteOperativo  == undefined ? 0 :$scope.empleo.VacanteOperativo ));
          var vacante2  = ( $scope.empleo.VacanteAdministrativo == null ? 0 : ($scope.empleo.VacanteAdministrativo  == undefined ? 0 :$scope.empleo.VacanteAdministrativo ));
         var vacante3  = ( $scope.empleo.VacanteGerencial == null ? 0 : ($scope.empleo.VacanteGerencial  == undefined ? 0 :$scope.empleo.VacanteGerencial ));
@@ -585,7 +601,7 @@ $scope.$watch('id', function () {
         }
     }
 
-     $scope.validacion = function(){
+   $scope.validacion = function(){
         
         
         return true;
