@@ -111,44 +111,50 @@
 
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Cuántos vehículos alquiló en total en el trimestre anterior?</b></h3>
+
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  ¿El establecimiento tuvo actividad comercial?</b></h3>
             </div>
-            <div class="panel-footer"><b>Complete la siguiente información</b></div>
+            <div class="panel-footer"><b>Seleccione una opción</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <input class="form-control" type="number" id="totalTrimestre" name="totalTrimestre" ng-model="alquiler.TotalTrimestre" min="1" ng-required="true" placeholder="Ingrese solo números">
+
+                        <select class="form-control" name="actividadComercial" ng-model="alquiler.Comercial" ng-required="true">
+                            <option value="" disabled selected>Seleccione</option>
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
                     </div>
                 </div>
-                <span ng-show="AlquilerForm.$submitted || AlquilerForm.totalTrimestre.$touched">
-                    <span class="label label-danger" ng-show="AlquilerForm.totalTrimestre.$error.required">*El campo cuántos vehículos alquiló en total en el trimestre anterior de viaje es requerido.</span>
-                    <span class="label label-danger" ng-show="AlquilerForm.totalTrimestre.$error.number">*El campo cuántos vehículos alquiló en total en el trimestre anterior de viaje debe ser un número.</span>
-                    <span class="label label-danger" ng-show="AlquilerForm.totalTrimestre.$error.min">*El campo cuántos vehículos alquiló en total en el trimestre anterior de viaje debe ser mayor que 1.</span>
-                  
+                <span ng-show="AlquilerForm.$submitted || AlquilerForm.actividadComercial.$touched">
+                    <span class="label label-danger" ng-show="AlquilerForm.actividadComercial.$error.required">*El campo es requerido.</span>
                 </span>
-
             </div>
+
         </div>
 
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-if="alquiler.Comercial==1">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es la tarifa promedio para el alquiler de vehículos?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúantos días en el mes?</b></h3>
             </div>
-            <div class="panel-footer"><b>Complete la siguiente información</b></div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
 
-                        <input class="form-control" type="number" id="Tarifa" name="Tarifa" ng-model="alquiler.Tarifa" min="1000" ng-required="true" placeholder="Ingrese solo números">
+                        <input class="form-control" type="number" id="numeroDias" name="numeroDias" ng-model="alquiler.NumeroDias" min="1" max="31" ng-required="true" placeholder="Solo números">
                     </div>
                 </div>
-                <span ng-show="AlquilerForm.$submitted || AlquilerForm.Tarifa.$touched">
-                    <span class="label label-danger" ng-show="AlquilerForm.Tarifa.$error.required">*El campo cuál es la tarifa promedio para el alquiler de vehículos es requerido.</span>
-                    <span class="label label-danger" ng-show="AlquilerForm.Tarifa.$error.number">*El campo cuál es la tarifa promedio para el alquiler de vehículos deber ser un número.</span>
-                    <span class="label label-danger" ng-show="AlquilerForm.Tarifa.$error.min">*El campo cuál es la tarifa promedio para el alquiler de vehículos deber ser mayor que $1000.</span>
+                <span ng-show="AlquilerForm.$submitted || AlquilerForm.numeroDias.$touched">
+                    <span class="label label-danger" ng-show="AlquilerForm.numeroDias.$error.required">*El campo es requerido.</span>
+                    <span class="label label-danger" ng-show="AlquilerForm.numeroDias.$error.number">*El campo debe ser un número.</span>
+                    <span class="label label-danger" ng-show="AlquilerForm.numeroDias.$error.min">*El campo debe ser mayor que 1.</span>
+                    <span class="label label-danger" ng-show="AlquilerForm.numeroDias.$error.max">*El campo debe ser menor o igual que 31.</span>
                 </span>
+
             </div>
         </div>
+
 
         <div class="row" style="text-align:center">
           

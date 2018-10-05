@@ -21,10 +21,7 @@ class BolsaEmpleoController extends Controller
         
         $this->middleware('auth');
         $this->middleware('role:Admin');
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
-        }
-        
+        $this->user = \Auth::user();
     }
     
     public function getCrear(){
@@ -101,7 +98,7 @@ class BolsaEmpleoController extends Controller
     
     public function getEditarvacante($id){
         if(Oferta_Vacante::find($id) == null){
-            return \Redirect::to('/bolsaEmpleo/vacantes')->with('message', 'Verifique que el visitante este en la sección adecuada.')
+            return \Redirect::to('/bolsaEmpleo/vacantes')->with('message', 'Verifique que la vacante este ingresada en el sistema.')
                         ->withInput();
         }
         
@@ -109,7 +106,7 @@ class BolsaEmpleoController extends Controller
     }
     
     public function getCargareditarvacante($id){
-        $vacante = Oferta_Vacante::where('id',$id)->with(['proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante'])->first();
+        $vacante = Oferta_Vacante::where('id',$id)->with(['postulaciones','proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante'])->first();
         $vacante['salario'] = floatval($vacante->salario);
     
         $proveedores = Proveedores_rnt::all();
@@ -225,6 +222,23 @@ class BolsaEmpleoController extends Controller
 		$vacante->save();
 		
 		return ["success" => true];
+    }
+    
+    public function getPostulados($id){
+    	if(!Oferta_Vacante::find($id)){
+    		return \Redirect::to('/bolsaEmpleo/vacantes')->with('message', 'Verifique que la vacante este ingresada en el sistema.')
+                        ->withInput();
+    	}
+    	return view('bolsaEmpleo.postulados',['id' => $id]);
+    }
+    
+    public function getVacantepostulados($id){
+    	$vacante = Oferta_Vacante::where('id',$id)->with(['postulaciones'=>function($q){
+    		$q->with(['postuladosVacante' => function($p){$p->with('municipio','user');}]);
+    	},'proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante'])->first();
+    	
+    	return ['vacante' => $vacante];
+    	
     }
     
 }

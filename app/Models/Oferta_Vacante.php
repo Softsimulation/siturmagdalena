@@ -44,7 +44,8 @@ class Oferta_Vacante extends Model
      * @var array
      */
     protected $fillable = ['tipo_cargo_vacante_id', 'proveedores_rnt_id', 'municipio_id', 'nivel_educacion_id', 'nombre', 'descripcion', 'anios_experiencia', 'fecha_vencimiento', 'salario_minimo', 'numero_vacantes', 'updated_at', 'created_at', 'estado', 'user_update', 'user_create', 'requisitos', 'fecha_publicacion', 'numero_maximo_postulaciones', 'salario_maximo', 'es_publico'];
-
+    
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -76,4 +77,17 @@ class Oferta_Vacante extends Model
     {
         return $this->belongsTo('App\Models\Nivel_Educacion');
     }
+    
+    public function postulaciones(){
+        return $this->hasMany('App\Models\Postulaciones_Vacante', 'ofertas_vacante_id');
+    }
+    
+    public function scopeSearch($query, $request){
+        $query->where(function($q)use($request){ if( isset($request->proveedor) && $request->proveedor != null ){$q->where('proveedores_rnt_id',$request->proveedor);}})
+            ->where(function($q)use($request){ if( isset($request->municipio) && $request->municipio != null ){$q->where('municipio_id',$request->municipio);}})
+            ->where(function($q)use($request){ if( isset($request->tipoCargo) && $request->tipoCargo != null ){$q->where('tipo_cargo_vacante_id',$request->tipoCargo);}})
+            ->where(function($q)use($request){ if( isset($request->nivelEducacion) && $request->nivelEducacion != null ){$q->where('nivel_educacion_id',$request->nivelEducacion);}})
+            ->where(function($q)use($request){ if( isset($request->nombreVacante) && $request->nombreVacante != null ){$q->where('nombre','like','%'.$request->nombreVacante.'%');}});
+    }
+    
 }

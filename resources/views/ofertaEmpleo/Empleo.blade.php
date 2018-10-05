@@ -143,76 +143,141 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            <tr>
-                                                <td>Directivos</td>
-                                                <td>
-                                                <input type="number" min="0" class="form-control" name="sexo" ng-model="cargo(1).hombres" placeholder="0" ng-required="true"/>
-                                                <span ng-show="empleoForm.$submitted || empleoForm.sexo.$touched">
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo.$error.required">*Es requerido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo.$error.number">*Formato no válido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo.$error.min">*Números mayores a 0</span>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <input type="number" min="0" class="form-control" name="sexof" ng-model="cargo(1).mujeres" placeholder="0" ng-required="true"/>
-                                                <span ng-show="empleoForm.$submitted || empleoForm.sexof.$touched">
-                                                    <span class="label label-danger" ng-show="empleoForm.sexof.$error.required">*Es requerido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexof.$error.number">*Formato no válido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexof.$error.min">*Números mayores a 0</span>
-                                                </span>
-                                            </td>
-                                            <td style="text-align: right">@{{cargo(1).hombres + cargo(1).mujeres }}</td>
+                                             <tr>
+                                                <td>Directivos tiempo completo</td>
+                                                   <td>
+                                        <input type="number" min="0" class="form-control" name="tiempo_completo" ng-model="tiempoempleado(1,1).tiempo_completo" placeholder="0" ng-required="true"/>
+                                        <span ng-show="empleoForm.$submitted || empleoForm.tiempo_completo.$touched">
+                                            <span class="label label-danger" ng-show="empleoForm.tiempo_completo.$error.required">*Es requerido</span>
+                                            <span class="label label-danger" ng-show="empleoForm.tiempo_completo.$error.number">*Formato no válido</span>
+                                            <span class="label label-danger" ng-show="empleoForm.tiempo_completo.$error.min">*Números mayores a 0</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <input type="number" min="0" class="form-control" name="tiempo_completof" ng-model="tiempoempleado(1,0).tiempo_completo" placeholder="0" ng-required="true"/>
+                                        <span ng-show="empleoForm.$submitted || empleoForm.tiempo_completof.$touched">
+                                            <span class="label label-danger" ng-show="empleoForm.tiempo_completof.$error.required">*Es requerido</span>
+                                            <span class="label label-danger" ng-show="empleoForm.tiempo_completof.$error.number">*Formato no válido</span>
+                                            <span class="label label-danger" ng-show="empleoForm.tiempo_completof.$error.min">*Números mayores a 0</span>
+                                        </span>
+                                    </td>
+                                
+                                            <td style="text-align: right">@{{tiempoempleado(1,1).tiempo_completo + tiempoempleado(1,0).tiempo_completo }}</td>
                                           
                                             </tr>
                                              <tr>
-                                                <td>Mandos medios</td>
-                                                 <td>
-                                                <input type="number" min="0" class="form-control" name="sexo2" ng-model="cargo(2).hombres" placeholder="0" ng-required="true"/>
-                                                <span ng-show="empleoForm.$submitted || empleoForm.sexo2.$touched">
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo2.$error.required">*Es requerido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo2.$error.number">*Formato no válido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo2.$error.min">*Números mayores a 0</span>
-                                                </span>
+                                                <td>Mandos medios tiempo completo</td>
+                                              <td>
+                                                    <input type="number" min="0" class="form-control" name="tiempo_completo2" ng-model="tiempoempleado(2,1).tiempo_completo" placeholder="0" ng-required="true"/>
+                                                    <span ng-show="empleoForm.$submitted || empleoForm.tiempo_completo2.$touched">
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo2.$error.required">*Es requerido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo2.$error.number">*Formato no válido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo2.$error.min">*Números mayores a 0</span>
+                                                    </span>
                                                 </td>
-                                                       <td>
-                                                    <input type="number" min="0" class="form-control" name="sexo2f" ng-model="cargo(2).mujeres" placeholder="0" ng-required="true"/>
-                                                    <span ng-show="empleoForm.$submitted || empleoForm.sexo2f.$touched">
-                                                        <span class="label label-danger" ng-show="empleoForm.sexo2f.$error.required">*Es requerido</span>
-                                                        <span class="label label-danger" ng-show="empleoForm.sexo2f.$error.number">*Formato no válido</span>
-                                                        <span class="label label-danger" ng-show="empleoForm.sexo2f.$error.min">*Números mayores a 0</span>
+                                                <td>
+                                                    <input type="number" min="0" class="form-control" name="tiempo_completo2f" ng-model="tiempoempleado(2,0).tiempo_completo" placeholder="0" ng-required="true"/>
+                                                    <span ng-show="empleoForm.$submitted || empleoForm.tiempo_completo2f.$touched">
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo2f.$error.required">*Es requerido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo2f.$error.number">*Formato no válido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo2f.$error.min">*Números mayores a 0</span>
                                                     </span>
                                                 </td>
                                                
-                                            <td style="text-align: right">@{{cargo(2).hombres + cargo(2).mujeres }}</td>
+                                            <td style="text-align: right">@{{tiempoempleado(2,1).tiempo_completo + tiempoempleado(2,0).tiempo_completo }}</td>
                                             </tr>
                                              <tr>
-                                                <td>Operativo</td>
-                                                                   <td>
-                                                <input type="number" min="0" class="form-control" name="sexo3" ng-model="cargo(3).hombres" placeholder="0" ng-required="true"/>
-                                                <span ng-show="empleoForm.$submitted || empleoForm.sexo3.$touched">
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo3.$error.required">*Es requerido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo3.$error.number">*Formato no válido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo3.$error.min">*Números mayores a 0</span>
-                                                </span>
-                                            </td>
+                                              <td>Operativo tiempo completo</td>
+                                              <td>
+                                                    <input type="number" min="0" class="form-control" name="tiempo_completo3" ng-model="tiempoempleado(3,1).tiempo_completo" placeholder="0" ng-required="true"/>
+                                                    <span ng-show="empleoForm.$submitted || empleoForm.tiempo_completo3.$touched">
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo3.$error.required">*Es requerido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo3.$error.number">*Formato no válido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo3.$error.min">*Números mayores a 0</span>
+                                                    </span>
+                                               </td>
+                                              <td>
+                                                    <input type="number" min="0" class="form-control" name="tiempo_completo3f" ng-model="tiempoempleado(3,0).tiempo_completo" placeholder="0" ng-required="true"/>
+                                                    <span ng-show="empleoForm.$submitted || empleoForm.tiempo_completo3f.$touched">
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo3f.$error.required">*Es requerido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo3f.$error.number">*Formato no válido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.tiempo_completo3f.$error.min">*Números mayores a 0</span>
+                                                    </span>
+                                                </td>                                              
+                                              <td style="text-align: right">@{{tiempoempleado(3,1).tiempo_completo + tiempoempleado(3,0).tiempo_completo }}</td>
+                                            </tr>
                                             
-                                           <td>
-                                                <input type="number" min="0" class="form-control" name="sexo3f" ng-model="cargo(3).mujeres" placeholder="0" ng-required="true"/>
-                                                <span ng-show="empleoForm.$submitted || empleoForm.sexo3f.$touched">
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo3f.$error.required">*Es requerido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo3f.$error.number">*Formato no válido</span>
-                                                    <span class="label label-danger" ng-show="empleoForm.sexo3f.$error.min">*Números mayores a 0</span>
+                                             <tr>
+                                                <td>Directivos medio tiempo</td>
+                                                <td>
+                                                    <input type="number" min="0" class="form-control" name="medio_tiempo" ng-model="tiempoempleado(1,1).medio_tiempo" placeholder="0" ng-required="true"/>
+                                                    <span ng-show="empleoForm.$submitted || empleoForm.medio_tiempo.$touched">
+                                                        <span class="label label-danger" ng-show="empleoForm.medio_tiempo.$error.required">*Es requerido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.medio_tiempo.$error.number">*Formato no válido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.medio_tiempo.$error.min">*Números mayores a 0</span>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0" class="form-control" name="medio_tiempof" ng-model="tiempoempleado(1,0).medio_tiempo" placeholder="0" ng-required="true"/>
+                                                    <span ng-show="empleoForm.$submitted || empleoForm.medio_tiempof.$touched">
+                                                        <span class="label label-danger" ng-show="empleoForm.medio_tiempof.$error.required">*Es requerido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.medio_tiempof.$error.number">*Formato no válido</span>
+                                                        <span class="label label-danger" ng-show="empleoForm.medio_tiempof.$error.min">*Números mayores a 0</span>
+                                                    </span>
+                                                </td>
+                 
+                                                <td style="text-align: right">@{{tiempoempleado(1,1).medio_tiempo + tiempoempleado(1,0).medio_tiempo }}</td>
+                                          
+                                            </tr>
+                                             <tr>
+                                                <td>Mandos medios medio tiempo</td>
+                                                                 <td>
+                                                <input type="number" min="0" class="form-control" name="medio_tiempo2" ng-model="tiempoempleado(2,1).medio_tiempo" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.medio_tiempo2.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo2.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo2.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo2.$error.min">*Números mayores a 0</span>
                                                 </span>
                                             </td>
-                        
+                                                   <td>
+                                                <input type="number" min="0" class="form-control" name="medio_tiempo2f" ng-model="tiempoempleado(2,0).medio_tiempo" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.medio_tiempo2f.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo2f.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo2f.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo2f.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                      
+                                               
+                                                <td style="text-align: right">@{{tiempoempleado(2,1).medio_tiempo + tiempoempleado(2,0).medio_tiempo }}</td>
+                                            </tr>
+                                             <tr>
+                                                <td>Operativo medio tiempo</td>
+                                                 <td>
+                                                <input type="number" min="0" class="form-control" name="medio_tiempo3" ng-model="tiempoempleado(3,1).medio_tiempo" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.medio_tiempo3.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo3.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo3.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo3.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+                                                 <td>
+                                                <input type="number" min="0" class="form-control" name="medio_tiempo3f" ng-model="tiempoempleado(3,0).medio_tiempo" placeholder="0" ng-required="true"/>
+                                                <span ng-show="empleoForm.$submitted || empleoForm.medio_tiempo3f.$touched">
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo3f.$error.required">*Es requerido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo3f.$error.number">*Formato no válido</span>
+                                                    <span class="label label-danger" ng-show="empleoForm.medio_tiempo3f.$error.min">*Números mayores a 0</span>
+                                                </span>
+                                            </td>
+
                                      
-                                            <td style="text-align: right">@{{cargo(3).hombres + cargo(3).mujeres }}</td>
+                                            <td style="text-align: right">@{{tiempoempleado(3,1).medio_tiempo + tiempoempleado(3,0).medio_tiempo }}</td>
                                             </tr>
                                             <tr>
                                                 <td >Total</td>
-                                                <td style="text-align: right">@{{cargo(1).hombres + cargo(2).hombres + cargo(3).hombres  }}</td>
-                                                <td style="text-align: right">@{{cargo(1).mujeres + cargo(2).mujeres + cargo(3).mujeres }}</td>
-                                                <td style="text-align: right">@{{cargo(1).hombres + cargo(2).hombres + cargo(3).hombres  + cargo(1).mujeres + cargo(2).mujeres + cargo(3).mujeres }}</td>
+                                                <td style="text-align: right">@{{tiempoempleado(1,1).tiempo_completo + tiempoempleado(1,1).medio_tiempo + tiempoempleado(2,1).tiempo_completo + tiempoempleado(2,1).medio_tiempo + tiempoempleado(3,1).tiempo_completo + tiempoempleado(3,1).medio_tiempo}}</td>
+                                                <td style="text-align: right">@{{tiempoempleado(1,0).tiempo_completo + tiempoempleado(1,0).medio_tiempo + tiempoempleado(2,0).tiempo_completo + tiempoempleado(2,0).medio_tiempo + tiempoempleado(3,0).tiempo_completo + tiempoempleado(3,0).medio_tiempo }}</td>
+                                                <td style="text-align: right">@{{Total('Empleo','medio_tiempo')}}</td>
                                             </tr>
                                     </tbody>
                                 </table>

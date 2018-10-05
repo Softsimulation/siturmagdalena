@@ -18,6 +18,7 @@
 
 @section('content')
     <br><br>
+    
     <div class="alert alert-danger" ng-if="errores != null">
         <h6>Errores</h6>
         <span class="messages" ng-repeat="error in errores">

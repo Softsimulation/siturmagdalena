@@ -11,20 +11,19 @@
     <a href="/publicaciones/crear" class="btn btn-lg btn-success" class="btn btn-lg btn-success">
         Crear publicaciones
     </a> 
-    <div class="form-group has-feedback" style="display: inline-block;">
-        <label class="sr-only">Búsqueda de encuestas</label>
-        <input type="text" ng-model="searchpublicacion" class="form-control input-lg" id="inputEmail3" placeholder="Buscar publicación...">
-        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-    </div>      
+    <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>     
 </div>
-<div class="text-center" ng-if="(publicaciones |filter: searchpublicacion).length > 0 && (searchpublicacion != '' && searchpublicacion != undefined)">
-    <p>Hay @{{(publicaciones |filter: searchpublicacion).length}} registro(s) que coinciden con su búsqueda</p>
+<div class="text-center" ng-if="(publicaciones | filter:search).length > 0 && (search != undefined)">
+    <p>Hay @{{(publicaciones | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
 </div>
 <div class="alert alert-info" ng-if="publicaciones.length == 0">
     <p>No hay registros almacenados</p>
 </div>
-<div class="alert alert-warning" ng-if="(publicaciones |filter: searchpublicacion).length == 0 && publicaciones.length > 0">
+<div class="alert alert-warning" ng-if="(publicaciones | filter:search).length == 0 && publicaciones.length > 0">
     <p>No existen registros que coincidan con su búsqueda</p>
+</div>
+<div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.titulo.length > 0 || search.tipoPublicacion.length > 0 || search.descripcion.length > 0 || search.estado.length > 0 )">
+    Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
 </div>
 
 <div class="row">
@@ -41,9 +40,17 @@
                     <th>Visible</th>
                     <th style="width: 120px;">Opciones</th>
                 </tr>
+                <tr ng-show="mostrarFiltro == true">
+                            
+                    <td><input type="text" ng-model="search.titulo" name="titulo" id="titulo" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.tipoPublicacion" name="tipoPublicacion" id="tipoPublicacion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.descripcion" name="descripcion" id="descripcion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td></td>
+                </tr>
             </thead>
             <tbody ng-init="currentPagepublicacion = 1">
-                <tr dir-paginate="publicacion in publicaciones |filter:searchpublicacion|itemsPerPage: 10" pagination-id="pagepublicacion" current-page="currentPagepublicacion">
+                <tr dir-paginate="publicacion in publicaciones |filter:search|itemsPerPage: 10" pagination-id="pagepublicacion" current-page="currentPagepublicacion">
                     <!--<td>@{{($index + 1) + (currentPagepublicacion - 1) * 10}}</td>-->
                     <td>@{{publicacion.titulo}}</td>
                    <td>@{{publicacion.tipopublicacion.idiomas[0].nombre}}</td>
@@ -58,7 +65,7 @@
                          <button ng-click="cambiarEstadoPublicacion(publicacion)" type="button" title="Cambiar estado publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-transfer"></span></button> 
                     </td>
                 </tr>
-               
+                
             </tbody>
         </table>
     </div>

@@ -75,6 +75,7 @@ angular.module('oferta.agenciasOperadoras', ["checklist-model","ofertaService"])
             $scope.toures = data.toures;
             if (data.retornado != null) {
                 $scope.agencia = data.retornado;
+                $scope.agencia.Comercial = data.retornado.Comercial+'';
             }
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
@@ -109,19 +110,35 @@ angular.module('oferta.agenciasOperadoras', ["checklist-model","ofertaService"])
         $("body").attr("class", "cbp-spmenu-push charging");
         ofertaServi.guardarCaracterizacionOperadora($scope.agencia).then(function (data) {
             if(data.success){
-                $("body").attr("class", "cbp-spmenu-push");
+                $("body").attr("class", "cbp-spmenu-push")
+                
                 swal({
-                    title: "Realizado",
-                    text: "Se ha guardado satisfactoriamente la sección.",
-                    type: "success",
-                    timer: 1000,
-                    showConfirmButton: false
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: data.oferta == true ? "Oferta" : "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                      if(!data.oferta){
+                          window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                      }else{
+                          window.location.href = '/ofertaempleo/ocupacionagenciasoperadoras/'+$scope.id;
+                      }
+                    
+                  } else {
+                    window.location = "ruta";
+                  }
                 });
-                setTimeout(function () {
-                    window.location.href = "/ofertaempleo/ocupacionagenciasoperadoras/" + $scope.id;
-                }, 1000);
             }else{
                 $("body").attr("class", "cbp-spmenu-push");
+                $scope.errores = data.errores; 
                 swal("Error", "Error en la carga, por favor recarga la pagina", "error");
             }
         }).catch(function () {
