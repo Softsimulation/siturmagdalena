@@ -6,13 +6,6 @@
 @section('estilos')
     <style>
         
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        
         .ui-select-container{
             width: 100%;
         }
@@ -50,6 +43,9 @@
                     
                     <fieldset>
                         <legend>Información básica</legend>
+                        <div class="alert alert-info">
+                            <p>Los campos marcados con asterisco (*) son obligatorios.</p>
+                        </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-8">
                                 <div class="form-group" ng-class="{'has-error': (crearDestinoForm.$submitted || crearDestinoForm.nombre.$touched) && crearDestinoForm.nombre.$error.required}">

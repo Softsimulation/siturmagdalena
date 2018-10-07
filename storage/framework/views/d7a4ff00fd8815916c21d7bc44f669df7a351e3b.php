@@ -139,9 +139,11 @@
                         <li>
                             <a role="menuitem" href="#menuPromocion" aria-haspopup="true" aria-expanded="false">Promoción</a>
                             <ul role="menu" id="menuPromocion" aria-label="Promoción">
-                                
+                                <li role="none"><a role="menuitem" href="<?php echo e(asset('administradordestinos')); ?>">Administrar destinos</a></li>
                                 <li role="none"><a role="menuitem" href="<?php echo e(asset('administradoratracciones')); ?>">Administrar atracciones</a></li>
         					    <li role="none"><a role="menuitem" href="<?php echo e(asset('administradoractividades')); ?>">Administrar actividades</a></li>
+        					    <li role="none"><a role="menuitem" href="<?php echo e(asset('administradorproveedores')); ?>">Administrar proveedores</a></li>
+        					    <li role="none"><a role="menuitem" href="<?php echo e(asset('administradoreventos')); ?>">Administrar eventos</a></li>
         					</ul>
                         </li>
                         <li>

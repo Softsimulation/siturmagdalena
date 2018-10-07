@@ -1,7 +1,7 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Editar destino')
+@section('title', 'Formulario para la modificación de destinos')
 
 @section('estilos')
     <style>
