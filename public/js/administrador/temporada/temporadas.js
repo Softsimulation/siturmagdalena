@@ -150,7 +150,7 @@ var pp=angular.module('admin.temporadas', ['adminservice','angularUtils.directiv
         adminService.DatosTemporada($scope.id)
             .then(function (data) {
                 $scope.temporada = data.temporada;
-                $scope.temporada.encuestas=data.encuestas
+                $scope.temporada.Personas=data.encuestas
                 $("body").attr("class", "cbp-spmenu-push");
             }).catch(function () {
                 $("body").attr("class", "cbp-spmenu-push");
