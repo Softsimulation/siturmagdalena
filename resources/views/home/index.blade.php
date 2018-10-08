@@ -6,6 +6,11 @@
 
 <link href="{{asset('/css/public/main.css')}}" rel="stylesheet">
 @endsection
+@section('meta_og')
+    <meta property="og:title" content="SITUR Magdalena" />
+    <meta property="og:image" content="{{asset('/img/brand/128.png')}}" />
+    <meta property="og:description" content="Sistema de Información Turística del Magdalena y de Santa Marta D.T.C.H"/>
+@endsection
 
 @section('content')
 <section id="slider">

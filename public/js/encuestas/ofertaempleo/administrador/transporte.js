@@ -35,7 +35,8 @@ situr.controller('caracterizacionTransporteCtrl', ['$scope','transporteServi', f
                     } else {
                         $scope.estadoEncuesta = 0;
                     }
-                    
+                    $scope.transporte.Comercial = data.encuesta.Comercial+"";
+                    $scope.transporte.NumeroDias = data.encuesta.NumeroDias;
                 }
                 $("body").attr("class", "cbp-spmenu-push");
                 
@@ -63,16 +64,31 @@ situr.controller('caracterizacionTransporteCtrl', ['$scope','transporteServi', f
         transporteServi.guardarCaracterizacionTransporte($scope.transporte).then(function (data) {
             if (data.success == true) {
                 $("body").attr("class", "cbp-spmenu-push")
+                
                 swal({
-                    title: "Realizado",
-                    text: "Se ha guardado satisfactoriamente la sección.",
-                    type: "success",
-                    timer: 1000,
-                    showConfirmButton: false
+                  title: "Realizado",
+                  text: "Se ha guardado satisfactoriamente la sección.",
+                  type: "success",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-info",
+                  cancelButtonClass: "btn-info",
+                  confirmButtonText: data.oferta == true ? "Oferta" : "Empleo",
+                  cancelButtonText: "Listado de encuestas",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                      if(!data.oferta){
+                          window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                      }else{
+                          window.location.href = '/ofertaempleo/ofertatransporte/'+$scope.id;
+                      }
+                    
+                  } else {
+                    window.location = "/ofertaempleo/encuestas/"+data.sitio;
+                  }
                 });
-                setTimeout(function () {
-                    window.location.href = "/ofertaempleo/ofertatransporte/" + $scope.id;
-                }, 1000);
             } else {
                 $("body").attr("class", "cbp-spmenu-push")
                 $scope.errores = data.errores;

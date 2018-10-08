@@ -3,6 +3,11 @@
 @section('Title', 'Bolsa de empleo - Vacantes')
 
 @section('content')
+
+    @if(Session::has('message'))
+        <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
+    @endif
+
     <h1>Bolsa de empleo - Vacantes</h1>
     
     <div class="row">
@@ -51,8 +56,14 @@
                         @endforeach
                     </select>
                 </div>
-            </div>    
-            <div class="col-xs-12 col-md-2">
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="nombreVacante" class="control-label">Nombre vacante</label>
+                    <input class="form-control" type="text" name="nombreVacante" id="nombreVacante" />
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-3">
 				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
 			</div>
         </form>
@@ -74,6 +85,8 @@
         <br>
     @endforeach
     
-    
+    <div class="row">
+		{{$vacantes->links()}}
+	</div>
     
 @endsection

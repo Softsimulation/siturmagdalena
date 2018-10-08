@@ -83,10 +83,15 @@ Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 
 Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
 
+Route::controller('/postulado','PostuladoController');
+
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
 Route::controller('/login','LoginController');
 Route::controller('/noticias','NoticiaController');
+Route::controller('/promocionNoticia','PublicoNoticiaController');
+Route::controller('/promocionInforme','PublicoInformeController');
+Route::controller('/promocionPublicacion','PublicoPublicacionController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
@@ -111,12 +116,11 @@ Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
 
 Route::group(['middleware' => 'cors'], function(){
    
-   Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
-   Route::controller('/grupoviajeapi','GrupoViajeCorsController');
   
    Route::controller('/authapi', 'ApiAuthController');
    Route::group(['middleware'=> 'jwt.auth'], function () {
         Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
+        Route::controller('/grupoviajeapi','GrupoViajeCorsController');
    });
 });
 

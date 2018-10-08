@@ -1446,7 +1446,7 @@
                                             <span class="label label-danger" ng-show="empleoForm.tiempo_completo2.$error.min">*Números mayores a 0</span>
                                         </span>
                                     </td>
-                                           <td>
+                                    <td>
                                         <input type="number" min="0" class="form-control" name="tiempo_completo2f" ng-model="tiempoempleado(2,0).tiempo_completo" placeholder="0" ng-required="true"/>
                                         <span ng-show="empleoForm.$submitted || empleoForm.tiempo_completo2f.$touched">
                                             <span class="label label-danger" ng-show="empleoForm.tiempo_completo2f.$error.required">*Es requerido</span>

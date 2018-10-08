@@ -67,7 +67,7 @@ tags-input .tags .tag-item .remove-button {
   color: #585858;
 }
 tags-input .tags .tag-item .remove-button:active {
-  color: #ff0000;
+  color: #201f1f;
 }
 tags-input .tags .input {
   border: 0;
@@ -155,6 +155,11 @@ tags-input .autocomplete .suggestion-item em {
   font: normal bold 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #000;
   background-color: #fff;
+}
+
+tags-input .tags .tag-item {
+  color: #2d2828;
+ 
 }
 
 /*# sourceMappingURL=ng-tags-input.css.map */

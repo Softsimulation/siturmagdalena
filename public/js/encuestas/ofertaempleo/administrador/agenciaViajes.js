@@ -21,7 +21,9 @@ situr.controller('caracterizacionAgenciaViajesCtrl', ['$scope','agenciaViajeServ
                     $scope.encuesta.TipoServicios = arrayAux;
                     
                     $scope.encuesta.Planes = data.Planes + ""
-                    $scope.encuesta.Otro = data.Otro
+                    $scope.encuesta.Otro = data.Otro;
+                    $scope.encuesta.Comercial = data.Comercial+"";
+                    $scope.encuesta.NumeroDias = data.numeroDias;
                 }
                 $("body").attr("class", "cbp-spmenu-push");
                 
@@ -51,24 +53,35 @@ situr.controller('caracterizacionAgenciaViajesCtrl', ['$scope','agenciaViajeServ
                 $("body").attr("class", "cbp-spmenu-push");
                 if (data.success) {
     
-                    swal({
-                        title: "Realizado",
-                        text: "Sección guardada exitosamente",
-                        type: "success",
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-                    setTimeout(function () {
-    
                         if(data.redireccion == true){
-                            window.location = "/ofertaempleo/ofertaagenciaviajes/"+$scope.encuesta.id;
+    
+                            swal({
+                              title: "Realizado",
+                              text: "Se ha guardado satisfactoriamente la sección.",
+                              type: "success",
+                              showCancelButton: true,
+                              confirmButtonClass: "btn-info",
+                              cancelButtonClass: "btn-info",
+                              confirmButtonText: data.oferta == true ? "Oferta" : "Empleo",
+                              cancelButtonText: "Listado de encuestas",
+                              closeOnConfirm: false,
+                              closeOnCancel: false
+                            },
+                            function(isConfirm) {
+                              if (isConfirm) {
+                                  if(!data.oferta){
+                                      window.location.href = '/ofertaempleo/empleomensual/'+$scope.encuesta.id;
+                                  }else{
+                                      window.location.href = '/ofertaempleo/ofertaagenciaviajes/'+$scope.encuesta.id;
+                                  }
+                                
+                              } else {
+                                window.location = "/ofertaempleo/encuestas/"+data.sitio;
+                              }
+                            });
                         }else{
                             window.location = "/ofertaempleo/encuestas/"+data.sitio;
                         }
-                        
-    
-    
-                    }, 1000);
     
     
     
