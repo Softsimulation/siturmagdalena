@@ -1,49 +1,10 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Nuevo proveedor')
+@section('title', 'Formulario para el registro de proveedores')
 
 @section('estilos')
     <style>
-        
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-        .row {
-            margin: 1em 0 0;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        
         .ui-select-container{
             width: 100%;
         }
@@ -52,12 +13,6 @@
         }
     </style>
 @endsection
-
-@section('TitleSection', 'Nuevo proveedor')
-
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
 
 @section('app', 'ng-app="proveedoresApp"')
 
@@ -174,41 +129,32 @@
             <div id="multimedia" class="tab-pane fade">
                 <fieldset>
                     <legend>Multimedia</legend>
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <strong>Tenga en cuenta que para subir imágenes.</strong>
-                        <ul>
-                            <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
-                            <li>Puede subir máximo 5 imágenes. El peso de cada imagen debe ser menor o igual a 2MB.</li>
-                            <li>Si alguna de sus imágenes sobrepasa el tamaño permitido se le sugiere comprimir la imagen en <a href="https://compressor.io" target="_blank">compressor.io <span class="glyphicon glyphicon-share"></span></n></a>, <a href="http://optimizilla.com" target="_blank">optimizilla.com <span class="glyphicon glyphicon-share"></span></a>, o cualquier otro compresor de imágenes.</li>
-                            <li>Para seleccionar varias imágenes debe mantener presionada la tecla ctrl o arrastre el ratón sobre las imágenes que desea seleccionar.</li>
-                        </ul>
-                    </div>
+                    @include('layout.partial._recomendacionesSubidaImagenes')
                     <form novalidate role="form" name="multimediaForm">
                         <div class="row">
-                            <h4><span class="asterisk">*</span> Imagen de portada</h4>
-                            <div class="col-sm-12">
+                            <div class="col-xs-12">
+                                <label><span class="asterisk">*</span> Imagen de portada</label>
                                 <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                                
                             </div>
-                        </div>
-                        <div>
-                            <h4>Subir imágenes</h4>
-                            <div class="col-sm-12">
+                            <div class="col-xs-12">
+                                <br/>
+                                <label>Subir imágenes</label>
                                 <file-input ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
+                                
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 form-group">
-                                <label for="video_promocional"><h4>Video promocional</h4></label>
+                            <div class="col-xs-12">
+                                <br/>
+                                <label for="video_promocional">Video promocional</label>
                                 <input type="text" name="video_promocional" id="video_promocional" class="form-control" placeholder="URL del video de YouTube" />
                             </div>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12 text-center">
+                            <div class="col-xs-12 text-center">
+                                <hr/>
                                 <button ng-click="guardarMultimedia()" type="submit" ng-class="{'disabled': (proveedor.id == -1)}" class="btn btn-lg btn-success" >Guardar</button>
+                                <a href="{{asset('/administradorproveedores')}}" class="btn btn-lg btn-default">Cancelar</a>
                             </div>
                         </div>
+                        
                     </form>
                 </fieldset>
                 
@@ -257,7 +203,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <label for="perfiles"><h4>Actividades <small>(Seleccione al menos una actividad)</small></h4></label>
+                                <label for="perfiles">Actividades <small>(Seleccione al menos una actividad)</small></label>
                                 <ui-select multiple ng-model="proveedor.adicional.actividades" theme="bootstrap" close-on-select="false" >
                                     <ui-select-match placeholder="Seleccione una o varias actividades.">
                                         <span ng-bind="$item.actividades_con_idiomas[0].nombre"></span>
@@ -271,7 +217,9 @@
                         <br>
                         <div class="row">
                             <div class="col-sm-12 text-center">
+                                <hr/>
                                 <button type="submit"  class="btn btn-lg btn-success" ng-class="{'disabled': (proveedor.id == -1)}" ng-click="guardarAdicional()">Guardar</button>
+                                <a href="{{asset('/administradorproveedores')}}" class="btn btn-lg btn-default">Cancelar</a>
                             </div>
                         </div>
                     </form>

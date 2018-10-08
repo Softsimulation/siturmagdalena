@@ -395,7 +395,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row" ng-if="pregunta.tipo_campos_id==2 || detallePregunta.tipo_campos_id==10"  >
+                                <div class="row" ng-if="detallePregunta.tipo_campos_id==2 || detallePregunta.tipo_campos_id==10"  >
                                     <div class="col-xs-12 col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Mínimo valor</label>
@@ -420,7 +420,7 @@
                                             </li>
                                             
                                             <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="item in detallePregunta.opciones track by $index" style="cursor:default" >
-                                               @{{ (item.idiomas|filter:{ 'idiomas_id':1 })[0].nombre }} <button type="button" class="btn btn-xs btn-default" ng-click="eliminarOpionPregunta($index,item.id);"><span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar</span></button>
+                                               @{{ (item.idiomas|filter:{ 'idiomas_id':1 })[0].nombre }} <span ng-if="item.es_otro" >(Otro)</span> <button type="button" class="btn btn-xs btn-default" ng-click="eliminarOpionPregunta($index,item.id);"><span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar</span></button>
                                             </li>
                                             
                                             <li class="list-group-item d-flex justify-content-between align-items-center" ng-if="detallePregunta.opciones.length==0" >

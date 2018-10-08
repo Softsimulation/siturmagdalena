@@ -6,6 +6,12 @@
 @section('titulo','Publicaciones')
 @section('subtitulo','Formulario de creación de publicaciones')
 
+@section('estilos')
+    <link href="{{asset('/css/ng-tags-input.bootstrap.css')}}" rel='stylesheet' type='text/css' />
+    <link href="{{asset('/css/ng-tags-input.css')}}" rel='stylesheet' type='text/css' />
+
+@endsection
+
 @section('content')
         <div class="alert alert-danger" ng-if="errores != null">
             <h6>Errores</h6>
@@ -60,47 +66,47 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label class="control-label" for="resumen">Palabras claves </label>
-                           <tags-input ng-model="publicacion.palabrasClaves"></tags-input>
-                        <p>Model: @{{publicacion.palabrasClaves}}</p>
+                           <tags-input ng-model="publicacion.palabrasClaves" placeholder="Agregar palabra"></tags-input>
+                       
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-4">
-                    <label class="u-block"><span class="asterisk">*</span> Adjuntar publicación</label>
+                    <label class="u-block"><span class="asterisk">*</span> Adjuntar publicación</label><h6><strong>(solo archivo pdf)</strong></h6>
                     <div class="input-group">
                         <label class="input-group-btn">
                             <span class="btn btn-primary" title="Seleccionar archivo" data-toggle="tooltip" data-placement="right">
-                                Archivo <input type="file" id="soporte_publicacion" name="soporte_publicacion" file-input='soporte_publicacion' style="display: none;">
+                                Archivo <input type="file" id="soporte_publicacion" name="soporte_publicacion" file-input='soporte_publicacion' style="display: none;" accept=".pdf">
                             </span>
                         </label>
-                        <input id="nombreArchivoSeleccionadoPublicacion" type="text" class="form-control" placeholder="Peso máximo 5MB" readonly>
+                        <input id="nombreArchivoSeleccionadoPublicacion" type="text" class="form-control" placeholder="Peso máximo 15MB" readonly>
 
                     </div>
                     <span class="text-error" ng-show="formCrear.$submitted  && (soporte_publicacion == null || soporte_publicacion.length == 0 )">Debe adjuntar un soporte</span>
 
                 </div>
                 <div class="col-xs-12 col-md-4">
-                    <label class="u-block"><span class="asterisk">*</span>Adjuntar portada</label>
+                    <label class="u-block"><span class="asterisk">*</span>Adjuntar portada</label><h6><strong>(solo archivo jpg,jpeg,png)</strong></h6>
                     <div class="input-group">
                         <label class="input-group-btn">
                             <span class="btn btn-primary" title="Seleccionar archivo" data-toggle="tooltip" data-placement="right">
-                                Archivo <input type="file" id="portada" name="portada" file-input='portada' style="display: none;">
+                                Archivo <input type="file" id="portada" name="portada" file-input='portada' style="display: none;" accept=".jpg;.jpeg;.png">
                             </span>
                         </label>
-                        <input id="nombreArchivoSeleccionadoPublicacion" type="text" class="form-control" placeholder="Peso máximo 5MB" readonly>
+                        <input id="nombreArchivoSeleccionadoPublicacion" type="text" class="form-control" placeholder="Peso máximo 15MB" readonly>
 
                     </div>
                     <span class="text-error" ng-show="formCrear.$submitted  && (portada == null || portada.length == 0 )">Debe adjuntar un soporte</span>
 
                 </div>
                 <div class="col-xs-12 col-md-4">
-                        <label class="u-block"><span class="asterisk">*</span>Adjuntar soporte</label>
+                        <label class="u-block"><span class="asterisk">*</span>Adjuntar soporte</label><h6><strong>(solo archivo pdf)</strong></h6>
                         <div class="input-group" >
                             <label class="input-group-btn">
                                 <span class="btn btn-primary" title="Seleccionar archivo" data-toggle="tooltip" data-placement="right">
-                                    Archivo <input type="file" id="soporte_carta" name="soporte_carta" file-input='soporte_carta' style="display: none;">
+                                    Archivo <input type="file" id="soporte_carta" name="soporte_carta" file-input='soporte_carta' style="display: none;" accept=".pdf">
                                 </span>
                             </label>
-                            <input id="nombreArchivoSeleccionadoCarta" type="text" class="form-control" placeholder="Peso máximo 5MB" readonly>
+                            <input id="nombreArchivoSeleccionadoCarta" type="text" class="form-control" placeholder="Peso máximo 15MB" readonly>
                         <span class="text-error" ng-show="formCrear.$submitted  && (soporte_carta == null || soporte_carta.length == 0 )">Debe adjuntar un soporte</span>
 
                     </div>
@@ -125,8 +131,9 @@
                             <tbody>
                                 <tr ng-repeat="persona in publicacion.personas">
                                     <td>     
-                                        <input type="email" name="email@{{$index}}" class="form-control input-sm" ng-model="persona.email" ng-change="buscarPersona(persona)" autocomplete="off" required/>
+                                        <input type="email"  name="email@{{$index}}" class="form-control input-sm" ng-model="persona.email" ng-change="buscarPersona(persona)" autocomplete="off" required/>
                                         <span class="text-error" ng-show="(formCrear.$submitted || formCrear.email@{{$index}}.$touched) && formCrear.email@{{$index}}.$error.required">Campo requerido</span>
+                                        <span class="text-error" ng-show="(formCrear.$submitted || formCrear.email@{{$index}}.$touched) && formCrear.email@{{$index}}.$error.email">No es un correo válido</span>
                                         
                                     </td>
                                     <td> 
@@ -174,6 +181,57 @@
 
 @endsection
 @section('javascript')
+ <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#preview-upload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imagen").change(function () {
+            readURL(this);
+        });
+
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover()
+
+            $(':file').on('fileselect', function (event, numFiles, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    //if (log) alert(log);
+                }
+
+            });
+
+        });
+
+        $('body').on("click", ".goto", function (e) {
+            e.preventDefault();
+            $('.nav-tabs a[href="#historial"]').tab('show');
+            var idDiv = ($(this).data('href') != undefined) ? $(this).data('href') : $(this).attr('href');
+
+            $("html, body").delay(50).animate({ scrollTop: $(idDiv).offset().top - 45 }, 350);
+
+
+        });
+    </script>
     <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
     <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
     <script src="{{asset('/js/plugins/select.min.js')}}"></script>
