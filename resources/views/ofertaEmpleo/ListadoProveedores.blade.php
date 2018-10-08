@@ -3,11 +3,6 @@
 
 @section('title', 'Proveedores oferta y empleo')
 
-@section('estilos')
-    <style>
-        
-    </style>
-@endsection
 
 @section('TitleSection', 'Listado proveedores oferta y empleo')
 
@@ -20,14 +15,14 @@
 
 @section('content')
 
-<div class="flex-list">
+<div class="flex-list" ng-show="proveedores.length > 0">
     <div class="form-group has-feedback" style="display: inline-block;">
-        <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
+        <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar registros</button>
     </div>      
 </div>
 
 <br/>
-<div class="text-center" ng-if="(proveedores | filter:search).length > 0 && (search != undefined)">
+<div class="text-center" ng-if="(proveedores | filter:search).length > 0 && (search != undefined && (proveedores | filter:search).length != proveedores.length)">
     <p>Hay @{{(proveedores | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
 </div>
 <div class="alert alert-info" ng-if="proveedores.length == 0">
@@ -60,7 +55,7 @@
                                 <th>Tipo</th>
                                 <th>Contacto</th>
       
-                                <th style="width: 70px;"></th>
+                                <th style="width: 110px;"></th>
                             </tr>
                             <tr ng-show="mostrarFiltro == true">
                                     
@@ -79,10 +74,10 @@
                                 <td>@{{item.razon_social}}</td>
                                 <td>@{{item.subcategoria}}</td>
                                 <td>@{{item.categoria}}</td>
-                                <td>@{{item.email}}</td>
+                                <td style="overflow: hidden; text-overflow:ellipsis;">@{{item.email}}</td>
                       
                                 <td style="text-align: center;">
-                                <a  href="/ofertaempleo/activar/@{{item.proveedor_rnt_id}}" class="btn btn-default btn-sm" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a href="/ofertaempleo/activar/@{{item.proveedor_rnt_id}}" class="btn btn-default btn-xs" title="Editar" ><span class="ionicons-padding ion-edit"></span><span class="sr-only">Editar</span></a>
                                 <a href="/ofertaempleo/encuesta/@{{item.id}}" class="btn btn-default btn-xs" title="Encuesta sin realizar"><span class="ionicons ion-document"></span><span class="sr-only">Encuestas sin realizar</span></a>
                                 <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-default btn-xs" title="Encuesta realizadas"><span class="ionicons ion-clipboard"></span><span class="sr-only">Encuestas realizadas</span></a>
                                 </td>

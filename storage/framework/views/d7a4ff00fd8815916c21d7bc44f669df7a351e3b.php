@@ -101,6 +101,7 @@
             background-color: #dfedf4;
             color: #131a61;
         }
+        
     </style>
 </head>
 <body <?php echo $__env->yieldContent('app'); ?>  <?php echo $__env->yieldContent('controller'); ?> >

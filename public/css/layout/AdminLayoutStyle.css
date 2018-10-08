@@ -581,3 +581,26 @@ align-items-center{
 .table .form-control{
     margin-bottom: 0;
 }
+.ionicons-padding{
+    font-size: 1.125rem;
+    margin: 5px 0;
+}
+        /* width */
+#left-side-menu::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+#left-side-menu::-webkit-scrollbar-track {
+    background: #eee; 
+}
+ 
+/* Handle */
+#left-side-menu::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.3); 
+}
+
+/* Handle on hover */
+#left-side-menu::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}

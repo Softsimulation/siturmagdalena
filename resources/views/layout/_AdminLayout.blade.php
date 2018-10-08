@@ -101,6 +101,7 @@
             background-color: #dfedf4;
             color: #131a61;
         }
+        
     </style>
 </head>
 <body @yield('app')  @yield('controller') >
