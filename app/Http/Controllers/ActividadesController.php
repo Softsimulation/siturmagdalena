@@ -21,6 +21,8 @@ class ActividadesController extends Controller
             $queryActividadesConIdiomas->orderBy('idiomas')->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
         }, 'multimediasActividades' => function($queryMultimediasActividades){
             $queryMultimediasActividades->orderBy('portada', 'desc')->select('actividades_id', 'ruta');
+        }, 'sitiosConActividades' => function ($querySitiosConActividades){
+            $querySitiosConActividades->join('atracciones', 'sitios.id', '=', 'atracciones.sitios_id')->select('sitios.id as id' ,'sitios.latitud as latitud', 'sitios.longitud as longitud');
         }])->where('id', $id)->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'calificacion_llegar', 'calificacion_recomendar', 'calificacion_volveria')->first();
         
         return view('actividades.Ver', ['actividad' => $actividad]);

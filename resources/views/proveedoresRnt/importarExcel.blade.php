@@ -1,47 +1,16 @@
 
 @extends('layout._AdminLayout')
 
-@section('Title', 'Muestra maestra')
-
 @section('title', 'Importación RNT')
 
 @section('estilos')
     <style>
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
         
-        
-        
+        .modal .form-group{
+            margin-top: .5rem;
+        }        
     </style>
 @endsection
-
-@section('TitleSection', 'Importación RNT')
 
 @section('app','ng-app="importarRntApp"')
 

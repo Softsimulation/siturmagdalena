@@ -1,41 +1,12 @@
 @extends('layout._AdminLayout')
 
-@section('Title','Ver temporada')
+@section('Title','Detalle de la temporada')
 
-@section ('estilos')
-     <style>
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-    </style>
-@endsection
 @section('app','ng-app="admin.temporadas"')
-@section('titulo','Detalle de la temporada')
+
+@section('titulo','Temporadas')
+@section('subtitulo','Detalle de la temporada')
+
 @section('content')
 
 <div class="main-page" ng-controller="verTemporadaCtrl">
@@ -89,17 +60,11 @@
 
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="hogares">
-                <div class="row">
-                    <!--<div class="col-xs-12 col-sm-6 col-md-6">
-                        <input type="text" style="margin-bottom: .5em;" ng-model="prop.search1" class="form-control" id="inputSearch" placeholder="Buscar hogar...">
-                        <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
-                    </div>-->
-                    <div class="col-xs-12" style="text-align: center;">
-                        <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
-                        <span class="chip" style="margin-bottom: .5em;">@{{(temporada.Hogares|filter:prop.search1).length}} resultados</span>
-                    </div>
+                <div class="flex-list" ng-show="temporada.Hogares.length > 0">
+                    <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar resultados</button>
                 </div>
-                <br/>
+                
+                
                 <div class="text-center" ng-if="(temporada.Hogares | filter:search).length > 0 && (search != undefined)">
                     <p>Hay @{{(temporada.Hogares | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
                 </div>
@@ -143,7 +108,7 @@
                                     <td>@{{item.edificacione.estrato.nombre}}</td>
                                     <td>@{{item.digitadore.user.username}}</td>
                                     <td>@{{item.edificacione.nombre_entrevistado}}</td>
-                                    <td>@{{item.fecha_realizacion }}</td>
+                                    <td>@{{item.fecha_realizacion | date:'dd-MM-yyyy' }}</td>
                                     <td>
                                         <a href="/turismointerno/editarhogar/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                     </td>
@@ -168,21 +133,22 @@
             </div>
 
             <div role="tabpanel" class="tab-pane fade" id="personas">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6">
-                        <input type="text" style="margin-bottom: .5em;" ng-model="prop.search" class="form-control" id="inputSearch" placeholder="Buscar persona...">
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6" style="text-align: center;">
-                        <span class="chip" style="margin-bottom: .5em;">@{{(temporada.Personas|filter:prop.search).length}} resultados</span>
-                    </div>
+                
+                <div class="flex-list">
+                    <input type="text" style="margin-bottom: .5em;" ng-model="prop.searchPersona" class="form-control" id="inputSearch" placeholder="Buscar persona...">
                 </div>
-                <div class="row" ng-show="prop.search.length > 0 && (temporada.Personas|filter:prop.search).length != 0">
-                    <div class="col-xs-12">
-                        <div class="alert alert-success" role="alert" style="padding: .5em; margin-bottom: 0;">
-                            @{{(temporada.Personas|filter:prop.search).length}} personas han sido encontradas para la búsqueda '@{{prop.search}}'
-                        </div>
-                    </div>
+                
+                
+                <div class="text-center" ng-if="(temporada.Personas | filter:searchPersona).length > 0 && (searchPersona != undefined)">
+                    <p>Hay @{{(temporada.Personas | filter:searchPersona).length}} registro(s) que coinciden con su búsqueda</p>
                 </div>
+                <div class="alert alert-info" ng-if="temporada.Personas.length == 0">
+                    <p>No hay registros almacenados</p>
+                </div>
+                <div class="alert alert-warning" ng-if="(temporada.Personas | filter:searchPersona).length == 0 && temporada.Personas.length > 0">
+                    <p>No existen registros que coincidan con su búsqueda</p>
+                </div>
+                
                 <div class="row" ng-show="temporada.Personas.length > 0">
                     <div class="col-xs-12" style="overflow-x: auto;">
                         <table class="table table-hover table-striped">
@@ -218,18 +184,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-xs-12" ng-if="(temporada.Personas|filter:prop.search).length == 0 && temporada.Personas.length != 0">
-                    <div class="alert alert-warning" role="alert">
-                        No hay resultados para la búsqueda '@{{prop.search}}'. <a href="#" ng-click="prop.search = ''">Presione aquí</a> para volver a mostrar todos los resultados.
-                    </div>
-                </div>
-                <div class="row" ng-show="temporada.Personas.length == 0">
-                    <div class="col-xs-12">
-                        <div class="alert alert-warning" role="alert">
-                            No hay personas encuestadas ingresados
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="row">
 
                     <div class="col-xs-12 col-sm-12 col-md-12" style="text-align: center;">
@@ -245,10 +200,6 @@
             </div>
            
         </div>
-
-
-            
-
 
     </div>
 

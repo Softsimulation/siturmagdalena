@@ -5,46 +5,6 @@
 @section ('estilos')
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     <style>
-        
-
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
         .ADMdtp-box.ADMdtp-calendar-container{
                 z-index: 1060!important;
         }
@@ -110,15 +70,17 @@
                             </td>
                             <td style="width: 130px;">
                                 <button class="btn btn-default btn-xs" ng-click="pasarE(item)" title="Editar">
-                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="sr-only">Editar</span>
                                 </button>
                                 <button class="btn btn-default btn-xs" ng-if="!item.Estado" ng-click="cambiarEstado(item)" title="Activar">
-                                    <span class="glyphicon glyphicon-ok"></span>
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Activar</span>
                                 </button>
                                 <button class="btn btn-default btn-xs" ng-if="item.Estado" ng-click="cambiarEstado(item)" title="Desactivar">
-                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Desactivar</span>
                                 </button>
-                                <a ng-if="item.Estado" href="/temporada/ver/@{{item.id}}" title="Ver" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                <a ng-if="item.Estado" href="/temporada/ver/@{{item.id}}" title="Ver" class="btn btn-default btn-xs">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span><span class="sr-only">Ver</span>
+                                </a>
                             </td>
                         </tr>
                     </tbody>

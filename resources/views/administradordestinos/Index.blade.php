@@ -23,8 +23,6 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Listado de destinos')
-
 @section('titulo','Destinos')
 
 @section('subtitulo','El siguiente listado cuenta con @{{destinos.length}} registro(s)')

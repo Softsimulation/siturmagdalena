@@ -1,55 +1,10 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Editar proveedor')
+@section('title', 'Formulario para edición de proveedores')
 
 @section('estilos')
     <style>
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-
-        .row {
-            margin: 1em 0 0;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        .text-error {
-            color: #a94442;
-            font-style: italic;
-            font-size: .7em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
         .ui-select-container{
             width: 100%;
         }
@@ -58,12 +13,6 @@
         }
     </style>
 @endsection
-
-@section('TitleSection', 'Editar proveedor')
-
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
 
 @section('app', 'ng-app="proveedoresApp"')
 
@@ -175,28 +124,23 @@
             <div id="multimedia" class="tab-pane fade">
                 <fieldset>
                     <legend>Multimedia</legend>
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <strong>Tenga en cuenta que para subir imágenes.</strong>
-                        <ul>
-                            <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
-                            <li>Puede subir máximo 5 imágenes. El peso de cada imagen debe ser menor o igual a 2MB.</li>
-                            <li>Si alguna de sus imágenes sobrepasa el tamaño permitido se le sugiere comprimir la imagen en <a href="https://compressor.io" target="_blank">compressor.io <span class="glyphicon glyphicon-share"></span></n></a>, <a href="http://optimizilla.com" target="_blank">optimizilla.com <span class="glyphicon glyphicon-share"></span></a>, o cualquier otro compresor de imágenes.</li>
-                            <li>Para seleccionar varias imágenes debe mantener presionada la tecla ctrl o arrastre el ratón sobre las imágenes que desea seleccionar.</li>
-                        </ul>
-                    </div>
+                    @include('layout.partial._recomendacionesSubidaImagenes')
                     <form novalidate role="form" name="multimediaForm">
                         <div class="row">
-                            
-                            <h4><span class="asterisk">*</span> Imagen de portada</h4>
-                            <div class="col-sm-12">
+                            <div class="col-xs-12">
+                                <label><span class="asterisk">*</span> Imagen de portada</label>
                                 <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                           
                             </div>
-                            <h4>Subir imágenes</h4>
-                            <div class="col-sm-12">
+                            <div class="col-xs-12">
+                                <br/>
+                                <label>Subir imágenes</label>
                                 <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
+                            
                             </div>
-                            <div class="col-sm-12 form-group">
-                                <label for="video_promocional"><h4>Video promocional</h4></label>
+                            <div class="col-xs-12">
+                                <br/>
+                                <label for="video_promocional">Video promocional</label>
                                 <input type="text" ng-model="video_promocional" name="video_promocional" id="video_promocional" class="form-control" placeholder="URL del video de YouTube" />
                             </div>
                             <div class="col-sm-12 text-center">
