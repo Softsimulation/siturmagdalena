@@ -85,7 +85,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta.id)" >
+                                <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta)" >
                                     Duplicar encuesta
                                 </a>
                             </li>
@@ -114,6 +114,46 @@
         </div>
     </div>
     
+    
+    <!-- Modal duplicar encuesta-->
+    <div class="modal fade" id="modalDuplicarEncuesta" tabindex="-1" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Duplicar encuesta</h4>
+                </div>
+                <form name="formDE" novalidate>
+                    <div class="modal-body">
+                        
+                        <h1 class="text-center" >Duplicar encuesta</h1>
+                        <h3 class="text-center" >¿Esta seguro de duplicar la encuesta?</h3>
+                        
+                        <br><br>
+                        
+                        <div class="row">
+                          
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formDE.$submitted || formDE.tipoED.$touched) && formDE.tipoED.$error.required}">
+                                    <label class="control-label" for="tipoED"><span class="asterisk">*</span>  Tipo encuesta</label>
+                                    <select class="form-control" name="tipoED" id="tipoED" ng-model="duplicarencuesta.tipo" ng-options="item.id as item.nombre for item in tipos" required >
+                                        <option  disabled selected value="" >Selecione un tipo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer center" >
+                        
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" ng-click="guardarDuplicarEncuesta()" class="btn btn-success">Guardar</button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     
     
     <!-- Modal agregar encuesta-->

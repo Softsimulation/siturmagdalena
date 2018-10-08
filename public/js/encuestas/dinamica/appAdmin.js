@@ -682,30 +682,39 @@
         }
         
         
-        $scope.duplicarEncuesta = function (id) {
-            swal({
-                title: "Duplicar encuesta",
-                text: "¿Esta seguro de duplicar la encuesta?",
-                type: "warning",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true,
-            }, function () {
-                setTimeout(function () {
-                   
-                    ServiEncuesta.duplicarEncuesta( {id:id} ).then(function (data) {
-                        if (data.success) {
-                            $scope.encuestas.unshift(data.data);
-                            swal("¡Duplicada!", "LA encuesta se ha duplicado exitosamente", "success");
-                        }
-                        else {
-                            sweetAlert("Oops...", "Ha ocurrido un error.", "error");
-                        }
-                    }).catch(function () {
-                        swal("Error", "Error en la carga, por favor recarga la página", "error");
-                    });
-    
-                }, 500);
+        $scope.duplicarEncuesta = function (encuesta) {
+           
+           $scope.duplicarencuesta = {
+               id : encuesta.id,
+               tipo : encuesta.tipos_encuestas_dinamica_id
+           };
+           $("#modalDuplicarEncuesta").modal("show"); 
+          
+        }
+        $scope.guardarDuplicarEncuesta = function(){
+           
+           if (!$scope.formDE.$valid) {
+                swal("Error", "Verifique los errores en el formulario", "error");  return;
+            } 
+           
+            $("body").attr("class", "cbp-spmenu-push charging");
+            
+            ServiEncuesta.duplicarEncuesta( $scope.duplicarencuesta )
+            .then(function (data) {
+                if (data.success) {
+                    $scope.encuestas.unshift(data.data);
+                    swal("¡Duplicada!", "La encuesta se ha duplicado exitosamente", "success");
+                }
+                else {
+                    sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                }
+                
+                $("body").attr("class", "cbp-spmenu-push");
+                $("#modalDuplicarEncuesta").modal("hide"); 
+                
+            }).catch(function () {
+                swal("Error", "Error en la carga, por favor recarga la página", "error");
+                $("body").attr("class", "cbp-spmenu-push");
             });
         }
         
