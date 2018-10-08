@@ -41,14 +41,14 @@
                     <div class="col-md-6">
                         <div class="form-group" ng-class="{'error' : (form.$submitted || form.correo.$touched) && !form.correo.$valid}">
                             <label class="control-label">Correo electronico</label><br>
-                            <input type="email" class="form-control" name="correo" ng-model="usuario.email" placeholder="Correo electronico" required />
+                            <input type="email" class="form-control" name="correo" ng-model="usuario.email" placeholder="Correo electronico" />
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="form-group" ng-class="{'error' : (form.$submitted || form.telefono.$touched) && form.correo.$error.required}">
                             <label class="control-label">Teléfono</label><br>
-                            <input type="text" class="form-control" name="telefono" ng-model="usuario.telefono" placeholder="No teléfonico" required />
+                            <input type="text" class="form-control" name="telefono" ng-model="usuario.telefono" placeholder="No teléfonico" />
                         </div>
                     </div>
                        

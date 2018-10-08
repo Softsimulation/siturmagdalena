@@ -7,21 +7,23 @@
          ADMdtpProvider.setOptions({ calType: "gregorian", format: "YYYY/MM/DD", default: "today" });
     }])
     
-    .controller("CrearPeriodoCtrl", ["$scope","ServiMuestra", "NgMap", function($scope,ServiMuestra,NgMap){
+    .controller("CrearPeriodoCtrl", ["$scope","ServiMuestra", "NgMap", "$interval", function($scope,ServiMuestra,NgMap, $interval){
+        
+        
         
         $scope.dataPerido = { zonas:[] };
         $scope.zona = {};
         $scope.styloMapa = [{featureType:'poi.school',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.business',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.attraction',elementType:'labels',stylers:[{visibility:'off'}]} ];
         var PrestadoresInfowindow = new google.maps.InfoWindow();
         
+        
         ServiMuestra.getData($("#periodo").val())
-           .then(function(data){ 
+          .then(function(data){ 
                 
                 if(data.periodo){
-                
+                    
                     for(var i=0; i< data.periodo.zonas.length; i++){
                         data.periodo.zonas[i].coordenadas = $scope.getCoordenadas(data.periodo.zonas[i].coordenadas);
-                        
                         var ids = [];
                         for(var j=0; j<data.periodo.zonas[i].encargados.length; j++){
                             ids.push( data.periodo.zonas[i].encargados[j].id );
@@ -33,14 +35,23 @@
                     $scope.dataPerido.nombre = null;
                     $scope.dataPerido.fecha_inicio = null;
                     $scope.dataPerido.fecha_fin = null;
+                    
                 }
                 
-                $scope.digitadores = data.digitadores; 
-                $scope.proveedores = data.proveedores;
+                $scope.digitadores = data.digitadores;
+                $scope.sectores = data.sectores;
+                $scope.proveedores = data.proveedores.concat(data.proveedoresInformales);
                 
+                $("body").attr("class", "cbp-spmenu-push");
+                
+                $scope.validarProveedoresFueraZona();
+                $interval( function(){ $scope.validarProveedoresFueraZona(); } , 20000);
             });
         
-        
+        $scope.validarProveedoresFueraZona =  function(){
+            ServiMuestra.validarProveedoresFueraZona($scope.proveedores,$scope.dataPerido.zonas) .then(function(data){  $scope.proveedoresFuera = data; });
+        }
+       
         $scope.guardar = function(){
             
             if (!$scope.formCrear.$valid) {
@@ -50,7 +61,7 @@
             
             swal({
                 title: "Guardar",
-                text: "Recuerde que las zonas que se encuentran en el mapa, seran registradas con el nuevo periodo.",
+                text: "Recuerde que los bloques que se encuentran en el mapa, seran registradas con el nuevo periodo.",
                 type: "info",
                 showCancelButton: true,
                 closeOnConfirm: false,
@@ -102,15 +113,15 @@
         $scope.eliminarZona = function (zona,index) {
             swal({
                 title: "Eliminar zona",
-                text: "¿Esta seguro de eliminar la zona : "+ zona +" ?",
+                text: "¿Esta seguro de eliminar el bloque : "+ zona +" ?",
                 type: "warning",
                 showCancelButton: true,
                 closeOnConfirm: false,
                 showLoaderOnConfirm: true,
             }, function () {
                 setTimeout(function () {
-                    swal("¡Zona eliminada!", "La zona se ha eliminado exitosamnete", "success");
-                    $scope.dataPerido.zonas.splice(index,1);
+                    swal("¡Zona eliminada!", "El bloque se ha eliminado exitosamnete", "success");
+                    $scope.$apply(function () { $scope.dataPerido.zonas.splice(index,1); });
                 }, 500);
             });
         }
@@ -136,6 +147,7 @@
                     $scope.dataPerido.zonas[i].nombre=$scope.zona.nombre;
                     $scope.dataPerido.zonas[i].encargados=$scope.zona.encargados;
                     $scope.dataPerido.zonas[i].color=$scope.zona.color;
+                    $scope.dataPerido.zonas[i].sector_id=$scope.zona.sector_id;
                     $scope.map.shapes[i].set('fillColor',$scope.zona.color);
                     break;
                 }
@@ -143,15 +155,33 @@
             $("#modalAddZona").modal("hide");
         }
     
-        $scope.getIcono = function( estado ){
-            var icono = null;
-            switch ( estado ) {
-                case 1: icono = "/Content/IconsMap/green.png";  break;
-                case 2: icono = "/Content/IconsMap/yellow.png"; break;
-                case 3: icono = "/Content/IconsMap/red.png";    break;
-                default: break;
+        $scope.getIcono = function( p ){
+            
+            var ruta = "/Content/IconsMap/";
+            
+            switch ( p.idtipo ) {
+                case 1: ruta += "alojamientos/"; break;
+                case 2: ruta += "gastronomicos/"; break;
+                case 3: ruta += "agencias_viajes/"; break;
+                case 4: ruta += "esparcimiento/"; break;
+                case 5: ruta += "arrendadores_vehiculos/"; break;
+                default: return null;
             }
-            return  icono ? { url: "\""+icono+"\"" } : null;
+            
+            if(p.rnt){
+                switch ( p.idestado ) {
+                    case 1: ruta += "activo.png";     break;  // Activo
+                    case 2: ruta += "cancelado.png";  break;  // Nnulado
+                    case 3: ruta += "cancelado.png";  break;  // Cancelado
+                    case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
+                    case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
+                    case 6: ruta += "cancelado.png";  break;  // Suspendido
+                    default: return null;
+                }
+            }
+            else{ ruta += "informal.png";  }
+            
+            return  ruta;
         }
         
         $scope.getCoordenadas = function(coordenadas){
@@ -1094,7 +1124,7 @@
         }
         
         $scope.centrarMapaAlProveedor = function(pro){
-            $scope.map.setZoom(15);
+            $scope.map.setZoom(21);
             $scope.map.setCenter( new google.maps.LatLng(pro.latitud, pro.longitud) );
         }
         

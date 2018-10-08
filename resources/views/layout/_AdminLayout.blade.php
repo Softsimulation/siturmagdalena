@@ -101,6 +101,7 @@
             background-color: #dfedf4;
             color: #131a61;
         }
+        
     </style>
 </head>
 <body @yield('app')  @yield('controller') >
@@ -139,10 +140,9 @@
                         <li>
                             <a role="menuitem" href="#menuPromocion" aria-haspopup="true" aria-expanded="false">Promoción</a>
                             <ul role="menu" id="menuPromocion" aria-label="Promoción">
-                                
+                                <li role="none"><a role="menuitem" href="{{asset('administradordestinos')}}">Administrar destinos</a></li>
                                 <li role="none"><a role="menuitem" href="{{asset('administradoratracciones')}}">Administrar atracciones</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('administradoractividades')}}">Administrar actividades</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('administradordestinos')}}">Administrar destinos</a></li>
         					</ul>
                         </li>
                         <li>

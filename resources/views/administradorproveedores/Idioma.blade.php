@@ -1,46 +1,7 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Editar proveedor')
-
-@section('estilos')
-    <style>
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-    </style>
-@endsection
-
-@section('TitleSection', 'Editar idioma del proveedor')
-
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
+@section('title', 'Formulario para la modificación de información en otro idioma')
 
 @section('app', 'ng-app="proveedoresApp"')
 
@@ -76,19 +37,19 @@
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="form-group" ng-class="{'has-error': (editarProveedorForm.$submitted || editarProveedorForm.nombre.$touched) && editarProveedorForm.nombre.$error.required}">
                     <label for="nombre"><span class="asterisk">*</span> Nombre</label>
-                    <input max="150" ng-model="proveedor.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del proveedor (Máximo 150 caracteres)"/>
+                    <input maxlength="150" ng-model="proveedor.datosGenerales.nombre" required type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del proveedor (Máximo 150 caracteres)"/>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="form-group">
                     <label for="horario"> Horario</label>
-                    <input max="255" ng-model="proveedor.datosGenerales.horario" type="text" name="horario" id="horario" class="form-control" placeholder="Horario del proveedor (Máximo 255 caracteres)"/>
+                    <input maxlength="255" ng-model="proveedor.datosGenerales.horario" type="text" name="horario" id="horario" class="form-control" placeholder="Horario del proveedor (Máximo 255 caracteres)"/>
                 </div>
             </div>
             <div class="col-xs-12">
                 <div class="form-group" ng-class="{'has-error': (editarProveedorForm.$submitted || editarProveedorForm.descripcion.$touched) && editarProveedorForm.descripcion.$error.required}">
                     <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
-                    <textarea min="100" max="1000" style="resize: none;" ng-model="proveedor.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del proveedor (De 100 a 1,000 caracteres)"></textarea>
+                    <textarea min="100" maxlength="1000" style="resize: none;" ng-model="proveedor.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del proveedor (De 100 a 1,000 caracteres)"></textarea>
                     
                 </div>
             </div>

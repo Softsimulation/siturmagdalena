@@ -57,7 +57,7 @@ class TemporadaController extends Controller
         
         $encuestas=Viaje::where('es_principal',true)->whereHas('persona.hogare.edificacione',function($q)use($temporada){
             $q->where('temporada_id',$temporada->id);
-        })->with('persona.hogare.digitadore.user')->with('persona.hogare.edificacione.barrio.municipio')->orderby('id')->get();
+        })->with('persona.hogare.digitadore.user')->with('persona.hogare.edificacione.barrio.municipio')->with('persona.hogare.edificacione.estrato')->orderby('id')->get();
         
         return ['temporada'=>$temporada,'encuestas'=>$encuestas];
         

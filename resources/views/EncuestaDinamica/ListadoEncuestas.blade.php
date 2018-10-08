@@ -15,7 +15,7 @@
 </div>
 <div class="flex-list">
     <button type="button" class="btn btn-lg btn-success" ng-click="openModalAddEncuesta()" class="btn btn-lg btn-success" ng-if="encuesta.tipos_encuestas_dinamica_id==3">
-      Agregar encuesta
+      Agregar encuestado
     </button>
     <a class="btn btn-lg btn-default" href="/encuesta/listado" >Volver al listado</a>
 </div>
@@ -74,7 +74,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Agregar encuesta</h4>
+            <h4 class="modal-title">Agregar encuestado</h4>
           </div>
            <form name="form" novalidate>
               <div class="modal-body">
@@ -97,15 +97,15 @@
                     
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group" ng-class="{'has-error' : (form.$submitted || form.correo.$touched) && !form.correo.$valid}">
-                            <label class="control-label"><span class="asterisk">*</span> Correo electrónico</label><br>
-                            <input type="email" class="form-control" name="correo" ng-model="usuario.email" placeholder="Correo electronico" required />
+                            <label class="control-label">Correo electrónico</label><br>
+                            <input type="email" class="form-control" name="correo" ng-model="usuario.email" placeholder="Correo electronico" />
                         </div>
                     </div>
                     
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group" ng-class="{'has-error' : (form.$submitted || form.telefono.$touched) && form.correo.$error.required}">
-                            <label class="control-label"><span class="asterisk">*</span> Teléfono</label><br>
-                            <input type="text" class="form-control" name="telefono" ng-model="usuario.telefono" placeholder="No. teléfonico" required />
+                            <label class="control-label">Teléfono</label><br>
+                            <input type="text" class="form-control" name="telefono" ng-model="usuario.telefono" placeholder="No. teléfonico" />
                         </div>
                     </div>
                        
