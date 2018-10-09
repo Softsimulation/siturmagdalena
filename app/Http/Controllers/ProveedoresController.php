@@ -29,6 +29,14 @@ class ProveedoresController extends Controller
             $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas){
                 $queryActividadesConIdiomas->select('actividades_id', 'idiomas', 'nombre');
             }])->select('actividades.id');
+        }, 'perfilesUsuariosConProveedores' => function($queryPerfilesUsuariosConProveedores){
+            $queryPerfilesUsuariosConProveedores->with(['perfilesUsuariosConIdiomas' => function ($queryPerfilesUsuariosConIdiomas){
+                $queryPerfilesUsuariosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'perfiles_usuarios_id', 'nombre');
+            }])->select('perfiles_usuarios.id');
+        }, 'categoriaTurismoConProveedores' => function($queryCategoriaTurismoConProveedores){
+            $queryCategoriaTurismoConProveedores->with(['categoriaTurismoConIdiomas' => function($queryCategoriaTurismoConIdiomas){
+                $queryCategoriaTurismoConIdiomas->orderBy('idiomas_id')->select('categoria_turismo_id', 'idiomas_id', 'nombre');
+            }])->select('categoria_turismo.id');
         }])->select('id', 'proveedor_rnt_id',  'telefono', 'sitio_web', 'valor_min', 'valor_max', 'calificacion_legusto')->where('id', $id)->first();
         
         $video_promocional = Proveedor::with(['multimediaProveedores' => function ($queryMultimediaProveedores){

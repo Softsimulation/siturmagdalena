@@ -23,6 +23,8 @@ class RutasTuristicasController extends Controller
             $queryRutasConAtracciones->with(['sitio' => function($querySitio){
                 $querySitio->with(['sitiosConIdiomas' => function($querySitiosConIdiomas){
                     $querySitiosConIdiomas->select('idiomas_id', 'sitios_id', 'nombre');
+                }, 'multimediaSitios' => function($queryMultimediaSitios){
+                    $queryMultimediaSitios->select('sitios_id', 'ruta')->orderBy('portada', 'desc')->where('tipo', false);
                 }])->select('id');
             }])->select('atracciones.id', 'atracciones.sitios_id');
         }])->select('id', 'portada')->first();

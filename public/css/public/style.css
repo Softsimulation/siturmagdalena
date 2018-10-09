@@ -84,6 +84,9 @@ header {
     -moz-user-select: none;     /* Firefox all */
     -ms-user-select: none;      /* IE 10+ */
     user-select: none;
+    box-shadow: 0px 2px 4px -2px rgba(0,0,0,.35);
+    position:relative;
+    z-index: 4;
 }
 /*Sombra nivel 1*/
 .tile {
@@ -101,7 +104,7 @@ header {
 }
 /*Flexbox*/
 
-.row, #toolbar-main{
+.row, #toolbar-main, .tiles{
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -113,9 +116,13 @@ header {
 }
 
 /*Bootstrap*/
+.row{
+    width: 100%;
+}
 .btn-group-xs>.btn, .btn-xs {
     font-size: 1rem;
 }
+
 
 .stats {
     background-image: url(../../img/icons/sprite-stats.png);
@@ -548,7 +555,9 @@ footer{
     font-size: 2.325rem;
     line-height: 2.25rem;
 }
-
+.tile .row{
+    margin: 0;
+}
 /*Carousel*/
 .carousel-inner>.item:before {
     content: "";
@@ -590,6 +599,12 @@ footer .info-footer{
 footer .sign-footer{
     padding: .5rem 0;
     background-color: rgba(0,0,0,.15);
+}
+.align-items-center{
+    align-items: center;
+}
+.justify-content-center{
+    justify-content: center;
 }
 /*Fonts*/
 @font-face {

@@ -49,7 +49,10 @@ class NoticiaController extends Controller
         ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado",
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
         "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia")->get();
-        return view('noticias.ListadoNoticiasPublico',array('noticias' => $noticias));
+        
+        $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',$idiomaId)->get();
+        
+        return view('noticias.ListadoNoticiasPublico',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias));
 	}
 	public function getVer($idNoticia,$idiomaId){
 	    $noticia = Noticia::

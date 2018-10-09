@@ -40,7 +40,7 @@
             <div class="tile-caption">
                 <h3>@{{actividad.actividades_con_idiomas[0].nombre}}</h3>
             </div>
-            <p>@{{actividad.actividades_con_idiomas[0].descripcion | limitTo: 255}} <span ng-if="actividad.actividades_con_idiomas[0].descripcion.length > 255">...</span></p>
+            <p>@{{actividad.actividades_con_idiomas[0].descripcion | limitTo: 255}}<span ng-if="actividad.actividades_con_idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
                 <a href="/administradoractividades/editar/@{{actividad.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{actividad.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(actividad)">@{{actividad.estado ? 'Desactivar' : 'Activar'}}</button>

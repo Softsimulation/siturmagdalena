@@ -38,8 +38,6 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Editar idioma de la actividad')
-
 @section('app', 'ng-app="actividadesApp"')
 
 @section('controller','ng-controller="actividadesIdiomaController"')

@@ -41,10 +41,40 @@ class AdministradorProveedoresController extends Controller
         return view('administradorproveedores.Editar', ['id' => $id]);
     }
     
+    public function getIdioma($id, $idIdioma){
+        if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Proveedor::find($id) == null){
+            return response('Not found.', 404);
+        }
+        if ($idIdioma == null){
+            return response('Bad request.', 400);
+        }elseif(Idioma::find($idIdioma) == null){
+            return response('Not found.', 404);
+        }
+        return view('administradorproveedores.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
+    }
+    
+    public function getDatosIdioma ($id, $idIdioma){
+        $proveedor = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt) use ($idIdioma){
+            $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idIdioma){
+                $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id','nombre' , 'descripcion')->where('idioma_id', $idIdioma);
+            }])->select('id', 'razon_social');
+        }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas){
+            $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario');
+        }])->select('id', 'proveedor_rnt_id')->where('id', $id)->first();
+        
+        $idioma = Idioma::find($idIdioma);
+        
+        return ['proveedor' => $proveedor, 'success' => Proveedores_rnt_idioma::where('proveedor_rnt_id', $proveedor->proveedor_rnt_id)->where('idioma_id', $idIdioma)->first() != null, 'idioma' => $idioma];
+    }
+    
     public function getDatos (){
         $proveedores = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt){
-            $queryProveedorRnt->with(['proveedor_rnt_idioma' => function ($queyProveedor_rnt_idioma){
-                $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id', 'descripcion');
+            $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma){
+                $queyProveedor_rnt_idioma->with(['idioma' => function ($queryIdioma){
+                    $queryIdioma->select('id', 'nombre', 'culture');
+                }])->select('proveedor_rnt_id', 'idioma_id', 'nombre', 'descripcion')->orderBy('idioma_id');
             }])->select('id', 'razon_social');
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('portada', true)->select('proveedor_id', 'ruta');
@@ -63,11 +93,7 @@ class AdministradorProveedoresController extends Controller
     
     public function getDatosproveedor ($id){
         $proveedor = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt){
-            $queryProveedorRnt->with(['proveedor_rnt_idioma' => function ($queyProveedor_rnt_idioma){
-                $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->where('idioma_id', 2);
-            }])->select('id', 'razon_social');
-        }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas){
-            $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario')->where('idiomas_id', 2);
+            $queryProveedorRnt->select('id', 'razon_social');
         }])->select('id', 'proveedor_rnt_id', 'telefono', 'sitio_web', 'valor_min', 'valor_max')->where('id', $id)->first();
         
         $portadaIMG = Multimedia_Proveedor::where('portada', true)->where('proveedor_id', $id)->pluck('ruta')->first();
@@ -136,6 +162,7 @@ class AdministradorProveedoresController extends Controller
         $validator = \Validator::make($request->all(), [
             'proveedor_rnt_id' => 'required|numeric|exists:proveedores_rnt,id',
             'descripcion' => 'required|max:1000|min:100',
+            'nombre' => 'max:255|required',
             'valor_minimo' => 'required|numeric|min:0',
             'valor_maximo' => 'required|numeric|min:0',
             'horario' => 'max:255',
@@ -149,6 +176,9 @@ class AdministradorProveedoresController extends Controller
             'descripcion.required' => 'Se necesita una descripción para el proveedor.',
             'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
             'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
+            
+            'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
+            'nombre.required' => 'El nombre público del proveedor es requerido.',
             
             'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para el proveedor.',
             'valor_minimo.numeric' => '"Valor mínimo" debe tener un valor numérico.',
@@ -175,7 +205,7 @@ class AdministradorProveedoresController extends Controller
         }
         
         $errores = [];
-        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 2)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 1)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
         if ($proveedor_rnt_con_idioma != null){
             $errores["exists"][0] = "Este proveedor ya se encuentra registrado en el sistema.";
         }
@@ -207,8 +237,8 @@ class AdministradorProveedoresController extends Controller
         
         $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
         $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
-        $proveedor_rnt_con_idioma->idioma_id = 2;
-        $proveedor_rnt_con_idioma->nombre = Proveedores_rnt::find($request->proveedor_rnt_id)->razon_social;
+        $proveedor_rnt_con_idioma->idioma_id = 1;
+        $proveedor_rnt_con_idioma->nombre = $request->nombre;
         $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
         $proveedor_rnt_con_idioma->save();
         
@@ -363,10 +393,10 @@ class AdministradorProveedoresController extends Controller
         $validator = \Validator::make($request->all(), [
             'id' => 'required|exists:proveedores|numeric',
             'proveedor_rnt_id' => 'required|numeric|exists:proveedores_rnt,id',
-            'descripcion' => 'required|max:1000|min:100',
+            // 'descripcion' => 'required|max:1000|min:100',
             'valor_minimo' => 'required|numeric|min:0',
             'valor_maximo' => 'required|numeric|min:0',
-            'horario' => 'max:255',
+            // 'horario' => 'max:255',
             'telefono' => 'max:100',
             'pagina_web' => 'max:255|url'
         ],[
@@ -378,9 +408,9 @@ class AdministradorProveedoresController extends Controller
             'proveedor_rnt_id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
             'proveedor_rnt_id.exists' => 'El proveedor no se encuentra registrado en la base de datos.',
             
-            'descripcion.required' => 'Se necesita una descripción para el proveedor.',
-            'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
-            'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
+            // 'descripcion.required' => 'Se necesita una descripción para el proveedor.',
+            // 'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
+            // 'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
             
             'valor_minimo.required' => 'Se requiere ingresar un valor mínimo para el proveedor.',
             'valor_minimo.numeric' => '"Valor mínimo" debe tener un valor numérico.',
@@ -394,7 +424,7 @@ class AdministradorProveedoresController extends Controller
             'categoria_proveedor.numeric' => 'La categoría del proveedor debe ser un valor numérico.',
             'categoria_proveedor.exists' => 'La categoría del proveedor no se encuentra registrada en la base de datos.',
             
-            'horario.max' => 'Se ha excedido el número máximo de caracteres para el campo "Horario".',
+            // 'horario.max' => 'Se ha excedido el número máximo de caracteres para el campo "Horario".',
             
             'telefono.max' => 'Se ha excedido el número máximo de caracteres para el campo "Teléfono".',
             
@@ -407,12 +437,12 @@ class AdministradorProveedoresController extends Controller
         }
         
         $errores = [];
-        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 2)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
-        if ($proveedor_rnt_con_idioma != null){
-            if ($proveedor_rnt_con_idioma->proveedor_rnt_id != Proveedor::find($request->id)->proveedor_rnt_id){
-                $errores["exists"][0] = "Este proveedor ya se encuentra registrado en el sistema.";
-            }
-        }
+        // $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 2)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        // if ($proveedor_rnt_con_idioma != null){
+        //     if ($proveedor_rnt_con_idioma->proveedor_rnt_id != Proveedor::find($request->id)->proveedor_rnt_id){
+        //         $errores["exists"][0] = "Este proveedor ya se encuentra registrado en el sistema.";
+        //     }
+        // }
         if ($request->valor_maximo < $request->valor_minimo){
             $errores["gt"][0] = 'El campo "Valor máximo" debe ser mayor a "Valor mínimo".';
         }
@@ -421,12 +451,12 @@ class AdministradorProveedoresController extends Controller
         }
         
         $proveedor = Proveedor::find($request->id);
-        Proveedores_rnt_idioma::where('proveedor_rnt_id', $proveedor->proveedor_rnt_id)->where('idioma_id', 2)->delete();
+        // Proveedores_rnt_idioma::where('proveedor_rnt_id', $proveedor->proveedor_rnt_id)->where('idioma_id', 2)->delete();
         $proveedor->valor_min = $request->valor_minimo;
         $proveedor->valor_max = $request->valor_maximo;
         $proveedor->telefono = $request->telefono;
         $proveedor->sitio_web = $request->pagina_web;
-        $proveedor->proveedor_rnt_id = $request->proveedor_rnt_id;
+        // $proveedor->proveedor_rnt_id = $request->proveedor_rnt_id;
         $proveedor->estado = true;
         $proveedor->created_at = Carbon::now();
         $proveedor->updated_at = Carbon::now();
@@ -434,17 +464,88 @@ class AdministradorProveedoresController extends Controller
         $proveedor->user_update = "Situr";
         $proveedor->save();
         
-        $proveedor_con_idioma = Proveedor_Con_Idioma::where('proveedores_id', $request->id)->where('idiomas_id', 2)->first();
-        $proveedor_con_idioma->horario = $request->horario;
-        $proveedor_con_idioma->save();
+        // $proveedor_con_idioma = Proveedor_Con_Idioma::where('proveedores_id', $request->id)->where('idiomas_id', 2)->first();
+        // $proveedor_con_idioma->horario = $request->horario;
+        // $proveedor_con_idioma->save();
         
-        $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
-        $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
-        $proveedor_rnt_con_idioma->idioma_id = 2;
-        $proveedor_rnt_con_idioma->nombre = Proveedores_rnt::find($request->proveedor_rnt_id)->razon_social;
-        $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
-        $proveedor_rnt_con_idioma->save();
+        // $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
+        // $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
+        // $proveedor_rnt_con_idioma->idioma_id = 2;
+        // $proveedor_rnt_con_idioma->nombre = Proveedores_rnt::find($request->proveedor_rnt_id)->razon_social;
+        // $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        // $proveedor_rnt_con_idioma->save();
         
         return ['success' => true];
+    }
+    
+    public function postEditaridioma (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'id' => 'required|exists:proveedores|numeric',
+            'idIdioma' => 'required|exists:idiomas,id|numeric',
+            'descripcion' => 'required|max:1000|min:100',
+            'horario' => 'max:255'
+        ],[
+            'nombre.required' => 'Se necesita un nombre para el proveedor.',
+            'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
+            
+            'id.required' => 'Se necesita el identificador del proveedor.',
+            'id.exists' => 'El proveedor no se encuentra registrada en la base de datos.',
+            'id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            
+            'idIdioma.required' => 'Se necesita el identificador del idioma.',
+            'idIdioma.numeric' => 'El identificador del idioma debe ser un valor numérico.',
+            'idIdioma.exists' => 'El idioma especificado no se encuentra registrado en la base de datos.',
+            
+            
+            'descripcion.required' => 'Se necesita una descripción para el proveedor.',
+            'descripcion.max' => 'Se ha excedido el número máximo de caracteres para el campo "Descripción".',
+            'descripcion.min' => 'Se deben ingresar mínimo 100 caracteres para la descripción.',
+            
+            'horario.max' => 'Se ha excedido el número máximo de caracteres para el campo "Horario"'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $proveedor_rnt_id = Proveedor::find($request->id)->proveedor_rnt_id;
+        
+        
+        if (Proveedores_rnt_idioma::where('proveedor_rnt_id', $proveedor_rnt_id)->where('idioma_id', $request->idIdioma)->first() != null){
+            
+            Proveedores_rnt_idioma::where('proveedor_rnt_id', $proveedor_rnt_id)->where('idioma_id', $request->idIdioma)
+                ->update([
+                'nombre' => $request->nombre,
+                'descripcion' => $request->descripcion]);
+        }else{
+            Proveedores_rnt_idioma::create([
+                'proveedor_rnt_id' => $proveedor_rnt_id,
+                'idioma_id' => $request->idIdioma,
+                'nombre' => $request->nombre,
+                'descripcion' => $request->descripcion]);
+        }
+        
+        if (Proveedor_Con_Idioma::where('proveedores_id', $request->id)->where('idiomas_id', $request->idIdioma)->first() != null){
+            
+            Proveedor_Con_Idioma::where('proveedores_id', $request->id)->where('idiomas_id', $request->idIdioma)
+                ->update([
+                'horario' => $request->horario]);
+        }else{
+            Proveedor_Con_Idioma::create([
+                'proveedores_id' => $request->id,
+                'idiomas_id' => $request->idIdioma,
+                'horario' => $request->horario]);
+        }
+        
+        $proveedor = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt) use ($request){
+            $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($request){
+                $queyProveedor_rnt_idioma->select('proveedor_rnt_id', 'idioma_id','nombre' , 'descripcion')->where('idioma_id', $request->idIdioma);
+            }])->select('id', 'razon_social');
+        }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas){
+            $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario');
+        }])->select('id', 'proveedor_rnt_id')->where('id', $request->id)->first();
+        
+        return ['success' => true, 'proveedor' => $proveedor];
     }
 }

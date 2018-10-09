@@ -48,9 +48,21 @@ class AtraccionesController extends Controller
                 }, 'multimediasActividades' => function($queryMultimediasActividades){
                     $queryMultimediasActividades->where('portada', true)->select('actividades_id', 'ruta');
                 }])->select('actividades.id');
-            }])->select('id', 'longitud', 'latitud');
+            }])->select('id', 'longitud', 'latitud', 'direccion');
         }, 'atraccionesConIdiomas' => function ($queryAtraccionesConIdiomas){
             $queryAtraccionesConIdiomas->orderBy('idiomas_id')->select('atracciones_id', 'idiomas_id'  , 'como_llegar', 'horario', 'periodo', 'recomendaciones', 'reglas');
+        }, 'atraccionesConTipos' => function ($queryAtraccionesConTipos){
+            $queryAtraccionesConTipos->with(['tipoAtraccionesConIdiomas' => function ($queryTipoAtraccionesConIdiomas){
+                $queryTipoAtraccionesConIdiomas->select('idiomas_id', 'tipo_atracciones_id', 'nombre');
+            }])->select('tipo_atracciones.id');
+        }, 'categoriaTurismoConAtracciones' => function($queryCategoriaTurismoConAtracciones){
+            $queryCategoriaTurismoConAtracciones->with(['categoriaTurismoConIdiomas' => function ($queryCategoriaTurismoConIdiomas){
+                $queryCategoriaTurismoConIdiomas->select('categoria_turismo_id', 'idiomas_id', 'nombre');
+            }])->select('categoria_turismo.id');
+        }, 'perfilesUsuariosConAtracciones' => function ($queryPerfilesUsuariosConAtracciones){
+            $queryPerfilesUsuariosConAtracciones->with(['perfilesUsuariosConIdiomas' => function($queryPerfilesUsuariosConIdiomas){
+                $queryPerfilesUsuariosConIdiomas->select('idiomas_id', 'perfiles_usuarios_id', 'nombre');
+            }])->select('perfiles_usuarios.id');
         }])->where('id', $id)->select('id', 'sitios_id', 'calificacion_legusto', 'calificacion_recomendar', 'calificacion_volveria', 'sitio_web')->first();
         
         $video_promocional = Atracciones::where('id', $id)->with(['sitio' => function($querySitio){

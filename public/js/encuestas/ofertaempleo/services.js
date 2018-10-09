@@ -26,7 +26,7 @@ app.factory("ofertaServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-          guardarEmpleomensual: function (data) {
+          guardarEmpleo: function (data) {
             var defered = $q.defer();
             var promise = defered.promise;
 
@@ -137,6 +137,17 @@ app.factory("ofertaServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+       getDatosAlquilerVehiculoOferta: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/ofertaempleo/cargarofertaalquilervehiculos/'  + id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
         
          cargarDatosNumEmp: function (id) {
             var defered = $q.defer();
@@ -160,7 +171,17 @@ app.factory("ofertaServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-        
+        guardarOfertaAlquilerVehiculo: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/ofertaempleo/guardarofertaalquilervehiculo',data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },        
         guardarActvidadComercial: function (data) {
             var defered = $q.defer();
             var promise = defered.promise;
@@ -173,6 +194,16 @@ app.factory("ofertaServi", ["$http", "$q", function ($http, $q) {
             return promise;
         },
         
-        
+          getDatoActivar: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/ofertaempleo/encuestaspendientes/'  + id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);

@@ -39,7 +39,7 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/administradoratracciones/datos-idioma/'+id+'/'+idIdioma).success(function (data) {
+            $http.get('/administradorproveedores/datos-idioma/'+id+'/'+idIdioma).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);
@@ -99,7 +99,7 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/administradoratracciones/editaridioma', data).success(function (data) {
+            $http.post('/administradorproveedores/editaridioma', data).success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
                 defered.reject(err);

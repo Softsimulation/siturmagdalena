@@ -27,6 +27,7 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
             $("body").attr("class", "cbp-spmenu-push");
             $scope.encuestas = data.encuestas;
             $scope.ruta = data.ruta;
+            $scope.ruta2 = data.ruta2;
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "No se realizo la solicitud, reinicie la página");

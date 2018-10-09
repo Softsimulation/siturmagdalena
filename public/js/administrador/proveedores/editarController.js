@@ -26,10 +26,8 @@ angular.module('proveedores.editar', [])
                 $scope.proveedor.datosGenerales.valor_minimo = parseInt(data.proveedor.valor_min);
                 $scope.proveedor.datosGenerales.valor_maximo = parseInt(data.proveedor.valor_max);
                 $scope.proveedor.datosGenerales.proveedor_rnt_id = data.proveedor.proveedor_rnt_id;
-                $scope.proveedor.datosGenerales.descripcion = data.proveedor.proveedor_rnt.proveedor_rnt_idioma.length != 0 ? data.proveedor.proveedor_rnt.proveedor_rnt_idioma[0].descripcion : '';
                 $scope.proveedor.datosGenerales.telefono = data.proveedor.telefono;
                 $scope.proveedor.datosGenerales.pagina_web = data.proveedor.sitio_web;
-                $scope.proveedor.datosGenerales.horario = data.proveedor.proveedores_con_idiomas[0].horario;
                 $scope.proveedor.datosGenerales.id = $scope.id;
                 
                 var portada = null;

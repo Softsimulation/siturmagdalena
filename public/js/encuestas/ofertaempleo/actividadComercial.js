@@ -1,25 +1,27 @@
 angular.module('oferta.Actividad', [])
 
 .controller('seccionActividadComercialAdmin', ['$scope', 'ofertaServi',function ($scope, ofertaServi) {
-
-    $scope.Id = null;
-    $scope.actividad = {}
-    $scope.Sitio = null;
-    $scope.Anio = null;
+  
+    $scope.encuestas = [];
     $scope.$watch('Id', function () {
-        if ($scope.Id == null) {
-            swal("Error", "Error en la carga, por favor recarga la pagina", "error")
+        if ($scope.Id != null) {
+             $("body").attr("class", "cbp-spmenu-push charging");
+            ofertaServi.getDatoActivar($scope.Id).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push")
+                $scope.encuestas = data.encuestas;
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            });   
         }
     });
 
-    $scope.guardar = function () {
-        if (!$scope.ActividadForm.$valid) {
-            swal("Error", "Formulario incompleto corrige los errores", "error")
-            return
-        }
-        $scope.actividad.Mes = $scope.Id;
-        $scope.actividad.Anio = $scope.Anio;
-        $scope.actividad.Sitio = $scope.Sitio;
+    $scope.guardar = function (mes) {
+     
+        $scope.actividad = {};
+        $scope.actividad.Mes = mes.mesId;
+        $scope.actividad.Anio = mes.anio;
+        $scope.actividad.Sitio = $scope.Id;
         $("body").attr("class", "cbp-spmenu-push charging")
         ofertaServi.guardarActvidadComercial($scope.actividad).then(function (data) {
         $("body").attr("class", "cbp-spmenu-push");
