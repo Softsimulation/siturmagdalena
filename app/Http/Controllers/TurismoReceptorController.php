@@ -80,7 +80,7 @@ class TurismoReceptorController extends Controller
     
     public function getInformaciondatoscrear(){
         
-        $grupos = Grupo_Viaje::orderBy('id')->get()->pluck('id');
+        $grupos = Grupo_Viaje::where('id','>',20382)->orderBy('id')->get()->pluck('id');
         
         $encuestadores = Digitador::with([ 'user'])->get();
         

@@ -34,7 +34,7 @@ class GrupoViajeController extends Controller
         return view('grupoViaje.ListadoGrupos');
     }
     public function getGrupos(){
-        if(Auth::user()->hasRole('Admin')){
+        if(Auth::user()->digitador == null){
             $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
                 $q->with('user');
             },'visitantes'=>function($q){
