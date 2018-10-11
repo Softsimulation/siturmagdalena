@@ -8,14 +8,12 @@ Route::get('/Mapa/getData', 'MapaCtrl@getData');
 Route::controller('/indicadores','IndicadoresCtrl');
 
 Route::controller('/EstadisticasSecundarias','EstadisticasSecundariasCtrl');
-
+*/
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
-
 Route::controller('/turismoreceptor','TurismoReceptorController');
-
 Route::controller('/grupoviaje','GrupoViajeController');
-*/
+
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 /*
@@ -43,8 +41,9 @@ Route::controller('/administradoreventos', 'AdministradorEventosController');
 Route::controller('/administradorrutas', 'AdministradorRutasController');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
+*/
 Route::controller('/ofertaempleo','OfertaEmpleoController');
-
+/*
 Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
