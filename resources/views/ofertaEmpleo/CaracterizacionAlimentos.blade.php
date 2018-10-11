@@ -141,7 +141,52 @@
                 </div>
             </div>
         </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
 
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>  ¿El establecimiento tuvo actividad comercial?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Seleccione una opción</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <select class="form-control" name="actividadComercial" ng-model="alimentos.Comercial" ng-required="true">
+                            <option value="" disabled selected>Seleccione</option>
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <span ng-show="carAlim.$submitted || carAlim.actividadComercial.$touched">
+                    <span class="label label-danger" ng-show="carAlim.actividadComercial.$error.required">*El campo es requerido.</span>
+                </span>
+            </div>
+
+        </div>
+
+        <div class="panel panel-success" ng-if="alimentos.Comercial==1">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúantos días en el mes?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Comprete la información</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <input class="form-control" type="number" id="numeroDias" name="numeroDias" ng-model="alimentos.NumeroDias" min="1" max="31" ng-required="true" placeholder="Solo números">
+                    </div>
+                </div>
+                <span ng-show="carAlim.$submitted || carAlim.numeroDias.$touched">
+                    <span class="label label-danger" ng-show="carAlim.numeroDias.$error.required">*El campo es requerido.</span>
+                    <span class="label label-danger" ng-show="carAlim.numeroDias.$error.number">*El campo debe ser un número.</span>
+                    <span class="label label-danger" ng-show="carAlim.numeroDias.$error.min">*El campo debe ser mayor que 1.</span>
+                    <span class="label label-danger" ng-show="carAlim.numeroDias.$error.max">*El campo debe ser menor o igual que 31.</span>
+                </span>
+
+            </div>
+        </div>
         
 
         <div class="row" style="text-align:center">

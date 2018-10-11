@@ -291,8 +291,9 @@ class AdministradorAtraccionController extends Controller
         $validator = \Validator::make($request->all(), [
             'portadaIMG' => 'required|max:2097152',
             'id' => 'required|exists:atracciones|numeric',
-            'image' => 'array|max:5',
-            'video_promocional' => 'url'
+            'image' => 'array|max:20',
+            'video_promocional' => 'url',
+            'image.*' => 'max:2097152'
         ],[
             'portadaIMG.required' => 'Se necesita una imagen de portada.',
             'portadaIMG.max' => 'La imagen de portada no puede ser mayor a 2MB.',
@@ -304,7 +305,9 @@ class AdministradorAtraccionController extends Controller
             'image.array' => 'Error al enviar los datos. Recargue la página.',
             'image.max' => 'Máximo se pueden subir 5 imágenes para la atracción.',
             
-            'video_promocional.url' => 'El video promocional no tiene la estructura de enlace.'
+            'video_promocional.url' => 'El video promocional no tiene la estructura de enlace.',
+            
+            'image.*.max' => 'El peso máximo por imagen es de 2MB. Por favor verifique si se cumple esta condición.'
         ]);
         
         if($validator->fails()){
@@ -351,13 +354,14 @@ class AdministradorAtraccionController extends Controller
         }
         
         Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('tipo', false)->where('portada', false)->delete();
-        for ($i = 0; $i < 5; $i++){
+        for ($i = 0; $i < 20; $i++){
             $nombre = "imagen-".$i.".*";
             if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/'.$nombre)){
                 Storage::disk('multimedia-atraccion')->delete('atraccion-'.$request->id.'/'.$nombre);
             }
         }
         
+        $c = 0;
         if ($request->image != null){
             foreach($request->image as $key => $file){
                 $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
@@ -374,10 +378,11 @@ class AdministradorAtraccionController extends Controller
                 $multimedia_sitio->save();
                 
                 Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$nombre, File::get($file));
+                $c++;
             }
         }
         
-        return ['success' => true];
+        return ['success' => true, 'tam' => $c];
     }
     
     public function postGuardaradicional (Request $request){

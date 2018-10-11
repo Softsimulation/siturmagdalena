@@ -29,17 +29,17 @@ angular.module('proveedores.index', [])
         });
     }
     
-    // $scope.modalIdioma = function (atraccion){
-    //     $scope.atraccionEdit = atraccion;
-    //     $("#idiomaModal").modal('show');
-    // }
+    $scope.modalIdioma = function (proveedor){
+        $scope.proveedorEdit = proveedor;
+        $("#idiomaModal").modal('show');
+    }
     
-    // $scope.nuevoIdioma = function (){
-    //     if ($scope.idiomaEditSelected == ""){
-    //         swal("Información", 'Elija un idioma.', 'info');
-    //         return;
-    //     }
-    //     window.location = "/administradoratracciones/idioma/"+ $scope.atraccionEdit.id +"/" + $scope.idiomaEditSelected;
-    // }
+    $scope.nuevoIdioma = function (){
+        if ($scope.idiomaEditSelected == ""){
+            swal("Información", 'Elija un idioma.', 'info');
+            return;
+        }
+        window.location = "/administradorproveedores/idioma/"+ $scope.proveedorEdit.id +"/" + $scope.idiomaEditSelected;
+    }
     
 });

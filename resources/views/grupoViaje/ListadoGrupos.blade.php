@@ -51,48 +51,61 @@
     <a href="/grupoviaje/grupoviaje" type="button" class="btn btn-lg btn-success">
       Agregar grupo
     </a> 
-    <div class="form-group has-feedback" style="display: inline-block;">
-        <label class="sr-only">Búsqueda de grupo</label>
-        <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar grupo...">
-        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-    </div>      
+    <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>     
 </div>
-<div class="text-center" ng-if="(grupos).length > 0 && (prop.search != '' && prop.search != undefined)">
-    <p>Hay @{{(grupos | filter:prop.search).length}} registro(s) que coinciden con su búsqueda</p>
+<div class="text-center" ng-if="(grupos | filter:search).length > 0 && (grupos != undefined)">
+    <p>Hay @{{(grupos | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
 </div>
 <div class="alert alert-info" ng-if="grupos.length == 0">
     <p>No hay registros almacenados</p>
 </div>
-<div class="alert alert-warning" ng-if="(grupos | filter:prop.search).length == 0 && grupos.length > 0">
+<div class="alert alert-warning" ng-if="(grupos | filter:search).length == 0 && grupos.length > 0">
     <p>No existen registros que coincidan con su búsqueda</p>
-</div>    
+</div>
+<div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.id.length > 0 || search.fecha_aplicacion.length > 0 || search.lugares_aplicacion_encuestum.nombre.length > 0 || search.digitadore.user.nombre.length > 0 || search.encuestasDiligenciadas.length>0)">
+    Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
+</div>   
 
         <div class="row">
             <div class="col-xs-12 table-overflow">
                 <table class="table table-hover table-striped">
-                    <tr>
-                        <th>ID</th>
-                        <th>Fecha de aplicación</th>
-                        <th>Lugar de aplicación</th>
-                        <th>Nombre de usuario</th>
-                        <th>Encuestas diligenciadas</th>
-                        <th style="width: 80px"></th>
-                        
-                    </tr>
-                    <tr dir-paginate="g in grupos |filter:prop.search | itemsPerPage:10" pagination-id="paginacion_grupos" >
-                        <td>
-                            @{{g.id}}
-                        </td>
-                        <td>@{{g.fecha_aplicacion | date:'dd-MM-yyyy'}}</td>
-                        <td>@{{g.lugares_aplicacion_encuestum.nombre}}</td>
-                        <td>@{{g.digitadore.user.nombre}}</td>
-                        <td>@{{g.visitantes.length}}/@{{g.personas_encuestadas}}</td>
-                        <td style="text-align: center;">
-                            <a href="/grupoviaje/vergrupo/@{{g.id}}" class="btn btn-xs btn-default" title="Ver información del grupo">
-                                <span class="glyphicon glyphicon-eye-open"aria-hidden="true"></span><span class="sr-only">Ver detalles</span>
-                            </a>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha de aplicación</th>
+                            <th>Lugar de aplicación</th>
+                            <th>Nombre de usuario</th>
+                            <th>Encuestas diligenciadas</th>
+                            <th style="width: 80px"></th>
+                            
+                        </tr>
+                        <tr ng-show="mostrarFiltro == true">
+                                    
+                            <td><input type="text" ng-model="search.id" name="id" id="id" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.fecha_aplicacion" name="fecha_aplicacion" id="fecha_aplicacion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.lugares_aplicacion_encuestum.nombre" name="search.lugares_aplicacion_encuestum.nombre" id="search.lugares_aplicacion_encuestum.nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.digitadore.user.nombre" name="digitadore.user.nombre" id="digitadore.user.nombre" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.encuestasDiligenciadas" name="encuestasDiligenciadas" id="encuestasDiligenciadas" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="g in grupos |filter:search | itemsPerPage:10" pagination-id="paginacion_grupos" >
+                            <td>
+                                @{{g.id}}
+                            </td>
+                            <td>@{{g.fecha_aplicacion | date:'dd-MM-yyyy'}}</td>
+                            <td>@{{g.lugares_aplicacion_encuestum.nombre}}</td>
+                            <td>@{{g.digitadore.user.nombre}}</td>
+                            <td>@{{g.visitantes.length}}/@{{g.personas_encuestadas}}</td>
+                            <td style="text-align: center;">
+                                <a href="/grupoviaje/vergrupo/@{{g.id}}" class="btn btn-xs btn-default" title="Ver información del grupo">
+                                    <span class="glyphicon glyphicon-eye-open"aria-hidden="true"></span><span class="sr-only">Ver detalles</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
                 </table>
                 
             </div>

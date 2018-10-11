@@ -313,7 +313,7 @@
         .list-details li {
             padding: .3rem 0;
         }
-        
+        .filtros_tabla_bloques td{ padding: 5px 25px !important; }
     </style>
 @endsection
 
@@ -330,7 +330,9 @@
            <details>
               <summary>Clic para ver prestadores</summary>
               <ul style="max-height: 300px; overflow: auto;">
-                  <li ng-repeat="it in proveedoresFuera track by $index">@{{it}}</li>
+                  <li ng-repeat="it in proveedoresFuera track by $index">
+                     <a ng-click="centrarMapaAlProveedor(it)" href > @{{it.nombre}}</a>
+                  </li>
               </ul>
             </details>
           
@@ -440,7 +442,8 @@
                             <div class="checkbox" ng-repeat="it in sectoresZonas" >
                                <label>
                                    <input type="checkbox" checklist-model="filtro.sectoresProv" checklist-value="it.id" > 
-                                   @{{it.destino.destino_con_idiomas[0].nombre +' - '+ it.sectores_con_idiomas[0].nombre}}
+                                       @{{it.destino.destino_con_idiomas[0].nombre +' - '+ it.sectores_con_idiomas[0].nombre}}
+                                       <p style="font-size: 11px;" > <htmldiv content="getCantidadPorSector(it.id)"></htmldiv> </p>
                                 </label>
                             </div>
                         </div>
@@ -543,13 +546,13 @@
                              <i class="material-icons">menu</i>
                           </a>
                           <ul class="dropdown-menu">
-                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
-                            <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
+                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
+                            <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Descargar excel de la muestra</a></li>
                             <li>
                                 <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
                             </li>
                             <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
-                            <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar zona</a></li>
+                            <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar bloque</a></li>
                           </ul>
                     </div>
                     
@@ -588,7 +591,7 @@
                                 <li><a href ng-click="editarPosicionZona(item,$index)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
                                 <li><a href ng-click="eliminarZona(item,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
                                 <li><a href ng-click="exportarFileExcelZona(item)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
-                                <li><a href="/MuestraMaestra/llenarinfozona/@{{item.id}}" ><i class="material-icons">border_color</i> Cargar datos</a></li>
+                                <li><a href="/MuestraMaestra/llenarinfozona/@{{item.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
                               </ul>
                             </div>
                             <button class="btn btn-xs btn-success" type="button" ng-if="item.editar" ng-click="guardarEditarPosicion()" > 
@@ -613,44 +616,6 @@
         </div>
             
     </div>
-    
-    <!--<div class="row" >
-        
-        
-        <div class="col-md-9" ng-class="{ 'col-md-12': pantallaCompleta }"  style="padding:0" >
-            
-            <div class="btn-map">
-                
-                <a class="btn btn-default" href title="Ver menu" ng-click="pantallaCompleta=false" style="padding: 0 3px;" ng-show="pantallaCompleta" >
-                    <i class="material-icons">arrow_forward</i>
-                </a>  
-                
-                <div class="dropdown">
-                      <a class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="padding: 0 3px; margin-left: 5px;" >
-                         <i class="material-icons">menu</i>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
-                        <li><a href="/MuestraMaestra/excelinfoperiodo/{{$periodo->id}}" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
-                        <li>
-                            <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
-                        </li>
-                        <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
-                        <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar zona</a></li>
-                      </ul>
-                </div>
-                
-                <button type="button" id="btn-add" class="btn btn-danger btn-sm" ng-click="cancelarAgregarZonaPRoveedor()" ng-show="es_crear_zona" style="margin-left: 5px;" >
-                    Cancelar crear zona
-                </button>
-                
-            </div>
-            
-            
-            
-        </div>
-        
-    </div>-->
     
     
     <div id="mySidenav" class="sidenav">
@@ -749,8 +714,8 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
-        <h4 class="modal-title">Zona</h4>
+        <button type="button" ng-click="cancelarAgregarZonaPRoveedor()" class="close" data-dismiss="modal" >&times;</button>
+        <h4 class="modal-title">Bloque</h4>
       </div>
       <form name="form" >
       
@@ -844,6 +809,81 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th>Detalles</th>
+                  <th>PRESTADORES (Categoría - Estado)</th>
+                  <th style="width:200px;" >PLANILLA</th>
+                  <th style="width:200px;" >TABULACIÓN</th>
+                </tr>
+                <tr class="filtros_tabla_bloques" >
+                    <td colspan="2" >
+                        <input type="text" class="form-control" ng-model="busquedaZonas" placeholder="Busqueda por nombre, sector y Encargado."  />
+                    </td>
+                    <td>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada"  name="optradio1">Todas</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada" value="true" name="optradio1">Si</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada" value="false" name="optradio1">No</label>
+                    </td>
+                    <td>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.tabulada" name="optradio2">Todas</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.tabulada" value="true" name="optradio2">Si</label>
+                        <label class="radio-inline"><input type="radio" ng-model="filterTabla.tabulada" value="false" name="optradio2">No</label>
+                    </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="z in detalle|filter:busquedaZonas|filter:{ 'es_generada':filterTabla.planillada, 'es_tabulada':filterTabla.tabulada } " >
+                  <td>
+                      <p>  <b>BLOQUE:</b> @{{z.nombre}} </p>
+                      <p>  <b>SECTOR:</b> @{{(sectores|filter:{id:z.sector_id}:true)[0].sectores_con_idiomas[0].nombre}} </p>
+                      <p>  
+                            <b>ENCARGADOS:</b> 
+                            <ul>
+                                <li ng-repeat="it in z.encargados" > @{{it.codigo}} </li> 
+                            </ul>
+                      </p>
+                  </td>
+                  <td>
+                      
+                      <div class="row" >
+                          <div class="col-md-6" >
+                              <ul>
+                                 <li style="list-style: none;" ><b>Categorías</b></li>
+                                 <li ng-repeat="it in z.tiposProveedores" > 
+                                    @{{it.nombre}}: @{{it.cantidad[0]+it.cantidad[1]}}
+                                    <p style="font-size:11px" >Formales:@{{it.cantidad[0]}}, informales:@{{it.cantidad[1]}}</p> 
+                                 </li> 
+                              </ul>
+                          </div>
+                          <div class="col-md-6" >
+                                <ul>
+                                    <li style="list-style: none;" ><b>Estados</b></li>
+                                    <li ng-repeat="it in z.estadosProveedores" > @{{it.nombre}}: @{{it.cantidad}} </li> 
+                                </ul>
+                          </div>
+                      </div>
+                      
+                  </td>
+                  <td>
+                        <p>  <b>GENERADA:</b> @{{z.es_generada ? "Si" : "No"}} </p>
+                        <a href  ng-click="exportarFileExcelZona(z)" >
+                            Descargar
+                        </a>
+                  </td>
+                  <td>
+                        <p>  <b>TABULADA:</b> @{{z.es_tabulada ? "Si" : "No"}} </p>
+                        <p>  <b>TABULADOR:</b> @{{z.tabulador || '-'}} </p>
+                        <a href  ng-click="exportarFileExcelZona(z)" >
+                            TABULAR
+                        </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!--
+            <table class="table table-striped">
+              <thead>
+                <tr>
                   <th>#</th>
                   <th>SECTOR</th>
                   <th>BLOQUE</th>
@@ -884,7 +924,7 @@
                 </tr>
               </tbody>
             </table>
-            
+            -->
             
         </div>
         <div class="modal-footer">
@@ -904,7 +944,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
-        <h4 class="modal-title">Proveedor informal</h4>
+        <h4 class="modal-title">Proveedor</h4>
       </div>
       <form name="formP" >
       

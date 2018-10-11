@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */                                                                                                                                                                            
     protected $fillable = [
-        'name', 'email', 'password',
+        'nombre', 'email', 'password','username','estado'
     ];
     public $timestamps = false;
 
@@ -46,6 +46,11 @@ class User extends Authenticatable
     }
     public function permissions(){
         return $this->belongsToMany('App\Models\Permission');
+    }
+    
+    public function datosAdicionales(){
+        return $this->hasOne('App\Models\Datos_Adicional_Usuario','users_id');
+        
     }
     
     public static function resolveUser()

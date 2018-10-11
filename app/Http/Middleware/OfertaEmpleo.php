@@ -53,18 +53,12 @@ class OfertaEmpleo
     }    
         
     
-    if($encuesta->actividad_comercial == 0){
-        return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
-        
-    }
+    
     
     
     
     if(strlen(strstr($request->path(),'ofertaempleo/agenciaviajes'))>0){
             
-            if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/empleo/'.$request->one);
-            }
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 15){
                          return $next($request);
             }else{
@@ -75,6 +69,11 @@ class OfertaEmpleo
         }
         
     if(strlen(strstr($request->path(),'ofertaempleo/ofertaagenciaviajes'))>0){
+           if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }
+           
             if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/empleo/'.$request->one);
             }
@@ -88,9 +87,23 @@ class OfertaEmpleo
     }
         
     if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalquilervehiculo'))>0){
-                if($data[0]->mes_id%3 != 0){
+          
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 21){
+                         return $next($request);
+            }else{
+                \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
+                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+            }
+            
+        }
+        if(strlen(strstr($request->path(),'ofertaempleo/ofertalquilervehiculo'))>0){
+            if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }
+           if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/empleo/'.$request->one);
-            }        
+            }     
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 21){
                          return $next($request);
             }else{
@@ -100,10 +113,10 @@ class OfertaEmpleo
             
         }
      
+     
+     
     if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionagenciasoperadoras'))>0){
-              if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/empleo/'.$request->one);
-            }          
+           
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 14){
                          return $next($request);
             }else{
@@ -114,6 +127,10 @@ class OfertaEmpleo
         }
      
     if(strlen(strstr($request->path(),'ofertaempleo/ocupacionagenciasoperadoras'))>0){
+        if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }
                 if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/empleo/'.$request->one);
             }        
@@ -126,10 +143,8 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizaciontransporte'))>0){
-               if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/empleo/'.$request->one);
-            }        
+    if(strlen(strstr($request->path(),'ofertaempleo/caracterizaciontransporte'))>0){   
+
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 22){
                          return $next($request);
             }else{
@@ -140,6 +155,11 @@ class OfertaEmpleo
         }
      
     if(strlen(strstr($request->path(),'ofertaempleo/ofertatransporte'))>0){
+              if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }
+ 
              if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/empleo/'.$request->one);
             }           
@@ -152,10 +172,7 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalimentos'))>0){
-           if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/empleo/'.$request->one);
-            }         
+    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalimentos'))>0){        
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11 ){
                          return $next($request);
             }else{
@@ -166,6 +183,11 @@ class OfertaEmpleo
         }
      
     if(strlen(strstr($request->path(),'ofertaempleo/capacidadalimentos'))>0){
+              if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }
+ 
              if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/empleo/'.$request->one);
             }                 
@@ -179,7 +201,10 @@ class OfertaEmpleo
         }
         
     if(strlen(strstr($request->path(),'ofertaempleo/alojamientomensual'))>0){
-            
+              if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }           
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1){
                       if($data[0]->mes_id%3 == 0){
                         return redirect('/ofertaempleo/caracterizacion/'.$request->one);
@@ -196,9 +221,7 @@ class OfertaEmpleo
     if(strlen(strstr($request->path(),'ofertaempleo/caracterizacion'))>0){
             
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1){
-                      if($data[0]->mes_id%3 != 0){
-                        return redirect('/ofertaempleo/alojamientomensual/'.$request->one);
-                      }
+          
              
                          return $next($request);
             }else{
@@ -210,9 +233,12 @@ class OfertaEmpleo
      
      
     if(strlen(strstr($request->path(),'ofertaempleo/oferta'))>0){
-            
+             if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }            
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1 ){
-                                  if($data[0]->mes_id%3 != 0){
+                  if($data[0]->mes_id%3 == 0){
                         return redirect('/ofertaempleo/alojamientomensual/'.$request->one);
                       }
                          return $next($request);
@@ -224,7 +250,10 @@ class OfertaEmpleo
         }
         
     if(strlen(strstr($request->path(),'ofertaempleo/empleomensual'))>0){
-            
+               if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }          
             if($data[0]->mes_id%3 != 0){
                 return redirect('/ofertaempleo/empleo/'.$request->one);
             } else{
@@ -237,7 +266,10 @@ class OfertaEmpleo
 
      
      if(strlen(strstr($request->path(),'ofertaempleoempleo/empleo'))>0){
-            
+             if($encuesta->actividad_comercial == false  ){
+                return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
+                
+            }            
             if($data[0]->mes_id%3 == 0){
                 return redirect('/ofertaempleo/empleomensual/'.$request->one);
             } else{

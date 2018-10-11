@@ -14,7 +14,7 @@
    <table style="width:60%" style="text-align:left" >
        <tr>
            <td colspan="8" >
-               <img src="Content/image/logo_ministerio.jpg" />   
+               <img src="img/brand/others/logos.png" />
            </td>
        </tr>
        <tr>

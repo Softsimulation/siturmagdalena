@@ -34,14 +34,19 @@ class GrupoViajeController extends Controller
         return view('grupoViaje.ListadoGrupos');
     }
     public function getGrupos(){
-        
-
-
+        if(Auth::user()->hasRole('Admin')){
+            $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
+                $q->with('user');
+            },'visitantes'=>function($q){
+                $q->select("grupo_viaje_id","nombre");
+            }])->get();
+        }else{
             $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
             }])->where('digitador_id',$this->user->digitador->id)->get();
+        }
             
         return $grupos;    
     }
@@ -198,7 +203,7 @@ class GrupoViajeController extends Controller
             })->select('tipo_viaje_id','nombre');
         }])->get();
 
-        $grupo = Grupo_Viaje::where('id',$id)->with(['tiposViaje'=>function($q){
+        $grupo = Grupo_Viaje::where('id',$id)->with(['lugaresAplicacionEncuestum','tiposViaje'=>function($q){
             $q->with(['tiposViajeConIdiomas'=>function($r){
                 $r->whereHas('idioma', function($p){
                     $p->where('culture','es');

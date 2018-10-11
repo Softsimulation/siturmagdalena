@@ -1,93 +1,11 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Editar ruta')
+@section('title', 'Formulario para la modificación de rutas turísticas')
 
 @section('estilos')
     <style>
-        .panel-body {
-            max-height: 400px;
-            color: white;
-        }
-
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-
-        form.ng-submitted input.ng-invalid {
-            border-color: #FA787E;
-        }
-
-        form input.ng-invalid.ng-touched {
-            border-color: #FA787E;
-        }
-
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-        .row {
-            margin: 1em 0 0;
-        }
-        .form-group {
-            margin: 0;
-        }
-        .form-group label, .form-group .control-label, label {
-            font-size: smaller;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group-addon {
-            width: 3em;
-        }
-        .text-error {
-            color: #a94442;
-            font-style: italic;
-            font-size: .7em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
+        
         .ui-select-container{
             width: 100%;
         }
@@ -97,97 +15,87 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Editar ruta')
-
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
 
 @section('app', 'ng-app="rutasApp"')
 
 @section('controller','ng-controller="rutasEditarController"')
 
+@section('titulo','Rutas turísticas')
+@section('subtitulo','Formulario para la modificación de rutas turísticas')
+
 @section('content')
-<div class="col-sm-12">
-    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <h1 class="title1">@{{rutaNombre}} - Editar</h1>
-    <br />
-    <div class="col-col-sm-12">
-        <a href="{{asset('/administradorrutas')}}">Volver al listado</a>
+<div class="text-center">
+    <div class="alert alert-info">
+        <p>Ruta a modificar:</p>
+        <h3 style="margin: 0">@{{rutaNombre}}</h3>
     </div>
-    <div class="blank-page widget-shadow scroll" id="style-2 div1">
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
-            <li><a data-toggle="tab" href="#adicional">Información adicional</a></li>
-        </ul>
+    
+</div>
+<input type="hidden" ng-model="id" ng-init="id={{$id}}" />
+    
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#multimedia">Multimedia</a></li>
+    <li><a data-toggle="tab" href="#adicional">Información adicional</a></li>
+</ul>
         <div class="tab-content">
             
             <!--Multimedia-->
             <div id="multimedia" class="tab-pane fade in active">
-                <h3>Multimedia</h3>
-                <div class="alert-warning alert-dismissible" role="alert">
-                    <strong>Tenga en cuenta que para subir imágenes.</strong>
-                    <ul>
-                        <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
-                        <li>Puede subir máximo 5 imágenes por atracción. El peso de cada imagen debe ser menor o igual a 2MB.</li>
-                        <li>Si alguna de sus imágenes sobrepasa el tamaño permitido se le sugiere comprimir la imagen en <a href="https://compressor.io" target="_blank">compressor.io <span class="glyphicon glyphicon-share"></span></n></a>, <a href="http://optimizilla.com" target="_blank">optimizilla.com <span class="glyphicon glyphicon-share"></span></a>, o cualquier otro compresor de imágenes.</li>
-                        <li>Para seleccionar varias imágenes debe mantener presionada la tecla ctrl o arrastre el ratón sobre las imágenes que desea seleccionar.</li>
-                    </ul>
-                </div>
-                <form novalidate role="form" name="multimediaForm">
-                    <div class="row">
-                        <h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Imagen de portada</h4>
-                        <div class="col-sm-12">
-                            <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                <fieldset>
+                    <legend>Multimedia</legend>
+                    @include('layout.partial._recomendacionesSubidaImagenes')
+                    <form novalidate role="form" name="multimediaForm">
+                        <div class="row">
+                            <label><span class="asterisk">*</span> Imagen de portada</label>
+                            <div class="col-sm-12">
+                                <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                            </div>
                         </div>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <button ng-click="guardarMultimedia()" type="submit" class="btn btn-lg btn-success" >Guardar</button>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <hr/>
+                                <button ng-click="guardarMultimedia()" type="submit" class="btn btn-lg btn-success" >Guardar</button>
+                                <a href="{{asset('/administradorrutas')}}" class="btn btn-lg btn-default">Cancelar</a>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </fieldset>
+                
             </div>
             
             <!--Información adicional-->
             <div id="adicional" class="tab-pane fade">
-                <h3>Información adicional</h3>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1" style="background-color: rgba(255,216,0,.5)"><span class="glyphicon glyphicon-asterisk"></span></span>
-                            <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Los campos marcados con asterisco son obligatorios.</strong> </div>
-                        </div>
-                    </div>
-                </div>
                 <form novalidate role="form" name="informacionAdicionalForm">
-                    <div class="row">
-                        <div class="col-sm-12" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.atracciones.$touched) && informacionAdicionalForm.atracciones.$error.required}">
-                            <label for="atracciones"><h4><span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span> Atracciones de la ruta <small>(Seleccione al menos una atracción)</small></h4></label>
-                            <ui-select name="atracciones" id="atracciones" multiple ng-required="true" ng-model="ruta.adicional.atracciones" theme="bootstrap" close-on-select="false" >
-                                <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
-                                    <span ng-bind="$item.sitio.sitios_con_idiomas[0].nombre"></span>
-                                </ui-select-match>
-                                <ui-select-choices repeat="atraccion.id as atraccion in (atracciones| filter: $select.search)">
-                                    <span ng-bind="atraccion.sitio.sitios_con_idiomas[0].nombre" title="@{{atraccion.sitio.sitios_con_idiomas[0].nombre}}"></span>
-                                </ui-select-choices>
-                            </ui-select>
+                    <fieldset>
+                        <legend>Información adicional</legend>
+                        <div class="alert alert-info">
+                            <p>Los campos marcados con asterisco (*) son obligatorios.</p>
                         </div>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <button type="submit"  class="btn btn-lg btn-success" ng-click="guardarAdicional()">Guardar</button>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.atracciones.$touched) && informacionAdicionalForm.atracciones.$error.required}">
+                                    <label for="atracciones"><span class="asterisk">*</span> Atracciones de la ruta <span class="text-error text-msg">(Seleccione al menos una atracción)</span></label>
+                                    <ui-select name="atracciones" id="atracciones" multiple ng-required="true" ng-model="ruta.adicional.atracciones" theme="bootstrap" close-on-select="false" >
+                                        <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
+                                            <span ng-bind="$item.sitio.sitios_con_idiomas[0].nombre"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="atraccion.id as atraccion in (atracciones| filter: $select.search)">
+                                            <span ng-bind="atraccion.sitio.sitios_con_idiomas[0].nombre" title="@{{atraccion.sitio.sitios_con_idiomas[0].nombre}}"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 text-center">
+                                <hr/>
+                                <button type="submit"  class="btn btn-lg btn-success" ng-click="guardarAdicional()">Guardar</button>
+                                 <a href="{{asset('/administradorrutas')}}" class="btn btn-lg btn-default">Cancelar</a>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
+                    
                 </form>
             </div>
         </div>
-    </div>
-</div>
 @endsection
 
 @section('javascript')

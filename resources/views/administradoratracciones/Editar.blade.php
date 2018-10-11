@@ -1,40 +1,10 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Editar atracción')
+@section('title', 'Formulario para la modificación de atracciones')
 
 @section('estilos')
     <style>
-        
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-        .image-preview-input-title {
-            margin-left: 2px;
-        }
-
-        .messages {
-            color: #FA787E;
-        }
-
         
         .row {
             margin: 1em 0 0;
@@ -50,9 +20,6 @@
         }
     </style>
 @endsection
-
-@section('TitleSection', 'Editar atracción')
-
 @section('app', 'ng-app="atraccionesApp"')
 
 @section('controller','ng-controller="atraccionesEditarController"')
@@ -166,25 +133,24 @@
                     @include('layout.partial._recomendacionesSubidaImagenes')
                     <form novalidate role="form" name="multimediaForm">
                         <div class="row">
-                            <h4><span class="asterisk">*</span> Imagen de portada</h4>
-                            <div class="col-sm-12">
+                            <div class="col-xs-12">
+                                <label><span class="asterisk">*</span> Imagen de portada</label>
                                 <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                                
                             </div>
-                        </div>
-                        <div>
-                            <h4>Subir imágenes</h4>
-                            <div class="col-sm-12">
-                                <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
+                            <div class="col-xs-12">
+                                <br/>
+                                <label>Subir imágenes</label>
+                                <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="20"></file-input>
+                                
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 form-group">
-                                <label for="video_promocional"><h4>Video promocional</h4></label>
+                            <div class="col-xs-12">
+                                <br/>
+                                <label for="video_promocional">Video promocional</label>
                                 <input type="text" name="video_promocional" id="video_promocional" ng-model="video_promocional" class="form-control" placeholder="URL del video de YouTube" />
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 text-center">
+                            <div class="col-xs-12 text-center">
+                                <hr/>
                                 <button ng-click="guardarMultimedia()" type="submit" ng-class="{'disabled': (atraccion.id == -1)}" class="btn btn-lg btn-success" >Guardar</button>
                                 <a href="{{asset('/administradoratracciones')}}" class="btn btn-lg btn-default">Cancelar</a>
                             </div>
@@ -283,4 +249,5 @@
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="/js/plugins/ng-map.js"></script>
 @endsection

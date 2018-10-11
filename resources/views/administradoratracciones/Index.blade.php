@@ -62,7 +62,7 @@
             <div class="tile-caption">
                 <h3>@{{atraccion.sitio.sitios_con_idiomas[0].nombre}}</h3>
             </div>
-            <p>@{{atraccion.sitio.sitios_con_idiomas[0].descripcion}}</p>
+            <p>@{{atraccion.sitio.sitios_con_idiomas[0].descripcion | limitTo:255}}<span ng-if="atraccion.sitio.sitios_con_idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
                 <a href="/administradoratracciones/editar/@{{atraccion.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{atraccion.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(atraccion)">@{{atraccion.estado ? 'Desactivar' : 'Activar'}}</button>
@@ -125,4 +125,5 @@
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="/js/plugins/ng-map.js"></script>
 @endsection

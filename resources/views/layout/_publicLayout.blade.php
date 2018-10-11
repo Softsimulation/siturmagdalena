@@ -8,11 +8,10 @@
     <meta name="keywords" content="SITUR Magdalena, Visita Magdalena, Visit Magdalena, Turismo en el Magdalena, estadisticas Magdalena, Magdalena" />
     <meta name="author" content="Softsimulation S.A.S" />
     <meta name="copyright" content="SITUR Capítulo Magdalena, Softsimulation S.A.S" />
-    <meta property="og:title" content="SITUR Magdalena" />
+    
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.siturmagdalena.com" />
-    <meta property="og:image" content="{{asset('/img/brand/128.png')}}" />
-    <meta property="og:description" content="Sistema de Información Turística del Magdalena y de Santa Marta D.T.C.H"/>
+    <meta property="og:url" content="{{\Request::url()}}" />
+    @yield('meta_og')
     <title>@yield('Title') SITUR Magdalena</title>
     <link rel='manifest' href='{{asset("/manifest.json")}}'>
     <meta name='mobile-web-app-capable' content='yes'>

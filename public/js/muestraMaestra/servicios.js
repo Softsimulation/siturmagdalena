@@ -93,7 +93,7 @@
                     }
                     
                     if(sw==false){
-                        proveedoresFuera.push( proveedores[k].nombre );
+                        proveedoresFuera.push( proveedores[k] );
                     }
                     
                 }

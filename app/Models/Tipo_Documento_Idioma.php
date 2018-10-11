@@ -38,6 +38,6 @@ class Tipo_Documento_Idioma extends Model
      */
     public function tipoDocumento()
     {
-        return $this->belongsTo('App\TipoDocumento');
+        return $this->belongsTo('App\Models\Tipo_Documento');
     }
 }

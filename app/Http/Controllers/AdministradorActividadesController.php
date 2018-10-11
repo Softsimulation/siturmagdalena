@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Storage;
 use File;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 use App\Models\Sitio;
 use App\Models\Perfil_Usuario;

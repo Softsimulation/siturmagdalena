@@ -14,19 +14,21 @@
       Agregar encuesta
     </button> 
     <div class="form-group has-feedback" style="display: inline-block;">
-        <label class="sr-only">Búsqueda de encuestas</label>
-        <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar encuesta...">
-        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+        <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
     </div>      
 </div>
-<div class="text-center" ng-if="(encuestas | filter:prop.search).length > 0 && (prop.search != '' && prop.search != undefined)">
-    <p>Hay @{{(encuestas | filter:prop.search).length}} registro(s) que coinciden con su búsqueda</p>
+<br/>
+<div class="text-center" ng-if="(encuestas | filter:search).length > 0 && (search != undefined)">
+    <p>Hay @{{(encuestas | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
 </div>
 <div class="alert alert-info" ng-if="encuestas.length == 0">
     <p>No hay registros almacenados</p>
 </div>
-<div class="alert alert-warning" ng-if="(encuestas | filter:prop.search).length == 0 && encuestas.length > 0">
+<div class="alert alert-warning" ng-if="(encuestas | filter:search).length == 0 && encuestas.length > 0">
     <p>No existen registros que coincidan con su búsqueda</p>
+</div>
+<div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.tipo.nombre.length > 0 || search.estado.nombre.length > 0 || search.subcategoria.length > 0 || search.categoria.length > 0 || search.email.length > 0)">
+    Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
 </div>
 <div>
     
@@ -42,9 +44,16 @@
                 <th style="width: 20px;" >Estado</th>
                 <th style="width: 152px;">Opciones</th>
               </tr>
+              <tr ng-show="mostrarFiltro == true">
+                                    
+                    <td><input type="text" ng-model="search.nombreEsp" name="nombreEsp" id="nombreEsp" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.tipo.nombre" name="tipo" id="tipo" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.estado.nombre" name="estado" id="estado" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td></td>
+                </tr>
             </thead>
             <tbody>
-              <tr dir-paginate="encuesta in encuestas | filter:prop.search | itemsPerPage:10">
+              <tr dir-paginate="encuesta in encuestas | filter:search | itemsPerPage:10">
                 <td>@{{ (encuesta.idiomas|filter:{ 'idiomas_id':1 })[0].nombre}}</td>
                 <td>@{{ encuesta.tipo.nombre }}</td>
                 <td>@{{ encuesta.estado.nombre }}</td>
@@ -85,7 +94,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta.id)" >
+                                <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta)" >
                                     Duplicar encuesta
                                 </a>
                             </li>
@@ -114,6 +123,46 @@
         </div>
     </div>
     
+    
+    <!-- Modal duplicar encuesta-->
+    <div class="modal fade" id="modalDuplicarEncuesta" tabindex="-1" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Duplicar encuesta</h4>
+                </div>
+                <form name="formDE" novalidate>
+                    <div class="modal-body">
+                        
+                        <h1 class="text-center" >Duplicar encuesta</h1>
+                        <h3 class="text-center" >¿Esta seguro de duplicar la encuesta?</h3>
+                        
+                        <br><br>
+                        
+                        <div class="row">
+                          
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : (formDE.$submitted || formDE.tipoED.$touched) && formDE.tipoED.$error.required}">
+                                    <label class="control-label" for="tipoED"><span class="asterisk">*</span>  Tipo encuesta</label>
+                                    <select class="form-control" name="tipoED" id="tipoED" ng-model="duplicarencuesta.tipo" ng-options="item.id as item.nombre for item in tipos" required >
+                                        <option  disabled selected value="" >Selecione un tipo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer center" >
+                        
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" ng-click="guardarDuplicarEncuesta()" class="btn btn-success">Guardar</button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     
     
     <!-- Modal agregar encuesta-->
