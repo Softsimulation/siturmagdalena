@@ -179,10 +179,8 @@
 
                             <div class="col-xs-12">
                                 <!--P4P3Input1. Ingrese su email-->
-                                <input type="email" class="form-control" name="email" placeholder="Ingrese su email" ng-model="encuesta.Email" ng-required="true" />
+                                <input type="email" class="form-control" name="email" placeholder="Ingrese su email" ng-model="encuesta.Email" />
                                 <span ng-show="DatosForm.$submitted || DatosForm.email.$touched">
-                                    <!--P4P2Alert1. El campo email es requerido-->
-                                    <span class="label label-danger" ng-show="DatosForm.email.$error.required">*El campo email es requerido</span>
                                     <!--P4P2Alert2. El campo email no es un email válido-->
                                     <span class="label label-danger" ng-show="DatosForm.email.$error.email">*El campo email no es un email válido</span>
                                 </span>
