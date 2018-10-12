@@ -22,9 +22,6 @@ class GrupoViajeController extends Controller
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        
-        
-        
     }
     public function getGrupoviaje(){
         return view('grupoViaje.CrearGrupoViaje');
@@ -39,13 +36,13 @@ class GrupoViajeController extends Controller
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->get();
+            }])->where('id','>','20381')->get();
         }else{
             $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->where('digitador_id',$this->user->digitador->id)->get();
+            }])->where('id','>','20381')->where('digitador_id',$this->user->digitador->id)->get();
         }
             
         return $grupos;    
