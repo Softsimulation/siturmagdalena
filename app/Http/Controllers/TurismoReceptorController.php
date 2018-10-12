@@ -130,12 +130,12 @@ class TurismoReceptorController extends Controller
         $validator = \Validator::make($request->all(), [
 			'Grupo' => 'required|exists:grupos_viaje,id',
 			'Encuestador' => 'required|exists:digitadores,id',
-			'Llegada' => 'required|date|before:tomorrow',
+			'Llegada' => 'required|date',
 			'Salida' => 'required|date',
 			'Nombre' => 'required|max:150',
 			'Edad' => 'required|numeric|between:15,150',
 			'Sexo' => 'required',
-			'Email' => 'required|email',
+			'Email' => 'email',
 			'Telefono' => 'max:50',
 			'Celular' => 'max:50',
 			'Nacimiento' => 'required|exists:opciones_lugares,id',
@@ -208,7 +208,7 @@ class TurismoReceptorController extends Controller
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
 		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
-		$visitante->email = $request->Email;
+		$visitante->email = isset($request->Email) ? $request->Email : null;
 		$visitante->encuestador_creada = $request->Encuestador;
 		$visitante->fecha_llegada = $request->Llegada;
 		$visitante->fecha_salida = $request->Salida;
@@ -323,12 +323,12 @@ class TurismoReceptorController extends Controller
 			'Id' => 'required|exists:visitantes,id',
 			'Grupo' => 'required|exists:grupos_viaje,id',
 			'Encuestador' => 'required|exists:digitadores,id',
-			'Llegada' => 'required|date|before:tomorrow',
+			'Llegada' => 'required|date',
 			'Salida' => 'required|date',
 			'Nombre' => 'required|max:150',
 			'Edad' => 'required|numeric|between:15,150',
 			'Sexo' => 'required',
-			'Email' => 'required|email',
+			'Email' => 'email',
 			'Telefono' => 'max:50',
 			'Celular' => 'max:50',
 			'Nacimiento' => 'required|exists:opciones_lugares,id',
@@ -395,7 +395,7 @@ class TurismoReceptorController extends Controller
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
 		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
-		$visitante->email = $request->Email;
+		$visitante->email = isset($request->Email) ? $request->Email : null;
 		$visitante->encuestador_creada = $request->Encuestador;
 		$visitante->fecha_llegada = $request->Llegada;
 		$visitante->fecha_salida = $request->Salida;
@@ -1310,9 +1310,11 @@ class TurismoReceptorController extends Controller
 // 		if( (!isset($request->OtroElementos)) && in_array(11,$request->Elementos) ){
 // 		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro."]]];
 // 		}
-		if( (!isset($request->OtroActividad)) && in_array(12,$request->Actividades) ){
-		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro en las actividades."]]];
-		}
+        if(isset($request->Actividades)){
+            if( (!isset($request->OtroActividad)) && in_array(12,$request->Actividades) ){
+    		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro en las actividades."]]];
+    		}    
+        }
 		
 		$visitante = Visitante::find($request->Id);
 		$sw = 0;
