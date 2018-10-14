@@ -166,17 +166,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr dir-paginate="item in temporada.Personas|filter:prop.searchPersona|itemsPerPage:10 as results" pagination-id="personaP" style="border-bottom: .5px solid lightgray">
-                                    <td>@{{item.id}}</td>
-                                    <td>@{{item.hogare.id}}</td>
-                                    <td>@{{item.nombre}}</td>
-                                    <td>@{{item.hogare.edificacione.direccion}}</td>
-                                    <td>@{{item.hogare.edificacione.estrato.nombre}}</td>
-                                    <td>@{{item.hogare.digitadore.user.username}}</td>
-                                    <td>@{{item.viajes[0].fecha_inicio}}</td>
-                                    <td>@{{item.viajes[0].ultima_sesion}}</td>
+                                <tr dir-paginate="item in temporada.Personas|filter:prop.search|itemsPerPage:10 as results" pagination-id="personaP" style="border-bottom: .5px solid lightgray">
+                                    <td>@{{item.persona.id}}</td>
+                                    <td>@{{item.persona.hogare.id}}</td>
+                                    <td>@{{item.persona.nombre}}</td>
+                                    <td>@{{item.persona.hogare.edificacione.direccion}}</td>
+                                    <td>@{{item.persona.hogare.edificacione.estrato.nombre}}</td>
+                                    <td>@{{item.persona.hogare.digitadore.user.username}}</td>
+                                    <td>@{{item.fecha_inicio}}</td>
+                                    <td>@{{item.ultima_sesion}}</td>
                                     <td>
-                                        <a href="/turismointerno/viajesrealizados/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                     </td>
                                 </tr>
 
