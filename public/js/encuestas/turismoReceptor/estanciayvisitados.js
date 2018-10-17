@@ -57,6 +57,8 @@ angular.module('receptor.estanciayvisitados', [])
 
     $scope.cambioselectalojamiento = function (es) {
 
+        
+
         if (es.Noches == 0) {
 
             es.Alojamiento = 15;
@@ -66,19 +68,34 @@ angular.module('receptor.estanciayvisitados', [])
                 es.Alojamiento = null;
             }
         }
+        
+        var retornoBuscar = $scope.buscarSimilarSeleccion(es);
+        if(retornoBuscar){
+            es.Alojamiento = null;
+        }
+        
     }
 
     $scope.cambioselectmunicipio = function (es) {
-
+        var retornoBuscar = $scope.buscarSimilarSeleccion(es);
+        if(retornoBuscar){
+            es.Municipio = null;
+        }
+    }
+    
+    $scope.buscarSimilarSeleccion = function(es){
+        var bandera = false;
+        
         for (i = 0; i < $scope.encuesta.Estancias.length; i++) {
             if ($scope.encuesta.Estancias[i] != es) {
-                if ($scope.encuesta.Estancias[i].Municipio == es.Municipio) {
-                    es.Municipio = null;
+                if ($scope.encuesta.Estancias[i].Municipio == es.Municipio && $scope.encuesta.Estancias[i].Alojamiento == es.Alojamiento ) {
+                    bandera = true;
+                    break;
                 }
             }
-
-
         }
+        
+        return bandera;
     }
 
     $scope.cambioActividadesRealizadas = function (actividad) {
