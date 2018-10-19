@@ -1,0 +1,36 @@
+﻿{
+  "name": "Sistema de Información Turística del Magdalena",
+  "short_name": "SITUR Magdalena",
+  "icons": [{
+        "src": "img/brand/128.png",
+        "type": "image/png",
+        "sizes": "128x128"
+      }, {
+        "src": "img/brand/152.png",
+        "type": "image/png",
+        "sizes": "152x152"
+      }, {
+        "src": "img/brand/144.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      }, {
+        "src": "img/brand/192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "img/brand/192.png",
+        "type": "image/png",
+        "sizes": "256x256"
+      },
+      {
+        "src": "img/brang/384.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#004A87",
+  "theme_color": "#004A87"
+}
