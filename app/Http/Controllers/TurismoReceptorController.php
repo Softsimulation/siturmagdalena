@@ -393,7 +393,6 @@ class TurismoReceptorController extends Controller
 		$visitante->telefono = isset($request->Telefono) ? $request->Telefono : null;
 		$visitante->celular = isset($request->Celular) ? $request->Celular : null;
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
-		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
 		$visitante->email = isset($request->Email) ? $request->Email : null;
 		$visitante->encuestador_creada = $request->Encuestador;
@@ -602,8 +601,8 @@ class TurismoReceptorController extends Controller
 		        return ["success" => false, "errores" => [["Si el número de noches es mayor a 0 no puede seleccionar la opcion Ningún tipo de alojamiento."]] ];
 		    }
 		    
-		    if( collect($request->Estancias)->where('Municipio', $estancia['Municipio'] )->count() > 1 ){
-		        return ["success" => false, "errores" => [["No debe repetir un municipio en las estancias."]] ];
+		    if( collect($request->Estancias)->where('Municipio', $estancia['Municipio'] )->where('Alojamiento', $estancia['Alojamiento'] )->count() > 1 ){
+		        return ["success" => false, "errores" => [["No debe repetir un municipio con el mismo tipo de alojamiento en las estancias."]] ];
 		    }
 		    
 		}

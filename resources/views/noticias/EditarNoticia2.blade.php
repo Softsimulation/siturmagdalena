@@ -130,16 +130,18 @@
                             <ng-ckeditor  
                                           ng-model="noticia.texto"
                                           ng-disabled="editorDIsabled" 
+                                          name="textoNoticia"
                                           skin="moono" 
                                           remove-buttons="Image" 
                                           remove-plugins="iframe,flash,smiley"
                                           required
                                           >
                             </ng-ckeditor>
+                            <span class="messages" ng-show="crearForm.$submitted || crearForm.textoNoticia.$touched">
+                                <span ng-show="crearForm.textoNoticia.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                            </span>
                         </div>
-                        <span class="messages" ng-show="crearForm.$submitted || crearForm.textoNoticia.$touched">
-                            <span ng-show="crearForm.textoNoticia.$error.required" class="color_errores">* El campo es obligatorio.</span>
-                        </span>
+                        
                     </div>
                     <br>
                     <div class="row">

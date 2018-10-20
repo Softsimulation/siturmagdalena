@@ -94,6 +94,10 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
             'Krlove\\EloquentModelGenerator\\' => 30,
             'Krlove\\CodeGenerator\\' => 21,
         ),
+        'J' => 
+        array (
+            'JakubOnderka\\PhpConsoleColor\\' => 29,
+        ),
         'I' => 
         array (
             'Illuminate\\' => 11,
@@ -278,6 +282,10 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         array (
             0 => __DIR__ . '/..' . '/krlove/code-generator/src',
         ),
+        'JakubOnderka\\PhpConsoleColor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
+        ),
         'Illuminate\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
@@ -396,10 +404,6 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
             array (
                 0 => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src',
             ),
-            'JakubOnderka\\PhpConsoleColor' => 
-            array (
-                0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
-            ),
         ),
         'D' => 
         array (
@@ -422,6 +426,13 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
             'Doctrine\\Common\\Annotations\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/annotations/lib',
+            ),
+        ),
+        'C' => 
+        array (
+            'Chumper\\Zipper' => 
+            array (
+                0 => __DIR__ . '/..' . '/chumper/zipper/src',
             ),
         ),
     );
@@ -505,8 +516,9 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\H_Viaje_Emisores_Agencia' => __DIR__ . '/../..' . '/app/Models/H_Viaje_Emisores_Agencia.php',
         'App\\H_Viaje_Internos_Agencia' => __DIR__ . '/../..' . '/app/Models/H_Viaje_Internos_Agencia.php',
         'App\\H_Vinculacion_Laboral' => __DIR__ . '/../..' . '/app/Models/H_Vinculacion_Laboral.php',
+        'App\\Http\\Controllers\\ActividadesController' => __DIR__ . '/../..' . '/app/Http/Controllers/ActividadesController.php',
         'App\\Http\\Controllers\\AdministradorActividadesController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministradorActividadesController.php',
-        'App\\Http\\Controllers\\AdministradorAtraccionController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministradorAtraccionController.php',
+        'App\\Http\\Controllers\\AdministradorAtraccionController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministradorInformes.php',
         'App\\Http\\Controllers\\AdministradorDestinosController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministradorDestinosController.php',
         'App\\Http\\Controllers\\AdministradorEventosController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministradorEventosController.php',
         'App\\Http\\Controllers\\AdministradorProveedoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministradorProveedoresController.php',
@@ -514,15 +526,20 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\Http\\Controllers\\AdministrarDepartamentosController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministrarDepartamentosController.php',
         'App\\Http\\Controllers\\AdministrarMunicipiosController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministrarMunicipiosController.php',
         'App\\Http\\Controllers\\AdministrarPaisesController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministrarPaisesController.php',
+        'App\\Http\\Controllers\\ApiAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiAuthController.php',
+        'App\\Http\\Controllers\\AtraccionesController' => __DIR__ . '/../..' . '/app/Http/Controllers/AtraccionesController.php',
         'App\\Http\\Controllers\\Auth\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthController.php',
         'App\\Http\\Controllers\\Auth\\PasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/PasswordController.php',
         'App\\Http\\Controllers\\BolsaEmpleoController' => __DIR__ . '/../..' . '/app/Http/Controllers/BolsaEmpleoController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\DestinosController' => __DIR__ . '/../..' . '/app/Http/Controllers/DestinosController.php',
         'App\\Http\\Controllers\\EmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/EmailController.php',
         'App\\Http\\Controllers\\EncuestaDinamicaCtrl' => __DIR__ . '/../..' . '/app/Http/Controllers/EncuestaDinamicaCtrl.php',
         'App\\Http\\Controllers\\EstadisticasSecundariasCtrl' => __DIR__ . '/../..' . '/app/Http/Controllers/EstadisticasSecundariasCtrl.php',
+        'App\\Http\\Controllers\\EventosController' => __DIR__ . '/../..' . '/app/Http/Controllers/EventosController.php',
         'App\\Http\\Controllers\\ExportacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExportacionController.php',
         'App\\Http\\Controllers\\GrupoViajeController' => __DIR__ . '/../..' . '/app/Http/Controllers/GrupoViajeController.php',
+        'App\\Http\\Controllers\\GrupoViajeCorsController' => __DIR__ . '/../..' . '/app/Http/Controllers/GrupoViajeCorsController.php',
         'App\\Http\\Controllers\\ImportacionRntController' => __DIR__ . '/../..' . '/app/Http/Controllers/ImportacionRntController.php',
         'App\\Http\\Controllers\\IndicadoresCtrl' => __DIR__ . '/../..' . '/app/Http/Controllers/IndicadoresCtrl.php',
         'App\\Http\\Controllers\\InformesCtrl' => __DIR__ . '/../..' . '/app/Http/Controllers/InformesCtrl.php',
@@ -531,7 +548,14 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\Http\\Controllers\\MuestraMaestraCtrl' => __DIR__ . '/../..' . '/app/Http/Controllers/MuestraMaestraCtrl.php',
         'App\\Http\\Controllers\\NoticiaController' => __DIR__ . '/../..' . '/app/Http/Controllers/NoticiaController.php',
         'App\\Http\\Controllers\\OfertaEmpleoController' => __DIR__ . '/../..' . '/app/Http/Controllers/OfertaEmpleoController.php',
+        'App\\Http\\Controllers\\PostuladoController' => __DIR__ . '/../..' . '/app/Http/Controllers/PostuladoController.php',
+        'App\\Http\\Controllers\\ProveedoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProveedoresController.php',
         'App\\Http\\Controllers\\PublicacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/PublicacionController.php',
+        'App\\Http\\Controllers\\PublicoBolsaEmpleoController' => __DIR__ . '/../..' . '/app/Http/Controllers/PublicoBolsaEmpleoController.php',
+        'App\\Http\\Controllers\\PublicoInformeController' => __DIR__ . '/../..' . '/app/Http/Controllers/PublicoInformeController.php',
+        'App\\Http\\Controllers\\PublicoNoticiaController' => __DIR__ . '/../..' . '/app/Http/Controllers/PublicoNoticiaController.php',
+        'App\\Http\\Controllers\\PublicoPublicacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/PublicoPublicacionController.php',
+        'App\\Http\\Controllers\\RutasTuristicasController' => __DIR__ . '/../..' . '/app/Http/Controllers/RutasTuristicasController.php',
         'App\\Http\\Controllers\\SostenibilidadHogaresController' => __DIR__ . '/../..' . '/app/Http/Controllers/SostenibilidadHogaresController.php',
         'App\\Http\\Controllers\\SostenibilidadPstController' => __DIR__ . '/../..' . '/app/Http/Controllers/SostenibilidadPstController.php',
         'App\\Http\\Controllers\\TemporadaController' => __DIR__ . '/../..' . '/app/Http/Controllers/TemporadaController.php',
@@ -632,6 +656,7 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\Models\\Coordenadas_zona' => __DIR__ . '/../..' . '/app/Models/Coordenadas_zona.php',
         'App\\Models\\Criterio_Calificacion' => __DIR__ . '/../..' . '/app/Models/Criterio_Calificacion.php',
         'App\\Models\\Dato_Rnt' => __DIR__ . '/../..' . '/app/Models/Dato_Rnt.php',
+        'App\\Models\\Datos_Adicional_Usuario' => __DIR__ . '/../..' . '/app/Models/Datos_Adicional_Usuario.php',
         'App\\Models\\Departamento' => __DIR__ . '/../..' . '/app/Models/Departamento.php',
         'App\\Models\\Destino' => __DIR__ . '/../..' . '/app/Models/Destino.php',
         'App\\Models\\Destino_Con_Idioma' => __DIR__ . '/../..' . '/app/Models/Destino_Con_Idioma.php',
@@ -781,6 +806,7 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\Models\\Persona_Destino_Con_Viaje_Turismo' => __DIR__ . '/../..' . '/app/Models/Persona_Destino_Con_Viaje_Turismo.php',
         'App\\Models\\Plan_Mitigacion' => __DIR__ . '/../..' . '/app/Models/Plan_Mitigacion.php',
         'App\\Models\\Plan_Santamarta' => __DIR__ . '/../..' . '/app/Models/Plan_Santamarta.php',
+        'App\\Models\\Postulaciones_Vacante' => __DIR__ . '/../..' . '/app/Models/Postulaciones_Vacante.php',
         'App\\Models\\Prestamo_Servicio' => __DIR__ . '/../..' . '/app/Models/Prestamo_Servicio.php',
         'App\\Models\\Programa_Conservacion' => __DIR__ . '/../..' . '/app/Models/Programa_Conservacion.php',
         'App\\Models\\Proveedor' => __DIR__ . '/../..' . '/app/Models/Proveedor.php',
@@ -849,6 +875,7 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'App\\Models\\Tipo_Atraccion' => __DIR__ . '/../..' . '/app/Models/Tipo_Atraccion.php',
         'App\\Models\\Tipo_Atraccion_Con_Idioma' => __DIR__ . '/../..' . '/app/Models/Tipo_Atraccion_Con_Idioma.php',
         'App\\Models\\Tipo_Cargo' => __DIR__ . '/../..' . '/app/Models/Tipo_Cargo.php',
+        'App\\Models\\Tipo_Cargo_Vacante' => __DIR__ . '/../..' . '/app/Models/Tipo_Cargo_Vacante.php',
         'App\\Models\\Tipo_Destino' => __DIR__ . '/../..' . '/app/Models/Tipo_Destino.php',
         'App\\Models\\Tipo_Destino_Con_Idioma' => __DIR__ . '/../..' . '/app/Models/Tipo_Destino_Con_Idioma.php',
         'App\\Models\\Tipo_Discapacidad' => __DIR__ . '/../..' . '/app/Models/Tipo_Discapacidad.php',
@@ -949,6 +976,11 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
         'Carbon\\Laravel\\ServiceProvider' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Laravel/ServiceProvider.php',
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
+        'Chumper\\Zipper\\Facades\\Zipper' => __DIR__ . '/..' . '/chumper/zipper/src/Chumper/Zipper/Facades/Zipper.php',
+        'Chumper\\Zipper\\Repositories\\RepositoryInterface' => __DIR__ . '/..' . '/chumper/zipper/src/Chumper/Zipper/Repositories/RepositoryInterface.php',
+        'Chumper\\Zipper\\Repositories\\ZipRepository' => __DIR__ . '/..' . '/chumper/zipper/src/Chumper/Zipper/Repositories/ZipRepository.php',
+        'Chumper\\Zipper\\Zipper' => __DIR__ . '/..' . '/chumper/zipper/src/Chumper/Zipper/Zipper.php',
+        'Chumper\\Zipper\\ZipperServiceProvider' => __DIR__ . '/..' . '/chumper/zipper/src/Chumper/Zipper/ZipperServiceProvider.php',
         'ClassPreloader\\ClassList' => __DIR__ . '/..' . '/classpreloader/classpreloader/src/ClassList.php',
         'ClassPreloader\\ClassLoader' => __DIR__ . '/..' . '/classpreloader/classpreloader/src/ClassLoader.php',
         'ClassPreloader\\ClassNode' => __DIR__ . '/..' . '/classpreloader/classpreloader/src/ClassNode.php',
@@ -2592,8 +2624,8 @@ class ComposerStaticInit635bc917630258a315658786beb8dd2e
         'Illuminate\\View\\View' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/View.php',
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
-        'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/ConsoleColor.php',
-        'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/InvalidStyleException.php',
+        'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/ConsoleColor.php',
+        'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/InvalidStyleException.php',
         'JakubOnderka\\PhpConsoleHighlighter\\Highlighter' => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src/JakubOnderka/PhpConsoleHighlighter/Highlighter.php',
         'JsonSerializable' => __DIR__ . '/..' . '/nesbot/carbon/src/JsonSerializable.php',
         'Krlove\\CodeGenerator\\Exception\\GeneratorException' => __DIR__ . '/..' . '/krlove/code-generator/src/Exception/GeneratorException.php',
