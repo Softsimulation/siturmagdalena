@@ -118,24 +118,22 @@
                         <ng-ckeditor  
                                       ng-model="noticia.texto"
                                       ng-disabled="editorDIsabled" 
-                                      name="textoNoticia"
                                       skin="moono" 
                                       remove-buttons="Image" 
                                       remove-plugins="iframe,flash,smiley"
                                       required
                                       >
                         </ng-ckeditor>
-                        <span class="messages" ng-show="crearForm.$submitted || crearForm.textoNoticia.$touched">
-                            <span ng-show="crearForm.textoNoticia.$error.required" class="color_errores">* El campo es obligatorio.</span>
-                        </span>
                     </div>
-                    
+                    <span class="messages" ng-show="crearForm.$submitted || crearForm.textoNoticia.$touched">
+                        <span ng-show="crearForm.textoNoticia.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                    </span>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-xs-12">
                         <label for="fuenteNoticia">Enlace de fuente</label>
-                        <input type="url" class="form-control" name="fuenteNoticia" id="fuenteNoticia" ng-model="noticia.fuenteNoticia"/>
+                        <input type="text" class="form-control" name="fuenteNoticia" id="fuenteNoticia" ng-model="noticia.fuenteNoticia"/>
                         <span ng-show="crearForm.fuenteNoticia.$error.url" class="color_errores">* Url.</span>
                       
                     </div>
