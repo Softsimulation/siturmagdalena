@@ -33,7 +33,7 @@ class PublicoNoticiaController extends Controller
         ->where('noticias_has_idiomas.idiomas_id',1)->where('tipos_noticias_has_idiomas.idiomas_id',1)
         ->where('tipos_noticias.estado',1)
         ->where(function($q)use($request){ if( isset($request->tipoNoticia) && $request->tipoNoticia != null ){$q->where('tipos_noticias.id',$request->tipoNoticia);}})
-        ->where(function($q)use($request){ if( isset($request->buscar) && $request->buscar != null ){$q->where(trim(strtolower('noticias_has_idiomas.titulo')),'like','%'.trim(strtolower($request->buscar)).'%');}})            
+        ->where(function($q)use($request){ if( isset($request->buscar) && $request->buscar != null ){$q->where('noticias_has_idiomas.titulo','like','%'.$request->buscar.'%');}})            
         ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado",
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
         "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia")->paginate(10);
