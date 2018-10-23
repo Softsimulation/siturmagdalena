@@ -234,20 +234,22 @@ class AdministradorDestinosController extends Controller
         
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_sitio = new Multimedia_Destino();
-                $multimedia_sitio->destino_id = $request->id;
-                $multimedia_sitio->ruta = "/multimedia/destinos/destino-".$request->id."/".$nombre;
-                $multimedia_sitio->tipo = false;
-                $multimedia_sitio->portada = false;
-                $multimedia_sitio->estado = true;
-                $multimedia_sitio->user_create = "Situr";
-                $multimedia_sitio->user_update = "Situr";
-                $multimedia_sitio->created_at = Carbon::now();
-                $multimedia_sitio->updated_at = Carbon::now();
-                $multimedia_sitio->save();
-                
-                Storage::disk('multimedia-destino')->put('destino-'.$request->id.'/'.$nombre, File::get($file));
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_sitio = new Multimedia_Destino();
+                    $multimedia_sitio->destino_id = $request->id;
+                    $multimedia_sitio->ruta = "/multimedia/destinos/destino-".$request->id."/".$nombre;
+                    $multimedia_sitio->tipo = false;
+                    $multimedia_sitio->portada = false;
+                    $multimedia_sitio->estado = true;
+                    $multimedia_sitio->user_create = "Situr";
+                    $multimedia_sitio->user_update = "Situr";
+                    $multimedia_sitio->created_at = Carbon::now();
+                    $multimedia_sitio->updated_at = Carbon::now();
+                    $multimedia_sitio->save();
+                    
+                    Storage::disk('multimedia-destino')->put('destino-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         
