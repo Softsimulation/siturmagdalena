@@ -8,6 +8,7 @@ use Storage;
 use File;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use DB;
 
 use App\Models\Sitio;
 use App\Models\Perfil_Usuario;
