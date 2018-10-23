@@ -34,7 +34,8 @@
     30 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
     31 => 'Zizaco\\Entrust\\EntrustServiceProvider',
     32 => 'Barryvdh\\Cors\\ServiceProvider',
-    33 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    33 => 'Chumper\\Zipper\\ZipperServiceProvider',
+    34 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
   ),
   'eager' => 
   array (
@@ -57,7 +58,8 @@
     16 => 'Krlove\\EloquentModelGenerator\\Provider\\GeneratorServiceProvider',
     17 => 'Zizaco\\Entrust\\EntrustServiceProvider',
     18 => 'Barryvdh\\Cors\\ServiceProvider',
-    19 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
+    19 => 'Chumper\\Zipper\\ZipperServiceProvider',
+    20 => 'Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider',
   ),
   'deferred' => 
   array (

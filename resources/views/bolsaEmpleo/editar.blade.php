@@ -86,8 +86,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="numero_maximo_postulaciones" class="control-label">No. máximo de postulaciones</label>
-                            <input ng-if="vacante.postulaciones.length == 0" type="number" class="form-control" min="1" ng-model="vacante.numero_maximo_postulaciones" name="numero_maximo_postulaciones" placeholder="Min 1. (Opcional)" />
-                            <input ng-if="vacante.postulaciones.length > 0" type="number" class="form-control" value="@{{vacante.numero_maximo_postulaciones}}" name="numero_maximo_postulaciones" placeholder="No ingresado" readonly />
+                            <input  type="number" class="form-control" min="1" ng-model="vacante.numero_maximo_postulaciones" name="numero_maximo_postulaciones" placeholder="Min 1. (Opcional)" />
                             <span ng-show="datosForm.$submitted || datosForm.numero_maximo_postulaciones.$touched">
                                 <span class="label label-danger" ng-show="datosForm.numero_maximo_postulaciones.$error.min">*El campo acepta valores mayores o iguales que 1.</span>
                             </span>
@@ -96,15 +95,13 @@
                     <div class="col-md-4">
                         <div class="form-group" >
                             <label for="fecha_vencimiento" class="control-label">Fecha de vencimiento</label>
-                            <adm-dtp name="fecha_vencimiento" ng-if="vacante.postulaciones.length == 0" id="fecha_vencimiento" ng-model='vacante.fecha_vencimiento' mindate="@{{fechaActual}}"options="optionFecha" placeholder="Ingrese fecha de vencimiento"></adm-dtp>
-                            <input type="text" ng-if="vacante.postulaciones.length > 0" name="fecha_vencimiento" class="form-control" value="@{{vacante.fecha_vencimiento}}" readonly placeholder="No ingresado" />
+                            <adm-dtp name="fecha_vencimiento"  id="fecha_vencimiento" ng-model='vacante.fecha_vencimiento' mindate="@{{fechaActual}}"options="optionFecha" placeholder="Ingrese fecha de vencimiento"></adm-dtp>
                         </div>
                     </div>
                     <div class="col-md-4" ng-class="{'error' : (datosForm.$submitted || datosForm.anios_experiencia.$touched) && datosForm.anios_experiencia.$error.required}">
                         <div class="form-group">
                             <label for="anios_experiencia" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Años de experiencia</label>
-                            <input type="number" ng-if="vacante.postulaciones.length == 0" class="form-control" min="0" ng-model="vacante.anios_experiencia" name="anios_experiencia" placeholder="Ingrese años. Min 0" required/>
-                            <input type="number" ng-if="vacante.postulaciones.length > 0" class="form-control" value="@{{vacante.anios_experiencia}}" name="anios_experiencia" placeholder="No ingresado" readonly/>
+                            <input type="number" class="form-control" min="0" ng-model="vacante.anios_experiencia" name="anios_experiencia" placeholder="Ingrese años. Min 0" required/>
                             <span ng-show="datosForm.$submitted || datosForm.anios_experiencia.$touched">
                                 <span class="label label-danger" ng-show="datosForm.anios_experiencia.$error.required">*El campo es requerido</span>
                                 <span class="label label-danger" ng-show="datosForm.anios_experiencia.$error.min">*El campo acepta valores mayores o iguales que 0.</span>
@@ -117,13 +114,12 @@
                     <div class="col-md-4" ng-class="{'error' : (datosForm.$submitted || datosForm.municipio.$touched) && datosForm.municipio.$error.required}">
                         <div class="form-group">
                             <label for="municipio" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Municipio</label>
-                            <ui-select id="municipio" ng-if="vacante.postulaciones.length == 0" name="municipio" ng-model="vacante.municipio_id"  ng-required="true">
+                            <ui-select id="municipio" name="municipio" ng-model="vacante.municipio_id"  ng-required="true">
                                 <ui-select-match placeholder="Seleccione municipio">@{{$select.selected.nombre}}</ui-select-match>
                                 <ui-select-choices repeat="item.id as item in municipios | filter:$select.search">
                                     @{{item.nombre}}
                                 </ui-select-choices>
                             </ui-select>
-                            <input type="text" ng-if="vacante.postulaciones.length > 0" name="municipio" class="form-control" value="@{{vacante.municipio.nombre}}" readonly placeholder="No ingresado" />
                             <span ng-show="datosForm.$submitted || datosForm.municipio.$touched">
                                 <span class="label label-danger" ng-show="datosForm.municipio.$error.required">*El campo es requerido</span>
                             </span>
@@ -132,10 +128,9 @@
                     <div class="col-md-4" ng-class="{'error' : (datosForm.$submitted || datosForm.nivelEducacion.$touched) && datosForm.nivelEducacion.$error.required}">
                         <div class="form-group">
                             <label for="nivelEducacion" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Nivel de educación</label>
-                            <select ng-if="vacante.postulaciones.length == 0" class="form-control" id="nivelEducacion" name="nivelEducacion" ng-model="vacante.nivel_educacion_id" ng-options="item.id as item.nombre for item in nivelesEducacion" required>
+                            <select class="form-control" id="nivelEducacion" name="nivelEducacion" ng-model="vacante.nivel_educacion_id" ng-options="item.id as item.nombre for item in nivelesEducacion" required>
                                 <option value="" selected disable>Seleccion nivel de educación</option>
                             </select>
-                            <input type="text" ng-if="vacante.postulaciones.length > 0" name="nivelEducacion" class="form-control" value="@{{vacante.nivel_educacion.nombre}}" readonly placeholder="No ingresado" />
                             <span ng-show="datosForm.$submitted || datosForm.nivelEducacion.$touched">
                                 <span class="label label-danger" ng-show="datosForm.nivelEducacion.$error.required">*El campo es requerido</span>
                             </span>
@@ -144,13 +139,12 @@
                     <div class="col-md-4" ng-class="{'error' : (datosForm.$submitted || datosForm.tipo_cargo_vacante_id.$touched) && datosForm.tipo_cargo_vacante_id.$error.required}">
                         <div class="form-group">
                             <label for="tipo_cargo_vacante_id" class="control-label"><span class="glyphicon glyphicon-asterisk"></span> Tipo de cargo</label>
-                            <ui-select ng-if="vacante.postulaciones.length == 0" id="tipo_cargo_vacante_id"  name="tipo_cargo_vacante_id" ng-model="vacante.tipo_cargo_vacante_id"  ng-required="true">
+                            <ui-select id="tipo_cargo_vacante_id"  name="tipo_cargo_vacante_id" ng-model="vacante.tipo_cargo_vacante_id"  ng-required="true">
                                 <ui-select-match placeholder="Seleccione tipo de cargo">@{{$select.selected.nombre}}</ui-select-match>
                                 <ui-select-choices repeat="item.id as item in tiposCargos | filter:$select.search">
                                     @{{item.nombre}}
                                 </ui-select-choices>
                             </ui-select>
-                            <input type="text" ng-if="vacante.postulaciones.length > 0" name="tipo_cargo_vacante_id" class="form-control" value="@{{vacante.tipos_cargos_vacante.nombre}}" readonly placeholder="No ingresado" />
                             <span ng-show="datosForm.$submitted || datosForm.tipo_cargo_vacante_id.$touched">
                                 <span class="label label-danger" ng-show="datosForm.tipo_cargo_vacante_id.$error.required">*El campo es requerido</span>
                             </span>
@@ -162,8 +156,7 @@
                     <div class="col-md-4" >
                         <div class="form-group">
                             <label for="salario_minimo" class="control-label">Salario mínimo</label>
-                            <input type="number" ng-if="vacante.postulaciones.length == 0" class="form-control" min="0" max="@{{vacante.salario_maximo != undefined ? vacante.salario_maximo : 9999999999999999}}" ng-model="vacante.salario_minimo" name="salario_minimo" placeholder="Ingrese salario mínimo. Min 0"/>
-                            <input type="number" ng-if="vacante.postulaciones.length > 0" class="form-control" value="@{{vacante.salario_minimo}}" name="salario_minimo" placeholder="No ingresado" readonly/>
+                            <input type="number" class="form-control" min="0" max="@{{vacante.salario_maximo != undefined ? vacante.salario_maximo : 9999999999999999}}" ng-model="vacante.salario_minimo" name="salario_minimo" placeholder="Ingrese salario mínimo. Min 0"/>
                             <span ng-show="datosForm.$submitted || datosForm.salario_minimo.$touched">
                                 <span class="label label-danger" ng-show="datosForm.salario_minimo.$error.min">*El campo acepta valores mayores o iguales que 0.</span>
                                 <span class="label label-danger" ng-show="datosForm.salario_minimo.$error.max">*El campo acepta valores mayores o iguales que el salario máximo ó 0.</span>
@@ -173,8 +166,7 @@
                     <div class="col-md-4" >
                         <div class="form-group">
                             <label for="salario_maximo" class="control-label">Salario máximo</label>
-                            <input type="number" ng-if="vacante.postulaciones.length == 0" class="form-control" min="@{{vacante.salario_minimo != undefined ? vacante.salario_minimo : 0}}" ng-model="vacante.salario_maximo" name="salario_maximo" placeholder="Ingrese salario máximo. Min 0"/>
-                            <input type="number" ng-if="vacante.postulaciones.length > 0" class="form-control" value="@{{vacante.salario_maximo}}" name="salario_maximo" placeholder="No ingresado" readonly/>
+                            <input type="number" class="form-control" min="@{{vacante.salario_minimo != undefined ? vacante.salario_minimo : 0}}" ng-model="vacante.salario_maximo" name="salario_maximo" placeholder="Ingrese salario máximo. Min 0"/>
                             <span ng-show="datosForm.$submitted || datosForm.salario_maximo.$touched">
                                 <span class="label label-danger" ng-show="datosForm.salario_maximo.$error.min">*El campo acepta valores mayores o iguales que el salario mínimo ó 0.</span>
                             </span>
