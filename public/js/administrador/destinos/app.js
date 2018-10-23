@@ -1,4 +1,4 @@
-var situr = angular.module("destinosApp", ['InputFile' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'destinosServices', 'destinos.crear', 'destinos.index', 'destinos.idioma', 'destinos.editar']);
+var situr = angular.module("destinosApp", ['InputFile', 'ng.ckeditor' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'destinosServices', 'destinos.crear', 'destinos.index', 'destinos.idioma', 'destinos.editar']);
 
 situr.directive('fileInput', ['$parse', function ($parse) {
 

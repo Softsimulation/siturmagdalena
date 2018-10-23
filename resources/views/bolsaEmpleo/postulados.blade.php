@@ -131,7 +131,7 @@
             <br>
             <div class="row">
                 <div class="col-xs-12">
-                    <h6>Postulados</h6>
+                    <h6>Postulados <a ng-if="vacante.postulaciones.length > 0" href="/bolsaEmpleo/generararchivosvacante/@{{vacante.id}}" title="Descargar adjuntos" target="_blank" class="btn btn-primary"><span class="glyphicon glyphicon-download-alt"></span></a></h6>
                     <table class="table table-striped">
                         <tr>
                             <th></th>

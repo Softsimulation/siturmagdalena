@@ -71,8 +71,15 @@
                             <div class="col-xs-12 col-md-12">
                                 <div class="form-group" ng-class="{'has-error': (crearDestinoForm.$submitted || crearDestinoForm.descripcion.$touched) && crearDestinoForm.descripcion.$error.required}">
                                     <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
-                                    <textarea style="resize: none;" ng-model="destino.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del destino (De 100 a 1,000 caracteres)" maxlength="1000"></textarea>
-                                    
+                                    <ng-ckeditor  
+                                              ng-model="destino.datosGenerales.descripcion"
+                                               
+                                              skin="moono" 
+                                              remove-buttons="Image" 
+                                              remove-plugins="iframe,flash,smiley"
+                                              required
+                                              >
+                                </ng-ckeditor>
                                 </div>
                             </div>
                             <div class="col-xs-12 form-inline text-center">
@@ -151,4 +158,6 @@
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

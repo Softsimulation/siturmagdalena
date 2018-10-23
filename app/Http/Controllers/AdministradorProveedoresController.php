@@ -313,20 +313,22 @@ class AdministradorProveedoresController extends Controller
         
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_proveedor = new Multimedia_Proveedor();
-                $multimedia_proveedor->proveedor_id = $request->id;
-                $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
-                $multimedia_proveedor->tipo = false;
-                $multimedia_proveedor->portada = false;
-                $multimedia_proveedor->estado = true;
-                $multimedia_proveedor->user_create = "Situr";
-                $multimedia_proveedor->user_update = "Situr";
-                $multimedia_proveedor->created_at = Carbon::now();
-                $multimedia_proveedor->updated_at = Carbon::now();
-                $multimedia_proveedor->save();
-                
-                Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$nombre, File::get($file));
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_proveedor = new Multimedia_Proveedor();
+                    $multimedia_proveedor->proveedor_id = $request->id;
+                    $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
+                    $multimedia_proveedor->tipo = false;
+                    $multimedia_proveedor->portada = false;
+                    $multimedia_proveedor->estado = true;
+                    $multimedia_proveedor->user_create = "Situr";
+                    $multimedia_proveedor->user_update = "Situr";
+                    $multimedia_proveedor->created_at = Carbon::now();
+                    $multimedia_proveedor->updated_at = Carbon::now();
+                    $multimedia_proveedor->save();
+                    
+                    Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         

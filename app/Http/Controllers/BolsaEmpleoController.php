@@ -13,6 +13,7 @@ use App\Models\Nivel_Educacion;
 use App\Models\Municipio;
 use App\Models\Oferta_Vacante;
 use App\Models\Tipo_Cargo_Vacante;
+use App\Models\Postulaciones_Vacante;
 
 class BolsaEmpleoController extends Controller
 {
@@ -81,7 +82,7 @@ class BolsaEmpleoController extends Controller
 	        'descripcion' => $request->descripcion,
 	        'anios_experiencia' => $request->anios_experiencia,
 	        'numero_maximo_postulaciones' => isset($request->numero_maximo_postulaciones) ? $request->numero_maximo_postulaciones : null,
-	        'fecha_vencimiento' => isset($request->fecha_vencimiento) ? $request->fecha_vencimiento : null,
+	        'fecha_vencimiento' => isset($request->fecha_vencimiento) ? date('Y-m-d H:i',strtotime(str_replace("/","-",$request->fecha_vencimiento))) : null,
 	        'salario_minimo' => isset($request->salario_minimo) ? $request->salario_minimo : null,
 	        'salario_maximo' => isset($request->salario_maximo) ? $request->salario_maximo : null,
 	        'numero_vacantes' => $request->numero_vacantes,
@@ -152,13 +153,14 @@ class BolsaEmpleoController extends Controller
 			}
 		}
 		
+		
 		$vacante = Oferta_Vacante::find($request->id);
 		$vacante->proveedores_rnt_id = $request->proveedores_rnt_id;
 		$vacante->nombre = $request->nombre;
 		$vacante->numero_vacantes = $request->numero_vacantes;
 		$vacante->descripcion = $request->descripcion;
 		$vacante->numero_maximo_postulaciones = isset($request->numero_maximo_postulaciones) ? $request->numero_maximo_postulaciones : null;
-		$vacante->fecha_vencimiento = isset($request->fecha_vencimiento) ? $request->fecha_vencimiento : null;
+		$vacante->fecha_vencimiento = isset($request->fecha_vencimiento) ? date('Y-m-d H:i',strtotime(str_replace("/","-",$request->fecha_vencimiento))) : null;
 		$vacante->anios_experiencia = $request->anios_experiencia;
 		$vacante->municipio_id = $request->municipio_id;
 		$vacante->nivel_educacion_id = $request->nivel_educacion_id;
@@ -239,6 +241,28 @@ class BolsaEmpleoController extends Controller
     	
     	return ['vacante' => $vacante];
     	
+    }
+    
+    public function getGenerararchivosvacante($id){
+    	$vacante = Oferta_Vacante::find($id);
+    	if(!$vacante){
+            return \Redirect::to('/bolsaEmpleo/vacantes')->with('message', 'Verifique que la vacante este ingresada en el sistema.')
+                        ->withInput();
+        }else{
+        	if(count($vacante->postulaciones) == 0){
+        		return \Redirect::to('/bolsaEmpleo/postulados/'.$id)->with('message', 'La vacante no tiene postulados.')
+                        ->withInput();
+        	}else{
+        		$arregloHv = Postulaciones_Vacante::where('ofertas_vacante_id', $vacante->id)->pluck('ruta_hoja_vida');
+        		$arregloZip = array();
+        		foreach($arregloHv as $item){
+        			array_push($arregloZip, public_path($item));
+        		}
+        		\Zipper::make(public_path('/comprimidosVacantes/vacante_'.$vacante->id.'.zip'))->add($arregloZip)->close();
+        
+	    		return \Response::download(public_path('/comprimidosVacantes/vacante_'.$vacante->id.'.zip'));
+        	}
+        }
     }
     
 }
