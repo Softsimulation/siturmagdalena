@@ -361,28 +361,28 @@ class AdministradorAtraccionController extends Controller
             }
         }
         
-        $c = 0;
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_sitio = new Multimedia_Sitio();
-                $multimedia_sitio->sitios_id = $atraccion->sitios_id;
-                $multimedia_sitio->ruta = "/multimedia/atracciones/atraccion-".$request->id."/".$nombre;
-                $multimedia_sitio->tipo = false;
-                $multimedia_sitio->portada = false;
-                $multimedia_sitio->estado = true;
-                $multimedia_sitio->user_create = "Situr";
-                $multimedia_sitio->user_update = "Situr";
-                $multimedia_sitio->created_at = Carbon::now();
-                $multimedia_sitio->updated_at = Carbon::now();
-                $multimedia_sitio->save();
-                
-                Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$nombre, File::get($file));
-                $c++;
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_sitio = new Multimedia_Sitio();
+                    $multimedia_sitio->sitios_id = $atraccion->sitios_id;
+                    $multimedia_sitio->ruta = "/multimedia/atracciones/atraccion-".$request->id."/".$nombre;
+                    $multimedia_sitio->tipo = false;
+                    $multimedia_sitio->portada = false;
+                    $multimedia_sitio->estado = true;
+                    $multimedia_sitio->user_create = "Situr";
+                    $multimedia_sitio->user_update = "Situr";
+                    $multimedia_sitio->created_at = Carbon::now();
+                    $multimedia_sitio->updated_at = Carbon::now();
+                    $multimedia_sitio->save();
+                    
+                    Storage::disk('multimedia-atraccion')->put('atraccion-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         
-        return ['success' => true, 'tam' => $c];
+        return ['success' => true];
     }
     
     public function postGuardaradicional (Request $request){
