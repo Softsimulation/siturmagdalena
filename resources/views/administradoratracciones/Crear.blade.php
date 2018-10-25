@@ -289,4 +289,6 @@
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/ng-map.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

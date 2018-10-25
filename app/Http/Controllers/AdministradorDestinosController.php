@@ -121,7 +121,7 @@ class AdministradorDestinosController extends Controller
     public function postCreardestino(Request $request){
         $validator = \Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'tipo' => 'required|numeric|exists:tipo_destino,id',
             'pos' => 'required'
         ],[
@@ -281,7 +281,7 @@ class AdministradorDestinosController extends Controller
             'nombre' => 'required|max:255',
             'id' => 'required|exists:destino|numeric',
             'idIdioma' => 'required|exists:idiomas,id|numeric',
-            'descripcion' => 'required|max:1000|min:100'
+            'descripcion' => 'required|min:100'
         ],[
             'nombre.required' => 'Se necesita un nombre para el destino.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
