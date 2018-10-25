@@ -31,6 +31,7 @@
     <br><br>
     @if ($publicaciones != null || count($publicaciones) > 0)
         @foreach ($publicaciones as $publicacion)
+        {{$publicacion}}
             Título : {{$publicacion->titulo}}
             <br>
             Portada : {{$publicacion->portada}}

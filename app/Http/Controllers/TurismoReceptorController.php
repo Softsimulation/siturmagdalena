@@ -130,12 +130,12 @@ class TurismoReceptorController extends Controller
         $validator = \Validator::make($request->all(), [
 			'Grupo' => 'required|exists:grupos_viaje,id',
 			'Encuestador' => 'required|exists:digitadores,id',
-			'Llegada' => 'required|date|before:tomorrow',
+			'Llegada' => 'required|date',
 			'Salida' => 'required|date',
 			'Nombre' => 'required|max:150',
 			'Edad' => 'required|numeric|between:15,150',
 			'Sexo' => 'required',
-			'Email' => 'required|email',
+			'Email' => 'email',
 			'Telefono' => 'max:50',
 			'Celular' => 'max:50',
 			'Nacimiento' => 'required|exists:opciones_lugares,id',
@@ -208,7 +208,7 @@ class TurismoReceptorController extends Controller
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
 		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
-		$visitante->email = $request->Email;
+		$visitante->email = isset($request->Email) ? $request->Email : null;
 		$visitante->encuestador_creada = $request->Encuestador;
 		$visitante->fecha_llegada = $request->Llegada;
 		$visitante->fecha_salida = $request->Salida;
@@ -242,7 +242,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => 1,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => 'La encuesta ha sido creada',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
         
         
@@ -323,12 +323,12 @@ class TurismoReceptorController extends Controller
 			'Id' => 'required|exists:visitantes,id',
 			'Grupo' => 'required|exists:grupos_viaje,id',
 			'Encuestador' => 'required|exists:digitadores,id',
-			'Llegada' => 'required|date|before:tomorrow',
+			'Llegada' => 'required|date',
 			'Salida' => 'required|date',
 			'Nombre' => 'required|max:150',
 			'Edad' => 'required|numeric|between:15,150',
 			'Sexo' => 'required',
-			'Email' => 'required|email',
+			'Email' => 'email',
 			'Telefono' => 'max:50',
 			'Celular' => 'max:50',
 			'Nacimiento' => 'required|exists:opciones_lugares,id',
@@ -393,9 +393,8 @@ class TurismoReceptorController extends Controller
 		$visitante->telefono = isset($request->Telefono) ? $request->Telefono : null;
 		$visitante->celular = isset($request->Celular) ? $request->Celular : null;
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
-		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
-		$visitante->email = $request->Email;
+		$visitante->email = isset($request->Email) ? $request->Email : null;
 		$visitante->encuestador_creada = $request->Encuestador;
 		$visitante->fecha_llegada = $request->Llegada;
 		$visitante->fecha_salida = $request->Salida;
@@ -431,7 +430,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => 'Se ha modificado la sección de información general.',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
     	
     	$visitante->save();
@@ -602,8 +601,8 @@ class TurismoReceptorController extends Controller
 		        return ["success" => false, "errores" => [["Si el número de noches es mayor a 0 no puede seleccionar la opcion Ningún tipo de alojamiento."]] ];
 		    }
 		    
-		    if( collect($request->Estancias)->where('Municipio', $estancia['Municipio'] )->count() > 1 ){
-		        return ["success" => false, "errores" => [["No debe repetir un municipio en las estancias."]] ];
+		    if( collect($request->Estancias)->where('Municipio', $estancia['Municipio'] )->where('Alojamiento', $estancia['Alojamiento'] )->count() > 1 ){
+		        return ["success" => false, "errores" => [["No debe repetir un municipio con el mismo tipo de alojamiento en las estancias."]] ];
 		    }
 		    
 		}
@@ -675,7 +674,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $sw == 0 ? 'Se ha creado en la sección estancia y visitados' : 'Se ha editado la sección estancia y visitados',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
 		
 		$visitante->atraccion_favorita = $request->favorita;
@@ -811,7 +810,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $sw == 0 ? 'Se completó la sección de transporte' : 'Se editó la sección de transporte',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
 		
 		$visitante->save();
@@ -919,7 +918,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $sw == 0 ? 'Se completó la sección de viaje en grupo' : 'Se editó la sección de viaje en grupo',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
 		
 		$visitante->save();
@@ -1015,7 +1014,7 @@ class TurismoReceptorController extends Controller
              
 			'id' => 'required|exists:visitantes,id',
 			'RealizoGasto' => 'required|between:0,1',
-			'ViajoDepartamento' => 'required|between:0,1',
+			'ViajoDepartamento' => 'required_if:RealizoGasto,1|between:0,1',
 			'CostoPaquete' => 'required_if:ViajoDepartamento,1',
 			'DivisaPaquete' => 'required_if:ViajeDepartamento,1|exists:divisas,id',
 			'PersonasCubrio' => 'required_if:ViajeDepartamento,1|integer|min:1',
@@ -1026,7 +1025,7 @@ class TurismoReceptorController extends Controller
 			'LugarAgencia' => 'required_if:Proveedor,1|exists:opciones_lugares,id',
 			'ServiciosIncluidos' => 'required_if:ViajoDepartamento,1|array',
 			'ServiciosIncluidos.*' => 'required|exists:servicios_paquete,id',
-			'GastosAparte' => 'required|between:0,1',
+			'GastosAparte' => 'required_if:RealizoGasto,1|between:0,1',
 			'Financiadores' => 'required|array',
 			'Financiadores.*' => 'required|exists:financiadores_viajes,id',
 			'Rubros'=>'required_if:GastosAparte,1|array',
@@ -1178,7 +1177,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => 1,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $visitante->ultima_sesion ==5?"Se ha creado la sección de gastos":"Se ha editado la sección de gastos",
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
         $visitante->save();
         return ["success"=>true];
@@ -1310,9 +1309,11 @@ class TurismoReceptorController extends Controller
 // 		if( (!isset($request->OtroElementos)) && in_array(11,$request->Elementos) ){
 // 		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro."]]];
 // 		}
-		if( (!isset($request->OtroActividad)) && in_array(12,$request->Actividades) ){
-		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro en las actividades."]]];
-		}
+        if(isset($request->Actividades)){
+            if( (!isset($request->OtroActividad)) && in_array(12,$request->Actividades) ){
+    		    return ["success"=>false,"errores"=>[["Por favor ingrese el campo de valor otro en las actividades."]]];
+    		}    
+        }
 		
 		$visitante = Visitante::find($request->Id);
 		$sw = 0;
@@ -1383,7 +1384,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $sw == 0 ? 'Se completó la sección de fuente de percepción del visitante' : 'Se editó la sección de fuente de percepción del visitante',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
 		
 		$visitante->save();
@@ -1559,7 +1560,7 @@ class TurismoReceptorController extends Controller
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $sw == 0 ? 'Se completó la sección de fuente de información del visitante' : 'Se editó la sección de fuente de información del visitante',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
 		
         $visitante->save();

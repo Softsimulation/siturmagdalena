@@ -158,8 +158,8 @@ angular.module('atracciones.editar', [])
             for (var i in $scope.imagenes){
                 if (Number.isInteger(parseInt(i))){
                     fd.append("image[]", $scope.imagenes[i]);
+                    console.log(i);
                 }
-                console.log(i);
             }
         }
         fd.append('id', $scope.id);

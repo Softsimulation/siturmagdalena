@@ -85,6 +85,8 @@ Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
 
 Route::controller('/postulado','PostuladoController');
 
+Route::controller('/controlSostenibilidadReceptor','ControlSostenibilidadController');
+
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
 Route::controller('/login','LoginController');
@@ -123,4 +125,6 @@ Route::group(['middleware' => 'cors'], function(){
         Route::controller('/grupoviajeapi','GrupoViajeCorsController');
    });
 });
+
+
 

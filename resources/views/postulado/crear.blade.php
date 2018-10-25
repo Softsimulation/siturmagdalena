@@ -98,9 +98,10 @@
 @section('content')
 <div class="main-page" ng-app="postuladoApp" ng-controller="crearPostuladoCtrl">
     
-    @if(Session::has('vacante'))
+    @if(isset($id))
         <input type="hidden" ng-model="id" ng-init="id={{ Session::get('vacante')}}" />
     @endif
+
     
     
     <h1 class="title1">Registro de postulado</h1><br />
@@ -112,9 +113,7 @@
             </div>
         </div>    
     </div>
-    @if(Session::has('message'))
-        <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
-    @endif
+    <div class="alert alert-info" role="alert" style="text-align: center;">Debe llenar los datos de configuración</div>
     
     @if( Auth::check() )
         <div class="alert alert-info" role="alert" style="text-align: center;">Si el usuario ya se encuentra registrado en el sistema se recomienda que utilice el correo con el cual inicia sesión.</div>

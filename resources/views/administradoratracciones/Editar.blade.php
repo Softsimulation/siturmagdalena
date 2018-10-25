@@ -141,7 +141,7 @@
                             <div class="col-xs-12">
                                 <br/>
                                 <label>Subir imágenes</label>
-                                <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
+                                <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="20"></file-input>
                                 
                             </div>
                             <div class="col-xs-12">
@@ -248,6 +248,8 @@
 <script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
+<script src="{{asset('/js/plugins/ng-map.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
-<script src="/js/plugins/ng-map.js"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

@@ -27,8 +27,18 @@ class EventosController extends Controller
             $queryMultimediaEventos->where('tipo', false)->orderBy('portada', 'desc')->select('eventos_id', 'ruta');
         }, 'sitiosConEventos' =>function ($querySitiosConEventos){
             $querySitiosConEventos->with(['sitiosConIdiomas' => function ($querySitiosConIdiomas){
-                $querySitiosConIdiomas->select('idiomas_id', 'sitios_id', 'nombre', 'descripcion');
+                $querySitiosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'sitios_id', 'nombre');
+            }, 'multimediaSitios' => function($queryMultimediaSitios){
+                $queryMultimediaSitios->select('sitios_id', 'ruta')->orderBy('portada', 'desc')->where('tipo', false);
             }])->select('sitios.id');
+        }, 'perfilesUsuariosConEventos' => function ($queryPerfilesUsuariosConEventos){
+            $queryPerfilesUsuariosConEventos->with(['perfilesUsuariosConIdiomas' => function ($queryPerfilesUsuariosConIdiomas){
+                $queryPerfilesUsuariosConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'perfiles_usuarios_id', 'nombre');
+            }])->select('perfiles_usuarios.id');
+        }, 'categoriaTurismoConEventos' => function ($queryCategoriaTurismoConEventos){
+            $queryCategoriaTurismoConEventos->with(['categoriaTurismoConIdiomas' => function($queryCategoriaTurismoConIdiomas){
+                $queryCategoriaTurismoConIdiomas->orderBy('idiomas_id')->select('categoria_turismo_id', 'idiomas_id', 'nombre');
+            }])->select('categoria_turismo.id');
         }])->select('id', 'tipo_eventos_id', 'telefono', 'web', 'fecha_in', 'fecha_fin', 'valor_min', 'valor_max')->first();
         
         $video_promocional = Evento::where('id', $id)->with(['multimediaEventos' => function ($queryMultimediaEventos){

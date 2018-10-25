@@ -14,7 +14,9 @@ angular.module('actividades.crear', [])
         return item.destino.destino_con_idiomas[0].nombre;
     }
     
+    $("body").attr("class", "cbp-spmenu-push charging");
     actividadesServi.getDatoscrear().then(function (data){
+        $("body").attr("class", "cbp-spmenu-push");
         if (data.success){
             $scope.sitios = data.sitios;
             $scope.perfiles_turista = data.perfiles_turista;
