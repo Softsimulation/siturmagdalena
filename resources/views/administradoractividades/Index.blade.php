@@ -90,19 +90,14 @@
 
 @section('javascript')
 <script src="{{asset('/js/dir-pagination.js')}}"></script>
-<script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
-<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
 <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
 <script src="{{asset('/js/plugins/select.min.js')}}"></script>
-<script src="{{asset('/js/administrador/atracciones/indexController.js')}}"></script>
-<script src="{{asset('/js/administrador/atracciones/crearController.js')}}"></script>
-<script src="{{asset('/js/administrador/atracciones/editarController.js')}}"></script>
-<script src="{{asset('/js/administrador/atracciones/idiomaController.js')}}"></script>
-<script src="{{asset('/js/administrador/atracciones/services.js')}}"></script>
-<script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
-<script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
-<script src="{{asset('/js/plugins/gmaps.js')}}"></script>
-<script src="{{asset('/js/plugins/ng-map.js')}}"></script>
+<script src="{{asset('/js/administrador/actividades/indexController.js')}}"></script>
+<script src="{{asset('/js/administrador/actividades/crearController.js')}}"></script>
+<script src="{{asset('/js/administrador/actividades/editarController.js')}}"></script>
+<script src="{{asset('/js/administrador/actividades/idiomaController.js')}}"></script>
+<script src="{{asset('/js/administrador/actividades/services.js')}}"></script>
+<script src="{{asset('/js/administrador/actividades/app.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
 <script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
 <script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>

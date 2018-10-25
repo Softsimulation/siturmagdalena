@@ -1,4 +1,4 @@
-var situr = angular.module("eventosApp", ['ADM-dateTimePicker',  'InputFile' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'eventosServices', 'eventos.crear', 'eventos.index', 'eventos.idioma', 'eventos.editar']);
+var situr = angular.module("eventosApp", ['ADM-dateTimePicker', 'ng.ckeditor' ,  'InputFile' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'eventosServices', 'eventos.crear', 'eventos.index', 'eventos.idioma', 'eventos.editar']);
 
 situr.directive('fileInput', ['$parse', function ($parse) {
 
