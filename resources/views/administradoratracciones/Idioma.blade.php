@@ -41,11 +41,22 @@
                      
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-12">
                 <div class="form-group" ng-class="{'has-error': (editarIdiomaForm.$submitted || editarIdiomaForm.descripcion.$touched) && editarIdiomaForm.descripcion.$error.required}">
                     <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
-                    <textarea style="resize: none;" ng-model="atraccion.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)"></textarea>
-                    
+                    <ng-ckeditor  
+                              ng-model="atraccion.datosGenerales.descripcion"
+                               
+                              skin="moono" 
+                              remove-buttons="Image" 
+                              remove-plugins="iframe,flash,smiley"
+                              name="descripcion"
+                              required
+                              >
+                    </ng-ckeditor>
+                    <span class="messages" ng-show="editarIdiomaForm.$submitted || editarIdiomaForm.descripcion.$touched">
+                        <span ng-show="editarIdiomaForm.nombre.$error.required" class="text-error">* El campo es obligatorio.</span>
+                    </span>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-6">
@@ -58,19 +69,19 @@
                     <input ng-model="atraccion.datosGenerales.horario" type="text" name="horario" id="horario" class="form-control" placeholder="Máximo 255 caracteres."/>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                     <label for="recomendaciones">Recomendaciones</label>
-                    <textarea style="resize: none;" rows="5" class="form-control" id="recomendaciones" name="recomendaciones" ng-model="atraccion.datosGenerales.recomendaciones" placeholder="Máximo 1,000 caracteres."></textarea>
+                    <textarea style="resize: none;" rows="6" class="form-control" id="recomendaciones" name="recomendaciones" ng-model="atraccion.datosGenerales.recomendaciones" placeholder="Máximo 1,000 caracteres."></textarea>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                     <label for="reglas">Reglas</label>
                     <textarea style="resize: none;" rows="5" class="form-control" id="reglas" name="reglas" ng-model="atraccion.datosGenerales.reglas" placeholder="Reglas o normas que deben seguir los visitantes. Máximo 1,000 caracteres."></textarea>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                     <label for="como_llegar">Como llegar</label>
                     <textarea style="resize: none;" rows="5" class="form-control" id="como_llegar" name="como_llegar" ng-model="atraccion.datosGenerales.como_llegar" placeholder="Pasos o indicaciones para llegar al lugar. Máximo 1,000 caracteres."></textarea>
@@ -103,6 +114,8 @@
 <script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
+<script src="{{asset('/js/plugins/ng-map.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
-<script src="/js/plugins/ng-map.js"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

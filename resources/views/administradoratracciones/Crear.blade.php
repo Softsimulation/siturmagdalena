@@ -60,8 +60,19 @@
                     <div class="col-xs-12 col-sm-12">
                         <div class="form-group" ng-class="{'has-error': (crearAtraccionForm.$submitted || crearAtraccionForm.descripcion.$touched) && crearAtraccionForm.descripcion.$error.required}">
                             <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
-                            <textarea style="resize: none;" ng-model="atraccion.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la atracción (De 100 a 1,000 caracteres)"></textarea>
-                            
+                            <ng-ckeditor  
+                                      ng-model="atraccion.datosGenerales.descripcion"
+                                       
+                                      skin="moono" 
+                                      remove-buttons="Image" 
+                                      remove-plugins="iframe,flash,smiley"
+                                      name="descripcion"
+                                      required
+                                      >
+                            </ng-ckeditor>
+                            <span class="messages" ng-show="crearAtraccionForm.$submitted || crearAtraccionForm.descripcion.$touched">
+                                <span ng-show="crearAtraccionForm.descripcion.$error.required" class="text-error">* El campo es obligatorio.</span>
+                            </span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-4">
@@ -289,4 +300,6 @@
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/ng-map.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

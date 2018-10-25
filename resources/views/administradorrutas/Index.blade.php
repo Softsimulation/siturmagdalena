@@ -124,4 +124,6 @@
 <script src="{{asset('/js/administrador/rutas/editarController.js')}}"></script>
 <script src="{{asset('/js/administrador/rutas/services.js')}}"></script>
 <script src="{{asset('/js/administrador/rutas/app.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

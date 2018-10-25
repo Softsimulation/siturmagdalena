@@ -124,4 +124,6 @@
 <script src="{{asset('/js/administrador/eventos/editarController.js')}}"></script>
 <script src="{{asset('/js/administrador/eventos/services.js')}}"></script>
 <script src="{{asset('/js/administrador/eventos/app.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection
