@@ -73,7 +73,7 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
                       
                     
                   } else {
-                    window.location = "ruta";
+                    window.location.href = data.ruta;
                   }
                 });
                 
