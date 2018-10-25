@@ -42,12 +42,7 @@ class EntrustRole
 		}
 
 		if ($this->auth->guest() || !$request->user()->hasRole($roles)) {
-<<<<<<< HEAD
 			abort(403);
-=======
-			return \Redirect::to('/')->with('message', 'El usuario no cuenta con los permisos requeridos.')
-                    ->withInput();
->>>>>>> 5c172ba75039de0f7e8e840a073bcf741fe3205e
 		}
 
 		return $next($request);
