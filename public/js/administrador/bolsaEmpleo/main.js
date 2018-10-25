@@ -126,6 +126,8 @@ angular.module('bolsaEmpleoApp', ['bolsaEmpleoService','ADM-dateTimePicker','ui.
                 $scope.vacante.fecha_vencimiento = $scope.parsearFecha($scope.vacante.fecha_vencimiento);    
             }
             
+            $scope.vacante.salario_minimo = $scope.vacante.salario_minimo ? parseFloat($scope.vacante.salario_minimo) : null; 
+            $scope.vacante.salario_maximo = $scope.vacante.salario_maximo ? parseFloat($scope.vacante.salario_maximo) : null; 
             
             
             $("body").attr("class", "cbp-spmenu-push");

@@ -259,20 +259,22 @@ class AdministradorEventosController extends Controller
         
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_evento = new Multimedia_Evento();
-                $multimedia_evento->eventos_id = $request->id;
-                $multimedia_evento->ruta = "/multimedia/eventos/evento-".$request->id."/".$nombre;
-                $multimedia_evento->tipo = false;
-                $multimedia_evento->portada = false;
-                $multimedia_evento->estado = true;
-                $multimedia_evento->user_create = "Situr";
-                $multimedia_evento->user_update = "Situr";
-                $multimedia_evento->created_at = Carbon::now();
-                $multimedia_evento->updated_at = Carbon::now();
-                $multimedia_evento->save();
-                
-                Storage::disk('multimedia-evento')->put('evento-'.$request->id.'/'.$nombre, File::get($file));
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_evento = new Multimedia_Evento();
+                    $multimedia_evento->eventos_id = $request->id;
+                    $multimedia_evento->ruta = "/multimedia/eventos/evento-".$request->id."/".$nombre;
+                    $multimedia_evento->tipo = false;
+                    $multimedia_evento->portada = false;
+                    $multimedia_evento->estado = true;
+                    $multimedia_evento->user_create = "Situr";
+                    $multimedia_evento->user_update = "Situr";
+                    $multimedia_evento->created_at = Carbon::now();
+                    $multimedia_evento->updated_at = Carbon::now();
+                    $multimedia_evento->save();
+                    
+                    Storage::disk('multimedia-evento')->put('evento-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         
