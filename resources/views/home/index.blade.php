@@ -94,7 +94,7 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="{{asset('indicadores/secundarios')}}">
                 <span class="stats stats-secundarias" aria-hidden="true"></span>
                 Estadísticas secundarias
             </a>

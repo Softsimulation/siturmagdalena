@@ -143,7 +143,12 @@
                                 <li role="none"><a role="menuitem" href="{{asset('administradordestinos')}}">Administrar destinos</a></li>
                                 <li role="none"><a role="menuitem" href="{{asset('administradoratracciones')}}">Administrar atracciones</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('administradoractividades')}}">Administrar actividades</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('administradorproveedores')}}">Administrar proveedores</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('administradorrutas')}}">Administrar rutas</a></li>
         					</ul>
+                        </li>
+                        <li>
+                            <a role="menuitem" href="{{asset('bolsaEmpleo/vacantes')}}">Bolsa de empleo</a>
                         </li>
                         <li>
                             <a role="menuitem" href="#menuTurismoReceptor" aria-haspopup="true" aria-expanded="false">Turísmo receptor</a>
