@@ -157,7 +157,14 @@
                             <a role="menuitem" href="{{asset('temporada')}}">Turismo interno y emisor</a>
                         </li>
                         <li>
-                            <a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedores')}}">Oferta y empleo</a>
+                            
+                            <a role="menuitem" href="#oferta" aria-haspopup="true" aria-expanded="false">Oferta y empleo</a>
+                            <ul role="menu" id="oferta" aria-label="Muestra maestra">
+                                <li role="none">
+                                    <a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedores')}}">Listado de proveedores</a>
+                                    <a role="menuitem" href="{{asset('importarRnt')}}">Importar</a>
+                                </li>
+                            </ul>
                         
                         </li>
                         <li>
@@ -174,7 +181,7 @@
                             <ul role="menu" id="menuMuestraMaestra" aria-label="Muestra maestra">
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('MuestraMaestra/periodos')}}">Periodos</a>
-                                    <a role="menuitem" href="{{asset('importarRnt')}}">Importar</a>
+                                    
                                 </li>
                             </ul>
                         </li>
