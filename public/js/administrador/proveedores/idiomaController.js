@@ -31,6 +31,7 @@ angular.module('proveedores.idioma', [])
         $scope.proveedor.datosGenerales.id = $scope.id;
         $scope.proveedor.datosGenerales.idIdioma = $scope.idIdioma;
         proveedoresServi.postEditaridioma($scope.proveedor.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 $scope.proveedor.datosGenerales = {
                     'nombre': data.proveedor.proveedor_rnt.idiomas[0].nombre,
@@ -41,7 +42,6 @@ angular.module('proveedores.idioma', [])
             }else{
                 $scope.errores = data.errores;
             }
-            $("body").attr("class", "cbp-spmenu-push");
         }).catch(function(err){
             $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');

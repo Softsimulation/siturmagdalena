@@ -35,9 +35,9 @@ angular.module('atracciones.idioma', [])
         $scope.atraccion.datosGenerales.id = $scope.id;
         $scope.atraccion.datosGenerales.idIdioma = $scope.idIdioma;
         atraccionesServi.postEditaridioma($scope.atraccion.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 $scope.errores = null;
-                $("body").attr("class", "cbp-spmenu-push");
                 $scope.atraccion.datosGenerales = {
                     'nombre': data.atraccion.sitio.sitios_con_idiomas[0].nombre,
                     'descripcion' : data.atraccion.sitio.sitios_con_idiomas[0].descripcion,
