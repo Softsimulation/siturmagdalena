@@ -6,7 +6,7 @@
 
 
 @section('content')
-
+<h2>Estadisticas secundarias</h2>
 <div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" >
     
     <ul class="list-group" ng-init="buscarData( {{$indicadores[0]['id']}} )" >
