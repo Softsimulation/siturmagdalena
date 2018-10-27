@@ -141,7 +141,7 @@
                      <i class="material-icons">picture_as_pdf</i> 
                 </a>
             </div>
-            <div class="panel-body" id="customers" >
+            <div class="panel-body" id="customers" style="overflow-x: auto;width: 100%;margin-right: 0;">
                 
                 <table class="table table-striped" ng-if="!series"   >
                     <thead>
