@@ -209,48 +209,23 @@
             </div>
         </div>
         
-        <div class="panel panel-success" ng-repeat="opcion in encuesta.ActividadesRelizadas" ng-if="opcion.opciones.length > 0" >
-            <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? (@{{opcion.actividades_realizadas_con_idiomas[0].nombre}})</b></h3>
-            </div>
-            <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="item in opcion.opciones">
-                            <label>
-                                <input type="checkbox" name ="opcion_@{{opcion.id}}" id="opcion_@{{opcion.id}}" checklist-model="opcion.Respuestas" checklist-value="item" > @{{item.opciones_actividades_realizadas_idiomas[0].nombre}}
-                            </label>
-                            <!--<span ng-if="item.id==22 || item.id==26 || item.id==34">:<input type="text" name="opcionOtro_@{{opcion.id}}" style="display: inline-block;" class="form-control" id="opcionOtro_@{{opcion.id}}" placeholder="Escriba su otra opción" ng-model="opcion.otro" ng-change="validarOtro(item.id,opcion)" ng-required="(item.id==22 || item.id==26 || item.id==34) && validarContenido(item.id,opcion)"/></span>-->
-                        </div>
-                        <span ng-show="EstanciaForm.$submitted || EstanciaForm.opcion_@{{opcion.id}}.$touched || opcion.Respuestas.length > 0">
-                            <span class="label label-danger" ng-show="opcion.Respuestas.length == 0 || opcion.Respuestas == undefined">* Debe seleccionar alguna opción</span>
-                            <!--<span class="label label-danger" ng-show="EstanciaForm.opcionOtro_@{{opcion.id}}.$error.required">* Debe escribir el otro.</span>-->
-                        </span>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        
-        <div  ng-repeat="opcion in encuesta.ActividadesRelizadas" ng-if="opcion.opciones.length > 0 && opcion.Respuestas.length > 0" >
-            <div class="panel panel-success" ng-repeat="sub in opcion.Respuestas" ng-if="sub.sub_opciones.length > 0 ">
+        <div ng-repeat="opcion in encuesta.ActividadesRelizadas" ng-if="opcion.opciones.length > 0" >
+          <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? (@{{sub.opciones_actividades_realizadas_idiomas[0].nombre}})</b></h3>
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? (@{{opcion.actividades_realizadas_con_idiomas[0].nombre}})</b></h3>
                 </div>
                 <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="checkbox" ng-repeat="item in sub.sub_opciones">
+                            <div class="checkbox" ng-repeat="item in opcion.opciones">
                                 <label>
-                                    <input type="checkbox" name ="sub_@{{opcion.id}}" id="sub_@{{opcion.id}}" checklist-model="sub.Respuestas" checklist-value="item.id" > @{{item.sub_opciones_actividades_realizadas_idiomas[0].nombre}}
+                                    <input type="checkbox" name ="opcion_@{{opcion.id}}" id="opcion_@{{opcion.id}}" checklist-model="opcion.Respuestas" checklist-value="item" > @{{item.opciones_actividades_realizadas_idiomas[0].nombre}}
                                 </label>
                                 <!--<span ng-if="item.id==22 || item.id==26 || item.id==34">:<input type="text" name="opcionOtro_@{{opcion.id}}" style="display: inline-block;" class="form-control" id="opcionOtro_@{{opcion.id}}" placeholder="Escriba su otra opción" ng-model="opcion.otro" ng-change="validarOtro(item.id,opcion)" ng-required="(item.id==22 || item.id==26 || item.id==34) && validarContenido(item.id,opcion)"/></span>-->
                             </div>
-                            <span ng-show="EstanciaForm.$submitted || EstanciaForm.sub_@{{opcion.id}}.$touched || sub.Respuestas.length > 0">
-                                <span class="label label-danger" ng-show="sub.Respuestas.length == 0 || sub.Respuestas == undefined">* Debe seleccionar alguna opción</span>
+                            <span ng-show="EstanciaForm.$submitted || EstanciaForm.opcion_@{{opcion.id}}.$touched || opcion.Respuestas.length > 0">
+                                <span class="label label-danger" ng-show="opcion.Respuestas.length == 0 || opcion.Respuestas == undefined">* Debe seleccionar alguna opción</span>
                                 <!--<span class="label label-danger" ng-show="EstanciaForm.opcionOtro_@{{opcion.id}}.$error.required">* Debe escribir el otro.</span>-->
                             </span>
     
@@ -259,7 +234,85 @@
     
                 </div>
             </div>
+            <div ng-if="opcion.opciones.length > 0 && opcion.Respuestas.length > 0" >
+                <div class="panel panel-success" ng-repeat="sub in opcion.Respuestas" ng-if="sub.sub_opciones.length > 0 ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? (@{{sub.opciones_actividades_realizadas_idiomas[0].nombre}})</b></h3>
+                    </div>
+                    <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="checkbox" ng-repeat="item in sub.sub_opciones">
+                                    <label>
+                                        <input type="checkbox" name ="sub_@{{opcion.id}}" id="sub_@{{opcion.id}}" checklist-model="sub.Respuestas" checklist-value="item.id" > @{{item.sub_opciones_actividades_realizadas_idiomas[0].nombre}}
+                                    </label>
+                                    <!--<span ng-if="item.id==22 || item.id==26 || item.id==34">:<input type="text" name="opcionOtro_@{{opcion.id}}" style="display: inline-block;" class="form-control" id="opcionOtro_@{{opcion.id}}" placeholder="Escriba su otra opción" ng-model="opcion.otro" ng-change="validarOtro(item.id,opcion)" ng-required="(item.id==22 || item.id==26 || item.id==34) && validarContenido(item.id,opcion)"/></span>-->
+                                </div>
+                                <span ng-show="EstanciaForm.$submitted || EstanciaForm.sub_@{{opcion.id}}.$touched || sub.Respuestas.length > 0">
+                                    <span class="label label-danger" ng-show="sub.Respuestas.length == 0 || sub.Respuestas == undefined">* Debe seleccionar alguna opción</span>
+                                    <!--<span class="label label-danger" ng-show="EstanciaForm.opcionOtro_@{{opcion.id}}.$error.required">* Debe escribir el otro.</span>-->
+                                </span>
+        
+                            </div>
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        <!--<div class="panel panel-success" ng-repeat="opcion in encuesta.ActividadesRelizadas" ng-if="opcion.opciones.length > 0" >-->
+        <!--    <div class="panel-heading">-->
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? (@{{opcion.actividades_realizadas_con_idiomas[0].nombre}})</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <div class="checkbox" ng-repeat="item in opcion.opciones">-->
+        <!--                    <label>-->
+        <!--                        <input type="checkbox" name ="opcion_@{{opcion.id}}" id="opcion_@{{opcion.id}}" checklist-model="opcion.Respuestas" checklist-value="item" > @{{item.opciones_actividades_realizadas_idiomas[0].nombre}}-->
+        <!--                    </label>-->
+                            <!--<span ng-if="item.id==22 || item.id==26 || item.id==34">:<input type="text" name="opcionOtro_@{{opcion.id}}" style="display: inline-block;" class="form-control" id="opcionOtro_@{{opcion.id}}" placeholder="Escriba su otra opción" ng-model="opcion.otro" ng-change="validarOtro(item.id,opcion)" ng-required="(item.id==22 || item.id==26 || item.id==34) && validarContenido(item.id,opcion)"/></span>-->
+        <!--                </div>-->
+        <!--                <span ng-show="EstanciaForm.$submitted || EstanciaForm.opcion_@{{opcion.id}}.$touched || opcion.Respuestas.length > 0">-->
+        <!--                    <span class="label label-danger" ng-show="opcion.Respuestas.length == 0 || opcion.Respuestas == undefined">* Debe seleccionar alguna opción</span>-->
+                            <!--<span class="label label-danger" ng-show="EstanciaForm.opcionOtro_@{{opcion.id}}.$error.required">* Debe escribir el otro.</span>-->
+        <!--                </span>-->
+
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <!--    </div>-->
+        <!--</div>-->
+        
+        <!--<div  ng-repeat="opcion in encuesta.ActividadesRelizadas" ng-if="opcion.opciones.length > 0 && opcion.Respuestas.length > 0" >-->
+        <!--    <div class="panel panel-success" ng-repeat="sub in opcion.Respuestas" ng-if="sub.sub_opciones.length > 0 ">-->
+        <!--        <div class="panel-heading">-->
+        <!--            <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cúales? (@{{sub.opciones_actividades_realizadas_idiomas[0].nombre}})</b></h3>-->
+        <!--        </div>-->
+        <!--        <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>-->
+        <!--        <div class="panel-body">-->
+        <!--            <div class="row">-->
+        <!--                <div class="col-md-12">-->
+        <!--                    <div class="checkbox" ng-repeat="item in sub.sub_opciones">-->
+        <!--                        <label>-->
+        <!--                            <input type="checkbox" name ="sub_@{{opcion.id}}" id="sub_@{{opcion.id}}" checklist-model="sub.Respuestas" checklist-value="item.id" > @{{item.sub_opciones_actividades_realizadas_idiomas[0].nombre}}-->
+        <!--                        </label>-->
+                                <!--<span ng-if="item.id==22 || item.id==26 || item.id==34">:<input type="text" name="opcionOtro_@{{opcion.id}}" style="display: inline-block;" class="form-control" id="opcionOtro_@{{opcion.id}}" placeholder="Escriba su otra opción" ng-model="opcion.otro" ng-change="validarOtro(item.id,opcion)" ng-required="(item.id==22 || item.id==26 || item.id==34) && validarContenido(item.id,opcion)"/></span>-->
+        <!--                    </div>-->
+        <!--                    <span ng-show="EstanciaForm.$submitted || EstanciaForm.sub_@{{opcion.id}}.$touched || sub.Respuestas.length > 0">-->
+        <!--                        <span class="label label-danger" ng-show="sub.Respuestas.length == 0 || sub.Respuestas == undefined">* Debe seleccionar alguna opción</span>-->
+                                <!--<span class="label label-danger" ng-show="EstanciaForm.opcionOtro_@{{opcion.id}}.$error.required">* Debe escribir el otro.</span>-->
+        <!--                    </span>-->
+    
+        <!--                </div>-->
+        <!--            </div>-->
+    
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
 
         <div class="panel panel-success">
             <div class="panel-heading">

@@ -6,7 +6,7 @@ angular.module('controlSosRecpApp', ['ControlSostenibilidadService','ADM-dateTim
     $scope.fechaActual = "'" + formatDate(new Date()) + "'";
     $scope.optionFecha = {
         calType: 'gregorian',
-        format: 'YYYY/MM/DD',
+        format: 'YYYY-MM-DD',
         zIndex: 1060,
         autoClose: true,
         default: null,
@@ -125,6 +125,43 @@ angular.module('controlSosRecpApp', ['ControlSostenibilidadService','ADM-dateTim
         })
        
    }
+   
+   $scope.cambiarEstado = function(item){
+        
+        swal({
+            title: "Cambiar estado",
+            text: "¿Está seguro?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+            setTimeout(function () {
+                $("body").attr("class", "charging");
+                controlSostenibilidadServi.cambiarEstado(item).then(function(data){
+                    if(data.success){
+                        item.estado = !item.estado;
+                        swal({
+                            title: "Estado cambiado",
+                            text: "Se ha cambiado el estado satisfactoriamente.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        $scope.errores = null;
+                    }else{
+                        swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                        $scope.errores = data.errores; 
+                    }
+                     $("body").attr("class", "cbp-spmenu-push");
+                }).catch(function(){
+                    $("body").attr("class", "cbp-spmenu-push");
+                    swal("Error","Error en la petición, recargue la pagina","error");
+                })
+            }, 2000);
+        });
+    }
     
 }])
 

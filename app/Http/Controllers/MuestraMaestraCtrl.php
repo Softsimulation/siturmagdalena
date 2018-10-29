@@ -663,6 +663,9 @@ class MuestraMaestraCtrl extends Controller
             $proveedor->longitud = $request->longitud;
             $proveedor->user_create = $this->user->username;
             $proveedor->estado = true;
+            
+            $proveedor->codigo = Proveedores_informale::where( "municipio_id", $request->municipio_id )->max("codigo") + 1;
+            
         }
         
         $proveedor->razon_social = $request->nombre;

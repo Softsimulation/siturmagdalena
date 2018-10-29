@@ -108,18 +108,14 @@ class ControlSostenibilidadController extends Controller
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
 		
-		if($request->fecha_inicial > $request->fecha_final){
-		    return ["success"=>false,"errores"=>[["La fecha inicial no puede ser mayor que la final."]]];
-		}
-		
 		//validacion encuestas hecas ese mes
-		if( $consulta ){
-		    return ["success"=>false,"errores"=>[["Verifique que las fechas de activación no se superpongan."]]];
-		}
+		// if( $consulta ){
+		//     return ["success"=>false,"errores"=>[["Verifique que las fechas de activación no se superpongan."]]];
+		// }
 		
 		$registro = Control_Sostenibilidad_Receptor::find($request->id);
-		$registro->estado = !$this->estado;
-		$registro>save();
+		$registro->estado = !$registro->estado;
+		$registro->save();
 		
 		return ["success" => true, 'registro' => $registro];
 	}
