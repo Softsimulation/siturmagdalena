@@ -23,9 +23,9 @@
                 
             </div>
             <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group has-feedback">
                         <label class="sr-only">Búsqueda</label>
-                        <input type="text" name="buscar" class="form-control input-lg" id="buscar" placeholder="Buscar publicación...">
+                        <input type="text" name="buscar" class="form-control" id="buscar" placeholder="Buscar publicación...">
                         <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
                     
                 </div>

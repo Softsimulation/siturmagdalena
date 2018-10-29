@@ -249,7 +249,7 @@
 
                             <div class="col-xs-12">
                                 <!--P4P5Input1. Ingrese su teléfono celular-->
-                                <input type="text" class="form-control" id="inputCelular" name="celular" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
+                                <input type="text" class="form-control" id="inputCelular" name="celular"  placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
                                 <span ng-show="DatosForm.$submitted || DatosForm.celular.$touched">
                                     <span class="label label-danger" ng-show="DatosForm.celular.$error.pattern">*El celular no tiene un formato válido</span>
                                 </span>
@@ -476,57 +476,57 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-success">
-            <div class="panel-heading">
+        <!--<div class="panel panel-success">-->
+        <!--    <div class="panel-heading">-->
                 <!-- P7. ¿Quien va a diligenciar la encuesta?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quién va a diligenciar la encuesta?</b></h3>
-            </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <select class="form-control" name="actor" ng-model="encuesta.Actor" ng-required="true">
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quién va a diligenciar la encuesta?</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <select class="form-control" name="actor" ng-model="encuesta.Actor" ng-required="true">-->
                             <!--P7Op1. Selecciona una persona-->
-                            <option value="" disabled>Selecciona una persona</option>
+        <!--                    <option value="" disabled>Selecciona una persona</option>-->
                             <!--P7Op2. Visitante-->
-                            <option value="true">Visitante</option>
+        <!--                    <option value="true">Visitante</option>-->
                             <!--P7Op3. Encuestador-->
-                            <option value="false">Encuestador</option>
-                        </select>
-                        <span ng-show="DatosForm.$submitted || DatosForm.actor.$touched">
+        <!--                    <option value="false">Encuestador</option>-->
+        <!--                </select>-->
+        <!--                <span ng-show="DatosForm.$submitted || DatosForm.actor.$touched">-->
                             <!--P7Alert1. Encuestador-->
-                            <span class="label label-danger" ng-show="DatosForm.actor.$error.required">*El campo diligenciar encuesta es requerido</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-success" ng-if="encuesta.Actor=='true'">
-            <div class="panel-heading">
+        <!--                    <span class="label label-danger" ng-show="DatosForm.actor.$error.required">*El campo diligenciar encuesta es requerido</span>-->
+        <!--                </span>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="panel panel-success" ng-if="encuesta.Actor=='true'">-->
+        <!--    <div class="panel-heading">-->
                 <!-- P7. ¿Quien va a diligenciar la encuesta?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿En que idioma se va a diligenciar la encuesta?</b></h3>
-            </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <select class="form-control" name="idioma" ng-model="encuesta.Idioma" ng-required="encuesta.Actor">
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿En que idioma se va a diligenciar la encuesta?</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <select class="form-control" name="idioma" ng-model="encuesta.Idioma" ng-required="encuesta.Actor">-->
                             <!--P7Op1. Selecciona una opción-->
-                            <option value="" disabled>Seleccione una opcion</option>
+        <!--                    <option value="" disabled>Seleccione una opcion</option>-->
                             <!--P7Op2. Español-->
-                            <option value="false">Español</option>
+        <!--                    <option value="false">Español</option>-->
                             <!--P7Op3. Inglés-->
-                            <option value="true">Inglés</option>
+        <!--                    <option value="true">Inglés</option>-->
 
-                        </select>
-                        <span ng-show="DatosForm.$submitted || DatosForm.idioma.$touched">
+        <!--                </select>-->
+        <!--                <span ng-show="DatosForm.$submitted || DatosForm.idioma.$touched">-->
                             <!--P7Alert1. Encuestador-->
-                            <span class="label label-danger" ng-show="DatosForm.actor.idioma.required">*El campo es requerido</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--                    <span class="label label-danger" ng-show="DatosForm.actor.idioma.required">*El campo es requerido</span>-->
+        <!--                </span>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
         <div class="row" style="text-align:center">
             <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>

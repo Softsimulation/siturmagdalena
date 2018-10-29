@@ -63,6 +63,11 @@
                 <p>Los campos marcados con asterisco (*) son obligatorios. <strong>Debe ingresar por lo menos uno de los valores solicitados en la tabla de tamaño de grupo de viaje.</strong></p>
             </div>
             <div class="row">
+                <div class="col-xs-12">
+                    <h3>Grupo de viaje @{{grupo.id}}</h3>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-xs-12 col-xs-12 col-md-4">
                     <div class="form-group" ng-class="{'has-error':(ediForm.$submitted || ediForm.date_apli.$touched) && ediForm.date_apli.$error.required}">
                         <label class="control-label" for="date_apli"><span class="asterisk">*</span> Fecha de aplicación</label>
