@@ -137,7 +137,7 @@
             </div>
         </div>
         
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading">
                 <!-- Experiencia de viaje-->
                 <h3 class="panel-title"><b>C3. Sostenibilidad</b></h3>
