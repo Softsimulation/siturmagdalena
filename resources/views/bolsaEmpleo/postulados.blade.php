@@ -1,24 +1,45 @@
 @extends('layout._AdminLayout')
 
-@section('title', 'Bolsa de empleo - Vacantes')
+@section('title', 'Bolsa de empleo :: Listado de postulados en una vacante')
 
-@section('TitleSection', 'Edición de vacante')
+@section('TitleSection', 'Listado de postulados en una vacante')
 
 @section('app','ng-app="bolsaEmpleoApp"')
 
 @section('controller','ng-controller="postuladosVacanteController"')
 
+@section('titulo','Bolsa de empleo')
+@section('subtitulo','Listado de postulados en una vacante. @{{vacante.postulaciones.length}} postulado(s) registrado(s).')
+
 @section('estilos')
-    <style>
-        body{
-            overflow: visible;
-        }
-    </style>
+<style>
+    .tile {
+        width: 100%;
+        background-color: white;
+        box-shadow: 0px 1px 2px 0px rgba(0,0,0,.35);
+    }
+    .m-0{
+        margin: 0;
+    }
+    .collapse{
+        padding-top:2%;
+    }
+    .collapse .form-group label{
+        border-bottom:1px dotted #ddd;
+    }
+    .collapse .form-group label+.form-control-static {
+        padding: 0;
+    }
+    .collapse {
+        border: 1px solid #eee;
+        border-radius: 8px;
+    }
+</style>
 @endsection
 
 @section('content')
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <br><br>
+    
     <div class="alert alert-danger" ng-if="errores != null">
         <h6>Errores</h6>
         <span class="messages" ng-repeat="error in errores">
@@ -26,115 +47,118 @@
         </span>
     </div>
     
-    <div class="container">
-       <div>
-            
+    <div class="tile" style="width: 100%;">
+        <div class="tile-body" style="width: 100%;">
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-12 col-md-6">
                     <div class="form-group">
                         <label for="proveedor" class="control-label">Empresa</label>
-                        <input type="text" class="form-control" name="proveedor" value="@{{vacante.proveedores_rnt.razon_social}}" readonly />
+                        <p class="form-control-static">@{{vacante.proveedores_rnt.razon_social}}</p>
+                        
                     </div>
                 </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="proveedor" class="control-label">Nombre de la vacante</label>
+                        <p class="form-control-static">@{{vacante.nombre}}</p>
+                        
+                    </div>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseInformacionVacante" aria-expanded="false" aria-controls="collapseInformacionVacante">Ver más información de la vacante</button>
+                </div>
             </div>
-            <br>
+        </div>
+        
+    </div>
+    
+   
+       <div class="collapse" id="collapseInformacionVacante">
+            
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-xs-12 col-md-8">
                     <div class="form-group" >
                         <label for="nombre_vacante" class="control-label">Nombre de la vacante</label>
-                        <input type="text" class="form-control" id="nombre_vacante" name="nombre_vacante" value="@{{vacante.nombre}}" readonly />
+                        <p class="form-control-static">@{{vacante.nombre}}</p>
+                        
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group" >
                         <label for="numero_vacantes" class="control-label">Número de vacantes</label>
-                        <input type="number" class="form-control" value="@{{vacante.numero_vacantes}}" name="numero_vacantes"  readonly/>
+                        <p class="form-control-static">@{{vacante.numero_vacantes}}</p>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="descripcion">Descripción</label>
-                        <textarea class="form-control" name="descripcion" id="descripcion" rows="5" readonly>@{{vacante.descripcion}}</textarea>
+                        <p class="form-control-static">@{{vacante.descripcion}}</p>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-xs-12 col-md-4" ng-if="vacante.numero_maximo_postulaciones">
                     <div class="form-group">
                         <label for="numero_maximo_postulaciones" class="control-label">No. máximo de postulaciones</label>
-                        <input type="number" class="form-control" value="@{{vacante.numero_maximo_postulaciones}}" name="numero_maximo_postulaciones" placeholder="No ingresado" readonly />
+                        <p class="form-control-static">@{{vacante.numero_maximo_postulaciones}}</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-12 col-md-4" ng-if="vacante.fecha_vencimiento">
                     <div class="form-group" >
                         <label for="fecha_vencimiento" class="control-label">Fecha de vencimiento</label>
-                        <input type="text" name="fecha_vencimiento" class="form-control" value="@{{vacante.fecha_vencimiento}}" readonly placeholder="No ingresado" />
+                        <p class="form-control-static">@{{vacante.fecha_vencimiento}}</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <label for="anios_experiencia" class="control-label">Años de experiencia</label>
-                        <input type="number" class="form-control" value="@{{vacante.anios_experiencia}}" name="anios_experiencia" placeholder="No ingresado" readonly/>
+                        <p class="form-control-static">@{{vacante.anios_experiencia}}</p>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <label for="municipio" class="control-label">Municipio</label>
-                        <input type="text" name="municipio" class="form-control" value="@{{vacante.municipio.nombre}}" readonly placeholder="No ingresado" />
+                        <p class="form-control-static">@{{vacante.municipio.nombre}}</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <label for="nivelEducacion" class="control-label">Nivel de educación</label>
-                        <input type="text" name="nivelEducacion" class="form-control" value="@{{vacante.nivel_educacion.nombre}}" readonly placeholder="No ingresado" />
+                        <p class="form-control-static">@{{vacante.nivel_educacion.nombre}}</p>
                     </div>
                 </div>
-                <div class="col-md-4" >
+                <div class="col-xs-12 col-md-4" >
                     <div class="form-group">
                         <label for="tipo_cargo_vacante_id" class="control-label">Tipo de cargo</label>
-                        <input type="text" name="tipo_cargo_vacante_id" class="form-control" value="@{{vacante.tipos_cargos_vacante.nombre}}" readonly placeholder="No ingresado" />
+                        <p class="form-control-static">@{{vacante.tipos_cargos_vacante.nombre}}</p>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4" >
+                <div class="col-xs-12 col-md-4" ng-if="vacante.salario_minimo">
                     <div class="form-group">
                         <label for="salario_minimo" class="control-label">Salario mínimo</label>
-                        <input type="number" class="form-control" value="@{{vacante.salario_minimo}}" name="salario_minimo" placeholder="No ingresado" readonly/>
+                        <p class="form-control-static">@{{vacante.salario_minimo}}</p>
                     </div>
                 </div>
-                <div class="col-md-4" >
+                <div class="col-xs-12 col-md-4" ng-if="vacante.salario_maximo">
                     <div class="form-group">
                         <label for="salario_maximo" class="control-label">Salario máximo</label>
-                        <input type="number" class="form-control" value="@{{vacante.salario_maximo}}" name="salario_maximo" placeholder="No ingresado" readonly/>
+                        <p class="form-control-static">@{{vacante.salario_maximo}}</p>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-12 col-xs-12">
                     <div class="form-group">
                         <label for="requisitos">Requisitos</label>
-                        <textarea class="form-control" name="requisitos" id="requisitos" rows="5" readonly>@{{vacante.requisitos}}</textarea>
+                        <p class="form-control-static">@{{vacante.requisitos}}</p>
                     </div>
                 </div>
             </div>
-                
+            
+        </div>
             <br>
             <div class="row">
-                <div class="col-xs-12">
-                    <h6>Postulados <a ng-if="vacante.postulaciones.length > 0" href="/bolsaEmpleo/generararchivosvacante/@{{vacante.id}}" title="Descargar adjuntos" target="_blank" class="btn btn-primary"><span class="glyphicon glyphicon-download-alt"></span></a></h6>
+                <div class="col-xs-12" style="overflow-x: auto;">
+                    <legend>Postulados <a ng-if="vacante.postulaciones.length > 0" href="/bolsaEmpleo/generararchivosvacante/@{{vacante.id}}" title="Descargar adjuntos" target="_blank" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-download-alt"></span> Descargar</a></legend>
+                    
                     <table class="table table-striped">
                         <tr>
-                            <th></th>
                             <th>Nombre</th>
                             <th>Profesión</th>
                             <th>Municipio</th>
@@ -142,13 +166,13 @@
                             <th></th>
                         </tr>
                         <tr dir-paginate="item in vacante.postulaciones|itemsPerPage:10 as results" pagination-id="paginacion_vacantes" >
-                            <td></td>
+                            
                             <td>@{{item.postulados_vacante.nombres}} @{{item.postulados_vacante.apellidos}}</td>
                             <td>@{{item.postulados_vacante.profesion}}</td>
                             <td>@{{item.postulados_vacante.municipio.nombre}}</td>
                             <td>@{{item.postulados_vacante.user.email}}</td>
                             <td style="text-align: center;">
-                                <a class="btn" href="@{{item.ruta_hoja_vida}}" target="_blank" title="Hoja de vida" ><span class="glyphicon glyphicon-paperclip"></span></a>
+                                <a class="btn btn-xs btn-default" href="@{{item.ruta_hoja_vida}}" target="_blank" title="Hoja de vida" ><span class="glyphicon glyphicon-paperclip"></span><span class="sr-only">Hoja de vida</span></a>
                             </td>
                         </tr>
                     </table>
@@ -156,23 +180,18 @@
                 </div>
             </div>
             <div class="row">
-              <div class="col-6" style="text-align:center;">
+              <div class="col-xs-12 text-center">
               <dir-pagination-controls pagination-id="paginacion_vacantes"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
               </div>
             </div>
-        </div>
-        
-        <br><br>
-        <div class="row" style="text-align:center">
-            <div class="col-xs-12">
-                <a href="/bolsaEmpleo/vacantes" class="btn btn-raised btn-default">Volver</a>
-            </div>
+        <div class="text-center">
+            <hr/>
+                <a href="/bolsaEmpleo/vacantes" class="btn btn-lg btn-default">Volver</a>
         </div>
         
         <div class='carga'>
     
-        </div> 
-    </div>
+        </div>
     
 @endsection
 
