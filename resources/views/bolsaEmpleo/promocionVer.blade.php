@@ -2,15 +2,149 @@
 
 @section('Title', 'Vacante')
 
+@section('estilos')
+<style>
+.list-group-item:last-child {
+    border-radius: 0;
+    border-bottom: 0;
+}
+
+.list-group-item:first-child {
+    border-radius: 0;
+    border-top: 0;
+}
+.list-group-item {
+    border-left: 0;
+    border-right: 0;
+    padding: .5rem 1rem;
+}
+.p-0{
+    padding: 0;
+}
+.m-0{
+    margin: 0;
+}
+
+.list-group-item a{
+    color:#555;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: #ddd;
+    
+}
+.list-group-item a:hover{
+    text-decoration-color: dodgerblue;
+}
+.ionicons-list{
+    font-size: 1.25rem;
+    color: #555;
+}
+label{
+    font-weight: 500;
+    margin: 0;
+}
+</style>
+@endsection
+
 @section('content')
+<div class="container">
+    
+    
+    
+    <h2>{{$vacante->nombre}}</h2>
+    <hr/>
     
     @if(Session::has('message'))
         <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
     @endif
     
+    <div class="row">
+        <div class="col-xs-12 col-md-5">
+            <ul class="list-group">
+              <li class="list-group-item">
+                  <div class="media">
+                      <div class="media-left">
+                            <span class="media-object ionicons-list ion-android-home"></span>
+                      </div>
+                      <div class="media-body">
+                          <div class="form-group m-0">
+                              <label>Proveedor</label>
+                              <p class="media-heading p-0 m-0"><a href="/promocionBolsaEmpleo/vacantes?proveedor={{$vacante->proveedoresRnt->id}}">{{$vacante->proveedoresRnt->razon_social}} <small>{{$vacante->proveedoresRnt->nit}}</small></a></p>
+                              
+                          </div>
+                          
+                      </div>
+                  </div>
+              </li>
+              <li class="list-group-item">
+                  <div class="media">
+                      <div class="media-left">
+                            <span class="media-object ionicons-list ion-android-pin"></span>
+                      </div>
+                      <div class="media-body">
+                          <div class="form-group m-0">
+                              <label>Ubicación</label>
+                              <p class="media-heading p-0 m-0">
+                                  {{$vacante->proveedoresRnt->direccion}}. <a href="/promocionBolsaEmpleo/vacantes?municipio={{$vacante->municipio_id}}">{{$vacante->municipio->nombre}}, {{$vacante->municipio->departamento->nombre}}</a>
+                              </p>
+                          </div>
+                          
+                      </div>
+                  </div>
+              </li>
+              <li class="list-group-item">
+                  <div class="media">
+                      <div class="media-left">
+                            <span class="media-object ionicons-list ion-university"></span>
+                      </div>
+                      <div class="media-body">
+                          <div class="form-group m-0">
+                              <label>Nivel de educación</label>
+                              <p class="media-heading p-0 m-0">
+                                  <a href="/promocionBolsaEmpleo/vacantes?nivelEducacion={{$vacante->nivel_educacion_id}}">{{$vacante->nivelEducacion->nombre}}</a>
+                              </p>
+                          </div>
+                          
+                      </div>
+                  </div>    
+              </li>
+              <li class="list-group-item">
+                  <div class="media">
+                      <div class="media-left">
+                            <span class="media-object ionicons-list ion-podium"></span>
+                      </div>
+                      <div class="media-body">
+                          <div class="form-group m-0">
+                              <label>Tipo de cargo</label>
+                              <p class="media-heading p-0 m-0">
+                                  <a href="/promocionBolsaEmpleo/vacantes?tipoCargo={{$vacante->tipo_cargo_vacante_id}}">{{$vacante->tiposCargosVacante->nombre}}</a>
+                              </p>
+                          </div>
+                          
+                      </div>
+                  </div>      
+              </li>
+              <li class="list-group-item">
+                  <div class="media">
+                      <div class="media-left">
+                            <span class="media-object ionicons-list ion-person-stalker"></span>
+                      </div>
+                      <div class="media-body">
+                          <div class="form-group m-0">
+                              <label>No. de vacantes</label>
+                              <p class="media-heading p-0 m-0">
+                                  {{$vacante->numero_vacantes}}
+                              </p>
+                          </div>
+                          
+                      </div>
+                  </div>      
+              </li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-md-7"></div>
+    </div>
     
-    
-    <h1>Vacante - {{$vacante->nombre}}</h1>
     
     <div class="row">
         <div class="col-xs-12">
@@ -59,5 +193,7 @@
             </div>
         @endforeach
     </div>
+</div>
+    
     
 @endsection
