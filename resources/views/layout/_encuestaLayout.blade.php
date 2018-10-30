@@ -170,6 +170,7 @@
                             <div class="col-xs-12">
                                 <select id="salto" name="salto" onchange="location = this.value;">
                                     <option value="" selected disabled>Seleccione sección</option>
+                                    <option value="/turismoreceptor/editardatos/{{$saltoSeccion}}">Datos encuestado</option>
                                     <option value="/turismoreceptor/seccionestancia/{{$saltoSeccion}}">Estancia y visitados</option>
                                     <option value="/turismoreceptor/secciontransporte/{{$saltoSeccion}}">Transporte</option>
                                     <option value="/turismoreceptor/secciongrupoviaje/{{$saltoSeccion}}">Viaje en grupo</option>

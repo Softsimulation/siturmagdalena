@@ -88,7 +88,7 @@ angular.module('receptor.estanciayvisitados', [])
         
         for (i = 0; i < $scope.encuesta.Estancias.length; i++) {
             if ($scope.encuesta.Estancias[i] != es) {
-                if ($scope.encuesta.Estancias[i].Municipio == es.Municipio && $scope.encuesta.Estancias[i].Alojamiento == es.Alojamiento ) {
+                if ($scope.encuesta.Estancias[i].Municipio == es.Municipio  ) {
                     bandera = true;
                     break;
                 }
