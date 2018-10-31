@@ -124,7 +124,7 @@ label{
                 </div>
                 
                 <div class="col-xs-12 col-md-3 text-center" style="align-self: flex-end">
-    				<button type="submit" class="btn btn-block btn-primary" style="margin-bottom: 1rem;">
+    				<button type="submit" class="btn btn-block btn-success" style="margin-bottom: 1rem;">
     				    <span class="glyphicon glyphicon-search"></span>
     				    Buscar
 				    </button>
