@@ -1,7 +1,6 @@
 angular.module('receptor.gasto', ['ui.select'])
 
 .controller('gasto', ['$scope', 'receptorServi', '$window',function ($scope, receptorServi, $window) {
-
     $scope.encuestaReceptor = {};
     $scope.abrirAlquiler = false;
     $scope.abrirTerrestre = false;
@@ -31,7 +30,8 @@ angular.module('receptor.gasto', ['ui.select'])
             });
         }
     })
-     $scope.limpiarGasto = function(){
+    
+    $scope.limpiarGasto = function(){
         if($scope.encuestaReceptor.RealizoGasto == 0){
             var aux = [];
             aux = $scope.encuestaReceptor.Financiadores;

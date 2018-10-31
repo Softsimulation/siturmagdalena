@@ -246,7 +246,7 @@
 <script src="{{asset('/js/administrador/atracciones/idiomaController.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/services.js')}}"></script>
 <script src="{{asset('/js/administrador/atracciones/app.js')}}"></script>
-<script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyC55uUNZFEafP0702kEyGLlSmGE29R9s5k&libraries=placeses,visualization,drawing,geometry,places"></script>
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/ng-map.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
