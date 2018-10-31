@@ -1,5 +1,5 @@
 <?php
-/*
+
 
 Route::get('/Mapa', 'MapaCtrl@getIndex');
 Route::get('/Mapa/getData', 'MapaCtrl@getData');
@@ -8,15 +8,15 @@ Route::get('/Mapa/getData', 'MapaCtrl@getData');
 Route::controller('/indicadores','IndicadoresCtrl');
 
 Route::controller('/EstadisticasSecundarias','EstadisticasSecundariasCtrl');
-*/
+
 Route::controller('/temporada','TemporadaController');
 Route::controller('/turismointerno','TurismoInternoController');
+
 Route::controller('/turismoreceptor','TurismoReceptorController');
+
 Route::controller('/grupoviaje','GrupoViajeController');
 
-
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
-/*
 
 Route::controller('/administradoratracciones', 'AdministradorAtraccionController');
 
@@ -26,11 +26,9 @@ Route::controller('/administradordestinos', 'AdministradorDestinosController');
 
 Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
-*/
+
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
-
-/*
 
 Route::controller('/importarRnt','ImportacionRntController');
 
@@ -41,9 +39,8 @@ Route::controller('/administradoreventos', 'AdministradorEventosController');
 Route::controller('/administradorrutas', 'AdministradorRutasController');
 
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
-*/
 Route::controller('/ofertaempleo','OfertaEmpleoController');
-/*
+
 Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
@@ -88,18 +85,11 @@ Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
 
 Route::controller('/postulado','PostuladoController');
 
-<<<<<<< HEAD
-*/
-=======
 Route::controller('/controlSostenibilidadReceptor','ControlSostenibilidadController');
 
->>>>>>> e8a6c088ace9021ed4fcfbcc6775227bee994e87
 Route::controller('/usuario','UsuarioController');
-/*
 Route::controller('/email','EmailController');
-*/
 Route::controller('/login','LoginController');
-/*
 Route::controller('/noticias','NoticiaController');
 Route::controller('/promocionNoticia','PublicoNoticiaController');
 Route::controller('/promocionInforme','PublicoInformeController');
@@ -135,4 +125,4 @@ Route::group(['middleware' => 'cors'], function(){
         Route::controller('/grupoviajeapi','GrupoViajeCorsController');
    });
 });
-*/
+

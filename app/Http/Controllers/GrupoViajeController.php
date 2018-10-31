@@ -31,11 +31,7 @@ class GrupoViajeController extends Controller
         return view('grupoViaje.ListadoGrupos');
     }
     public function getGrupos(){
-<<<<<<< HEAD
         if(Auth::user()->digitador == null){
-=======
-        if(Auth::user()->digitador != null){
->>>>>>> e8a6c088ace9021ed4fcfbcc6775227bee994e87
             $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
                 $q->with('user');
             },'visitantes'=>function($q){
