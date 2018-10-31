@@ -161,7 +161,7 @@ class AdministradorProveedoresController extends Controller
     public function postCrearproveedor(Request $request){
         $validator = \Validator::make($request->all(), [
             'proveedor_rnt_id' => 'required|numeric|exists:proveedores_rnt,id',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'nombre' => 'max:255|required',
             'valor_minimo' => 'required|numeric|min:0',
             'valor_maximo' => 'required|numeric|min:0',
@@ -313,20 +313,22 @@ class AdministradorProveedoresController extends Controller
         
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_proveedor = new Multimedia_Proveedor();
-                $multimedia_proveedor->proveedor_id = $request->id;
-                $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
-                $multimedia_proveedor->tipo = false;
-                $multimedia_proveedor->portada = false;
-                $multimedia_proveedor->estado = true;
-                $multimedia_proveedor->user_create = "Situr";
-                $multimedia_proveedor->user_update = "Situr";
-                $multimedia_proveedor->created_at = Carbon::now();
-                $multimedia_proveedor->updated_at = Carbon::now();
-                $multimedia_proveedor->save();
-                
-                Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$nombre, File::get($file));
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_proveedor = new Multimedia_Proveedor();
+                    $multimedia_proveedor->proveedor_id = $request->id;
+                    $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
+                    $multimedia_proveedor->tipo = false;
+                    $multimedia_proveedor->portada = false;
+                    $multimedia_proveedor->estado = true;
+                    $multimedia_proveedor->user_create = "Situr";
+                    $multimedia_proveedor->user_update = "Situr";
+                    $multimedia_proveedor->created_at = Carbon::now();
+                    $multimedia_proveedor->updated_at = Carbon::now();
+                    $multimedia_proveedor->save();
+                    
+                    Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         
@@ -483,7 +485,7 @@ class AdministradorProveedoresController extends Controller
             'nombre' => 'required|max:255',
             'id' => 'required|exists:proveedores|numeric',
             'idIdioma' => 'required|exists:idiomas,id|numeric',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'horario' => 'max:255'
         ],[
             'nombre.required' => 'Se necesita un nombre para el proveedor.',

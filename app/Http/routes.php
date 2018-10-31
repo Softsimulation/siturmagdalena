@@ -88,7 +88,12 @@ Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
 
 Route::controller('/postulado','PostuladoController');
 
+<<<<<<< HEAD
 */
+=======
+Route::controller('/controlSostenibilidadReceptor','ControlSostenibilidadController');
+
+>>>>>>> e8a6c088ace9021ed4fcfbcc6775227bee994e87
 Route::controller('/usuario','UsuarioController');
 /*
 Route::controller('/email','EmailController');

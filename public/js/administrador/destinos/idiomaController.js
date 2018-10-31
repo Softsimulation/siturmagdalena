@@ -30,8 +30,8 @@ angular.module('destinos.idioma', [])
         $scope.destino.datosGenerales.id = $scope.id;
         $scope.destino.datosGenerales.idIdioma = $scope.idIdioma;
         destinosServi.postEditaridioma($scope.destino.datosGenerales).then(function(data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
-                $("body").attr("class", "cbp-spmenu-push");
                 $scope.destino.datosGenerales = {
                     'nombre': data.destino.destino_con_idiomas[0].nombre,
                     'descripcion' : data.destino.destino_con_idiomas[0].descripcion

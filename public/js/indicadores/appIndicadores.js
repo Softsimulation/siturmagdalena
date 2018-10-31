@@ -105,7 +105,7 @@
                     
                     $scope.options.scales.xAxes[0].scaleLabel.labelString = data.indicador.idiomas[0].eje_x;
                     $scope.options.scales.yAxes[0].scaleLabel.labelString = data.indicador.idiomas[0].eje_y;
-                    $scope.formato = '$';
+                    $scope.formato = ' ';
                 });
         }
         
@@ -209,7 +209,7 @@
                     
                     $scope.options.scales.xAxes[0].scaleLabel.labelString = data.indicador.label_x;
                     $scope.options.scales.yAxes[0].scaleLabel.labelString = data.indicador.label_y;
-                    $scope.formato = '$';
+                    $scope.formato = ' ';
                 });
         }
         

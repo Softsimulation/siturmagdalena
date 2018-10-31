@@ -4,14 +4,61 @@
 @section('app','ng-app="appIndicadores"')
 @section('controller','ng-controller="secundariasCtrl"')
 
+@section('estilos')
+
+<style type="text/css">
+    #selectGrafica .btn-select{
+        display: inline-flex;
+        align-items: center;
+        border-radius: 0;
+        width: calc(100% - 26px);
+    }
+    #selectGrafica .btn-select i{
+        font-size: 20px;
+        margin-right: 5px;
+    }
+    #modalData td, #modalData th{ padding: 1px; }
+    
+    .filtros .input-group-addon{
+        background-color: #009541!important;
+        border-color: #009541!important;
+        color: #fff!important;
+        font-weight: 700!important;
+    }
+    .menu-descraga, .menu-descraga .dropdown{
+            float: right;
+    }
+    .menu-descraga .dropdown button{
+        display:flex;
+        align-items:center;
+        background: transparent;
+    }
+    .menu-descraga .dropdown button .material-icons{
+        margin-right: .5rem;
+    }
+    #descargarTABLA{
+        float: right;
+        color: black;
+    }
+    #descargarTABLA i{
+        font-size:2em;
+    }
+    .panel-body{
+        padding:0!important;
+        padding-top:20px !important;
+    }
+</style>
+
+@endsection
+
 
 @section('content')
-
+<h2>Estadisticas secundarias</h2>
 <div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" >
     
     <ul class="list-group" ng-init="buscarData( {{$indicadores[0]['id']}} )" >
         @foreach ($indicadores as $indicador)
-            <li class="list-group-item" ng-click="changeIndicador({{$indicador['id']}})" ng-class="{'active': (indicadorSelect=={{$indicador['id']}}) }"  >
+            <li class="list-group-item" ng-click="changeIndicador({{$indicador['id']}})" ng-class="{'active': (indicadorSelect=={{$indicador['id']}}) }" role="button">
               {{$indicador["nombre"]}}
             </li>
         @endforeach
@@ -22,7 +69,7 @@
         <div class="panel-heading">
             <form name="form" >
                 <div class="row filtros" >
-                    <div class="col-md-3" >
+                    <div class="col-xs-12 col-sm-6 col-md-5" >
                         <div class="input-group">
                             <label class="input-group-addon">Período </label>
                             <select class="form-control" ng-model="filtro.year" ng-change="filtrarDatos()" ng-options="y.id as y.anio for y in periodos" requerid >
@@ -31,10 +78,10 @@
                     </div>
                     
                     
-                    <div class="col-md-4" >
+                    <div class="col-xs-12 col-sm-6 col-md-5" >
                         <div class="input-group" id="selectGrafica" >
                             <label class="input-group-addon">Gráfica </label>
-                            <div class="btn-group">
+                            <div class="btn-group" style="width: 100%;">
                                 <button type="button" class="btn btn-default btn-select" style="height:34px;" >
                                    <i class="material-icons">@{{graficaSelect.icono}}</i> @{{graficaSelect.nombre || " "}}
                                 </button>
@@ -50,11 +97,11 @@
                         </div>
                     </div> 
                     
-                    <div class="col-md-1 menu-descraga" >
+                    <div class="col-xs-12 col-md-2 menu-descraga" >
                     
                         <div class="dropdown">
-                          <button class="dropdown-toggle" type="button" data-toggle="dropdown">
-                              <i class="material-icons">menu</i>
+                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                              <i class="material-icons">cloud_download</i> Descargar
                           </button>
                           <ul class="dropdown-menu dropdown-menu-right">
                             <li><a href id="descargarPNG" >Descargar grafica : PNG</a></li>
@@ -94,7 +141,7 @@
                      <i class="material-icons">picture_as_pdf</i> 
                 </a>
             </div>
-            <div class="panel-body" id="customers" >
+            <div class="panel-body" id="customers" style="overflow-x: auto;width: 100%;margin-right: 0;">
                 
                 <table class="table table-striped" ng-if="!series"   >
                     <thead>
@@ -162,47 +209,7 @@
 @endsection
 
 
-@section('estilos')
 
-<style type="text/css">
-    #selectGrafica .btn-select{
-        display: inline-flex;
-        align-items: center;
-        border-radius: 0;
-    }
-    #selectGrafica .btn-select i{
-        font-size: 20px;
-        margin-right: 5px;
-    }
-    #modalData td, #modalData th{ padding: 1px; }
-    
-    .filtros .input-group-addon{
-        background-color: #009541!important;
-        border-color: #009541!important;
-        color: #fff!important;
-        font-weight: 700!important;
-    }
-    .menu-descraga, .menu-descraga .dropdown{
-            float: right;
-    }
-    .menu-descraga .dropdown button{
-        border: none;
-        background: transparent;
-    }
-    #descargarTABLA{
-        float: right;
-        color: black;
-    }
-    #descargarTABLA i{
-        font-size:2em;
-    }
-    .panel-body{
-        padding:0!important;
-        padding-top:20px !important;
-    }
-</style>
-
-@endsection
 
 
 @section('javascript')

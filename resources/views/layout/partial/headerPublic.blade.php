@@ -288,7 +288,7 @@
                                 <a role="menuitem" href="#">Planifica tu viaje</a>
                             </li>
                             <li>
-                                <a role="menuitem" href="#">Mapa</a>
+                                <a role="menuitem" href="{{asset('Mapa')}}">Mapa</a>
                             </li>
                         </ul>
                     </nav>

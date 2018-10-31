@@ -22,6 +22,7 @@
 @section('content')
 <div class="alert alert-info text-center">
     <p>A continuación presione el botón "Seleccionar archivo" para elegir el archivo a importar desde su computador. <strong>Recuerde que el archivo seleccionado debe ser de formato CSV con un peso menor o igual a 10MB.</strong> Después, presione el botón "Cargar".</p>
+    <p>Para descargar el formato de importación pulse <a target="_blank" href="/FormatosImportacion/FormatoImportacion.csv"><strong>aquí</strong></a></p>
 </div>
 <div class="alert alert-danger" ng-if="errores != null">
     <label><b>Errores:</b></label>

@@ -144,9 +144,14 @@
                                 <li role="none"><a role="menuitem" href="{{asset('administradordestinos')}}">Administrar destinos</a></li>
                                 <li role="none"><a role="menuitem" href="{{asset('administradoratracciones')}}">Administrar atracciones</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('administradoractividades')}}">Administrar actividades</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('administradorproveedores')}}">Administrar proveedores</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('administradorrutas')}}">Administrar rutas</a></li>
         					</ul>
                         </li>
                         -->
+                        <li>
+                            <a role="menuitem" href="{{asset('bolsaEmpleo/vacantes')}}">Bolsa de empleo</a>
+                        </li>
                         <li>
                             <a role="menuitem" href="#menuTurismoReceptor" aria-haspopup="true" aria-expanded="false">Turísmo receptor</a>
                             <ul role="menu" id="menuTurismoReceptor" aria-label="Turísmo receptor">
@@ -159,7 +164,14 @@
                             <a role="menuitem" href="{{asset('temporada')}}">Turismo interno y emisor</a>
                         </li>
                         <li>
-                            <a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedores')}}">Oferta y empleo</a>
+                            
+                            <a role="menuitem" href="#oferta" aria-haspopup="true" aria-expanded="false">Oferta y empleo</a>
+                            <ul role="menu" id="oferta" aria-label="Muestra maestra">
+                                <li role="none">
+                                    <a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedores')}}">Listado de proveedores</a>
+                                    <a role="menuitem" href="{{asset('importarRnt')}}">Importar</a>
+                                </li>
+                            </ul>
                         
                         </li>
                         
@@ -179,7 +191,7 @@
                             <ul role="menu" id="menuMuestraMaestra" aria-label="Muestra maestra">
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('MuestraMaestra/periodos')}}">Periodos</a>
-                                    <a role="menuitem" href="{{asset('importarRnt')}}">Importar</a>
+                                    
                                 </li>
                             </ul>
                         </li>

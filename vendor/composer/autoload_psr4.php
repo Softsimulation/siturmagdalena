@@ -41,6 +41,7 @@ return array(
     'Laravie\\Parser\\' => array($vendorDir . '/laravie/parser/src'),
     'Krlove\\EloquentModelGenerator\\' => array($vendorDir . '/krlove/eloquent-model-generator/src'),
     'Krlove\\CodeGenerator\\' => array($vendorDir . '/krlove/code-generator/src'),
+    'JakubOnderka\\PhpConsoleColor\\' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
     'Illuminate\\' => array($vendorDir . '/laravel/framework/src/Illuminate'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
