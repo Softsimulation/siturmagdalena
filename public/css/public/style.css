@@ -195,7 +195,7 @@ footer{
 #toolbar-main:before{
     clear: both;
 }
-#toolbar-main .btn-group-xs>.btn, .btn-xs {
+#toolbar-main .btn-group-xs>.btn,#toolbar-main .btn-xs {
     color: #333;
 }
 #toolbar-main a, #toolbar-main form, #toolbar-main button{

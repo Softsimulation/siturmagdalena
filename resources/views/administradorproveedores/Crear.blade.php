@@ -77,8 +77,19 @@
                             <div class="col-xs-12 col-sm-12">
                                 <div class="form-group" ng-class="{'has-error': (crearProveedorForm.$submitted || crearProveedorForm.descripcion.$touched) && crearProveedorForm.descripcion.$error.required}">
                                     <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
-                                    <textarea style="resize: none;" ng-model="proveedor.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción del proveedor (De 100 a 1,000 caracteres)"></textarea>
-                                        
+                                    <ng-ckeditor  
+                                              ng-model="proveedor.datosGenerales.descripcion"
+                                               
+                                              skin="moono" 
+                                              remove-buttons="Image" 
+                                              remove-plugins="iframe,flash,smiley"
+                                              name="descripcion"
+                                              required
+                                              >
+                                    </ng-ckeditor>
+                                    <span class="messages" ng-show="crearProveedorForm.$submitted || crearProveedorForm.descripcion.$touched">
+                                        <span ng-show="crearProveedorForm.descripcion.$error.required" class="text-error">* El campo es obligatorio.</span>
+                                    </span>   
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6">
@@ -242,5 +253,6 @@
 <script src="{{asset('/js/administrador/proveedores/services.js')}}"></script>
 <script src="{{asset('/js/administrador/proveedores/app.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
-
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

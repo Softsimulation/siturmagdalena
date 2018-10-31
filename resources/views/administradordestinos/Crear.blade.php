@@ -77,9 +77,13 @@
                                               skin="moono" 
                                               remove-buttons="Image" 
                                               remove-plugins="iframe,flash,smiley"
+                                              name="descripcion"
                                               required
                                               >
-                                </ng-ckeditor>
+                                    </ng-ckeditor>
+                                    <span class="messages" ng-show="crearDestinoForm.$submitted || crearDestinoForm.descripcion.$touched">
+                                        <span ng-show="crearDestinoForm.descripcion.$error.required" class="text-error">* El campo es obligatorio.</span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-xs-12 form-inline text-center">
@@ -127,8 +131,8 @@
                             </div>
                             <div class="col-xs-12">
                                 <br/>
-                                <label for="video_promocional">Video promocional</label>
-                                <input type="text" name="video_promocional" id="video_promocional" ng-model="video_promocional" class="form-control" placeholder="URL del video de YouTube" />
+                                <label for="video">Video promocional</label>
+                                <input type="text" name="video" id="video" ng-model="video" class="form-control" placeholder="URL del video de YouTube" />
                             </div>
                             <div class="col-xs-12 text-center">
                                 <hr/>

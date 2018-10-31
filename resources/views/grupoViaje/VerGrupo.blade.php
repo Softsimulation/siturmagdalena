@@ -22,6 +22,11 @@
     </div>
     <hr/>
         <div class="row">
+            <div class="col-xs-12">
+                <h3>Grupo de viaje @{{grupo.id}}</h3>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-3 col-xs-12 col-sm-6">
                 <label>Fecha de aplicación</label>
                 <p>{{$grupo->fecha_aplicacion}}</p><br />

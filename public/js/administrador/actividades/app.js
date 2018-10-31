@@ -1,4 +1,4 @@
-var situr = angular.module("actividadesApp", ['InputFile' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'actividadesServices', 'actividades.crear', 'actividades.index', 'actividades.idioma', 'actividades.editar']);
+var situr = angular.module("actividadesApp", ['InputFile', 'ng.ckeditor' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'actividadesServices', 'actividades.crear', 'actividades.index', 'actividades.idioma', 'actividades.editar']);
 
 situr.directive('fileInput', ['$parse', function ($parse) {
 

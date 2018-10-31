@@ -264,7 +264,7 @@
 
                             <div class="col-xs-12">
                                 <!--P4P5Input1. Ingrese su teléfono celular-->
-                                <input type="text" class="form-control" id="inputCelular" name="celular" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
+                                <input type="text" class="form-control" id="inputCelular" name="celular" placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
                                 <span ng-show="DatosForm.$submitted || DatosForm.celular.$touched">
                                     <span class="label label-danger" ng-show="DatosForm.celular.$error.pattern">*El celular no tiene un formato válido</span>
                                 </span>

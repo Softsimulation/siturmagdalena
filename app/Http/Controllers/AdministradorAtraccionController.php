@@ -178,7 +178,7 @@ class AdministradorAtraccionController extends Controller
     public function postCrearatraccion(Request $request){
         $validator = \Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'valor_minimo' => 'required|numeric',
             'valor_maximo' => 'required|numeric',
             'sector_id' => 'required|numeric|exists:sectores,id',
@@ -461,7 +461,7 @@ class AdministradorAtraccionController extends Controller
             'nombre' => 'required|max:255',
             'id' => 'required|exists:atracciones|numeric',
             'idIdioma' => 'required|exists:idiomas,id|numeric',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'horario' => 'max:255',
             'actividad' => 'max:1000',
             'recomendaciones' => 'max:1000',

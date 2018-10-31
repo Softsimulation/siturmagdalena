@@ -73,7 +73,7 @@ class AdministradorRutasController extends Controller
     public function postCrearruta (Request $request){
         $validator = \Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            'descripcion' => 'required|max:1000|min:100'
+            'descripcion' => 'required|min:100'
         ],[
             'nombre.required' => 'Se necesita un nombre para la ruta turística.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',
@@ -212,7 +212,7 @@ class AdministradorRutasController extends Controller
             'nombre' => 'required|max:255',
             'id' => 'required|exists:rutas|numeric',
             'idIdioma' => 'required|exists:idiomas,id|numeric',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'recomendacion' => 'max:1000|min:100'
         ],[
             'nombre.required' => 'Se necesita un nombre para la ruta turística.',

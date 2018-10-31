@@ -107,7 +107,7 @@ class AdministradorEventosController extends Controller
     public function postCrearevento(Request $request){
         $validator = \Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'valor_minimo' => 'required|numeric',
             'valor_maximo' => 'required|numeric',
             'tipo_evento' => 'required|numeric|exists:tipo_eventos,id',
@@ -357,7 +357,7 @@ class AdministradorEventosController extends Controller
             'nombre' => 'required|max:255',
             'id' => 'required|exists:eventos|numeric',
             'idIdioma' => 'required|exists:idiomas,id|numeric',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'horario' => 'max:255',
             'edicion' => 'max:50'
         ],[
