@@ -15,7 +15,7 @@ use App\Models\Estadisitica_Secundaria;
 use App\Models\Valor_serie_tiempo;
 use App\Models\Series_estadistica;
 use App\Models\Rotulos_estadistica;
-use App\Models\Series_estadisticas_rutulo;
+use App\Models\Series_estadistica_rotulo;
 
 class IndicadoresCtrl extends Controller
 {
@@ -100,7 +100,7 @@ class IndicadoresCtrl extends Controller
                 foreach($estadistica->series as $serie){
                     $dt = [];
                     foreach($estadistica->rotulos as $rotulo){                         
-                        $dato = Series_estadisticas_rutulo::where([ ["serie_estadistica_id",$serie->id] , ["rotulo_estadistica_id",$rotulo->id], ["anio_id",$year]  ])->pluck("valor")->first();
+                        $dato = Series_estadistica_rotulo::where([ ["series_estadistica_id",$serie->id] , ["rotulo_estadistica_id",$rotulo->id], ["anio_id",$year]  ])->pluck("valor")->first();
                         array_push( $dt, $dato );
                     }
                     array_push($datos,$dt); 
