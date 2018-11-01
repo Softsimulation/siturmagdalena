@@ -600,7 +600,7 @@ class EncuestaDinamicaCtrl extends Controller
            "encuesta"=> Encuestas_dinamica::where([ ["id",$id], ["estado",true] ])
                                            ->with( [ "secciones"=>function($q){ 
                                                           $q->with([ "preguntas"=>function($qr){ 
-                                                                    $qr->where("es_visible",true)->whereNotIn( "tipo_campos_id",[1,2,4])
+                                                                    $qr->where([["es_visible",true],["estado",true]])->whereNotIn( "tipo_campos_id",[1,2,4])
                                                                        ->with( [ 
                                                                             "idiomas"=> function($qrr){ $qrr->where("idiomas_id",1)->select("id","preguntas_id","idiomas_id","pregunta"); }
                                                                         ] )->select("id","secciones_encuestas_id", "tipo_campos_id")->orderBy('orden'); 

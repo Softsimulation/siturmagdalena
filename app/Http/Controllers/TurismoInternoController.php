@@ -38,6 +38,7 @@ use App\Models\Divisa;
 use App\Models\Servicio_Excursion_Incluido_Interno;
 use App\Models\Lugar_Agencia_Viaje;
 use App\Models\Pago_Peso_Colombiano;
+use App\Models\Porcentajes_servicios_paquete_viaje;
 
 use App\Models\Pais_Con_Idioma;
 use App\Models\Departamento;
@@ -757,7 +758,8 @@ class TurismoInternoController extends Controller
                 "viajeExcursion"=> Viaje_Excursion::where("viajes_id",$idViaje)->first(),
                 "serviciosPaquetes"=> Servicio_Excursion_Incluido_Interno::where("viajes_id",$idViaje)->pluck('servicios_paquete_id')->toArray(),
                 "lugarAgencia"=> Lugar_Agencia_Viaje::where("viaje_excursion_id",$idViaje)->pluck('ubicacion_agencia_viajes_id')->first(),
-                "modalidadPago"=> Pago_Peso_Colombiano::where("viajes_id",$idViaje)->pluck('es_efectivo')->first()
+                "modalidadPago"=> Pago_Peso_Colombiano::where("viajes_id",$idViaje)->pluck('es_efectivo')->first(),
+                "gastosServicosPaquetes"=> Porcentajes_servicios_paquete_viaje::where("viaje_id",$idViaje)->get(),
         ];
         
         $encuesta["realizoGasto"] = Viaje_Gasto_Interno::where("viajes_id",$idViaje)->count() > 0 ? 1 : ( $encuesta["viajeExcursion"] != null > 0 ? 1 : 0 );
@@ -792,6 +794,11 @@ class TurismoInternoController extends Controller
                 'viajeExcursion.divisas_id'=>'required_if:viajePaquete,1|exists:divisas,id',
                 'viajeExcursion.valor_paquete'=>'required_if:viajePaquete,1',
                 
+                'gastosServicosPaquetes'=>'array',
+                'gastosServicosPaquetes.*.servicio_paquete_id'=>'required|exists:servicios_paquete_interno,id',
+                'gastosServicosPaquetes.*.dentro'=>'required',
+                'gastosServicosPaquetes.*.fuera'=>'required',
+                
                 'serviciosPaquetes'=>'required_if:viajePaquete,1|array|min:1',
                 'serviciosPaquetes.*'=>'required|numeric|exists:servicios_paquete_interno,id',
                 'lugarAgencia'=>'required_if:viajePaquete,1|exists:opciones_lugares,id',
@@ -816,7 +823,7 @@ class TurismoInternoController extends Controller
         Viaje_Excursion::where("viajes_id",$idViaje)->delete();
         Viaje_Financiadore::where("viaje_id",$idViaje)->delete();
         Viaje_Gasto_Interno::where("viajes_id",$idViaje)->delete();
-        
+        Porcentajes_servicios_paquete_viaje::where("viaje_id",$idViaje)->delete();
         
         
         if($request->realizoGasto==1){
@@ -838,6 +845,15 @@ class TurismoInternoController extends Controller
                     $viajeExcursion->pagoPesosColombiano()->save($pago);
                 }
                 
+                 foreach($request->gastosServicosPaquetes as $gastoSerViaje){
+                    $aux = new Porcentajes_servicios_paquete_viaje();
+                    $aux->viaje_id = $idViaje;
+                    $aux->servicio_paquete_id = $gastoSerViaje["servicio_paquete_id"];
+                    $aux->dentro = $gastoSerViaje["dentro"];
+                    $aux->fuera = $gastoSerViaje["fuera"];
+                    $aux->save();
+                }
+                    
             }
             
             if($request->gastosAparte==1){
