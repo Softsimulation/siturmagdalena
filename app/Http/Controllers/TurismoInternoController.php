@@ -1116,7 +1116,7 @@ class TurismoInternoController extends Controller
     }
     if($request->Crear){
         $viaje = new Viaje();
-        $viaje->creada_por = $this->user->id;
+        $viaje->creada_por = $this->user->digitador->id;
         $viaje->digitada_por = $this->user->digitador->id;
         $viaje->ultima_sesion = 1;
         $mensaje="Creada seccion de viaje";
