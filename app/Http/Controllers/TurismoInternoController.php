@@ -79,6 +79,8 @@ use App\Models\Fuente_Informacion_Durante_Viaje_Interno;
 use App\Models\Calificacion_Experiencia_Interno;
 use App\Models\Redes_Sociales_Viajero;
 use App\Models\Otra_Fuente_Informacion_Durante_Viaje_Interno;
+use App\Models\Tipo_Transporte_Interno;
+use App\Models\Alquila_Vehiculo_Interno;
 
 
 class TurismoInternoController extends Controller
@@ -874,20 +876,34 @@ class TurismoInternoController extends Controller
             $p->where('estado',true);
         })->get(['tipos_transporte_id as id','nombre']);
         
+        $transporteinterno=Tipo_Transporte_Interno::where('estado',true)->get();
+        
         $viajero=Viaje::find($one);
         $aux=Empresa_Terrestre_Interno::where('viajes_id',$viajero->id)->first();
+        $aux2=Alquila_Vehiculo_Interno::where('viaje_id',$viajero->id)->first();
         $empresa=($aux != null)?$aux->nombre:"";
+        $alquilado=($aux2 != null)?$aux2->alquilado_magdalena:null;
         
-        return ["transportes"=>$transportes,"tipo_transporte"=>$viajero->tipo_transporte_id,"empresa"=>$empresa];
+        return ["transportes"=>$transportes,
+                "tipo_transporte"=>$viajero->tipo_transporte_id,
+                'tipo_transporte_interno'=>$viajero->tipo_transporte_interno_id,
+                'salir'=>$viajero->salir,
+                "empresa"=>$empresa,
+                "transporte_interno"=>$transporteinterno,
+                "alquilado"=>$alquilado
+                ];
         
     }
     
     public function postGuardartransporte(Request $request){
         
           $validator=\Validator::make($request->all(),[
-                
-                'Mover'=>'required|exists:tipos_transporte,id',
-                'Empresa'=>"required_if:Mover,6"
+               
+                'Mover'=>'required|exists:tipos_transporte_interno,id',
+                'Desplazarse'=>'required|exists:tipos_transporte_interno,id',
+                'Salir'=>'required|exists:tipos_transporte_interno,id',
+                'Empresa'=>"required_if:Mover,6",
+                'alquilado'=>'required_if:Mover,5'
             ]);
             
             if($validator->fails()){
@@ -908,13 +924,28 @@ class TurismoInternoController extends Controller
               Empresa_Terrestre_Interno::where('viajes_id',$viajero->id)->delete();
               
           }
+          if($viajero->tipo_transporte_id == 5){
+              
+              Alquila_Vehiculo_Interno::where('viaje_id',$viajero->id)->delete();
+              
+          }
           $viajero->tipo_transporte_id=$request->Mover;
+          $viajero->tipo_transporte_interno_id=$request->Desplazarse;
+          $viajero->salir=$request->Salir;
           
           if($request->Mover == 6){
               
               $nuevo=new Empresa_Terrestre_Interno();
               $nuevo->viajes_id=$viajero->id;
               $nuevo->nombre=$request->Empresa;
+              $nuevo->save();
+          }
+          
+           if($request->Mover == 5){
+              
+              $nuevo=new Alquila_Vehiculo_Interno();
+              $nuevo->viaje_id=$viajero->id;
+              $nuevo->alquilado_magdalena=$request->alquilado;
               $nuevo->save();
           }
           
