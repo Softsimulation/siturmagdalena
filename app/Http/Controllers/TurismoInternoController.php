@@ -516,6 +516,8 @@ class TurismoInternoController extends Controller
     public function getCargardatosfuentes($one){
         
         $viaje=Viaje::find($one);
+        $autorizo=$viaje->autorizo;
+        $acepta=$viaje->tratamiento_datos;
         
         $fuentesAntes=Fuente_Informacion_Antes_Viaje_Con_Idioma::
             whereHas('idioma',function($q){
@@ -599,7 +601,9 @@ class TurismoInternoController extends Controller
                 'facebook'=>$facebook,
                 'twitter'=>$twitter,
                 'invitacion'=>$invitacion,
-                'invitacion_correo'=>$invitacion_correo
+                'invitacion_correo'=>$invitacion_correo,
+                'autorizo'=>$autorizo,
+                'acepta'=>$acepta
                 ];
     }
     
@@ -729,6 +733,8 @@ class TurismoInternoController extends Controller
             }
             
         }
+        $viaje->autorizo=$request->Autorizo;
+        $viaje->tratamiento_datos=$request->Acepta_tratamiento;
         $viaje->invitacion_correo=($request->Correo==0)?false:true;
         $viaje->ultima_sesion=($sw==0)?7:$viaje->ultima_sesion;
         $viaje->save();
