@@ -10,6 +10,18 @@ angular.module('interno.gastos', [] )
             $scope.financiadores = data.financiadores;
             $scope.opcionesLugares = data.opcionesLugares;
             $scope.serviciosPaquetes = data.serviciosPaquetes;
+            
+            for(var i=0; i< $scope.encuesta.gastosServicosPaquetes.length ;i++){
+               
+               for (var j = 0; j < $scope.serviciosPaquetes.length; j++){
+                    if ($scope.encuesta.gastosServicosPaquetes[i].servicio_paquete_id == $scope.serviciosPaquetes[j].id) { 
+                        $scope.encuesta.gastosServicosPaquetes[i].nombre = $scope.serviciosPaquetes[j].nombre;
+                        break;
+                    }
+                }
+                
+            }
+            
             $("body").attr("class", "cbp-spmenu-push");
         }).catch(function () {
             swal("Error", "Error en la carga, por favor recarga la página", "error");
@@ -21,6 +33,12 @@ angular.module('interno.gastos', [] )
         if (!$scope.GastoForm.$valid || $scope.encuesta.financiadores.length==0) {
             swal("Error", "Formulario incompleto corrige los errores", "error")
             return;
+        }
+        
+        for (var i = 0; i < $scope.encuesta.gastosServicosPaquetes.length; i++){
+            if( ($scope.encuesta.gastosServicosPaquetes[i].dentro+$scope.encuesta.gastosServicosPaquetes[i].fuera) != 100 ){
+                swal("Error", "La suma de los porcentajes gastados debe ser igual a 100%.", 'info'); return;
+            }
         }
         
         var data = angular.copy($scope.encuesta);
@@ -83,6 +101,23 @@ angular.module('interno.gastos', [] )
         
         
 
+    }
+    
+    
+    
+    $scope.changeServiciosPaquetes = function(s){
+        if(s.id==7 || s.id==8 ){
+            if( $scope.encuesta.serviciosPaquetes.indexOf(s.id)!=-1 ){
+               $scope.encuesta.gastosServicosPaquetes.push( { servicio_paquete_id:s.id, nombre: s.nombre} );
+            }
+            else{ 
+                for(var i=0; i<$scope.encuesta.gastosServicosPaquetes.length;i++){
+                    if( $scope.encuesta.gastosServicosPaquetes[i].servicio_paquete_id==s.id ){ 
+                        $scope.encuesta.gastosServicosPaquetes.splice(i,1); break; 
+                    }
+                }
+            }
+        }
     }
     
     
