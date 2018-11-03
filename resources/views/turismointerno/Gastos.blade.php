@@ -319,7 +319,7 @@
                                 <div class="col-md-12">
                                     <div class="checkbox" ng-repeat="servicio in serviciosPaquetes">
                                         <label>
-                                            <input type="checkbox" name="servicios" checklist-model="encuesta.serviciosPaquetes" checklist-value="servicio.id"> 
+                                            <input type="checkbox" name="servicios" checklist-model="encuesta.serviciosPaquetes" checklist-value="servicio.id" checklist-change="changeServiciosPaquetes(servicio)" > 
                                             @{{servicio.nombre}}
                                         </label>
                                     </div>
@@ -329,9 +329,74 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
-    
+                
+                <div class="panel panel-success" ng-if="encuesta.gastosServicosPaquetes.length>0" >
+                     <div class="panel-heading">
+                                <!-- P8. ¿Qué productos y servicios incluía el paquete turístico o excursión?-->
+                                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Qué porcentaje del gasto realizó:</b></h3>
+                            </div>
+                            <div class="panel-footer"><b>Complete la siguiente tabla</b></div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                       
+                                        <table class="table table-striped">
+                                            <thead>
+                                              <tr>
+                                                <th>Servicio</th>
+                                                <th>En el Magdalena</th>
+                                                <th>Fuera del Magdalena</th>
+                                                <th></th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr ng-repeat="servicio in encuesta.gastosServicosPaquetes" >
+                                                <td> @{{servicio.nombre}}</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <!-- P5P1. ¿Cuánto pagó usted por el paquete turístico o excursión?-->
+                                                        <label for="costoA@{{$index}}" class="col-md-12 control-label" style="color:dimgray;"></label>
+                                                        <input type="number" placeholder="%%" class="form-control" min="0" max="100" name="costoA@{{$index}}" ng-model="servicio.dentro" ng-change="changeRubros(rub)" ng-required="true" style="display:inline-block;width:90%;">
+                                                        <span ng-show="GastoForm.$submitted || GastoForm.costoA@{{$index}}.$touched">
+                                                            <span class="label label-danger" ng-show="GastoForm.costoA@{{$index}}.$error.required">* El campo es requerido.</span>
+                                                            <span class="label label-danger" ng-show="GastoForm.costoA@{{$index}}.$error.min">* El valor mínimo es 0</span>
+                                                            <span class="label label-danger" ng-show="GastoForm.costoA@{{$index}}.$error.max">* El valor máximo es 100</span>
+                                                            <span class="label label-danger" ng-show="GastoForm.costoA@{{$index}}.$error.number">* Sólo números</span>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <!-- P5P1. ¿Cuánto pagó usted por el paquete turístico o excursión?-->
+                                                        <label for="costoB@{{$index}}" class="col-md-12 control-label" style="color:dimgray;"></label>
+                                                        <input type="number" placeholder="%%" class="form-control" min="0" max="100" name="costoB@{{$index}}" ng-model="servicio.fuera" ng-required="true" style="display:inline-block;width:90%;">
+                                                        <span ng-show="GastoForm.$submitted || GastoForm.costoB@{{$index}}.$touched">
+                                                            <span class="label label-danger" ng-show="GastoForm.costoB@{{$index}}.$error.required">* El campo es requerido.</span>
+                                                            <span class="label label-danger" ng-show="GastoForm.costoB@{{$index}}.$error.min">* El valor mínimo es 0</span>
+                                                            <span class="label label-danger" ng-show="GastoForm.costoB@{{$index}}.$error.max">* El valor mínimo es 0</span>
+                                                            <span class="label label-danger" ng-show="GastoForm.costoB@{{$index}}.$error.number">* Sólo números</span>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td ng-show="GastoForm.$submitted || GastoForm.costoB@{{$index}}.$touched || GastoForm.costoA@{{$index}}.$touched " >
+                                                    <span ng-show="(servicio.dentro+servicio.fuera)!=100" >
+                                                        <span class="label label-danger">La suma debe completar 100%</span>
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                        </table>
+                                       
+                                      
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Desea proporcionar información adicional de sus gastos?</b></h3>
