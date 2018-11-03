@@ -38,6 +38,7 @@ use App\Models\Divisa;
 use App\Models\Servicio_Excursion_Incluido_Interno;
 use App\Models\Lugar_Agencia_Viaje;
 use App\Models\Pago_Peso_Colombiano;
+use App\Models\Porcentajes_servicios_paquete_viaje;
 
 use App\Models\Pais_Con_Idioma;
 use App\Models\Departamento;
@@ -79,6 +80,8 @@ use App\Models\Fuente_Informacion_Durante_Viaje_Interno;
 use App\Models\Calificacion_Experiencia_Interno;
 use App\Models\Redes_Sociales_Viajero;
 use App\Models\Otra_Fuente_Informacion_Durante_Viaje_Interno;
+use App\Models\Tipo_Transporte_Interno;
+use App\Models\Alquila_Vehiculo_Interno;
 
 
 class TurismoInternoController extends Controller
@@ -513,6 +516,8 @@ class TurismoInternoController extends Controller
     public function getCargardatosfuentes($one){
         
         $viaje=Viaje::find($one);
+        $autorizo=$viaje->autorizo;
+        $acepta=$viaje->tratamiento_datos;
         
         $fuentesAntes=Fuente_Informacion_Antes_Viaje_Con_Idioma::
             whereHas('idioma',function($q){
@@ -596,7 +601,9 @@ class TurismoInternoController extends Controller
                 'facebook'=>$facebook,
                 'twitter'=>$twitter,
                 'invitacion'=>$invitacion,
-                'invitacion_correo'=>$invitacion_correo
+                'invitacion_correo'=>$invitacion_correo,
+                'autorizo'=>$autorizo,
+                'acepta'=>$acepta
                 ];
     }
     
@@ -726,6 +733,8 @@ class TurismoInternoController extends Controller
             }
             
         }
+        $viaje->autorizo=$request->Autorizo;
+        $viaje->tratamiento_datos=$request->Acepta_tratamiento;
         $viaje->invitacion_correo=($request->Correo==0)?false:true;
         $viaje->ultima_sesion=($sw==0)?7:$viaje->ultima_sesion;
         $viaje->save();
@@ -757,7 +766,8 @@ class TurismoInternoController extends Controller
                 "viajeExcursion"=> Viaje_Excursion::where("viajes_id",$idViaje)->first(),
                 "serviciosPaquetes"=> Servicio_Excursion_Incluido_Interno::where("viajes_id",$idViaje)->pluck('servicios_paquete_id')->toArray(),
                 "lugarAgencia"=> Lugar_Agencia_Viaje::where("viaje_excursion_id",$idViaje)->pluck('ubicacion_agencia_viajes_id')->first(),
-                "modalidadPago"=> Pago_Peso_Colombiano::where("viajes_id",$idViaje)->pluck('es_efectivo')->first()
+                "modalidadPago"=> Pago_Peso_Colombiano::where("viajes_id",$idViaje)->pluck('es_efectivo')->first(),
+                "gastosServicosPaquetes"=> Porcentajes_servicios_paquete_viaje::where("viaje_id",$idViaje)->get(),
         ];
         
         $encuesta["realizoGasto"] = Viaje_Gasto_Interno::where("viajes_id",$idViaje)->count() > 0 ? 1 : ( $encuesta["viajeExcursion"] != null > 0 ? 1 : 0 );
@@ -792,6 +802,11 @@ class TurismoInternoController extends Controller
                 'viajeExcursion.divisas_id'=>'required_if:viajePaquete,1|exists:divisas,id',
                 'viajeExcursion.valor_paquete'=>'required_if:viajePaquete,1',
                 
+                'gastosServicosPaquetes'=>'array',
+                'gastosServicosPaquetes.*.servicio_paquete_id'=>'required|exists:servicios_paquete_interno,id',
+                'gastosServicosPaquetes.*.dentro'=>'required',
+                'gastosServicosPaquetes.*.fuera'=>'required',
+                
                 'serviciosPaquetes'=>'required_if:viajePaquete,1|array|min:1',
                 'serviciosPaquetes.*'=>'required|numeric|exists:servicios_paquete_interno,id',
                 'lugarAgencia'=>'required_if:viajePaquete,1|exists:opciones_lugares,id',
@@ -816,7 +831,7 @@ class TurismoInternoController extends Controller
         Viaje_Excursion::where("viajes_id",$idViaje)->delete();
         Viaje_Financiadore::where("viaje_id",$idViaje)->delete();
         Viaje_Gasto_Interno::where("viajes_id",$idViaje)->delete();
-        
+        Porcentajes_servicios_paquete_viaje::where("viaje_id",$idViaje)->delete();
         
         
         if($request->realizoGasto==1){
@@ -838,6 +853,15 @@ class TurismoInternoController extends Controller
                     $viajeExcursion->pagoPesosColombiano()->save($pago);
                 }
                 
+                 foreach($request->gastosServicosPaquetes as $gastoSerViaje){
+                    $aux = new Porcentajes_servicios_paquete_viaje();
+                    $aux->viaje_id = $idViaje;
+                    $aux->servicio_paquete_id = $gastoSerViaje["servicio_paquete_id"];
+                    $aux->dentro = $gastoSerViaje["dentro"];
+                    $aux->fuera = $gastoSerViaje["fuera"];
+                    $aux->save();
+                }
+                    
             }
             
             if($request->gastosAparte==1){
@@ -874,20 +898,34 @@ class TurismoInternoController extends Controller
             $p->where('estado',true);
         })->get(['tipos_transporte_id as id','nombre']);
         
+        $transporteinterno=Tipo_Transporte_Interno::where('estado',true)->get();
+        
         $viajero=Viaje::find($one);
         $aux=Empresa_Terrestre_Interno::where('viajes_id',$viajero->id)->first();
+        $aux2=Alquila_Vehiculo_Interno::where('viaje_id',$viajero->id)->first();
         $empresa=($aux != null)?$aux->nombre:"";
+        $alquilado=($aux2 != null)?$aux2->alquilado_magdalena:null;
         
-        return ["transportes"=>$transportes,"tipo_transporte"=>$viajero->tipo_transporte_id,"empresa"=>$empresa];
+        return ["transportes"=>$transportes,
+                "tipo_transporte"=>$viajero->tipo_transporte_id,
+                'tipo_transporte_interno'=>$viajero->tipo_transporte_interno_id,
+                'salir'=>$viajero->salir,
+                "empresa"=>$empresa,
+                "transporte_interno"=>$transporteinterno,
+                "alquilado"=>$alquilado
+                ];
         
     }
     
     public function postGuardartransporte(Request $request){
         
           $validator=\Validator::make($request->all(),[
-                
-                'Mover'=>'required|exists:tipos_transporte,id',
-                'Empresa'=>"required_if:Mover,6"
+               
+                'Mover'=>'required|exists:tipos_transporte_interno,id',
+                'Desplazarse'=>'required|exists:tipos_transporte_interno,id',
+                'Salir'=>'required|exists:tipos_transporte_interno,id',
+                'Empresa'=>"required_if:Mover,6",
+                'alquilado'=>'required_if:Mover,5'
             ]);
             
             if($validator->fails()){
@@ -908,13 +946,28 @@ class TurismoInternoController extends Controller
               Empresa_Terrestre_Interno::where('viajes_id',$viajero->id)->delete();
               
           }
+          if($viajero->tipo_transporte_id == 5){
+              
+              Alquila_Vehiculo_Interno::where('viaje_id',$viajero->id)->delete();
+              
+          }
           $viajero->tipo_transporte_id=$request->Mover;
+          $viajero->tipo_transporte_interno_id=$request->Desplazarse;
+          $viajero->salir=$request->Salir;
           
           if($request->Mover == 6){
               
               $nuevo=new Empresa_Terrestre_Interno();
               $nuevo->viajes_id=$viajero->id;
               $nuevo->nombre=$request->Empresa;
+              $nuevo->save();
+          }
+          
+           if($request->Mover == 5){
+              
+              $nuevo=new Alquila_Vehiculo_Interno();
+              $nuevo->viaje_id=$viajero->id;
+              $nuevo->alquilado_magdalena=$request->alquilado;
               $nuevo->save();
           }
           

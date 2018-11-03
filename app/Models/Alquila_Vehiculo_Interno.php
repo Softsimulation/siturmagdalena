@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,13 +30,15 @@ class Alquila_Vehiculo_Interno extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
      */
     protected $fillable = ['alquilado_magdalena'];
 
+    public $timestamps=false;
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
