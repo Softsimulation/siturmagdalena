@@ -168,6 +168,14 @@ header:before, #nav-menu-main nav>ul:before{
     -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,.4);
     -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,.4);
 }
+#nav-menu-main nav>ul li ul a .mdi {
+    position: absolute;
+    left: .5rem;
+    top: calc(50% - 1rem);
+}
+#nav-menu-main nav>ul li ul a {
+    padding-left: 2.5rem;
+}
 #navbar-mobile{
     display: none;
 }

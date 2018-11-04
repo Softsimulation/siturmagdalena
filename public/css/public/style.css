@@ -73,7 +73,7 @@ h1, h2, h3, h4, h5{
     }
 }
 /*Transición suave para movimiento de elementos y evitar que el usuario copie el contenido del elemento*/
-.toolbar, .nav-bar-main, #stats-links, #stats-links a {
+.toolbar, .nav-bar-main, #stats-links, #stats-links a, #nav-menu-main nav>ul li>a {
     transition: all .16s ease-in-out;
     -webkit-transition: all .16s ease-in-out;
     -moz-transition: all .16s ease-in-out;
@@ -274,10 +274,14 @@ footer{
     color: #004A87;
     
 }
-#nav-menu-main nav>ul li>a:hover{
+#nav-menu-main nav>ul li.in>a, #nav-menu-main nav>ul li>a:hover{
     color: white;
     background-color: #004A87;
 }
+#nav-menu-main nav>ul>li:not(.in)>a:hover{
+    background-color: dodgerblue;
+}
+
 #nav-menu-main nav>ul>li:not(:last-child), #nav-menu-main nav>ul li.in ul{
     border-bottom: 1px solid #eee;
 }

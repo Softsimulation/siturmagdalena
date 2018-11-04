@@ -33,19 +33,19 @@
             <thead>
                 <tr>
                     <!--<th style="width: 20px;"></th>-->
-                    <th>Titulo</th>
-                    <th>Tipo</th>                                                                          
-                    <th>Descripción</th>
+                    <th>Título</th>
+                    <th style="min-width: 110px;">Tipo</th>                                                                          
+                    <!--<th>Descripción</th>-->
                     <th>Estado</th>
                     <th>Visible</th>
                     <th style="width: 120px;">Opciones</th>
                 </tr>
                 <tr ng-show="mostrarFiltro == true">
                             
-                    <td><input type="text" ng-model="search.titulo" name="titulo" id="titulo" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.tipoPublicacion" name="tipoPublicacion" id="tipoPublicacion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.descripcion" name="descripcion" id="descripcion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.titulo" name="titulo" id="titulo" class="form-control input-sm" id="inputSearch" maxlength="150" placeholder="Buscar por título" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.tipoPublicacion" name="tipoPublicacion" id="tipoPublicacion" class="form-control input-sm" id="inputSearch" maxlength="150" placeholder="Buscar por tipo" autocomplete="off"></td>
+                    <!--<td><input type="text" ng-model="search.descripcion" name="descripcion" id="descripcion" class="form-control input-sm" id="inputSearch" maxlength="150"  placeholder="Buscar descripción" autocomplete="off"></td>-->
+                    <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" id="inputSearch" maxlength="150" placeholder="Buscar por estado" autocomplete="off"></td>
                     <td></td>
                 </tr>
             </thead>
@@ -54,7 +54,7 @@
                     <!--<td>@{{($index + 1) + (currentPagepublicacion - 1) * 10}}</td>-->
                     <td>@{{publicacion.titulo}}</td>
                    <td>@{{publicacion.tipopublicacion.idiomas[0].nombre}}</td>
-                    <td>@{{publicacion.descripcion}}</td>
+                    <!--<td>@{{publicacion.descripcion}}</td>-->
                     <td>@{{publicacion.estado_publicacion.nombre}}</td>
                     <td ng-show="publicacion.estado">Si</td>
                     <td ng-show="!publicacion.estado">No</td>
