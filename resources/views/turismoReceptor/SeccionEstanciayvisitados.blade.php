@@ -191,7 +191,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="activ in Datos.Actividadesrelizadas" >
+                        <div class="checkbox" ng-repeat="activ in Datos.Actividadesrelizadas | orderBy: 'peso'" >
                             <label>
                                 <input type="checkbox" checklist-model="encuesta.ActividadesRelizadas" name= "actividadesr"  checklist-value="activ"  ng-click="cambioActividadesRealizadas(activ)" > @{{activ.actividades_realizadas_con_idiomas[0].nombre}}
                             </label>
@@ -218,7 +218,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="checkbox" ng-repeat="item in opcion.opciones">
+                            <div class="checkbox" ng-repeat="item in opcion.opciones| orderBy: 'codigo'">
                                 <label>
                                     <input type="checkbox" name ="opcion_@{{opcion.id}}" id="opcion_@{{opcion.id}}" checklist-model="opcion.Respuestas" checklist-value="item" > @{{item.opciones_actividades_realizadas_idiomas[0].nombre}}
                                 </label>
@@ -243,7 +243,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="checkbox" ng-repeat="item in sub.sub_opciones">
+                                <div class="checkbox" ng-repeat="item in sub.sub_opciones| orderBy: 'codigo'">
                                     <label>
                                         <input type="checkbox" name ="sub_@{{opcion.id}}" id="sub_@{{opcion.id}}" checklist-model="sub.Respuestas" checklist-value="item.id" > @{{item.sub_opciones_actividades_realizadas_idiomas[0].nombre}}
                                     </label>
