@@ -97,7 +97,7 @@ class TurismoReceptorController extends Controller
             })->select('pais_id','nombre');
         }])->get();
         
-        $motivos = Motivo_Viaje::where('estado', true)->with(["motivosViajeConIdiomas" => function($q){
+        $motivos = Motivo_Viaje::where('estado', true)->orderBy('peso')->with(["motivosViajeConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
                 $p->where('culture','es');
             })->select('motivo_viaje_id','nombre');
@@ -111,7 +111,7 @@ class TurismoReceptorController extends Controller
         
         $departamentos = Departamento::where('pais_id',47)->select('id','nombre')->get();
         
-        $ocupaciones = Ocupacion_Persona::all();
+        $ocupaciones = Ocupacion_Persona::orderBy('id')->where('estado',true)->get();
         
         $result = [ 
             'grupos' => $grupos, 
@@ -476,17 +476,17 @@ class TurismoReceptorController extends Controller
             })->select('tipos_alojamientos_id','nombre');
         }])->get();
         
-        $actividadesrealizadas = Actividad_Realizada::where('estado',1)->with(["actividadesRealizadasConIdiomas" => function($q){
+        $actividadesrealizadas = Actividad_Realizada::orderBy('peso')->where('estado',1)->with(["actividadesRealizadasConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
                 $p->where('culture','es');
             })->select('actividad_realizada_id','nombre');
         },"opciones" => function($q){
-            $q->orderBy('id')->with(["opcionesActividadesRealizadasIdiomas" => function($w){
+            $q->where('estado',1)->orderBy('codigo')->with(["opcionesActividadesRealizadasIdiomas" => function($w){
                 $w->whereHas('idioma',function($p){
                     $p->where('culture','es');
                 })->select('opciones_actividad_realizada_id','nombre');
             },"subOpciones" => function($w){
-                $w->orderBy('id')->with(["subOpcionesActividadesRealizadasIdiomas" => function($a){
+                $w->where('estado',1)->orderBy('codigo')->with(["subOpcionesActividadesRealizadasIdiomas" => function($a){
                     $a->whereHas('idioma',function($p){
                         $p->where('culture','es');
                     })->select('sub_opciones_actividades_realizada_id','nombre');
@@ -624,7 +624,7 @@ class TurismoReceptorController extends Controller
 		}
 		
 		if($noches > $numeroDias){
-		    return ["success" => false, "errores" => [["La suma del número de noches no debe ser mayor al número de días del viaje."]] ];
+		    return ["success" => false, "errores" => [["La suma del número de noches no debe ser mayor al número de días del viaje (".$numeroDias.")."]] ];
 		}
 		
 		foreach($request->ActividadesRelizadas as $actividad){
