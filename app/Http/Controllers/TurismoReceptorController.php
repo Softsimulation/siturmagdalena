@@ -203,7 +203,7 @@ class TurismoReceptorController extends Controller
 		    return ["success"=>false,"errores"=> [ ["El grupo seleccionado ya tiene el número de encuestas completas."] ] ];
 		}
 		
-		if($grupo->fecha_aplicacion < $request->Llegada || $grupo->fecha_aplicacion > $request->Salida){
+		if(date('Y-m-d',strtotime($grupo->fecha_aplicacion)) < date('Y-m-d',strtotime($request->Llegada)) || date('Y-m-d',strtotime($grupo->fecha_aplicacion)) > date('Y-m-d',strtotime($request->Salida)) ){
 		    return ["success"=>false,"errores"=> [ ["Verifique que la fecha de llegada y de salida contemplen la fecha de aplicación de la encuesta la cual fue " .$grupo->fecha_aplicacion." ."] ] ];
 		}
 		
@@ -391,7 +391,7 @@ class TurismoReceptorController extends Controller
 		    return ["success"=>false,"errores"=> [ ["La fecha de llegada no debe ser mayor a la de salida."] ] ];
 		}
 		
-		if($grupo->fecha_aplicacion < $request->Llegada || $grupo->fecha_aplicacion > $request->Salida){
+		if(date('Y-m-d',strtotime($grupo->fecha_aplicacion)) < date('Y-m-d',strtotime($request->Llegada)) || date('Y-m-d',strtotime($grupo->fecha_aplicacion)) > date('Y-m-d',strtotime($request->Salida)) ){
 		    return ["success"=>false,"errores"=> [ ["Verifique que la fecha de llegada y de salida contemplen la fecha de aplicación de la encuesta la cual fue " .$grupo->fecha_aplicacion." ."] ] ];
 		}
     	
@@ -1341,7 +1341,6 @@ class TurismoReceptorController extends Controller
 		$sw = 0;
 		if($visitante->ultima_sesion >= 6){
 		    $sw =1;
-		    
 		}else{
 		    $visitante->ultima_sesion = 6;
 		}
