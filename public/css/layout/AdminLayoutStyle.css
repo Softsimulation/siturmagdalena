@@ -13,6 +13,7 @@ h2{
 }
 fieldset{
     margin: 1rem 0;
+    min-width: 100%;
 }
 #nav-menu-main, #nav-menu-main nav ul, #nav-menu-main nav ul li, .btn{
     transition: all .16s ease-in-out;
@@ -635,8 +636,6 @@ align-items-center{
 #left-side-menu::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
-
-
 
 /*Fonts*/
 @font-face {

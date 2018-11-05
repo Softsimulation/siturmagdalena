@@ -78,8 +78,8 @@
               <tr>
                   <th>Título</th>
                   <th>Tipo de noticia</th>
-                  <th>Estado</th>
-                  <th>Acción</th>
+                  <th style="width: 110px;">Estado</th>
+                  <th style="width: 150px;">Acciones</th>
                   
               </tr>
               <tr ng-show="mostrarFiltro == true">
@@ -96,12 +96,15 @@
                   <td>@{{x.nombreTipoNoticia}}</td>
                   <td >@{{x.estado == true ? 'Activo' : 'Inactivo'}}</td>
                   <td>
-                    <!--<a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-default" title="Editar noticia" style="float:left"><span class="glyphicon glyphicon-pencil"></span></a>-->
-                    <a href="/noticias/vernoticia/@{{x.idNoticia}}" class="btn btn-default" title="Ver noticia" style="float:left"><span class="glyphicon glyphicon-eye-open"></span></a>
-                    <a href="" ng-click="cambiarEstado(x)" class="btn btn-default" title="Cambiar estado" style="float:left"><span class="glyphicon glyphicon-transfer"></span></a>
+                    <a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-xs btn-default" title="Editar noticia"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="/noticias/vernoticia/@{{x.idNoticia}}" class="btn btn-xs btn-default" title="Ver noticia"><span class="glyphicon glyphicon-search"></span></a>
+                    <button type="button" ng-click="cambiarEstado(x)" class="btn btn-xs btn-default" title="Cambiar estado">
+                        <span ng-if="!x.estado" class="glyphicon glyphicon-eye-open"></span>
+                        <span ng-if="x.estado" class="glyphicon glyphicon-eye-close"></span>
+                    </button>
                     <!--<a href="" ng-click="eliminarNoticia(x)" class="btn btn-default" title="Eliminar noticia" style="float:left"><span class="glyphicon glyphicon-remove"></span></a>-->
-                    <a ng-repeat="idioma in x.idiomas[0].idiomas" href="/noticias/vistaeditar/@{{x.idNoticia}}/@{{idioma.id}}" class="btn btn-default" title="Editar @{{idioma.nombre}}" style="float:left">@{{idioma.culture}}</a>
-                      <a ng-if="x.idiomas[0].idiomas.length < cantIdiomas" href="/noticias/nuevoidioma/@{{x.idNoticia}}" class="btn btn-default" title="Agregar idioma" style="float:left"><span class="glyphicon glyphicon-plus"></span></a>
+                    <a ng-repeat="idioma in x.idiomas[0].idiomas" href="/noticias/vistaeditar/@{{x.idNoticia}}/@{{idioma.id}}" class="btn btn-xs btn-default" title="Editar @{{idioma.nombre}}">@{{idioma.culture}}</a>
+                      <a ng-if="x.idiomas[0].idiomas.length < cantIdiomas" href="/noticias/nuevoidioma/@{{x.idNoticia}}" class="btn btn-xs btn-default" title="Agregar idioma"><span class="glyphicon glyphicon-plus"></span></a>
                   </td>
               </tr>
           </tbody>

@@ -8,7 +8,7 @@
         </div>
     	<header>
     		<div id="situr-main-brand" class="brand">
-    			<a href="#">
+    			<a href="/">
     				<img src="{{asset('img/brand/default.png')}}" alt="Logo de SITUR Magdalena">
     				<h1 class="sr-only">SITUR Magdalena</h1>
     			</a>
@@ -317,16 +317,16 @@
                                 </ul>
                             </li>
                             <li>
-                                <a role="menuitem" href="#">Noticias</a>
+                                <a role="menuitem" href="/promocionNoticia/listado">Noticias</a>
                             </li>
                             <li>
-                                <a role="menuitem" href="#">Publicaciones</a>
+                                <a role="menuitem" href="/promocionPublicacion/listado">Publicaciones</a>
                             </li>
                             <li>
                                 <a role="menuitem" href="#">Planifica tu viaje</a>
                             </li>
                             <li>
-                                <a role="menuitem" href="#">Mapa</a>
+                                <a role="menuitem" href="/Mapa">Mapa</a>
                             </li>
                         </ul>
                     </nav>
