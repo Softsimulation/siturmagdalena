@@ -76,7 +76,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="item in viaje_grupos">
+                        <div class="checkbox" ng-repeat="item in viaje_grupos | orderBy: 'codigo'">
                             <label>
                                 <input type="checkbox" name="personas" checklist-model="grupo.Personas" checklist-value="item.id"  ng-disabled="(grupo.Numero == 1 && item.id != 1) || (grupo.Numero > 1 && item.id == 1) || grupo.Numero == null || grupo.Numero < 1" ng-change="vchek(item.id)" /> @{{item.tipos_acompaniante_con_idiomas[0].nombre}}
                             </label>

@@ -8,7 +8,6 @@
 /*Tiles*/
 .tiles.tile-list .tile {
     padding: .5rem;
-    margin: 0;
     align-items: center;
     display: inline-flex;
     flex-wrap: wrap;

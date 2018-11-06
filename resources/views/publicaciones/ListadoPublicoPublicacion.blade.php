@@ -34,6 +34,7 @@
         {{$publicacion}}
             Título : {{$publicacion->titulo}}
             <br>
+            <img src="{{$publicacion->portada}}" alt="">
             Portada : {{$publicacion->portada}}
             <br>
             Descripción : {{$publicacion->descripcion}}
