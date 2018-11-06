@@ -77,16 +77,16 @@
           <thead>
               <tr>
                   <th>Título</th>
-                  <th>Tipo de noticia</th>
+                  <th style="width: 140px; max-width: 140px;">Tipo de noticia</th>
                   <th style="width: 110px;">Estado</th>
                   <th style="width: 150px;">Acciones</th>
                   
               </tr>
               <tr ng-show="mostrarFiltro == true">
                                         
-                    <td><input type="text" ng-model="search.tituloNoticia" name="tituloNoticia" id="tituloNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.nombreTipoNoticia" name="nombreTipoNoticia" id="nombreTipoNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.estadoNoticia" name="estadoNoticia" id="estadoNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.tituloNoticia" name="tituloNoticia" id="tituloNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off" placeholder="buscar por título"></td>
+                    <td><input type="text" ng-model="search.nombreTipoNoticia" name="nombreTipoNoticia" id="nombreTipoNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off" placeholder="buscar por tipo"></td>
+                    <td><input type="text" ng-model="search.estadoNoticia" name="estadoNoticia" id="estadoNoticia" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off" placeholder="buscar por estado"></td>
                     <td></td>
                 </tr>
           </thead>
@@ -112,7 +112,7 @@
           
       </table>
         <div class="row">
-          <div class="col-6" style="text-align:center;">
+          <div class="col-xs-12 text-center">
           <dir-pagination-controls pagination-id="paginacion_noticias"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
           </div>
         </div>

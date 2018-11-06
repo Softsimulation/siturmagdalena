@@ -618,6 +618,17 @@ footer .sign-footer{
     padding-left: 0;
     padding-right: 0;
 }
+.breadcrumb>li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+}
+
+.breadcrumb {
+    display: flex;
+    margin-bottom: .5rem;
+}
 /*Fonts*/
 @font-face {
     font-family: 'Futura';

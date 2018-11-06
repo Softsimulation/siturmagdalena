@@ -84,6 +84,7 @@
                                 <div class="form-group" ng-class="{'has-error': (crearForm.$submitted || crearForm.fuenteNoticia.$touched) && crearForm.fuenteNoticia.$error.url}">
                                     <label for="fuenteNoticia" class="control-label">Enlace de fuente</label>
                                     <input type="url" class="form-control" name="fuenteNoticia" id="fuenteNoticia" ng-model="noticia.fuenteNoticia" maxlength="500" placeholder="Ej: http://www.dominio.com"/>
+                                    <span class="text-error" ng-show="(crearForm.$submitted || crearForm.fuenteNoticia.$touched) && crearForm.fuenteNoticia.$error.url">Debe ingresar una URL válida. Ej: http://www.dominio.com</span>
                                 </div>
                             </div>
                             <div class="col-xs-12 text-center">
