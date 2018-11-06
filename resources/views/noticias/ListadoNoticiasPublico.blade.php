@@ -9,14 +9,19 @@
     .row{
         width: calc(100% + 30px);
     }
-    .tile .tile-img{
+    .tile .tile-img.no-img{
         background-color: white;
     }
-    .tile .tile-img img{
+    .tile .tile-img.no-img img{
         height: 100px;
     }
-    .tiles .tile .tile-img {
+    .tiles .tile .tile-img.no-img {
         height: 100px;
+    }
+    .content-head {
+        padding-top: 1rem;
+        background-color: whitesmoke;
+        box-shadow: 0px 2px 4px -2px rgba(0,0,0,.35);
     }
 </style>
 @endsection
@@ -71,15 +76,22 @@
     @if ($noticias != null || count($noticias) > 0)
     <div class="tiles">
         @foreach ($noticias as $noticia)
-        <div class="tile">
-            <div class="tile-img">
+        <div class="tile @if(strlen($noticia->titulo) >= 200 || strlen($noticia->resumen) > 230) two-places @endif">
+            <div class="tile-img @if(!$noticia->portada) no-img @endif">
+                @if($noticia->portada)
+                <img src="{{$noticia->portada}}" alt="" role="presentation">
+                @else
                 <img src="/img/news.png" alt="" role="presentation">
+                @endif
+                <div class="text-overlap">
+                    <a href="/promocionNoticia/listado/?tipoNoticia={{$noticia->nombreTipoNoticia}}"><span class="label label-info">{{$noticia->nombreTipoNoticia}}</span></a>
+                </div>
             </div>
             <div class="tile-body">
                 <div class="tile-caption">
                     <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>
                 </div>
-                <p><a href="/promocionNoticia/listado/?tipoNoticia={{$noticia->nombreTipoNoticia}}"><span class="label label-info">{{$noticia->nombreTipoNoticia}}</span></a></p>
+                <p>{{$noticia->resumen}}</p>
                 <div class="text-right">
                     <a href="/promocionNoticia/ver/{{$noticia->idNoticia}}" class="btn btn-xs btn-link">Ver más</a>
                 </div>
