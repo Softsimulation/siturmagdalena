@@ -9,9 +9,13 @@ angular.module('interno.transporte', ["checklist-model"])
             .success(function (data) {
                 $("body").attr("class", "cbp-spmenu-push")
                 $scope.transportes = data.transportes
+                $scope.transporte_interno=data.transporte_interno
                 $scope.transporte.id = $scope.id
                 $scope.transporte.Mover = data.tipo_transporte
+                $scope.transporte.Desplazarse = data.tipo_transporte_interno
+                $scope.transporte.Salir = data.salir
                 $scope.transporte.Empresa = data.empresa
+                $scope.transporte.alquilado=data.alquilado
             }).error(function () {
                 $("body").attr("class", "cbp-spmenu-push")
                 swal("Error", "Error en la carga, por favor recarga la pagina", "error")

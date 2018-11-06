@@ -40,8 +40,19 @@
                     <div class="col-xs-12">
                         <div class="form-group" ng-class="{'has-error': (editarIdiomaForm.$submitted || editarIdiomaForm.descripcion.$touched) && editarIdiomaForm.descripcion.$error.required}">
                             <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
-                            <textarea style="resize: none;" ng-model="ruta.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la ruta (De 100 a 1,000 caracteres)"></textarea>
-                            
+                            <ng-ckeditor  
+                                      ng-model="ruta.datosGenerales.descripcion"
+                                       
+                                      skin="moono" 
+                                      remove-buttons="Image" 
+                                      remove-plugins="iframe,flash,smiley"
+                                      name="descripcion"
+                                      required
+                                      >
+                            </ng-ckeditor>
+                            <span class="messages" ng-show="editarIdiomaForm.$submitted || editarIdiomaForm.descripcion.$touched">
+                                <span ng-show="editarIdiomaForm.descripcion.$error.required" class="text-error">* El campo es obligatorio.</span>
+                            </span>
                         </div>
                     </div>
                     <div class="col-xs-12">
@@ -74,4 +85,6 @@
 <script src="{{asset('/js/administrador/rutas/editarController.js')}}"></script>
 <script src="{{asset('/js/administrador/rutas/services.js')}}"></script>
 <script src="{{asset('/js/administrador/rutas/app.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

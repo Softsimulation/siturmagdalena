@@ -1,4 +1,4 @@
-var situr = angular.module("rutasApp", ['ADM-dateTimePicker',  'InputFile' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'rutasServices', 'rutas.crear', 'rutas.index', 'rutas.idioma', 'rutas.editar']);
+var situr = angular.module("rutasApp", ['ADM-dateTimePicker', 'ng.ckeditor' ,  'InputFile' ,'checklist-model', 'angularUtils.directives.dirPagination', 'ui.select', 'rutasServices', 'rutas.crear', 'rutas.index', 'rutas.idioma', 'rutas.editar']);
 
 situr.directive('fileInput', ['$parse', function ($parse) {
 

@@ -30,7 +30,7 @@ function parse_yturl($url)
 
 @section('Title','Atracciones')
 
-@section('TitleSection','Atracciones')
+@section('TitleSection',$atraccion->sitio->sitiosConIdiomas[0]->nombre)
 
 @section('content')
     <div id="carousel-main-page" class="carousel slide" data-ride="carousel">
@@ -128,7 +128,7 @@ function parse_yturl($url)
             <div class="row">
                 <div class="col-xs-12">
                     @if($video_promocional != null)
-                    <iframe src="https://www.youtube.com/embed/{{print(parse_yturl($video_promocional))}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;margin-bottom: 1rem;"></iframe>
+                    <iframe src="https://www.youtube.com/embed/<?php echo parse_yturl($video_promocional); ?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;margin-bottom: 1rem;"></iframe>
                     @endif
                 </div>
                 <div class="col-xs-12 col-md-8">
@@ -504,6 +504,7 @@ function parse_yturl($url)
     });
 </script>
 <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNCXa64urvn7WPRdFSW29prR-SpZIHZPs&callback=initMap">
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC55uUNZFEafP0702kEyGLlSmGE29R9s5k&callback=initMap">
+
 </script>
 @endsection

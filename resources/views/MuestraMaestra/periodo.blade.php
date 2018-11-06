@@ -568,11 +568,11 @@
                     <i class="material-icons">arrow_forward</i>
                 </button>  
             </div>
-            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
+            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="false" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
               
                 <marker ng-repeat="pro in (proveedores|filter:filtro.busqueda|filter:filterProveedores) as proveedoresFiltrados" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
                     icon="@{{ getIcono(pro) }}" on-click="showInfoMapa(event,pro,$index)" 
-                    draggable="@{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" >     
+                    draggable="@{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" label="@{{pro.concat}}"  >     
                 </marker>
         
                 <shape index="fig-@{{$index}}" ng-repeat="item in dataPerido.zonas|filter:filterZonas" fill-color="@{{item.color}}" 
@@ -1061,7 +1061,7 @@
     <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
     <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
     <script src="/js/plugins/tokml.js"></script>
-    <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyC55uUNZFEafP0702kEyGLlSmGE29R9s5k&libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="/js/plugins/ng-map.js"></script>
     <script src="/js/plugins/geoxml3.js"></script>
     <script src="{{asset('/js/muestraMaestra/servicios.js')}}"></script>

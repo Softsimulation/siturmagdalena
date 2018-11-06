@@ -62,7 +62,7 @@ angular.module('receptor.grupo_viaje', ['ADM-dateTimePicker','grupoViajeService'
                     confirmButtonText: "OK",
                     closeOnConfirm: true
                 }, function (isConfirm) {
-                    window.location.href = "/grupoviaje/listadogrupos";
+                    window.location.href = "/turismoreceptor/datosencuestados";
                 });
             } else {
                 swal("Error", "Por favor corrija los errores", "error");

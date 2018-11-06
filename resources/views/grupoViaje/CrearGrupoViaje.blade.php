@@ -34,7 +34,6 @@
                         <adm-dtp name="date_apli" id="date_apli" ng-model='grupo.Fecha' full-data="date11_detail" maxdate="@{{fechaActual}}"
                                              options="optionFecha" ng-required="true"></adm-dtp>
                          <span class="text-error" ng-show="(crearForm.$submitted || crearForm.date_apli.$touched) && crearForm.date_apli.$error.required">El campo es obligatorio</span>
-
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-5">

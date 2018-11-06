@@ -59,7 +59,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="it in fuentesAntes">
+                        <div class="checkbox" ng-repeat="it in fuentesAntes| orderBy: 'codigo'">
                             <label>
                                 <input type="checkbox" name="fuentesAntes" checklist-model="enteran.FuentesAntes"  checklist-value="it.id" ng-change="validar(2, it.id)" > @{{it.fuente_informacion_antes_viaje_con_idiomas[0].nombre}}
                             </label>
@@ -82,7 +82,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="it in fuentesDurante">
+                        <div class="checkbox" ng-repeat="it in fuentesDurante| orderBy: 'codigo'">
                             <label>
                                 <input type="checkbox" name="fuentesDurante" checklist-model="enteran.FuentesDurante" ng-disabled="(enteran.FuentesDurante.indexOf(13) > -1 && it.id!=13)" ng-change="validar(0, it.id)" checklist-value="it.id"> @{{it.fuentes_informacion_durante_viaje_con_idiomas[0].nombre}}
                             </label>

@@ -83,8 +83,8 @@
             <div class="panel-footer"><b>Califique en una escala del 1 al 10, donde 1 es Muy insatisfecho y 10 Muy satisfecho</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-striped" ng-required="calificacion.Alojamiento==1">
+                    <div class="col-md-12" style="overflow-x: auto;">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th> @{{aspectos[0].aspectos_evaluados_con_idiomas[0].nombre}} </th>
@@ -161,7 +161,7 @@
             <div class="panel-footer"><b>Califique en una escala del 1 al 10, donde 1 es muy insatisfecho y 10 muy satisfecho</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="overflow-x: auto;">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -169,6 +169,7 @@
                                     @for ($j = 1; $j <= 10; $j++)
                                         <th> {{$j}} </th>
                                     @endfor
+                                    <th> Sin Respuesta </th>
                                 </tr>
 
                             </thead>
@@ -186,9 +187,14 @@
                                             </div>
                                         </td>
                                     @endfor
-                                   
+                                   <td>
+                                        <div class="radio radio-primary">
+                                            <label>
+                                                <input type="radio" ng-checked="it.radios==null" ng-click="limpiarFila(it.id)" name="infraestructura_@{{it.id}}" value="0">
+                                            </label>
+                                        </div>
+                                    </td>
                                 </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -246,7 +252,7 @@
 
                             </thead>
                             <tbody>
-                                <tr ng-repeat="it in aspectos[2].items_evaluars">
+                                <tr ng-repeat="it in aspectos[2].items_evaluars" ng-if="(controlSostenibilidad>0 && it.id > 15) || it.id <= 15">
                                     <td> @{{it.items_evaluar_con_idiomas[0].nombre}}</td>
                                     @for ($i = 1; $i <= 10; $i++)
                                     
@@ -403,23 +409,22 @@
 
                             </thead>
                             <tbody>
-                                <tr ng-repeat="it in aspectos[4].items_evaluars">
+                                <tr ng-repeat="it in aspectos[4].items_evaluars" ng-if="(controlSostenibilidad>0 && it.id == 25) || it.id != 25">
                                     <td> @{{it.items_evaluar_con_idiomas[0].nombre}}</td>
                                     @for ($i = 1; $i <= 10; $i++)
                                         <td>
                                             <div class="radio radio-primary">
                                                 <label>
-                                                    <input type="radio" name="infraestructura_@{{it.id}}" id="infraestructura_@{{it.id}}_{{$i}}" ng-checked="checkedRadio('infraestructura_@{{it.id}}_{{$i}}', it.radios.Valor,{{$i}})" ng-model="it.radios" ng-value="{Id:it.id,Valor:{{$i}}}">
+                                                    <input type="radio" name="ocio_@{{it.id}}" ng-model="it.radios" id="ocio_@{{it.id}}_{{$i}}" ng-checked="checkedRadio('ocio_@{{it.id}}_{{$i}}', it.radios.Valor,{{$i}})"  ng-value="{Id:it.id,Valor:{{$i}}}">
 
                                                 </label>
                                             </div>
                                         </td>
                                     @endfor
-                                    
                                     <td>
                                         <div class="radio radio-primary">
                                             <label>
-                                                <input type="radio"  ng-checked="it.radios==null" ng-click="limpiarFila(it.id)" name="infraestructura_@{{it.id}}" value="0">
+                                                <input type="radio" ng-checked="it.radios==null" ng-click="limpiarFila(it.id)" name="infraestructura_@{{it.id}}" value="0">
                                             </label>
                                         </div>
                                     </td>
@@ -523,7 +528,7 @@
                 <!-- ¿Cuántas veces ha venido al Magdalena en los últimos dos años?-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> F9. ¿Cuántas veces ha venido al Magdalena en los últimos dos años?</b></h3>
             </div>
-            <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
+            <div class="panel-footer"><b>Pregunta de selección única</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -583,7 +588,7 @@
             </div>
         </div>
         
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading p1">
                 <!-- ¿Durante su viaje utilizó servicio de alojamiento?-->
                 <h3 class="panel-title"><b> ¿Fue informado sobre las normas y cuidados que debe tener el visitante con la flora y fauna de Atlántico?</b></h3>
@@ -611,7 +616,7 @@
 
         
         
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading">
                 <!-- Experiencia de viaje-->
                 <h3 class="panel-title"><b>Sostenibilidad</b></h3>
@@ -646,7 +651,7 @@
         </div>
 
         
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading">
                 <!-- ¿Cuál fue el  atractivo y/o el elemento de la ciudad que más llamó su atención?-->
                 <h3 class="panel-title"><b> Sostenibilidad ¿Realizó alguna de las siguientes actividades para ayudar a la conservación del medio ambiente en Atlántico?</b></h3>
