@@ -32,6 +32,10 @@
     width: calc(50% - 1rem);
 }
 
+.tiles .tile:not(.inline-tile).two-places{
+    width: calc(100% - 1rem);
+}
+
 .tiles.tile-list .tile .tile-img, .tiles.tile-list .tile .tile-body {
     
     float: left;
