@@ -33,6 +33,12 @@
 </style>
 @endsection
 
+@section('meta_og')
+<meta property="og:title" content="{{$noticia->tituloNoticia}}. Publicado por SITUR Magdalena." />
+<meta property="og:image" content="{{asset('/res/img/brand/128.png')}}" />
+<meta property="og:description" content="{{$noticia->resumenNoticia}}"/>
+@endsection
+
 @section('content')
 <div class="container">
     <ol class="breadcrumb">
@@ -96,7 +102,7 @@
             <span class="ion-social-googleplus" aria-hidden="true"></span>
             <span class="sr-only">Compartir en Google +</span>
         </a>
-        <button type="button" class="btn btn-circle btn-default" title="Imprimir esta publicación">
+        <button type="button" class="btn btn-circle btn-default" title="Imprimir esta publicación" onclick="window.print();return false;">
             <span class="ion-android-print" aria-hidden="true"></span>
             <span class="sr-only">Imprimir esta publicación</span>
         </button>
