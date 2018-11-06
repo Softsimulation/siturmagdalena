@@ -48,6 +48,9 @@
 
 @section('controller','ng-controller="editarNoticiaCtrl"')
 
+@section('titulo','Noticias')
+@section('subtitulo','Formulario de edición de noticias')
+
 @section('content')
     <div class="container">
         <input type="hidden" ng-init="editar2.idNoticia={{$idNoticia}}" ng-model="editar2.idNoticia" />

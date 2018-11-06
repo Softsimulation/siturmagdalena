@@ -36,13 +36,13 @@ class GrupoViajeController extends Controller
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->where('id','>','20381')->get();
+            }])->orderBy('created_at','DESC')->get();
         }else{
             $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
-            }])->where('id','>','20381')->where('digitador_id',$this->user->digitador->id)->get();
+            }])->where('id','>','20381')->where('digitador_id',$this->user->digitador->id)->orderBy('created_at','DESC')->get();
         }
             
         return $grupos;    
@@ -143,7 +143,7 @@ class GrupoViajeController extends Controller
 
         $grupo = new Grupo_Viaje();
         $grupo->digitador_id = $this->user->digitador->id;
-        $grupo->fecha_aplicacion = $request->Fecha;
+        $grupo->fecha_aplicacion = date('Y-m-d',strtotime($request->Fecha));
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
         $grupo->mayores_quince = $request->Mayores15;
@@ -294,7 +294,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             'id'=>'required|exists:grupos_viaje,id',
-            'Fecha'=>'required|date',
+            'Fecha'=>'required',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -380,8 +380,8 @@ class GrupoViajeController extends Controller
             return  ["success"=>false,"errores"=>$errores];
         }
         $grupo = Grupo_Viaje::where('id',$request->id)->first();
-
-        $grupo->fecha_aplicacion = $request->Fecha;
+        
+        $grupo->fecha_aplicacion = date('Y-m-d',strtotime($request->Fecha));
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
         $grupo->mayores_quince = $request->Mayores15;
@@ -395,7 +395,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         
         $grupo->save();
-
+        
         return ["success"=>true];
         }
 }

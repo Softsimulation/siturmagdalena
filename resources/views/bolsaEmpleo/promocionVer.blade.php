@@ -205,6 +205,7 @@ label{
        
             <a role="button" href="/promocionBolsaEmpleo/vacantes" class="btn btn-lg btn-default">Volver</a>
     </div>
+    @if(count($otrasVacantes) > 0)
     <h2>Otras vacantes</h2>
     <div class="tiles">
         
@@ -222,6 +223,7 @@ label{
             </div>
         @endforeach
     </div>
+    @endif
 </div>
     
     

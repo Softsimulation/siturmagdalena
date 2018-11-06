@@ -47,22 +47,69 @@
         padding:0!important;
         padding-top:20px !important;
     }
+    .btn-outline-primary{
+        background-color: white;
+        color: #004A87;
+        border-color: #004A87;
+        border-radius: 6px;
+    }
+    .btn-outline-primary:hover{
+        background-color: #004A87;
+        color: white;
+    }
+    .dropdown-menu{
+        width: 100%;
+        text-align:center;
+    }
+    .dropdown-menu>li>button:hover {
+        background-color: #eee;
+    }
+    .dropdown-menu>li>button {
+        display: block;
+        font-weight: 400;
+        line-height: 1.42857143;
+        color: #333;
+        white-space: normal;
+        font-size: 1rem;
+        width: 100%;
+        border: 0;
+        background-color: inherit;
+        padding: .5rem 1rem;
+    }
 </style>
 
 @endsection
 
 
 @section('content')
-<h2>Estadisticas secundarias</h2>
-<div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" >
+<h2 class="text-center"><small class="btn-block">Estadísticas secundarias</small> @{{indicador.nombre}}</h2>
+<hr>
+
+<div class="dropdown text-center" ng-init="indicadorSelectId={{$indicadores[0]['id']}}">
+  <button type="button" class="btn btn-outline-primary text-uppercase dropdown-toggle"id="dropdownMenuIndicadores" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ver más estadísticas <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+  
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuIndicadores" ng-init="buscarData( {{$indicadores[0]['id']}} )">
+    @foreach ($indicadores as $indicador)
+        <li ng-class="{'active': (indicadorSelectId=={{$indicador['id']}}) }">
+          <button type="button" ng-click="changeIndicador({{$indicador['id']}})">{{$indicador["nombre"]}}</button>
+        </li>
+    @endforeach
     
-    <ul class="list-group" ng-init="buscarData( {{$indicadores[0]['id']}} )" >
-        @foreach ($indicadores as $indicador)
-            <li class="list-group-item" ng-click="changeIndicador({{$indicador['id']}})" ng-class="{'active': (indicadorSelect=={{$indicador['id']}}) }" role="button">
-              {{$indicador["nombre"]}}
-            </li>
-        @endforeach
-    </ul>
+  </ul>
+</div>
+<br>
+<div ng-if="indicador == undefined" class="text-center">
+    <img src="/img/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
+</div>
+<div class="card" ng-show="indicador != undefined">
+    
+    <!--<ul class="list-group" ng-init="buscarData( {{$indicadores[0]['id']}} )" >-->
+    <!--    @foreach ($indicadores as $indicador)-->
+    <!--        <li class="list-group-item" ng-click="changeIndicador({{$indicador['id']}})" ng-class="{'active': (indicadorSelectId=={{$indicador['id']}}) }" role="button">-->
+    <!--          {{$indicador["nombre"]}}-->
+    <!--        </li>-->
+    <!--    @endforeach-->
+    <!--</ul>-->
     
     
     <div class="panel panel-default">
