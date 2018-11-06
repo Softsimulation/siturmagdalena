@@ -397,4 +397,8 @@ class Idioma extends Model
     {
         return $this->belongsToMany('App\Models\Tipo_noticia', 'tipos_noticias_has_idiomas', 'tipos_noticias_id', 'idiomas_id');
     }
+    public function sliders()
+    {
+        return $this->belongsToMany('App\Models\Slider', 'sliders_idiomas', 'slider_id', 'idioma_id');
+    }
 }
