@@ -252,7 +252,7 @@
 
                             </thead>
                             <tbody>
-                                <tr ng-repeat="it in aspectos[2].items_evaluars">
+                                <tr ng-repeat="it in aspectos[2].items_evaluars" ng-if="(controlSostenibilidad>0 && it.id > 15) || it.id <= 15">
                                     <td> @{{it.items_evaluar_con_idiomas[0].nombre}}</td>
                                     @for ($i = 1; $i <= 10; $i++)
                                     
@@ -409,23 +409,22 @@
 
                             </thead>
                             <tbody>
-                                <tr ng-repeat="it in aspectos[4].items_evaluars">
+                                <tr ng-repeat="it in aspectos[4].items_evaluars" ng-if="(controlSostenibilidad>0 && it.id == 25) || it.id != 25">
                                     <td> @{{it.items_evaluar_con_idiomas[0].nombre}}</td>
                                     @for ($i = 1; $i <= 10; $i++)
                                         <td>
                                             <div class="radio radio-primary">
                                                 <label>
-                                                    <input type="radio" name="infraestructura_@{{it.id}}" id="infraestructura_@{{it.id}}_{{$i}}" ng-checked="checkedRadio('infraestructura_@{{it.id}}_{{$i}}', it.radios.Valor,{{$i}})" ng-model="it.radios" ng-value="{Id:it.id,Valor:{{$i}}}">
+                                                    <input type="radio" name="ocio_@{{it.id}}" ng-model="it.radios" id="ocio_@{{it.id}}_{{$i}}" ng-checked="checkedRadio('ocio_@{{it.id}}_{{$i}}', it.radios.Valor,{{$i}})"  ng-value="{Id:it.id,Valor:{{$i}}}">
 
                                                 </label>
                                             </div>
                                         </td>
                                     @endfor
-                                    
                                     <td>
                                         <div class="radio radio-primary">
                                             <label>
-                                                <input type="radio"  ng-checked="it.radios==null" ng-click="limpiarFila(it.id)" name="infraestructura_@{{it.id}}" value="0">
+                                                <input type="radio" ng-checked="it.radios==null" ng-click="limpiarFila(it.id)" name="infraestructura_@{{it.id}}" value="0">
                                             </label>
                                         </div>
                                     </td>

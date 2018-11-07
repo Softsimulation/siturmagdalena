@@ -73,7 +73,7 @@ h1, h2, h3, h4, h5{
     }
 }
 /*Transición suave para movimiento de elementos y evitar que el usuario copie el contenido del elemento*/
-.toolbar, .nav-bar-main, #stats-links, #stats-links a {
+.toolbar, .nav-bar-main, #stats-links, #stats-links a, #nav-menu-main nav>ul li>a {
     transition: all .16s ease-in-out;
     -webkit-transition: all .16s ease-in-out;
     -moz-transition: all .16s ease-in-out;
@@ -274,10 +274,14 @@ footer{
     color: #004A87;
     
 }
-#nav-menu-main nav>ul li>a:hover{
+#nav-menu-main nav>ul li.in>a, #nav-menu-main nav>ul li>a:hover{
     color: white;
     background-color: #004A87;
 }
+#nav-menu-main nav>ul>li:not(.in)>a:hover{
+    background-color: dodgerblue;
+}
+
 #nav-menu-main nav>ul>li:not(:last-child), #nav-menu-main nav>ul li.in ul{
     border-bottom: 1px solid #eee;
 }
@@ -402,22 +406,22 @@ footer{
     z-index: 2;
     background: rgba(248,80,50,0.05);
     background: -moz-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(248,80,50,0.05)), color-stop(100%, rgba(0,0,0,0.8)));
-    background: -webkit-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
-    background: -o-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
-    background: -ms-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
-    background: linear-gradient(to bottom, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(248,80,50,0.05)), color-stop(100%, rgba(0,0,0,0.65)));
+    background: -webkit-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.65) 100%);
+    background: -o-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.65) 100%);
+    background: -ms-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.65) 100%);
+    background: linear-gradient(to bottom, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.65) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#000000', GradientType=0 );
     overflow: auto;
 }
 .tile .tile-img .text-overlap:hover{
     background: rgba(0,0,0,0.07);
-    background: -moz-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(248,80,50,0.1)), color-stop(100%, rgba(0,0,0,0.85)));
-    background: -webkit-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
-    background: -o-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
-    background: -ms-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
-    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
+    background: -moz-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(248,80,50,0.1)), color-stop(100%, rgba(0,0,0,0.75)));
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    background: -o-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    background: -ms-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#000000', GradientType=0 );
 }
 .tile .tile-img .text-overlap p, .tile .tile-img .text-overlap h3{
@@ -606,6 +610,29 @@ footer .sign-footer{
 .justify-content-center{
     justify-content: center;
 }
+.no-gutters{
+    margin-left: 0;
+    margin-right: 0;
+}
+.no-gutters>[class*="col-"]{
+    padding-left: 0;
+    padding-right: 0;
+}
+.breadcrumb>li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+}
+
+.breadcrumb {
+    display: flex;
+    margin-bottom: .5rem;
+}
+hr{
+    margin: .5rem;
+}
+
 /*Fonts*/
 @font-face {
     font-family: 'Futura';

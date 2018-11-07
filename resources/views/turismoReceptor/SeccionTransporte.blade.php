@@ -59,7 +59,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in transportes" ng-if="item.Id != 10">
+                        <div class="radio" ng-repeat="item in transportes | orderBy: 'codigo'" ng-if="item.llegada">
                             <label>
                                 <input type="radio" name="llegar" ng-value="item.id" ng-model="transporte.Llegar" ng-required="true"> @{{item.tipos_transporte_con_idiomas[0].nombre}}
                                 <i ng-if="item.Id==6" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="left" title="@Resource.AyudaTipoTransporte"
@@ -101,7 +101,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in transportes" ng-if="item.Id != 9">
+                        <div class="radio" ng-repeat="item in transportes | orderBy: 'codigo2'" ng-if="item.dentro">
                             <label>
                                 <input type="radio" name="mover" ng-value="item.id" ng-model="transporte.Mover" ng-required="true"> @{{item.tipos_transporte_con_idiomas[0].nombre}}
                                 <i ng-if="item.Id==6" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="left" title="@Resource.AyudaTipoTransporte"

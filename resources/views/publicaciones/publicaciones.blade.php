@@ -33,19 +33,19 @@
             <thead>
                 <tr>
                     <!--<th style="width: 20px;"></th>-->
-                    <th>Titulo</th>
-                    <th>Tipo</th>                                                                          
-                    <th>Descripción</th>
+                    <th>Título</th>
+                    <th style="min-width: 110px;">Tipo</th>                                                                          
+                    <!--<th>Descripción</th>-->
                     <th>Estado</th>
                     <th>Visible</th>
                     <th style="width: 120px;">Opciones</th>
                 </tr>
                 <tr ng-show="mostrarFiltro == true">
                             
-                    <td><input type="text" ng-model="search.titulo" name="titulo" id="titulo" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.tipoPublicacion" name="tipoPublicacion" id="tipoPublicacion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.descripcion" name="descripcion" id="descripcion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                    <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.titulo" name="titulo" id="titulo" class="form-control input-sm" id="inputSearch" maxlength="150" placeholder="Buscar por título" autocomplete="off"></td>
+                    <td><input type="text" ng-model="search.tipoPublicacion" name="tipoPublicacion" id="tipoPublicacion" class="form-control input-sm" id="inputSearch" maxlength="150" placeholder="Buscar por tipo" autocomplete="off"></td>
+                    <!--<td><input type="text" ng-model="search.descripcion" name="descripcion" id="descripcion" class="form-control input-sm" id="inputSearch" maxlength="150"  placeholder="Buscar descripción" autocomplete="off"></td>-->
+                    <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" id="inputSearch" maxlength="150" placeholder="Buscar por estado" autocomplete="off"></td>
                     <td></td>
                 </tr>
             </thead>
@@ -54,15 +54,22 @@
                     <!--<td>@{{($index + 1) + (currentPagepublicacion - 1) * 10}}</td>-->
                     <td>@{{publicacion.titulo}}</td>
                    <td>@{{publicacion.tipopublicacion.idiomas[0].nombre}}</td>
-                    <td>@{{publicacion.descripcion}}</td>
+                    <!--<td>@{{publicacion.descripcion}}</td>-->
                     <td>@{{publicacion.estado_publicacion.nombre}}</td>
-                    <td ng-show="publicacion.estado">Si</td>
-                    <td ng-show="!publicacion.estado">No</td>
                     <td>
-                        <a href="/publicaciones/editar/@{{publicacion.id}}" type="button" title="Editar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>  
-                        <button ng-click="cambiarEstado(publicacion)" type="button" title="Cambiar visualización publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-transfer"></span></button>    
-                        <button ng-click="eliminar(publicacion)" type="button" title="Eliminar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></button>    
-                         <button ng-click="cambiarEstadoPublicacion(publicacion)" type="button" title="Cambiar estado publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-transfer"></span></button> 
+                        <span ng-show="publicacion.estado">Si</span>
+                        <span ng-show="!publicacion.estado">No</span>
+                    </td>
+                    <td>
+                        <a href="/publicaciones/editar/@{{publicacion.id}}" role="button" title="Editar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>  
+                        <button ng-click="cambiarEstado(publicacion)" type="button" title="Cambiar estado de visualización" class="btn btn-xs btn-default">
+                            <span class="glyphicon glyphicon-eye-open" ng-show="!publicacion.estado"></span>
+                            <span class="glyphicon glyphicon-eye-close" ng-show="publicacion.estado"></span>
+                            <span class="sr-only">Cambiar estado de visualización</span>
+                        </button>    
+                            
+                         <button ng-click="cambiarEstadoPublicacion(publicacion)" type="button" title="Cambiar estado de publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-transfer"></span></button> 
+                         <button ng-click="eliminar(publicacion)" type="button" title="Eliminar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></button>
                     </td>
                 </tr>
                 

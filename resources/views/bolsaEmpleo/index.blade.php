@@ -52,32 +52,37 @@
     <div class="row" ng-show="(vacantes|filter:prop.search).length > 0 && vacantes.length > 0">
         <div class="col-xs-12" style="overflow-x: auto;">
             <table class="table table-striped">
-                <tr>
-                    <th>Empresa</th>
-                    <th>Nombre vacante</th>
-                    <th>Municipio</th>
-                    <th>Categoría</th>
-                    <th>Estado</th>
-                    <th style="width: 120px;">Opciones</th>
-                </tr>
-                <tr dir-paginate="item in vacantes|filter:prop.search |orderBy:'es_publico':true|itemsPerPage:10 as results" pagination-id="paginacion_vacantes" >
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Nombre vacante</th>
+                        <th>Municipio</th>
+                        <th>Categoría</th>
+                        <th>Estado</th>
+                        <th style="width: 120px;">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="item in vacantes|filter:prop.search |orderBy:'es_publico':true|itemsPerPage:10 as results" pagination-id="paginacion_vacantes" >
                     
-                    <td>@{{item.proveedores_rnt.razon_social}}</td>
-                    <td>@{{item.nombre}}</td>
-                    <td>@{{item.municipio.nombre}}</td>
-                    <td>@{{item.tipos_cargos_vacante.nombre}}</td>
-                    <td ng-if="item.es_publico">Publicado</td><td ng-if="!item.es_publico">NO Publicado</td>
-                    <td>
-                        <a class="btn btn-xs btn-default" href="/bolsaEmpleo/editarvacante/@{{item.id}}" title="Editar vacante" ><span class="glyphicon glyphicon-pencil"></span></a>
-                        <a class="btn btn-xs btn-default" href="/bolsaEmpleo/postulados/@{{item.id}}" title="Postulados" ><span class="glyphicon glyphicon-user"></span></a>
-                        <a class="btn btn-xs btn-default" title="Publicar" ng-click="cambiarEstadoPublicar(item)" ng-if="!item.es_publico"><span class="glyphicon glyphicon-ok"></span></a>
-                        <a class="btn btn-xs btn-default" title="Quitar publicación" ng-click="cambiarEstadoPublicar(item)" ng-if="item.es_publico"><span class="glyphicon glyphicon-remove"></span></a>
-                        <a class="btn btn-xs btn-default" title="Activar" ng-click="cambiarEstado(item)" ng-if="!item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-open"></span></a>
-                        <a class="btn btn-xs btn-default" title="Desactivar" ng-click="cambiarEstado(item)" ng-if="item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-close"></span></a>
-                        
-                        
-                    </td>
-                </tr>
+                        <td>@{{item.proveedores_rnt.razon_social}}</td>
+                        <td>@{{item.nombre}}</td>
+                        <td>@{{item.municipio.nombre}}</td>
+                        <td>@{{item.tipos_cargos_vacante.nombre}}</td>
+                        <td ng-if="item.es_publico">Publicado</td><td ng-if="!item.es_publico">NO Publicado</td>
+                        <td>
+                            <a class="btn btn-xs btn-default" href="/bolsaEmpleo/editarvacante/@{{item.id}}" title="Editar vacante" ><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a class="btn btn-xs btn-default" href="/bolsaEmpleo/postulados/@{{item.id}}" title="Postulados" ><span class="glyphicon glyphicon-user"></span></a>
+                            <a class="btn btn-xs btn-default" title="Publicar" ng-click="cambiarEstadoPublicar(item)" ng-if="!item.es_publico"><span class="glyphicon glyphicon-ok"></span></a>
+                            <a class="btn btn-xs btn-default" title="Quitar publicación" ng-click="cambiarEstadoPublicar(item)" ng-if="item.es_publico"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a class="btn btn-xs btn-default" title="Activar" ng-click="cambiarEstado(item)" ng-if="!item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-open"></span></a>
+                            <a class="btn btn-xs btn-default" title="Desactivar" ng-click="cambiarEstado(item)" ng-if="item.estado && item.es_publico"><span class="glyphicon glyphicon-eye-close"></span></a>
+                            
+                            
+                        </td>
+                    </tr>
+                </tbody>
+                
             </table>
             
         </div>
