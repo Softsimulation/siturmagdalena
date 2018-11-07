@@ -39,7 +39,7 @@ class PublicoBolsaEmpleoController extends Controller
         
         $vacantes = Oferta_Vacante::where('estado',1)
                     ->search($request)
-                    ->paginate(5);
+                    ->paginate(6);
         
         $proveedores = Proveedores_rnt::whereHas('vacantes',function($q){
             $q->where('estado',1)->where(function($q){$q->where('fecha_vencimiento','>=',date('Y-m-d'))->orWhereNull('fecha_vencimiento');});

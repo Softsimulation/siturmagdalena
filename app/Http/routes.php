@@ -91,6 +91,8 @@ Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
 Route::controller('/login','LoginController');
 Route::controller('/noticias','NoticiaController');
+Route::controller('/sliders','SliderController');
+Route::controller('/suscriptores','SuscriptoreController');
 Route::controller('/promocionNoticia','PublicoNoticiaController');
 Route::controller('/promocionInforme','PublicoInformeController');
 Route::controller('/promocionPublicacion','PublicoPublicacionController');

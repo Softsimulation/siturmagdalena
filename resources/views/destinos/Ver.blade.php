@@ -407,6 +407,7 @@ function parse_yturl($url)
     });
 </script>
 <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNCXa64urvn7WPRdFSW29prR-SpZIHZPs&callback=initMap">
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC55uUNZFEafP0702kEyGLlSmGE29R9s5k&callback=initMap">
+
 </script>
 @endsection

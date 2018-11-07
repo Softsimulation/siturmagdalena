@@ -98,6 +98,77 @@
                 </div>
             </div>
         </div>
+        
+        <div ng-if="transporte.Mover == 5" class="panel panel-success">
+            <div class="panel-heading">
+                <!-- Nombre de la empresa de transporte-->
+                <h3 class="panel-title"><b> ¿El alquiler de vehículo se realizó?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta abierta</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="alquilado" ng-value="true" ng-model="transporte.alquilado" ng-required="transporte.Mover == 5"> En el Magdalena
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="alquilado" ng-value="false" ng-model="transporte.alquilado" ng-required="transporte.Mover == 5"> Fuera del Magdalena
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="transForm.$submitted || transForm.despla.$touched">
+                    <span class="label label-danger" ng-show="transForm.despla.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <!-- ¿Qué tipo de transporte utilizó para recorrer-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Tipo de transporte más utilizado para desplazarse durante su estancia en el destino visitado?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta de selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in transporte_interno">
+                            <label>
+                                <input type="radio" name="despla" ng-value="item.id" ng-model="transporte.Desplazarse" ng-required="true"> @{{item.nombre}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="transForm.$submitted || transForm.despla.$touched">
+                    <span class="label label-danger" ng-show="transForm.despla.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <!-- ¿Qué tipo de transporte utilizó para recorrer-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Tipo de transporte para salir del destino visitado? </b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta de selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in transporte_interno">
+                            <label>
+                                <input type="radio" name="salir" ng-value="item.id" ng-model="transporte.Salir" ng-required="true"> @{{item.nombre}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="transForm.$submitted || transForm.salir.$touched">
+                    <span class="label label-danger" ng-show="transForm.salir.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
 
         <div class="row" style="text-align:center">
              <a href="/turismointerno/actividadesrealizadas/{{$id}}" class="btn btn-raised btn-default">{{trans('resources.EncuestaBtnAnterior')}}</a>

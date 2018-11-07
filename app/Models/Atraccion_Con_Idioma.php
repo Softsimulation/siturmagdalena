@@ -41,7 +41,7 @@ class Atraccion_Con_Idioma extends Model
      */
     public function atraccione()
     {
-        return $this->belongsTo('App\Models\Atraccione', 'atracciones_id');
+        return $this->belongsTo('App\Models\Atracciones', 'atracciones_id');
     }
 
     /**

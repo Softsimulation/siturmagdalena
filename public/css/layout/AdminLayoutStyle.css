@@ -13,6 +13,7 @@ h2{
 }
 fieldset{
     margin: 1rem 0;
+    min-width: 100%;
 }
 #nav-menu-main, #nav-menu-main nav ul, #nav-menu-main nav ul li, .btn{
     transition: all .16s ease-in-out;
@@ -590,7 +591,31 @@ align-items-center{
     font-weight: 400;
     color:#555!important;
 }
-
+.ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
+    font-weight: 400;
+    text-transform: none;
+}
+.form-control{
+    font-size: 0.875rem;
+}
+.table .form-group{
+    margin: 0;
+   
+}
+.table .form-control{
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    box-shadow: none;
+}
+.table .form-group.has-error .form-control{
+    border-bottom-color: red;
+}
+.table .form-control:focus{
+    outline: none;
+}
+.table{
+    margin-bottom: 1rem;
+}
 
         /* width */
 #left-side-menu::-webkit-scrollbar {
@@ -611,8 +636,6 @@ align-items-center{
 #left-side-menu::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
-
-
 
 /*Fonts*/
 @font-face {

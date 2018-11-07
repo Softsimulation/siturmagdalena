@@ -36,6 +36,16 @@
 	                
 	            </div>
 	        </div>
+	        <div class="row">
+	        	<div class="col-xs-12">
+	        		<form name="guardarSuscriptor" action="/suscriptores/guardarsuscriptor" method="post">
+	        			<div class="form-group">
+                            <input type="email" class="form-control" name="emailSuscriptor" id="emailSuscriptor" placeholder="Ingrese el correo donde desea recibir las notificaciones"/>
+							<button type="submit" class="btn btn-success">Enviar</button>
+                        </div>
+	        		</form>
+	        	</div>
+	        </div>
 	    </div>
 	    <div class="sign-footer">
 	        <div class="container text-center">

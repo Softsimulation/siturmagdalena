@@ -87,7 +87,7 @@ class Oferta_Vacante extends Model
             ->where(function($q)use($request){ if( isset($request->municipio) && $request->municipio != null ){$q->where('municipio_id',$request->municipio);}})
             ->where(function($q)use($request){ if( isset($request->tipoCargo) && $request->tipoCargo != null ){$q->where('tipo_cargo_vacante_id',$request->tipoCargo);}})
             ->where(function($q)use($request){ if( isset($request->nivelEducacion) && $request->nivelEducacion != null ){$q->where('nivel_educacion_id',$request->nivelEducacion);}})
-            ->where(function($q)use($request){ if( isset($request->nombreVacante) && $request->nombreVacante != null ){$q->where('nombre','like','%'.$request->nombreVacante.'%');}});
+            ->where(function($q)use($request){ if( isset($request->nombreVacante) && $request->nombreVacante != null ){$q->whereRaw('upper(nombre) like ?',['%'.strtoupper($request->nombreVacante).'%']);}});
     }
     
 }

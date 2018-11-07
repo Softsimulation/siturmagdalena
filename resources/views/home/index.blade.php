@@ -94,7 +94,7 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="/indicadores/secundarios">
                 <span class="stats stats-secundarias" aria-hidden="true"></span>
                 Estadísticas secundarias
             </a>
