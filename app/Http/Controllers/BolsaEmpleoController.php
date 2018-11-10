@@ -258,11 +258,28 @@ class BolsaEmpleoController extends Controller
         		foreach($arregloHv as $item){
         			array_push($arregloZip, public_path($item));
         		}
-        		\Zipper::make(public_path('/comprimidosVacantes/vacante_'.$vacante->id.'.zip'))->add($arregloZip)->close();
+        		$nombreZip = $this->MayusculaTilde($vacante->nombre);
+        		\Zipper::make(public_path('/comprimidosVacantes/vacante_'.$nombreZip.'.zip'))->add($arregloZip)->close();
         
-	    		return \Response::download(public_path('/comprimidosVacantes/vacante_'.$vacante->id.'.zip'));
+	    		return \Response::download(public_path('/comprimidosVacantes/vacante_'.$nombreZip.'.zip'));
         	}
         }
+    }
+    
+    public static function MayusculaTilde($cadena){
+        $cadena = str_replace("á", "Á", $cadena); 
+		$cadena = str_replace("é", "É", $cadena); 
+		$cadena = str_replace("í", "Í", $cadena); 
+		$cadena = str_replace("ó", "Ó", $cadena); 
+		$cadena = str_replace("ú", "Ú", $cadena); 
+		
+		$cadena = str_replace("á", "A", $cadena); 
+		$cadena = str_replace("é", "E", $cadena); 
+		$cadena = str_replace("í", "I", $cadena); 
+		$cadena = str_replace("ó", "O", $cadena); 
+		$cadena = str_replace("ú", "U", $cadena); 
+		
+        return trim($cadena);
     }
     
 }

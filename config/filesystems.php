@@ -47,6 +47,11 @@ return [
             'root' => public_path().'/Noticias',
             'visibility' => 'public',
         ],
+        'Sliders' => [
+            'driver' => 'local',
+            'root' => public_path().'/Sliders',
+            'visibility' => 'public',
+        ],
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

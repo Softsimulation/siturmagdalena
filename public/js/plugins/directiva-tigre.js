@@ -31,6 +31,7 @@
                             +'<div class="col-sm-4" ng-repeat="item in filesView" style="background-color: rgba(24, 20, 20, 0.9);border-radius: 5px;padding: 5px;width: auto;display: grid;margin: 10px;float:left" >' 
                                    +'<img ng-if="item.img" class="img-responsive" style="height:200px;width:auto;" ng-src="{{item.ruta}}">'
                                    +'<i ng-if="!item.img" class="{{iconClass}}" style="font-size:9em" >{{icon}}</i>'
+                                   +'<div style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><input class="form-control" placeholder="Texto alternativo"></div>'
                                    +'<div style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><button ng-click="eliminarFile($index)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></div>'
                             +'</div>'
                         +'</div>'
