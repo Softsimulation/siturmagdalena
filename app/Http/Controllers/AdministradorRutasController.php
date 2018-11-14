@@ -53,7 +53,7 @@ class AdministradorRutasController extends Controller
             $queryRutasConIdiomas->with(['idioma' => function ($queryIdioma){
                 $queryIdioma->select('id', 'nombre', 'culture');
             }])->select('idioma_id', 'ruta_id', 'nombre', 'descripcion')->orderBy('idioma_id');
-        }])->select('id', 'estado', 'portada')->orderBy('id')->get();
+        }])->select('id', 'estado', 'portada', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'nombre', 'culture')->get();
         
@@ -190,6 +190,28 @@ class AdministradorRutasController extends Controller
         
         $ruta = Ruta::find($request->id);
         $ruta->estado = !$ruta->estado;
+        $ruta->updated_at = Carbon::now();
+        $ruta->user_update = "Situr";
+        $ruta->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:rutas'
+        ],[
+            'id.required' => 'Se necesita el identificador de la ruta turística.',
+            'id.numeric' => 'El identificador de la ruta debe ser un valor numérico.',
+            'id.exists' => 'La ruta no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $ruta = Ruta::find($request->id);
+        $ruta->sugerido = !$ruta->sugerido;
         $ruta->updated_at = Carbon::now();
         $ruta->user_update = "Situr";
         $ruta->save();

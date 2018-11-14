@@ -135,7 +135,7 @@ class AdministradorActividadesController extends Controller
             }])->orderBy('idiomas')->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
         }, 'multimediasActividades' => function ($queryMultimediasActividades){
             $queryMultimediasActividades->where('portada', true)->select('actividades_id', 'ruta');
-        }])->orderBy('id')->select('id', 'estado')->get();
+        }])->orderBy('id')->select('id', 'estado', 'sugerido')->get();
         
         $idiomas = Idioma::select('id', 'nombre', 'culture')->get();
         
@@ -331,6 +331,26 @@ class AdministradorActividadesController extends Controller
         
         $actividad = Actividad::find($request->id);
         $actividad->estado = !$actividad->estado;
+        $actividad->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:actividades'
+        ],[
+            'id.required' => 'Se necesita el identificador de la actividad.',
+            'id.numeric' => 'El identificador de la actividad debe ser un valor numérico.',
+            'id.exists' => 'La actividad no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $actividad = Actividad::find($request->id);
+        $actividad->sugerido = !$actividad->sugerido;
         $actividad->save();
         
         return ['success' => true];

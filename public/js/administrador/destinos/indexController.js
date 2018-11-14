@@ -29,6 +29,20 @@ angular.module('destinos.index', [])
         });
     }
     
+    $scope.sugerir = function (destino){
+        $("body").attr("class", "cbp-spmenu-push charging");
+        destinosServi.postSugerir(destino.id).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
+            if (data.success){
+                destino.sugerido = !destino.sugerido;
+                swal('¡Éxito!', 'Operación realizada con éxito.', 'success');
+            }
+        }).catch(function (error){
+            $("body").attr("class", "cbp-spmenu-push");
+            swal('Error', 'Error al desactivar la atracción. Por favor, recargue la página.', 'error');
+        });
+    }
+    
     $scope.modalIdioma = function (destino){
         $scope.destinoEdit = destino;
         $("#idiomaModal").modal('show');

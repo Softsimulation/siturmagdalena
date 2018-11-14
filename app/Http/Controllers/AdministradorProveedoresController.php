@@ -79,7 +79,7 @@ class AdministradorProveedoresController extends Controller
             }])->select('id', 'razon_social');
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('portada', true)->select('proveedor_id', 'ruta');
-        }])->select('id', 'estado', 'proveedor_rnt_id')->orderBy('id')->get();
+        }])->select('id', 'estado', 'proveedor_rnt_id', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'culture', 'nombre')->where('estado', true)->get();
         
@@ -396,6 +396,26 @@ class AdministradorProveedoresController extends Controller
         
         $proveedor = Proveedor::find($request->id);
         $proveedor->estado = !$proveedor->estado;
+        $proveedor->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:proveedores'
+        ],[
+            'id.required' => 'Se necesita el identificador del proveedor.',
+            'id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            'id.exists' => 'El proveedor no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $proveedor = Proveedor::find($request->id);
+        $proveedor->sugerido = !$proveedor->sugerido;
         $proveedor->save();
         
         return ['success' => true];
