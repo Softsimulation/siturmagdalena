@@ -65,6 +65,7 @@
             <div class="inline-buttons">
                 <a href="/administradordestinos/editar/@{{destino.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{destino.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(destino)">@{{destino.estado ? 'Desactivar' : 'Activar'}}</button>
+                <button title="@{{destino.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(destino)"><span class="glyphicon glyphicon-@{{destino.sugerido ? 'star' : 'star-empty'}}"></span></button>
                 <a href="/administradordestinos/idioma/@{{destino.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in destino.destino_con_idiomas"> @{{traduccion.idioma.culture}}</a>
                 <button type="button" ng-click="modalIdioma(destino)" class="btn btn-default" ng-if="destino.destino_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
             </div>  

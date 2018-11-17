@@ -1,0 +1,31 @@
+#toolbar-main, #nav-menu-main, #navbar-mobile, footer .info-footer, .breadcrumb, #shareButtons{
+    display: none;
+}
+header{
+    box-shadow: none;
+    margin: 0;
+}
+#situr-main-brand img{
+    height: 70px;
+}
+h2 {
+    font-family: sans-serif;
+    font-size: 18pt;
+    margin: 0;
+}
+hr{
+    margin: 4px;
+}
+blockquote{
+    font-family: sans-serif;
+    font-size: 12pt;
+    font-style: italic;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+html, body {
+    font-size: 9pt;
+    font-family: sans-serif;
+}

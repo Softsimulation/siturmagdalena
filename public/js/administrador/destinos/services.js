@@ -117,6 +117,17 @@ app.factory('destinosServi', ['$http', '$q', function ($http, $q){
             });
             return promise;
         },
+        postSugerir: function(id){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administradordestinos/sugerir', {'id' : id}).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
         getDeletesector: function (id){
             var defered = $q.defer();
             var promise = defered.promise;

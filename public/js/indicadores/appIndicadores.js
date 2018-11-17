@@ -80,7 +80,7 @@
         }
 
         $scope.changeIndicador = function(id){
-            $scope.indicadorSelect = id;
+            $scope.indicadorSelectId = id;
             $scope.buscarData(id);
             $scope.yearSelect = null;
         }
@@ -185,7 +185,7 @@
         }
 
         $scope.changeIndicador = function(id){
-            $scope.indicadorSelect = id;
+            $scope.indicadorSelectId = id;
             $scope.buscarData(id);
             $scope.yearSelect = null;
         }
@@ -196,6 +196,7 @@
             $scope.labels = [];
             $scope.data = [];
             $scope.series = null;
+            $scope.indicador = undefined;
             
             indicadoresServi.getDataSecundarios(id, $scope.filtro.year)
                 .then(function(data){

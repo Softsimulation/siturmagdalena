@@ -44,6 +44,7 @@
             <div class="inline-buttons">
                 <a href="/administradoractividades/editar/@{{actividad.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{actividad.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(actividad)">@{{actividad.estado ? 'Desactivar' : 'Activar'}}</button>
+                <button title="@{{actividad.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(actividad)"><span class="glyphicon glyphicon-@{{actividad.sugerido ? 'star' : 'star-empty'}}"></span></button>
                 <a href="/administradoractividades/idioma/@{{actividad.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in actividad.actividades_con_idiomas" class="btn btn-default"> @{{traduccion.idioma.culture}}</a>
                 <button type="button" class="btn btn-default" ng-click="modalIdioma(actividad)" ng-if="actividad.actividades_con_idiomas.length < idiomas.length" title="Agregar idioma"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
             </div>  
