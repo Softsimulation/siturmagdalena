@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 
 use App\Models\Atracciones;
+use App\Models\Atraccion_Favorita;
 
 class AtraccionesController extends Controller
 {

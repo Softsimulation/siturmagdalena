@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Evento;
+use App\Models\Evento_Favorita;
 
 class EventosController extends Controller
 {

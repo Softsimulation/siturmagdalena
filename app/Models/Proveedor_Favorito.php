@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,10 @@ class Proveedor_Favorito extends Model
     /**
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['usuario_id','proveedores_id'];
+    
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

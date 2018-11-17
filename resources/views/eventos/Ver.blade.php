@@ -64,6 +64,21 @@ function parse_yturl($url)
 	          </small>
 	          @endif
           </h2>
+          <div class="text-center">
+            @if(Auth::check())
+                <form role="form" action="/eventos/favorito" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="evento_id" value="{{$evento->id}}" />
+                    <button type="submit" class="btn btn-lg btn-circled btn-favorite">
+                      <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
+                    </button>    
+                </form>
+            @else
+                <button type="button" class="btn btn-lg btn-circled" title="Marcar como favorito" data-toggle="modal" data-target="#modalIniciarSesion">
+                  <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
+                </button>
+            @endif
+          </div>
       </div>
       <!-- Controls -->
       <!--<a class="left carousel-control" href="#carousel-main-page" role="button" data-slide="prev">-->
@@ -105,6 +120,9 @@ function parse_yturl($url)
                     <iframe src="https://www.youtube.com/embed/<?php echo parse_yturl($video_promocional); ?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;margin-bottom: 1rem;"></iframe>
                     @endif
                 </div>
+                @if(Session::has('message'))
+                    <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
+                @endif
                 <div class="col-xs-12 col-md-8">
                     
                     <p style="white-space: pre-line;">{{$evento->eventosConIdiomas[0]->descripcion}}</p>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Actividad;
+use App\Models\Actividad_Favorita;
 
 class ActividadesController extends Controller
 {
