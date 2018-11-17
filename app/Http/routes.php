@@ -126,3 +126,6 @@ Route::group(['middleware' => 'cors'], function(){
    });
 });
 
+
+Route::controller('/visitante', 'VisitanteController');
+
