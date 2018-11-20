@@ -48,6 +48,7 @@ class VisitanteController extends Controller
                                 $join->on('atracciones.sitios_id','=','multimedia_sitios.sitios_id')
                                 ->where('multimedia_sitios.portada','=' ,true)->where('multimedia_sitios.tipo', '=' , false);
                             })
+                            ->distinct()
                             ->get(['atracciones_favoritas.atracciones_id as Id','sitios_con_idiomas.nombre as Nombre','multimedia_sitios.ruta as Imagen',\DB::raw(' 1  as "Tipo" ')])->toArray();
                             
             $actividades = Actividad_Favorita::where('usuario_id', $this->user->id)
@@ -59,6 +60,7 @@ class VisitanteController extends Controller
                                 $join->on('multimedias_actividades.actividades_id', '=', 'actividades_favoritas.actividades_id')
                                 ->where('multimedias_actividades.portada','=', true)->where('multimedias_actividades.tipo','=', false);
                             })
+                            ->distinct()
                             ->get(['actividades_favoritas.actividades_id as Id', 'actividades_con_idiomas.nombre as Nombre' ,'multimedias_actividades.ruta as Imagen' ,\DB::raw(' 2  as "Tipo"')])->toArray();
                             
             $proveedores = Proveedor_Favorito::where('usuario_id', $this->user->id)
@@ -72,6 +74,7 @@ class VisitanteController extends Controller
                                 $join->on('proveedores.id','=','multimedias_proveedores.proveedor_id')
                                 ->where('multimedias_proveedores.portada','=' ,true)->where('multimedias_proveedores.tipo', '=' , false);
                             })
+                            ->distinct()
                             ->get([ 'proveedores.id as Id', 'proveedores_rnt_idiomas.nombre as Nombre', 'multimedias_proveedores.ruta as Imagen' ,\DB::raw(' 3  as "Tipo"') ])->toArray();
                             
             $eventos = Evento_Favorita::where('usuario_id', $this->user->id)
@@ -84,6 +87,7 @@ class VisitanteController extends Controller
                             $join->on('eventos_favoritas.eventos_id', '=', 'multimedia_evento.eventos_id')
                             ->where('multimedia_evento.portada', '=', true)->where('multimedia_evento.tipo', '=', false);
                         })
+                        ->distinct()
                         ->get(['eventos_favoritas.eventos_id as Id', 'eventos_con_idiomas.nombre as Nombre', 'multimedia_evento.ruta as Imagen', \DB::raw(' 4  as "Tipo"'), 'eventos.fecha_in as FechaInicial', 'eventos.fecha_fin as FechaFin' ])->toArray();
                         
             $favoritos = array_merge($atracciones,$actividades,$proveedores,$eventos);
@@ -111,6 +115,7 @@ class VisitanteController extends Controller
                                                     $join->on('atracciones.sitios_id','=','multimedia_sitios.sitios_id')
                                                     ->where('multimedia_sitios.portada','=' ,true)->where('multimedia_sitios.tipo', '=' , false);
                                                 })
+                                                ->distinct()
                                                 ->get(['planificador_atracciones.atracciones_id as Id','sitios_con_idiomas.nombre as Nombre','multimedia_sitios.ruta as Imagen','planificador_atracciones.orden_visita as Orden',\DB::raw(' 1  as "Tipo" ')])->toArray();
                     
                     $actividadesSeleccionadas = Planificador_Actividad::where('planificador_id', $planificador->id)->where('dia', $i)
@@ -122,6 +127,7 @@ class VisitanteController extends Controller
                                                     $join->on('multimedias_actividades.actividades_id', '=', 'planificador_actividades.actividades_id')
                                                     ->where('multimedias_actividades.portada','=', true)->where('multimedias_actividades.tipo','=', false);
                                                 })
+                                                ->distinct()
                                                 ->get(['planificador_actividades.actividades_id as Id', 'actividades_con_idiomas.nombre as Nombre' ,'multimedias_actividades.ruta as Imagen','planificador_actividades.orden_dia as Orden' ,\DB::raw(' 2  as "Tipo"')])->toArray();
                                                 
                     $proveedoresSeleccionados = Planificador_Proveedor::where('planificador_id', $planificador->id)->where('dia', $i)
@@ -135,6 +141,7 @@ class VisitanteController extends Controller
                                                     $join->on('proveedores.id','=','multimedias_proveedores.proveedor_id')
                                                     ->where('multimedias_proveedores.portada','=' ,true)->where('multimedias_proveedores.tipo', '=' , false);
                                                 })
+                                                ->distinct()
                                                 ->get([ 'proveedores.id as Id', 'proveedores_rnt_idiomas.nombre as Nombre', 'multimedias_proveedores.ruta as Imagen','planificador_proveedores.orden_visita as Orden' ,\DB::raw(' 3  as "Tipo"') ])->toArray();
                                                 
                     $eventosSeleccionados = Planificador_Evento::where('planificador_id', $planificador->id)->where('dia', $i)
@@ -147,6 +154,7 @@ class VisitanteController extends Controller
                                                 $join->on('planificador_eventos.eventos_id', '=', 'multimedia_evento.eventos_id')
                                                 ->where('multimedia_evento.portada', '=', true)->where('multimedia_evento.tipo', '=', false);
                                             })
+                                            ->distinct()
                                             ->get(['planificador_eventos.eventos_id as Id', 'eventos_con_idiomas.nombre as Nombre', 'multimedia_evento.ruta as Imagen','planificador_eventos.orden_visita as Orden', \DB::raw(' 4  as "Tipo"'), 'eventos.fecha_in as FechaInicial', 'eventos.fecha_fin as FechaFin' ])->toArray();
                     
                     $objeto['Items'] = array_merge($atraccionesSeleccionadas,$actividadesSeleccionadas,$proveedoresSeleccionados,$eventosSeleccionados);
@@ -315,6 +323,7 @@ class VisitanteController extends Controller
                                             $join->on('atracciones.sitios_id','=','multimedia_sitios.sitios_id')
                                             ->where('multimedia_sitios.portada','=' ,true)->where('multimedia_sitios.tipo', '=' , false);
                                         })
+                                        ->distinct()
                                         ->get(['planificador_atracciones.atracciones_id as Id','sitios_con_idiomas.nombre as Nombre','multimedia_sitios.ruta as Imagen','planificador_atracciones.orden_visita as Orden',\DB::raw(' 1  as "Tipo", sitios_con_idiomas.descripcion as Descripcion, sitios.direccion as Direccion, atracciones.telefono as Telefono ')])->toArray();
             
             $actividadesSeleccionadas = Planificador_Actividad::where('planificador_id', $planificador->id)->where('dia', $i)
@@ -326,6 +335,7 @@ class VisitanteController extends Controller
                                             $join->on('multimedias_actividades.actividades_id', '=', 'planificador_actividades.actividades_id')
                                             ->where('multimedias_actividades.portada','=', true)->where('multimedias_actividades.tipo','=', false);
                                         })
+                                        ->distinct()
                                         ->get(['planificador_actividades.actividades_id as Id', 'actividades_con_idiomas.nombre as Nombre' ,'multimedias_actividades.ruta as Imagen','planificador_actividades.orden_dia as Orden' ,\DB::raw(' 2  as "Tipo", actividades_con_idiomas.descripcion as Descripcion ')])->toArray();
                                         
             $proveedoresSeleccionados = Planificador_Proveedor::where('planificador_id', $planificador->id)->where('dia', $i)
@@ -339,6 +349,7 @@ class VisitanteController extends Controller
                                             $join->on('proveedores.id','=','multimedias_proveedores.proveedor_id')
                                             ->where('multimedias_proveedores.portada','=' ,true)->where('multimedias_proveedores.tipo', '=' , false);
                                         })
+                                        ->distinct()
                                         ->get([ 'proveedores.id as Id', 'proveedores_rnt_idiomas.nombre as Nombre', 'multimedias_proveedores.ruta as Imagen','planificador_proveedores.orden_visita as Orden' ,\DB::raw(' 3  as "Tipo", proveedores_rnt_idiomas.descripcion as Descripcion, proveedores_rnt.direccion as Direccion, proveedores_rnt.telefono as Telefono ') ])->toArray();
                                         
             $eventosSeleccionados = Planificador_Evento::where('planificador_id', $planificador->id)->where('dia', $i)
@@ -351,6 +362,7 @@ class VisitanteController extends Controller
                                         $join->on('planificador_eventos.eventos_id', '=', 'multimedia_evento.eventos_id')
                                         ->where('multimedia_evento.portada', '=', true)->where('multimedia_evento.tipo', '=', false);
                                     })
+                                    ->distinct()
                                     ->get(['planificador_eventos.eventos_id as Id', 'eventos_con_idiomas.nombre as Nombre', 'multimedia_evento.ruta as Imagen','planificador_eventos.orden_visita as Orden', \DB::raw(' 4  as "Tipo", eventos_con_idiomas.descripcion as Descripcion, eventos.telefono as Telefono '), 'eventos.fecha_in as FechaInicial', 'eventos.fecha_fin as FechaFin' ])->toArray();
             
             $objeto['Items'] = array_merge($atraccionesSeleccionadas,$actividadesSeleccionadas,$proveedoresSeleccionados,$eventosSeleccionados);
