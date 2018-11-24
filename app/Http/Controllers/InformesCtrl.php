@@ -12,7 +12,8 @@ use App\Models\Tipo_Documento;
 use App\Models\Publicacione;
 use App\Models\Publicaciones_idioma;
 use App\Models\Idioma;
-
+use App\Models\Suscriptore;
+use Carbon\Carbon;
 class InformesCtrl extends Controller
 {
     
@@ -101,6 +102,36 @@ class InformesCtrl extends Controller
         $pubId->publicaciones_id = $informe->id;
         $pubId->idioma_id = 1;
         $pubId->save();
+        
+        $suscriptores = Suscriptore::all();
+        foreach($suscriptores as $suscriptor){
+            if($suscriptor != null){
+                $fecha_actual = Carbon::now();
+                $data = [];
+                $data["email"] = $suscriptor->email;
+                $data["nombre"] = $pubId->nombre;
+                $data["noticia"] = false;
+                $data["informe"] = true;
+                $data["publicacion"] = false;
+                $data["ruta"] = $informe->ruta;
+                try{
+                    \Mail::send('Email.Publicaciones', $data, function($message) use ($suscriptor){
+                   //remitente
+                   $message->from(env('CONTACT_MAIL'), env('CONTACT_NAME'));
+         
+                   //asunto
+                   $message->subject("Nuevo informe – SITUR Magdalena.");
+         
+                   //receptor
+                   $message->to($suscriptor->email, $suscriptor->email);
+                    });
+                }catch(\Exception $e){
+                    // Never reached
+                    //return $e;
+                }
+                
+            }
+        }
         
         return redirect('informes/configuracion')->with([ "post"=>true, "success"=>true, "mensaje"=> "La creación de la publicación se ha realizado exitosamente." ]);
         
