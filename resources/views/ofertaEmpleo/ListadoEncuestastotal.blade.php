@@ -131,57 +131,75 @@
 </div>    
 
 <div class="container">
+    <div class="row" ng-if="encuestas.length > 0 && mostrarFiltro == true">
+          <div class="col-xs-12">
+              Caracterización
+              <label>
+                <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="1">
+                Realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="2">
+                No realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="">
+                Todas
+              </label>
+          </div>    
+          <div class="col-xs-12">
+              Oferta
+              <label>
+                <input type="radio" ng-model="search.ofertaFiltro" ng-value="1">
+                Realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.ofertaFiltro" ng-value="2">
+                No realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.ofertaFiltro" ng-value="">
+                Todas
+              </label>
+          </div>
+          <div class="col-xs-12">
+              Capacitación
+              <label>
+                <input type="radio" ng-model="search.capacitacionFiltro" ng-value="1">
+                Realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.capacitacionFiltro" ng-value="2">
+                No realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.capacitacionFiltro" ng-value="">
+                Todas
+              </label>
+          </div>
+          <div class="col-xs-12">
+              Empleo
+              <label>
+                <input type="radio" ng-model="search.empleoFiltro" ng-value="1">
+                Realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.empleoFiltro" ng-value="2">
+                No realizadas
+              </label>
+              <label>
+                <input type="radio" ng-model="search.empleoFiltro" ng-value="">
+                Todas
+              </label>
+          </div>
+          
+      </div>
        <div class="row">
             <div class="row">
                 <div class="col-xs-12">
                     <table class="table table-striped">
                   <thead>
-                      <div class="row" ng-if="encuestas.length > 0">
-                          <div class="col-xs-12">
-                              Caracterización
-                              <label>
-                                <input type="radio" ng-model="search.caracterizacion" value="1">
-                                Realizadas
-                              </label>
-                              <label>
-                                <input type="radio" ng-model="search.caracterizacion" value="0">
-                                No realizadas
-                              </label>
-                          </div>
-                          <div class="col-xs-12">
-                              Oferta
-                              <label>
-                                <input type="radio" ng-model="search.oferta" value="true">
-                                Realizadas
-                              </label>
-                              <label>
-                                <input type="radio" ng-model="search.oferta" value="false">
-                                No realizadas
-                              </label>
-                          </div>
-                          <div class="col-xs-12">
-                              Capacitación
-                              <label>
-                                <input type="radio" ng-model="search.capacitacion" value="1">
-                                Realizadas
-                              </label>
-                              <label>
-                                <input type="radio" ng-model="search.capacitacion" value="false">
-                                No realizadas
-                              </label>
-                          </div>
-                          <div class="col-xs-12">
-                              Empleo
-                              <label>
-                                <input type="radio" ng-model="search.empleo" value="true">
-                                Realizadas
-                              </label>
-                              <label>
-                                <input type="radio" ng-model="search.empleo" value="false">
-                                No realizadas
-                              </label>
-                          </div>
-                      </div>
+                      
                         <tr>
                             <th>Id</th>
                             <th>Codigo</th>
@@ -216,6 +234,7 @@
                             <td>@{{item.tipo}}</td>
                             <td>@{{item.categoria}}</td>
                             <td>@{{item.estado}}</td>
+                            
                             <td>
                                 <div>
                                 <button ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' )" ng-click = "caracterizacionEmpleo(item)" class="btn btn-default btn-sm" title="Editar encuesta caracterizacion" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)"><span class="glyphicon glyphicon-edit"></span></button><p ng-show="item.caracterizacion == true">Realizó</p><p ng-show="item.caracterizacion != true">No realizó</p>

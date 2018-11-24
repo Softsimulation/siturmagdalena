@@ -19,7 +19,6 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
 
 .controller('listadoecuesta', ['$scope', 'proveedorServi',function ($scope, proveedorServi) {
    
-        
     $scope.$watch('id', function () {
         $("body").attr("class", "cbp-spmenu-push charging");
         
@@ -131,12 +130,19 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
 .controller('listadoecuestatotal', ['$scope', 'proveedorServi',function ($scope, proveedorServi) {
    
         
-
+        //$scope.search = {'caracterizacionFiltro':"",'ofertaFiltro':"",'capacitacionFiltro':"",'empleoFiltro':""};   
+        $scope.search = {};
         $("body").attr("class", "cbp-spmenu-push charging");
         
         proveedorServi.getEncuestasTotal().then(function (data) {
             $("body").attr("class", "cbp-spmenu-push");
             $scope.encuestas = data.encuestas;
+            for(var i=0;i<$scope.encuestas.length;i++){
+                $scope.encuestas[i].caracterizacionFiltro = $scope.encuestas[i].caracterizacion != true ? 2 : 1;
+                $scope.encuestas[i].ofertaFiltro = $scope.encuestas[i].oferta != true ? 2 : 1; 
+                $scope.encuestas[i].capacitacionFiltro = $scope.encuestas[i].capacitacion != true ? 2 : 1; 
+                $scope.encuestas[i].empleoFiltro = $scope.encuestas[i].empleo != true ? 2 : 1; 
+            }
            
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
