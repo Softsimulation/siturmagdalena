@@ -600,7 +600,7 @@ class EncuestaDinamicaCtrl extends Controller
            "encuesta"=> Encuestas_dinamica::where([ ["id",$id], ["estado",true] ])
                                            ->with( [ "secciones"=>function($q){ 
                                                           $q->with([ "preguntas"=>function($qr){ 
-                                                                    $qr->where("es_visible",true)->whereNotIn( "tipo_campos_id",[1,2,4])
+                                                                    $qr->where([["es_visible",true],["estado",true]])->whereNotIn( "tipo_campos_id",[1,2,4])
                                                                        ->with( [ 
                                                                             "idiomas"=> function($qrr){ $qrr->where("idiomas_id",1)->select("id","preguntas_id","idiomas_id","pregunta"); }
                                                                         ] )->select("id","secciones_encuestas_id", "tipo_campos_id")->orderBy('orden'); 
@@ -1097,7 +1097,7 @@ class EncuestaDinamicaCtrl extends Controller
                       "encuesta" => "required|exists:encuestas_dinamicas,id",
                       "nombres" => "required|max:120",
                       "apellidos" => "required|max:120",
-                      "email" => "required|email|max:120",
+                      "email" => "email|max:120",
                       "telefono" => "max:120",
                     ],
                     [
@@ -1146,7 +1146,7 @@ class EncuestaDinamicaCtrl extends Controller
                       "encuesta" => "required|exists:encuestas_dinamicas,id",
                       "nombres" => "required|max:120",
                       "apellidos" => "required|max:120",
-                      "email" => "required|email|max:120",
+                      "email" => "email|max:120",
                       "telefono" => "max:120",
                     ],
                     [
@@ -1273,11 +1273,24 @@ class EncuestaDinamicaCtrl extends Controller
     //////////////// DUPLICAR ENCUESTA //////////////////////////
     public function postDuplicarencuesta(Request $request){
         
+        
+         $validate = \ Validator::make($request->all(),
+                    [ 
+                      "id" => "required|exists:encuestas_dinamicas,id",
+                      "tipo" => "required|exists:tipos_encuestas_dinamicas,id"
+                    ]
+                );
+        
+        if ($validate->fails())
+        {
+            return [ "success"=>false, "errores"=>$validate->errors() ];
+        }
+        
         $encuesta = Encuestas_dinamica::find($request->id);
         
         $encuestaNueva = new Encuestas_dinamica();
         $encuestaNueva->estados_encuestas_id = 1;
-        $encuestaNueva->tipos_encuestas_dinamica_id = $encuesta->tipos_encuestas_dinamica_id;
+        $encuestaNueva->tipos_encuestas_dinamica_id = $request->tipo;
         $encuestaNueva->estado = true;
         $encuestaNueva->save();
         

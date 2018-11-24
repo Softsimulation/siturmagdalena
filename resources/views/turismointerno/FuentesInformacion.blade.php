@@ -282,6 +282,62 @@
                 </div>
             </div>
         </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Dando cumplimiento a la ley de Protección de datos personales, solicito su autorización para que pueda contactarlo nuevamente. ¿Está usted de acuerdo?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Respuesta única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_autorizacion" id="acepta_autorizacion" required value="0" ng-model="enteran.Autorizo">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_autorizacion" id="acepta_autorizacion" required value="1" ng-model="enteran.Autorizo">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="inForm.$submitted">
+                    <span class="label label-danger" ng-show="inForm.acepta_autorizacion.$error.required">* Debe seleccionar alguna de las opciones.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Ya para terminar, le solicito su autorización para que SITUR ATLÁNTICO comparta sus respuestas con las entidades que contrataron el proyecto, ¿Está usted de acuerdo?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Respuesta única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_tratamiento" id="acepta_tratamiento" required value="0" ng-model="enteran.Acepta_tratamiento">
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio radio-primary">
+                            <label>
+                                <input type="radio" name="acepta_tratamiento" id="acepta_tratamiento" required value="1" ng-model="enteran.Acepta_tratamiento">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="inForm.$submitted">
+                    <span class="label label-danger" ng-show="inForm.acepta_tratamiento.$error.required">* Debe seleccionar alguna de las opciones.</span>
+                </span>
+            </div>
+        </div>
 
         <div class="row" style="text-align:center">
             <a href="/turismointerno/gastos/@{{id}}" class="btn btn-raised btn-default">{{trans('resources.EncuestaBtnAnterior')}}</a>

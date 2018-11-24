@@ -85,10 +85,17 @@ Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
 
 Route::controller('/postulado','PostuladoController');
 
+Route::controller('/controlSostenibilidadReceptor','ControlSostenibilidadController');
+
 Route::controller('/usuario','UsuarioController');
 Route::controller('/email','EmailController');
 Route::controller('/login','LoginController');
 Route::controller('/noticias','NoticiaController');
+Route::controller('/sliders','SliderController');
+Route::controller('/suscriptores','SuscriptoreController');
+Route::controller('/promocionNoticia','PublicoNoticiaController');
+Route::controller('/promocionInforme','PublicoInformeController');
+Route::controller('/promocionPublicacion','PublicoPublicacionController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
@@ -120,4 +127,7 @@ Route::group(['middleware' => 'cors'], function(){
         Route::controller('/grupoviajeapi','GrupoViajeCorsController');
    });
 });
+
+
+Route::controller('/visitante', 'VisitanteController');
 

@@ -43,7 +43,7 @@ class MuestraMaestraCtrl extends Controller
         
         
     }
-    public function getPeriodo($id){
+    public function getPeriodo($id){  
         
         $periodo = Periodos_medicion::find($id);
         
@@ -153,7 +153,7 @@ class MuestraMaestraCtrl extends Controller
     }
     
     
-    public function postCrearperiodo(Request $request){
+    public function postCrearperiodo(Request $request){ 
          
         $validator = \Validator::make($request->all(), [
 			'nombre' => 'required|max:250',
@@ -191,9 +191,12 @@ class MuestraMaestraCtrl extends Controller
             $zona->periodo_medicion_id = $periodo->id;
             $zona->nombre = $z["nombre"];
             $zona->color =  $z["color"];
+            $zona->sector_id =  $z["sector_id"];
             $zona->user_update = $this->user->username;
             $zona->user_create = $this->user->username;
             $zona->estado = true;
+            $zona->es_generada = false;
+            $zona->es_tabulada = false;
             $zona->save();
             
             foreach($z["coordenadas"] as $coordenada){ 
@@ -240,6 +243,8 @@ class MuestraMaestraCtrl extends Controller
         $zona->user_update = $this->user->username;
         $zona->user_create = $this->user->username;
         $zona->estado = true;
+        $zona->es_generada = false;
+        $zona->es_tabulada = false;
         $zona->save();
         
         foreach($request->coordenadas as $coordenada){ 
@@ -658,6 +663,9 @@ class MuestraMaestraCtrl extends Controller
             $proveedor->longitud = $request->longitud;
             $proveedor->user_create = $this->user->username;
             $proveedor->estado = true;
+            
+            $proveedor->codigo = Proveedores_informale::where( "municipio_id", $request->municipio_id )->max("codigo") + 1;
+            
         }
         
         $proveedor->razon_social = $request->nombre;

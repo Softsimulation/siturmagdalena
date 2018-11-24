@@ -80,7 +80,7 @@
         }
 
         $scope.changeIndicador = function(id){
-            $scope.indicadorSelect = id;
+            $scope.indicadorSelectId = id;
             $scope.buscarData(id);
             $scope.yearSelect = null;
         }
@@ -105,7 +105,7 @@
                     
                     $scope.options.scales.xAxes[0].scaleLabel.labelString = data.indicador.idiomas[0].eje_x;
                     $scope.options.scales.yAxes[0].scaleLabel.labelString = data.indicador.idiomas[0].eje_y;
-                    $scope.formato = '$';
+                    $scope.formato = ' ';
                 });
         }
         
@@ -185,7 +185,7 @@
         }
 
         $scope.changeIndicador = function(id){
-            $scope.indicadorSelect = id;
+            $scope.indicadorSelectId = id;
             $scope.buscarData(id);
             $scope.yearSelect = null;
         }
@@ -196,6 +196,7 @@
             $scope.labels = [];
             $scope.data = [];
             $scope.series = null;
+            $scope.indicador = undefined;
             
             indicadoresServi.getDataSecundarios(id, $scope.filtro.year)
                 .then(function(data){
@@ -209,7 +210,7 @@
                     
                     $scope.options.scales.xAxes[0].scaleLabel.labelString = data.indicador.label_x;
                     $scope.options.scales.yAxes[0].scaleLabel.labelString = data.indicador.label_y;
-                    $scope.formato = '$';
+                    $scope.formato = ' ';
                 });
         }
         

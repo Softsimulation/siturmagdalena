@@ -91,8 +91,19 @@
                     <div class="col-xs-12">
                         <div class="form-group" ng-class="{'has-error': (crearActividadForm.$submitted || crearActividadForm.descripcion.$touched) && crearActividadForm.descripcion.$error.required}">
                             <label for="descripcion"><span class="asterisk">*</span> Descripción</label>
-                            <textarea style="resize: none;" ng-model="actividad.datosGenerales.descripcion" rows="5" required name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la actividad (De 100 a 1,000 caracteres)"></textarea>
-                            
+                            <ng-ckeditor  
+                                      ng-model="actividad.datosGenerales.descripcion"
+                                      id="descripcion" 
+                                      skin="moono" 
+                                      remove-buttons="Image" 
+                                      remove-plugins="iframe,flash,smiley"
+                                      name="descripcion"
+                                      required
+                                      >
+                            </ng-ckeditor>
+                            <span class="messages" ng-show="crearActividadForm.$submitted || crearActividadForm.descripcion.$touched">
+                                <span ng-show="crearActividadForm.descripcion.$error.required" class="text-error">* El campo es obligatorio.</span>
+                            </span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
@@ -124,24 +135,17 @@
     <div id="multimedia" class="tab-pane fade">
         <fieldset>
             <legend>Multimedia</legend>
-            <div class="alert alert-warning alert-dismissible" role="alert">
-                <strong>Tenga en cuenta que para subir imágenes.</strong>
-                <ul>
-                    <li>Se recomienda que las imágenes presenten buena calidad (mínimo recomendado 850px × 480px).</li>
-                    <li>Puede subir máximo 5 imágenes. El peso de cada imagen debe ser menor o igual a 2MB.</li>
-                    <li>Si alguna de sus imágenes sobrepasa el tamaño permitido se le sugiere comprimir la imagen en <a href="https://compressor.io" target="_blank">compressor.io <span class="glyphicon glyphicon-share"></span></n></a>, <a href="http://optimizilla.com" target="_blank">optimizilla.com <span class="glyphicon glyphicon-share"></span></a>, o cualquier otro compresor de imágenes.</li>
-                    <li>Para seleccionar varias imágenes debe mantener presionada la tecla ctrl o arrastre el ratón sobre las imágenes que desea seleccionar.</li>
-                </ul>
-            </div>
+            @include('layout.partial._recomendacionesSubidaImagenes')
             <form novalidate role="form" name="multimediaForm">
                 <div class="row">
-                    <h4><span class="asterisk">*</span> Imagen de portada</h4>
+                    <label><span class="asterisk">*</span> Imagen de portada</label>
                     <div class="col-sm-12">
                         <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                     </div>
                 </div>
                 <div>
-                    <h4>Galería de imágenes</h4>
+                    <br>
+                    <label>Galería de imágenes</label>
                     <div class="col-sm-12">
                         <file-input ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
                     </div>
@@ -182,7 +186,7 @@
                 </div>
                 <div class="col-xs-12">
                     <div class="form-group" ng-class="{'has-error': (informacionAdicionalForm.$submitted || informacionAdicionalForm.perfiles.$touched) && informacionAdicionalForm.perfiles.$error.required}">
-                        <label for="perfiles"><span class="asterisk">*</span> Perfiles del turista <span class="text-error text-smg">(Seleccione al menos un perfil)</span></label>
+                        <label for="perfiles"><span class="asterisk">*</span> Perfiles del turista <span class="text-error text-msg">(Seleccione al menos un perfil)</span></label>
                         <ui-select name="perfiles" id="perfiles" multiple ng-required="true" ng-model="actividad.adicional.perfiles" theme="bootstrap" close-on-select="false" >
                             <ui-select-match placeholder="Seleccione uno o varios perfiles de usuario.">
                                 <span ng-bind="$item.perfiles_usuarios_con_idiomas[0].nombre"></span>
@@ -229,4 +233,6 @@
 <script src="{{asset('/js/administrador/actividades/services.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/app.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

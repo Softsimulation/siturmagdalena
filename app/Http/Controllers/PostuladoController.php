@@ -79,7 +79,7 @@ class PostuladoController extends Controller
 	        'users_id' => $user->id,
             'nombres' => $request->nombres,
             'apellidos' => $request->apellidos,
-            'fecha_nacimiento' => $request->fecha_nacimiento,
+            'fecha_nacimiento' => date('Y-m-d H:i',strtotime(str_replace("/","-",$request->fecha_nacimiento))),
             'sexo' => $request->sexo,
             'profesion' => $request->profesion,
             'municipio_id' => $request->municipio_id,
@@ -110,7 +110,7 @@ class PostuladoController extends Controller
                     ->withInput();
         }else{
             $vacante = Oferta_Vacante::find($id);
-            if($vacante->fecha_vencimiento < date('Y-m-d')){
+            if($vacante->fecha_vencimiento < date('Y-m-d') && $vacante->fecha_nacimiento != null){
                 return \Redirect::to('/promocionBolsaEmpleo/ver/'.$vacante->id)
                     ->with('message', "La vacante ya ha vencido.")
                     ->withInput();
@@ -123,9 +123,7 @@ class PostuladoController extends Controller
                 }
                 return view('postulado.postular', ['vacante' => $vacante]); 
             }else{
-                return \Redirect::to('/postulado/crear/'.$id)
-                        ->with('message', 'Debe llenar los datos de configuración del postulante.')
-                        ->withInput();
+                return view('postulado.crear', ['id' => $id]);
             }    
         }
     }
@@ -150,19 +148,28 @@ class PostuladoController extends Controller
         $user = \Auth::user();
         $vacante = Oferta_Vacante::find($request->vacante_id);
         
+        if(isset($vacante->numero_maximo_postulaciones)){
+            if( count($vacante->postulaciones) == $vacante->numero_maximo_postulaciones ){
+                return \Redirect::to('/postulado/postular/'.$request->vacante_id)
+                        ->with('message', "La vacante ya superó el número máximo de postulaciones.")
+                        ->withInput();
+            }    
+        }
+        
+        
         if(Postulaciones_Vacante::where('ofertas_vacante_id',$request->vacante_id)->where('datos_usuario_id', $user->id)->first()){
             return \Redirect::to('/postulado/postular/'.$request->vacante_id)
                         ->with('message', "El usuario ya se ha postulado a esta vacante")
                         ->withInput();
         }else{
             $file = $request->archivo;
-            \Storage::disk('HojasDeVida')->put( 'usuario_'.$user->id.'/'.date('Y-m-d H:i').$file->getClientOriginalName() ,  \File::get($file) );
+            \Storage::disk('HojasDeVida')->put( 'vacante_'.$vacante->id .'/'. 'usuario_'.$user->id.'_'.date('Y-m-d H:i').$file->getClientOriginalName() ,  \File::get($file) );
             
             Postulaciones_Vacante::create([
                 'ofertas_vacante_id' => $request->vacante_id,
                 'datos_usuario_id' => $user->id,
                 'fecha_postulacion' => date('Y-m-d'),
-                'ruta_hoja_vida' => '/HojasDeVida/'.'usuario_'.$user->id.'/'.date('Y-m-d H:i').$file->getClientOriginalName(),
+                'ruta_hoja_vida' => '/HojasDeVida/vacante_'.$vacante->id.'/'.'usuario_'.$user->id.'_'.date('Y-m-d H:i').$file->getClientOriginalName(),
                 'estado' => 1,
     	        'user_create' => $user->username,
         		'user_update' => $user->username

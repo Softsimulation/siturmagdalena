@@ -7,6 +7,7 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use Storage;
 use File;
+use DB;
 
 use App\Models\Sector;
 use App\Models\Perfil_Usuario;
@@ -78,7 +79,7 @@ class AdministradorProveedoresController extends Controller
             }])->select('id', 'razon_social');
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('portada', true)->select('proveedor_id', 'ruta');
-        }])->select('id', 'estado', 'proveedor_rnt_id')->orderBy('id')->get();
+        }])->select('id', 'estado', 'proveedor_rnt_id', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'culture', 'nombre')->where('estado', true)->get();
         
@@ -148,7 +149,9 @@ class AdministradorProveedoresController extends Controller
             }])->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
         }])->where('estado', true)->select('id')->get();
         
-        $proveedores_rnt = Proveedores_rnt::select('id', 'razon_social')->orderBy('id')->get();
+        $proveedores_rnt = Proveedores_rnt::select('id', 'razon_social')->orderBy('id')->doesntHave('proveedor')->get();
+        //$proveedores_rnt = DB::select("SELECT proveedores_rnt.id AS id, proveedores_rnt.razon_social AS razon_social FROM
+        //proveedores_rnt INNER JOIN proveedores ON proveedores.proveedor_rnt_id = proveedores_rnt.id");
             
         return ['success' => true,
             'perfiles_turista' => $perfiles_turista, 
@@ -205,7 +208,8 @@ class AdministradorProveedoresController extends Controller
         }
         
         $errores = [];
-        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 1)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        $proveedor_rnt_con_idioma = Proveedor::where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        //return ['proveedores' => Proveedores_rnt_idioma::all()];
         if ($proveedor_rnt_con_idioma != null){
             $errores["exists"][0] = "Este proveedor ya se encuentra registrado en el sistema.";
         }
@@ -235,11 +239,17 @@ class AdministradorProveedoresController extends Controller
         $proveedor_con_idioma->horario = $request->horario;
         $proveedor_con_idioma->save();
         
-        $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
-        $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
-        $proveedor_rnt_con_idioma->idioma_id = 1;
-        $proveedor_rnt_con_idioma->nombre = $request->nombre;
-        $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 1)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        if ($proveedor_rnt_con_idioma != null){
+            $proveedor_rnt_con_idioma->nombre = $request->nombre;
+            $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        }else {
+            $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
+            $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
+            $proveedor_rnt_con_idioma->idioma_id = 1;
+            $proveedor_rnt_con_idioma->nombre = $request->nombre;
+            $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        }
         $proveedor_rnt_con_idioma->save();
         
         return ['success' => true, 'id' => $proveedor->id];
@@ -313,20 +323,22 @@ class AdministradorProveedoresController extends Controller
         
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_proveedor = new Multimedia_Proveedor();
-                $multimedia_proveedor->proveedor_id = $request->id;
-                $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
-                $multimedia_proveedor->tipo = false;
-                $multimedia_proveedor->portada = false;
-                $multimedia_proveedor->estado = true;
-                $multimedia_proveedor->user_create = "Situr";
-                $multimedia_proveedor->user_update = "Situr";
-                $multimedia_proveedor->created_at = Carbon::now();
-                $multimedia_proveedor->updated_at = Carbon::now();
-                $multimedia_proveedor->save();
-                
-                Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$nombre, File::get($file));
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_proveedor = new Multimedia_Proveedor();
+                    $multimedia_proveedor->proveedor_id = $request->id;
+                    $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
+                    $multimedia_proveedor->tipo = false;
+                    $multimedia_proveedor->portada = false;
+                    $multimedia_proveedor->estado = true;
+                    $multimedia_proveedor->user_create = "Situr";
+                    $multimedia_proveedor->user_update = "Situr";
+                    $multimedia_proveedor->created_at = Carbon::now();
+                    $multimedia_proveedor->updated_at = Carbon::now();
+                    $multimedia_proveedor->save();
+                    
+                    Storage::disk('multimedia-proveedor')->put('proveedor-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         
@@ -384,6 +396,26 @@ class AdministradorProveedoresController extends Controller
         
         $proveedor = Proveedor::find($request->id);
         $proveedor->estado = !$proveedor->estado;
+        $proveedor->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:proveedores'
+        ],[
+            'id.required' => 'Se necesita el identificador del proveedor.',
+            'id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            'id.exists' => 'El proveedor no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $proveedor = Proveedor::find($request->id);
+        $proveedor->sugerido = !$proveedor->sugerido;
         $proveedor->save();
         
         return ['success' => true];

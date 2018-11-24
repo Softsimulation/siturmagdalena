@@ -34,14 +34,19 @@ class GrupoViajeController extends Controller
         return view('grupoViaje.ListadoGrupos');
     }
     public function getGrupos(){
-        
-
-
+        if(Auth::user()->hasRole('Admin')){
+            $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
+                $q->with('user');
+            },'visitantes'=>function($q){
+                $q->select("grupo_viaje_id","nombre");
+            }])->orderBy('created_at','DESC')->get();
+        }else{
             $grupos = Grupo_Viaje::with(['lugaresAplicacionEncuestum','digitadore'=>function($q){
                 $q->with('user');
             },'visitantes'=>function($q){
                 $q->select("grupo_viaje_id","nombre");
             }])->where('digitador_id',$this->user->digitador->id)->get();
+        }
             
         return $grupos;    
     }
@@ -141,7 +146,7 @@ class GrupoViajeController extends Controller
 
         $grupo = new Grupo_Viaje();
         $grupo->digitador_id = $this->user->digitador->id;
-        $grupo->fecha_aplicacion = $request->Fecha;
+        $grupo->fecha_aplicacion = date('Y-m-d',strtotime($request->Fecha));
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
         $grupo->mayores_quince = $request->Mayores15;
@@ -198,7 +203,7 @@ class GrupoViajeController extends Controller
             })->select('tipo_viaje_id','nombre');
         }])->get();
 
-        $grupo = Grupo_Viaje::where('id',$id)->with(['tiposViaje'=>function($q){
+        $grupo = Grupo_Viaje::where('id',$id)->with(['lugaresAplicacionEncuestum','tiposViaje'=>function($q){
             $q->with(['tiposViajeConIdiomas'=>function($r){
                 $r->whereHas('idioma', function($p){
                     $p->where('culture','es');
@@ -292,7 +297,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         $validator=\Validator::make($request->all(),[
             'id'=>'required|exists:grupos_viaje,id',
-            'Fecha'=>'required|date',
+            'Fecha'=>'required',
             'Sitio'=>'required|numeric|exists:lugares_aplicacion_encuesta,id',
             'Mayores15'=>'required|numeric|between:0,999999999',
             'Menores15'=>'required|numeric|between:0,999999999',
@@ -378,8 +383,8 @@ class GrupoViajeController extends Controller
             return  ["success"=>false,"errores"=>$errores];
         }
         $grupo = Grupo_Viaje::where('id',$request->id)->first();
-
-        $grupo->fecha_aplicacion = $request->Fecha;
+        
+        $grupo->fecha_aplicacion = date('Y-m-d',strtotime($request->Fecha));
         $grupo->lugar_aplicacion_id = $request->Sitio;
         $grupo->tipo_viaje_id = $request->Tipo;
         $grupo->mayores_quince = $request->Mayores15;
@@ -393,7 +398,7 @@ class GrupoViajeController extends Controller
         //return $request->all();
         
         $grupo->save();
-
+        
         return ["success"=>true];
         }
 }

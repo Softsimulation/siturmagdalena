@@ -4,25 +4,119 @@
 @section('app','ng-app="appIndicadores"')
 @section('controller','ng-controller="secundariasCtrl"')
 
+@section('estilos')
+
+<style type="text/css">
+    #selectGrafica .btn-select{
+        display: inline-flex;
+        align-items: center;
+        border-radius: 0;
+        width: calc(100% - 26px);
+    }
+    #selectGrafica .btn-select i{
+        font-size: 20px;
+        margin-right: 5px;
+    }
+    #modalData td, #modalData th{ padding: 1px; }
+    
+    .filtros .input-group-addon{
+        background-color: #009541!important;
+        border-color: #009541!important;
+        color: #fff!important;
+        font-weight: 700!important;
+    }
+    .menu-descraga, .menu-descraga .dropdown{
+            float: right;
+    }
+    .menu-descraga .dropdown button{
+        display:flex;
+        align-items:center;
+        background: transparent;
+    }
+    .menu-descraga .dropdown button .material-icons{
+        margin-right: .5rem;
+    }
+    #descargarTABLA{
+        float: right;
+        color: black;
+    }
+    #descargarTABLA i{
+        font-size:2em;
+    }
+    .panel-body{
+        padding:0!important;
+        padding-top:20px !important;
+    }
+    .btn-outline-primary{
+        background-color: white;
+        color: #004A87;
+        border-color: #004A87;
+        border-radius: 6px;
+    }
+    .btn-outline-primary:hover{
+        background-color: #004A87;
+        color: white;
+    }
+    .dropdown-menu{
+        width: 100%;
+        text-align:center;
+    }
+    .dropdown-menu>li>button:hover {
+        background-color: #eee;
+    }
+    .dropdown-menu>li>button {
+        display: block;
+        font-weight: 400;
+        line-height: 1.42857143;
+        color: #333;
+        white-space: normal;
+        font-size: 1rem;
+        width: 100%;
+        border: 0;
+        background-color: inherit;
+        padding: .5rem 1rem;
+    }
+</style>
+
+@endsection
+
 
 @section('content')
+<h2 class="text-center"><small class="btn-block">Estadísticas secundarias</small> @{{indicador.nombre}}</h2>
+<hr>
 
-<div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" >
+<div class="dropdown text-center" ng-init="indicadorSelectId={{$indicadores[0]['id']}}">
+  <button type="button" class="btn btn-outline-primary text-uppercase dropdown-toggle"id="dropdownMenuIndicadores" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ver más estadísticas <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+  
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuIndicadores" ng-init="buscarData( {{$indicadores[0]['id']}} )">
+    @foreach ($indicadores as $indicador)
+        <li ng-class="{'active': (indicadorSelectId=={{$indicador['id']}}) }">
+          <button type="button" ng-click="changeIndicador({{$indicador['id']}})">{{$indicador["nombre"]}}</button>
+        </li>
+    @endforeach
     
-    <ul class="list-group" ng-init="buscarData( {{$indicadores[0]['id']}} )" >
-        @foreach ($indicadores as $indicador)
-            <li class="list-group-item" ng-click="changeIndicador({{$indicador['id']}})" ng-class="{'active': (indicadorSelect=={{$indicador['id']}}) }"  >
-              {{$indicador["nombre"]}}
-            </li>
-        @endforeach
-    </ul>
+  </ul>
+</div>
+<br>
+<div ng-if="indicador == undefined" class="text-center">
+    <img src="/img/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
+</div>
+<div class="card" ng-show="indicador != undefined">
+    
+    <!--<ul class="list-group" ng-init="buscarData( {{$indicadores[0]['id']}} )" >-->
+    <!--    @foreach ($indicadores as $indicador)-->
+    <!--        <li class="list-group-item" ng-click="changeIndicador({{$indicador['id']}})" ng-class="{'active': (indicadorSelectId=={{$indicador['id']}}) }" role="button">-->
+    <!--          {{$indicador["nombre"]}}-->
+    <!--        </li>-->
+    <!--    @endforeach-->
+    <!--</ul>-->
     
     
     <div class="panel panel-default">
         <div class="panel-heading">
             <form name="form" >
                 <div class="row filtros" >
-                    <div class="col-md-3" >
+                    <div class="col-xs-12 col-sm-6 col-md-5" >
                         <div class="input-group">
                             <label class="input-group-addon">Período </label>
                             <select class="form-control" ng-model="filtro.year" ng-change="filtrarDatos()" ng-options="y.id as y.anio for y in periodos" requerid >
@@ -31,10 +125,10 @@
                     </div>
                     
                     
-                    <div class="col-md-4" >
+                    <div class="col-xs-12 col-sm-6 col-md-5" >
                         <div class="input-group" id="selectGrafica" >
                             <label class="input-group-addon">Gráfica </label>
-                            <div class="btn-group">
+                            <div class="btn-group" style="width: 100%;">
                                 <button type="button" class="btn btn-default btn-select" style="height:34px;" >
                                    <i class="material-icons">@{{graficaSelect.icono}}</i> @{{graficaSelect.nombre || " "}}
                                 </button>
@@ -50,11 +144,11 @@
                         </div>
                     </div> 
                     
-                    <div class="col-md-1 menu-descraga" >
+                    <div class="col-xs-12 col-md-2 menu-descraga" >
                     
                         <div class="dropdown">
-                          <button class="dropdown-toggle" type="button" data-toggle="dropdown">
-                              <i class="material-icons">menu</i>
+                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                              <i class="material-icons">cloud_download</i> Descargar
                           </button>
                           <ul class="dropdown-menu dropdown-menu-right">
                             <li><a href id="descargarPNG" >Descargar grafica : PNG</a></li>
@@ -94,7 +188,7 @@
                      <i class="material-icons">picture_as_pdf</i> 
                 </a>
             </div>
-            <div class="panel-body" id="customers" >
+            <div class="panel-body" id="customers" style="overflow-x: auto;width: 100%;margin-right: 0;">
                 
                 <table class="table table-striped" ng-if="!series"   >
                     <thead>
@@ -162,47 +256,7 @@
 @endsection
 
 
-@section('estilos')
 
-<style type="text/css">
-    #selectGrafica .btn-select{
-        display: inline-flex;
-        align-items: center;
-        border-radius: 0;
-    }
-    #selectGrafica .btn-select i{
-        font-size: 20px;
-        margin-right: 5px;
-    }
-    #modalData td, #modalData th{ padding: 1px; }
-    
-    .filtros .input-group-addon{
-        background-color: #009541!important;
-        border-color: #009541!important;
-        color: #fff!important;
-        font-weight: 700!important;
-    }
-    .menu-descraga, .menu-descraga .dropdown{
-            float: right;
-    }
-    .menu-descraga .dropdown button{
-        border: none;
-        background: transparent;
-    }
-    #descargarTABLA{
-        float: right;
-        color: black;
-    }
-    #descargarTABLA i{
-        font-size:2em;
-    }
-    .panel-body{
-        padding:0!important;
-        padding-top:20px !important;
-    }
-</style>
-
-@endsection
 
 
 @section('javascript')

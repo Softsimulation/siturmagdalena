@@ -14,6 +14,12 @@ use App\Models\Tipo_Cargo_Vacante;
 
 class PublicoBolsaEmpleoController extends Controller
 {
+    
+    public function __construct()
+	{
+	    $this->middleware('auth', ['only' => ['getMispostulaciones'] ]);
+	}
+    
     public function getVer($id){
         $vacante = Oferta_Vacante::find($id);
         if($vacante == null){
@@ -33,7 +39,7 @@ class PublicoBolsaEmpleoController extends Controller
         
         $vacantes = Oferta_Vacante::where('estado',1)
                     ->search($request)
-                    ->paginate(5);
+                    ->paginate(6);
         
         $proveedores = Proveedores_rnt::whereHas('vacantes',function($q){
             $q->where('estado',1)->where(function($q){$q->where('fecha_vencimiento','>=',date('Y-m-d'))->orWhereNull('fecha_vencimiento');});
@@ -46,6 +52,12 @@ class PublicoBolsaEmpleoController extends Controller
         $municipios = Municipio::where('departamento_id', 1411)->get();
         
         return view('bolsaEmpleo.promocionListado', ['vacantes' => $vacantes, 'tiposCargos' => $tiposCargos ,'proveedores' => $proveedores, 'nivelesEducacion' => $nivelesEducacion, 'municipios' => $municipios]);
+    }
+    
+    public function getMispostulaciones(){
+        $user = \Auth::user();
+        
+        return view('bolsaEmpleo.usuarioPostulaciones',['user' => $user]);
     }
     
 }

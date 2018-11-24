@@ -31,19 +31,9 @@
             margin-left: 2px;
         }
 
-        .messages {
-            color: #FA787E;
-        }
-
         
     </style>
 @endsection
-
-@section('TitleSection', 'Editar actividad')
-
-@section('Progreso', '0%')
-
-@section('NumSeccion', '0%')
 
 @section('app', 'ng-app="actividadesApp"')
 
@@ -116,13 +106,14 @@
                     @include('layout.partial._recomendacionesSubidaImagenes')
                     <form novalidate role="form" name="editarMultimediaForm">
                         <div class="row">
-                            <h4><span class="asterisk">*</span> Imagen de portada</h4>
+                            <label><span class="asterisk">*</span> Imagen de portada</label>
                             <div class="col-sm-12">
                                 <file-input ng-model="portadaIMG" preview="previewportadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                             </div>
                         </div>
                         <div>
-                            <h4>Subir imágenes</h4>
+                            <br>
+                            <label>Subir imágenes</label>
                             <div class="col-sm-12">
                                 <file-input ng-model="imagenes" preview="previewImagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
                             </div>
@@ -215,4 +206,6 @@
 <script src="{{asset('/js/administrador/actividades/services.js')}}"></script>
 <script src="{{asset('/js/administrador/actividades/app.js')}}"></script>
 <script src="{{asset('/js/plugins/directiva-tigre.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection

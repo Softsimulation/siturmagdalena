@@ -67,16 +67,18 @@ function parse_yturl($url)
           </h2>
           <div class="text-center">
             @if(Auth::check())
-                <button class="btn btn-lg btn-circled btn-favorite">
-                  <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
-                </button>
-                
+                <form role="form" action="/actividades/favorito" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="actividad_id" value="{{$actividad->id}}" />
+                    <button type="submit" class="btn btn-lg btn-circled btn-favorite">
+                      <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
+                    </button>    
+                </form>
             @else
                 <button type="button" class="btn btn-lg btn-circled" title="Marcar como favorito" data-toggle="modal" data-target="#modalIniciarSesion">
                   <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
                 </button>
             @endif
-              
           </div>
       </div>
       <!-- Controls -->
@@ -116,6 +118,9 @@ function parse_yturl($url)
     <section id="informacionGeneral" class="section active">
         <div class="container">
             <h3 class="title-section">{{$actividad->actividadesConIdiomas[0]->nombre}}</h3>
+            @if(Session::has('message'))
+                <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
+            @endif
             <div class="row">
                 {{--<div class="col-xs-12">
                     @if($video_promocional != null)
@@ -153,5 +158,24 @@ function parse_yturl($url)
         </div>
         
     </section>
-
+    
+    <!-- Modal iniciar sesión-->
+    <div class="modal fade" id="modalIniciarSesion" tabindex="-1" role="dialog" aria-labelledby="labelModalIniciarSesion">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="labelModalIniciarSesion">Iniciar sesión</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Para calificar, comentar o agregar a sus favoritos este contenido debe iniciar sesión. Si aún no se encuentra registrado <a href="#">haga clic aquí</a></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Iniciar sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 @endsection

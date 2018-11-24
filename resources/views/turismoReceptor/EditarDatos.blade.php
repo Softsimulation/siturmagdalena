@@ -194,10 +194,8 @@
 
                             <div class="col-xs-12">
                                 <!--P4P3Input1. Ingrese su email-->
-                                <input type="email" class="form-control" name="email" placeholder="Ingrese su email" ng-model="encuesta.Email" ng-required="true" />
+                                <input type="email" class="form-control" name="email" placeholder="Ingrese su email" ng-model="encuesta.Email" />
                                 <span ng-show="DatosForm.$submitted || DatosForm.email.$touched">
-                                    <!--P4P2Alert1. El campo email es requerido-->
-                                    <span class="label label-danger" ng-show="DatosForm.email.$error.required">*El campo email es requerido</span>
                                     <!--P4P2Alert2. El campo email no es un email válido-->
                                     <span class="label label-danger" ng-show="DatosForm.email.$error.email">*El campo email no es un email válido</span>
                                 </span>
@@ -266,7 +264,7 @@
 
                             <div class="col-xs-12">
                                 <!--P4P5Input1. Ingrese su teléfono celular-->
-                                <input type="text" class="form-control" id="inputCelular" name="celular" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
+                                <input type="text" class="form-control" id="inputCelular" name="celular" placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
                                 <span ng-show="DatosForm.$submitted || DatosForm.celular.$touched">
                                     <span class="label label-danger" ng-show="DatosForm.celular.$error.pattern">*El celular no tiene un formato válido</span>
                                 </span>
@@ -435,7 +433,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in motivos">
+                        <div class="radio" ng-repeat="item in motivos | orderBy: 'peso'">
                             <label>
                                 <input type="radio" ng-change="cambiomotivo()" name="motivo" ng-model="encuesta.Motivo" value="@{{item.id}}" ng-required="true">@{{item.motivos_viaje_con_idiomas[0].nombre}} <input type="text" class="form-control" name="otro" ng-model="encuesta.Otro" ng-change="otro()" ng-if="item.id == 18" />
                             </label>

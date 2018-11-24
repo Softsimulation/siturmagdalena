@@ -32,6 +32,9 @@ app.controller('listadoNoticiasCtrl', function($scope, noticiaServi) {
     $("body").attr("class", "charging");
     noticiaServi.listadoNoticias().then(function (dato) {
         $scope.noticias = dato.noticias;
+        for(var i=0; i<$scope.noticias.length;i++){
+            $scope.noticias[i].estadoNoticia = $scope.noticias[i].estado == true ? 'Activo' : 'Inactivo';
+        }
         $scope.tiposNoticias = dato.tiposNoticias;
         $scope.idiomasNoticia = dato.idiomasNoticia[0].idiomas;
         $scope.cantIdiomas = dato.cantIdiomas;

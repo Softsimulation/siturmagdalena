@@ -310,7 +310,7 @@
         .list-details li {
             padding: .3rem 0;
         }
-        
+        .filtros_tabla_bloques td{ padding: 5px 25px !important; }
     </style>
 <?php $__env->stopSection(); ?>
 
@@ -543,12 +543,8 @@
                              <i class="material-icons">menu</i>
                           </a>
                           <ul class="dropdown-menu">
-<<<<<<< HEAD
                             <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
-=======
-                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
->>>>>>> dd95048d365cc119937e02216d6e02f5c432ce93
-                            <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
+                            <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Descargar excel de la muestra</a></li>
                             <li>
                                 <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
                             </li>
@@ -569,11 +565,11 @@
                     <i class="material-icons">arrow_forward</i>
                 </button>  
             </div>
-            <ng-map id="mapa" zoom="9" center="{{centro}}" styles="{{styloMapa}}" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
+            <ng-map id="mapa" zoom="9" center="{{centro}}" styles="{{styloMapa}}" map-type-control="false" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
               
                 <marker ng-repeat="pro in (proveedores|filter:filtro.busqueda|filter:filterProveedores) as proveedoresFiltrados" position="{{pro.latitud}},{{pro.longitud}}"  id="{{pro.id}}"
                     icon="{{ getIcono(pro) }}" on-click="showInfoMapa(event,pro,$index)" 
-                    draggable="{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" >     
+                    draggable="{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" label="{{pro.concat}}"  >     
                 </marker>
         
                 <shape index="fig-{{$index}}" ng-repeat="item in dataPerido.zonas|filter:filterZonas" fill-color="{{item.color}}" 
@@ -592,11 +588,7 @@
                                 <li><a href ng-click="editarPosicionZona(item,$index)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
                                 <li><a href ng-click="eliminarZona(item,$index)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
                                 <li><a href ng-click="exportarFileExcelZona(item)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
-<<<<<<< HEAD
                                 <li><a href="/MuestraMaestra/llenarinfozona/{{item.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
-=======
-                                <li><a href="/MuestraMaestra/llenarinfozona/{{item.id}}" ><i class="material-icons">border_color</i> Cargar datos</a></li>
->>>>>>> dd95048d365cc119937e02216d6e02f5c432ce93
                               </ul>
                             </div>
                             <button class="btn btn-xs btn-success" type="button" ng-if="item.editar" ng-click="guardarEditarPosicion()" > 
@@ -621,44 +613,6 @@
         </div>
             
     </div>
-    
-    <!--<div class="row" >
-        
-        
-        <div class="col-md-9" ng-class="{ 'col-md-12': pantallaCompleta }"  style="padding:0" >
-            
-            <div class="btn-map">
-                
-                <a class="btn btn-default" href title="Ver menu" ng-click="pantallaCompleta=false" style="padding: 0 3px;" ng-show="pantallaCompleta" >
-                    <i class="material-icons">arrow_forward</i>
-                </a>  
-                
-                <div class="dropdown">
-                      <a class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="padding: 0 3px; margin-left: 5px;" >
-                         <i class="material-icons">menu</i>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de zonas</a></li>
-                        <li><a href="/MuestraMaestra/excelinfoperiodo/<?php echo e($periodo->id); ?>" download ><i class="material-icons">arrow_downward</i> Decargar excel de la muestra</a></li>
-                        <li>
-                            <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
-                        </li>
-                        <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
-                        <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar zona</a></li>
-                      </ul>
-                </div>
-                
-                <button type="button" id="btn-add" class="btn btn-danger btn-sm" ng-click="cancelarAgregarZonaPRoveedor()" ng-show="es_crear_zona" style="margin-left: 5px;" >
-                    Cancelar crear zona
-                </button>
-                
-            </div>
-            
-            
-            
-        </div>
-        
-    </div>-->
     
     
     <div id="mySidenav" class="sidenav">
@@ -853,17 +807,14 @@
               <thead>
                 <tr>
                   <th>Detalles</th>
-                  <th>PRESTADORES (Estado – Categoría)</th>
-                  <th>PLANILLA</th>
-                  <th>TABULACIÓN</th>
+                  <th>PRESTADORES (Categoría - Estado)</th>
+                  <th style="width:200px;" >PLANILLA</th>
+                  <th style="width:200px;" >TABULACIÓN</th>
                 </tr>
-              </thead>
-              <tbody>
-                <tr>
-                    <td>
+                <tr class="filtros_tabla_bloques" >
+                    <td colspan="2" >
                         <input type="text" class="form-control" ng-model="busquedaZonas" placeholder="Busqueda por nombre, sector y Encargado."  />
                     </td>
-                    <td></td>
                     <td>
                         <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada"  name="optradio1">Todas</label>
                         <label class="radio-inline"><input type="radio" ng-model="filterTabla.planillada" value="true" name="optradio1">Si</label>
@@ -875,6 +826,8 @@
                         <label class="radio-inline"><input type="radio" ng-model="filterTabla.tabulada" value="false" name="optradio2">No</label>
                     </td>
                 </tr>
+              </thead>
+              <tbody>
                 <tr ng-repeat="z in detalle|filter:busquedaZonas|filter:{ 'es_generada':filterTabla.planillada, 'es_tabulada':filterTabla.tabulada } " >
                   <td>
                       <p>  <b>BLOQUE:</b> {{z.nombre}} </p>
@@ -887,24 +840,31 @@
                       </p>
                   </td>
                   <td>
-                      <ul>
-                         <li ng-repeat="it in z.estadosProveedores" > {{it.nombre}}: {{it.cantidad}} </li> 
-                      </ul>
                       
-                      <br>
+                      <div class="row" >
+                          <div class="col-md-6" >
+                              <ul>
+                                 <li style="list-style: none;" ><b>Categorías</b></li>
+                                 <li ng-repeat="it in z.tiposProveedores" > 
+                                    {{it.nombre}}: {{it.cantidad[0]+it.cantidad[1]}}
+                                    <p style="font-size:11px" >Formales:{{it.cantidad[0]}}, informales:{{it.cantidad[1]}}</p> 
+                                 </li> 
+                              </ul>
+                          </div>
+                          <div class="col-md-6" >
+                                <ul>
+                                    <li style="list-style: none;" ><b>Estados</b></li>
+                                    <li ng-repeat="it in z.estadosProveedores" > {{it.nombre}}: {{it.cantidad}} </li> 
+                                </ul>
+                          </div>
+                      </div>
                       
-                      <ul>
-                         <li ng-repeat="it in z.tiposProveedores" > {{it.nombre}}: {{it.cantidad[0]+it.cantidad[1]}}
-                         <p style="font-size:11px" >Formales:{{it.cantidad[0]}}, informales:{{it.cantidad[1]}}</p> </li> 
-                      </ul>
                   </td>
                   <td>
                         <p>  <b>GENERADA:</b> {{z.es_generada ? "Si" : "No"}} </p>
                         <a href  ng-click="exportarFileExcelZona(z)" >
                             Descargar
                         </a>
-                        
-                        ( {{z.es_generada}} == {{filterTabla.planillada}}} ): {{ filterTabla.planillada==z.es_generada}}
                   </td>
                   <td>
                         <p>  <b>TABULADA:</b> {{z.es_tabulada ? "Si" : "No"}} </p>
@@ -1098,7 +1058,7 @@
     <script src="<?php echo e(asset('/js/plugins/checklist-model.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/plugins/ADM-dateTimePicker.min.js')); ?>"></script>
     <script src="/js/plugins/tokml.js"></script>
-    <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyC55uUNZFEafP0702kEyGLlSmGE29R9s5k&libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="/js/plugins/ng-map.js"></script>
     <script src="/js/plugins/geoxml3.js"></script>
     <script src="<?php echo e(asset('/js/muestraMaestra/servicios.js')); ?>"></script>

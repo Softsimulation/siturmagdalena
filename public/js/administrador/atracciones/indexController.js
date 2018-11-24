@@ -29,6 +29,20 @@ angular.module('atracciones.index', [])
         });
     }
     
+     $scope.sugerir = function (atraccion){
+        $("body").attr("class", "cbp-spmenu-push charging");
+        atraccionesServi.postSugerir(atraccion.id).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
+            if (data.success){
+                atraccion.sugerido = !atraccion.sugerido;
+                swal('¡Éxito!', 'Operación realizada con éxito.', 'success');
+            }
+        }).catch(function (error){
+            $("body").attr("class", "cbp-spmenu-push");
+            swal('Error', 'Error al desactivar la atracción. Por favor, recargue la página.', 'error');
+        });
+    }
+    
     $scope.modalIdioma = function (atraccion){
         $scope.atraccionEdit = atraccion;
         $("#idiomaModal").modal('show');

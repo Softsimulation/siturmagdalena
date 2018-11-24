@@ -42,7 +42,7 @@ angular.module('rutas.crear', [])
     }
     
     $scope.guardarMultimedia = function (){
-        if (!$scope.multimediaForm.$valid || $scope.evento.id == -1){
+        if (!$scope.multimediaForm.$valid || $scope.ruta.id == -1){
             return;
         }
         var fd = new FormData();

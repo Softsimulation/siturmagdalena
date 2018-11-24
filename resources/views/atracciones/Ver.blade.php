@@ -30,7 +30,7 @@ function parse_yturl($url)
 
 @section('Title','Atracciones')
 
-@section('TitleSection','Atracciones')
+@section('TitleSection',$atraccion->sitio->sitiosConIdiomas[0]->nombre)
 
 @section('content')
     <div id="carousel-main-page" class="carousel slide" data-ride="carousel">
@@ -67,16 +67,18 @@ function parse_yturl($url)
           </h2>
           <div class="text-center">
             @if(Auth::check())
-                <button class="btn btn-lg btn-circled btn-favorite">
-                  <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
-                </button>
-                
+                <form role="form" action="/atracciones/favorito" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="atraccion_id" value="{{$atraccion->id}}" />
+                    <button type="submit" class="btn btn-lg btn-circled btn-favorite">
+                      <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
+                    </button>    
+                </form>
             @else
                 <button type="button" class="btn btn-lg btn-circled" title="Marcar como favorito" data-toggle="modal" data-target="#modalIniciarSesion">
                   <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
                 </button>
             @endif
-              
           </div>
       </div>
       <!-- Controls -->
@@ -125,10 +127,13 @@ function parse_yturl($url)
     <section id="informacionGeneral" class="section active">
         <div class="container">
             <h3 class="title-section">{{$atraccion->sitio->sitiosConIdiomas[0]->nombre}}</h3>
+            @if(Session::has('message'))
+                <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
+            @endif
             <div class="row">
                 <div class="col-xs-12">
                     @if($video_promocional != null)
-                    <iframe src="https://www.youtube.com/embed/{{print(parse_yturl($video_promocional))}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;margin-bottom: 1rem;"></iframe>
+                    <iframe src="https://www.youtube.com/embed/<?php echo parse_yturl($video_promocional); ?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;margin-bottom: 1rem;"></iframe>
                     @endif
                 </div>
                 <div class="col-xs-12 col-md-8">
@@ -504,6 +509,7 @@ function parse_yturl($url)
     });
 </script>
 <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNCXa64urvn7WPRdFSW29prR-SpZIHZPs&callback=initMap">
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC55uUNZFEafP0702kEyGLlSmGE29R9s5k&callback=initMap">
+
 </script>
 @endsection

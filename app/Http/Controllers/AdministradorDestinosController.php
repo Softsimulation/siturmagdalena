@@ -73,7 +73,7 @@ class AdministradorDestinosController extends Controller
             }])->select('destino_id', 'idiomas_id', 'nombre', 'descripcion')->orderBy('idiomas_id');
         }, 'multimediaDestinos' => function ($queryMultimediaDestinos){
             $queryMultimediaDestinos->where('portada', true)->select('destino_id', 'ruta');
-        }])->select('id', 'estado')->orderBy('id')->get();
+        }])->select('id', 'estado', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'nombre', 'culture')->where('estado', true)->get();
         
@@ -121,7 +121,7 @@ class AdministradorDestinosController extends Controller
     public function postCreardestino(Request $request){
         $validator = \Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            'descripcion' => 'required|max:1000|min:100',
+            'descripcion' => 'required|min:100',
             'tipo' => 'required|numeric|exists:tipo_destino,id',
             'pos' => 'required'
         ],[
@@ -234,20 +234,22 @@ class AdministradorDestinosController extends Controller
         
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_sitio = new Multimedia_Destino();
-                $multimedia_sitio->destino_id = $request->id;
-                $multimedia_sitio->ruta = "/multimedia/destinos/destino-".$request->id."/".$nombre;
-                $multimedia_sitio->tipo = false;
-                $multimedia_sitio->portada = false;
-                $multimedia_sitio->estado = true;
-                $multimedia_sitio->user_create = "Situr";
-                $multimedia_sitio->user_update = "Situr";
-                $multimedia_sitio->created_at = Carbon::now();
-                $multimedia_sitio->updated_at = Carbon::now();
-                $multimedia_sitio->save();
-                
-                Storage::disk('multimedia-destino')->put('destino-'.$request->id.'/'.$nombre, File::get($file));
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_sitio = new Multimedia_Destino();
+                    $multimedia_sitio->destino_id = $request->id;
+                    $multimedia_sitio->ruta = "/multimedia/destinos/destino-".$request->id."/".$nombre;
+                    $multimedia_sitio->tipo = false;
+                    $multimedia_sitio->portada = false;
+                    $multimedia_sitio->estado = true;
+                    $multimedia_sitio->user_create = "Situr";
+                    $multimedia_sitio->user_update = "Situr";
+                    $multimedia_sitio->created_at = Carbon::now();
+                    $multimedia_sitio->updated_at = Carbon::now();
+                    $multimedia_sitio->save();
+                    
+                    Storage::disk('multimedia-destino')->put('destino-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         
@@ -274,12 +276,32 @@ class AdministradorDestinosController extends Controller
         return ['success' => true];
     }
     
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:destino'
+        ],[
+            'id.required' => 'Se necesita el identificador del destino.',
+            'id.numeric' => 'El identificador del destino debe ser un valor numérico.',
+            'id.exists' => 'El destino no se encuentra registrado en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $destino = Destino::find($request->id);
+        $destino->sugerido = !$destino->sugerido;
+        $destino->save();
+        
+        return ['success' => true];
+    }
+    
     public function postEditaridioma (Request $request){
         $validator = \Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             'id' => 'required|exists:destino|numeric',
             'idIdioma' => 'required|exists:idiomas,id|numeric',
-            'descripcion' => 'required|max:1000|min:100'
+            'descripcion' => 'required|min:100'
         ],[
             'nombre.required' => 'Se necesita un nombre para el destino.',
             'nombre.max' => 'Se ha excedido el número máximo de caracteres para el campo "Nombre".',

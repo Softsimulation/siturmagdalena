@@ -62,7 +62,7 @@ angular.module('receptor.grupo_viaje', ['ADM-dateTimePicker','grupoViajeService'
                     confirmButtonText: "OK",
                     closeOnConfirm: true
                 }, function (isConfirm) {
-                    window.location.href = "/grupoviaje/listadogrupos";
+                    window.location.href = "/turismoreceptor/datosencuestados";
                 });
             } else {
                 swal("Error", "Por favor corrija los errores", "error");
@@ -105,6 +105,7 @@ angular.module('receptor.grupo_viaje', ['ADM-dateTimePicker','grupoViajeService'
         $scope.grupos = data;
         for(var i=0;i<$scope.grupos.length;i++){
             $scope.grupos[i].fecha_aplicacion = formatDate($scope.grupos[i].fecha_aplicacion);
+            $scope.grupos[i].encuestasDiligenciadas = $scope.grupos[i].visitantes.length+"/"+$scope.grupos[i].personas_encuestadas;
         }
         $("body").attr("class", "cbp-spmenu-push");
     }).catch(function () {

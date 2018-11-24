@@ -12,8 +12,6 @@
 </style>
 @endsection
 
-@section('TitleSection', 'Listado encuestas')
-
 @section('app','ng-app="encuestaListado"')
 
 @section('controller','ng-controller="listadoEncuestas2Ctrl"')
@@ -50,11 +48,11 @@
                             <th>No. de encuesta</th>
                             <th style="width: 60px;">Grupo</th>
                             <th>Lugar de aplicación</th>
-                            <th>Fecha de aplicación</th>
-                            <th>Fecha de llegada</th>
+                            <th style="width: 90px;">Fecha de aplicación</th>
+                            <th style="width: 90px;">Fecha de llegada</th>
                             <th>Encuestador</th>
-                            <th style="width: 150px;">Estado</th>
-                            <th style="width: 110px;">Última sección</th>
+                            <th style="width: 130px;">Estado</th>
+                            <th style="width: 70px;">Última sección</th>
                             <th style="width: 120px;">Opciones</th>
                         
                         </tr>

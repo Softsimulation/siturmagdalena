@@ -67,6 +67,7 @@
             <div class="inline-buttons">
                 <a href="/administradorrutas/editar/@{{ruta.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{ruta.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(ruta)">@{{ruta.estado ? 'Desactivar' : 'Activar'}}</button>
+                <button title="@{{ruta.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(ruta)"><span class="glyphicon glyphicon-@{{ruta.sugerido ? 'star' : 'star-empty'}}"></span></button>
                 <a href="/administradorrutas/idioma/@{{ruta.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in ruta.rutas_con_idiomas"> @{{traduccion.idioma.culture}}</a>
                 <button type="button" ng-click="modalIdioma(ruta)" class="btn btn-default" ng-if="ruta.rutas_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
             </div>  
@@ -124,4 +125,6 @@
 <script src="{{asset('/js/administrador/rutas/editarController.js')}}"></script>
 <script src="{{asset('/js/administrador/rutas/services.js')}}"></script>
 <script src="{{asset('/js/administrador/rutas/app.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
 @endsection
