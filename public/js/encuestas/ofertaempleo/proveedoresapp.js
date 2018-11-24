@@ -127,3 +127,79 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
 
    
 }])
+
+.controller('listadoecuestatotal', ['$scope', 'proveedorServi',function ($scope, proveedorServi) {
+   
+        
+
+        $("body").attr("class", "cbp-spmenu-push charging");
+        
+        proveedorServi.getEncuestasTotal().then(function (data) {
+            $("body").attr("class", "cbp-spmenu-push");
+            $scope.encuestas = data.encuestas;
+           
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
+    
+        
+      $scope.caracterizacionEmpleo = function(obj){
+             
+              if(obj.tipo_id == 1){
+                     window.location.href = "/ofertaempleo/caracterizacion/"+obj.id;
+              }else{
+                  
+                    if(obj.categoria_id == 15 || obj.categoria_id == 13){
+                         window.location.href = "/ofertaempleo/agenciaviajes/"+obj.id;
+                    }
+                     if(obj.categoria_id == 14){
+                         window.location.href = "/ofertaempleo/caracterizacionagenciasoperadoras/"+obj.id;
+                    }
+                     if(obj.categoria_id == 21){
+                         window.location.href = "/ofertaempleo/caracterizaciontransporte/"+obj.id;
+                    }
+                     if(obj.categoria_id == 22 || obj.categoria_id == 28){
+                         window.location.href = "/ofertaempleo/caracterizaciontransporte/"+obj.id;
+                    }
+                     if(obj.categoria_id == 12){
+                         window.location.href = "/ofertaempleo/caracterizacionalimentos/";+obj.id
+                    }
+                   if(obj.categoria_id == 11 || obj.categoria_id == 16 || obj.categoria_id == 27 ){
+                         window.location.href = "/ofertaempleo/caracterizacionalimentos/"+obj.id;
+                    }
+              }
+      }
+      
+       $scope.ofertaEmpleo = function(obj){
+             
+              if(obj.tipo_id == 1){
+                     window.location.href = "/ofertaempleo/oferta/"+obj.id;
+              }else{
+                  
+                    if(obj.categoria_id == 15 || obj.categoria_id == 13){
+                         window.location.href = "/ofertaempleo/ofertaagenciaviajes/"+obj.id;
+                    }
+                     if(obj.categoria_id == 14){
+                         window.location.href = "/ofertaempleo/ocupacionagenciasoperadoras/"+obj.id;
+                    }
+                     if(obj.categoria_id == 21){
+                         window.location.href = "/ofertaempleo/ofertalquilervehiculo/"+obj.id;
+                    }
+                     if(obj.categoria_id == 22 || obj.categoria_id == 28){
+                         window.location.href = "/ofertaempleo/ofertatransporte/"+obj.id;
+                    }
+                     if(obj.categoria_id == 12){
+                         window.location.href = "/ofertaempleo/capacidadalimentos/";+obj.id
+                    }
+                   if(obj.categoria_id == 11){
+                         window.location.href = "/ofertaempleo/capacidadalimentos/"+obj.id;
+                    }
+              }
+      }
+   
+   
+   
+   
+   
+}])

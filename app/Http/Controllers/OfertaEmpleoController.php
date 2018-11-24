@@ -112,6 +112,26 @@ class OfertaEmpleoController extends Controller
         
          return ["success" => true];
     }
+    
+    
+    
+       public function getEncuestasoferta(){
+        
+        return view('ofertaEmpleo.ListadoEncuestastotal');
+    }
+    
+    
+    public function getEncuestasrealizadastotales(){
+ 
+          $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta"));
+        
+         
+        return ["success"=>true, "encuestas"=>$data];
+
+    }
+    
+    
+    
     public function getCrearencuesta(){
         return view('ofertaEmpleo.Crearencuesta');
     }
@@ -2708,6 +2728,9 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
             return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
+    
+    
+    
     
     public function postGuardarofertaalojamientos(Request $request){
     
