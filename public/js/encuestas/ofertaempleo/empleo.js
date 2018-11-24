@@ -12,6 +12,12 @@ angular.module('empleo.Empleo', [])
                 $scope.empleo = data.empleo;
                 $scope.tipo_cargo = data.tipo_cargo;
                 $scope.url = data.url;
+                if($scope.empleo.VacanteOperativo == null){
+                    $scope.empleo.VacanteGerencial = 0;
+                    $scope.empleo.VacanteAdministrativo = 0;
+                    $scope.empleo.VacanteOperativo = 0;
+                    
+                }
                   
         }).catch(function () {
               $("body").attr("class", "cbp-spmenu-push")
@@ -529,7 +535,12 @@ $scope.$watch('id', function () {
          ofertaServi.cargarDatosEmplomensual($scope.id).then(function (data) {
                  $("body").attr("class", "cbp-spmenu-push")
                 $scope.empleo = data.empleo;
-                
+                if($scope.empleo.VacanteOperativo == null){
+                    $scope.empleo.VacanteGerencial = 0;
+                    $scope.empleo.VacanteAdministrativo = 0;
+                    $scope.empleo.VacanteOperativo = 0;
+                    
+                }
                 $scope.url = data.url;
                   
         }).catch(function () {

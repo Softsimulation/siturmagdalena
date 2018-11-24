@@ -128,7 +128,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Empleados </b></h3>
                 </div>
-                <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+                <div class="panel-footer"><b>Complete la siguiente tabla</b></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -136,14 +136,18 @@
                                 <table id="tgastos" class="table table-condensed table-bordered table-hover">
                                     <thead id="head-tgastos">
                                         <tr>
-                                            <th class="text-center">Tipo</th>
+                                            <th class="text-center" colspan="2">Tipo</th>
                                             <th class="text-center">Hombres</th>
                                             <th class="text-center">Mujeres</th>
                                             <th class="text-center">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        
                                              <tr>
+                                                 <td colspan="1" rowspan="4" >
+                                                Tiempo Completo
+                                            </td>
                                                 <td>Directivos tiempo completo</td>
                                                    <td>
                                         <input type="number" min="0" class="form-control" name="tiempo_completo" ng-model="tiempoempleado(1,1).tiempo_completo" placeholder="0" ng-required="true"/>
@@ -206,8 +210,19 @@
                                                 </td>                                              
                                               <td style="text-align: right">@{{tiempoempleado(3,1).tiempo_completo + tiempoempleado(3,0).tiempo_completo }}</td>
                                             </tr>
+                                             <tr>
+                                              <td>Total</td>
+                                                <td style="text-align: left">@{{tiempoempleado(1,1).tiempo_completo  + tiempoempleado(2,1).tiempo_completo + tiempoempleado(3,1).tiempo_completo }}</td>
+                                                <td style="text-align: left">@{{tiempoempleado(1,0).tiempo_completo  + tiempoempleado(2,0).tiempo_completo  + tiempoempleado(3,0).tiempo_completo  }}</td>
+                                                <td style="text-align: right">@{{Total('Empleo','tiempo_completo')}}</td>
+        
+                                            
+                                             </tr>
                                             
                                              <tr>
+                                             <td colspan="1" rowspan="4" >
+                                                Medio Tiempo 
+                                            </td>
                                                 <td>Directivos medio tiempo</td>
                                                 <td>
                                                     <input type="number" min="0" class="form-control" name="medio_tiempo" ng-model="tiempoempleado(1,1).medio_tiempo" placeholder="0" ng-required="true"/>
@@ -273,11 +288,19 @@
                                      
                                             <td style="text-align: right">@{{tiempoempleado(3,1).medio_tiempo + tiempoempleado(3,0).medio_tiempo }}</td>
                                             </tr>
-                                            <tr>
-                                                <td >Total</td>
-                                                <td style="text-align: right">@{{tiempoempleado(1,1).tiempo_completo + tiempoempleado(1,1).medio_tiempo + tiempoempleado(2,1).tiempo_completo + tiempoempleado(2,1).medio_tiempo + tiempoempleado(3,1).tiempo_completo + tiempoempleado(3,1).medio_tiempo}}</td>
-                                                <td style="text-align: right">@{{tiempoempleado(1,0).tiempo_completo + tiempoempleado(1,0).medio_tiempo + tiempoempleado(2,0).tiempo_completo + tiempoempleado(2,0).medio_tiempo + tiempoempleado(3,0).tiempo_completo + tiempoempleado(3,0).medio_tiempo }}</td>
+                                             <tr>
+                                              <td>Total</td>
+                                                <td style="text-align: left">@{{tiempoempleado(1,1).medio_tiempo  + tiempoempleado(2,1).medio_tiempo  + tiempoempleado(3,1).medio_tiempo}}</td>
+                                                <td style="text-align: left">@{{tiempoempleado(1,0).medio_tiempo  + tiempoempleado(2,0).medio_tiempo  + tiempoempleado(3,0).medio_tiempo }}</td>
                                                 <td style="text-align: right">@{{Total('Empleo','medio_tiempo')}}</td>
+        
+                                            
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="text-align: center">Total</td>
+                                                <td style="text-align: left">@{{tiempoempleado(1,1).tiempo_completo + tiempoempleado(1,1).medio_tiempo + tiempoempleado(2,1).tiempo_completo + tiempoempleado(2,1).medio_tiempo + tiempoempleado(3,1).tiempo_completo + tiempoempleado(3,1).medio_tiempo}}</td>
+                                                <td style="text-align: left">@{{tiempoempleado(1,0).tiempo_completo + tiempoempleado(1,0).medio_tiempo + tiempoempleado(2,0).tiempo_completo + tiempoempleado(2,0).medio_tiempo + tiempoempleado(3,0).tiempo_completo + tiempoempleado(3,0).medio_tiempo }}</td>
+                                                <td style="text-align: right">@{{Total('Empleo','medio_tiempo') + Total('Empleo','tiempo_completo')}}</td>
                                             </tr>
                                     </tbody>
                                 </table>
