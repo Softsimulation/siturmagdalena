@@ -29,6 +29,20 @@ angular.module('proveedores.index', [])
         });
     }
     
+     $scope.sugerir = function (proveedor){
+        $("body").attr("class", "cbp-spmenu-push charging");
+        proveedoresServi.postSugerir(proveedor.id).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
+            if (data.success){
+                proveedor.sugerido = !proveedor.sugerido;
+                swal('¡Éxito!', 'Operación realizada con éxito.', 'success');
+            }
+        }).catch(function (error){
+            $("body").attr("class", "cbp-spmenu-push");
+            swal('Error', 'Error al desactivar el proveedor. Por favor, recargue la página.', 'error');
+        });
+    }
+    
     $scope.modalIdioma = function (proveedor){
         $scope.proveedorEdit = proveedor;
         $("#idiomaModal").modal('show');

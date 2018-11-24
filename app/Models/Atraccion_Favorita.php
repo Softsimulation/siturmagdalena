@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,10 @@ class Atraccion_Favorita extends Model
     /**
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['usuario_id','atracciones_id'];
+    
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -37,6 +40,6 @@ class Atraccion_Favorita extends Model
      */
     public function atraccione()
     {
-        return $this->belongsTo('App\Atraccione', 'atracciones_id');
+        return $this->belongsTo('App\Models\Atracciones', 'atracciones_id');
     }
 }

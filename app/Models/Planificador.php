@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +24,7 @@ class Planificador extends Model
      * @var string
      */
     protected $table = 'planificador';
+    public $timestamps = false;
 
     /**
      * @var array
@@ -43,7 +44,7 @@ class Planificador extends Model
      */
     public function planificadorProveedores()
     {
-        return $this->hasMany('App\PlanificadorProveedore');
+        return $this->hasMany('App\Models\Planificador_Proveedor');
     }
 
     /**
@@ -51,7 +52,7 @@ class Planificador extends Model
      */
     public function planificadorEventos()
     {
-        return $this->hasMany('App\PlanificadorEvento');
+        return $this->hasMany('App\Models\Planificador_Evento');
     }
 
     /**
@@ -59,7 +60,7 @@ class Planificador extends Model
      */
     public function planificadorAtracciones()
     {
-        return $this->hasMany('App\PlanificadorAtraccione');
+        return $this->hasMany('App\Models\Planificador_Atraccion');
     }
 
     /**
@@ -67,6 +68,6 @@ class Planificador extends Model
      */
     public function planificadorActividades()
     {
-        return $this->hasMany('App\PlanificadorActividade');
+        return $this->hasMany('App\Models\Planificador_Actividad');
     }
 }

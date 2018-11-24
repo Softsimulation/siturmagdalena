@@ -12,16 +12,74 @@
     .tile .tile-img.no-img{
         background-color: white;
     }
-    .tile .tile-img.no-img img{
-        height: 100px;
-    }
-    .tiles .tile .tile-img.no-img {
-        height: 100px;
-    }
+    /*.tile .tile-img.no-img img{*/
+    /*    height: 100px;*/
+    /*}*/
+    /*.tiles .tile .tile-img.no-img {*/
+    /*    height: 100px;*/
+    /*}*/
     .content-head {
         padding-top: 1rem;
         background-color: whitesmoke;
         box-shadow: 0px 2px 4px -2px rgba(0,0,0,.35);
+    }
+    .tile .tile-img .text-overlap{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .tile .tile-img .text-overlap p {
+        color: white;
+        font-weight: 500;
+        margin: 0;
+        font-size: .875rem;
+    }
+    .tile .tile-img .text-overlap h3{
+        font-size: 1.125rem;
+        margin: 0;
+        margin-bottom: .5rem;
+        border-bottom: 2px solid white;
+    }
+    .tile .tile-img .text-overlap p, .tile .tile-img .text-overlap h3{
+        position:relative;
+    }
+    .text-overlap .label.label-info {
+        margin-left: -.5rem;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+    .tile .tile-img, .tiles .tile .tile-img {
+        height: 280px;
+    }
+    @media only screen and (min-width: 768px) {
+        .tile .tile-img img{
+            height: 100%;
+        }
+        .tile .tile-img, .tiles .tile .tile-img {
+            height: 300px;
+        }   
+        .tiles .tile:not(.inline-tile){
+            width: calc(100% - 1rem)!important;
+            flex-grow: 1;
+        }   
+        
+    }
+    @media only screen and (min-width: 992px) {
+        .tiles .tile:not(.inline-tile){
+            width: calc(50% - 1rem)!important;
+            flex-grow: 1;
+        }    
+        .tile .tile-img .text-overlap h3{
+            font-size: 1.25rem;
+        }
+        .tile .tile-img, .tiles .tile .tile-img {
+            height: 280px;
+        }
+        
     }
 </style>
 @endsection
@@ -84,18 +142,23 @@
                 <img src="/img/news.png" alt="" role="presentation">
                 @endif
                 <div class="text-overlap">
-                    <a href="/promocionNoticia/listado/?tipoNoticia={{$noticia->nombreTipoNoticia}}"><span class="label label-info">{{$noticia->nombreTipoNoticia}}</span></a>
+                    <a class="btn-block" href="/promocionNoticia/listado/?tipoNoticia={{$noticia->nombreTipoNoticia}}"><span class="label label-info">{{$noticia->nombreTipoNoticia}}</span></a>
+                    <div class="tile-caption">
+                        <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>
+                        <p>{{$noticia->resumen}}</p>
+                    </div>
+                    
                 </div>
             </div>
-            <div class="tile-body">
-                <div class="tile-caption">
-                    <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>
-                </div>
-                <p>{{$noticia->resumen}}</p>
-                <div class="text-right">
-                    <a href="/promocionNoticia/ver/{{$noticia->idNoticia}}" class="btn btn-xs btn-link">Ver más</a>
-                </div>
-            </div>
+            <!--<div class="tile-body">-->
+            <!--    <div class="tile-caption">-->
+            <!--        <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>-->
+            <!--    </div>-->
+            <!--    <p>{{$noticia->resumen}}</p>-->
+            <!--    <div class="text-right">-->
+            <!--        <a href="/promocionNoticia/ver/{{$noticia->idNoticia}}" class="btn btn-xs btn-link">Ver más</a>-->
+            <!--    </div>-->
+            <!--</div>-->
         </div>
            
         @endforeach

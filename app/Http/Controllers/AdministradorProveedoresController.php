@@ -7,6 +7,7 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use Storage;
 use File;
+use DB;
 
 use App\Models\Sector;
 use App\Models\Perfil_Usuario;
@@ -78,7 +79,7 @@ class AdministradorProveedoresController extends Controller
             }])->select('id', 'razon_social');
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('portada', true)->select('proveedor_id', 'ruta');
-        }])->select('id', 'estado', 'proveedor_rnt_id')->orderBy('id')->get();
+        }])->select('id', 'estado', 'proveedor_rnt_id', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'culture', 'nombre')->where('estado', true)->get();
         
@@ -148,7 +149,9 @@ class AdministradorProveedoresController extends Controller
             }])->select('actividades_id', 'idiomas', 'nombre', 'descripcion');
         }])->where('estado', true)->select('id')->get();
         
-        $proveedores_rnt = Proveedores_rnt::select('id', 'razon_social')->orderBy('id')->get();
+        $proveedores_rnt = Proveedores_rnt::select('id', 'razon_social')->orderBy('id')->doesntHave('proveedor')->get();
+        //$proveedores_rnt = DB::select("SELECT proveedores_rnt.id AS id, proveedores_rnt.razon_social AS razon_social FROM
+        //proveedores_rnt INNER JOIN proveedores ON proveedores.proveedor_rnt_id = proveedores_rnt.id");
             
         return ['success' => true,
             'perfiles_turista' => $perfiles_turista, 
@@ -161,7 +164,7 @@ class AdministradorProveedoresController extends Controller
     public function postCrearproveedor(Request $request){
         $validator = \Validator::make($request->all(), [
             'proveedor_rnt_id' => 'required|numeric|exists:proveedores_rnt,id',
-            'descripcion' => 'required|min:100',
+            'descripcion' => 'required|max:1000|min:100',
             'nombre' => 'max:255|required',
             'valor_minimo' => 'required|numeric|min:0',
             'valor_maximo' => 'required|numeric|min:0',
@@ -205,7 +208,8 @@ class AdministradorProveedoresController extends Controller
         }
         
         $errores = [];
-        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 1)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        $proveedor_rnt_con_idioma = Proveedor::where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        //return ['proveedores' => Proveedores_rnt_idioma::all()];
         if ($proveedor_rnt_con_idioma != null){
             $errores["exists"][0] = "Este proveedor ya se encuentra registrado en el sistema.";
         }
@@ -235,11 +239,17 @@ class AdministradorProveedoresController extends Controller
         $proveedor_con_idioma->horario = $request->horario;
         $proveedor_con_idioma->save();
         
-        $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
-        $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
-        $proveedor_rnt_con_idioma->idioma_id = 1;
-        $proveedor_rnt_con_idioma->nombre = $request->nombre;
-        $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        $proveedor_rnt_con_idioma = Proveedores_rnt_idioma::where('idioma_id', 1)->where('proveedor_rnt_id', $request->proveedor_rnt_id)->first();
+        if ($proveedor_rnt_con_idioma != null){
+            $proveedor_rnt_con_idioma->nombre = $request->nombre;
+            $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        }else {
+            $proveedor_rnt_con_idioma = new Proveedores_rnt_idioma();
+            $proveedor_rnt_con_idioma->proveedor_rnt_id = $request->proveedor_rnt_id;
+            $proveedor_rnt_con_idioma->idioma_id = 1;
+            $proveedor_rnt_con_idioma->nombre = $request->nombre;
+            $proveedor_rnt_con_idioma->descripcion = $request->descripcion;
+        }
         $proveedor_rnt_con_idioma->save();
         
         return ['success' => true, 'id' => $proveedor->id];
@@ -391,6 +401,26 @@ class AdministradorProveedoresController extends Controller
         return ['success' => true];
     }
     
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:proveedores'
+        ],[
+            'id.required' => 'Se necesita el identificador del proveedor.',
+            'id.numeric' => 'El identificador del proveedor debe ser un valor numérico.',
+            'id.exists' => 'El proveedor no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $proveedor = Proveedor::find($request->id);
+        $proveedor->sugerido = !$proveedor->sugerido;
+        $proveedor->save();
+        
+        return ['success' => true];
+    }
+    
     public function postEditarproveedor (Request $request){
         $validator = \Validator::make($request->all(), [
             'id' => 'required|exists:proveedores|numeric',
@@ -485,7 +515,7 @@ class AdministradorProveedoresController extends Controller
             'nombre' => 'required|max:255',
             'id' => 'required|exists:proveedores|numeric',
             'idIdioma' => 'required|exists:idiomas,id|numeric',
-            'descripcion' => 'required|min:100',
+            'descripcion' => 'required|max:1000|min:100',
             'horario' => 'max:255'
         ],[
             'nombre.required' => 'Se necesita un nombre para el proveedor.',

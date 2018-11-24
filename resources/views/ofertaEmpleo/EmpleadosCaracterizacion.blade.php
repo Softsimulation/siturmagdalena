@@ -172,9 +172,9 @@
         <div class="capEmpleo">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Necesidades de capacitación: ¿Hubo cargos que requerían capacitación?</b></h3>
+                    <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Ha realizado procesos de capacitación en su empresa?</b></h3>
                 </div>
-                <div class="panel-footer"><b>@Resource.EncuestaMsgSeleccionUnica</b></div>
+                <div class="panel-footer"><b>Seleccione una opcióna</b></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -268,12 +268,15 @@
             <div class="panel panel-success">
             <div class="panel-heading">
          
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>.Por favor indique del siguiente listado las necesidades de capacitación más relevantes para sus trabajadores (nivel administrativo y nivel operativo) a fin de mejorar la gestión actual de su establecimiento </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Por favor indique del siguiente listado las necesidades de capacitación más relevantes para sus trabajadores (nivel administrativo y nivel operativo) a fin de mejorar la gestión actual de su establecimiento </b></h3>
             </div>
             <div class="panel-footer"><b>(puede escoger mínimo una o máximo tres opciones) </b></div>
             <div class="panel-body">
                 <div class="row">
-                    <h4 class="title" >Nivel 1. Gestión Gerencial o Administrativo</h4>
+                    <div class="col-md-12">
+                        <h4 class="title" >Nivel 1. Gestión Gerencial o Administrativo</h4>
+                    </div>
+                
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="linea in data.lineas | filter:{tipo_nivel:true}">
                             <label>
@@ -290,7 +293,10 @@
                     </div>
                 </div>
                   <div class="row">
-                    <h4 class="title">Nivel 2. Gestión Operativa</h4>
+                     <div class="col-md-12">
+                         <h4 class="title">Nivel 2. Gestión Operativa</h4>
+                     </div>
+                    
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="linea in data.lineas | filter:{tipo_nivel:false}">
                             <label>
@@ -318,43 +324,7 @@
             <div class="panel panel-success">
             <div class="panel-heading">
          
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>. La capacitación que requieren los trabajadores de su establecimiento podría desarrollarse por medio de ¿qué tipo de programa de formación? </b></h3>
-            </div>
-            <div class="panel-footer"><b>(puede escoger mínimo una o máximo tres opciones) </b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="medio in data.medios">
-                            <label>
-                                <input type="checkbox" name="medio" checklist-model="empleo.medios" checklist-value="medio.id"> @{{medio.nombre}}
-                                 <input type="text" ng-if="medio.id == 6" style="display: inline-block;" class="form-control" name ="opcion@{{medio.id}}" id="opcion@{{medio.id}}" ng-disabled="!existeOpcion(medio.id)" ng-model="empleo.otromedio"  ng-required="existeOpcion(medio.id)"/>
-                                  <span ng-show="empleoForm.$submitted || empleoForm.opcion@{{medio.id}}.$touched">
-                                      <span class="label label-danger" ng-show="empleoForm.opcion@{{medio.id}}.$error.required">* Debe escribir otro</span>
-                              
-                                  </span>
-                                  
-                            </label>
-                        </div>
-                        <span ng-show="empleoForm.$submitted || empleoForm.medio.$touched">
-                            <!--EncuestaEstanciaP4Alert1. Debe seleccionar alguna visita a parques, cascadas, ríos-->
-                            <span class="label label-danger" ng-show="empleo.medios.length < 1  ">* Debe seleccionar por lo menos un medio</span>
-                             <span class="label label-danger" ng-show="empleo.medios.length > 3  ">* Debe seleccionar maximo 3</span>
-                        </span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        
-        </div>
-        
-
-        <div>
-        <div class="panel panel-success">
-            <div class="panel-heading">
-               
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Con quién contrataría los servicios para la capacitación de su talento humano?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>La capacitación que requieren los trabajadores de su establecimiento podría desarrollarse por medio de ¿qué tipo de programa de formación? </b></h3>
             </div>
             <div class="panel-footer"><b>(puede escoger mínimo una o máximo tres opciones) </b></div>
             <div class="panel-body">
@@ -381,6 +351,43 @@
 
             </div>
         </div>
+
+        
+        </div>
+        
+
+        <div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+               
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Con quién contrataría los servicios para la capacitación de su talento humano?</b></h3>
+            </div>
+            <div class="panel-footer"><b>(puede escoger mínimo una o máximo tres opciones) </b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="checkbox" ng-repeat="medio in data.medios">
+                            <label>
+                                <input type="checkbox" name="medio" checklist-model="empleo.medios" checklist-value="medio.id"> @{{medio.nombre}}
+                                 <input type="text" ng-if="medio.id == 6" style="display: inline-block;" class="form-control" name ="opcion@{{medio.id}}" id="opcion@{{medio.id}}" ng-disabled="!existeOpcion(medio.id)" ng-model="empleo.otromedio"  ng-required="existeOpcion(medio.id)"/>
+                                  <span ng-show="empleoForm.$submitted || empleoForm.opcion@{{medio.id}}.$touched">
+                                      <span class="label label-danger" ng-show="empleoForm.opcion@{{medio.id}}.$error.required">* Debe escribir otro</span>
+                              
+                                  </span>
+                                  
+                            </label>
+                        </div>
+                        <span ng-show="empleoForm.$submitted || empleoForm.medio.$touched">
+                            <!--EncuestaEstanciaP4Alert1. Debe seleccionar alguna visita a parques, cascadas, ríos-->
+                            <span class="label label-danger" ng-show="empleo.medios.length < 1  ">* Debe seleccionar por lo menos un medio</span>
+                             <span class="label label-danger" ng-show="empleo.medios.length > 3  ">* Debe seleccionar maximo 3</span>
+                        </span>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
        </div>   
        
        
@@ -388,7 +395,7 @@
             <div class="panel panel-success">
             <div class="panel-heading">
          
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>.Dando cumplimiento a la ley de Protección de datos Personales le solicito su autorización para que SITUR Magdalena pueda contactarlo nuevamente en caso de ser necesario ¿Está usted de acuerdo? </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Dando cumplimiento a la ley de Protección de datos Personales le solicito su autorización para que SITUR Magdalena pueda contactarlo nuevamente en caso de ser necesario ¿Está usted de acuerdo? </b></h3>
             </div>
             <div class="panel-footer"><b>si o no </b></div>
             <div class="panel-body">
@@ -420,7 +427,7 @@
             <div class="panel panel-success">
             <div class="panel-heading">
          
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>D8 Ya para terminar, le solicito su autorización para que SITUR Magdalena comparta sus respuestas con las entidades que contrataron el proyecto si o no </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Le solicito su autorización para que SITUR Magdalena comparta sus respuestas con las entidades que contrataron el proyecto si o no </b></h3>
             </div>
             <div class="panel-footer"><b>si o no </b></div>
             <div class="panel-body">

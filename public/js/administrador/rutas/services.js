@@ -84,6 +84,17 @@ app.factory('rutasServi', ['$http', '$q', function ($http, $q){
             });
             return promise;
         },
+        postSugerir: function(id){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administradorrutas/sugerir', {'id' : id}).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
         postGuardaradicional: function (data){
             var defered = $q.defer();
             var promise = defered.promise;

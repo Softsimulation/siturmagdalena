@@ -60,7 +60,7 @@ class AdministradorEventosController extends Controller
             }])->select('eventos_id', 'idiomas_id', 'nombre', 'descripcion', 'edicion');
         }, 'multimediaEventos' => function ($queryMultimediaEventos){
             $queryMultimediaEventos->where('portada', true)->select('eventos_id', 'ruta');
-        }])->select('id', 'estado')->orderBy('id')->get();
+        }])->select('id', 'estado', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'nombre', 'culture')->get();
         
@@ -335,6 +335,28 @@ class AdministradorEventosController extends Controller
         
         $evento = Evento::find($request->id);
         $evento->estado = !$evento->estado;
+        $evento->updated_at = Carbon::now();
+        $evento->user_update = "Situr";
+        $evento->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:eventos'
+        ],[
+            'id.required' => 'Se necesita el identificador del evento.',
+            'id.numeric' => 'El identificador del evento debe ser un valor numérico.',
+            'id.exists' => 'El evento no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $evento = Evento::find($request->id);
+        $evento->sugerido = !$evento->sugerido;
         $evento->updated_at = Carbon::now();
         $evento->user_update = "Situr";
         $evento->save();

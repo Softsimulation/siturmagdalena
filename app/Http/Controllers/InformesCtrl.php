@@ -168,11 +168,13 @@ class InformesCtrl extends Controller
         if($request->Archivo){
             $documentoNombre = "archivo.pdf";
             Storage::disk('multimedia-informes')->put('informe-'.$informe->id.'/'.$documentoNombre, File::get($request->Archivo) );
+            $informe->ruta = "/multimedia/informes/informe-".$informe->id."/".$documentoNombre;
         }
         
         if($request->Portada){
             $portadaNombre = "portada.".pathinfo($request->Portada->getClientOriginalName(), PATHINFO_EXTENSION);
             Storage::disk('multimedia-informes')->put('informe-'.$informe->id.'/'.$portadaNombre, File::get($request->Portada));
+            $informe->portada = "/multimedia/informes/informe-".$informe->id."/".$portadaNombre;
         }
         
         $informe->save();
