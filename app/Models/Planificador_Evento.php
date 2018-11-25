@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +21,9 @@ class Planificador_Evento extends Model
      * @var string
      */
     protected $table = 'planificador_eventos';
+    
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @var array

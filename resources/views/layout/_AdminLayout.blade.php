@@ -162,16 +162,25 @@
                             <a role="menuitem" href="{{asset('temporada')}}">Turismo interno y emisor</a>
                         </li>
                         <li>
-                            
-                            <a role="menuitem" href="#oferta" aria-haspopup="true" aria-expanded="false">Oferta y empleo</a>
-                            <ul role="menu" id="oferta" aria-label="Muestra maestra">
+                            <a role="menuitem" href="#menuOferta" aria-haspopup="true" aria-expanded="false">Oferta y empleo</a>
+                            <ul role="menu" id="menuOferta" aria-label="Oferta">
                                 <li role="none">
-                                    <a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedores')}}">Listado de proveedores</a>
-                                    <a role="menuitem" href="{{asset('importarRnt')}}">Importar</a>
+                                    <a role="menuitem" href="{{asset('ofertaempleo/listadoproveedores')}}">Listado de proveedores</a>
+                                </li>
+                                <li role="none">
+                                    <a role="menuitem" href="{{asset('ofertaempleo/listadoproveedoresrnt')}}">Activar proveedores</a>
+                                </li>
+                                <li role="none">
+                                    <a role="menuitem" href="{{asset('ofertaempleo/encuestasoferta')}}">Listado de encuestas</a>
+                                  </li>
+                                  <li role="none">
+                                    <a role="menuitem" href="{{asset('importarRnt')}}">Importar RNT</a>
                                 </li>
                             </ul>
-                        
                         </li>
+                        
+                         
+                        
                         <li>
                             <a role="menuitem" href="#menuSostenibilidad" aria-haspopup="true" aria-expanded="false">Sostenibilidad</a>
                             <ul role="menu" id="menuSostenibilidad" aria-label="Sostenibilidad">

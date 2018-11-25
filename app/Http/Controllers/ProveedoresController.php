@@ -6,9 +6,15 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Proveedor;
+use App\Models\Proveedor_Favorito;
 
 class ProveedoresController extends Controller
 {
+    public function __construct()
+	{
+	    $this->middleware('auth',["only"=>["postFavorito","postFavoritoclient"]]);
+	}
+	
     //
     public function getVer($id){
         if ($id == null){
@@ -52,4 +58,48 @@ class ProveedoresController extends Controller
         //return ['proveedor' => $proveedor, 'video_promocional' => $video_promocional];
         return view('proveedor.Ver', ['proveedor' => $proveedor, 'video_promocional' => $video_promocional]);
     }
+    
+    public function postFavorito(Request $request){
+        $this->user = \Auth::user();
+        $proveedor = Proveedor::find($request->proveedor_id);
+        if(!$proveedor){
+           return response('Not found.', 404);
+        }else{
+            if(Proveedor_Favorito::where('usuario_id',$this->user->id)->where('proveedores_id',$proveedor->id)->first() == null){
+                Proveedor_Favorito::create([
+                    'usuario_id' => $this->user->id,
+                    'proveedores_id' => $proveedor->id
+                ]);
+                return \Redirect::to('/proveedor/ver/'.$proveedor->id)
+                        ->with('message', 'Se ha añadido el proveedor a tus favoritos.')
+                        ->withInput(); 
+            }else{
+                Proveedor_Favorito::where('usuario_id',$this->user->id)->where('proveedores_id',$proveedor->id)->delete();
+                return \Redirect::to('/proveedor/ver/'.$proveedor->id)
+                        ->with('message', 'Se ha quitado el proveedor de tus favoritos.')
+                        ->withInput(); 
+            }
+        }
+    }
+    
+    public function postFavoritoclient(Request $request){
+        $this->user = \Auth::user();
+        $proveedor = Proveedor::find($request->proveedor_id);
+        if(!$proveedor){
+           return ["success" => false, "errores" => [["El proveedor seleccionado no se encuentra en el sistema."]] ];
+        }else{
+            if(Proveedor_Favorito::where('usuario_id',$this->user->id)->where('proveedores_id',$proveedor->id)->first() == null){
+                Proveedor_Favorito::create([
+                    'usuario_id' => $this->user->id,
+                    'proveedores_id' => $proveedor->id
+                ]);
+                return ["success" => true];
+            }else{
+                Proveedor_Favorito::where('usuario_id',$this->user->id)->where('proveedores_id',$proveedor->id)->delete();
+                return ["success" => true]; 
+            }
+        }
+
+    }
+    
 }

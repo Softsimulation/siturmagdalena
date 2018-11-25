@@ -29,6 +29,20 @@ angular.module('rutas.index', [])
         });
     }
     
+    $scope.sugerir = function (ruta){
+        $("body").attr("class", "cbp-spmenu-push charging");
+        rutasServi.postSugerir(ruta.id).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
+            if (data.success){
+                ruta.sugerido = !ruta.sugerido;
+                swal('¡Éxito!', 'Operación realizada con éxito.', 'success');
+            }
+        }).catch(function (error){
+            $("body").attr("class", "cbp-spmenu-push");
+            swal('Error', 'Error al desactivar la atracción. Por favor, recargue la página.', 'error');
+        });
+    }
+    
     $scope.modalIdioma = function (ruta){
         $scope.rutaEdit = ruta;
         $("#idiomaModal").modal('show');
