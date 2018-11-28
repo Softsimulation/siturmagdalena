@@ -166,9 +166,20 @@
                 <div class="progress-bar progress-bar-info" style="width: @yield('Progreso')">@yield('NumSeccion')</div>
             </div>
             
+     
+            
         </header>
         
         <div class="container" >
+           <div class="row" ng-if = "proveedor != null">
+                 <div class="col-sm-7">
+                      <h4 style="margin-top: 0.5em;"><strong>@{{ proveedor.razon_social }}</strong></h4>
+                 </div>
+                
+                   <div class="col-sm-5">
+                      <h4 style="margin-top: 0.5em;"><strong>@{{ proveedor.mes }}</strong></h4>
+                 </div>
+            </div>
             @yield('content')
         </div>
         
