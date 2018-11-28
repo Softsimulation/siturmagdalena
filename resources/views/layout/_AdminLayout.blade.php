@@ -167,8 +167,8 @@
                             <a role="menuitem" href="#menuTurismoReceptor" aria-haspopup="true" aria-expanded="true">Turísmo receptor</a>
                             <ul role="menu" id="menuTurismoReceptor" aria-label="Turísmo receptor" style="top: 220px; left: 230px;">
                                 
-                                <li role="none"><a role="menuitem" href="http://siturmagdalena.info/grupoviaje/listadogrupos">Grupos de viaje</a></li>
-        					    <li role="none"><a role="menuitem" href="http://siturmagdalena.info/turismoreceptor/listadoencuestas">Listado de encuestas</a></li>
+                                <li role="none"><a role="menuitem" href="/grupoviaje/listadogrupos">Grupos de viaje</a></li>
+        					    <li role="none"><a role="menuitem" href="/turismoreceptor/listadoencuestas">Listado de encuestas</a></li>
         					    <li role="none"><a role="menuitem" href="/controlSostenibilidadReceptor/registros">Control de sostenibilidad</a></li>
         					</ul>
                         </li>
