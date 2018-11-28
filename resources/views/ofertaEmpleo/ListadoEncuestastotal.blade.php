@@ -5,91 +5,30 @@
 
 @section('estilos')
     <style>
-        .panel-body {
-            max-height: 400px;
-            color: white;
-        }
-
-        .image-preview-input {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
+        .dropdown-menu .btn {
+            text-align: left;
+            padding: .25rem 1.25rem;
+            font-weight: 400;
+            text-transform: initial;
             color: #333;
-            background-color: #fff;
-            border-color: #ccc;
+            font-size: .875rem;
+            box-shadow: none;
         }
-
-        .image-preview-input input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
+        .dropdown-menu .btn:hover {
+            box-shadow: none;
         }
-
-        .image-preview-input-title {
-            margin-left: 2px;
+        .btn.dropdown-toggle {
+            text-transform: initial;
+            font-weight: 500;
         }
-
-        .messages {
-            color: #FA787E;
+        #inputGroupFilter .col-xs-12{
+            margin-bottom: 1rem;
         }
-
-        form.ng-submitted input.ng-invalid {
-            border-color: #FA787E;
-        }
-
-        form input.ng-invalid.ng-touched {
-            border-color: #FA787E;
-        }
-
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-        .row {
-            margin: 1em 0 0;
-        }
-        .form-group {
-            margin: 0;
-        }
-        .form-group label, .form-group .control-label, label {
-            font-size: smaller;
-        }
-        
-        .input-group-addon {
-            width: 3em;
-        }
-        .text-error {
-            color: #a94442;
-            font-style: italic;
-            font-size: .7em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+        #inputGroupFilter .btn{
+            font-weight: 500;
         }
     </style>
 @endsection
-
-@section('TitleSection', 'Listado encuestas oferta y empleo')
 
 @section('app','ng-app="proveedoresoferta"')
 
@@ -131,66 +70,88 @@
 </div>    
 
 <div class="container">
-    <div class="row" ng-if="encuestas.length > 0 && mostrarFiltro == true">
-          <div class="col-xs-12">
-              Caracterización
-              <label>
-                <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="1">
-                Realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="2">
-                No realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="">
-                Todas
-              </label>
+    <div id="inputGroupFilter" class="row" ng-if="encuestas.length > 0 && mostrarFiltro == true">
+          <div class="col-xs-12 col-md-6">
+              Caracterizaciónz<br>
+              <div class="btn-group" role="group" aria-label="Caracterización">
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.caracterizacionFiltro == 1}" ng-click="search.caracterizacionFiltro = 1">Realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.caracterizacionFiltro == 2}" ng-click="search.caracterizacionFiltro = 2">No realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.caracterizacionFiltro == undefined}" ng-click="search.caracterizacionFiltro = undefined">Todas</button>
+              </div>
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="1">-->
+              <!--  Realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="2">-->
+              <!--  No realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.caracterizacionFiltro" ng-value="">-->
+              <!--  Todas-->
+              <!--</label>-->
           </div>    
-          <div class="col-xs-12">
-              Oferta
-              <label>
-                <input type="radio" ng-model="search.ofertaFiltro" ng-value="1">
-                Realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.ofertaFiltro" ng-value="2">
-                No realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.ofertaFiltro" ng-value="">
-                Todas
-              </label>
+          <div class="col-xs-12 col-md-6">
+              Oferta<br>
+              <div class="btn-group" role="group" aria-label="Oferta">
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.ofertaFiltro == 1}" ng-click="search.ofertaFiltro = 1">Realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.ofertaFiltro == 2}" ng-click="search.ofertaFiltro = 2">No realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.ofertaFiltro == undefined}" ng-click="search.ofertaFiltro = undefined">Todas</button>
+              </div>
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.ofertaFiltro" ng-value="1">-->
+              <!--  Realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.ofertaFiltro" ng-value="2">-->
+              <!--  No realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.ofertaFiltro" ng-value="">-->
+              <!--  Todas-->
+              <!--</label>-->
           </div>
-          <div class="col-xs-12">
-              Capacitación
-              <label>
-                <input type="radio" ng-model="search.capacitacionFiltro" ng-value="1">
-                Realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.capacitacionFiltro" ng-value="2">
-                No realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.capacitacionFiltro" ng-value="">
-                Todas
-              </label>
+          <div class="col-xs-12 col-md-6">
+              Capacitación<br>
+              <div class="btn-group" role="group" aria-label="Capacitación">
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.capacitacionFiltro == 1}" ng-click="search.capacitacionFiltro = 1">Realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.capacitacionFiltro == 2}" ng-click="search.capacitacionFiltro = 2">No realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.capacitacionFiltro == undefined}" ng-click="search.capacitacionFiltro = undefined">Todas</button>
+              </div>
+              
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.capacitacionFiltro" ng-value="1">-->
+              <!--  Realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.capacitacionFiltro" ng-value="2">-->
+              <!--  No realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.capacitacionFiltro" ng-value="">-->
+              <!--  Todas-->
+              <!--</label>-->
           </div>
-          <div class="col-xs-12">
-              Empleo
-              <label>
-                <input type="radio" ng-model="search.empleoFiltro" ng-value="1">
-                Realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.empleoFiltro" ng-value="2">
-                No realizadas
-              </label>
-              <label>
-                <input type="radio" ng-model="search.empleoFiltro" ng-value="">
-                Todas
-              </label>
+          <div class="col-xs-12 col-md-6">
+              Empleo<br>
+              <div class="btn-group" role="group" aria-label="Empleo">
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.empleoFiltro == 1}" ng-click="search.empleoFiltro = 1">Realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.empleoFiltro == 2}" ng-click="search.empleoFiltro = 2">No realizadas</button>
+                  <button type="button" class="btn btn-default" ng-class="{'active': search.empleoFiltro == undefined}" ng-click="search.empleoFiltro = undefined">Todas</button>
+              </div>
+              
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.empleoFiltro" ng-value="1">-->
+              <!--  Realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.empleoFiltro" ng-value="2">-->
+              <!--  No realizadas-->
+              <!--</label>-->
+              <!--<label>-->
+              <!--  <input type="radio" ng-model="search.empleoFiltro" ng-value="">-->
+              <!--  Todas-->
+              <!--</label>-->
           </div>
           
       </div>
@@ -201,15 +162,15 @@
                   <thead>
                       
                         <tr>
-                            <th>Id</th>
-                            <th>Codigo</th>
+                            <th>ID</th>
+                            <th>Cód.</th>
                             <th>Mes</th>
                             <th>Año</th>
                             <th>Nombre</th>
                             <th>Tipo</th>
-                            <th>Categoria</th>
+                            <th>Categoría</th>
                             <th>Estado</th>
-                            <th style="width: 80px;"></th>
+                            <th style="width: 80px;">Acciones</th>
                         </tr>
                         <tr ng-show="mostrarFiltro == true">
                                     
@@ -236,18 +197,38 @@
                             <td>@{{item.estado}}</td>
                             
                             <td>
-                                <div>
-                                <button ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' )" ng-click = "caracterizacionEmpleo(item)" class="btn btn-default btn-sm" title="Editar encuesta caracterizacion" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)"><span class="glyphicon glyphicon-edit"></span></button><p ng-show="item.caracterizacion == true">Realizó</p><p ng-show="item.caracterizacion != true">No realizó</p>
+                                <div class="dropdown">
+                                  <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu@{{item.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="glyphicon glyphicon-pencil"></span> Editar encuentas
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu@{{item.id}}">
+                                    <li>
+                                        <button class="btn btn-sm btn-block btn-default" ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' ) || (item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)" ng-click = "caracterizacionEmpleo(item)">Encuesta de caracterización <span ng-show="item.caracterizacion" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.caracterizacion" class="ion-help text-muted" title="No realizada"></span></button>
+                                    </li>
+                                    <li>
+                                        <button class="btn btn-sm btn-block btn-default" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad ==1 && ((item.mes_id%3 == 0) || (item.tipo_id == 1)) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1))" ng-click="ofertaEmpleo(item)">Encuesta oferta <span ng-show="item.oferta" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.oferta" class="ion-help text-muted" title="No realizada"></span></button>
+                                    </li>
+                                    <li>
+                                        <a href="/ofertaempleo/empleomensual/@{{item.id}}" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad == 1 ) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1)">Encuesta empleo <span ng-show="item.empleo" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.empleo" class="ion-help text-muted" title="No realizada"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad == 1 ) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1)">Encuesta empleo de capacitaciones <span ng-show="item.capacitacion" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.capacitacion" class="ion-help text-muted" title="No realizada"></span></a>
+                                    </li>
+                                  </ul>
                                 </div>
-                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad ==1 &&((item.mes_id%3 == 0) || (item.tipo_id == 1)) )">
-                                    <button  ng-click = "ofertaEmpleo(item)" class="btn btn-default btn-sm" title="Editar encuesta oferta" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-edit"></span></button><p   ng-show="item.oferta == true">Realizó</p><p ng-show="item.oferta != true">No realizó</p>
-                                </div>
-                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
-                                    <a  href="/ofertaempleo/empleomensual/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-pencil"></span></a>  <p ng-show="item.empleo == true">Realizó</p><p ng-show="item.empleo != true">No realizó</p>
-                                </div>
-                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
-                                    <a  href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo capacitaciones" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-lock"></span></a><p ng-show="item.capacitacion == true">Realizó</p><p ng-show="item.capacitacion != true">No realizó</p>  
-                                </div>
+                                <!--<div>-->
+                                <!--<button ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' )" ng-click = "caracterizacionEmpleo(item)" class="btn btn-default btn-sm" title="Editar encuesta caracterizacion" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)"><span class="glyphicon glyphicon-edit"></span></button><p ng-show="item.caracterizacion == true">Realizó</p><p ng-show="item.caracterizacion != true">No realizó</p>-->
+                                <!--</div>-->
+                                <!--<div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad ==1 &&((item.mes_id%3 == 0) || (item.tipo_id == 1)) )">-->
+                                <!--    <button  ng-click = "ofertaEmpleo(item)" class="btn btn-default btn-sm" title="Editar encuesta oferta" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-edit"></span></button><p   ng-show="item.oferta == true">Realizó</p><p ng-show="item.oferta != true">No realizó</p>-->
+                                <!--</div>-->
+                                <!--<div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">-->
+                                <!--    <a  href="/ofertaempleo/empleomensual/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-pencil"></span></a>  <p ng-show="item.empleo == true">Realizó</p><p ng-show="item.empleo != true">No realizó</p>-->
+                                <!--</div>-->
+                                <!--<div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">-->
+                                <!--    <a  href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo capacitaciones" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-lock"></span></a><p ng-show="item.capacitacion == true">Realizó</p><p ng-show="item.capacitacion != true">No realizó</p>  -->
+                                <!--</div>-->
                             </td>
                             
                             
