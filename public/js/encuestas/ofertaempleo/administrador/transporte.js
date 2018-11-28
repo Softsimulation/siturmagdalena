@@ -11,6 +11,7 @@ situr.controller('caracterizacionTransporteCtrl', ['$scope','transporteServi', f
         if ($scope.id != null) {
             $("body").attr("class", "charging");
             transporteServi.getCaracterizacionTransporte($scope.id).then(function (data) {
+                $scope.proveedor = data.proveedor;
                 if (data.transporte != null) {
 
                     for (i = 0; i < data.transporte.length;i++){
@@ -117,6 +118,7 @@ situr.controller('ofertaTransporteCtrl', ['$scope','transporteServi', function (
             $("body").attr("class", "charging");
             transporteServi.getOfertaTransporte($scope.id).then(function (data) {
                 for (var i = 0; i < data.oferta.length; i++) {
+                    $scope.proveedor = data.proveedor;
                     if(data.oferta[i].transporte != null){
                         if (data.oferta[i].transporte.tipos_transporte_oferta_id == 1) {
                             $scope.transporte.TotalTerrestre = parseInt(data.oferta[i].personas_total);

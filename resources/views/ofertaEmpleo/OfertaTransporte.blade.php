@@ -62,7 +62,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Terrestre municipal</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCampoNumero</b></div>
+            <div class="panel-footer"><b>Campo numero</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -95,7 +95,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Aéreo</b></h3>
             </div>
-            <div class="panel-footer"><b>@Resource.EncuestaMsgCampoNumero</b></div>
+            <div class="panel-footer"><b>Campo numero</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-6">
