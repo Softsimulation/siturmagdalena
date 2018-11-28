@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,10 @@ class Actividad_Favorita extends Model
     /**
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['usuario_id','actividades_id'];
+
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

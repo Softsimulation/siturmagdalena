@@ -67,6 +67,7 @@
             <div class="inline-buttons">
                 <a href="/administradoreventos/editar/@{{evento.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{evento.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(evento)">@{{evento.estado ? 'Desactivar' : 'Activar'}}</button>
+                <button title="@{{evento.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(evento)"><span class="glyphicon glyphicon-@{{evento.sugerido ? 'star' : 'star-empty'}}"></span></button>
                 <a href="/administradoreventos/idioma/@{{evento.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in evento.eventos_con_idiomas"> @{{traduccion.idioma.culture}}</a>
                 <button type="button" ng-click="modalIdioma(evento)" class="btn btn-default" ng-if="evento.eventos_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
             </div>  

@@ -95,6 +95,17 @@ app.factory('proveedoresServi', ['$http', '$q', function ($http, $q){
             });
             return promise;
         },
+        postSugerir: function(id){
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/administradorproveedores/sugerir', {'id' : id}).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+            return promise;
+        },
         postEditaridioma: function (data){
             var defered = $q.defer();
             var promise = defered.promise;

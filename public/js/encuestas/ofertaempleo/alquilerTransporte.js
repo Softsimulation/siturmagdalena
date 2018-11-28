@@ -13,6 +13,7 @@ angular.module('oferta.alquilarTransporte', ["checklist-model","ofertaService"])
                 $("body").attr("class", "cbp-spmenu-push")
                 $scope.alquiler = data.alquiler;
                 $scope.alquiler.Comercial = data.alquiler.Comercial+'';
+                $scope.proveedor = data.proveedor;
             }).catch(function () {
                 $("body").attr("class", "cbp-spmenu-push");
                 swal("Error", "No se realizo la solicitud, reinicie la página");
@@ -89,6 +90,7 @@ angular.module('oferta.alquilarTransporte', ["checklist-model","ofertaService"])
             ofertaServi.getDatosAlquilerVehiculoOferta($scope.id).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push")
                 $scope.alquiler = data.alquiler;
+               $scope.proveedor = data.proveedor;
             }).catch(function () {
                 $("body").attr("class", "cbp-spmenu-push");
                 swal("Error", "No se realizo la solicitud, reinicie la página");

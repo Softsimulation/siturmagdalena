@@ -6,9 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Evento;
+use App\Models\Evento_Favorita;
 
 class EventosController extends Controller
 {
+    public function __construct()
+    {
+        
+        $this->middleware('auth',["only"=>["postFavorito","postFavoritoclient"]]);
+        // $this->user = \Auth::user();
+    }
+    
     //
     public function getVer($id){
         if ($id == null){
@@ -54,4 +62,47 @@ class EventosController extends Controller
         //return ['evento' => $evento, 'video_promocional' => $video_promocional];
         return view('eventos.Ver', ['evento' => $evento, 'video_promocional' => $video_promocional]);
     }
+    
+    public function postFavorito(Request $request){
+        $this->user = \Auth::user();
+        $evento = Evento::find($request->evento_id);
+        if(!$evento){
+            return response('Not found.', 404);
+        }else{
+            if(Evento_Favorita::where('usuario_id',$this->user->id)->where('eventos_id',$evento->id)->first() == null){
+                Evento_Favorita::create([
+                    'usuario_id' => $this->user->id,
+                    'eventos_id' => $evento->id
+                ]);
+                return \Redirect::to('/eventos/ver/'.$evento->id)
+                        ->with('message', 'Se ha añadido el evento a tus favoritos.')
+                        ->withInput(); 
+            }else{
+                Evento_Favorita::where('usuario_id',$this->user->id)->where('eventos_id',$evento->id)->delete();
+                return \Redirect::to('/eventos/ver/'.$evento->id)
+                        ->with('message', 'Se ha quitado el evento de tus favoritos.')
+                        ->withInput(); 
+            }
+        }
+    }
+    
+    public function postFavoritoclient(Request $request){
+        $this->user = \Auth::user();
+        $evento = Evento::find($request->evento_id);
+        if(!$evento){
+            return ["success" => false, "errores" => [["El evento seleccionado no se encuentra en el sistema."]] ];
+        }else{
+            if(Evento_Favorita::where('usuario_id',$this->user->id)->where('eventos_id',$evento->id)->first() == null){
+                Evento_Favorita::create([
+                    'usuario_id' => $this->user->id,
+                    'eventos_id' => $evento->id
+                ]);
+                return ["success" => true];
+            }else{
+                Evento_Favorita::where('usuario_id',$this->user->id)->where('eventos_id',$evento->id)->delete();
+                return ["success" => true];
+            }
+        }
+    }
+    
 }

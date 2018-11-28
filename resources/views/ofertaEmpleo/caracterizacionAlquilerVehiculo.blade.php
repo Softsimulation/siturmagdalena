@@ -53,9 +53,8 @@
 
 @section('content')
 
-<h1>Caracterización del  Alquiler de Vehiculo</h1>
 
-<div class="container" ng-controller="seccionAlquiler">
+
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>
@@ -166,6 +165,6 @@
     <div class='carga'>
 
     </div>
-</div>
+
 
 @endsection

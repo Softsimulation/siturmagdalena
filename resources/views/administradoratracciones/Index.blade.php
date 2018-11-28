@@ -66,6 +66,7 @@
             <div class="inline-buttons">
                 <a href="/administradoratracciones/editar/@{{atraccion.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{atraccion.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(atraccion)">@{{atraccion.estado ? 'Desactivar' : 'Activar'}}</button>
+                <button title="@{{atraccion.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(atraccion)"><span class="glyphicon glyphicon-@{{atraccion.sugerido ? 'star' : 'star-empty'}}"></span></button>
                 <a href="/administradoratracciones/idioma/@{{atraccion.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in atraccion.sitio.sitios_con_idiomas"> @{{traduccion.idioma.culture}}</a>
                 <button type="button" ng-click="modalIdioma(atraccion)" class="btn btn-default" ng-if="atraccion.sitio.sitios_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
             </div>  
