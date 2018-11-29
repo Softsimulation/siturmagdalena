@@ -348,7 +348,7 @@ class AdministradorDestinosController extends Controller
     
     public function postEditardatosgenerales (Request $request){
         $validator = \Validator::make($request->all(), [
-            'id' => 'required|exists:destinos|numeric',
+            'id' => 'required|exists:destino|numeric',
             'tipo' => 'required|numeric|exists:tipo_destino,id',
             'pos' => 'required'
         ],[
