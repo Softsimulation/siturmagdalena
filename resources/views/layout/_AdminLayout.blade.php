@@ -264,7 +264,7 @@
                         <li>
                             <a role="menuitem" href="{{asset('usuario/listadousuarios')}}">Administrar usuarios</a>
                         </li>
-                        -->
+                      
                     </ul>
                 </nav>
             </div>
