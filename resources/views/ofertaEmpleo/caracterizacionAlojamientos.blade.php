@@ -152,11 +152,11 @@
                                         <span ng-show="carForm.$submitted || carForm.numeroCamas.$touched">
                                             <span class="label label-danger" ng-show="carForm.numeroCamas.$error.required">* El número total de camas es requerido.</span>
                                             <span class="label label-danger" ng-show="carForm.numeroCamas.$error.number">* El número total de camas debe ser un número.</span>
-                                            <span class="label label-danger" ng-show="carForm.numeroCamas.$error.min">* El número total de camas debe ser mayor que 0.</span>
+                                            <span class="label label-danger" ng-show="carForm.numeroCamas.$error.min">* El número total de camas debe ser mayor que el total de habitaciones.</span>
                                         </span>
                                     </td>
                                     <td style="width: 15%;min-width: 50px">
-                                        <input type="number" name="numeroCamas" class="form-control" min="0" ng-model="alojamiento.habitaciones[0].total_camas" ng-required="servicios.habitacion" placeholder="Ingrese aquí el número total de camas" />
+                                        <input type="number" name="numeroCamas" class="form-control" min="@{{alojamiento.habitaciones[0].total}}" ng-model="alojamiento.habitaciones[0].total_camas" ng-required="servicios.habitacion" placeholder="Ingrese aquí el número total de camas" />
                                     </td>
                                 </tr>
                                 <tr>

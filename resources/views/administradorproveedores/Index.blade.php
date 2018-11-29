@@ -62,6 +62,7 @@
             <div class="inline-buttons">
                 <a href="/administradorproveedores/editar/@{{proveedor.id}}" class="btn btn-warning">Editar</a>
                 <button class="btn btn-@{{proveedor.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(proveedor)">@{{proveedor.estado ? 'Desactivar' : 'Activar'}}</button>
+                <button title="@{{proveedor.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(proveedor)"><span class="glyphicon glyphicon-@{{proveedor.sugerido ? 'star' : 'star-empty'}}"></span></button>
                 <a href="/administradorproveedores/idioma/@{{proveedor.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in proveedor.proveedor_rnt.idiomas" class="btn btn-default" title="@{{traduccion.idioma.culture}}"> @{{traduccion.idioma.culture}}</a>
                 <a href="javascript:void(0)" ng-click="modalIdioma(proveedor)" ng-if="proveedor.proveedor_rnt.idiomas.length < idiomas.length" class="btn btn-default" title="Agregar idioma"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></a>
                 

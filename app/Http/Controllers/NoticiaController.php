@@ -16,6 +16,7 @@ use App\Models\Multimedia_noticia_Idioma;
 use App\Models\Tipo_noticia;
 use App\Models\Tipo_noticia_Idioma;
 use App\Models\User;
+use App\Models\Suscriptore;
 
 class NoticiaController extends Controller
 {
@@ -126,6 +127,7 @@ class NoticiaController extends Controller
     }
     
     public function postGuardarnoticia(Request $request){
+        //return Suscriptore::all();
         //return $request->all();
         $validator = \Validator::make($request->all(), [
             'tituloNoticia' => 'string|min:1|max:255|required',

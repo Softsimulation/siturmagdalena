@@ -144,16 +144,16 @@
                             <tr>
                                 <td class="text-center">¿Cuántas personas viajaron con planes con destino Santa / Magdalena?</td>
                                 <td>
-                                    <input type="number"  name="numero" ng-model="encuesta.numero" min="0" class="form-control" ng-required="true" placeholder="Solo números"/>
+                                    <input type="number"  name="numero" ng-model="encuesta.numero" min="0" class="form-control" ng-required="encuesta.ofrecePlanesConDestino == true" placeholder="Solo números"/>
                                 </td>
                                 <td>
-                                    <input type="number"  name="magdalena"  ng-model="encuesta.magdalena" min="0" max="100" class="form-control" ng-required="true" placeholder="Solo números"/>
+                                    <input type="number"  name="magdalena"  ng-model="encuesta.magdalena" min="0" max="100" class="form-control" ng-required="encuesta.ofrecePlanesConDestino == true" placeholder="Solo números"/>
                                 </td>
                                 <td>
-                                    <input type="number"  name="nacional" ng-model="encuesta.nacional" min="0" max="100" class="form-control" ng-required="true" placeholder="Solo números"/>
+                                    <input type="number"  name="nacional" ng-model="encuesta.nacional" min="0" max="100" class="form-control" ng-required="encuesta.ofrecePlanesConDestino == true" placeholder="Solo números"/>
                                 </td>
                                 <td>
-                                    <input type="number"  name="internacional" ng-model="encuesta.internacional" min="0" max="100" class="form-control" ng-required="true" placeholder="Solo números"/>
+                                    <input type="number"  name="internacional" ng-model="encuesta.internacional" min="0" max="100" class="form-control" ng-required="encuesta.ofrecePlanesConDestino == true" placeholder="Solo números"/>
                                 </td>
                             </tr>
                         </table>

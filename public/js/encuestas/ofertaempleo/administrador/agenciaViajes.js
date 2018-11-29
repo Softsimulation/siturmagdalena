@@ -9,21 +9,22 @@ situr.controller('caracterizacionAgenciaViajesCtrl', ['$scope','agenciaViajeServ
         if ($scope.encuesta.id != null) {
             $("body").attr("class", "charging");
             agenciaViajeServi.getAgencia($scope.encuesta.id).then(function (data) {
-                if (data.Id > 0) {
+                $scope.proveedor = data.proveedor;
+                if (data.agencia.Id > 0) {
                     var arrayAux = [];
-                    if(data.TipoServicios != null){
-                        if(data.TipoServicios.servicios_agencias.length > 0){
-                            for(var i=0; i<data.TipoServicios.servicios_agencias.length;i++){
-                                arrayAux.push(data.TipoServicios.servicios_agencias[i].id);
+                    if(data.agencia.TipoServicios != null){
+                        if(data.agencia.TipoServicios.servicios_agencias.length > 0){
+                            for(var i=0; i<data.agencia.TipoServicios.servicios_agencias.length;i++){
+                                arrayAux.push(data.agencia.TipoServicios.servicios_agencias[i].id);
                             }
                         }
                     }
                     $scope.encuesta.TipoServicios = arrayAux;
                     
-                    $scope.encuesta.Planes = data.Planes + ""
-                    $scope.encuesta.Otro = data.Otro;
-                    $scope.encuesta.Comercial = data.Comercial+"";
-                    $scope.encuesta.NumeroDias = data.numeroDias;
+                    $scope.encuesta.Planes = data.agencia.Planes + ""
+                    $scope.encuesta.Otro = data.agencia.Otro;
+                    $scope.encuesta.Comercial = data.agencia.Comercial+"";
+                    $scope.encuesta.NumeroDias = data.agencia.numeroDias;
                 }
                 $("body").attr("class", "cbp-spmenu-push");
                 
@@ -114,10 +115,11 @@ situr.controller('ofertaAgenciaViajesCtrl', ['$scope','agenciaViajeServi', funct
         if ($scope.encuesta.id != null) {
             $("body").attr("class", "charging");
             agenciaViajeServi.getOfertaAgencia($scope.encuesta.id).then(function (data) {
-                if (data.id > 0) {
-                    $scope.encuesta.ofrecePlanesConDestino = data.ofreceplanes;
-                    if(data.personas_destino_con_viajes_turismos.length > 0){
-                        $scope.encuesta.personas = data.personas_destino_con_viajes_turismos;
+                $scope.proveedor = data.proveedor;
+                if (data.agencia.id > 0) {
+                    $scope.encuesta.ofrecePlanesConDestino = data.agencia.ofreceplanes;
+                    if(data.agencia.personas_destino_con_viajes_turismos.length > 0){
+                        $scope.encuesta.personas = data.agencia.personas_destino_con_viajes_turismos;
                         for(var i=0; i<$scope.encuesta.personas.length; i++){
                             $scope.encuesta.personas[i].internacional = parseInt($scope.encuesta.personas[i].internacional);
                             $scope.encuesta.personas[i].nacional = parseInt($scope.encuesta.personas[i].nacional);
@@ -125,15 +127,15 @@ situr.controller('ofertaAgenciaViajesCtrl', ['$scope','agenciaViajeServi', funct
                         }
                     }
                     
-                    if(data.planes_santamarta != null){
-                        $scope.encuesta.numero=parseInt(data.planes_santamarta.numero)
-                        $scope.encuesta.magdalena=parseInt(data.planes_santamarta.residentes)
-                        $scope.encuesta.nacional=parseInt(data.planes_santamarta.noresidentes)
-                        $scope.encuesta.internacional=parseInt(data.planes_santamarta.extrajeros)
+                    if(data.agencia.planes_santamarta != null){
+                        $scope.encuesta.numero=parseInt(data.agencia.planes_santamarta.numero)
+                        $scope.encuesta.magdalena=parseInt(data.agencia.planes_santamarta.residentes)
+                        $scope.encuesta.nacional=parseInt(data.agencia.planes_santamarta.noresidentes)
+                        $scope.encuesta.internacional=parseInt(data.agencia.planes_santamarta.extrajeros)
                     }
                     
-                    for(var i=0; i<data.servicios_agencias.length; i++){
-                        if(data.servicios_agencias[i].id == 1){
+                    for(var i=0; i<data.agencia.servicios_agencias.length; i++){
+                        if(data.agencia.servicios_agencias[i].id == 1){
                             $scope.encuesta.ventaPlanes = true;
                             break;
                         }

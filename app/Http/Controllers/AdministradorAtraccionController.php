@@ -154,7 +154,7 @@ class AdministradorAtraccionController extends Controller
             }, 'multimediaSitios' => function($queryMultimediaSitios) {
                 $queryMultimediaSitios->where('portada', true)->select('sitios_id', 'ruta');
             }])->select('id');
-        }])->select('sitios_id', 'id', 'estado')->orderBy('id')->get();
+        }])->select('sitios_id', 'id', 'estado', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'nombre', 'culture')->get();
         
@@ -451,6 +451,26 @@ class AdministradorAtraccionController extends Controller
         
         $atraccion = Atracciones::find($request->id);
         $atraccion->estado = !$atraccion->estado;
+        $atraccion->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:atracciones'
+        ],[
+            'id.required' => 'Se necesita el identificador de la atracción.',
+            'id.numeric' => 'El identificador de la atracción debe ser un valor numérico.',
+            'id.exists' => 'La atracción no se encuentra registrada en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $atraccion = Atracciones::find($request->id);
+        $atraccion->sugerido = !$atraccion->sugerido;
         $atraccion->save();
         
         return ['success' => true];

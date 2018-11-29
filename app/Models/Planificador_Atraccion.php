@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +21,9 @@ class Planificador_Atraccion extends Model
      * @var string
      */
     protected $table = 'planificador_atracciones';
+    
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @var array

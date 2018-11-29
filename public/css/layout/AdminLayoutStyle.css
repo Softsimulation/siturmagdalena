@@ -637,6 +637,51 @@ align-items-center{
     background: #555; 
 }
 
+.input-upload {
+    width: 100%;
+    text-align: center;
+}
+.input-upload label {
+    display: block;
+}
+.input-upload input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -10;
+}
+.input-upload label .content-input-upload {
+    overflow: hidden;
+    height: 208px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    background-color: rgba(0,0,0,.65);
+    position: relative;
+}
+.input-upload label>.content-input-upload>.content {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.25);
+    text-align: center;
+    color: white;
+    padding-top: 8%;
+}
+.input-upload label > .content-input-upload > .content >span {
+    font-size: 3em;
+}
+.input-upload label .content-input-upload img {
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+}
+
 /*Fonts*/
 @font-face {
     font-family: 'Futura';

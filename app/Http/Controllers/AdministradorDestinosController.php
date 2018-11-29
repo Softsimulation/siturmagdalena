@@ -73,7 +73,7 @@ class AdministradorDestinosController extends Controller
             }])->select('destino_id', 'idiomas_id', 'nombre', 'descripcion')->orderBy('idiomas_id');
         }, 'multimediaDestinos' => function ($queryMultimediaDestinos){
             $queryMultimediaDestinos->where('portada', true)->select('destino_id', 'ruta');
-        }])->select('id', 'estado')->orderBy('id')->get();
+        }])->select('id', 'estado', 'sugerido')->orderBy('id')->get();
         
         $idiomas = Idioma::select('id', 'nombre', 'culture')->where('estado', true)->get();
         
@@ -271,6 +271,26 @@ class AdministradorDestinosController extends Controller
         
         $destino = Destino::find($request->id);
         $destino->estado = !$destino->estado;
+        $destino->save();
+        
+        return ['success' => true];
+    }
+    
+    public function postSugerir (Request $request){
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|numeric|exists:destino'
+        ],[
+            'id.required' => 'Se necesita el identificador del destino.',
+            'id.numeric' => 'El identificador del destino debe ser un valor numérico.',
+            'id.exists' => 'El destino no se encuentra registrado en la base de datos.'
+        ]);
+        
+        if($validator->fails()){
+            return ["success"=>false,'errores'=>$validator->errors()];
+        }
+        
+        $destino = Destino::find($request->id);
+        $destino->sugerido = !$destino->sugerido;
         $destino->save();
         
         return ['success' => true];

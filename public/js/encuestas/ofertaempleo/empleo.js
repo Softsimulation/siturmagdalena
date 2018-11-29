@@ -12,6 +12,13 @@ angular.module('empleo.Empleo', [])
                 $scope.empleo = data.empleo;
                 $scope.tipo_cargo = data.tipo_cargo;
                 $scope.url = data.url;
+                $scope.proveedor =data.proveedor;
+                if($scope.empleo.VacanteOperativo == null){
+                    $scope.empleo.VacanteGerencial = 0;
+                    $scope.empleo.VacanteAdministrativo = 0;
+                    $scope.empleo.VacanteOperativo = 0;
+                    
+                }
                   
         }).catch(function () {
               $("body").attr("class", "cbp-spmenu-push")
@@ -411,6 +418,7 @@ $scope.$watch('id', function () {
               
                 $scope.empleo = data.empleo;
                 $scope.data = data.data;
+                $scope.proveedor =data.proveedor;
                 
         }).catch(function () {
               $("body").attr("class", "cbp-spmenu-push")
@@ -442,6 +450,8 @@ $scope.$watch('id', function () {
         return false;
     }
     
+ 
+    
    $scope.existeTipo = function(obj){
         
        for (var i = 0; i < $scope.empleo.tipos.length; i++) {
@@ -451,6 +461,82 @@ $scope.$watch('id', function () {
         }
         return false;
     }
+    
+    
+    $scope.nivel1 = function(obj){
+       if($scope.empleo.lineasadmin.indexOf(obj) >= 0){
+           return false;
+       }else{
+           
+           if( $scope.empleo.lineasadmin.length ==3){
+               return true;
+           }else{
+               return false;
+           }
+       }
+        
+    }
+    
+    
+   $scope.nivel2 = function(obj){
+       if($scope.empleo.lineasopvt.indexOf(obj) >= 0){
+           return false;
+       }else{
+           
+           if( $scope.empleo.lineasopvt.length ==3){
+               return true;
+           }else{
+               return false;
+           }
+       }
+        
+    }
+    
+    
+       $scope.nivel2 = function(obj){
+       if($scope.empleo.lineasopvt.indexOf(obj) >= 0){
+           return false;
+       }else{
+           
+           if( $scope.empleo.lineasopvt.length ==3){
+               return true;
+           }else{
+               return false;
+           }
+       }
+        
+    }
+    
+    
+   $scope.mediovalue = function(obj){
+       if($scope.empleo.medios.indexOf(obj) >= 0){
+           return false;
+       }else{
+           
+           if( $scope.empleo.medios.length ==3){
+               return true;
+           }else{
+               return false;
+           }
+       }
+        
+    }
+    
+   $scope.tipovalue = function(obj){
+       if($scope.empleo.tipos.indexOf(obj) >= 0){
+           return false;
+       }else{
+           
+           if( $scope.empleo.tipos.length ==3){
+               return true;
+           }else{
+               return false;
+           }
+       }
+        
+    }
+    
+    
     
     
    $scope.validar = function(){
@@ -529,7 +615,13 @@ $scope.$watch('id', function () {
          ofertaServi.cargarDatosEmplomensual($scope.id).then(function (data) {
                  $("body").attr("class", "cbp-spmenu-push")
                 $scope.empleo = data.empleo;
-                
+                $scope.proveedor =data.proveedor;
+                if($scope.empleo.VacanteOperativo == null){
+                    $scope.empleo.VacanteGerencial = 0;
+                    $scope.empleo.VacanteAdministrativo = 0;
+                    $scope.empleo.VacanteOperativo = 0;
+                    
+                }
                 $scope.url = data.url;
                   
         }).catch(function () {
