@@ -727,12 +727,12 @@ class OfertaEmpleoController extends Controller
             $empleo["otrotipo"] = Capacitacion_Empleo::join("programas_capaciaciones",'capacitaciones_empleo.encuesta_id','=','programas_capaciaciones.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->where("tipo_programa_capacitacion_id",10)->pluck("otro")->first();
             $empleo["otromedio"] = Capacitacion_Empleo::join("medios_capacitaciones_encuestas",'capacitaciones_empleo.encuesta_id','=','medios_capacitaciones_encuestas.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->where("medio_capacitacion_id",6)->pluck("otro")->first();
             
-             $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+             $dato =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
        
           $retorno = [
                 'empleo' => $empleo,
                 'data'=> $data,
-                'proveedor' => $data[0]
+                'proveedor' => $dato[0]
                 
             ];
             
