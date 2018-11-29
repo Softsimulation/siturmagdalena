@@ -207,10 +207,8 @@
                         
                         </li>
                         
-<<<<<<< HEAD
                         
-=======
->>>>>>> origin/demo
+
                         <li>
                             <a role="menuitem" href="{{asset('EstadisticasSecundarias/configuracion')}}">Estadísticas Secundarias</a>
                         
