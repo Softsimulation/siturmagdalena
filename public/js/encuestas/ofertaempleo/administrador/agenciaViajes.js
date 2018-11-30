@@ -185,7 +185,7 @@ situr.controller('ofertaAgenciaViajesCtrl', ['$scope','agenciaViajeServi', funct
                 },
                 function(isConfirm) {
                   if (isConfirm) {
-                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.encuesta.id;
                   } else {
                     window.location.href = data.ruta;
                   }
