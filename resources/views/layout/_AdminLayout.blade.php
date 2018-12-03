@@ -206,6 +206,9 @@
                             <a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a>
                         </li>
                         <li>
+                            <a role="menuitem" href="{{asset('/exportacion')}}">Exportaciones</a>
+                        </li>
+                        <li>
                             <a role="menuitem" href="#menuPaises" aria-haspopup="true" aria-expanded="false">Administrar países</a>
                             <ul role="menu" id="menuPaises" aria-label="Administrar países">
                                 <li role="none">
