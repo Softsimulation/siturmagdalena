@@ -128,7 +128,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Empleados </b></h3>
                 </div>
-                <div class="panel-footer"><b>@Resource.EncuestaMsgCompleteTabla</b></div>
+                <div class="panel-footer"><b>Complete la siguiente tabla</b></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">

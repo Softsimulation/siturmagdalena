@@ -34,10 +34,10 @@ class PublicoInformeController extends Controller
                    ->where('categoria_documento_idioma.idioma_id',1)
                    ->where(function($q)use($request){ if( isset($request->tipoInforme) && $request->tipoInforme != null ){$q->where('publicaciones.tipo_documento_id',$request->tipoInforme);}})
                     ->where(function($q)use($request){ if( isset($request->categoriaInforme) && $request->categoriaInforme != null ){$q->where('publicaciones.categoria_doucmento_id',$request->categoriaInforme);}})
-                    ->where(function($q)use($request){ if( isset($request->buscar) && $request->buscar != null ){$q->where(strtolower('noticias_has_idiomas.titulo'),'like','%',trim(strtolower($request->buscar)))
-                                                                                                                   ->where(strtolower('noticias_has_idiomas.descripcion'),'like','%',trim(strtolower($request->buscar)))
-                                                                                                                   ->where(strtolower('noticias_has_idiomas.autores'),'like','%',trim(strtolower($request->buscar)))
-                    ;}}) 
+                    ->where(function($q)use($request){ if( isset($request->buscar) && $request->buscar != null ){$q->where(strtolower('publicaciones_idioma.palabrasclaves'),'like','%',trim(strtolower($request->buscar)))
+                                                                                                                   ->where(strtolower('publicaciones_idioma.nombre'),'like','%',trim(strtolower($request->buscar)))
+                                                                                                                   ->where(strtolower('publicaciones_idioma.descripcion'),'like','%',trim(strtolower($request->buscar)))
+                    ;}})  
                     ->select("publicaciones.id","publicaciones.autores", "publicaciones.volumen", "publicaciones.portada", "publicaciones.ruta", "publicaciones.fecha_creacion", 
                         "publicaciones.fecha_publicacion", "tipo_documento_idioma.nombre as tipoInforme", "categoria_documento_idioma.nombre as categoriaInforme",
                         "publicaciones_idioma.palabrasclaves as palabrasClaves", "publicaciones_idioma.nombre as tituloInforme", "publicaciones_idioma.descripcion")

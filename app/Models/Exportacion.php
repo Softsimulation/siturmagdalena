@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,8 +24,9 @@ class Exportacion extends Model
      * 
      * @var string
      */
+     
     protected $table = 'exportaciones';
-
+    public $timestamps=false;
     /**
      * @var array
      */

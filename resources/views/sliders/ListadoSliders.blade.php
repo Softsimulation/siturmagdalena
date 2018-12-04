@@ -3,43 +3,7 @@
 @section('title', 'Listado de sliders')
 
 @section('estilos')
-    <style>
-        .row {
-            margin: 1em 0 0;
-        }
-        .blank-page {
-            padding: 1em;
-        }
-        .carga {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat;
-        }
-        .carga>.text{
-            position: absolute;
-            display:block;
-            text-align:center;
-            width: 100%;
-            top: 40%;
-            color: white;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            display: block;
-        }
-    </style>
+    
     <style>
         
         .box-tigger img {
@@ -82,10 +46,6 @@
         }
         .tile .btn:not(.btn-link) {
             box-shadow: none;
-        }
-        main {
-            padding-top: 2rem;
-            margin-top: 2rem;
         }
         .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group {
             margin: 0;
@@ -147,8 +107,9 @@
     color:black;
 }
 .imagenActual{
-    width: 250px;
-    height: auto;
+    height: 200px;
+    width: auto;
+    margin: 0 auto;
 }
 .tile .tittle.activos {
     background-color: yellowgreen;
@@ -201,19 +162,21 @@
 
 @section('controller','ng-controller="listadoSlidersCtrl"')
 
-@section('titulo','Sliders')
+@section('titulo','Galería de imágenes')
 @section('subtitulo','El siguiente listado cuenta con @{{sliders.length}} registro(s)')
 
 @section('content')
-    
-    <button class="btn btn-success btn-block" ng-click="abrirModalCrearSlider()">Agregar imagen</button>
+    <div class="text-center">
+        <button class="btn btn-lg btn-success" type="button" ng-click="abrirModalCrearSlider()">Agregar imagen</button>
+    </div>
+    <hr>
     
     <div>
     <div class="alert alert-danger" ng-repeat="error in errores">
         *@{{error[0]}}
     </div>
     <div class="row">
-        <div class="col-md-4 col-sm-6" ng-repeat="slider in sliders| orderBy:'-estadoSlider'">
+        <div class=" col-xs-12 col-md-4 col-sm-6" ng-repeat="slider in sliders| orderBy:'-estadoSlider'">
             <div class="card tile">
                 <div class="box-tigger" onclick="tigger_box(this)" >
                     <img src="@{{slider.rutaSlider}}" />
@@ -259,25 +222,27 @@
                 <form role="form" name="crearSliderForm" novalidate>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-xs-12" id="upload-ini" style="margin-left: 0; margin-right: 0;">
-                                <label><span class="asterisk">*</span>Subir imagen</label><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="La imagen debe tener un peso de 2MB y debe ser de formato jpeg, jpg o png"></span>
-                                <div class="input-upload" title="Presione para seleccionar un logo">
-                                    <label for="imagenSlider">
-                                        <div class="content-input-upload">
-                                            <!--<img id="preview-upload" ng-if="!programa.portada" src="~/Content/Imagenes/escudo.png" alt="Imagen previa" />-->
-                                            <img id="imagen-slider-crear" class="previewUpload" src="@{{programa.portada}}" alt="Imagen previa" />
-                                            <div class="content">
-                                                <span class="ion-camera"></span><br />
-                                                Presione para seleccionar un logotipo (Opcional)
+                            <div class="col-xs-12" style="margin-left: 0; margin-right: 0;">
+                                <div class="form-group"´id="upload-ini">
+                                    <label class="control-label" for="imagenSlider"><span class="asterisk">*</span> Subir imagen <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="La imagen debe tener un peso de 2MB y debe ser de formato jpeg, jpg o png"></span></label>
+                                    <div class="input-upload" title="Presione para seleccionar un logo">
+                                        <label for="imagenSlider">
+                                            <div class="content-input-upload">
+                                                <!--<img id="preview-upload" ng-if="!programa.portada" src="~/Content/Imagenes/escudo.png" alt="Imagen previa" />-->
+                                                <img id="imagen-slider-crear" class="previewUpload" src="@{{programa.portada}}" alt="Imagen previa" />
+                                                <div class="content">
+                                                    <span class="ion-camera"></span><br />
+                                                    Presione para seleccionar un logotipo (Opcional)
+                                                </div>
                                             </div>
-                                        </div>
-                                    </label>
-                                    <input type="file" id="imagenSlider" name="imagenSlider" file-input='imagenSlider' accept=".jpg,.jpeg,.png" />
+                                        </label>
+                                        <input type="file" id="imagenSlider" name="imagenSlider" file-input='imagenSlider' accept=".jpg,.jpeg,.png" />
+                                    </div>
+                                    <span class="text-error" ng-show="(crearSliderForm.$submitted) && imagenSlider == null">La imagen es requerida</span>
                                 </div>
-                                <span class="text-error" ng-show="(crearSliderForm.$submitted) && imagenSlider == null">La imagen es requerida</span>
+                                
+                                
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group" ng-class="{'has-error':((crearSliderForm.$submitted || crearSliderForm.textoAlternativoSlider.$touched) && crearSliderForm.textoAlternativoSlider.$error.required)}">
                                     <label class="control-label" for="textoAlternativoSlider"><span class="asterisk">*</span> Texto alternativo</label>
@@ -285,8 +250,6 @@
                                     
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label" for="tituloSlider">Título</label>
@@ -294,49 +257,40 @@
     
                                 </div>
                             </div>
-                            
-                        </div>
-                        <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label u-block" for="enlaceInterno"><span class="asterisk">*</span>Tipo de enlace de acceso</label>
+                                    <label class="control-label" for="enlaceInterno"><span class="asterisk">*</span> Tipo de enlace de acceso</label>
                                     <br/>
                                     <label class="radio-inline"><input type="radio" name="enlaceInterno" id="enlaceInterno" ng-model="slider.enlaceInterno" value="1" required>Enlace interno</label>
                                     <label class="radio-inline"><input type="radio" name="enlaceInterno" id="enlaceInterno" ng-model="slider.enlaceInterno" value="0" required>Enlace externo</label>
                                     <label class="radio-inline"><input type="radio" name="enlaceInterno" id="enlaceInterno" ng-model="slider.enlaceInterno" value="2" required>No posee</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==0">
-                            <div class="col-xs-12">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==0">
                                 <div class="form-group" ng-class="{'has-error':((crearSliderForm.$submitted || crearSliderForm.enlaceExternoSlider.$touched) && (crearSliderForm.enlaceExternoSlider.$error.required || crearSliderForm.enlaceExternoSlider.$error.url))}">
-                                    <label class="control-label" for="enlaceExternoSlider"><span class="asterisk">*</span>Enlace externo</label>
+                                    <label class="control-label" for="enlaceExternoSlider"><span class="asterisk">*</span> Enlace externo</label>
                                     <input type="url" class="form-control" name="enlaceExternoSlider" id="enlaceExternoSlider" placeholder="Ingrese enlace de acceso de la imagen. Máx. 500 caracteres" maxlength="500" ng-model="slider.enlaceExternoSlider" ng-required="slider.enlaceInterno==0" />
                                     
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==1">
-                            <div class="col-xs-12">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==1">
                                 <div class="form-group" ng-class="{'has-error': (crearSliderForm.$submitted || crearSliderForm.tipoEntidadIdSlider.$touched) && crearSliderForm.tipoEntidadIdSlider.$error.required }">
-                                    <label class="control-label" for="tipoEntidadIdSlider"><span class="asterisk">*</span>Tipo de entidad</label>
+                                    <label class="control-label" for="tipoEntidadIdSlider"><span class="asterisk">*</span> Tipo de entidad</label>
                                     <select ng-model="slider.tipoEntidadIdSlider" class="form-control" id="tipoEntidadIdSlider" name="tipoEntidadIdSlider" ng-required="slider.enlaceInterno==1">
                                         <option value="" selected disabled>Seleccione el tipo de entidad</option>
-                                        <option value="1"  >Actividad</option>
-                                        <option value="2"  >Atracción</option>
-                                        <option value="3"  >Destino</option>
-                                        <option value="4"  >Evento</option>
-                                        <option value="5"  >Ruta</option>
-                                        <option value="6"  >Proveedor</option>
+                                        <option value="1">Actividad</option>
+                                        <option value="2">Atracción</option>
+                                        <option value="3">Destino</option>
+                                        <option value="4">Evento</option>
+                                        <option value="5">Ruta</option>
+                                        <option value="6">Proveedor</option>
                                     </select>
                                     
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==1">
-                            <div class="col-xs-12 ">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==1">
                                 <div class="form-group" ng-class="{'has-error': (crearSliderForm.$submitted || crearSliderForm.actividadIdSlider.$touched) && slider.actividadIdSlider == null }">
-                                    <label for="actividadIdSlider"><span class="asterisk">*</span>Actividad</label>
+                                    <label for="actividadIdSlider" class="control-label"><span class="asterisk">*</span> Actividad</label>
                                     <ui-select ng-model="slider.actividadIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione actividad">@{{$select.selected.nombre}}</ui-select-match>
                                         <ui-select-choices repeat="item.actividades_id as item in actividades | filter:$select.search">
@@ -345,11 +299,9 @@
                                     </ui-select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==2">
-                            <div class="col-xs-12 ">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==2">
                                 <div class="form-group" ng-class="{'has-error': (crearSliderForm.$submitted || crearSliderForm.atraccionIdSlider.$touched) && slider.atraccionIdSlider == null }">
-                                    <label for="atraccionIdSlider"><span class="asterisk">*</span>Atracción</label>
+                                    <label for="atraccionIdSlider" class="control-label"><span class="asterisk">*</span> Atracción</label>
                                     <ui-select ng-model="slider.atraccionIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione atracción">@{{$select.selected.nombre}}</ui-select-match>
                                         <ui-select-choices repeat="item.id as item in atracciones | filter:$select.search">
@@ -358,9 +310,7 @@
                                     </ui-select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==3">
-                            <div class="col-xs-12 ">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==3">
                                 <div class="form-group" ng-class="{'has-error': (crearSliderForm.$submitted || crearSliderForm.destinoIdSlider.$touched) && slider.destinoIdSlider == null }">
                                     <label for="atraccionIdSlider"><span class="asterisk">*</span>Destino</label>
                                     <ui-select ng-model="slider.destinoIdSlider" theme="bootstrap">
@@ -371,11 +321,9 @@
                                     </ui-select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==4">
-                            <div class="col-xs-12 ">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==4">
                                 <div class="form-group" ng-class="{'has-error': (crearSliderForm.$submitted || crearSliderForm.eventoIdSlider.$touched) && slider.eventoIdSlider == null }">
-                                    <label for="eventoIdSlider"><span class="asterisk">*</span>Evento</label>
+                                    <label for="eventoIdSlider"><span class="asterisk">*</span> Evento</label>
                                     <ui-select ng-model="slider.eventoIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione evento">@{{$select.selected.nombre}}</ui-select-match>
                                         <ui-select-choices repeat="item.eventos_id as item in eventos | filter:$select.search">
@@ -384,9 +332,7 @@
                                     </ui-select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==5">
-                            <div class="col-xs-12 ">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==5">
                                 <div class="form-group" ng-class="{'has-error': (crearSliderForm.$submitted || crearSliderForm.rutaIdSlider.$touched) && slider.rutaIdSlider == null }">
                                     <label for="rutaIdSlider"><span class="asterisk">*</span>Ruta</label>
                                     <ui-select ng-model="slider.rutaIdSlider" theme="bootstrap">
@@ -397,9 +343,7 @@
                                     </ui-select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==6">
-                            <div class="col-xs-12 ">
+                            <div class="col-xs-12" ng-if="slider.enlaceInterno==1 && slider.tipoEntidadIdSlider==6">
                                 <div class="form-group" ng-class="{'has-error': (crearSliderForm.$submitted || crearSliderForm.proveedorIdSlider.$touched) && slider.proveedorIdSlider == null }">
                                     <label for="proveedorIdSlider"><span class="asterisk">*</span>Proveedor</label>
                                     <ui-select ng-model="slider.proveedorIdSlider" theme="bootstrap">
@@ -411,6 +355,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -622,7 +567,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group" ng-class="{'has-error': (agregarIdiomaSliderForm.$submitted || agregarIdiomaSliderForm.idiomaIdSlider.$touched) && agregarIdiomaSliderForm.idiomaIdSlider.$error.required }">
-                                    <label class="control-label" for="idiomaIdSlider"><span class="asterisk">*</span>Nuevo idioma</label>
+                                    <label class="control-label" for="idiomaIdSlider"><span class="asterisk">*</span> Nuevo idioma</label>
                                     <select ng-options="item.id as item.nombre for item in agregarIdiomaSlider.noIdiomas" ng-model="agregarIdiomaSlider.idiomaIdSlider" class="form-control" id="idiomaIdSlider" name="idiomaIdSlider" required>
                                         <option value="" selected disabled>Seleccione un idioma</option>
                                     </select>
@@ -631,19 +576,20 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <label class="u-block">Imagen actual</label>
-                                <div class="input-group">
-                                    <img class="imagenActual" ng-src="@{{agregarIdiomaSlider.imagenActual}}" />
-                                </div>
-    
+                                <figure>
+                                    <figcaption>Imagen actual</figcaption>
+                                  <img class="img-responsive" ng-src="@{{agregarIdiomaSlider.imagenActual}}" alt="" role="presentation"/>
+                                  
+                                </figure>
+                                <br>
                             </div>
     
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group" ng-class="{'has-error':((agregarIdiomaSliderForm.$submitted || agregarIdiomaSliderForm.textoAlternativoSlider.$touched) && agregarIdiomaSliderForm.textoAlternativoSlider.$error.required)}">
-                                    <label class="control-label" for="textoAlternativoSlider"><span class="asterisk">*</span>Texto alternativo</label>
-                                    <textarea class="form-control" name="textoAlternativoSlider" id="textoAlternativoSlider" placeholder="Ingrese texto alternativo de la imagen." ng-model="agregarIdiomaSlider.textoAlternativoSlider" rows="4" required></textarea>
+                                    <label class="control-label" for="textoAlternativoSlider"><span class="asterisk">*</span> Texto alternativo</label>
+                                    <textarea class="form-control" name="textoAlternativoSlider" id="textoAlternativoSlider" placeholder="Ingrese una breve descripción del contenido de la imagen seleccionada. Máx. 100 caracteres" maxlength="100" ng-model="agregarIdiomaSlider.textoAlternativoSlider" rows="4" required></textarea>
                                     <span class="text-error" ng-show="(agregarIdiomaSliderForm.$submitted || agregarIdiomaSliderForm.textoAlternativoSlider.$touched) && agregarIdiomaSliderForm.textoAlternativoSlider.$error.required">Campo requerido</span>
                                 </div>
                             </div>
@@ -716,4 +662,30 @@
 <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
 <script src="{{asset('/js/administrador/sliders/sliders.js')}}"></script>
 <script src="{{asset('/js/administrador/sliders/sliderServices.js')}}"></script>
+
+<script defer>
+
+    function readURL(input , idPreview) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(idPreview).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#modalAgregarSlider").on('shown.bs.modal', function () {
+        $('#imagen-slider-crear').attr('src', '');
+    });
+
+    $("#imagenSlider").change(function () {
+        readURL(this, "#imagen-slider-crear");
+    });
+    $("#imagenSliderEditar").change(function () {
+        readURL(this, "#imagen-slider-editar");
+    });
+</script>
 @endsection

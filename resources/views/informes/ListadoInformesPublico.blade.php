@@ -1,9 +1,33 @@
+<?php
+    use Illuminate\Support\Facades\Input;
+?>
 @extends('layout._publicLayout')
-@section('title', 'Noticias')
+@section('title', 'Informes')
 
+@section('estilos')
+<style>
+    .row{
+        width: calc(100% + 30px);
+    }
+    .tile .tile-img.no-img{
+        background-color: white;
+    }
+    .tile .tile-img.no-img img{
+        height: 100px;
+    }
+    .tiles .tile .tile-img.no-img {
+        height: 100px;
+    }
+    .content-head {
+        padding-top: 1rem;
+        background-color: whitesmoke;
+        box-shadow: 0px 2px 4px -2px rgba(0,0,0,.35);
+    }
+</style>
+@endsection
 
 @section('content')
-    <h1>Noticias</h1>
+    <h1>Informes</h1>
     
     <div class="row">
         
@@ -59,6 +83,42 @@
             <br>
             <a href="ver/{{$informe->id}}">Ver más de informe</a>
         @endforeach
+    @endif
+    
+    @if ($informes != null || count($informes) > 0)
+    <div class="tiles">
+        @foreach ($informes as $informe)
+        <div class="tile @if(strlen($informe->tituloInforme) >= 200 || strlen($informe->descripcion) > 230) two-places @endif">
+            <div class="tile-img @if(!$informe->portada) no-img @endif">
+                @if($informe->portada)
+                <img src="{{$informe->portada}}" alt="" role="presentation">
+                @else
+                <img src="/img/news.png" alt="" role="presentation">
+                @endif
+                <div class="text-overlap">
+                    <a href="/promocionInforme/listado/?tipoInforme={{$informe->tipoInforme}}"><span class="label label-info">{{$informe->tipoInforme}}</span></a>
+                </div>
+            </div>
+            <div class="tile-body">
+                <div class="tile-caption">
+                    <h3><a href="/promocionInforme/ver/{{$informe->id}}">{{$informe->tituloInforme}}</a></h3>
+                </div>
+                <p>{{$informe->descripcion}}</p>
+                <div class="text-right">
+                    <a href="/promocionInforme/ver/{{$informe->id}}" class="btn btn-xs btn-link">Ver más</a>
+                </div>
+            </div>
+        </div>
+           
+        @endforeach
+    </div>
+    <div class="text-center">
+        {!!$informes->appends(Input::except('page'))->links()!!}
+    </div>
+    @else
+    <div class="alert alert-info">
+        <p>No hay elementos publicados en este momento.</p>
+    </div>
     @endif
     {!!$informes->links()!!}
 @endsection

@@ -11,6 +11,7 @@ app.controller("CaracterizacionAlojamientoCtrl", function($scope, OfertaEmpleoSe
             
             if(data.alojamiento){
                 $scope.alojamiento = data.alojamiento;
+                 $scope.proveedor = data.proveedor;
             }
             
             $scope.servicios = data.servicios;
@@ -104,6 +105,7 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
             
             if(data.alojamiento){
                 $scope.alojamiento = data.alojamiento;
+                 $scope.proveedor = data.proveedor;
             }
             
             $scope.servicios = data.servicios;
@@ -144,7 +146,7 @@ app.controller("OfertaAlojamientoCtrl", function($scope, OfertaEmpleoServi){
                 },
                 function(isConfirm) {
                   if (isConfirm) {
-                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                    window.location.href = '/ofertaempleo/empleomensual/'+$("#id").val();;
                   } else {
                     window.location.href = data.ruta;
                   }
@@ -176,6 +178,7 @@ app.controller("AlojamientoMensualCtrl", function($scope, OfertaEmpleoServi){
             
             if(data.alojamiento){
                 $scope.alojamiento = data.alojamiento;
+                $scope.proveedor = data.proveedor;
             }
             
             $scope.servicios = data.servicios;
@@ -196,6 +199,7 @@ app.controller("AlojamientoMensualCtrl", function($scope, OfertaEmpleoServi){
         var data = angular.copy($scope.alojamiento);
         data.encuesta = $("#id").val();
         data.servicios = angular.copy($scope.servicios);
+      
         
         $("body").attr("class", "cbp-spmenu-push charging");
         
@@ -216,7 +220,7 @@ app.controller("AlojamientoMensualCtrl", function($scope, OfertaEmpleoServi){
                 },
                 function(isConfirm) {
                   if (isConfirm) {
-                    window.location.href = '/ofertaempleo/empleomensual/'+$scope.id;
+                    window.location.href = '/ofertaempleo/empleomensual/'+$("#id").val();
                   } else {
                     window.location.href = data.ruta;
                   }

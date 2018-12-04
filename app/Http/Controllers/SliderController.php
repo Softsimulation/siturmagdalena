@@ -282,7 +282,7 @@ class SliderController extends Controller
 	    //return $request->all();
         $sliders = Slider::with('idiomas')->
             join('sliders_idiomas', 'sliders_idiomas.slider_id', '=', 'sliders.id')
-            ->where('sliders_idiomas.idioma_id',1)
+            ->where('sliders_idiomas.idioma_id',$request->idiomaId)
             ->where('sliders.id',$request->slider)
             ->where('sliders_idiomas.idioma_id',$request->idiomaId)
             ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
@@ -456,7 +456,7 @@ class SliderController extends Controller
         
         $sliders = Slider::with('idiomas')->
             join('sliders_idiomas', 'sliders_idiomas.slider_id', '=', 'sliders.id')
-            ->where('sliders_idiomas.idioma_id',1)
+            ->where('sliders_idiomas.idioma_id',$request->idiomaId)
             ->where('sliders.id',$slider->id)
             ->where('sliders_idiomas.idioma_id',$request->idiomaId)
             ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
