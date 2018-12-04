@@ -19,6 +19,7 @@ Route::controller('/turismointerno','TurismoInternoController');
 Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
+Route::controller('/exportacion','ExportacionController');
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 
