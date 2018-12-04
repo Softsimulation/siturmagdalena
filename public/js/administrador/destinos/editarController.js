@@ -22,6 +22,8 @@ angular.module('destinos.editar', [])
     var map;
     $scope.previewportadaIMG = [];
     $scope.previewImagenes = [];
+    $scope.portadaIMGText = [];
+    $scope.previewImagenesText = [];
     
     $scope.$watch('id', function(){
         $("body").attr("class", "cbp-spmenu-push charging");
@@ -38,16 +40,18 @@ angular.module('destinos.editar', [])
                 
                 var portada = null;
                 if (data.portadaIMG != null){
-                    $http.get("../.." + data.portadaIMG, {responseType: "blob"}).success((data) => {
-                        portada = data;
+                    $http.get("../.." + data.portadaIMG.ruta, {responseType: "blob"}).success((response) => {
+                        portada = response;
                         $scope.previewportadaIMG.push(portada);
+                        $scope.portadaIMGText.push(data.portadaIMG.texto_alternativo);
                     });
                 }
                 var imagenes = [];
                 for (var i = 0; i < data.imagenes.length; i++){
-                    $http.get("../.." + data.imagenes[i], {responseType: "blob"}).success((response) => {
+                    $http.get("../.." + data.imagenes[i].ruta, {responseType: "blob"}).success((response) => {
                         imagenes.push(response);
                     });
+                    $scope.previewImagenesText.push(data.imagenes[i].texto_alternativo);
                     if (i == (data.imagenes.length - 1)){
                         $scope.previewImagenes = imagenes;
                     }
@@ -136,12 +140,14 @@ angular.module('destinos.editar', [])
         }
         if ($scope.portadaIMG != null) {
             fd.append("portadaIMG", $scope.portadaIMG[0]);
+            fd.append("portadaIMGText", $('#text-brcc-portadaIMG-0').val());
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
         if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
+                fd.append("imageText[]", $('#text-brcc-imagenes-'+i).val());
             }
         }
         $("body").attr("class", "cbp-spmenu-push charging");

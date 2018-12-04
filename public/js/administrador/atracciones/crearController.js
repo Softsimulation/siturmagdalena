@@ -121,25 +121,30 @@ angular.module('atracciones.crear', [])
                 }
             }
         }
+        var portada = {image: $scope.portadaIMG[0], text: $('#text-brcc-portadaIMG-0').val()};
+        console.log(portada);
+        $("body").attr("class", "cbp-spmenu-push charging");
         if ($scope.portadaIMG != null) {
             fd.append("portadaIMG", $scope.portadaIMG[0]);
+            fd.append("portadaIMGText", $('#text-brcc-portadaIMG-0').val());
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
-            return;
         }
         if ($scope.imagenes != null && $scope.imagenes.length != 0) {
-            for (i in $scope.imagenes){
-                fd.append("image[]", $scope.imagenes[i]);
+            for (var i in $scope.imagenes){
+                if (Number.isInteger(parseInt(i))){
+                    fd.append("image[]", $scope.imagenes[i]);
+                    fd.append("imageText[]", $('#text-brcc-imagenes-'+i).val());
+                }
             }
         }
         fd.append('id', $scope.atraccion.id);
         fd.append('video_promocional', $("#video_promocional").val());
-        $("body").attr("class", "cbp-spmenu-push charging");
         atraccionesServi.postGuardarmultimedia(fd).then(function (data){
             $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 $scope.errores = null;
-                swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
+                swal('¡Éxito!', 'Multimedia modificada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
