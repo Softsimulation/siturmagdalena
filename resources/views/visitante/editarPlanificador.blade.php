@@ -1,6 +1,6 @@
 @extends('layout._publicLayout')
 
-@section('title', 'Mis favoritos')
+@section('Title', 'Editar planificador')
 
 @section('estilos')
     <style>
@@ -41,9 +41,11 @@
     .header-bg-fixed{
         display:flex;
         flex-wrap: wrap;
-        align-items: flex-end;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
         padding: 2% 4%;
+        margin-bottom: 1rem;
     }
     .header-bg-fixed h2{
         text-transform: uppercase;
@@ -52,6 +54,20 @@
         border-radius: 4px;
         margin-top: 0;
         color: #18337e;
+    }
+    .list-group-item:first-child {
+        border-radius: 0;
+        border-top: 0;
+    }
+    .list-group-item:last-child {
+        border-radius: 0;
+        border-bottom: 0;
+    }
+    .list-group-item {
+        border-left: 0;
+        border-right: 0;
+        padding: .5rem 1rem;
+        border-color: #eee;
     }
     </style>
     
@@ -65,19 +81,20 @@
     <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
 @endsection
 
-@section('TitleSection', 'Mis favoritos')
-
 
 
 @section('content')
-<div class="main-page" ng-app="visitanteApp" ng-controller="misFavoritosCtrl">
+<div class="main-page" ng-app="visitanteApp" ng-controller="editarPlanificadorCtrl">
     <div class="header-bg-fixed parallax">
-        <h2>Mis favoritos</h2>
-        <p>Guarda como favorito los destinos, atracciones y actividades y demás elementos que SITUR Atlántico te ofrece y planifica los viajes que realices al departamento.</p>
+        <h2>Editar planificador</h2>
+        
     </div>
-    
+    <input type="hidden" ng-model="Id" ng-init="Id={{$id}}" />
     <div class="container">
         <div class="row" ng-if="intrucciones.ver">
+            <div class="col-xs-12">
+                <p>Guarda como favorito los destinos, atracciones y actividades y demás elementos que SITUR Atlántico te ofrece y planifica los viajes que realices al departamento.</p>
+            </div>
             <div class="col-xs-12 col-md-6">
                 <!--Para guardar tus favoritos-->
                 <h3>Para guardar tus favoritos</h3>
@@ -126,11 +143,7 @@
     
     @if (Auth::check())
         <div class="container">
-            <div class="row">
-                <div class="col-xs-12" style="text-align: center;">
-                    <button type="button" class="btn btn-lg btn-primary btn-orange" ng-click="abrirAgregarPlanificador()" ng-disabled="planificadores.length > 0 || favoritos.length == 0"><span class="glyphicon glyphicon-plus"></span> Agregar planificador</button>
-                </div>
-            </div>
+            
             
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6">
@@ -178,7 +191,7 @@
                         <h2><strong>Para crear un planificador debe tener favoritos seleccionados</strong></h2>
                     </div>
                     
-                    <div id="planificadores" class="panel panel-default" ng-repeat="planificador in planificadores | orderBy: '-Fecha_inicio'" ng-show="planificadores.length > 0">
+                    <div id="planificadores" class="panel panel-default">
                         <div class="panel-heading heading-planificador">
                             <div class="row">
                                 <div class="col-xs-9">
@@ -255,24 +268,23 @@
             <div class="row">
                 <div class="col-xs-12" style="text-align: center">
                     <!--<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span></button>-->
-                    <button type="button" class="btn btn-lg btn-success" ng-click="guardar()" ng-if="planificadores.length > 0"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                    <button type="button" class="btn btn-lg btn-success" ng-click="guardar()" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                 </div>
             </div>
             
             <br />
+            
+            
             <div class="row" ng-show="listaPlanificadores.length > 0">
                 <h2 class="col-xs-12">Planificadores anteriores</h2>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-test" dir-paginate="planificador in listaPlanificadores | orderBy: 'Fecha_inicio'|itemsPerPage:6" pagination-id="plan" ng-show="listaPlanificadores.length > 0">
                     <div id="listaplanificadores" class="panel panel-default">
                         <div class="panel-heading heading-planificador">
                             <div class="row">
-                                <div class="col-xs-8">
+                                <div class="col-xs-12">
                                     @{{planificador.Nombre}} (@{{planificador.Fecha_inicio | date:'dd-MM-yyyy'}} - @{{planificador.Fecha_fin | date:'dd-MM-yyyy'}})
                                 </div>
-                                <div class="col-xs-3" style="text-align: right;">
-                                    <a href="/visitante/editarplanificador/@{{planificador.Id}}"><span class="glyphicon glyphicon-pencil" style="margin-right: 1em; cursor: pointer;" data-toggle="tooltip" data-placement="bottom"  title="Editar planificador"></span></a>
-                                    <span class="glyphicon glyphicon-remove" ng-click="eliminarPlanificador(planificador)" style="margin-right: 1em; cursor: pointer;" data-toggle="tooltip" data-placement="bottom"  title="Eliminar planificador"></span>
-                                </div>
+                                
                             </div>
 
 
@@ -353,51 +365,6 @@
             </div>
             <br /><br />
             
-            <!-- Modal agregar planificador-->
-            <div class="modal fade" id="modalCrearPlanificador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Agregar planificador</h4>
-                        </div>
-                        <form name="crearForm" role="form" novalidate>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group" ng-class="{'has-error': (crearForm.$submitted || crearForm.inputCrearNombre.$touched) && crearForm.inputCrearNombre.$error.required}">
-                                            <label for="inputCrearNombre">Nombre</label>
-                                            <input type="text" class="form-control" id="inputCrearNombre" name="inputCrearNombre" ng-model="nuevoPlanificador.Nombre" placeholder="Ingrese el nombre del planificador" required>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="col-xs-12 col-sm-6">
-                                        <div class="form-group" ng-class="{'has-error': (crearForm.$submitted || crearForm.Fecha_inicio.$touched) && crearForm.Fecha_inicio.$error.required}">
-                                            <label for="Fecha_inicio">Fecha inicio</label>
-                                            <adm-dtp name="Fecha_inicio" id="Fecha_inicio" ng-model='nuevoPlanificador.Fecha_inicio' mindate="@{{fechaActual}}" maxdate="'@{{nuevoPlanificador.Fecha_fin}}'" options="optionFecha" placeholder="Ingrese fecha de inicio" ng-required="true"></adm-dtp>
-                                            <span ng-if="(crearForm.$submitted || crearForm.Fecha_inicio.$touched) && crearForm.Fecha_inicio.$error.required">Requerido</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xs-12 col-sm-6">
-                                        <div class="form-group" ng-class="{'has-error': (crearForm.$submitted || crearForm.Fecha_fin.$touched) && crearForm.Fecha_fin.$error.required}">
-                                            <label for="Fecha_fin">Fecha fin</label>
-                                            <adm-dtp name="Fecha_fin" id="Fecha_fin" ng-model='nuevoPlanificador.Fecha_fin' mindate="'@{{nuevoPlanificador.Fecha_inicio}}'"options="optionFecha" placeholder="Ingrese fecha de inicio" ng-required="true"></adm-dtp>
-                                            <span ng-if="(crearForm.$submitted || crearForm.Fecha_fin.$touched) && crearForm.Fecha_fin.$error.required">Requerido</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary" ng-click="crearPlanificador()">Guardar</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-            
             
             <!-- Modal editar planificador-->
             <div class="modal fade" id="modalEditarPlanificador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -436,7 +403,7 @@
             				</div>
             				<div class="modal-footer">
             					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            					<button type="submit" class="btn btn-primary" ng-click="editarPlanificador()">Editar</button>
+            					<button type="submit" class="btn btn-success" ng-click="editarPlanificador()">Editar</button>
             				</div>
             			</form>
             		</div>
@@ -445,23 +412,29 @@
             
         </div>
     @else
-        <div class="row" style="padding: 0;">
-            <div class="jumbotron" style="text-align: center;font-size: 4em; padding-top: 2em; padding-bottom: 2em;">
-                <span class="glyphicon glyphicon-lock" style="font-size: 2.5em;"></span>
-                <!--Para acceder a esta funcionalidad debe iniciar sesión-->
-                <h2>Para acceder a esta funcionalidad debe iniciar sesión</h2>
-                <!--Si aún no te encuentras registrado te invitamos a registrarte en nuestro Portal-->
-                <p>Si aún no te encuentras registrado te invitamos a registrarte en nuestro Portal</p>
-                <div class="row">
-                    <div class="col-xs-6 col-md-6 col-md-6" style="text-align: right;">
-                        <a href="/Account/Login" class="btn btn-lg btn-default">Iniciar sesión</a>
-                    </div>
-                    <div class="col-xs-6 col-md-6 col-md-6" style="text-align: left;">
-                        <a href="/Account/Register" class="btn btn-lg btn-success">Registrarse</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="jumbotron" style="text-align: center;font-size: 4em; padding-top: 2em; padding-bottom: 2em;">
+                    <span class="glyphicon glyphicon-lock" style="font-size: 2.5em;"></span>
+                    <!--Para acceder a esta funcionalidad debe iniciar sesión-->
+                    <h2>Para acceder a esta funcionalidad debe iniciar sesión</h2>
+                    <!--Si aún no te encuentras registrado te invitamos a registrarte en nuestro Portal-->
+                    <p>Si aún no te encuentras registrado te invitamos a registrarte en nuestro Portal</p>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 col-md-6" style="text-align: right;">
+                            <a href="/login/login" class="btn btn-lg btn-default">Iniciar sesión</a>
+                        </div>
+                        <!--<div class="col-xs-6 col-md-6 col-md-6" style="text-align: left;">-->
+                        <!--    <a href="/Account/Register" class="btn btn-lg btn-success">Registrarse</a>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
+            
         </div>
+    </div>
+        
     @endif
     
     <div class='carga'>

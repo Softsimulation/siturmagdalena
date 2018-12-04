@@ -46,6 +46,39 @@ app.factory("visitanteServi", ["$http", "$q", function ($http, $q) {
                 defered.reject(err);
             })
             return promise;
-        }
+        },
+        CargarEditarPlanificador: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/visitante/cargareditarplanificador/'+id).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        EditarPlanificador: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/visitante/editarplanificador', data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        EliminarPlanificador: function (data) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/visitante/eliminarplanificador', data).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);
