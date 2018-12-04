@@ -591,7 +591,7 @@
         <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading p1">
                 <!-- ¿Durante su viaje utilizó servicio de alojamiento?-->
-                <h3 class="panel-title"><b> ¿Fue informado sobre las normas y cuidados que debe tener el visitante con la flora y fauna de Atlántico?</b></h3>
+                <h3 class="panel-title"><b> ¿Fue informado sobre las normas y cuidados que debe tener el visitante con la flora y fauna de Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -621,7 +621,7 @@
                 <!-- Experiencia de viaje-->
                 <h3 class="panel-title"><b>Sostenibilidad</b></h3>
             </div>
-            <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Mal trato y 10 Trato excelente. ¿Cómo califica el trato que reciben los turistas en Barranquilla? Respuesta única.</b></div>
+            <div class="panel-footer"><b>En una escala de 1 a 10, donde 1 es Mal trato y 10 Trato excelente. ¿Cómo califica el trato que reciben los turistas en Santa Marta? Respuesta única.</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12" style="overflow-x: auto;">
@@ -654,7 +654,7 @@
         <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading">
                 <!-- ¿Cuál fue el  atractivo y/o el elemento de la ciudad que más llamó su atención?-->
-                <h3 class="panel-title"><b> Sostenibilidad ¿Realizó alguna de las siguientes actividades para ayudar a la conservación del medio ambiente en Atlántico?</b></h3>
+                <h3 class="panel-title"><b> Sostenibilidad ¿Realizó alguna de las siguientes actividades para ayudar a la conservación del medio ambiente en Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">

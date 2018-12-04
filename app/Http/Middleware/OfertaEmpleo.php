@@ -238,7 +238,7 @@ class OfertaEmpleo
                 
             }            
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1 ){
-                  if($data[0]->mes_id%3 == 0){
+                  if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/alojamientomensual/'.$request->one);
                       }
                          return $next($request);

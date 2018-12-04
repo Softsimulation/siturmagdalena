@@ -109,5 +109,15 @@
         });
         
     </script>
+      <!-- Global site tag (gtag.js) -Código de seguimiento Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106392208-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106392208-1');
+</script>
+ <!-- fin de código de seguimiento-->
 </body>
 </html>

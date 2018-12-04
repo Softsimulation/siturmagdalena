@@ -6,6 +6,7 @@ situr.controller('caracterizacionAlimentosCtrl', ['$scope','restauranteServi', f
     $scope.$watch('id', function () {
         $("body").attr("class", "charging");    
         restauranteServi.getInfoAlimentosC($scope.id).then(function (dato) {
+            $scope.proveedor = dato.proveedor;
             $scope.actividades_servicios = dato.actividades_servicios;
             $scope.especialidades = dato.especialidades;
             if (dato.provision != null) {
@@ -79,6 +80,7 @@ situr.controller('capacidadAlimentosCtrl', ['$scope','restauranteServi', functio
         restauranteServi.getInfoCapAlimentos($scope.id).then(function (data) {
             if (data.capacidad != null) {
                 $scope.alimentos = data.capacidad
+                $scope.proveedor = data.proveedor;
             }
             $("body").attr("class", "cbp-spmenu-push");
             

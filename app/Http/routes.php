@@ -1,5 +1,9 @@
 <?php
 
+Route::get('/PlanificaTuViaje','InformacionDepartamentoCtrl@PlanificaTuViaje');
+Route::get('/Departamento/AcercaDe','InformacionDepartamentoCtrl@AcercaDe');
+Route::get('/Departamento/Requisitos','InformacionDepartamentoCtrl@Requisitos');
+Route::controller('/InformacionDepartamento','InformacionDepartamentoCtrl');
 
 Route::get('/Mapa', 'MapaCtrl@getIndex');
 Route::get('/Mapa/getData', 'MapaCtrl@getData');
@@ -15,6 +19,7 @@ Route::controller('/turismointerno','TurismoInternoController');
 Route::controller('/turismoreceptor','TurismoReceptorController');
 
 Route::controller('/grupoviaje','GrupoViajeController');
+Route::controller('/exportacion','ExportacionController');
 
 Route::controller('/sostenibilidadhogares','SostenibilidadHogaresController');
 
