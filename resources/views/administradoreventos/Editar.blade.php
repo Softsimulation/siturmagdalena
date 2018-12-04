@@ -48,7 +48,7 @@
     <div class="tab-content">
         <!--Información básica-->
         <div id="info" class="tab-pane fade in active">
-            <h2>Datos de la atracción</h2>
+            <h2>Datos del evento</h2>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="input-group">
@@ -138,12 +138,12 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <label><span class="asterisk">*</span> Imagen de portada</label>
-                                <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                                <file-input text="portadaIMGText" preview="previewportadaIMG" ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                             </div>
                             <div class="col-xs-12">
                                 <br/>
                                 <label>Subir imágenes</label>
-                                <file-input ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes." multiple max-files="5"></file-input>
+                                <file-input text="previewImagenesText" preview="previewImagenes" ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes." multiple max-files="5"></file-input>
                                 
                             </div>
                             <div class="col-sm-12">
