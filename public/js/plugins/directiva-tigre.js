@@ -15,6 +15,7 @@
                 accept:'@',
                 ngModel: '=?',
                 preview: '<',
+                text: '<',
             },
             require: '?ngModel',
             template:
@@ -31,7 +32,7 @@
                             +'<div class="col-sm-4" ng-repeat="item in filesView" style="background-color: rgba(24, 20, 20, 0.9);border-radius: 5px;padding: 5px;width: auto;display: grid;margin: 10px;float:left" >' 
                                    +'<img ng-if="item.img" class="img-responsive" style="height:200px;width:auto;" ng-src="{{item.ruta}}">'
                                    +'<i ng-if="!item.img" class="{{iconClass}}" style="font-size:9em" >{{icon}}</i>'
-                                //   +'<div style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><input class="form-control" placeholder="Texto alternativo"></div>'
+                                   +'<div ng-if="item.img && item.text" style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><input id="text-brcc-{{idInput}}-{{item.id}}" class="form-control" value="{{text[item.id]}}" placeholder="Texto alternativo"></div>'
                                    +'<div style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><button ng-click="eliminarFile($index)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></div>'
                             +'</div>'
                         +'</div>'
@@ -41,8 +42,10 @@
                 
                 var variable = 0;
                 scope.filesView = [];
+                scope.textView = [];
                 scope.filesModel = [];
                 scope.multiple = attrs.multiple==undefined ? false : true;
+                var text = attrs.text==undefined ? false : true;
                 scope.$watch('preview', function(preview) {
                     if (preview != undefined){
                         if (preview.length != 0){
@@ -50,7 +53,7 @@
                             reader.onload = function () {
                                 if (reader.result.length >6){
                                     var isImagen = reader.result.includes("data:image");
-                                    scope.filesView.push({ 'id': variable, 'ruta': reader.result, img:isImagen });
+                                    scope.filesView.push({ 'id': variable, 'ruta': reader.result, img:isImagen, text:text });
                                     variable++;
                                 }
                             };
@@ -82,7 +85,7 @@
                             scope.$apply(function () {
                                 var isImagen = e.target.result.includes("data:image");
                                 if(!scope.multiple){ scope.filesView = [];  }
-                                scope.filesView.push({ 'id': variable, 'ruta': e.target.result, img:isImagen });
+                                scope.filesView.push({ 'id': variable, 'ruta': e.target.result, img:isImagen, text:text });
                                 variable++;
                             });
                         }

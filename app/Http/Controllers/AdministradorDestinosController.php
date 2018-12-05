@@ -104,8 +104,8 @@ class AdministradorDestinosController extends Controller
             }])->select('id', 'destino_id', 'es_urbano');
         }])->where('id', $id)->select('id', 'tipo_destino_id', 'latitud', 'longitud')->first();
         
-        $portadaIMG = Multimedia_Destino::where('portada', true)->where('destino_id', $id)->pluck('ruta')->first();
-        $imagenes = Multimedia_Destino::where('portada', false)->where('tipo', false)->where('destino_id', $id)->pluck('ruta')->toArray();
+        $portadaIMG = Multimedia_Destino::where('portada', true)->where('destino_id', $id)->select('ruta', 'texto_alternativo')->first();
+        $imagenes = Multimedia_Destino::where('portada', false)->where('tipo', false)->where('destino_id', $id)->select('ruta', 'texto_alternativo')->get();
         $video = Multimedia_Destino::where('tipo', true)->where('destino_id', $id)->pluck('ruta')->first();
         
         $idiomas = Idioma::where('estado', true)->select('id', 'culture', 'nombre')->get();
@@ -167,12 +167,18 @@ class AdministradorDestinosController extends Controller
     public function postGuardarmultimedia (Request $request){
         $validator = \Validator::make($request->all(), [
             'portadaIMG' => 'required|max:2097152',
+            'portadaIMGText' => 'required',
             'id' => 'required|exists:destino|numeric',
             'image' => 'array|max:5',
-            'video' => 'url'
+            'video' => 'url',
+            'imageText' => 'array|max:20',
+            'image.*' => 'max:2097152',
+            'imageText.*' => 'required'
         ],[
             'portadaIMG.required' => 'Se necesita una imagen de portada.',
             'portadaIMG.max' => 'La portada debe tener máximo 2MB',
+            
+            'portadaIMGText.required' => 'Se necesita el texto de la imagen de portada.',
             
             'id.required' => 'Se necesita un identificador para el destino.',
             'id.exists' => 'El identificador del destino no se encuentra registrado en la base de datos.',
@@ -181,7 +187,14 @@ class AdministradorDestinosController extends Controller
             'image.array' => 'Error al enviar los datos. Recargue la página.',
             'image.max' => 'Máximo se pueden subir 5 imágenes para el destino.',
             
-            'video.url' => 'El video debe tener la estructura de un enlace.'
+            'imageText.array' => 'Error al enviar los datos. Recargue la página.',
+            'imageText.max' => 'Máximo se pueden subir 20 imágenes para el destino.',
+            
+            'video.url' => 'El video debe tener la estructura de un enlace.',
+            
+            'image.*.max' => 'El peso máximo por imagen es de 2MB. Por favor verifique si se cumple esta condición.',
+            
+            'imageText.*.required' => 'Una de las imágenes que se quiere subir no tiene texto alternativo.'
         ]);
         
         if($validator->fails()){
@@ -197,6 +210,7 @@ class AdministradorDestinosController extends Controller
         $multimedia_destino = new Multimedia_Destino();
         $multimedia_destino->destino_id = $request->id;
         $multimedia_destino->ruta = "/multimedia/destinos/destino-".$request->id."/".$portadaNombre;
+        $multimedia_destino->texto_alternativo = $request->portadaIMGText;
         $multimedia_destino->tipo = false;
         $multimedia_destino->portada = true;
         $multimedia_destino->estado = true;
@@ -239,6 +253,7 @@ class AdministradorDestinosController extends Controller
                     $multimedia_sitio = new Multimedia_Destino();
                     $multimedia_sitio->destino_id = $request->id;
                     $multimedia_sitio->ruta = "/multimedia/destinos/destino-".$request->id."/".$nombre;
+                    $multimedia_sitio->texto_alternativo = $request->imageText[$key];
                     $multimedia_sitio->tipo = false;
                     $multimedia_sitio->portada = false;
                     $multimedia_sitio->estado = true;

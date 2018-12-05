@@ -68,8 +68,11 @@
             <div class="panel-heading">
 
                 <h3 class="panel-title">
-                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Habitaciones (@{{alojamiento.habitaciones[0].total}} en total) </b>
-                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].habitaciones_ocupadas / (alojamiento.habitaciones[0].total*numero_dias))*100) | number:2 }} % </span>
+                    <b><span class="asterik glyphicon glyphicon-asterisk"></span ><strong ng-show="alojamiento.habitaciones[0].tiene_camas == false "> Habitaciones (@{{alojamiento.habitaciones[0].total}} en total) </strong> </b>
+                    <span style="float: right;" ng-show="alojamiento.habitaciones[0].tiene_camas == false ">Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].habitaciones_ocupadas / (alojamiento.habitaciones[0].total*numero_dias))*100) | number:2 }} % </span>
+                     <strong ng-show="alojamiento.habitaciones[0].tiene_camas == true ">Habitaciones Camas (@{{alojamiento.habitaciones[0].total_camas}} en total) </strong> </b>
+                    <span style="float: right;" ng-if="alojamiento.habitaciones[0].tiene_camas == true ">Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].total_camas_ocupadas / (alojamiento.habitaciones[0].total_camas*numero_dias))*100) | number:2 }} % </span>
+               
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -95,7 +98,7 @@
                                     </td>
                                     <td><input name="HabitacionTarifa" id="HabitacionTarifa" class="form-control" ng-model="alojamiento.habitaciones[0].tarifa" min="1000"  type="number" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
-                                <tr>
+                                <tr ng-if="alojamiento.habitaciones[0].tiene_camas == false  ">
                                 <td>¿Cuántas habitaciones se ocuparon durante el mes? (Es la suma de habitaciones vendidas cada noche del mes)
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.HabitacionOcupa.$touched">
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionOcupa.$error.required">*El campo es requerido.</span>
@@ -104,8 +107,21 @@
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionOcupa.$error.max">*Este campo no puede ser mayor al número total de habitaciones por el número de días de actividad comercial.</span>
                                         </span>    
                                     </td>
-                                    <td><input type="number" name="HabitacionOcupa" id="HabitacionOcupa" class="form-control" ng-model="alojamiento.habitaciones[0].habitaciones_ocupadas" min="1" max="@{{alojamiento.habitaciones[0].total*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="HabitacionOcupa" id="HabitacionOcupa" class="form-control" ng-model="alojamiento.habitaciones[0].habitaciones_ocupadas" min="1" max="@{{alojamiento.habitaciones[0].total*numero_dias}}" ng-required="alojamiento.habitaciones[0].tiene_camas == false" placeholder="Solo números"/></td>
                                 </tr>
+                                
+                               <tr ng-if="alojamiento.habitaciones[0].tiene_camas == true ">
+                                <td>¿Cuántas camas se ocuparon durante el mes? (Es la suma de las camas vendidas cada noche del mes)
+                                        <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.CamaOcupa.$touched">
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CamaOcupa.$error.required">*El campo es requerido.</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CamaOcupa.$error.number">*El campo debe ser un número.</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CamaOcupa.$error.min">*El campo debe ser mayor que 1</span>
+                                            <span class="label label-danger" ng-show="AlojamientoForm.CamaOcupa.$error.max">*Este campo no puede ser mayor al número total de camas por el número de días de actividad comercial.</span>
+                                        </span>    
+                                    </td>
+                                    <td><input type="number" name="CamaOcupa" id="CamaOcupa" class="form-control" ng-model="alojamiento.habitaciones[0].total_camas_ocupadas" min="1" max="@{{alojamiento.habitaciones[0].total_camas*numero_dias}}"  ng-required="alojamiento.habitaciones[0].tiene_camas == true" placeholder="Solo números"/></td>
+                                </tr>
+                                
                                 <tr>
                                     <td>¿Cuántas personas realizaron Check in o ingresaron durante el mes?
                                         <span ng-show="AlojamientoForm.$submitted || AlojamientoForm.HabitacionPersonas.$touched">

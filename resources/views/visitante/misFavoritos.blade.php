@@ -217,7 +217,7 @@
                                                 <li class="list-group-item" ng-repeat="item in dia.Items|orderBy:'Orden'">
 
                                                     <span class="badge" ng-click="deleteItem($index,dia.Items)" title="Remover ítem"><i class="glyphicon glyphicon-remove"></i></span>
-                                                    <span class="badge" ng-show="!$first" ng-click="ordenarItem($index,dia.Items)" title="Ordenar ítem"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                                                    <span class="badge" ng-show="!$first" ng-click="ordenarItem(item,dia.Items)" title="Ordenar ítem"><i class="glyphicon glyphicon-chevron-up"></i></span>
                                                     <img ng-src="@{{item.Imagen}}" alt="" width="50"> @{{item.Nombre}}
                                                 </li>
                                             </ul>
@@ -266,10 +266,13 @@
                     <div id="listaplanificadores" class="panel panel-default">
                         <div class="panel-heading heading-planificador">
                             <div class="row">
-                                <div class="col-xs-12">
+                                <div class="col-xs-8">
                                     @{{planificador.Nombre}} (@{{planificador.Fecha_inicio | date:'dd-MM-yyyy'}} - @{{planificador.Fecha_fin | date:'dd-MM-yyyy'}})
                                 </div>
-                                
+                                <div class="col-xs-3" style="text-align: right;">
+                                    <a href="/visitante/editarplanificador/@{{planificador.Id}}"><span class="glyphicon glyphicon-pencil" style="margin-right: 1em; cursor: pointer;" data-toggle="tooltip" data-placement="bottom"  title="Editar planificador"></span></a>
+                                    <span class="glyphicon glyphicon-remove" ng-click="eliminarPlanificador(planificador)" style="margin-right: 1em; cursor: pointer;" data-toggle="tooltip" data-placement="bottom"  title="Eliminar planificador"></span>
+                                </div>
                             </div>
 
 

@@ -12,6 +12,7 @@ angular.module('oferta.agenciasOperadoras', ["checklist-model","ofertaService"])
         ofertaServi.getOcuacionOperadora($scope.id).then(function (data) {
             $("body").attr("class", "cbp-spmenu-push")
             $scope.agencia = data.prestamo;
+            $scope.proveedor = data.proveedor;
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "No se realizo la solicitud, reinicie la página");
@@ -76,6 +77,7 @@ angular.module('oferta.agenciasOperadoras', ["checklist-model","ofertaService"])
             if (data.retornado != null) {
                 $scope.agencia = data.retornado;
                 $scope.agencia.Comercial = data.retornado.Comercial+'';
+                $scope.proveedor = data.proveedor;
             }
         }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
@@ -133,7 +135,7 @@ angular.module('oferta.agenciasOperadoras', ["checklist-model","ofertaService"])
                       }
                     
                   } else {
-                    window.location = "ruta";
+                    window.location = data.ruta;
                   }
                 });
             }else{

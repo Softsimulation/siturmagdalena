@@ -94,12 +94,14 @@ angular.module('eventos.crear', [])
         }
         if ($scope.portadaIMG != null) {
             fd.append("portadaIMG", $scope.portadaIMG[0]);
+            fd.append("portadaIMGText", $('#text-brcc-portadaIMG-0').val());
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
         if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
+                fd.append("imageText[]", $('#text-brcc-imagenes-'+i).val());
             }
         }
         fd.append('id', $scope.evento.id);

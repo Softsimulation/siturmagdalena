@@ -37,9 +37,11 @@ use App\Models\Plan_Santamarta;
 use App\Models\Actividad_Servicio;
 use App\Models\Provision_Alimento;
 use App\Models\Especialidad;
+use App\Models\Categoria_Proveedor_Con_Idioma;
 use App\Models\Capacidad_Alimento;
 use App\Models\Actividad_Deportiva;
 use App\Models\Tour;
+use App\Models\Proveedores_rnt;
 use DB;
 use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
@@ -113,13 +115,10 @@ class OfertaEmpleoController extends Controller
          return ["success" => true];
     }
     
-    
-    
-       public function getEncuestasoferta(){
+    public function getEncuestasoferta(){
         
         return view('ofertaEmpleo.ListadoEncuestastotal');
     }
-    
     
     public function getEncuestasrealizadastotales(){
  
@@ -130,6 +129,56 @@ class OfertaEmpleoController extends Controller
 
     }
     
+    
+        public function postGuardarproveedorrnt(Request $request)
+    {
+        $validator = \Validator::make($request->all(),[
+        
+            'id' => 'required|exists:proveedores_rnt,id',
+            'rnt'=>'required|max:50|unique:proveedores_rnt,numero_rnt,'.$request->id,
+        	'nombre' => 'required|max:455',
+            'idcategoria' => 'required|exists:categoria_proveedores,id',
+    	    'direccion' => 'required|max:455',
+    	    'nit'=>'required|max:150',
+    	    'email'=>'required|max:455',
+            
+        ],[
+            'id.required' => 'No existe el proveedor.',
+            'id.exists' => 'No existe el proveedor.',
+            'idcategoria.required' => 'No existe categoria del proveedor.',
+            'idcategoria.exists' => 'No existe categoria del proveedor.',
+          
+            ]
+        );
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        
+    	$proveedor = Proveedores_rnt::find($request->id);
+		$proveedor->categoria_proveedores_id = $request->idcategoria;
+		$proveedor->direccion = $request->direccion;
+		$proveedor->nit = $request->nit;
+	    $proveedor->numero_rnt = $request->rnt;
+		$proveedor->email = $request->email;
+		$proveedor->save();
+        	
+		$proveedorIdioma = $proveedor->idiomas->where('idioma_id',1)->first();
+		if($proveedorIdioma){
+			$proveedorIdioma->nombre = $request->nombre;
+			$proveedorIdioma->save();
+		}else{
+			Proveedores_rnt_idioma::create([
+    			'idioma_id' => 1,
+    			'proveedor_rnt_id' => $proveedor->id,
+    			'nombre' => $request->nombre
+    		]);
+		}
+       
+        $provedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt where id =".$request->id));
+       
+       return ["success"=>true,"proveedor" => $provedores];
+            
+    }
     
     
     public function getCrearencuesta(){
@@ -211,7 +260,8 @@ class OfertaEmpleoController extends Controller
     
     public function getListadornt(){
      $provedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
-      return ["success" => true, "proveedores"=> $provedores];
+     $categorias = Categoria_Proveedor_Con_Idioma::where("idiomas_id",1)->select("categoria_proveedores_id AS id","nombre")->get();
+      return ["success" => true, "proveedores"=> $provedores,"categorias"=>$categorias];
     }
     
     
@@ -495,10 +545,11 @@ class OfertaEmpleoController extends Controller
         $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$id)->first();
         
         $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
-        
+          $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
         $retorno = [
                 'empleo' => $empleo,
-                'url' => ""
+                'url' => "",
+                'proveedor'=>$data[0]
             ];
             
             return $retorno;
@@ -685,11 +736,13 @@ class OfertaEmpleoController extends Controller
         $empleo["Remuneracion"]  =  Remuneracion_Promedio::where("encuesta_id",$id)->get();
         
         $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
-            
+         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
           $retorno = [
                 'empleo' => $empleo,
                 'tipo_cargo' => $tipo_cargo,
-                  'url' => ""
+                 'url' => "",
+                 'proveedor' => $data[0]
+                  
             ];
         
 
@@ -697,12 +750,7 @@ class OfertaEmpleoController extends Controller
 
 
         
-         $retorno = [
-                'empleo' => $empleo,
-                'url' => ""
-            ];
-            
-            return $retorno;
+       
     }
     
     public function getCargardatosemplcaract($id = null)
@@ -732,11 +780,12 @@ class OfertaEmpleoController extends Controller
             $empleo["otrotipo"] = Capacitacion_Empleo::join("programas_capaciaciones",'capacitaciones_empleo.encuesta_id','=','programas_capaciaciones.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->where("tipo_programa_capacitacion_id",10)->pluck("otro")->first();
             $empleo["otromedio"] = Capacitacion_Empleo::join("medios_capacitaciones_encuestas",'capacitaciones_empleo.encuesta_id','=','medios_capacitaciones_encuestas.encuesta_id')->where("capacitaciones_empleo.encuesta_id",$id)->where("medio_capacitacion_id",6)->pluck("otro")->first();
             
-           
+             $dato =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
        
           $retorno = [
                 'empleo' => $empleo,
-                'data'=> $data
+                'data'=> $data,
+                'proveedor' => $dato[0]
                 
             ];
             
@@ -1518,22 +1567,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
         }
         
-        /*
-        CaracterizacionAgenciasViewModel enviar = new CaracterizacionAgenciasViewModel();
-            var agencia = (from encuesta in conexion.encuestas
-                           join viajes in conexion.viajes_turismos on encuesta.id equals viajes.encuestas_id
-                           join otro in conexion.viajes_turismos_otro on viajes.id equals otro.viajes_turismo_id into joined
-                           from otro in joined.DefaultIfEmpty()
-                           where encuesta.id == id
-                           select new CaracterizacionAgenciasViewModel
-                           {
-                               Id = encuesta.id,
-                               TipoServicios = viajes.servicios_agencias.Select(x => x.id).ToList(),
-                               Planes = viajes.ofreceplanes,
-                               Otro = otro.otro
-                           }).ToList();
-        return $servicios;*/
-        return $agenciaRetornar;
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        return ["agencia" => $agenciaRetornar, "proveedor" => $data[0]];
     }
     
     public function postGuardarcaracterizacion(Request $request)
@@ -1673,9 +1708,9 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $q->with('opcionesPersonasDestino')->get();
         }])->where('encuestas_id',$id)->first();
         
-        
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
 
-        return $agencia;
+        return ["agencia" => $agencia, "proveedor"=>$data[0]];
     }
     
     public function postGuardarofertaagenciaviajes(Request $request)
@@ -1684,27 +1719,30 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $validator = \Validator::make($request->all(),[
         
                 'id' => 'required|exists:encuestas,id',
-                'numero' => 'double|required',
-                'magdalena' => 'double|required|between:0,100',
-                'nacional' => 'double|required|between:0,100',
-                'internacional' => 'double|required|between:0,100',
+                'numero' => 'numeric',
+                'magdalena' => 'numeric|between:0,100',
+                'nacional' => 'numeric|between:0,100',
+                'internacional' => 'numeric|between:0,100',
                 
             ],[
                 'id.required' => 'Tuvo primero que haber creado una encuesta.',
                 'id.exists' => 'Tuvo primero que haber creado una encuesta.',
                 'numero.required' => 'El número total de personas que viajaron con planes a Magdalena es requerido.',
-                'numero.double' => 'El número total de personas que viajaron con planes a Magdalena debe ser de valor numérico.',
+                'numero.numeric' => 'El número total de personas que viajaron con planes a Magdalena debe ser de valor numérico.',
                 'magdalena.required' => 'El porcentaje comprado por residentes en el Magdalena es requerido.',
-                'magdalena.double' => 'El porcentaje comprado por residentes en el Magdalena debe ser de valor numérico.',
+                'magdalena.numeric' => 'El porcentaje comprado por residentes en el Magdalena debe ser de valor numérico.',
                 'magdalena.between' => 'El porcentaje comprado por residentes en el Magdalena debe ser menor o igual a 100.',
                 'nacional.required' => 'El porcentaje comprado por residentes fuera del Magdalena es requerido.',
-                'nacional.double' => 'El porcentaje comprado por residentes fuera del Magdalena debe ser de valor numérico.',
+                'nacional.numeric' => 'El porcentaje comprado por residentes fuera del Magdalena debe ser de valor numérico.',
                 'nacional.between' => 'El porcentaje comprado por residentes fuera del Magdalena debe ser menor o igual a 100.',
                 'internacional.required' => 'El porcentaje comprado por residentes en el extranjero es requerido.',
-                'internacional.double' => 'El porcentaje comprado por residentes en el extranjero debe ser de valor numérico.',
+                'internacional.numeric' => 'El porcentaje comprado por residentes en el extranjero debe ser de valor numérico.',
                 'internacional.between' => 'El porcentaje comprado por residentes en el extramjero debe ser menor o igual a 100.',
                 ]
-            ); 
+            );
+            if($validator->fails()){
+                return ["success"=>false,"errores"=>$validator->errors()];
+            }
             $errores = [];
             //return $request->personas;
             if($request->ventaPlanes == true){
@@ -1868,7 +1906,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $provision["sirvePlatos"] = $sirvePlatos;
         $provision["mesas"] = $mesas;
         $provision["asientos"] = $asientos;
-        return ["actividades_servicios"=>$actividades_servicios, "especialidades"=>$especialidades, "provision"=>$provision,"encuesta"=>$encuestaRteornar];
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        return ["actividades_servicios"=>$actividades_servicios, "especialidades"=>$especialidades, "provision"=>$provision,"encuesta"=>$encuestaRteornar, "proveedor" => $data[0]];
     }
     
     public function postGuardarcaralimentos(Request $request)
@@ -2010,7 +2049,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
             
         }
-        return ["capacidad"=>$capacidad];
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        return ["capacidad"=>$capacidad, "proveedor" => $data[0]];
     }
     
     public function getCaracterizacionagenciasoperadoras($id){
@@ -2049,7 +2089,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                     }    
                 }  
         }
-        return ['toures' => $toures, 'actividades' => $actividadesDeportivas, 'retornado' => $retornado];
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        return ['toures' => $toures, 'actividades' => $actividadesDeportivas, 'retornado' => $retornado, "proveedor"=>$data[0]];
     }
     
     public function postCrearcaracterizacionoperadora(Request $request){
@@ -2208,7 +2249,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                 }
             }
         }
-		return ["prestamo" => $prestamoCargar];
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+		return ["prestamo" => $prestamoCargar, "proveedor" => $data[0]];
     }
     
     public function postGuardarocupacionoperadora(Request $request){
@@ -2308,8 +2350,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
         }
         
-        
-        return ["alquiler" => $alquilerCargar];
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        return ["alquiler" => $alquilerCargar, "proveedor" => $data[0]];
     }
     
    public function getCargarcaracterizacionalquilervehiculos($id){
@@ -2338,9 +2380,9 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             }   
             }
         }
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
         
-        
-        return ["alquiler" => $alquilerCargar];
+        return ["alquiler" => $alquilerCargar, 'proveedor' => $data[0]];
     }
     
    public function postGuardarcaracterizacionalquilervehiculo(Request $request){
@@ -2513,7 +2555,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
        
         $encuesta = Encuesta::find($id);
         if($encuesta){
-       
+            $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
             $idEncuesta = $id;
           /*
             if( !alojamiento::where("encuestas_id",$id)->first() ){
@@ -2550,7 +2592,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                 $alojamiento["id"] = null;
             }
             
-            return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios, "encuesta"=>$encuesta  ];
+            return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios, "encuesta"=>$encuesta, "proveedor" => $data[0]  ];
             
         }
         
@@ -2729,21 +2771,19 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
     
-    
-    
-    
     public function postGuardarofertaalojamientos(Request $request){
     
         $validate = \ Validator::make($request->all(),
                     [ 
-                      "encuesta.id" => "required|exists:encuestas,id",
+                      "encuesta" => "required|exists:encuestas,id",
                       
                       "habitaciones"=>"array|max:1",
                       "habitaciones.*.tarifa" => "required_if:servicios.habitacion,true",
                       "habitaciones.*.numero_personas" => "required_if:servicios.habitacion,true",
                       "habitaciones.*.viajeros_locales" => "required_if:servicios.habitacion,true",
                       "habitaciones.*.viajeros_extranjeros" => "required_if:servicios.habitacion,true",
-                      "habitaciones.*.habitaciones_ocupadas" => "required_if:servicios.habitacion,true",
+                      "habitaciones.*.habitaciones_ocupadas" => "required_if:servicios.tiene_camas,false",
+                      "habitaciones.*.total_camas_ocupadas" => "required_if:servicios.tiene_camas,true",
                       "habitaciones.*.total_huespedes" => "required_if:servicios.habitacion,true",
                       
                       "apartamentos"=>"array|max:1",
@@ -2794,8 +2834,14 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $habitacion->numero_personas = $request->habitaciones[0]["numero_personas"];
             $habitacion->viajeros_locales = $request->habitaciones[0]["viajeros_locales"];
             $habitacion->viajeros_extranjeros = $request->habitaciones[0]["viajeros_extranjeros"];
-            $habitacion->habitaciones_ocupadas = $request->habitaciones[0]["habitaciones_ocupadas"];
+            if($request->habitaciones[0]["tiene_camas"]){
+            $habitacion->total_camas_ocupadas = $request->habitaciones[0]["total_camas_ocupadas"];
+            }
+            else{
+                $habitacion->habitaciones_ocupadas = $request->habitaciones[0]["habitaciones_ocupadas"];
+            }
             $habitacion->total_huespedes = $request->habitaciones[0]["total_huespedes"];
+            
             $habitacion->save();
         }
         
@@ -2845,7 +2891,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $cabana->save();
         }
         
-            $encuesta = Encuesta::where('id',$request->encuesta["id"])->first();
+            $encuesta = Encuesta::where('id',$request->encuesta)->first();
             $encuesta->oferta = true;
             $encuesta->save();
             
@@ -2871,11 +2917,12 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 
     }
     
+    
     public function postGuardaralojamientomensual(Request $request){
     
         $validate = \ Validator::make($request->all(),
                     [ 
-                      "encuesta.id" => "required|exists:encuestas,id",
+                      "encuesta" => "required|exists:encuestas,id",
                       
                       "habitaciones"=>"array|max:1",
                       "habitaciones.*.tarifa" => "required_if:servicios.habitacion,true",
@@ -2949,7 +2996,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }
         
         
-            $encuesta = Encuesta::where('id',$request->encuesta["id"])->first();
+            $encuesta = Encuesta::where('id',$request->encuesta)->first();
             $encuesta->oferta = true;
             $encuesta->save();
         
@@ -3159,7 +3206,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $encuestaRetornar["Comercial"] = $encuesta->actividad_comercial;
         $encuestaRetornar["NumeroDias"] = $encuesta->numero_dias;
         
-        return ["transporte"=>$transporte,"encuesta"=>$encuestaRetornar];
+         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        return ["transporte"=>$transporte,"encuesta"=>$encuestaRetornar, "proveedor" => $data[0]];
     }
     
     public function postGuardarcaracterizaciontransporte(Request $request)
@@ -3364,7 +3412,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $q->where('encuestas_id',$id);
         }])->get();
         
-        return ["oferta"=>$oferta, "ides"=>$ids];
+         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        return ["oferta"=>$oferta, "ides"=>$ids, "proveedor"=> $data[0]];
     }
     
     public function postGuardarofertatransporte(Request $request) {
@@ -3515,7 +3564,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     }
     
     public function getInfoProveedor($id, $bandera)
-        {
+    {
             $mes = "";
             $proveedor = "";
 

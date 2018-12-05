@@ -145,6 +145,11 @@
         					    <li role="none"><a role="menuitem" href="{{asset('administradoractividades')}}">Administrar actividades</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('administradorproveedores')}}">Administrar proveedores</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('administradoreventos')}}">Administrar eventos</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('administradorrutas')}}">Administrar rutas</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionacercade')}}">Acerca del departamento</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionrequisitos')}}">Requisitos de viaje</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('bolsaEmpleo/vacantes')}}">Bolsa de empleo</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('sliders/listadosliders')}}">Galería de imágenes</a></li>
         					</ul>
                         </li>
                         <li>
@@ -200,10 +205,13 @@
                             <a role="menuitem" href="{{asset('encuesta/listado')}}">Encuestas ADHOC</a>
                         </li>
                         <li>
-                            <a role="menuitem" href="{{asset('/publicaciones/listadoadmin')}}">Publicaciones</a>
+                            <a role="menuitem" href="{{asset('/publicaciones/listadoadmin')}}">Biblioteca digital</a>
                         </li>
                         <li>
                             <a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" href="{{asset('/exportacion')}}">Exportaciones</a>
                         </li>
                         <li>
                             <a role="menuitem" href="#menuPaises" aria-haspopup="true" aria-expanded="false">Administrar países</a>

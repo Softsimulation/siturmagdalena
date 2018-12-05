@@ -280,7 +280,7 @@
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="linea in data.lineas | filter:{tipo_nivel:true}">
                             <label>
-                                <input type="checkbox" name="linea" checklist-model="empleo.lineasadmin" checklist-value="linea.id"> @{{linea.nombre}}
+                                <input type="checkbox" name="linea" checklist-model="empleo.lineasadmin"  ng-disabled = "nivel1(linea.id)"  checklist-value="linea.id"> @{{linea.nombre}}
                                  
                                   
                             </label>
@@ -300,7 +300,7 @@
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="linea in data.lineas | filter:{tipo_nivel:false}">
                             <label>
-                                <input type="checkbox" name="lineaop" checklist-model="empleo.lineasopvt" checklist-value="linea.id"> @{{linea.nombre}}
+                                <input type="checkbox" name="lineaop" ng-disabled = "nivel2(linea.id)" checklist-model="empleo.lineasopvt"checklist-value="linea.id"> @{{linea.nombre}}
                                  
                                   
                             </label>
@@ -332,7 +332,7 @@
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="tipo in data.tipos">
                             <label>
-                                <input type="checkbox" name="tipo" checklist-model="empleo.tipos" checklist-value="tipo.id"> @{{tipo.nombre}}
+                                <input type="checkbox" name="tipo" ng-disabled = "tipovalue(tipo.id)" checklist-model="empleo.tipos" checklist-value="tipo.id"> @{{tipo.nombre}}
                                  <input type="text" ng-if="tipo.id == 10" style="display: inline-block;" class="form-control" name ="opcion@{{tipo.id}}" id="opcion@{{tipo.id}}" ng-disabled="!existeTipo(tipo.id)" ng-model="empleo.otrotipo"  ng-required="existeTipo(tipo.id)"/>
                                   <span ng-show="empleoForm.$submitted || empleoForm.opcion@{{tipo.id}}.$touched">
                                       <span class="label label-danger" ng-show="empleoForm.opcion@{{tipo.id}}.$error.required">* Debe escribir otro</span>
@@ -368,7 +368,7 @@
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="medio in data.medios">
                             <label>
-                                <input type="checkbox" name="medio" checklist-model="empleo.medios" checklist-value="medio.id"> @{{medio.nombre}}
+                                <input type="checkbox" name="medio" ng-disabled ="mediovalue(medio.id)" checklist-model="empleo.medios" checklist-value="medio.id"> @{{medio.nombre}}
                                  <input type="text" ng-if="medio.id == 6" style="display: inline-block;" class="form-control" name ="opcion@{{medio.id}}" id="opcion@{{medio.id}}" ng-disabled="!existeOpcion(medio.id)" ng-model="empleo.otromedio"  ng-required="existeOpcion(medio.id)"/>
                                   <span ng-show="empleoForm.$submitted || empleoForm.opcion@{{medio.id}}.$touched">
                                       <span class="label label-danger" ng-show="empleoForm.opcion@{{medio.id}}.$error.required">* Debe escribir otro</span>

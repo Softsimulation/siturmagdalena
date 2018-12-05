@@ -117,11 +117,56 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
     proveedorServi.CargarListadoRnt().then(function(data){
                                  $("body").attr("class", "cbp-spmenu-push");
                                 $scope.proveedores = data.proveedores;
+                                $scope.categorias = data.categorias;
                                
                 }).catch(function () {
             $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         });   
+   
+
+   $scope.abrirEditar = function (proveedor) {
+        $scope.item = proveedor;
+        $scope.proveedorEdit = angular.copy(proveedor);
+        $scope.proveedorEditForm.$setPristine();
+        $scope.proveedorEditForm.$setUntouched();
+        $scope.proveedorEditForm.$submitted = false;
+        $scope.errores = null;
+        $('#modalEditarProveedor').modal('show');
+    }
+   
+   
+   $scope.guardar = function(){
+              if (!$scope.proveedorEditForm.$valid) {
+            swal("Error", "Formulario incompleto corrige los errores", "error")
+            return
+        }
+
+        $("body").attr("class", "cbp-spmenu-push charging")
+        proveedorServi.EditarProveedor($scope.proveedorEdit).then(function (data) {
+        $("body").attr("class", "cbp-spmenu-push");
+           if (data.success == true) {
+                  swal("Realizado", "Se realizo correctamente la operacion", "success")
+                     $scope.item.nombre = data.proveedor[0].nombre;
+                     $scope.item.direccion = data.proveedor[0].direccion;
+                     $scope.item.idcategoria = data.proveedor[0].idcategoria;
+                     $scope.item.subcategoria = data.proveedor[0].subcategoria;
+                     $scope.item.categoria = data.proveedor[0].categoria;
+                     $scope.item.idtipo = data.proveedor[0].idtipo;
+                     
+                     $('#modalEditarProveedor').modal('hide');
+                } else {
+                   
+                    $scope.errores = data.errores;
+                    swal("Error", "Error en la carga, por favor recarga la pagina", "error")
+
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
+        
+    }
    
 
    
@@ -163,13 +208,13 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
                          window.location.href = "/ofertaempleo/caracterizacionagenciasoperadoras/"+obj.id;
                     }
                      if(obj.categoria_id == 21){
-                         window.location.href = "/ofertaempleo/caracterizaciontransporte/"+obj.id;
+                         window.location.href = "/ofertaempleo/caracterizacionalquilervehiculo/"+obj.id;
                     }
                      if(obj.categoria_id == 22 || obj.categoria_id == 28){
                          window.location.href = "/ofertaempleo/caracterizaciontransporte/"+obj.id;
                     }
                      if(obj.categoria_id == 12){
-                         window.location.href = "/ofertaempleo/caracterizacionalimentos/";+obj.id
+                         window.location.href = "/ofertaempleo/caracterizacionalimentos/"+obj.id;
                     }
                    if(obj.categoria_id == 11 || obj.categoria_id == 16 || obj.categoria_id == 27 ){
                          window.location.href = "/ofertaempleo/caracterizacionalimentos/"+obj.id;
@@ -196,7 +241,7 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
                          window.location.href = "/ofertaempleo/ofertatransporte/"+obj.id;
                     }
                      if(obj.categoria_id == 12){
-                         window.location.href = "/ofertaempleo/capacidadalimentos/";+obj.id
+                         window.location.href = "/ofertaempleo/capacidadalimentos/"+obj.id;
                     }
                    if(obj.categoria_id == 11){
                          window.location.href = "/ofertaempleo/capacidadalimentos/"+obj.id;
