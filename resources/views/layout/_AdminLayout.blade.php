@@ -142,7 +142,6 @@
                     <ul role="menubar">
                         <li>
                             <a role="menuitem" href="#menuPromocion" aria-haspopup="true" aria-expanded="false">Promoción</a>
-<<<<<<< HEAD
                            
                            <ul role="menu" id="menuPromocion" aria-label="Promoción">
                                 <li role="none"><a role="menuitem" href="{{asset('/administradordestinos')}}">Administrar destinos</a></li>
@@ -151,30 +150,14 @@
         					    <li role="none"><a role="menuitem" href="{{asset('/administradorproveedores')}}">Administrar proveedores</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('/administradoreventos')}}">Administrar eventos</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('http://demo.situratlantico.info/administradorrutas')}}">Administrar rutas turísticas</a></li>
-        					    <li><a role="menuitem" href="{{asset('/InformacionDepartamento/configuracionacercade')}}">Acerca de</a></li>
+        					    <li><a role="menuitem" href="{{asset('/InformacionDepartamento/configuracionacercade')}}">Acerca del departamento</a></li>
         					    <li><a role="menuitem" href="{{asset('/InformacionDepartamento/configuracionrequisitos')}}">Requisitos de viaje</a></li>
         					    <li><a role="menuitem" href="{{asset('o/publicaciones/listadoadmin')}}">Biblioteca Digital</a></li>
         					    <li><a role="menuitem" href="{{asset('/informes/configuracion')}}">Informes</a></li>
         					    <li><a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a></li>
         					    <li><a role="menuitem" href="{{asset('/bolsaEmpleo/vacantes')}}">Bolsa de empleo</a></li>
-        					   
-        					    
-        					    
-=======
-                            <ul role="menu" id="menuPromocion" aria-label="Promoción">
-                                <li role="none"><a role="menuitem" href="{{asset('administradordestinos')}}">Administrar destinos</a></li>
-                                <li role="none"><a role="menuitem" href="{{asset('administradoratracciones')}}">Administrar atracciones</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('administradoractividades')}}">Administrar actividades</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('administradorproveedores')}}">Administrar proveedores</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('administradoreventos')}}">Administrar eventos</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('administradorrutas')}}">Administrar rutas</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionacercade')}}">Acerca del departamento</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionrequisitos')}}">Requisitos de viaje</a></li>
-        					    <li role="none"><a role="menuitem" href="{{asset('bolsaEmpleo/vacantes')}}">Bolsa de empleo</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('sliders/listadosliders')}}">Galería de imágenes</a></li>
->>>>>>> origin/release
-        					</ul>
-                           
+        					  </ul>
                          
                         </li>
                         <li class="">
