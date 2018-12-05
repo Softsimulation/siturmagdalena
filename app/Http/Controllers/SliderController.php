@@ -188,7 +188,7 @@ class SliderController extends Controller
                 case 3:
                     
                     $slider->enlace_acceso = "/destinos/ver/".$request->destinoIdSlider;
-                    return $slider->enlace_acceso;
+                    //return $slider->enlace_acceso;
                     break;
                 case 4:
                     $slider->enlace_acceso = "/eventos/ver/".$request->eventoIdSlider;
