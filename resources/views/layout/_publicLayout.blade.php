@@ -61,6 +61,15 @@
             margin: 0;
             padding-left: 1rem;
         }
+        .weather{
+            margin:0 .5rem;
+            display: flex;
+            align-items: center;
+        }
+        .weather span:first-child{
+            font-size: 1.5rem;
+            margin-right: .25rem;
+        }
         /*main img{
             background-image: url('/img/bg-img.jpg');
         }*/
@@ -108,6 +117,30 @@
             $('#preloader').delay(250).fadeOut("fast");
         });
         
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.1.0/jquery.simpleWeather.min.js"></script>
+    <script>
+        // v3.1.0
+        //Docs at http://simpleweatherjs.com
+        $(document).ready(function() {
+          $.simpleWeather({
+            location: 'Magdalena, Colombia',
+            woeid: '',
+            unit: 'c',
+            success: function(weather) {
+            //   html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
+            //   html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+            //   html += '<li class="currently">'+weather.currently+'</li>';
+            //   html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';
+          
+              $("#weatherPluginJs").html(weather.temp+'&deg;'+weather.units.temp);
+            },
+            error: function(error) {
+              $("#weatherPluginJs").html('error');
+            }
+          });
+        });
+
     </script>
       <!-- Global site tag (gtag.js) -Código de seguimiento Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106392208-1"></script>

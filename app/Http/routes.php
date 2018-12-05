@@ -67,9 +67,7 @@ Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
 
-Route::get('/', function () {
-    return view('home.index');
-});
+
 
 
 
@@ -136,3 +134,15 @@ Route::group(['middleware' => 'cors'], function(){
 
 Route::controller('/visitante', 'VisitanteController');
 
+Route::group(['middleware' => ['web']], function () {
+
+    Route::get('/lang/{lang}', function ($lang) {
+        session(['lang' => $lang]);
+        return \Redirect::back();
+    })->where([
+        'lang' => 'en|es'
+    ]);
+
+    Route::controller('/','HomeController');
+    
+});

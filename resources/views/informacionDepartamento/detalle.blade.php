@@ -18,25 +18,30 @@ function parse_yturl($url)
         .carousel-inner:after{
             background-color: transparent;
         }
+        header{
+            margin-bottom: 2%;
+        }
+        .title-section{
+            color: #004a87;
+            text-align: center;
+        }
     </style>
 @endsection
 
 @section('meta_og')
-<meta property="og:title" content="{{$informacion->titulo}}. Miralo en SITUR Cesar" />
+<meta property="og:title" content="{{$informacion->titulo}}. Miralo en SITUR Magdalena" />
 <meta property="og:image" content="{{asset('/img/brand/96.png')}}" />
 @endsection
 
 @section('content')
-<div class="header-list without-options">
-        <div class="container">
-            <h2 class="title-section"><small class="d-block">Información del departamento</small> {{$informacion->titulo}}</h2>
-            
-        </div>
-        
-    </div>
+
 
     <div class="container">
-    
+        <ol class="breadcrumb">
+          <li>{{trans('resources.menu.conoceElMagdalena')}}</li>
+          <li class="active">{{$informacion->titulo}}</li>
+        </ol>
+        <h2 class="title-section"><small class="btn-block">{{trans('resources.menu.conoceElMagdalena')}}</small> {{$informacion->titulo}}</h2>    
         @if(count($informacion->imagenes) > 0)
 
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -91,7 +96,7 @@ function parse_yturl($url)
             <span class="ion-social-facebook" aria-hidden="true"></span>
             <span class="d-none d-sm-inline-block">Facebook</span>
         </a>
-        <a href="https://twitter.com/home?status= {{$informacion->titulo}} por SITUR Cesar. Lee más en {{\Request::url()}}" role="button" class="btn btn-info" title="Compartir en Twitter" target="_blank" rel="noopener noreferrer">
+        <a href="https://twitter.com/home?status= {{$informacion->titulo}} por SITUR Magdalena. Lee más en {{\Request::url()}}" role="button" class="btn btn-info" title="Compartir en Twitter" target="_blank" rel="noopener noreferrer">
             <span class="ion-social-twitter" aria-hidden="true"></span>
             <span class="d-none d-sm-inline-block">Twitter</span>
         </a>

@@ -111,7 +111,7 @@
     <a href="#">¿Qué es SITUR?</a>
     <div class="title">
         <div class="container">
-            <h2>SITUR Capítulo Magdalena</h2>    
+            <h2>SITUR Magdalena</h2>    
         </div>
     </div>
     
