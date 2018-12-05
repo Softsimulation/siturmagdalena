@@ -356,6 +356,9 @@
                                     <li role="none">
                                         <a role="menuitem" href="/indicadores/secundarios">Estadisticas secundarias</a>
                                     </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/MuestraMaestra/detalles">Verificación de proveedores en RNT</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li>
