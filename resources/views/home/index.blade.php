@@ -66,37 +66,37 @@
         <li>
             <a href="/indicadores/receptor">
                 <span class="stats stats-receptor" aria-hidden="true"></span>
-                Turismo receptor
+                {{trans('resources.estadisticas.turismoReceptor')}}
             </a>
         </li>
         <li>
             <a href="/indicadores/interno">
                 <span class="stats stats-interno" aria-hidden="true"></span>
-                Turismo interno
+                {{trans('resources.estadisticas.turismoInterno')}}
             </a>
         </li>
         <li>
             <a href="/indicadores/emisor">
                 <span class="stats stats-emisor" aria-hidden="true"></span>
-                Turismo emisor
+                {{trans('resources.estadisticas.turismoEmisor')}}
             </a>
         </li>
         <li>
             <a href="/indicadores/oferta">
                 <span class="stats stats-oferta" aria-hidden="true"></span>
-                Oferta turística
+                {{trans('resources.estadisticas.ofertaTuristica')}}
             </a>
         </li>
         <li>
             <a href="/indicadores/empleo">
                 <span class="stats stats-empleo" aria-hidden="true"></span>
-                Impacto en el empleo
+                {{trans('resources.estadisticas.impactoEnElEmpleo')}}
             </a>
         </li>
         <li>
             <a href="/indicadores/sostenibilidad">
                 <span class="stats stats-sostenible" aria-hidden="true"></span>
-                Sostenibilidad turística
+                {{trans('resources.estadisticas.sostenibilidadTuristica')}}
             </a>
         </li>
         <li>
@@ -148,6 +148,11 @@
         </li>
     </ul>
 </div>
+
+@for($i = 0; $i < count($sugeridos); $i++)
+    <div>$sugeridos[$i]</div>
+@endfor
+
 <div id="statsMap">
     <!-- *AQUI VA EL SVG O EL PLUGIN QUE SE HAGA PARA EL MAPA Y SUS INDICADORE -->
     

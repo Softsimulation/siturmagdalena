@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html @if(Config::get('app.locale') == 'es')lang="es-CO"@endif @if(Config::get('app.locale') == 'en')lang="en-US"@endif>
 <head>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
