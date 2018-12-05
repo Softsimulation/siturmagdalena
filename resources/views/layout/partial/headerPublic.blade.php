@@ -59,7 +59,20 @@
                                 <a role="menuitem" href="/">Inicio</a>
                             </li>
                             <li>
-                                <a role="menuitem" href="#">Estadísticas</a>
+                                <a role="menuitem" href="#menu-planificador" aria-haspopup="true" aria-expanded="false">Conoce el Magdalena</a>
+                                <ul role="menu" aria-label="menu-planificador">
+                                    <li role="none">
+                                        <a role="menuitem" href="/Departamento/AcercaDe">Acerca del departamento</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/Departamento/Requisitos">Requisitos de viaje</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/PlanificaTuViaje">Planifica tu viaje</a>
+                                    </li>
+                                    
+                                    
+                                </ul>
                             </li>
                             <li>
                                 <a role="menuitem" href="#menu-experiencias" aria-haspopup="true" aria-expanded="false">Experiencias</a>
@@ -316,15 +329,52 @@
                                     </li>
                                 </ul>
                             </li>
+                            <!--<li>-->
+                            <!--    <a role="menuitem" href="/promocionNoticia/listado">Noticias</a>-->
+                            <!--</li>-->
                             <li>
-                                <a role="menuitem" href="/promocionNoticia/listado">Noticias</a>
+                                <a role="menuitem" href="#menu-estadisticas" aria-haspopup="true" aria-expanded="false">Estadísticas</a>
+                                <ul role="menu" aria-label="menu-estadisticas">
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/receptor">Turismo receptor</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/interno">Turismo interno</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/emisor">Turismo emisor</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/oferta">Oferta turística</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/empleo">Impacto en el empleo</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/sostenibilidad">Sostenibilidad turística</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/secundarios">Estadisticas secundarias</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li>
-                                <a role="menuitem" href="/promocionPublicacion/listado">Publicaciones</a>
+                                <a role="menuitem" href="#menu-publicaciones" aria-haspopup="true" aria-expanded="false">Publicaciones</a>
+                                <ul role="menu" aria-label="menu-publicaciones">
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionNoticia/listado"><span class="mdi mdi-newspaper hidden-xs hidden-sm" aria-hidden="true"></span> Noticias</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionInforme/listado"><span class="mdi mdi-file-chart hidden-xs hidden-sm" aria-hidden="true"></span> Informes</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionPublicacion/listado"><span class="mdi mdi-library hidden-xs hidden-sm" aria-hidden="true"></span> Biblioteca digital</a>
+                                    </li>
+                                    
+                                    
+                                </ul>
                             </li>
-                            <li>
-                                <a role="menuitem" href="#">Planifica tu viaje</a>
-                            </li>
+                            
                             <li>
                                 <a role="menuitem" href="/Mapa">Mapa</a>
                             </li>
