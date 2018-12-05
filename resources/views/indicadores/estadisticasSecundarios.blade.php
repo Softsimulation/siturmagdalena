@@ -47,6 +47,10 @@
         padding:0!important;
         padding-top:20px !important;
     }
+    .icono{
+        height: 22px;
+        margin-right: 5px;
+    }
     .btn-outline-primary{
         background-color: white;
         color: #004A87;
@@ -85,12 +89,12 @@
 <h2 class="text-center"><small class="btn-block">Estadísticas secundarias</small> @{{indicador.nombre}}</h2>
 <hr>
 
-<div class="dropdown text-center" ng-init="indicadorSelectId={{$indicadores[0]['id']}}">
+<div class="dropdown text-center" ng-init="indicadorSelect={{$indicadores[0]['id']}}">
   <button type="button" class="btn btn-outline-primary text-uppercase dropdown-toggle"id="dropdownMenuIndicadores" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ver más estadísticas <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
   
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuIndicadores" ng-init="buscarData( {{$indicadores[0]['id']}} )">
     @foreach ($indicadores as $indicador)
-        <li ng-class="{'active': (indicadorSelectId=={{$indicador['id']}}) }">
+        <li ng-class="{'active': (indicadorSelect=={{$indicador['id']}}) }">
           <button type="button" ng-click="changeIndicador({{$indicador['id']}})">{{$indicador["nombre"]}}</button>
         </li>
     @endforeach
@@ -98,18 +102,11 @@
   </ul>
 </div>
 <br>
+
 <div ng-if="indicador == undefined" class="text-center">
-    <img src="/img/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
+    <img src="/res/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
 </div>
-<div class="card" ng-show="indicador != undefined">
-    
-    <!--<ul class="list-group" ng-init="buscarData( {{$indicadores[0]['id']}} )" >-->
-    <!--    @foreach ($indicadores as $indicador)-->
-    <!--        <li class="list-group-item" ng-click="changeIndicador({{$indicador['id']}})" ng-class="{'active': (indicadorSelectId=={{$indicador['id']}}) }" role="button">-->
-    <!--          {{$indicador["nombre"]}}-->
-    <!--        </li>-->
-    <!--    @endforeach-->
-    <!--</ul>-->
+<div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" ng-show="indicador != undefined">
     
     
     <div class="panel panel-default">
@@ -129,15 +126,15 @@
                         <div class="input-group" id="selectGrafica" >
                             <label class="input-group-addon">Gráfica </label>
                             <div class="btn-group" style="width: 100%;">
-                                <button type="button" class="btn btn-default btn-select" style="height:34px;" >
-                                   <i class="material-icons">@{{graficaSelect.icono}}</i> @{{graficaSelect.nombre || " "}}
+                                <button type="button" class="btn btn-default btn-select">
+                                   <img src="@{{graficaSelect.icono}}" class="icono" ></img> @{{graficaSelect.nombre || " "}}
                                 </button>
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret "></span>
                                 </button>
                                 <ul class="dropdown-menu menuTipoGrafica" role="menu">
                                     <li ng-repeat="item in indicador.graficas" ng-click="changeTipoGrafica(item)"  >
-                                        <a> <i class="material-icons">@{{item.icono}}</i> @{{item.nombre}}</a>
+                                        <a> <img src="@{{item.icono}}" class="icono" ></img> @{{item.nombre}}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -168,11 +165,6 @@
               chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colores" chart-dataset-override="override" >
             </canvas>
             
-            <!--
-            <a class="item-footer" style="float:left;margin-bottom:-20px;" href data-toggle="modal" data-target="#modalData"  >
-                <i class="material-icons">table_chart</i> Tabla de datos
-            </a>
-            -->
             <a class="item-footer" style="float:right;margin-right: 10px;" href="http://www.citur.gov.co/" target="_blank"  >
                 <img src="/Content/image/presentacion_CITUR-01.png" width="65">
             </a>
@@ -185,12 +177,12 @@
             <div class="panel-heading">
                 <i class="material-icons">table_chart</i> <span id="tituloIndicadorGrafica" > @{{tituloIndicadorGrafica}} </span>
                 <a href id="descargarTABLA" >
-                     <i class="material-icons">picture_as_pdf</i> 
+                     <img src="/Content/graficas/excel.png" class="icono" ></img>
                 </a>
             </div>
-            <div class="panel-body" id="customers" style="overflow-x: auto;width: 100%;margin-right: 0;">
+            <div class="panel-body" id="customers" style="overflow-x: auto;width: 100%;margin-right: 0;" >
                 
-                <table class="table table-striped" ng-if="!series"   >
+                <table class="table table-striped" ng-if="!series" >
                     <thead>
                       <tr>
                         <th>@{{indicador.idiomas[0].eje_x}} </th>
@@ -231,27 +223,6 @@
     
 </div>
 
-<!--
-<div class="modal" tabindex="-1" role="dialog" id="modalData" >
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"> @{{indicador.idiomas[0].nombre}} </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
--->
 
 @endsection
 
@@ -263,9 +234,10 @@
     <script src="{{asset('/js/plugins/jspdf.min.js')}}"></script>
     <script src="{{asset('/js/plugins/Chart.min.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-chart.min.js')}}"></script>
-   
+    <script src="{{asset('/js/plugins/chartsjs-plugin-data-labels.js')}}"></script>
+    <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
     <script src="{{asset('/js/indicadores/appIndicadores.js')}}"></script>
-    <script src="{{asset('/js/indicadores/servicios.js')}}"></script> 
+    <script src="{{asset('/js/indicadores/servicios.js')}}"></script>   
     
     <script>
     
@@ -299,6 +271,23 @@
         
         $("#descargarTABLA").on("click", function(){ 
             
+            var htmls = "";
+            var uri = 'data:application/vnd.ms-excel;base64,';
+            var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'; 
+            var base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) };
+            var format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }); };
+
+            htmls = $("#customers").html()
+
+            var ctx = { worksheet : 'Worksheet', table : htmls };
+
+            var link = document.createElement("a");
+            link.download = "datos.xls";
+            link.href = uri + base64(format(template, ctx));
+            link.click();
+
+            
+            /*
             var pdf = new jsPDF('l', 'pt', 'letter');
             pdf.text(20, 20, $("#tituloIndicadorGrafica").html() );
 
@@ -314,7 +303,7 @@
                 },
                 margins
             );
-            
+            */
         });
         
         $("#descargarGraficaTabla").on("click", function(){ 
