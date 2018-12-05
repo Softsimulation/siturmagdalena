@@ -140,14 +140,14 @@
                 <div class="row">
                     <label><span class="asterisk">*</span> Imagen de portada</label>
                     <div class="col-sm-12">
-                        <file-input ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
+                        <file-input text ng-model="portadaIMG" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="portadaIMG" label="Seleccione la imagen de portada."></file-input>
                     </div>
                 </div>
                 <div>
                     <br>
                     <label>Galería de imágenes</label>
                     <div class="col-sm-12">
-                        <file-input ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
+                        <file-input text ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes de la atracción." multiple max-files="5"></file-input>
                     </div>
                 </div>
                 <div class="row">

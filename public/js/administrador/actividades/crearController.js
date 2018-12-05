@@ -63,23 +63,28 @@ angular.module('actividades.crear', [])
         }
         if ($scope.portadaIMG != null) {
             fd.append("portadaIMG", $scope.portadaIMG[0]);
+            fd.append("portadaIMGText", $('#text-brcc-portadaIMG-0').val());
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
         if ($scope.imagenes != null) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
+                fd.append("imageText[]", $('#text-brcc-imagenes-'+i).val());
             }
         }
         fd.append('id', $scope.actividad.id);
         fd.append('video_promocional', $("#video_promocional").val());
+        $("body").attr("class", "cbp-spmenu-push charging");
         actividadesServi.postGuardarmultimedia(fd).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function (){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }
