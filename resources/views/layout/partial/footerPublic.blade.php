@@ -24,10 +24,10 @@
         				<a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
 	                </div>
 	                <p>O suscríbete a nuestro boletín de noticias</p>
-	                <div class="row" style="margin: 0; margin-bottom: 1rem;">
+	                <div class="row" style="text-align:center; margin-bottom: 1rem;">
 			        	<div class="col-xs-12">
 			        		<form name="guardarSuscriptor" class="form-inline" action="/suscriptores/guardarsuscriptor" method="post">
-			        			<div class="form-group" style="width: 70%;">
+			        			<div class="form-group" style="width: 70%;display: inline-block;">
 			        				<label class="sr-only">Correo electrónico</label>
 		                            <input type="email" class="form-control" style="width: 100%;" name="emailSuscriptor" id="emailSuscriptor" required maxlength="255" placeholder="Email"/>
 									

@@ -63,15 +63,13 @@
             height: 300px;
         }   
         .tiles .tile:not(.inline-tile){
-            width: calc(100% - 1rem)!important;
-            flex-grow: 1;
+            width: calc(50% - 1rem)!important;
         }   
         
     }
     @media only screen and (min-width: 992px) {
         .tiles .tile:not(.inline-tile){
-            width: calc(50% - 1rem)!important;
-            flex-grow: 1;
+            width: calc(33.3% - 1rem)!important;
         }    
         .tile .tile-img .text-overlap h3{
             font-size: 1.25rem;
@@ -136,42 +134,44 @@
         <a href="/promocionInforme/listado" class="btn btn-default">Limpiar filtros</a>
     </div>
     @endif
-    @if ($informes != null || count($informes) > 0)
-        @foreach ($informes as $informe)
-            Tipo de informe : {{$informe->tipoInforme}}
-            <br>
-            Categoría de informe : {{$informe->categoriaInforme}}
-            <br>
-            Autores : {{$informe->autores}}
-            <br>
-            Título : {{$informe->tituloInforme}}
-            <br>
-            Descripción : {{$informe->descripcion}}
-            <br>
-            Fecha de creación : {{$informe->fecha_creacion}}
-            <br>
-            Fecha de publicación : {{$informe->fecha_publicacion}}
-            <br>
-            Portada : {{$informe->portada}}
-            <br>
-            <a target="_blank" href="{{$informe->ruta}}">Ver PDF</a>
-            <br>
-            <a href="ver/{{$informe->id}}">Ver más de informe</a>
-        @endforeach
-    @endif
+    <!--@if ($informes != null || count($informes) > 0)-->
+    <!--    @foreach ($informes as $informe)-->
+    <!--        Tipo de informe : {{$informe->tipoInforme}}-->
+    <!--        <br>-->
+    <!--        Categoría de informe : {{$informe->categoriaInforme}}-->
+    <!--        <br>-->
+    <!--        Autores : {{$informe->autores}}-->
+    <!--        <br>-->
+    <!--        Título : {{$informe->tituloInforme}}-->
+    <!--        <br>-->
+    <!--        Descripción : {{$informe->descripcion}}-->
+    <!--        <br>-->
+    <!--        Fecha de creación : {{$informe->fecha_creacion}}-->
+    <!--        <br>-->
+    <!--        Fecha de publicación : {{$informe->fecha_publicacion}}-->
+    <!--        <br>-->
+    <!--        Portada : {{$informe->portada}}-->
+    <!--        <br>-->
+    <!--        <a target="_blank" href="{{$informe->ruta}}">Ver PDF</a>-->
+    <!--        <br>-->
+    <!--        <a href="ver/{{$informe->id}}">Ver más de informe</a>-->
+    <!--    @endforeach-->
+    <!--@endif-->
     
     @if ($informes != null && count($informes) > 0)
     <div class="tiles">
         @foreach ($informes as $informe)
-        <div class="tile @if(strlen($informe->tituloInforme) >= 200 || strlen($informe->descripcion) > 230) two-places @endif">
+        <div class="tile">
             <div class="tile-img @if(!$informe->portada) no-img @endif">
                 @if($informe->portada)
                 <img src="{{$informe->portada}}" alt="" role="presentation">
                 @else
                 <img src="/img/news.png" alt="" role="presentation">
                 @endif
-                <div class="text-overlap">
-                    <a href="/promocionInforme/listado/?tipoInforme={{$informe->tipoInforme}}"><span class="label label-info">{{$informe->tipoInforme}}</span></a>
+                <div class="text-overlap" style="flex-direction: column; align-items: end;">
+                    <span class="label label-info" style="margin-bottom: 1rem;">{{$informe->tipoInforme}}</span>
+                    
+                    <span class="label label-info">{{$informe->categoriaInforme}}</span>
                 </div>
             </div>
             <div class="tile-body">
@@ -189,7 +189,7 @@
                 <p class="text-muted">{{$informe->descripcion}}</p>
                 <div class="text-right">
                     <!--<a href="/promocionInforme/ver/{{$informe->id}}" class="btn btn-xs btn-link">Descargar PDF</a>-->
-                    <a href="{{$informe->ruta}}" target="_blank" class="btn btn-xs btn-link">Descargar PDF</a>
+                    <a href="{{$informe->ruta}}" target="_blank" class="btn btn-xs btn-success">Descargar PDF</a>
                 </div>
             </div>
         </div>
