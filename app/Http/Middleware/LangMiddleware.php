@@ -15,7 +15,6 @@ class LangMiddleware
      */
     public function handle($request, Closure $next)
     {
-        
         if (!empty(session('lang'))) {
             \App::setLocale(session('lang'));
         }

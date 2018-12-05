@@ -54,15 +54,17 @@ return [
             "noticias" => "News",
             "informes" => "Reports",
             "bibliotecaDigital" => "Digital library"
-        ]
+        ],
+        "estadisticas" => "Stats"
     ],
     "estadisticas" => [
         "turismoReceptor" => "Inbound tourism",
-        "turimoEmisor" => "Outbound tourism",
+        "turismoEmisor" => "Outbound tourism",
         "turismoInterno" => "Domestic tourism",
         "ofertaTuristica" => "Tourism supply",
         "impactoEnElEmpleo" => "Employment impact",
-        "sostenibilidadTuristica" => "Sustainable Tourism"
+        "sostenibilidadTuristica" => "Sustainable Tourism",
+        "estadisticasSecundarias" => "Secondary statistics"
     ],
     "mapa" => "Map"
     

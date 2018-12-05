@@ -73,15 +73,18 @@ return [
             "noticias" => "Noticias",
             "informes" => "Informes",
             "bibliotecaDigital" => "Biblioteca digital"
-        ]
+        ],
+        "estadisticas" => "Estadísticas"
+        
     ],
     "estadisticas" => [
         "turismoReceptor" => "Turismo receptor",
-        "turimoEmisor" => "Turismo emisor",
+        "turismoEmisor" => "Turismo emisor",
         "turismoInterno" => "Turismo interno",
         "ofertaTuristica" => "Oferta turística",
         "impactoEnElEmpleo" => "Impacto en el empleo",
-        "sostenibilidadTuristica" => "Sostenibilidad turística"
+        "sostenibilidadTuristica" => "Sostenibilidad turística",
+        "estadisticasSecundarias" => "Estadísticas secundarias"
     ],
     "mapa" => "Mapa"
     
