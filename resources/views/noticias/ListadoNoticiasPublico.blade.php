@@ -72,6 +72,18 @@
     .tile .tile-img, .tiles .tile .tile-img {
         height: 280px;
     }
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+    .carousel-inner>.item>img {
+        min-height: 100%;
+        min-width: 100%;
+        height: auto;
+        max-height: none;
+        max-width: none;
+    }
     @media only screen and (min-width: 768px) {
         .tile .tile-img img{
             width: 100%;
@@ -82,7 +94,9 @@
         .tiles .tile:not(.inline-tile){
             width: calc(100% - 1rem)!important;
         }   
-        
+        .carousel-inner>.item {
+            height: 450px;
+        }
     }
     @media only screen and (min-width: 992px) {
         .tiles .tile:not(.inline-tile){
@@ -94,7 +108,9 @@
         .tile .tile-img, .tiles .tile .tile-img {
             height: 280px;
         }
-        
+        .carousel-inner>.item {
+            height: 500px;
+        }
     }
 </style>
 @endsection
