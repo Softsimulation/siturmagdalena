@@ -129,7 +129,7 @@
     
 
         //muestra la información de la entidad
-        $scope.showInfo = function (event, id, nombre, portada, url, lat, long) {
+        $scope.showInfo = function (event, id, nombre, portada, lat, long,url) {
             
             $scope.detalle = {
                 id: id,
