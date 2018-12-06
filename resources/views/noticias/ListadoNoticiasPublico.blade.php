@@ -23,6 +23,16 @@
         background-color: whitesmoke;
         box-shadow: 0px 2px 4px -2px rgba(0,0,0,.35);
     }
+    .tile .tile-img{
+        position:relative;
+    }
+    .tile .tile-img img{
+          min-height: 100%;
+          min-width: 100%;
+          height: auto;
+          max-height: none;
+          max-width: none;
+    }
     .tile .tile-img .text-overlap{
         display: flex;
         flex-wrap: wrap;
