@@ -64,14 +64,12 @@
         }   
         .tiles .tile:not(.inline-tile){
             width: calc(100% - 1rem)!important;
-            flex-grow: 1;
         }   
         
     }
     @media only screen and (min-width: 992px) {
         .tiles .tile:not(.inline-tile){
             width: calc(50% - 1rem)!important;
-            flex-grow: 1;
         }    
         .tile .tile-img .text-overlap h3{
             font-size: 1.25rem;
@@ -134,7 +132,7 @@
     @if ($noticias != null || count($noticias) > 0)
     <div class="tiles">
         @foreach ($noticias as $noticia)
-        <div class="tile @if(strlen($noticia->titulo) >= 200 || strlen($noticia->resumen) > 230) two-places @endif">
+        <div class="tile">
             <div class="tile-img @if(!$noticia->portada) no-img @endif">
                 @if($noticia->portada)
                 <img src="{{$noticia->portada}}" alt="" role="presentation">

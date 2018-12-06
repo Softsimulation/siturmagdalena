@@ -92,6 +92,11 @@
                                 <img src="@{{detalle.portada}}" alt=""/>
                             </div>
                             <h4>@{{detalle.nombre}}</h4>
+                            <small class="btn-block text-muted">
+                                   
+                                    <span>Lat: @{{detalle.lat | currency : '' : 3}}</span>
+                                    <span>Long: @{{detalle.long | currency : '' : 3}}</span>
+                                </small>
                             <div class="content-rate">
                                 <span ng-class="{true:'ion-android-star',false:'ion-android-star-outline'}[CalificacionEntidad >= 1]"></span>
                                 <span ng-class="{true:'ion-android-star',false:'ion-android-star-outline'}[CalificacionEntidad >= 2]"></span>
@@ -112,21 +117,21 @@
                                 position="@{{dest.latitud}},@{{dest.longitud}}"
                                 icon="/Content/icons/maps/destino.png"
                                 id="@{{dest.id}}"
-                                on-click="showInfo(event, dest.id,dest.destino_con_idiomas[0].nombre, dest.multimedia_destinos[0].ruta, '/destinos/ver/' + dest.id )"
+                                on-click="showInfo(event, dest.id,dest.destino_con_idiomas[0].nombre, dest.multimedia_destinos[0].ruta, dest.latitud, dest.longitud, '/destinos/ver/' + dest.id )"
                                 title="Destino: @{{dest.destino_con_idiomas[0].nombre}}"></marker>
 
                         <marker ng-repeat="atr in atracciones|filter:filterAtracciones| limitTo : limiteAtr"
                                 position="@{{atr.sitio.latitud}},@{{atr.sitio.longitud}}"
                                 icon="@{{atr.icono}}"
                                 id="@{{atr.id}}"
-                                on-click="showInfo(event, atr.id,atr.sitio.sitios_con_idiomas[0].nombre,atr.sitio.multimedia_sitios[0].ruta,'/atracciones/ver/' + atr.id)"
+                                on-click="showInfo(event, atr.id,atr.sitio.sitios_con_idiomas[0].nombre,atr.sitio.multimedia_sitios[0].ruta, atr.sitio.latitud, atr.sitio.longitud, '/atracciones/ver/' + atr.id)"
                                 title="Atraccion: @{{atr.sitio.sitios_con_idiomas[0].nombre}}"></marker>
 
                         <marker ng-repeat="prov in proveedores|filter:filterProveedores | limitTo : limiteProv"
                                 position="@{{prov.latitud}},@{{prov.longitud}}"
                                 icon="@{{prov.icono}}"
                                 id="@{{prov.id}}"
-                                on-click="showInfo(event, prov.id, prov.razon_social,prov.proveedor[0].multimedia_proveedores[0].ruta,'/Proveedor/ver/' + prov.id)"
+                                on-click="showInfo(event, prov.id, prov.razon_social,prov.proveedor[0].multimedia_proveedores[0].ruta, prov.latitud, prov.longitud, '/Proveedor/ver/' + prov.id)"
                                 title="Proveedor: @{{prov.razon_social}}"></marker>
                                 
                     </ng-map>
