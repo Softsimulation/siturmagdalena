@@ -33,6 +33,12 @@
           max-height: none;
           max-width: none;
     }
+    .tile .tile-img.no-img img {
+        width: auto;
+        min-width: 0;
+        min-height: 0;
+        height: auto;
+    }
     .tile .tile-img .text-overlap{
         display: flex;
         flex-wrap: wrap;
