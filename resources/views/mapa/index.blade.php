@@ -46,7 +46,7 @@
                                 </div>
                                 <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                     <div>
-                                        <input type="text" class="form-control" placeholder="@Resource.LabelBuscar" ng-model="buscarFiltroAtracciones" />
+                                        <input type="text" class="form-control" placeholder="Buscar" ng-model="buscarFiltroAtracciones" />
                                     </div>
                                     <button class="st-btn-clean-radio" ng-click="filtro.tipoAtraciones=[]" ng-class="{true:'selected',false:'unselected'}[filtro.tipoAtraciones.length==0]" ng-show="filtro.tipoAtraciones.length>0">
                                         <i style="font-size: 1.1em;" class="ion-android-cancel"></i>  Limpiar Filtro
