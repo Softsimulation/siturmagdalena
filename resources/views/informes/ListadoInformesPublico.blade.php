@@ -176,7 +176,7 @@
             </div>
             <div class="tile-body">
                 <div class="tile-caption">
-                    <h3><a href="/promocionInforme/ver/{{$informe->id}}">{{$informe->tituloInforme}}</a></h3>
+                    <h3><a href="{{$informe->ruta}}" target="_blank">{{$informe->tituloInforme}}</a></h3>
                 </div>
                 <em class="text-muted">
                     @if($informe->autores)
