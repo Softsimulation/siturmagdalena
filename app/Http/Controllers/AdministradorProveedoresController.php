@@ -302,6 +302,7 @@ class AdministradorProveedoresController extends Controller
         $multimedia_proveedor = new Multimedia_Proveedor();
         $multimedia_proveedor->proveedor_id = $request->id;
         $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$portadaNombre;
+        $multimedia_proveedor->texto_alternativo = $request->portadaIMGText;
         $multimedia_proveedor->tipo = false;
         $multimedia_proveedor->portada = true;
         $multimedia_proveedor->estado = true;
@@ -341,6 +342,7 @@ class AdministradorProveedoresController extends Controller
                     $multimedia_proveedor = new Multimedia_Proveedor();
                     $multimedia_proveedor->proveedor_id = $request->id;
                     $multimedia_proveedor->ruta = "/multimedia/proveedores/proveedor-".$request->id."/".$nombre;
+                    $multimedia_proveedor->texto_alternativo = $request->imageText[$key];
                     $multimedia_proveedor->tipo = false;
                     $multimedia_proveedor->portada = false;
                     $multimedia_proveedor->estado = true;
