@@ -63,6 +63,8 @@ Route::controller('/eventos', 'EventosController');
 
 Route::controller('/proveedor', 'ProveedoresController');
 
+Route::controller('/quehacer', 'QueHacerController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
