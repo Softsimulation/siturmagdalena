@@ -32,6 +32,7 @@
           height: auto;
           max-height: none;
           max-width: none;
+          width: 100%;
     }
     .tile .tile-img.no-img img {
         width: auto;
@@ -73,7 +74,7 @@
     }
     @media only screen and (min-width: 768px) {
         .tile .tile-img img{
-            height: 100%;
+            width: 100%;
         }
         .tile .tile-img, .tiles .tile .tile-img {
             height: 300px;
