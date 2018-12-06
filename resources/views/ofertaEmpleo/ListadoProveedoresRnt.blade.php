@@ -143,6 +143,7 @@
                                 <td ng-if="item.sitio_para_encuesta_id == null">Desactivado</td>
                                 <td style="text-align: center;">
                                   <a  href="/ofertaempleo/activar/@{{item.id}}" class="btn btn-default btn-sm" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a ng-click="abrirEditar(item)" type="button" title="Editar provvedor" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-edit"></span></a>
                                 </td>
                             </tr>
                          </tbody>
@@ -159,6 +160,88 @@
     <div class='carga'>
     </div>
 </div>
+
+
+<div class="modal fade" id="modalEditarProveedor" tabindex="-1" role="dialog" aria-labelledby="modalEditarProveedor">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"> Solicitud </h4>
+            </div>
+            <form role="form" name="proveedorEditForm" novalidate>
+                <div class="modal-body">
+
+      		     <div class="row">  
+      		        <div class="col-xs-12 col-sm-8">
+    	            <div class="form-group" ng-class="{'has-error': ((proveedorEditForm.$submitted || proveedorEditForm.nombre_comercial.$touched) && proveedorEditForm.nombre_comercial.$error.required)}">
+    	                <label class="control-label" for="proveedorEditForm-nombre_comercial"><span class="asterisk">*</span> Nombre comercial</label>
+    	                <input type="text" class="form-control" ng-model="proveedorEdit.nombre" name="nombre_comercial" id="proveedorEditForm-nombre_comercial" required>
+	                </div>
+	                </div>
+    		        <div class="col-xs-12 col-sm-4">
+    		            <div class="form-group">
+    		                <label class="control-label" for="editarForm-numero_rnt"><span class="asterisk">*</span> No. de RNT</label>
+    		                <input type="text" class="form-control" ng-model="proveedorEdit.rnt" name="numero_rnt" id="editarForm-numero_rnt" required>
+    		             
+    		            </div>
+    		        </div>
+            
+	            
+	        </div>
+	        
+	        <div class="row"> 
+	                <div class="col-sm-6">
+                            <div class="form-group" ng-class="{'error': (proveedorEditForm.$submitted || proveedorEditForm.subcategoria.$touched) && proveedorEditForm.subcategoria.$error.required }">
+                                <label class="control-label" for="subcategoria"><span class="asterisk">*</span>Sub Categoria</label>
+                                <select ng-options="item.id as item.nombre for item in categorias" ng-model="proveedorEdit.idcategoria" class="form-control" id="subcategoria" name="subcategoria" required>
+                                    <option value="" selected disabled>Seleccione Subctaegoria</option>
+                                </select>
+                    </div>
+                </div>
+        	        <div class="col-xs-12 col-sm-6">
+			            <div class="form-group" ng-class="{'has-error': ((proveedorEditForm.$submitted || proveedorEditForm.direccion_comercial.$touched) && proveedorEditForm.direccion_comercial.$error.required)}">
+			                <label class="control-label" for="proveedorEditForm-direccion_comercial"><span class="asterisk">*</span> Dirección comercial</label>
+			                <input type="text" class="form-control" ng-model="proveedorEdit.direccion" name="direccion_comercial" id="proveedorEditForm-direccion_comercial" required>
+			            
+			            </div>
+			        </div>
+	        </div>
+	        <div class="row">
+			        <div class="col-xs-12 col-sm-6">
+			            <div class="form-group" ng-class="{'has-error': ((editarForm.$submitted || editarForm.correo.$touched) && editarForm.correo.$error.required) || (registro.correo != registro.correo2)}">
+			                <label class="control-label" for="editarForm-correo"><span class="asterisk">*</span> Correo electrónico</label>
+			                <input type="text" class="form-control" ng-model="proveedorEdit.email" name="correo" id="editarForm-correo" required>
+			          
+			            </div>
+			        </div>
+        	        <div class="col-xs-12 col-sm-6" >
+		            <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.nit.$touched) && addForm.nit.$error.required}">
+		                <label class="control-label" for="addForm-nit"><span class="asterisk">*</span> NIT</label>
+		                <input type="text" class="form-control" ng-model="proveedorEdit.nit" name="nit" id="addForm-id" required>
+		               
+		            </div>
+		        </div>
+	        </div>
+	   
+
+
+
+
+                </div>
+
+                <div class="modal-footer text-right">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                         <button type="submit" ng-click="guardar()" class="btn btn-success">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 @endsection
 

@@ -30,7 +30,7 @@
 @section('content')
 <div class="content-head">
     <div class="container">
-        <h2 class="text-uppercase">Publicaciones</h2>
+        <h2 class="text-uppercase">Biblioteca digital</h2>
         <hr/>
         <form method="GET" action="/promocionPublicacion/listado">
             <div class="row">

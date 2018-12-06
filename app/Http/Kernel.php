@@ -24,6 +24,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            \App\Http\Middleware\LangMiddleware::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
@@ -58,5 +59,6 @@ class Kernel extends HttpKernel
         'permissions' => \App\Http\Middleware\Permissions::class, 
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
         'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        'web' => \App\Http\Middleware\LangMiddleware::class
     ];
 }

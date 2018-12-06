@@ -34,15 +34,23 @@ class MuestraMaestraCtrl extends Controller
     public function __construct()
     {
         
-        $this->middleware('auth');
-        $this->middleware('role:Admin');
+        $this->middleware('auth', ['except' => ['getDetalles','getDatacongiguracion']] );
+        $this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
         
-        
-        
     }
+    
+    
+    public function getDetalles(){
+        
+        $periodo = Periodos_medicion::orderBy('id', 'desc')->first();
+        if($periodo){ return View("MuestraMaestra.periodoPublico", [ "periodo"=> $periodo ]); }
+        
+        return "No existen periodos en el sitema";
+    }
+    
     public function getPeriodo($id){  
         
         $periodo = Periodos_medicion::find($id);

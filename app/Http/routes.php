@@ -1,11 +1,9 @@
 <?php
 
-Route::get('/PlanificaTuViaje','InformacionDepartamentoCtrl@PlanificaTuViaje');
-Route::get('/Departamento/AcercaDe','InformacionDepartamentoCtrl@AcercaDe');
-Route::get('/Departamento/Requisitos','InformacionDepartamentoCtrl@Requisitos');
+
 Route::controller('/InformacionDepartamento','InformacionDepartamentoCtrl');
 
-Route::get('/Mapa', 'MapaCtrl@getIndex');
+
 Route::get('/Mapa/getData', 'MapaCtrl@getData');
 //Route::controller('/Mapa', 'MapaCtrl');
 
@@ -50,30 +48,13 @@ Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
-// Public Jáder
-Route::controller('/atracciones', 'AtraccionesController');
 
-Route::controller('/actividades', 'ActividadesController');
-
-Route::controller('/destinos', 'DestinosController');
-
-Route::controller('/rutas', 'RutasTuristicasController');
-
-Route::controller('/eventos', 'EventosController');
-
-Route::controller('/proveedor', 'ProveedoresController');
 
 Route::controller('/quehacer', 'QueHacerController');
 
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
-
-Route::get('/', function () {
-    return view('home.index');
-});
-
-
 
 Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
 
@@ -100,9 +81,7 @@ Route::controller('/login','LoginController');
 Route::controller('/noticias','NoticiaController');
 Route::controller('/sliders','SliderController');
 Route::controller('/suscriptores','SuscriptoreController');
-Route::controller('/promocionNoticia','PublicoNoticiaController');
-Route::controller('/promocionInforme','PublicoInformeController');
-Route::controller('/promocionPublicacion','PublicoPublicacionController');
+
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
@@ -138,3 +117,35 @@ Route::group(['middleware' => 'cors'], function(){
 
 Route::controller('/visitante', 'VisitanteController');
 
+Route::group(['middleware' => ['web']], function () {
+
+    Route::get('/lang/{lang}', function ($lang) {
+        session(['lang' => $lang]);
+        return \Redirect::back();
+    })->where([
+        'lang' => 'en|es'
+    ]);
+    Route::controller('/promocionNoticia','PublicoNoticiaController');
+    Route::controller('/promocionInforme','PublicoInformeController');
+    Route::controller('/promocionPublicacion','PublicoPublicacionController');
+    Route::get('/PlanificaTuViaje','InformacionDepartamentoCtrl@PlanificaTuViaje');
+    Route::get('/Departamento/AcercaDe','InformacionDepartamentoCtrl@AcercaDe');
+    Route::get('/Departamento/Requisitos','InformacionDepartamentoCtrl@Requisitos');
+    Route::get('/Mapa', 'MapaCtrl@getIndex');
+    
+    // Public Jáder
+    Route::controller('/atracciones', 'AtraccionesController');
+    
+    Route::controller('/actividades', 'ActividadesController');
+    
+    Route::controller('/destinos', 'DestinosController');
+    
+    Route::controller('/rutas', 'RutasTuristicasController');
+    
+    Route::controller('/eventos', 'EventosController');
+    
+    Route::controller('/proveedor', 'ProveedoresController');
+
+    Route::controller('/','HomeController');
+    
+});
