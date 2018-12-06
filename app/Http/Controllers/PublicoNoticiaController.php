@@ -40,7 +40,7 @@ class PublicoNoticiaController extends Controller
                  ->where('multimedias_noticias.es_portada', '=', 1);
         })
         ->join('tipos_noticias_has_idiomas', 'tipos_noticias_has_idiomas.tipos_noticias_id', '=', 'tipos_noticias.id')
-        ->where('noticias_has_idiomas.idiomas_id',$this->idioma_id)->where('tipos_noticias_has_idiomas.idiomas_id',$this->idioma_id)
+        ->where('noticias_has_idiomas.idiomas_id',1)->where('tipos_noticias_has_idiomas.idiomas_id',1)
         ->where('tipos_noticias.estado',1)
         ->where('noticias_has_idiomas.titulo','like','%'.$request->buscar.'%')
         
@@ -50,7 +50,7 @@ class PublicoNoticiaController extends Controller
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
         "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia","multimedias_noticias.ruta as portada", "multimedias_noticias.es_portada")->paginate(10);
         
-        $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',$this->idioma_id)->get();
+        $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',1)->get();
         //return $noticias;
         return view('noticias.ListadoNoticiasPublico',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias));
 	}
@@ -64,14 +64,14 @@ class PublicoNoticiaController extends Controller
             $join->on('noticias.id', '=', 'multimedias_noticias.noticia_id')
                  ->where('multimedias_noticias.es_portada', '=', 1);
         })
-        ->where('noticias_has_idiomas.idiomas_id',$this->idioma_id)->where('tipos_noticias_has_idiomas.idiomas_id',$this->idioma_id)
+        ->where('noticias_has_idiomas.idiomas_id',1)->where('tipos_noticias_has_idiomas.idiomas_id',1)
         ->where('tipos_noticias.estado',1)
         ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado", "noticias.created_at as fecha",
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
         "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia","multimedias_noticias.ruta as portada", "multimedias_noticias.es_portada")->
         orderBy('fecha','DESC')->take(4)->get();
         
-        $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',$this->idioma_id)->get();
+        $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',1)->get();
         return $noticias;
         //return view('noticias.ListadoNoticiasPublico',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias));
 	}
@@ -95,7 +95,7 @@ class PublicoNoticiaController extends Controller
         
         $portada = Multimedia_noticia::
         join('multimedias_noticias_has_idiomas', 'multimedias_noticias_has_idiomas.multimedias_noticias_id', '=', 'multimedias_noticias.id')
-        ->where('multimedias_noticias.noticia_id',$idNoticia)->where('multimedias_noticias.es_portada',1)->where('multimedias_noticias_has_idiomas.idiomas_id',$this->idioma_id)
+        ->where('multimedias_noticias.noticia_id',$idNoticia)->where('multimedias_noticias.es_portada',1)->where('multimedias_noticias_has_idiomas.idiomas_id',1)
         ->select("multimedias_noticias.id as idMultimedia","multimedias_noticias.ruta as ruta","multimedias_noticias.es_portada as portada",
         "multimedias_noticias_has_idiomas.idiomas_id as idiomas_id", "multimedias_noticias_has_idiomas.texto_alternativo as texto")->first();
         
