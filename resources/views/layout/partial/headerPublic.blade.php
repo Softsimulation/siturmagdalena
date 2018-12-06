@@ -37,12 +37,18 @@
     				<!--	</select>-->
     				<!--</form>-->
     				<!--<form name="langForm" method="get" action="/lang/">-->
-    					<label class="sr-only" for="languange">{{trans('resources.header.seleccionDeIdioma')}}</label>
-    					<select id="languange" name="lang" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-    						<option value="/lang/es" @if(Config::get('app.locale') == 'es') selected @endif>{{trans('resources.header.espanol')}}</option>
-    						<option value="/lang/en" @if(Config::get('app.locale') == 'en') selected @endif>{{trans('resources.header.ingles')}}</option>
-    					</select>
+    					<!--<label class="sr-only" for="languange">{{trans('resources.header.seleccionDeIdioma')}}</label>-->
+    					<!--<select id="languange" name="lang" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">-->
+    					<!--	<option value="/lang/es" @if(Config::get('app.locale') == 'es') selected @endif>{{trans('resources.header.espanol')}}</option>-->
+    					<!--	<option value="/lang/en" @if(Config::get('app.locale') == 'en') selected @endif>{{trans('resources.header.ingles')}}</option>-->
+    					<!--</select>-->
     				<!--</form>-->
+    				<div id="google_translate_element"></div><script type="text/javascript">
+                    function googleTranslateElementInit() {
+                      new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'de,en,es,fr,it,pt,ru,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                    }
+                    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                            
     				@if(Auth::check())
                     <a href="/login/cerrarsesion" class="btn btn-xs btn-link" title="{{trans('resources.header.cerrarSesion')}}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <span class="sr-only">{{trans('resources.header.cerrarSesion')}}</span></a>
                     @else
