@@ -12,7 +12,9 @@ angular.module('oferta.alquilarTransporte', ["checklist-model","ofertaService"])
             ofertaServi.getDatosAlquilerVehiculo($scope.id).then(function (data) {
                 $("body").attr("class", "cbp-spmenu-push")
                 $scope.alquiler = data.alquiler;
+                if($scope.alquiler != null){
                 $scope.alquiler.Comercial = data.alquiler.Comercial+'';
+                }
                 $scope.proveedor = data.proveedor;
             }).catch(function () {
                 $("body").attr("class", "cbp-spmenu-push");
