@@ -1,8 +1,8 @@
 <div id="preloader" aria-hidden="true">
             <div>
                 <div class="loader"></div>
-                <h1>Cargando...</h1>
-                <h4>Por favor espere</h4>
+                <h1>{{trans('resources.header.cargando')}}...</h1>
+                <h4>{{trans('resources.header.porFavorEspere')}}</h4>
                 <img src="/img/brand/default.png" alt="" role="presentation">
             </div>
         </div>
@@ -16,53 +16,73 @@
     		</div>
     		<div id="nav-bar-main">
     			<div id="toolbar-main">
-    			    <a href="#content-main" id="goto-top" class="sr-only">Ir al contenido</a>
-    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="Ir a Twitter"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
-    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="Ir a Facebook"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
-    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="Ir a Instagram"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
+		    	    <a href="#content-main" id="goto-top" class="sr-only">{{trans('resources.header.irAlContenido')}}</a>
+    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Twitter'])}}"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
+    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Facebook'])}}"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
+    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Instagram'])}}"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
     				<!-- *AQUI IRIA EL PLUGIN DEL CLIMA* -->
-    				<a href="#" class="btn btn-xs btn-link">Mapa del sitio</a>
+    				<p class="weather"><span class="ion-ios-partlysunny" aria-hidden="true"></span><span class="sr-only">Clima</span> <span id="weatherPluginJs"></span></p>
+    				<!--<a href="#" class="btn btn-xs btn-link">Mapa del sitio</a>-->
     				<form name="searchMainForm" method="get" action="">
-    					<label class="sr-only" for="searchMainTBox">Campo de búsqueda</label>
-    					<input type="text" id="searchMainTBox" name="search" maxlength="255" placeholder="¿Qué desea buscar?" required autocomplete="off"/>
-    					<button type="submit" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">Buscar</span></button>
+    					<label class="sr-only" for="searchMainTBox">{{trans('resources.header.campoDeBusqueda')}}</label>
+    					<input type="text" id="searchMainTBox" name="search" maxlength="255" placeholder="{{trans('resources.header.queDeseaBuscar')}}" required autocomplete="off"/>
+    					<button type="submit" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">{{trans('resources.header.buscar')}}</span></button>
     				</form>
-    				<form name="currencyForm" method="get" action="">
-    					<label class="sr-only" for="currencyMain">Cambio de moneda</label>
-    					<select id="currencyMain" name="currency" onchange="this.form.submit();">
-    						<option value="COP" selected>COP</option>
-    						<option value="USD">USD</option>
-    						<option value="EUR">EUR</option>
-    					</select>
-    				</form>
-    				<form name="langForm" method="get" action="">
-    					<label class="sr-only" for="languange">Selección de idioma</label>
-    					<select id="languange" name="lang" onchange="this.form.submit();">
-    						<option value="es" selected>Español</option>
-    						<option value="en">Inglés</option>
-    					</select>
-    				</form>
+    				<!--<form name="currencyForm" method="get" action="">-->
+    				<!--	<label class="sr-only" for="currencyMain">Cambio de moneda</label>-->
+    				<!--	<select id="currencyMain" name="currency" onchange="this.form.submit();">-->
+    				<!--		<option value="COP" selected>COP</option>-->
+    				<!--		<option value="USD">USD</option>-->
+    				<!--		<option value="EUR">EUR</option>-->
+    				<!--	</select>-->
+    				<!--</form>-->
+    				<!--<form name="langForm" method="get" action="/lang/">-->
+    					<!--<label class="sr-only" for="languange">{{trans('resources.header.seleccionDeIdioma')}}</label>-->
+    					<!--<select id="languange" name="lang" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">-->
+    					<!--	<option value="/lang/es" @if(Config::get('app.locale') == 'es') selected @endif>{{trans('resources.header.espanol')}}</option>-->
+    					<!--	<option value="/lang/en" @if(Config::get('app.locale') == 'en') selected @endif>{{trans('resources.header.ingles')}}</option>-->
+    					<!--</select>-->
+    				<!--</form>-->
+    				<div id="google_translate_element"></div><script type="text/javascript">
+                    function googleTranslateElementInit() {
+                      new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'de,en,es,fr,it,pt,ru,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                    }
+                    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                            
     				@if(Auth::check())
-                    <a href="/login/cerrarsesion" class="btn btn-xs btn-link" title="Cerrar sesión"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <span class="sr-only">Cerrar sesión</span></a>
+                    <a href="/login/cerrarsesion" class="btn btn-xs btn-link" title="{{trans('resources.header.cerrarSesion')}}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <span class="sr-only">{{trans('resources.header.cerrarSesion')}}</span></a>
                     @else
-                    <a href="/login/login" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="hidden-xs">Iniciar sesión</span></a>
+                    <a href="/login/login" class="btn btn-xs btn-link" title="{{trans('resources.header.iniciarSesion')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="hidden-xs">{{trans('resources.header.iniciarSesion')}}</span></a>
                     @endif
     				
     			</div>
     			<div id="navbar-mobile" class="text-center">
-                    <button type="button" class="btn btn-block btn-primary" title="Menu de navegación"><span aria-hidden="true" class="ion-navicon-round"></span><span class="sr-only">Menú de navegación</span></button>
+                    <button type="button" class="btn btn-block btn-primary" title="{{trans('resources.header.menuDeNavegacion')}}"><span aria-hidden="true" class="ion-navicon-round"></span><span class="sr-only">{{trans('resources.header.menuDeNavegacion')}}</span></button>
                 </div>
     			<div id="nav-menu-main">
     				<nav role="navigation" id="nav-main">
                         <ul role="menubar">
                             <li>
-                                <a role="menuitem" href="/">Inicio</a>
+                                <a role="menuitem" href="/">{{trans('resources.menu.inicio')}}</a>
                             </li>
                             <li>
-                                <a role="menuitem" href="#">Estadísticas</a>
+                                <a role="menuitem" href="#menu-planificador" aria-haspopup="true" aria-expanded="false">{{trans('resources.menu.conoceElMagdalena')}}</a>
+                                <ul role="menu" aria-label="menu-planificador">
+                                    <li role="none">
+                                        <a role="menuitem" href="/Departamento/AcercaDe">{{trans('resources.menu.acercaDe')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/Departamento/Requisitos">{{trans('resources.menu.requisitosDeViaje')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/PlanificaTuViaje">{{trans('resources.menu.planificaTuViaje')}}</a>
+                                    </li>
+                                    
+                                    
+                                </ul>
                             </li>
                             <li>
-                                <a role="menuitem" href="#menu-experiencias" aria-haspopup="true" aria-expanded="false">Experiencias</a>
+                                <a role="menuitem" href="#menu-experiencias" aria-haspopup="true" aria-expanded="false">{{trans('resources.menu.experiencias')}}</a>
                                 <!--<div class="sub-menu" id="menu-experiencias">-->
                                 <!--    <div class="sub-menu-list">-->
                                         
@@ -128,22 +148,22 @@
                                 
                                 <ul role="menu" aria-label="menuSitur">
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> Sol y playa</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.solYPlaya')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-arch hidden-xs hidden-sm" aria-hidden="true"></span> Cultura</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-arch hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.cultura')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-leaf hidden-xs hidden-sm" aria-hidden="true"></span> Naturaleza</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-leaf hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.naturaleza')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-swim hidden-xs hidden-sm" aria-hidden="true"></span> Náutico</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-swim hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.nautico')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-church hidden-xs hidden-sm" aria-hidden="true"></span> Religioso</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-church hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.religioso')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-calendar-clock hidden-xs hidden-sm" aria-hidden="true"></span> Reuniones y eventos</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-calendar-clock hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.reunionesYEventos')}}</a>
                                     </li>
                                 </ul>
                                 
@@ -151,7 +171,7 @@
                                 
                             </li>
                             <li>
-                                <a role="menuitem" href="#menu-queHacer" aria-haspopup="true" aria-expanded="false">Qué hacer</a>
+                                <a role="menuitem" href="#menu-queHacer" aria-haspopup="true" aria-expanded="false">{{trans('resources.menu.queHacer')}}</a>
                                 <!--<div class="sub-menu" id="menu-queHacer">-->
                                 <!--    <div class="sub-menu-list">-->
                                 <!--        <ul role="menu" aria-label="Qué hacer">-->
@@ -219,25 +239,25 @@
                                 <!--</div>-->
                                 <ul role="menu" id="menu-queHacer">
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-calendar hidden-xs hidden-sm" aria-hidden="true"></span> Eventos</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=4"><span class="mdi mdi-calendar hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.eventos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> Atracciones</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=2"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.atracciones')}}</a>
+                                    </li
+                                    <li role="none">
+                                        <a role="menuitem" href="/quehacer/?tipo=1"><span class="mdi mdi-run hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.actividades')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-run hidden-xs hidden-sm" aria-hidden="true"></span> Actividades</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=3"><span class="mdi mdi-map-marker hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.destinos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-map-marker hidden-xs hidden-sm" aria-hidden="true"></span> Destinos</a>
-                                    </li>
-                                    <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> Rutas turísticas</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=5"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.rutasTuristicas')}}</a>
                                     </li> 
                                 </ul>
                             </li>
                             
                             <li>
-                                <a role="menuitem" href="#menu-servicios" aria-haspopup="true" aria-expanded="false">Servicios</a>
+                                <a role="menuitem" href="#menu-servicios" aria-haspopup="true" aria-expanded="false"> {{trans('resources.menu.servicios')}}</a>
                                 <!--<div class="sub-menu" id="menu-servicios">-->
                                 <!--    <div class="sub-menu-list">-->
                                 <!--        <ul role="menu" aria-label="Servicios">-->
@@ -300,33 +320,72 @@
                                 <ul role="menu" id="menu-servicios">
                                     
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-hotel hidden-xs hidden-sm" aria-hidden="true"></span> Alojamientos</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-hotel hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.alojamientos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-silverware-fork-knife hidden-xs hidden-sm" aria-hidden="true"></span> Establecimientos de gratronomía</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-silverware-fork-knife hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.establecimientosDeGastronomia')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-airplane hidden-xs hidden-sm" aria-hidden="true"></span> Agencias de viaje</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-airplane hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.agenciasDeViaje')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-soccer-field hidden-xs hidden-sm" aria-hidden="true"></span> Establecimientos de esparcimiento y similares</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-soccer-field hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.establecimientosDeEsparcimiento')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-bus hidden-xs hidden-sm" aria-hidden="true"></span> Transporte especializado</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-bus hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.transporteEspecializado')}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--<li>-->
+                            <!--    <a role="menuitem" href="/promocionNoticia/listado">Noticias</a>-->
+                            <!--</li>-->
+                            <li>
+                                <a role="menuitem" href="#menu-estadisticas" aria-haspopup="true" aria-expanded="false">{{trans('resources.menu.estadisticas')}}</a>
+                                <ul role="menu" aria-label="menu-estadisticas">
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/receptor">{{trans('resources.estadisticas.turismoReceptor')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/interno">{{trans('resources.estadisticas.turismoEmisor')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/emisor">{{trans('resources.estadisticas.turismoInterno')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/oferta">{{trans('resources.estadisticas.ofertaTuristica')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/empleo">{{trans('resources.estadisticas.impactoEnElEmpleo')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/sostenibilidad">{{trans('resources.estadisticas.sostenibilidadTuristica')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/indicadores/secundarios">{{trans('resources.estadisticas.estadisticasSecundarias')}}</a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <a role="menuitem" href="/promocionNoticia/listado">Noticias</a>
+                                <a role="menuitem" href="#menu-publicaciones" aria-haspopup="true" aria-expanded="false">{{trans('resources.menu.publicaciones')}}</a>
+                                <ul role="menu" aria-label="menu-publicaciones">
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionNoticia/listado"><span class="mdi mdi-newspaper hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuPublicaciones.noticias')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionInforme/listado"><span class="mdi mdi-file-chart hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuPublicaciones.informes')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionPublicacion/listado"><span class="mdi mdi-library hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuPublicaciones.bibliotecaDigital')}}</a>
+                                    </li>
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionBolsaEmpleo/vacantes"><span class="mdi mdi-briefcase hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuPublicaciones.bolsaDeEmpleo')}}</a>
+                                    </li>
+                                    
+                                </ul>
                             </li>
+                            
                             <li>
-                                <a role="menuitem" href="/promocionPublicacion/listado">Publicaciones</a>
-                            </li>
-                            <li>
-                                <a role="menuitem" href="#">Planifica tu viaje</a>
-                            </li>
-                            <li>
-                                <a role="menuitem" href="/Mapa">Mapa</a>
+                                <a role="menuitem" href="/Mapa">{{trans('resources.mapa')}}</a>
                             </li>
                         </ul>
                     </nav>

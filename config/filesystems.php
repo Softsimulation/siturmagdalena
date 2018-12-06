@@ -62,12 +62,17 @@ return [
             'root' => storage_path('app/public'),
             'visibility' => 'public',
         ],
-        
+        'multimedia-informacion-departamento' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/informacion-departamento',
+            'visibility' => 'public',
+        ],
         'multimedia-informes' => [
             'driver' => 'local',
             'root' => public_path().'/multimedia/informes',
             'visibility' => 'public',
         ],
+        
         
         'multimedia-atraccion' => [
             'driver' => 'local',
@@ -104,7 +109,7 @@ return [
             'root' => public_path().'/multimedia/proveedores',
             'visibility' => 'public',
         ],
-         'Publicaciones' => [
+        'Publicaciones' => [
            'driver' => 'local',
            'root' => public_path().'/Publicaciones',
            'visibility' => 'public',

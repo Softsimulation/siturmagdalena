@@ -3,7 +3,7 @@
 @section('app','ng-app="appProyect"')
 @section('controller','ng-controller="ListadoPublicacionCtrl"')
 
-@section('titulo','Publicaciones')
+@section('titulo','Biblioteca digital')
 @section('subtitulo','El siguiente listado cuenta con @{{publicaciones.length}} registro(s)')
 
 @section('content')
