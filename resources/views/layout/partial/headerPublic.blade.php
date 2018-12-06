@@ -37,12 +37,18 @@
     				<!--	</select>-->
     				<!--</form>-->
     				<!--<form name="langForm" method="get" action="/lang/">-->
-    					<label class="sr-only" for="languange">{{trans('resources.header.seleccionDeIdioma')}}</label>
-    					<select id="languange" name="lang" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-    						<option value="/lang/es" @if(Config::get('app.locale') == 'es') selected @endif>{{trans('resources.header.espanol')}}</option>
-    						<option value="/lang/en" @if(Config::get('app.locale') == 'en') selected @endif>{{trans('resources.header.ingles')}}</option>
-    					</select>
+    					<!--<label class="sr-only" for="languange">{{trans('resources.header.seleccionDeIdioma')}}</label>-->
+    					<!--<select id="languange" name="lang" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">-->
+    					<!--	<option value="/lang/es" @if(Config::get('app.locale') == 'es') selected @endif>{{trans('resources.header.espanol')}}</option>-->
+    					<!--	<option value="/lang/en" @if(Config::get('app.locale') == 'en') selected @endif>{{trans('resources.header.ingles')}}</option>-->
+    					<!--</select>-->
     				<!--</form>-->
+    				<div id="google_translate_element"></div><script type="text/javascript">
+                    function googleTranslateElementInit() {
+                      new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'de,en,es,fr,it,pt,ru,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                    }
+                    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                            
     				@if(Auth::check())
                     <a href="/login/cerrarsesion" class="btn btn-xs btn-link" title="{{trans('resources.header.cerrarSesion')}}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <span class="sr-only">{{trans('resources.header.cerrarSesion')}}</span></a>
                     @else
@@ -233,19 +239,19 @@
                                 <!--</div>-->
                                 <ul role="menu" id="menu-queHacer">
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-calendar hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.eventos')}}</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=4"><span class="mdi mdi-calendar hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.eventos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.atracciones')}}</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=2"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.atracciones')}}</a>
+                                    </li
+                                    <li role="none">
+                                        <a role="menuitem" href="/quehacer/?tipo=1"><span class="mdi mdi-run hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.actividades')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-run hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.actividades')}}</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=3"><span class="mdi mdi-map-marker hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.destinos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-map-marker hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.destinos')}}</a>
-                                    </li>
-                                    <li role="none">
-                                        <a role="menuitem" href="#"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.rutasTuristicas')}}</a>
+                                        <a role="menuitem" href="/quehacer/?tipo=5"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.rutasTuristicas')}}</a>
                                     </li> 
                                 </ul>
                             </li>
@@ -374,7 +380,9 @@
                                     <li role="none">
                                         <a role="menuitem" href="/promocionPublicacion/listado"><span class="mdi mdi-library hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuPublicaciones.bibliotecaDigital')}}</a>
                                     </li>
-                                    
+                                    <li role="none">
+                                        <a role="menuitem" href="/promocionBolsaEmpleo/vacantes"><span class="mdi mdi-briefcase hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuPublicaciones.bolsaDeEmpleo')}}</a>
+                                    </li>
                                     
                                 </ul>
                             </li>

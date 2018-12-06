@@ -23,6 +23,22 @@
         background-color: whitesmoke;
         box-shadow: 0px 2px 4px -2px rgba(0,0,0,.35);
     }
+    .tile .tile-img{
+        position:relative;
+    }
+    .tile .tile-img img{
+          min-height: 100%;
+          min-width: 100%;
+          height: auto;
+          max-height: none;
+          max-width: none;
+    }
+    .tile .tile-img.no-img img {
+        width: auto;
+        min-width: 0;
+        min-height: 0;
+        height: auto;
+    }
     .tile .tile-img .text-overlap{
         display: flex;
         flex-wrap: wrap;
@@ -64,14 +80,12 @@
         }   
         .tiles .tile:not(.inline-tile){
             width: calc(100% - 1rem)!important;
-            flex-grow: 1;
         }   
         
     }
     @media only screen and (min-width: 992px) {
         .tiles .tile:not(.inline-tile){
             width: calc(50% - 1rem)!important;
-            flex-grow: 1;
         }    
         .tile .tile-img .text-overlap h3{
             font-size: 1.25rem;
@@ -134,7 +148,7 @@
     @if ($noticias != null || count($noticias) > 0)
     <div class="tiles">
         @foreach ($noticias as $noticia)
-        <div class="tile @if(strlen($noticia->titulo) >= 200 || strlen($noticia->resumen) > 230) two-places @endif">
+        <div class="tile">
             <div class="tile-img @if(!$noticia->portada) no-img @endif">
                 @if($noticia->portada)
                 <img src="{{$noticia->portada}}" alt="" role="presentation">

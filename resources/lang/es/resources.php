@@ -72,7 +72,8 @@ return [
         "menuPublicaciones" => [
             "noticias" => "Noticias",
             "informes" => "Informes",
-            "bibliotecaDigital" => "Biblioteca digital"
+            "bibliotecaDigital" => "Biblioteca digital",
+            "bolsaDeEmpleo" => "Bolsa de empleo"
         ],
         "estadisticas" => "Estadísticas"
         

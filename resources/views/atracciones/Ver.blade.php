@@ -341,7 +341,7 @@ function parse_yturl($url)
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="formEnviarComentario" name="formEnviarComentario" method="post" action="#">
+                    <form id="formEnviarComentario" name="formEnviarComentario" method="post" action="/atracciones/guardarcomentario">
                         <div class="modal-body">
                             <div class="form-group text-center">
                                 <label class="control-label" for="calificacionFueFacilLlegar">¿Fue fácil llegar?</label>

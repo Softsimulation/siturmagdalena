@@ -50,6 +50,8 @@ Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
 
 
+Route::controller('/quehacer', 'QueHacerController');
+
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });

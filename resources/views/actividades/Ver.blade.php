@@ -75,9 +75,9 @@ function parse_yturl($url)
                     </button>    
                 </form>
             @else
-                <button type="button" class="btn btn-lg btn-circled" title="Marcar como favorito" data-toggle="modal" data-target="#modalIniciarSesion">
-                  <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
-                </button>
+                <!--<button type="button" class="btn btn-lg btn-circled" title="Marcar como favorito" data-toggle="modal" data-target="#modalIniciarSesion">-->
+                <!--  <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>-->
+                <!--</button>-->
             @endif
           </div>
       </div>
@@ -158,24 +158,71 @@ function parse_yturl($url)
         </div>
         
     </section>
-    
-    <!-- Modal iniciar sesión-->
-    <div class="modal fade" id="modalIniciarSesion" tabindex="-1" role="dialog" aria-labelledby="labelModalIniciarSesion">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="labelModalIniciarSesion">Iniciar sesión</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Para calificar, comentar o agregar a sus favoritos este contenido debe iniciar sesión. Si aún no se encuentra registrado <a href="#">haga clic aquí</a></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Iniciar sesión</button>
-                </div>
-            </div>
+    <section id="caracteristicas" class="section">
+        <div class="container">
+            <h3 class="title-section">Ubicación</h3>
         </div>
-    </div>
+            <!--<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam porttitor, augue quis tempus dictum, augue dui molestie sem, vitae molestie augue ipsum id turpis. Fusce feugiat vestibulum ante. Sed a consequat eros, finibus luctus nisl. In ut diam congue, condimentum sem vel, sagittis dolor. Nunc ut vestibulum ex, vitae eleifend metus. Proin id ex eu erat aliquet egestas. Fusce id suscipit velit, ut sodales turpis. Aliquam turpis risus, luctus vitae lobortis finibus, condimentum in felis. Pellentesque vel erat tellus. Suspendisse potenti. Integer porta sed lorem ac iaculis. Pellentesque pretium ex et convallis condimentum. In luctus leo nulla, eu finibus justo volutpat quis.</p>-->
+            <div class="row" style="margin: 0;">
+                <div class="col-xs-12">
+                    <div id="map"></div>
+                </div>
+                
+            </div>
+        
+    </section>
+
     
+@endsection
+@section('javascript')
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNCXa64urvn7WPRdFSW29prR-SpZIHZPs&callback=initMap">
+</script>
+<script>
+    
+    function initMap() {
+          var sitiosConActividades = <?php print($actividad->sitiosConActividades); ?>;
+          console.log(sitiosConActividades);
+          var lat = 10.1287919, long = -75.366555;
+          var posInit = {lat: lat, lng: long};
+          // Initialize and add the map
+          var map = new google.maps.Map(
+              document.getElementById('map'), {zoom: 8, center: posInit});
+          for (i = 0; i < sitiosConActividades.length; i++) { 
+              var pos = {lat: parseFloat(sitiosConActividades[i].latitud), lng: parseFloat(sitiosConActividades[i].longitud)};
+              var marker = new google.maps.Marker({position: pos, map: map});
+          }
+            
+        }
+        function changeViewList(obj, idList, view){
+            var element, name, arr;
+            element = document.getElementById(idList);
+            name = view;
+            element.className = "tiles " + name;
+        } 
+        function showStars(input){
+            //var checksFacilLlegar = document.getElementsByName(input.name);
+            $("input[name='" + input.name + "']+label>.ionicons-inline").removeClass('ion-android-star');
+            $("input[name='" + input.name + "']+label>.ionicons-inline").addClass('ion-android-star-outline');
+            for(var i = 0; i < parseInt(input.value); i++){
+                $("label[for='" + input.name + "-" + (i+1) + "'] .ionicons-inline").removeClass('ion-android-star-outline');
+                $("label[for='" + input.name + "-" + (i+1) + "'] .ionicons-inline").addClass('ion-android-star');
+                //console.log(checksFacilLlegar[i].value);
+            }
+        }
+        
+</script>
+<script>
+    $(document).ready(function(){
+        $('#modalComentario').on('hidden.bs.modal', function (e) {
+            $(this).find('form')[0].reset();
+            $(this).find('.checks .ionicons-inline').removeClass('ion-android-star');
+            $(this).find('.checks .ionicons-inline').addClass('ion-android-star-outline');
+        })
+    });
+    $('.toSection').on('click', function(e){
+       $('.section').removeClass('active');
+       $($(this).attr('href')).addClass('active');
+    });
+</script>
 @endsection
