@@ -80,6 +80,7 @@
 #menu-page-list {
     display: flex;
     list-style: none;
+    justify-content: center;
     margin: 0;
     padding: 0;
 }

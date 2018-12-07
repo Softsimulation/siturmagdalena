@@ -63,6 +63,10 @@
         background-color: #004A87;
         color: white;
     }
+    .dropdown-menu>li>a {
+        text-align: left;
+        white-space: normal;
+    }
     .dropdown-menu{
         width: 100%;
         text-align:center;
