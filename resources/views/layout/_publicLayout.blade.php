@@ -70,6 +70,11 @@
             font-size: 1.5rem;
             margin-right: .25rem;
         }
+        #widget_valor {
+            color: #333;
+            font-family: Futura, sans-serif;
+            font-size: 1rem;
+        }
         /*Google traductor*/
             .goog-te-gadget img {
                 display: none!important;
@@ -186,6 +191,11 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-106392208-1');
+</script>
+<script>
+    window.setTimeout(function(){
+        document.getElementById('widget_valor').style.color = '#333';
+    },100);
 </script>
  <!-- fin de código de seguimiento-->
 </body>

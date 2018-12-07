@@ -20,6 +20,7 @@
     				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Twitter'])}}"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
     				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Facebook'])}}"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
     				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Instagram'])}}"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
+    				<div id="DolarCO4"><h2><a href="https://dolar.wilkinsonpc.com.co/">Dolar Hoy Colombia</a></h2><a href="https://dolar.wilkinsonpc.com.co/indicadores-economicos-dolar.html">Indicadores Economicos</a></div><script type="text/javascript" src="https://dolar.wilkinsonpc.com.co/widgets/gratis/dolar-cop-usd-4.js"></script>
     				<!-- *AQUI IRIA EL PLUGIN DEL CLIMA* -->
     				<p class="weather"><span class="ion-ios-partlysunny" aria-hidden="true"></span><span class="sr-only">Clima</span> <span id="weatherPluginJs"></span></p>
     				<!--<a href="#" class="btn btn-xs btn-link">Mapa del sitio</a>-->
