@@ -1,3 +1,32 @@
+<?php 
+function getItemType($type){
+    $path = ""; $name = "";
+    switch($type){
+        case(1):
+            $name = trans('resources.menu.menuQueHacer.actividades');
+            $path = "/actividades/ver/";
+            break;
+        case(2):
+            $name = trans('resources.menu.menuQueHacer.atracciones');
+            $path = "/atracciones/ver/";
+            break;
+        case(3):
+            $name = trans('resources.menu.menuQueHacer.destinos');
+            $path = "/destinos/ver/";
+            break;
+        case(4):
+            $name = trans('resources.menu.menuQueHacer.eventos');
+            $path = "/eventos/ver/";
+            break; 
+        case(5):
+            $name = trans('resources.menu.menuQueHacer.rutasTuristicas');
+            $path = "/rutas/ver/";
+            break;
+    }
+    return (object)array('name'=>$name, 'path'=>$path);
+}
+$colorTipo = ['primary','success','danger', 'info', 'warning'];
+?> 
 @extends('layout._publicLayout')
 
 @section('title', '')
@@ -9,6 +38,40 @@
     #layer9 path:hover {
         fill: blue!important;
         cursor: pointer;
+    }
+    .title-custom-section{
+        background-image: url('/img/bg-title.png');
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+    }
+    .title-custom-section .container{
+        text-align:center;
+    }
+    .title-custom-section h2{
+        margin: 0;
+        background-color: white;
+        padding: .5rem 1rem;
+        border-radius: 4px;
+        box-shadow: 0px 1px 3px 0px rgba(0,0,0,.35);
+        display: inline-block;
+        margin: 0 auto;
+    }
+    .tiles{
+        margin: 2% 0;
+    }
+    .tiles .tile:not(.inline-tile) .tile-img {
+        height: 230px;
+    }
+    .label{
+        font-size: .85rem;
+        font-weight: 500;
+    }
+    .tile .tile-img .text-overlap h3 {
+        font-size: 1rem;
+        text-transform: uppercase;
+    }
+    .tile.inline-tile .tile-body>p{
+        display:block;
     }
 </style>
 @endsection
@@ -149,10 +212,78 @@
     </ul>
 </div>
 
-@for($i = 0; $i < count($sugeridos); $i++)
-    <div>$sugeridos[$i]</div>
-@endfor
-
+@if(count($sugeridos))
+    <div class="title-custom-section">
+        <div class="container">
+            <h2 class="text-uppercase text-center">Sugerencias</h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="tiles">
+            @foreach($sugeridos as $sugerido)
+            <div class="tile">
+                <div class="tile-img">
+                    <img src="{{$sugerido->portada}}" alt="" role="presentation">
+                    <div class="text-overlap">
+                        <span class="label label-{{$colorTipo[$sugerido->tipo - 1]}}">{{getItemType($sugerido->tipo)->name}}</span>
+                        <h3>
+                            <a href="{{getItemType($sugerido->tipo)->path}}{{$sugerido->id}}">{{$sugerido->nombre}}</a>
+                            @if($sugerido->tipo == 4)
+                            <small>{{trans('resources.listado.fechaEvento', ['fechaInicio' => date('d/m/Y', strtotime($sugerido->fecha_inicio)), 'fechaFin' => date('d/m/Y', strtotime($sugerido->fecha_fin))])}}</small>
+                            @endif
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+                <!--<div class="tile-body">-->
+                <!--    <div class="tile-caption">-->
+                <!--        <h3><a href="#">{{$sugerido->nombre}}</a></h3>-->
+                        
+                <!--    </div>-->
+                <!--</div>-->
+            </div>
+            @endforeach
+        </div>
+    </div>
+    
+    @endif
+    @if(count($noticias) > 0)
+        <section id="noticias">
+            <div class="title-custom-section">
+                <div class="container">
+                    <h2 class="text-uppercase text-center">Noticias</h2>
+                </div>
+            </div>
+            <div class="container">
+                <div class="tiles">
+                    @foreach($noticias as $noticia)
+                    <div class="tile inline-tile">
+                        <div class="tile-img">
+                            @if($noticia->portada)
+                            <img src="$noticia->portada" alt="" role="presentation"/>
+                            @endif
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-caption">
+                                <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>
+                            </div>
+                            <p class="tile-date"><i class="ion-calendar" aria-hidden="true"></i> {{date("d/m/Y h:i A", strtotime($noticia->fecha))}}</p>
+                            <p class="text-muted">{{$noticia->resumen}}</p>
+                            <div class="text-right">
+                                <a href="/promocionNoticia/ver/{{$noticia->idNoticia}}" class="btn btn-xs btn-success">Ver más</a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="text-center">
+                    <a href="/promocionNoticia/listado" class="btn btn-success">Ver todo</a>
+                </div>
+            </div>
+            
+        </section>
+    @endif
 <!--<div id="statsMap">-->
     <!-- *AQUI VA EL SVG O EL PLUGIN QUE SE HAGA PARA EL MAPA Y SUS INDICADORE -->
     

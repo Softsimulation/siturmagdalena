@@ -53,7 +53,8 @@ return [
         "menuPublicaciones" => [
             "noticias" => "News",
             "informes" => "Reports",
-            "bibliotecaDigital" => "Digital library"
+            "bibliotecaDigital" => "Digital library",
+            "bolsaDeEmpleo" => "Employment exchange"
         ],
         "estadisticas" => "Stats"
     ],

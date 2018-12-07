@@ -25,6 +25,28 @@ function parse_yturl($url)
             color: #004a87;
             text-align: center;
         }
+        .carousel-inner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .carousel-inner>.item>img {
+            min-height: 100%;
+            min-width: 100%;
+            height: auto;
+            max-height: none;
+            max-width: none;
+        }
+        @media only screen and (min-width: 768px) {
+            .carousel-inner>.item {
+                height: 450px;
+            }    
+        }
+        @media only screen and (min-width: 992px) {
+            .carousel-inner>.item {
+                height: 500px;
+            }
+        }
     </style>
 @endsection
 
@@ -55,7 +77,7 @@ function parse_yturl($url)
           <!-- Wrapper for slides -->
           <div class="carousel-inner" role="listbox">
             @for ($i = 0; $i < count($informacion->imagenes); $i++)
-            <div class="carousel-item @if($i == 0) active @endif">
+            <div class="item @if($i == 0) active @endif">
               <img src="{{$informacion->imagenes[$i]->ruta}}" alt="" role="presentation" class="d-block w-100">
             </div>
             @endfor

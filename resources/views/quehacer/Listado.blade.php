@@ -2,7 +2,7 @@
 /*
 * Vista para listados del portal
 */
-$colorTipo = ['bg-primary','bg-success','bg-danger', 'bg-info', 'bg-warning'];
+$colorTipo = ['label-primary','label-success','label-danger', 'label-info', 'label-warning'];
 
 function getItemType($type){
     $path = ""; $name = ""; $title = "";
