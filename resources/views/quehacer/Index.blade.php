@@ -64,6 +64,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 <meta property="og:title" content="{{$tituloPagina}}" />
 <meta property="og:image" content="{{asset('/img/brand/128.png')}}" />
 <meta property="og:description" content="{{$tituloPagina}}"/>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section ('estilos')
@@ -175,7 +176,6 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="mdi mdi-view-sequential" aria-hidden="true"></span><span class="sr-only">Vista de lista</span></button>
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="mdi mdi-view-grid" aria-hidden="true"></span><span class="sr-only">Vista de mosaico</span></button>
                 <form id="formSearch" method="POST" action="{{URL::action('QueHacerController@postSearch')}}" class="form-inline">
-                    {{ csrf_field() }}
                     <div class="col-auto">
                       <label class="sr-only" for="searchMain">Buscador general</label>
                       <div class="input-group">
@@ -263,15 +263,106 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 <script src="{{asset('/js/public/vibrant.js')}}"></script>
 <script src="{{asset('/js/public/setProminentColorImg.js')}}"></script>
 <script>
+
+var colorTipo = ['bg-primary','bg-success','bg-danger', 'bg-info', 'bg-warning'];
+
+function getItemType(type){
+    switch(type){
+        case(1):
+            title = "Actividades";
+            name = "Actividad";
+            path = "/actividades/ver/";
+            controller = 'ActividadesController';
+            break;
+        case(2):
+            title = "Atracciones";
+            name = "Atracción";
+            path = "/atracciones/ver/";
+            controller = 'AtraccionesController';
+            break;
+        case(3):
+            title = "Destinos";
+            name = "Destino";
+            path = "/destinos/ver/";
+            controller = 'DestinosController';
+            break;
+        case(4):
+            title = "Eventos";
+            name = "Evento";
+            path = "/eventos/ver/";
+            controller = 'EventosController';
+            break; 
+        case(5):
+            title = "Rutas turísticas";
+            name = "Ruta turística";
+            path = "/rutas/ver/";
+            controller = 'RutasTuristicasController';
+            break;
+    }
+    return {'name':name, 'path':path, 'title' : title, 'controller' : controller};
+}
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tipo') : 0 ;
     function changeViewList(obj, idList, view){
         var element, name, arr;
         element = document.getElementById(idList);
         name = view;
         element.className = "tiles " + name;
     }
-    @if(!$success)
-    alert('No se encontraron resultados para su búsqueda');
-    @endif
+        
+    $.ajaxSetup({
+    headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    $('#formSearch').submit(function(){
+        $.ajax({
+          type: "POST",
+          url: '{{URL::action("QueHacerController@postSearch")}}',
+          data: {
+              'search': $('#searchMain').val()
+          },
+          success: function (data){
+              if (!data.success){
+                  alert('No hay resultados para su búsqueda');
+              }
+              var html = '';
+              for(var i = 0; i < data.query.length; i++){
+                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
+                    html += '<div class="tile tile-overlap">'
+                                +'<div class="tile-img">';
+                        if(data.query[i].portada != ""){
+                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
+                        }
+                    html +=     +'</div>'
+                                    +'<div class="tile-body">'
+                                        +'<div class="tile-caption">'
+                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
+                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
+                                        +'</div>'
+                                        +'<div class="tile-buttons">'
+                                            +'<div class="inline-buttons">';
+                    //Acá falta las fechas en los eventos
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
+              }
+              }
+              $('#listado').html(html);
+          },
+          dataType: 'json'
+        });
+        return false;
+    });
         
 </script>
 @endsection
