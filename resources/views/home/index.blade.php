@@ -52,9 +52,26 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         background-color: white;
         padding: .5rem 1rem;
         border-radius: 4px;
-        box-shadow: 0px 1px 3px 0px rgbaI(0,0,0,.35);
+        box-shadow: 0px 1px 3px 0px rgba(0,0,0,.35);
         display: inline-block;
         margin: 0 auto;
+    }
+    .tiles{
+        margin: 2% 0;
+    }
+    .tiles .tile:not(.inline-tile) .tile-img {
+        height: 230px;
+    }
+    .label{
+        font-size: .85rem;
+        font-weight: 500;
+    }
+    .tile .tile-img .text-overlap h3 {
+        font-size: 1rem;
+        text-transform: uppercase;
+    }
+    .tile.inline-tile .tile-body>p{
+        display:block;
     }
 </style>
 @endsection
@@ -230,6 +247,42 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         </div>
     </div>
     
+    @endif
+    @if(count($noticias) > 0)
+        <section id="noticias">
+            <div class="title-custom-section">
+                <div class="container">
+                    <h2 class="text-uppercase text-center">Noticias</h2>
+                </div>
+            </div>
+            <div class="container">
+                <div class="tiles">
+                    @foreach($noticias as $noticia)
+                    <div class="tile inline-tile">
+                        <div class="tile-img">
+                            @if($noticia->portada)
+                            <img src="$noticia->portada" alt="" role="presentation"/>
+                            @endif
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-caption">
+                                <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>
+                            </div>
+                            <p class="tile-date"><i class="ion-calendar" aria-hidden="true"></i> {{date("d/m/Y h:i A", strtotime($noticia->fecha))}}</p>
+                            <p class="text-muted">{{$noticia->resumen}}</p>
+                            <div class="text-right">
+                                <a href="/promocionNoticia/ver/{{$noticia->idNoticia}}" class="btn btn-xs btn-success">Ver más</a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="text-center">
+                    <a href="/promocionNoticia/listado" class="btn btn-success">Ver todo</a>
+                </div>
+            </div>
+            
+        </section>
     @endif
 <!--<div id="statsMap">-->
     <!-- *AQUI VA EL SVG O EL PLUGIN QUE SE HAGA PARA EL MAPA Y SUS INDICADORE -->

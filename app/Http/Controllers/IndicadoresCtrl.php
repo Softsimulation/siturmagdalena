@@ -101,7 +101,7 @@ class IndicadoresCtrl extends Controller
                 foreach($estadistica->series as $serie){
                     $dt = [];
                     foreach($estadistica->rotulos as $rotulo){                         
-                        $dato = Series_estadistica_rotulo::where([ ["serie_estadisitica_id",$serie->id] , ["rotulo_estadistica_id",$rotulo->id], ["anio_id",$year]  ])->pluck("valor")->first();
+                        $dato = Series_estadistica_rotulo::where([ ["serie_estadistica_id",$serie->id] , ["rotulo_estadistica_id",$rotulo->id], ["anio_id",$year]  ])->pluck("valor")->first();
                         array_push( $dt, $dato );
                     }
                     array_push($datos,$dt); 
