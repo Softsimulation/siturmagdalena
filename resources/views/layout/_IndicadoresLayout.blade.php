@@ -39,7 +39,53 @@
         <link href="{{asset('/css/public/style_1600.css')}}" rel="stylesheet" media="(min-width: 1600px)">
         <script src="{{secure_asset('/js/plugins/angular.min.js')}}"></script>
         @yield('estilos')
-        
+        <style>
+            .weather{
+            margin:0 .5rem;
+            display: flex;
+            align-items: center;
+        }
+        .weather span:first-child{
+            font-size: 1.5rem;
+            margin-right: .25rem;
+        }
+        /*Google traductor*/
+            .goog-te-gadget img {
+                display: none!important;
+            }
+            .goog-te-gadget-simple {
+                background: transparent!important;
+                color: #333!important;
+                border: 0!important;
+            }
+            .goog-te-gadget-simple .goog-te-menu-value span {
+                color: #333!important;
+                font-size: 1rem!important;
+                padding-right: .5rem!important;
+                font-family: Futura, sans-serif!important;
+            }
+            .goog-te-banner {
+                background: black!important;
+                color: white!important;
+            }
+            .goog-te-button div {
+                background: transparent!important;
+                border: 0!important;
+            }
+            .goog-te-button button {
+                color: white!important;
+                border: 0!important;
+                background-color: transparent!important;
+                font-family: Futura, sans-serif!important;
+            }
+            .goog-te-button {
+                border: 0!important;
+            }
+            .goog-te-menu-value span {
+                color: white!important;
+                font-family: Futura, sans-serif!important;
+            }
+        </style>
     </head>
     <body @yield('app') @yield('controller') >
         <!-- vista parcial de cabecera de vista pública -->
@@ -79,7 +125,30 @@
             });
             
         </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.1.0/jquery.simpleWeather.min.js"></script>
+        <script>
+        // v3.1.0
+        //Docs at http://simpleweatherjs.com
+        $(document).ready(function() {
+          $.simpleWeather({
+            location: 'Magdalena, Colombia',
+            woeid: '',
+            unit: 'c',
+            success: function(weather) {
+            //   html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
+            //   html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+            //   html += '<li class="currently">'+weather.currently+'</li>';
+            //   html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';
+          
+              $("#weatherPluginJs").html(weather.temp+'&deg;'+weather.units.temp);
+            },
+            error: function(error) {
+              $("#weatherPluginJs").html('error');
+            }
+          });
+        });
 
+    </script>
         @yield('javascript')
         
         <noscript>Su buscador no soporta Javascript!</noscript>

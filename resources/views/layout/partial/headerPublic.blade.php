@@ -1,8 +1,8 @@
 <div id="preloader" aria-hidden="true">
             <div>
                 <div class="loader"></div>
-                <h1>{{trans('resources.header.cargando')}}...</h1>
-                <h4>{{trans('resources.header.porFavorEspere')}}</h4>
+                <p>{{trans('resources.header.cargando')}}...</p>
+                <p>{{trans('resources.header.porFavorEspere')}}</p>
                 <img src="/img/brand/default.png" alt="" role="presentation">
             </div>
         </div>
