@@ -258,6 +258,13 @@
                                 </div>
                             </div>
                             <div class="col-xs-12">
+                                <div class="form-group" ng-class="{'has-error':((crearSliderForm.$submitted || crearSliderForm.descripcionTextoSlider.$touched) && crearSliderForm.descripcionTextoSlider.$error.required)}">
+                                    <label class="control-label" for="descripcionTextoSlider">Descripción</label>
+                                    <textarea class="form-control" name="descripcionTextoSlider" id="descripcionTextoSlider" placeholder="Ingrese descripción de la imagen seleccionada. Máx. 255 caracteres" ng-model="slider.descripcionTextoSlider" rows="4" required maxlength="255"></textarea>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label" for="enlaceInterno"><span class="asterisk">*</span> Tipo de enlace de acceso</label>
                                     <br/>
@@ -415,6 +422,14 @@
                                     <label class="control-label" for="tituloSlider">Título</label>
                                     <input type="text" class="form-control" name="tituloSlider" id="tituloSlider" placeholder="Ingrese título de la imagen. Máx. 150 caracteres" maxlength="150" ng-model="sliderEditar.tituloSlider" />
     
+                                </div>
+                            </div>
+                            
+                            <div class="col-xs-12">
+                                <div class="form-group" ng-class="{'has-error':((editarSliderForm.$submitted || editarSliderForm.descripcionTextoSlider.$touched) && editarSliderForm.descripcionTextoSlider.$error.required)}">
+                                    <label class="control-label" for="descripcionTextoSlider">Descripción</label>
+                                    <textarea class="form-control" name="descripcionTextoSlider" id="descripcionTextoSlider" placeholder="Ingrese descripción de la imagen seleccionada. Máx. 255 caracteres" ng-model="sliderEditar.descripcionTextoSlider" rows="4" required maxlength="255"></textarea>
+                                    
                                 </div>
                             </div>
                         </div>

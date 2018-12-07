@@ -110,4 +110,18 @@ class HomeController extends Controller
         return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query));
 	}
 	
+	public function getSliders() {
+	    /*Slider_Idioma::where('id','>',1)->delete();
+	    Slider::where('id','>',0)->delete();*/
+        $sliders = Slider::with('idiomas')->
+            join('sliders_idiomas', 'sliders_idiomas.slider_id', '=', 'sliders.id')
+            ->where('sliders_idiomas.idioma_id',1)->where('estado',1)
+            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
+            "sliders.ruta as rutaSlider","sliders.es_interno as enlaceInterno","sliders_idiomas.nombre as tituloSlider")
+            ->orderBy('sliders.estado','DESC')->orderBy('sliders.prioridad')
+            ->get();
+        
+        return ["sliders"=>$sliderss];
+	}
+	
 }
