@@ -73,6 +73,28 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     .tile.inline-tile .tile-body>p{
         display:block;
     }
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+    .carousel-inner>.item>img {
+        min-height: 100%;
+        min-width: 100%;
+        height: auto;
+        max-height: none;
+        max-width: none;
+    }
+    @media only screen and (min-width: 768px) {
+        .carousel-inner>.item {
+            height: 450px;
+        }    
+    }
+    @media only screen and (min-width: 992px) {
+        .carousel-inner>.item {
+            height: 500px;
+        }
+    }
 </style>
 @endsection
 @section('meta_og')
@@ -86,31 +108,29 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     <div id="carousel-main-page" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
-        <li data-target="#carousel-main-page" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-main-page" data-slide-to="1"></li>
-        <li data-target="#carousel-main-page" data-slide-to="2"></li>
+        @for($i = 0; $i < count($sliders); $i++)
+        <li data-target="#carousel-main-page" data-slide-to="{{$i}}" @if($i == 0) class="active" @endif></li>
+        @endfor
       </ol>
     
       <!-- Wrapper for slides -->
       <div class="carousel-inner" role="listbox">
-        <div class="item active">
-          <img src="{{asset('img/slider/slide1.jpg')}}" alt="" role="presentation">
+        @for($i = 0; $i < count($sliders); $i++)
+        <div class="item @if($i == 0) active @endif">
+          <img src="{{$sliders[$i]->rutaSlider}}" alt="{{$sliders[$i]->textoAlternativoSlider}}">
+          @if($sliders[$i]->tituloSlider != null && $sliders[$i]->tituloSlider != "")
           <div class="carousel-caption">
-            <h2>Transporte terrestre de pasajeros (Bus, buseta, taxi, automóvil) <small>fue el medio de transporte más utilizado para llegar al Magdalena en el 2017</small></h2>
+            <h2>{{$sliders[$i]->tituloSlider}} @if($sliders[$i]->descripcionSlider != null && $sliders[$i]->descripcionSlider != "")<small>{{$sliders[$i]->descripcionSlider}}</small>@endif</h2>
           </div>
+          @endif
         </div>
-        <div class="item">
-          <img src="{{asset('img/slider/slide2.jpg')}}" alt="" role="presentation">
-          <div class="carousel-caption">
-            <h2>Vacaciones, recreo y ocio <small>fue el motivo principal de viaje en el 2017</small></h2>
-          </div>
-        </div>
-        <div class="item">
-          <img src="{{asset('img/slider/slide3.jpg')}}" alt="" role="presentation">
-          <div class="carousel-caption">
-            <h2>Hotel <small>fue el tipo de alojamiento más utilizado en el 2017</small></h2>
-          </div>
-        </div>
+        @endfor
+        <!--<div class="item">-->
+        <!--  <img src="{{asset('img/slider/slide3.jpg')}}" alt="" role="presentation">-->
+        <!--  <div class="carousel-caption">-->
+        <!--    <h2>Hotel <small>fue el tipo de alojamiento más utilizado en el 2017</small></h2>-->
+        <!--  </div>-->
+        <!--</div>-->
       </div>
     
       <!-- Controls -->
@@ -261,7 +281,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                     <div class="tile inline-tile">
                         <div class="tile-img">
                             @if($noticia->portada)
-                            <img src="$noticia->portada" alt="" role="presentation"/>
+                            <img src="{{$noticia->portada}}" alt="" role="presentation"/>
                             @endif
                         </div>
                         <div class="tile-body">
