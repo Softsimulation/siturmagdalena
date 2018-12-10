@@ -132,7 +132,7 @@
                                             <span class="label label-danger" ng-show="AlojamientoForm.HabitacionOcupa.$error.max">*Este campo no puede ser mayor al número total de habitaciones por el número de días de actividad comercial.</span>
                                         </span>    
                                     </td>
-                                    <td><input type="number" name="HabitacionOcupa" id="HabitacionOcupa" class="form-control" ng-model="alojamiento.habitaciones[0].habitaciones_ocupadas" min="1" max="@{{(alojamiento.habitaciones[0].total_camas||alojamiento.habitaciones[0].total)*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
+                                    <td><input type="number" name="HabitacionOcupa" id="HabitacionOcupa" class="form-control" ng-model="alojamiento.habitaciones[0].habitaciones_ocupadas" min="0" max="@{{(alojamiento.habitaciones[0].total_camas||alojamiento.habitaciones[0].total)*numero_dias}}" ng-required="true" placeholder="Solo números"/></td>
                                 </tr>
                             </tbody>
 
@@ -353,7 +353,7 @@
                                             <span class="label label-danger" ng-show="AlojamientoForm.CampingCapacidad.$error.max">*Este campo no puede ser mayor al número total de parcelas por el número de días de actividad comercial.</span>
                                         </span>
                                     </td>
-                                    <td><input type="number" name="CampingCapacidad" id="CampingCapacidad" class="form-control" ng-model="alojamiento.campings[0].capacidad_ocupada" min="1" max="@{{alojamiento.campings[0].area*numero_dias}}" ng-required="true" placeholder="Solo números" /></td>
+                                    <td><input type="number" name="CampingCapacidad" id="CampingCapacidad" class="form-control" ng-model="alojamiento.campings[0].capacidad_ocupada" min="0" max="@{{alojamiento.campings[0].area*numero_dias}}" ng-required="true" placeholder="Solo números" /></td>
                                     
                                 </tr>
                             </tbody>
