@@ -156,6 +156,7 @@ class OfertaEmpleoController extends Controller
         
     	$proveedor = Proveedores_rnt::find($request->id);
 		$proveedor->categoria_proveedores_id = $request->idcategoria;
+		
 		$proveedor->direccion = $request->direccion;
 		$proveedor->nit = $request->nit;
 	    $proveedor->numero_rnt = $request->rnt;

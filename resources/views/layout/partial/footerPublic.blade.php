@@ -12,7 +12,7 @@
 	                <h3>Información de contacto</h3>
 	                
 	                <ul class="list-footer">
-                        <li><span class="glyphicon glyphicon-earphone"></span> Oficina: (+57) (5) 422 2289. Celular: (300) 531 5837<br></li>
+                        <li><span class="glyphicon glyphicon-earphone"></span> Oficina: (+57) (5) 422 2289<br></li>
                         <li><span class="glyphicon glyphicon-map-marker"></span> Calle 24 N° 3-99. Torre empresarial Banco de Bogotá<br>Oficina 9-10</li>
                     </ul>
 	            </div>
@@ -28,8 +28,8 @@
 			        	<div class="col-xs-12">
 			        		<form name="guardarSuscriptor" class="form-inline" action="/suscriptores/guardarsuscriptor" method="post">
 			        			<div class="form-group" style="width: 70%;display: inline-block;">
-			        				<label class="sr-only">Correo electrónico</label>
-		                            <input type="email" class="form-control" style="width: 100%;" name="emailSuscriptor" id="emailSuscriptor" required maxlength="255" placeholder="Email"/>
+			        				<label for="inputEmailSuscribe" class="sr-only">Correo electrónico</label>
+		                            <input type="email" class="form-control" id="inputEmailSuscribe" style="width: 100%;" name="emailSuscriptor" id="emailSuscriptor" required maxlength="255" placeholder="Email"/>
 									
 		                        </div>
 		                        <button type="submit" class="btn btn-info">Enviar</button>

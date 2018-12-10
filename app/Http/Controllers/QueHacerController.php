@@ -17,11 +17,11 @@ class QueHacerController extends Controller
     private $colorTipo = ['bg-primary','bg-success','bg-danger', 'bg-info', 'bg-warning'];
     
     public function postSearch(Request $request){
-        //return ['query' => $search];
-        $query = $this->queHacerData($request->searchMain);
+        //return ['query' => $request->search];
+        $query = $this->queHacerData($request->search);
         
         
-        return view('quehacer.Index', ['query' => $query['success'] ? $query['query']: $this->queHacerData($search = null)['query'], 'success' => $query['success']]);
+        return ['query' => $query['success'] ? $query['query']: $this->queHacerData($search = null)['query'], 'success' => $query['success']];
         
     }
     

@@ -45,13 +45,22 @@ class HomeController extends Controller
 	    $noticias = Noticia::
         join('noticias_has_idiomas', 'noticias_has_idiomas.noticias_id', '=', 'noticias.id')
         ->join('tipos_noticias', 'tipos_noticias.id', '=', 'noticias.tipos_noticias_id')
+        ->leftjoin('multimedias_noticias', function($join)
+        {
+            $join->on('noticias.id', '=', 'multimedias_noticias.noticia_id')
+                 ->where('multimedias_noticias.es_portada', '=', 1);
+        })
         ->join('tipos_noticias_has_idiomas', 'tipos_noticias_has_idiomas.tipos_noticias_id', '=', 'tipos_noticias.id')
         ->where('noticias_has_idiomas.idiomas_id',1)->where('tipos_noticias_has_idiomas.idiomas_id',1)
         ->where('tipos_noticias.estado',1)
-        ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado", "noticias.created_at as fecha",
+        ->where('noticias_has_idiomas.titulo','like','%'.$request->buscar.'%')
+        
+        //->where(function($q)use($request){ if( isset($request->tipoNoticia) && $request->tipoNoticia != null ){$q->where('tipos_noticias.id',$request->tipoNoticia);}})
+        //->where(function($q)use($request){ if( isset($request->buscar) && $request->buscar != null ){$q->where(strtolower('noticias_has_idiomas.titulo'),'like','%'.strtolower($request->buscar).'%');}})             
+        ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado",
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
-        "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia")->
-        orderBy('fecha','DESC')->take(4)->get();
+        "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia","multimedias_noticias.ruta as portada", "multimedias_noticias.es_portada","noticias.created_at as fecha")->
+        orderBy('fecha','DESC')->take(3)->get();
         
         $idIdioma = \Config::get('app.locale') == 'es' ? 1 : 2;
         
@@ -104,10 +113,24 @@ class HomeController extends Controller
                  rutas_con_idiomas.nombre AS nombre,
                  rutas.portada AS portada 
              FROM rutas INNER JOIN rutas_con_idiomas ON rutas.id = rutas_con_idiomas.ruta_id AND rutas_con_idiomas.idioma_id = ?  
-             WHERE rutas.estado = true AND rutas.sugerido = true) ORDER BY tipo", [$idIdioma, $idIdioma, $idIdioma, $idIdioma, $idIdioma]);
+             WHERE rutas.estado = true AND rutas.sugerido = true) ORDER BY tipo LIMIT 3", [$idIdioma, $idIdioma, $idIdioma, $idIdioma, $idIdioma]);
         
         $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',1)->get();
         return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query));
+	}
+	
+	public function getSliders() {
+	    /*Slider_Idioma::where('id','>',1)->delete();
+	    Slider::where('id','>',0)->delete();*/
+        $sliders = Slider::with('idiomas')->
+            join('sliders_idiomas', 'sliders_idiomas.slider_id', '=', 'sliders.id')
+            ->where('sliders_idiomas.idioma_id',1)->where('estado',1)
+            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
+            "sliders.ruta as rutaSlider","sliders.es_interno as enlaceInterno","sliders_idiomas.nombre as tituloSlider")
+            ->orderBy('sliders.estado','DESC')->orderBy('sliders.prioridad')
+            ->get();
+        
+        return ["sliders"=>$sliderss];
 	}
 	
 }
