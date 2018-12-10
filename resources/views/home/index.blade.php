@@ -95,6 +95,26 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             height: 500px;
         }
     }
+    @media only screen and (min-width: 1200px) {
+        .carousel-inner>.item {
+            height: 550px;
+        }
+    }
+    @media only screen and (min-width: 1400px) {
+        .carousel-inner>.item {
+            height: 580px;
+        }
+    }
+    @media only screen and (min-width: 1600px) {
+        .carousel-inner>.item {
+            height: 650px;
+        }
+    }
+    @media only screen and (min-width: 1900px) {
+        .carousel-inner>.item {
+            height: 720px;
+        }
+    }
 </style>
 @endsection
 @section('meta_og')
