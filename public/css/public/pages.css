@@ -189,6 +189,27 @@ section p{
     border-top: 1px solid #eee;
     padding-top: .5rem;
 }
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+.carousel-inner>.item>img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+    
+    min-height: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: none;
+    max-width: none;
+    
+}
+
 @media only screen and (min-width: 768px) {
     .carousel-inner>.item {
         height: 400px;
