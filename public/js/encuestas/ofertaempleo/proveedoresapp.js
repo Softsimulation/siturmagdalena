@@ -153,7 +153,10 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
                      $scope.item.subcategoria = data.proveedor[0].subcategoria;
                      $scope.item.categoria = data.proveedor[0].categoria;
                      $scope.item.idtipo = data.proveedor[0].idtipo;
-                     
+                     $scope.item.rnt = data.proveedor[0].rnt;
+                     $scope.item.nit = data.proveedor[0].nit;
+                     $scope.item.email = data.proveedor[0].email;
+
                      $('#modalEditarProveedor').modal('hide');
                 } else {
                    

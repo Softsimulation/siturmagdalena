@@ -99,12 +99,12 @@ function parse_yturl($url)
 						<span class="hidden-xs">Información general</span>
 					</a>
                 </li>
-                <li>
-                    <a href="#caracteristicas" class="toSection">
-						<i class="ionicons ionicons ion-android-pin" aria-hidden="true"></i>
-						<span class="hidden-xs">Ubicación</span>
-					</a>
-                </li>
+     <!--           <li>-->
+     <!--               <a href="#caracteristicas" class="toSection">-->
+					<!--	<i class="ionicons ionicons ion-android-pin" aria-hidden="true"></i>-->
+					<!--	<span class="hidden-xs">Ubicación</span>-->
+					<!--</a>-->
+     <!--           </li>-->
             </ul>
         </div>
     </div>
@@ -203,17 +203,26 @@ function parse_yturl($url)
             </div>
             
         </div>
-        
+        @if(count($evento->sitiosConEventos))
+        <div class="container">
+            <h2 class="title-section">{{$evento->eventosConIdiomas[0]->nombre}}
+               
+            </h2>
+            <div class="tiles">
+                @foreach ($evento->sitiosConEventos as $sitio)
+                <div class="tile">
+                    <div class="tile-body">
+                        <div class="tile-caption">
+                            <h3>{{$sitio->sitiosConIdiomas[0]->nombre}}</h3>
+                        </div>
+                    </div>
+                    
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
     </section>
 
 
-    <br/>
-    <h4>Sitios: </h4>
-    <div class="row">
-        @foreach ($evento->sitiosConEventos as $sitio)
-        <div class="col-sm-12 col-md-12 col-xs-12">
-            {{$sitio->sitiosConIdiomas[0]->nombre}}
-        </div>
-        @endforeach
-    </div>
 @endsection
