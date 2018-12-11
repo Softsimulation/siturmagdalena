@@ -58,6 +58,7 @@
     @media only screen and (min-width: 768px) {
         .tile .tile-img img{
             height: 100%;
+            max-width: none;
         }
         .tile .tile-img, .tiles .tile .tile-img {
             height: 300px;

@@ -201,11 +201,13 @@ class AdministradorDestinosController extends Controller
             return ["success"=>false,'errores'=>$validator->errors()];
         }
         
+        Multimedia_Destino::where('destino_id', $request->id)->where('portada', true)->delete();
+        Storage::disk('multimedia-destino')->deleteDirectory('destino-'.$request->id);
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName())['extension'];
-        if (Storage::disk('multimedia-destino')->exists('destino-'.$request->id.'/'.$portadaNombre)){
-            Multimedia_Destino::where('destino_id', $request->id)->where('portada', true)->delete();
-            Storage::disk('multimedia-destino')->deleteDirectory('destino-'.$request->id);
-        }
+        // if (Storage::disk('multimedia-destino')->exists('destino-'.$request->id.'/'.$portadaNombre)){
+        //     Multimedia_Destino::where('destino_id', $request->id)->where('portada', true)->delete();
+        //     Storage::disk('multimedia-destino')->deleteDirectory('destino-'.$request->id);
+        // }
         
         $multimedia_destino = new Multimedia_Destino();
         $multimedia_destino->destino_id = $request->id;
@@ -239,12 +241,12 @@ class AdministradorDestinosController extends Controller
             $multimedia_sitio->save();
         }
         
-        for ($i = 0; $i < 5; $i++){
-            $nombre = "imagen-".$i.".*";
-            if (Storage::disk('multimedia-destino')->exists('destino-'.$request->id.'/'.$nombre)){
-                Storage::disk('multimedia-destino')->delete('destino-'.$request->id.'/'.$nombre);
-            }
-        }
+        // for ($i = 0; $i < 20; $i++){
+        //     $nombre = "imagen-".$i.".*";
+        //     if (Storage::disk('multimedia-destino')->exists('destino-'.$request->id.'/'.$nombre)){
+        //         Storage::disk('multimedia-destino')->delete('destino-'.$request->id.'/'.$nombre);
+        //     }
+        // }
         
         if ($request->image != null){
             foreach($request->image as $key => $file){
@@ -363,7 +365,7 @@ class AdministradorDestinosController extends Controller
     
     public function postEditardatosgenerales (Request $request){
         $validator = \Validator::make($request->all(), [
-            'id' => 'required|exists:destinos|numeric',
+            'id' => 'required|exists:destino|numeric',
             'tipo' => 'required|numeric|exists:tipo_destino,id',
             'pos' => 'required'
         ],[

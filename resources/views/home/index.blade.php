@@ -85,6 +85,10 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         max-height: none;
         max-width: none;
     }
+    .tile .tile-img img{
+        height: 100%;
+        max-width: none;
+    }
     @media only screen and (min-width: 768px) {
         .carousel-inner>.item {
             height: 450px;
@@ -211,10 +215,10 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     </ul>
 </aside>
 <div id="tituloSitur" class="text-center">
-    <a href="#">¿Qué es SITUR?</a>
+    <a href="#introduce">¿Qué es SITUR?</a>
     <div class="title">
         <div class="container">
-            <h2>SITUR Magdalena</h2>    
+            <h2>SITUR MAGDALENA</h2>    
         </div>
     </div>
     
@@ -226,8 +230,8 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     <p>En SITUR Magdalena actualmente se pueden encontrar:</p>
     <ul id="elementosSitur" class="text-center">
         <li>
-            <a href="#">
-                <span class="big-number">22</span>
+            <a href="/quehacer?tipo=1">
+                <span class="big-number">{{$cantActividades}}</span>
                 Actividades que puede realizar
             </a>
         </li>
@@ -238,14 +242,14 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             </a>
         </li>
         <li>
-            <a href="#">
-                <span class="big-number">96</span>
+            <a href="/proveedor">
+                <span class="big-number">{{$cantProveedores}}</span>
                 Proveedores de servicios turísticos
             </a>
         </li>
         <li>
-            <a href="#">
-                <span class="big-number">44</span>
+            <a href="/promocionPublicacion/listado">
+                <span class="big-number">{{$cantPublicaciones}}</span>
                 Publicaciones realizadas
             </a>
         </li>
@@ -269,7 +273,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                         <h3>
                             <a href="{{getItemType($sugerido->tipo)->path}}{{$sugerido->id}}">{{$sugerido->nombre}}</a>
                             @if($sugerido->tipo == 4)
-                            <small>{{trans('resources.listado.fechaEvento', ['fechaInicio' => date('d/m/Y', strtotime($sugerido->fecha_inicio)), 'fechaFin' => date('d/m/Y', strtotime($sugerido->fecha_fin))])}}</small>
+                            <small class="btn-block" style="color: white;font-style: italic">{{trans('resources.rangoDeFechaEvento', ['fechaInicio' => date('d/m/Y', strtotime($sugerido->fecha_inicio)), 'fechaFin' => date('d/m/Y', strtotime($sugerido->fecha_fin))])}}</small>
                             @endif
                         </h3>
                         
@@ -308,7 +312,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                             <div class="tile-caption">
                                 <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>
                             </div>
-                            <p class="tile-date"><i class="ion-calendar" aria-hidden="true"></i> {{date("d/m/Y h:i A", strtotime($noticia->fecha))}}</p>
+                            <p class="tile-date"><span class="ion-calendar" aria-hidden="true"></span> {{date("d/m/Y h:i A", strtotime($noticia->fecha))}}</p>
                             <p class="text-muted">{{$noticia->resumen}}</p>
                             <div class="text-right">
                                 <a href="/promocionNoticia/ver/{{$noticia->idNoticia}}" class="btn btn-xs btn-success">Ver más</a>

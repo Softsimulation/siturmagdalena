@@ -1,0 +1,33 @@
+APP_ENV=local
+APP_DEBUG=true
+APP_KEY=base64:jGAuBBOhzcBFtX6nn3vuL4qBE0pzdfpZDnlq6KjAKsQ=
+APP_URL=http://localhost
+
+
+DB_CONNECTION=pgsql
+DB_HOST=situratlantico.info
+DB_PORT=5432
+DB_DATABASE=situratl_siturmagdalenapruebas
+DB_USERNAME=situratl_siturmagdalenauser
+DB_PASSWORD=Admin2015$
+
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+QUEUE_DRIVER=sync
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_DRIVER=mailgun
+MAIL_HOST=mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+
+MAILGUN_DOMAIN = sandbox4df2847d33fe4b889f01921c3d3bbeea.mailgun.org
+MAILGUN_SECRET = key-6c60fd5b2f7e589ffa59d71eb588817c
+
+CONTACT_MAIL = luiferpalmera@gmail.com
+CONTACT_NAME = "Luis Fernando Palmera"

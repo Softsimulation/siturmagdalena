@@ -13,11 +13,11 @@ angular.module('atracciones.idioma', [])
                 $scope.atraccion.datosGenerales = {
                     'nombre': data.atraccion.sitio.sitios_con_idiomas[0].nombre,
                     'descripcion' : data.atraccion.sitio.sitios_con_idiomas[0].descripcion,
-                    'horario' : data.atraccion.atracciones_con_idiomas[0].horario,
-                    'actividad' : data.atraccion.atracciones_con_idiomas[0].periodo,
-                    'recomendaciones' : data.atraccion.atracciones_con_idiomas[0].recomendaciones,
-                    'reglas' : data.atraccion.atracciones_con_idiomas[0].reglas,
-                    'como_llegar' : data.atraccion.atracciones_con_idiomas[0].como_llegar,
+                    'horario' : data.atraccion.atracciones_con_idiomas.length > 0 ? data.atraccion.atracciones_con_idiomas[0].horario:null,
+                    'actividad' : data.atraccion.atracciones_con_idiomas.length > 0 ? data.atraccion.atracciones_con_idiomas[0].periodo:null,
+                    'recomendaciones' : data.atraccion.atracciones_con_idiomas.length > 0 ? data.atraccion.atracciones_con_idiomas[0].recomendaciones:null,
+                    'reglas' : data.atraccion.atracciones_con_idiomas.length > 0 ? data.atraccion.atracciones_con_idiomas[0].reglas:null,
+                    'como_llegar' : data.atraccion.atracciones_con_idiomas.length > 0 ? data.atraccion.atracciones_con_idiomas[0].como_llegar:null,
                 };
             }
             $scope.idioma = data.idioma;
