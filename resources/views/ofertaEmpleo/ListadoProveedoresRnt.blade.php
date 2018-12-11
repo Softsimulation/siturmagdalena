@@ -201,8 +201,8 @@
                 </div>
         	        <div class="col-xs-12 col-sm-6">
 			            <div class="form-group" ng-class="{'has-error': ((proveedorEditForm.$submitted || proveedorEditForm.direccion_comercial.$touched) && proveedorEditForm.direccion_comercial.$error.required)}">
-			                <label class="control-label" for="proveedorEditForm-direccion_comercial"><span class="asterisk">*</span> Dirección comercial</label>
-			                <input type="text" class="form-control" ng-model="proveedorEdit.direccion" name="direccion_comercial" id="proveedorEditForm-direccion_comercial" required>
+			                <label class="control-label" for="proveedorEditForm-direccion_comercial"> Dirección comercial</label>
+			                <input type="text" class="form-control" ng-model="proveedorEdit.direccion" name="direccion_comercial" id="proveedorEditForm-direccion_comercial" >
 			            
 			            </div>
 			        </div>
@@ -210,15 +210,15 @@
 	        <div class="row">
 			        <div class="col-xs-12 col-sm-6">
 			            <div class="form-group" ng-class="{'has-error': ((editarForm.$submitted || editarForm.correo.$touched) && editarForm.correo.$error.required) || (registro.correo != registro.correo2)}">
-			                <label class="control-label" for="editarForm-correo"><span class="asterisk">*</span> Correo electrónico</label>
-			                <input type="text" class="form-control" ng-model="proveedorEdit.email" name="correo" id="editarForm-correo" required>
+			                <label class="control-label" for="editarForm-correo"> Correo electrónico</label>
+			                <input type="text" class="form-control" ng-model="proveedorEdit.email" name="correo" id="editarForm-correo" >
 			          
 			            </div>
 			        </div>
         	        <div class="col-xs-12 col-sm-6" >
 		            <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.nit.$touched) && addForm.nit.$error.required}">
-		                <label class="control-label" for="addForm-nit"><span class="asterisk">*</span> NIT</label>
-		                <input type="text" class="form-control" ng-model="proveedorEdit.nit" name="nit" id="addForm-id" required>
+		                <label class="control-label" for="addForm-nit"> NIT</label>
+		                <input type="text" class="form-control" ng-model="proveedorEdit.nit" name="nit" id="addForm-id" >
 		               
 		            </div>
 		        </div>

@@ -62,7 +62,7 @@ use App\Models\Anio;
 use App\Models\Mes_Anio;
 use App\Models\Sitio_Para_Encuesta;
 use App\Models\Medio_Actualizacion;
-
+use App\Models\Proveedores_rnt_idioma;
 
 class OfertaEmpleoController extends Controller
 {
@@ -138,9 +138,9 @@ class OfertaEmpleoController extends Controller
             'rnt'=>'required|max:50|unique:proveedores_rnt,numero_rnt,'.$request->id,
         	'nombre' => 'required|max:455',
             'idcategoria' => 'required|exists:categoria_proveedores,id',
-    	    'direccion' => 'required|max:455',
-    	    'nit'=>'required|max:150',
-    	    'email'=>'required|max:455',
+    	    'direccion' => 'max:455',
+    	    'nit'=>'max:150',
+    	    'email'=>'max:455',
             
         ],[
             'id.required' => 'No existe el proveedor.',
@@ -156,6 +156,7 @@ class OfertaEmpleoController extends Controller
         
     	$proveedor = Proveedores_rnt::find($request->id);
 		$proveedor->categoria_proveedores_id = $request->idcategoria;
+		
 		$proveedor->direccion = $request->direccion;
 		$proveedor->nit = $request->nit;
 	    $proveedor->numero_rnt = $request->rnt;

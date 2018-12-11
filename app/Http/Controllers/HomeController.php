@@ -22,6 +22,7 @@ use App\Models\Multimedia_noticia_Idioma;
 use App\Models\Tipo_noticia;
 use App\Models\Tipo_noticia_Idioma;
 use App\Models\User;
+use App\Models\Slider;
 use App;
 
 class HomeController extends Controller
@@ -40,6 +41,21 @@ class HomeController extends Controller
      * La fecha inicial y final solo aplica para el tipo 4 (Eventos)
      * para el resto de tipos las fechas tienen por default 'NOW()'
      * */	
+     
+     public function getSliders() {
+	    /*Slider_Idioma::where('','>',1)->delete();
+	    Slider::where('id','>',0)->delete();*/
+        $sliders = Slider::with('idiomas')->
+            join('sliders_idiomas', 'sliders_idiomas.slider_id', '=', 'sliders.id')
+            ->where('sliders_idiomas.idioma_id',1)->where('sliders.estado',1)
+            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
+            "sliders.ruta as rutaSlider","sliders.es_interno as enlaceInterno","sliders_idiomas.nombre as tituloSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
+            "sliders_idiomas.descripcion_texto as descripcionSlider")
+            ->orderBy('sliders.estado','DESC')->orderBy('sliders.prioridad')
+            ->get();
+        
+        return $sliders;
+	}
 	public function getIndex(Request $request) {
 	    
 	    $noticias = Noticia::
@@ -116,7 +132,9 @@ class HomeController extends Controller
              WHERE rutas.estado = true AND rutas.sugerido = true) ORDER BY tipo LIMIT 3", [$idIdioma, $idIdioma, $idIdioma, $idIdioma, $idIdioma]);
         
         $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',1)->get();
-        return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query));
+        return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query, 'sliders' => $this->getSliders()));
 	}
+	
+	
 	
 }
