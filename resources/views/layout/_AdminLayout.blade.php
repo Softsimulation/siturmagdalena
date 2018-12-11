@@ -156,16 +156,9 @@
         					    <li><a role="menuitem" href="{{asset('/informes/configuracion')}}">Informes</a></li>
         					    <li><a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a></li>
         					    <li><a role="menuitem" href="{{asset('/bolsaEmpleo/vacantes')}}">Bolsa de empleo</a></li>
-<<<<<<< HEAD
-        					   
-        					    
-        					    
-        					</ul>
-=======
         					    <li role="none"><a role="menuitem" href="{{asset('sliders/listadosliders')}}">Galería de imágenes</a></li>
         					  </ul>
                          
->>>>>>> origin/demo
                         </li>
                         <li>
                             <a role="menuitem" href="#menuTurismoReceptor" aria-haspopup="true" aria-expanded="false">Turísmo receptor</a>
