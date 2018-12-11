@@ -172,7 +172,7 @@ class AdministradorAtraccionController extends Controller
         
         $idioma = Idioma::find($idIdioma);
         
-        return ['atraccion' => $atraccion, 'success' => Atraccion_Con_Idioma::where('atracciones_id', $id)->where('idiomas_id', $idIdioma)->first() != null, 'idioma' => $idioma];
+        return ['atraccion' => $atraccion, 'success' => true, 'idioma' => $idioma];
     }
     
     public function postCrearatraccion(Request $request){
