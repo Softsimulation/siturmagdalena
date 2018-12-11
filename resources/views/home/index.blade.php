@@ -85,6 +85,10 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         max-height: none;
         max-width: none;
     }
+    .tile .tile-img img{
+        height: 100%;
+        max-width: none;
+    }
     @media only screen and (min-width: 768px) {
         .carousel-inner>.item {
             height: 450px;
@@ -211,10 +215,10 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     </ul>
 </aside>
 <div id="tituloSitur" class="text-center">
-    <a href="#">¿Qué es SITUR?</a>
+    <a href="#introduce">¿Qué es SITUR?</a>
     <div class="title">
         <div class="container">
-            <h2>SITUR Magdalena</h2>    
+            <h2>SITUR MAGDALENA</h2>    
         </div>
     </div>
     
@@ -227,7 +231,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     <ul id="elementosSitur" class="text-center">
         <li>
             <a href="#">
-                <span class="big-number">22</span>
+                <span class="big-number">{{$cantActividades}}</span>
                 Actividades que puede realizar
             </a>
         </li>
@@ -239,7 +243,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         </li>
         <li>
             <a href="#">
-                <span class="big-number">96</span>
+                <span class="big-number">{{$cantProveedores}}</span>
                 Proveedores de servicios turísticos
             </a>
         </li>
@@ -269,7 +273,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                         <h3>
                             <a href="{{getItemType($sugerido->tipo)->path}}{{$sugerido->id}}">{{$sugerido->nombre}}</a>
                             @if($sugerido->tipo == 4)
-                            <small>{{trans('resources.listado.fechaEvento', ['fechaInicio' => date('d/m/Y', strtotime($sugerido->fecha_inicio)), 'fechaFin' => date('d/m/Y', strtotime($sugerido->fecha_fin))])}}</small>
+                            <small class="btn-block" style="color: white;font-style: italic">{{trans('resources.rangoDeFechaEvento', ['fechaInicio' => date('d/m/Y', strtotime($sugerido->fecha_inicio)), 'fechaFin' => date('d/m/Y', strtotime($sugerido->fecha_fin))])}}</small>
                             @endif
                         </h3>
                         

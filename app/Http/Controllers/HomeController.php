@@ -23,6 +23,8 @@ use App\Models\Tipo_noticia;
 use App\Models\Tipo_noticia_Idioma;
 use App\Models\User;
 use App\Models\Slider;
+use App\Models\Actividad;
+use App\Models\Proveedor;
 use App;
 
 class HomeController extends Controller
@@ -51,11 +53,22 @@ class HomeController extends Controller
             ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
             "sliders.ruta as rutaSlider","sliders.es_interno as enlaceInterno","sliders_idiomas.nombre as tituloSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
             "sliders_idiomas.descripcion_texto as descripcionSlider")
-            ->orderBy('sliders.estado','DESC')->orderBy('sliders.prioridad')
+            ->orderBy('sliders.estado','DESC')->orderBy('sliders.prioridad')->take(6)
             ->get();
         
         return $sliders;
 	}
+	
+	public function getCountProveedores(){
+	    return Proveedor::where('estado', true)->count();
+        
+	}
+	
+	public function getCountActividades(){
+	    return Actividad::where('estado', true)->count();
+        
+	}
+	
 	public function getIndex(Request $request) {
 	    
 	    $noticias = Noticia::
@@ -132,7 +145,7 @@ class HomeController extends Controller
              WHERE rutas.estado = true AND rutas.sugerido = true) ORDER BY tipo LIMIT 3", [$idIdioma, $idIdioma, $idIdioma, $idIdioma, $idIdioma]);
         
         $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',1)->get();
-        return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query, 'sliders' => $this->getSliders()));
+        return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query, 'sliders' => $this->getSliders(), 'cantActividades' => $this->getCountActividades(), 'cantProveedores' => $this->getCountProveedores()));
 	}
 	
 	
