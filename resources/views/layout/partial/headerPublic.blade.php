@@ -25,7 +25,7 @@
     				<!-- *AQUI IRIA EL PLUGIN DEL CLIMA* -->
     				<p class="weather"><span class="ion-ios-partlysunny" aria-hidden="true"></span><span class="sr-only">Clima</span> <span id="weatherPluginJs"></span></p>
     				<!--<a href="#" class="btn btn-xs btn-link">Mapa del sitio</a>-->
-    				<form name="searchMainForm" method="get" action="">
+    				<form name="globalSearchForm" method="get" onsubmit="return searchForm(event)">
     					<label class="sr-only" for="searchMainTBox">{{trans('resources.header.campoDeBusqueda')}}</label>
     					<input type="text" id="searchMainTBox" name="search" maxlength="255" placeholder="{{trans('resources.header.queDeseaBuscar')}}" required autocomplete="off"/>
     					<button type="submit" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">{{trans('resources.header.buscar')}}</span></button>
