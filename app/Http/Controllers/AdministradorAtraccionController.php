@@ -328,11 +328,13 @@ class AdministradorAtraccionController extends Controller
         $atraccion->user_update = "Situr";
         $atraccion->updated_at = Carbon::now();
         
+        Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('portada', true)->delete();
+        Storage::disk('multimedia-atraccion')->deleteDirectory('atraccion-'.$request->id);
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
-        if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/'.$portadaNombre)){
-            Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('portada', true)->delete();
-            Storage::disk('multimedia-atraccion')->deleteDirectory('atraccion-'.$request->id);
-        }
+        //if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/portada.*')){
+        //   Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('portada', true)->delete();
+        //   Storage::disk('multimedia-atraccion')->deleteDirectory('atraccion-'.$request->id);
+        //}
         
         $multimedia_sitio = new Multimedia_Sitio();
         $multimedia_sitio->sitios_id = $atraccion->sitios_id;
@@ -365,12 +367,12 @@ class AdministradorAtraccionController extends Controller
         }
         
         Multimedia_Sitio::where('sitios_id', $atraccion->sitios_id)->where('tipo', false)->where('portada', false)->delete();
-        for ($i = 0; $i < 20; $i++){
-            $nombre = "imagen-".$i.".*";
-            if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/'.$nombre)){
-                Storage::disk('multimedia-atraccion')->delete('atraccion-'.$request->id.'/'.$nombre);
-            }
-        }
+        // for ($i = 0; $i < 20; $i++){
+        //     $nombre = "imagen-".$i.".*";
+        //     if (Storage::disk('multimedia-atraccion')->exists('atraccion-'.$request->id.'/'.$nombre)){
+        //         Storage::disk('multimedia-atraccion')->delete('atraccion-'.$request->id.'/'.$nombre);
+        //     }
+        // }
         
         //return ['success' => false, 'files' => $request->image[0]];
         

@@ -63,7 +63,7 @@ angular.module('actividades.crear', [])
         }
         if ($scope.portadaIMG != null) {
             fd.append("portadaIMG", $scope.portadaIMG[0]);
-            fd.append("portadaIMGText", $('#text-brcc-portadaIMG-0').val());
+            fd.append("portadaIMGText", $($('.cont-files-imagenes').find('input')[i]).val());
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
