@@ -308,7 +308,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                             <div class="tile-caption">
                                 <h3><a href="/promocionNoticia/ver/{{$noticia->idNoticia}}">{{$noticia->tituloNoticia}}</a></h3>
                             </div>
-                            <p class="tile-date"><i class="ion-calendar" aria-hidden="true"></i> {{date("d/m/Y h:i A", strtotime($noticia->fecha))}}</p>
+                            <p class="tile-date"><span class="ion-calendar" aria-hidden="true"></span> {{date("d/m/Y h:i A", strtotime($noticia->fecha))}}</p>
                             <p class="text-muted">{{$noticia->resumen}}</p>
                             <div class="text-right">
                                 <a href="/promocionNoticia/ver/{{$noticia->idNoticia}}" class="btn btn-xs btn-success">Ver más</a>

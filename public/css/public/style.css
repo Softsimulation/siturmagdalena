@@ -9,6 +9,12 @@ h1, h2, h3, h4, h5{
 	font-family: 'Futura', sans-serif;
 	font-weight: 700;
 }
+h1, .h1{
+    font-size: 1.5rem;
+}
+h2, .h2{
+    font-size: 1.125rem;
+}
 /*Cargando inicial*/
 #preloader {
     position: fixed;
