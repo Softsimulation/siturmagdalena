@@ -73,7 +73,7 @@ angular.module('proveedores.crear', [])
         if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
-                fd.append("imageText[]", $('#text-brcc-imagenes-'+i).val());
+                fd.append("imageText[]", $($('.cont-files-imagenes').find('input')[i]).val());
             }
         }
         fd.append('id', $scope.proveedor.id);

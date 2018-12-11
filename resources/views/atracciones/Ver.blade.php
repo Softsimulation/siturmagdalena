@@ -1,6 +1,10 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-$paraTenerEnCuentaContieneAlgo = $atraccion->atraccionesConIdiomas[0]->recomendaciones != "" || $atraccion->atraccionesConIdiomas[0]->reglas != "" || $atraccion->atraccionesConIdiomas[0]->como_llegar != "" || count($atraccion->sitio->sitiosConActividades) > 0;
+if (count($atraccion->atraccionesConIdiomas) > 0){
+    $paraTenerEnCuentaContieneAlgo = $atraccion->atraccionesConIdiomas[0]->recomendaciones != "" || $atraccion->atraccionesConIdiomas[0]->reglas != "" || $atraccion->atraccionesConIdiomas[0]->como_llegar != "" || count($atraccion->sitio->sitiosConActividades) > 0;
+}else{
+    $paraTenerEnCuentaContieneAlgo = count($atraccion->sitio->sitiosConActividades) > 0;
+}
 function parse_yturl($url) 
 {
     $pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=|/watch\?.+&v=))([\w-]{11})(?:.+)?$#x';
@@ -147,6 +151,8 @@ function parse_yturl($url)
                                 <div class="col-xs-2">
                                     <span class="ionicons ion-android-time" aria-hidden="true"></span> <span class="sr-only">Horario</span>
                                 </div>
+                                
+                                @if(count($atraccion->atraccionesConIdiomas) > 0)
                                 <div class="col-xs-10">
                                     <div class="form-group">
                                         <label>Horario</label>
@@ -154,8 +160,8 @@ function parse_yturl($url)
                                             {{$atraccion->atraccionesConIdiomas[0]->horario}} <em>{{$atraccion->atraccionesConIdiomas[0]->periodo}}</em>
                                         </p>
                                     </div>
-                                    
                                 </div>
+                                @endif
                                 
                             </div>
                         </li>
@@ -232,22 +238,24 @@ function parse_yturl($url)
     <section id="paraTenerEnCuenta" class="section">
         <div class="container">
             <h3 class="title-section">¿Qué debo tener en cuenta?</h3>
-            @if($atraccion->atraccionesConIdiomas[0]->recomendaciones != "" || $atraccion->atraccionesConIdiomas[0]->reglas != "" || $atraccion->atraccionesConIdiomas[0]->como_llegar != "")
-            <div class="row">
-                <div class="col-xs-12 col-md-4">
-                    <h4>Recomendaciones</h4>
-                    <p style="white-space: pre-line;">{{$atraccion->atraccionesConIdiomas[0]->recomendaciones}}</p>        
+            @if(count($atraccion->atraccionesConIdiomas) > 0)
+                @if($atraccion->atraccionesConIdiomas[0]->recomendaciones != "" || $atraccion->atraccionesConIdiomas[0]->reglas != "" || $atraccion->atraccionesConIdiomas[0]->como_llegar != "")
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <h4>Recomendaciones</h4>
+                        <p style="white-space: pre-line;">{{$atraccion->atraccionesConIdiomas[0]->recomendaciones}}</p>        
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <h4>Reglas</h4>
+                        <p style="white-space: pre-line;">{{$atraccion->atraccionesConIdiomas[0]->reglas}}</p>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <h4>Cómo llegar</h4>
+                        <p style="white-space: pre-line;">{{$atraccion->atraccionesConIdiomas[0]->como_llegar}}</p>
+                    </div>
                 </div>
-                <div class="col-xs-12 col-md-4">
-                    <h4>Reglas</h4>
-                    <p style="white-space: pre-line;">{{$atraccion->atraccionesConIdiomas[0]->reglas}}</p>
-                </div>
-                <div class="col-xs-12 col-md-4">
-                    <h4>Cómo llegar</h4>
-                    <p style="white-space: pre-line;">{{$atraccion->atraccionesConIdiomas[0]->como_llegar}}</p>
-                </div>
-            </div>
-            <hr/>
+                <hr/>
+                @endif
             @endif
             @if(count($atraccion->sitio->sitiosConActividades) > 0)
                 <div class="row">
@@ -291,7 +299,7 @@ function parse_yturl($url)
             <div class="text-center">
                 <div class="text-center">
                 <a id="btn-share-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{\Request::url()}}" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><span class="ion-social-facebook" aria-hidden="true"></span> Facebook</a>
-                <a id="btn-share-twitter" href="https://twitter.com/home?status=Realiza {{$atraccion->atraccionesConIdiomas[0]->nombre}} en el departamento del Magdalena. Conoce más en {{\Request::url()}}" class="btn btn-info" target="_blank" rel="noopener noreferrer"><span class="ion-social-twitter" aria-hidden="true"></span> Twitter</a>
+                <a id="btn-share-twitter" href="https://twitter.com/home?status=Realiza {{$atraccion->sitio->sitiosConIdiomas[0]->nombre}} en el departamento del Magdalena. Conoce más en {{\Request::url()}}" class="btn btn-info" target="_blank" rel="noopener noreferrer"><span class="ion-social-twitter" aria-hidden="true"></span> Twitter</a>
                 <a id="btn-share-googleplus" href="https://plus.google.com/share?url={{\Request::url()}}" class="btn btn-danger" target="_blank" rel="noopener noreferrer"><span class="ion-social-googleplus" aria-hidden="true"></span> Google +</a>
             </div>
             </div>
