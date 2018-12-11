@@ -28,11 +28,11 @@
                         +'<input ng-if="multiple"  type="file" accept="{{accept}}" id="files-brcc-{{idInput}}" style="display:none"  ng-model="f" ng-change="changeFile()" multiple >'
                         +'<input ng-if="!multiple" type="file" accept="{{accept}}" id="files-brcc-{{idInput}}" style="display:none"  ng-model="f" ng-change="changeFile()" >'
                     
-                        +'<div class="cont-files">'
+                        +'<div class="cont-files-{{idInput}}">'
                             +'<div class="col-sm-4" ng-repeat="item in filesView" style="background-color: rgba(24, 20, 20, 0.9);border-radius: 5px;padding: 5px;width: auto;display: grid;margin: 10px;float:left" >' 
                                    +'<img ng-if="item.img" class="img-responsive" style="height:200px;width:auto;" ng-src="{{item.ruta}}">'
                                    +'<i ng-if="!item.img" class="{{iconClass}}" style="font-size:9em" >{{icon}}</i>'
-                                   +'<div ng-if="item.img && item.text" style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><input id="text-brcc-{{idInput}}-{{item.id}}" class="form-control" value="{{text[item.id]}}" placeholder="Texto alternativo"></div>'
+                                   +'<div ng-if="item.img && item.text" style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><input id="text-brcc-{{idInput}}-{{item.id}}" class="form-control" autocomplete="off" value="{{text[item.id]}}" placeholder="Texto alternativo"></div>'
                                    +'<div style="width: 100%;background: transparent; text-align: center; cursor: pointer; margin-top: 3px;"><button ng-click="eliminarFile($index)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></div>'
                             +'</div>'
                         +'</div>'
@@ -100,6 +100,7 @@
                 scope.eliminarFile = function(pos){
                     scope.filesView.splice(pos,1);
                     scope.filesModel.splice(pos,1);
+                    variable--;
                     ngModel.$setViewValue( scope.filesModel);
                 };
                 
