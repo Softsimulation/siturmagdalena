@@ -150,16 +150,22 @@
         					    <li role="none"><a role="menuitem" href="{{asset('/administradorproveedores')}}">Administrar proveedores</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('/administradoreventos')}}">Administrar eventos</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('http://demo.situratlantico.info/administradorrutas')}}">Administrar rutas turísticas</a></li>
-        					    <li><a role="menuitem" href="{{asset('/InformacionDepartamento/configuracionacercade')}}">Acerca de</a></li>
+        					    <li><a role="menuitem" href="{{asset('/InformacionDepartamento/configuracionacercade')}}">Acerca del departamento</a></li>
         					    <li><a role="menuitem" href="{{asset('/InformacionDepartamento/configuracionrequisitos')}}">Requisitos de viaje</a></li>
         					    <li><a role="menuitem" href="{{asset('o/publicaciones/listadoadmin')}}">Biblioteca Digital</a></li>
         					    <li><a role="menuitem" href="{{asset('/informes/configuracion')}}">Informes</a></li>
         					    <li><a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a></li>
         					    <li><a role="menuitem" href="{{asset('/bolsaEmpleo/vacantes')}}">Bolsa de empleo</a></li>
+<<<<<<< HEAD
         					   
         					    
         					    
         					</ul>
+=======
+        					    <li role="none"><a role="menuitem" href="{{asset('sliders/listadosliders')}}">Galería de imágenes</a></li>
+        					  </ul>
+                         
+>>>>>>> origin/demo
                         </li>
                         <li>
                             <a role="menuitem" href="#menuTurismoReceptor" aria-haspopup="true" aria-expanded="false">Turísmo receptor</a>
@@ -222,9 +228,18 @@
                             </ul>
                         </li>
                         <li>
-                            <a role="menuitem" href="{{asset('exportacion')}}">Exportación</a>
+                            <a role="menuitem" href="{{asset('encuesta/listado')}}">Encuestas ADHOC</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" href="{{asset('/publicaciones/listadoadmin')}}">Biblioteca digital</a>
+                        </li>
+                        <li>
+                            <a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a>
                         </li>
                         
+                        <li>
+                            <a role="menuitem" href="{{asset('/exportacion')}}">Exportaciones</a>
+                        </li>
                         <li>
                             <a role="menuitem" href="#menuPaises" aria-haspopup="true" aria-expanded="false">Administrar países</a>
                             <ul role="menu" id="menuPaises" aria-label="Administrar países">

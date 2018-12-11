@@ -188,7 +188,7 @@ class SliderController extends Controller
                 case 3:
                     
                     $slider->enlace_acceso = "/destinos/ver/".$request->destinoIdSlider;
-                    return $slider->enlace_acceso;
+
                     break;
                 case 4:
                     $slider->enlace_acceso = "/eventos/ver/".$request->eventoIdSlider;
@@ -240,8 +240,9 @@ class SliderController extends Controller
         }else{
             $sliderIdioma->nombre = "No tiene";
         }*/
-        $sliderIdioma->nombre = $request->tituloSlider == null ? "No tiene" : $request->tituloSlider;
+        $sliderIdioma->nombre = $request->tituloSlider;
         $sliderIdioma->descripcion = $request->textoAlternativoSlider;
+        $sliderIdioma->descripcion_texto = $request->descripcionTextoSlider;
         $sliderIdioma->idioma_id = 1;
         $sliderIdioma->slider_id = $slider->id;
         $sliderIdioma->estado = true;
@@ -448,8 +449,9 @@ class SliderController extends Controller
         $slider->save();
         
         $sliderIdioma = Slider_Idioma::where('slider_id',$slider->id)->first();
-        $sliderIdioma->nombre = $request->tituloSlider == null ? "No tiene" : $request->tituloSlider;
+        $sliderIdioma->nombre = $request->tituloSlider;
         $sliderIdioma->descripcion = $request->textoAlternativoSlider;
+        $sliderIdioma->descripcion_texto = $request->descripcionTextoSlider;
         $sliderIdioma->user_update = $this->user->username;
         $sliderIdioma->updated_at = Carbon::now();
         $sliderIdioma->save();
@@ -511,8 +513,9 @@ class SliderController extends Controller
         }
         
 	    $sliderIdioma = new Slider_Idioma();
-        $sliderIdioma->nombre = $request->tituloSlider == null ? "No tiene" : $request->tituloSlider;
+        $sliderIdioma->nombre = $request->tituloSlider;
         $sliderIdioma->descripcion = $request->textoAlternativoSlider;
+        $sliderIdioma->descripcion_texto = $request->descripcionTextoSlider;
         $sliderIdioma->idioma_id = $request->idiomaIdSlider;
         $sliderIdioma->slider_id = $request->id;
         $sliderIdioma->estado = true;

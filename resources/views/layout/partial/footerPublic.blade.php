@@ -12,18 +12,30 @@
 	                <h3>Información de contacto</h3>
 	                
 	                <ul class="list-footer">
-                        <li><span class="glyphicon glyphicon-earphone"></span> Oficina: (+57) (5) 422 2289. Celular: (300) 531 5837<br></li>
+                        <li><span class="glyphicon glyphicon-earphone"></span> Oficina: (+57) (5) 422 2289<br></li>
                         <li><span class="glyphicon glyphicon-map-marker"></span> Calle 24 N° 3-99. Torre empresarial Banco de Bogotá<br>Oficina 9-10</li>
                     </ul>
 	            </div>
 	            <div class="col-xs-12 col-sm-6 col-md-4 text-center">
 	                <h3>Síguenos en nuestras redes sociales</h3>
 	                <div class="text-center">
-	                    <a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
-        				<a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
-        				<a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
+	                    <a href="https://twitter.com/siturmagdalena?lang=es" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
+        				<a href="https://www.facebook.com/SITURMag/" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
+        				<a href="https://www.instagram.com/siturmagdalena" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
 	                </div>
-	                <p>O descarga nuestra aplicación móvil</p>
+	                <p>O suscríbete a nuestro boletín de noticias</p>
+	                <div class="row" style="text-align:center; margin-bottom: 1rem;">
+			        	<div class="col-xs-12">
+			        		<form name="guardarSuscriptor" class="form-inline" action="/suscriptores/guardarsuscriptor" method="post">
+			        			<div class="form-group" style="width: 70%;display: inline-block;">
+			        				<label for="inputEmailSuscribe" class="sr-only">Correo electrónico</label>
+		                            <input type="email" class="form-control" id="inputEmailSuscribe" style="width: 100%;" name="inputEmailSuscribe" required maxlength="255" placeholder="Email"/>
+									
+		                        </div>
+		                        <button type="submit" class="btn btn-info">Enviar</button>
+			        		</form>
+			        	</div>
+			        </div>
 	            </div>
 	            <div class="col-xs-12 col-sm-6 col-md-4">
 	                <h3>Enlaces de interés</h3>
@@ -36,16 +48,7 @@
 	                
 	            </div>
 	        </div>
-	        <div class="row">
-	        	<div class="col-xs-12">
-	        		<form name="guardarSuscriptor" action="/suscriptores/guardarsuscriptor" method="post">
-	        			<div class="form-group">
-                            <input type="email" class="form-control" name="emailSuscriptor" id="emailSuscriptor" placeholder="Ingrese el correo donde desea recibir las notificaciones"/>
-							<button type="submit" class="btn btn-success">Enviar</button>
-                        </div>
-	        		</form>
-	        	</div>
-	        </div>
+	        
 	    </div>
 	    <div class="sign-footer">
 	        <div class="container text-center">

@@ -129,13 +129,15 @@
     
 
         //muestra la información de la entidad
-        $scope.showInfo = function (event, id, nombre, portada, url) {
+        $scope.showInfo = function (event, id, nombre, portada, lat, long,url) {
             
             $scope.detalle = {
                 id: id,
                 nombre: nombre,
                 portada: portada,
-                url: url
+                url: url,
+                lat: lat,
+                long: long
             };
             
             $scope.showInfoEntidad = true;

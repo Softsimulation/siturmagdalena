@@ -121,23 +121,28 @@ angular.module('destinos.crear', [])
         }
         if ($scope.portadaIMG != null) {
             fd.append("portadaIMG", $scope.portadaIMG[0]);
+            fd.append("portadaIMGText", $('#text-brcc-portadaIMG-0').val());
         }else{
             swal('Error', 'No ha adjuntado imagen de portada..', 'error');
         }
         if ($scope.imagenes != null && $scope.imagenes.length != 0) {
             for (i in $scope.imagenes){
                 fd.append("image[]", $scope.imagenes[i]);
+                fd.append("imageText[]", $('#text-brcc-imagenes-'+i).val());
             }
         }
         fd.append('id', $scope.destino.id);
         fd.append('video', $("#video").val());
+        $("body").attr("class", "cbp-spmenu-push charging");
         destinosServi.postGuardarmultimedia(fd).then(function (data){
+            $("body").attr("class", "cbp-spmenu-push");
             if (data.success){
                 swal('¡Éxito!', 'Multimedia agregada con éxito.', 'success');
             }else{
                 $scope.errores = data.errores;
             }
         }).catch(function (){
+            $("body").attr("class", "cbp-spmenu-push");
             swal('Error', 'Error al ingresar los datos. Por favor, recargue la página.', 'error');
         });
     }

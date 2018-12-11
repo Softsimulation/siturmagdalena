@@ -30,6 +30,28 @@
         margin-top: .5rem;
         
     }
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+    .carousel-inner>.item>img {
+        min-height: 100%;
+        min-width: 100%;
+        height: auto;
+        max-height: none;
+        max-width: none;
+    }
+    @media only screen and (min-width: 768px) {
+            .carousel-inner>.item {
+                height: 450px;
+            }    
+        }
+        @media only screen and (min-width: 992px) {
+            .carousel-inner>.item {
+                height: 500px;
+            }
+        }
 </style>
 @endsection
 

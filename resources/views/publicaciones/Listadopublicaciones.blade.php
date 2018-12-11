@@ -3,7 +3,7 @@
 
 @section('controller','ng-controller="ListadoPublicacionCtrl"')
 
-@section('titulo','Publicaciones')
+@section('titulo','Biblioteca digital')
 @section('subtitulo','El siguiente listado cuenta con @{{publicaciones.length}} registro(s)')
 
 @section('content')
@@ -36,7 +36,7 @@
             </div>
             <p>@{{publicacion.descripcion}}</p>
             <div class="inline-buttons">
-                <a href="/verPubliacion/@{{publicacion.id}}" class="btn btn-primary">Ver detalle</a>
+                <a href="/verPublicacion/@{{publicacion.id}}" class="btn btn-primary">Ver detalle</a>
                 
             </div>  
             

@@ -1214,12 +1214,12 @@ class TurismoReceptorController extends Controller
         
         $controlSostenibilidad = Control_Sostenibilidad_Receptor::where('fecha_inicial', '<=', $visitante->fecha_llegada)->where('fecha_final', '>=', $visitante->fecha_llegada)->where('estado', true)->count();
         
-        $percepcion = Aspectos_Evaluado::where('estado',1)->with(["aspectosEvaluadosConIdiomas" => function($q){
+        $percepcion = Aspectos_Evaluado::where('estado',true)->with(["aspectosEvaluadosConIdiomas" => function($q){
             $q->whereHas('idioma', function($p){
                 $p->where('culture','es');
             })->select('aspectos_evaluados_id','nombre');
         },"itemsEvaluars"=>function($q)use($visitante){
-            $q->with(['itemsEvaluarConIdiomas' => function($p){
+            $q->where('estado', true)->with(['itemsEvaluarConIdiomas' => function($p){
                 $p->whereHas('idioma',function($z){$z->where('culture','es');});
             },"calificacions" => function($p)use($visitante){
                 $p->where('visitante_id',$visitante->id);
@@ -1232,7 +1232,7 @@ class TurismoReceptorController extends Controller
         //     });
         // }])->get();
         
-        $veces = Volveria_Visitar::where('estado',1)->with(["volveriaVisitarConIdiomas"=>function($q){
+        $veces = Volveria_Visitar::where('estado',true)->with(["volveriaVisitarConIdiomas"=>function($q){
             $q->whereHas('idioma',function($p){
                 $p->where('culture','es');
             });

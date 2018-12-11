@@ -37,9 +37,11 @@ use App\Models\Plan_Santamarta;
 use App\Models\Actividad_Servicio;
 use App\Models\Provision_Alimento;
 use App\Models\Especialidad;
+use App\Models\Categoria_Proveedor_Con_Idioma;
 use App\Models\Capacidad_Alimento;
 use App\Models\Actividad_Deportiva;
 use App\Models\Tour;
+use App\Models\Proveedores_rnt;
 use DB;
 use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
@@ -60,7 +62,7 @@ use App\Models\Anio;
 use App\Models\Mes_Anio;
 use App\Models\Sitio_Para_Encuesta;
 use App\Models\Medio_Actualizacion;
-
+use App\Models\Proveedores_rnt_idioma;
 
 class OfertaEmpleoController extends Controller
 {
@@ -127,6 +129,57 @@ class OfertaEmpleoController extends Controller
 
     }
     
+    
+        public function postGuardarproveedorrnt(Request $request)
+    {
+        $validator = \Validator::make($request->all(),[
+        
+            'id' => 'required|exists:proveedores_rnt,id',
+            'rnt'=>'required|max:50|unique:proveedores_rnt,numero_rnt,'.$request->id,
+        	'nombre' => 'required|max:455',
+            'idcategoria' => 'required|exists:categoria_proveedores,id',
+    	    'direccion' => 'max:455',
+    	    'nit'=>'max:150',
+    	    'email'=>'max:455',
+            
+        ],[
+            'id.required' => 'No existe el proveedor.',
+            'id.exists' => 'No existe el proveedor.',
+            'idcategoria.required' => 'No existe categoria del proveedor.',
+            'idcategoria.exists' => 'No existe categoria del proveedor.',
+          
+            ]
+        );
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        
+    	$proveedor = Proveedores_rnt::find($request->id);
+		$proveedor->categoria_proveedores_id = $request->idcategoria;
+		
+		$proveedor->direccion = $request->direccion;
+		$proveedor->nit = $request->nit;
+	    $proveedor->numero_rnt = $request->rnt;
+		$proveedor->email = $request->email;
+		$proveedor->save();
+        	
+		$proveedorIdioma = $proveedor->idiomas->where('idioma_id',1)->first();
+		if($proveedorIdioma){
+			$proveedorIdioma->nombre = $request->nombre;
+			$proveedorIdioma->save();
+		}else{
+			Proveedores_rnt_idioma::create([
+    			'idioma_id' => 1,
+    			'proveedor_rnt_id' => $proveedor->id,
+    			'nombre' => $request->nombre
+    		]);
+		}
+       
+        $provedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt where id =".$request->id));
+       
+       return ["success"=>true,"proveedor" => $provedores];
+            
+    }
     
     
     public function getCrearencuesta(){
@@ -208,7 +261,8 @@ class OfertaEmpleoController extends Controller
     
     public function getListadornt(){
      $provedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
-      return ["success" => true, "proveedores"=> $provedores];
+     $categorias = Categoria_Proveedor_Con_Idioma::where("idiomas_id",1)->select("categoria_proveedores_id AS id","nombre")->get();
+      return ["success" => true, "proveedores"=> $provedores,"categorias"=>$categorias];
     }
     
     

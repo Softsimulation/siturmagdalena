@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html @if(Config::get('app.locale') == 'es')lang="es-CO"@endif @if(Config::get('app.locale') == 'en')lang="en-US"@endif>
 <head>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -61,6 +61,56 @@
             margin: 0;
             padding-left: 1rem;
         }
+        .weather{
+            margin:0 .5rem;
+            display: flex;
+            align-items: center;
+        }
+        .weather span:first-child{
+            font-size: 1.5rem;
+            margin-right: .25rem;
+        }
+        #widget_valor {
+            color: #333;
+            font-family: Futura, sans-serif;
+            font-size: 1rem;
+        }
+        /*Google traductor*/
+            .goog-te-gadget img {
+                display: none!important;
+            }
+            .goog-te-gadget-simple {
+                background: transparent!important;
+                color: #333!important;
+                border: 0!important;
+            }
+            .goog-te-gadget-simple .goog-te-menu-value span {
+                color: #333!important;
+                font-size: 1rem!important;
+                padding-right: .5rem!important;
+                font-family: Futura, sans-serif!important;
+            }
+            .goog-te-banner {
+                background: black!important;
+                color: white!important;
+            }
+            .goog-te-button div {
+                background: transparent!important;
+                border: 0!important;
+            }
+            .goog-te-button button {
+                color: white!important;
+                border: 0!important;
+                background-color: transparent!important;
+                font-family: Futura, sans-serif!important;
+            }
+            .goog-te-button {
+                border: 0!important;
+            }
+            .goog-te-menu-value span {
+                color: white!important;
+                font-family: Futura, sans-serif!important;
+            }
         /*main img{
             background-image: url('/img/bg-img.jpg');
         }*/
@@ -109,5 +159,44 @@
         });
         
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.1.0/jquery.simpleWeather.min.js"></script>
+    <script>
+        // v3.1.0
+        //Docs at http://simpleweatherjs.com
+        $(document).ready(function() {
+          $.simpleWeather({
+            location: 'Magdalena, Colombia',
+            woeid: '',
+            unit: 'c',
+            success: function(weather) {
+            //   html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
+            //   html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+            //   html += '<li class="currently">'+weather.currently+'</li>';
+            //   html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';
+          
+              $("#weatherPluginJs").html(weather.temp+'&deg;'+weather.units.temp);
+            },
+            error: function(error) {
+              $("#weatherPluginJs").html('error');
+            }
+          });
+        });
+
+    </script>
+      <!-- Global site tag (gtag.js) -Código de seguimiento Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106392208-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106392208-1');
+</script>
+<script>
+    window.setTimeout(function(){
+        document.getElementById('widget_valor').style.color = '#333';
+    },100);
+</script>
+ <!-- fin de código de seguimiento-->
 </body>
 </html>

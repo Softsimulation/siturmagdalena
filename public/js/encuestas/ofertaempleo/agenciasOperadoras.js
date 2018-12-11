@@ -135,7 +135,7 @@ angular.module('oferta.agenciasOperadoras', ["checklist-model","ofertaService"])
                       }
                     
                   } else {
-                    window.location = "ruta";
+                    window.location = data.ruta;
                   }
                 });
             }else{
