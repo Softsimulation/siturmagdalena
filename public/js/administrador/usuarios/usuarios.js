@@ -19,6 +19,7 @@ situr.controller('listadoUsuariosCtrl', ['$scope','usuarioServi', function ($sco
         }
         $scope.roles = data.roles;
         $scope.permisos = data.permisos;
+        $scope.proveedoresRNT = data.proveedoresRNT;
         $("body").attr("class", "cbp-spmenu-push");
         
     }).catch(function () {
@@ -128,15 +129,26 @@ situr.controller('guardarUsuarioCtrl', ['$scope','usuarioServi', function ($scop
     $("body").attr("class", "charging");
     usuarioServi.getInformacionguardar().then(function (data) {
         $scope.roles = data.roles;
+        $scope.proveedoresRNT = data.proveedoresRNT;
         $("body").attr("class", "cbp-spmenu-push");
         
     }).catch(function () {
         $("body").attr("class", "cbp-spmenu-push");
         swal("Error", "Error en la carga, por favor recarga la página.", "error");
     })
+    $scope.usuario = {'rol':[],'proveedoresRNT':[]};
+    $scope.$watch('usuario.rol', function () {
+        $scope.es_pst = false;
+        for(var i=0;i<$scope.usuario.rol.length; i++){
+            if($scope.usuario.rol[i] == 3){
+                $scope.es_pst = true;
+            }
+        }
+        
+    });
     
     $scope.guardarUsuario = function () {
-        if (!$scope.crearForm.$valid || $scope.usuario.rol.length == 0) {
+        if (!$scope.crearForm.$valid || $scope.usuario.rol.length == 0 || ($scope.es_pst == true && $scope.usuario.proveedoresRNT.length == 0)) {
             return;
         }
         $("body").attr("class", "charging");

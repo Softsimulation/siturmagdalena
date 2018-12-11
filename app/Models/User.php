@@ -52,6 +52,9 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Datos_Adicional_Usuario','users_id');
         
     }
+    public function proveedoresPst(){
+        return $this->belongsToMany('App\Models\Proveedores_rnt','proveedor_rnt_user','user_id','proveedor_rnt_id');
+    }
     
     public static function resolveUser()
     {   
