@@ -49,11 +49,6 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
     
     <style>
-        header {
-            position: relative;
-            background: black;
-            margin-bottom: 1rem;
-        }
         .tile .tile-caption h3 {
             margin: 0;
             font-size: 1rem;
@@ -102,6 +97,52 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             z-index: 60;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
+        .input-group>.input-group-prepend:not(:first-child)>.input-group-text .btn {
+            border-radius: 0;
+            border: 0;
+        }
+        
+        .input-group>.input-group-prepend:not(:first-child)>.input-group-text {
+            padding: 0;
+        }
+        
+        .card-header {
+            padding: 2px .5rem;
+        }
+        .card-header .btn {
+            padding: 0;
+            color: #333;
+            white-space: wrap;
+        }
+        .tile.tile-overlap .tile-img {
+            background-image: url(/img/no-image.jpg);
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        .label {
+            display: inline-block;
+            padding: .2rem .5rem;
+            font-size: .875rem;
+            font-weight: 500;
+            border-radius: 2px;
+            margin-bottom: 2px;
+        }
+        .tile-date {
+            display:inline-block;
+            background-color: #ddd;
+            color: #333;
+        }
+        .tile.tile-overlap .tile-img img {
+            font-size: 0.875rem;
+            text-align: center;
+            color: dimgrey;
+        }
+        .title-section{
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #004a87;
+        }
     </style>
     
 @endsection
@@ -122,49 +163,59 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
 @endsection
 
 @section('content')
-<div class="container">
-    <h2 class="text-uppercase">{{$tituloPagina}}</h2>
-    
-    <div id="opciones">
-        <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaLista')}}</span></button>
-        <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaMosaico')}}</span></button>
-        <form class="form-inline">
-            <div class="form-group">
-                <label class="sr-only" for="searchMain">{{trans('resources.listado.buscadorGeneral')}}</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="searchMain" placeholder="{{trans('resources.listado.queDeseaBuscar')}}" maxlength="255">
-                    <div class="input-group-addon"><button type="submit" class="btn btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.buscar')}}</span></button></div>
+<div class="header-list">
+    <div class="container">
+        @if(isset($_GET['tipo']))
+        <ol class="breadcrumb">
+          
+          <li><a href="/quehacer">{{trans('resources.menu.servicios')}}</a></li>
+          <li class="active">{{$tituloPagina}}</li>
+          
+        </ol>
+        @endif
+        <h2 class="title-section">{{$tituloPagina}}</h2>
+        <div id="opciones">
+            <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaLista')}}</span></button>
+            <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaMosaico')}}</span></button>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="searchMain">{{trans('resources.header.campoDeBusqueda')}}</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchMain" placeholder="{{trans('resources.header.queDeseaBuscar')}}" maxlength="255">
+                        <div class="input-group-addon"><button type="submit" class="btn btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.buscar')}}</span></button></div>
+                    </div>
+                    
                 </div>
                 
-            </div>
-            
-        </form>
-        <!--<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-filter" aria-hidden="true" title="Filtrar resultados" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter"></span><span class="sr-only">Filtrar resultados</span></button>-->
+            </form>
+            <!--<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-filter" aria-hidden="true" title="Filtrar resultados" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter"></span><span class="sr-only">Filtrar resultados</span></button>-->
+        </div>
     </div>
-    <hr/>
+</div>
+<div class="container">
     
+    
+    
+    <hr/>
     @if(count($proveedores))
     <div id="listado" class="tiles">
     @for($i = 0; $i < count($proveedores); $i++)
         <div class="tile">
             
             <div class="tile-img">
-                @if($proveedores[$i]->portada != null && $proveedores[$i]->portada != "")
-                <img src="{{$proveedores[$i]->portada}}" alt="Imagen de presentación de {{$proveedores[$i]->nombre}}"/>
+                @if($proveedores[$i]->multimediaProveedores != null && count($proveedores[$i]->multimediaProveedores) > 0)
+                <img src="{{$proveedores[$i]->multimediaProveedores[0]->ruta}}" alt="Imagen de presentación de {{$proveedores[$i]->proveedorRnt->razon_social}}"/>
                 @endif
-                <div class="text-overlap">
-                    <span class="label label-{{$colorTipo[1]}}">{{getItemType(5)->name}}</span>
-                </div>
+                <!--<div class="text-overlap">-->
+                <!--    <span class="label label-{{$colorTipo[1]}}">{{getItemType(5)->name}}</span>-->
+                <!--</div>-->
             </div>
             
             <div class="tile-body">
                 <div class="tile-caption">
                     
-                    <h3><a href="{{getItemType(1)->path}}{{$proveedores[$i]->id}}">{{$proveedores[$i]->nombre}}</a></h3>
+                    <h3><a href="proveedores/ver/{{$proveedores[$i]->id}}">{{$proveedores[$i]->proveedorRnt->razon_social}}</a></h3>
                 </div>
-                @if($proveedores[$i]->tipo == 4)
-                <p class="tile-date">{{trans('resources.listado.fechaEvento', ['fechaInicio' => date('d/m/Y', strtotime($proveedores[$i]->fecha_inicio)), 'fechaFin' => date('d/m/Y', strtotime($proveedores[$i]->fecha_fin))])}}</p>
-                @endif
                 <div class="btn-block ranking">
     	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 0.0) ? (($proveedores[$i]->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
     	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 1.0) ? (($proveedores[$i]->calificacion_legusto <= 1.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>

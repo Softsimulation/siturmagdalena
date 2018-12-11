@@ -119,3 +119,7 @@
 .tiles.tile-list .tile.tile-overlap{
     min-height: 50px;
 }
+.carousel-inner>.item>img{
+    max-height: none;
+    max-width: 100%;
+}

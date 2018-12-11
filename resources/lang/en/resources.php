@@ -67,7 +67,8 @@ return [
         "sostenibilidadTuristica" => "Sustainable Tourism",
         "estadisticasSecundarias" => "Secondary statistics"
     ],
-    "mapa" => "Map"
+    "mapa" => "Map",
+    "rangoDeFechaEvento" => "From :fechaInicio to :fechaFin"
     
     
     ];
