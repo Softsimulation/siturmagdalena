@@ -6,6 +6,7 @@
                 <img src="/img/brand/default.png" alt="" role="presentation">
             </div>
         </div>
+        <a href="#content-main" id="goto-top" class="sr-only">{{trans('resources.header.irAlContenido')}}</a>
     	<header>
     		<div id="situr-main-brand" class="brand">
     			<a href="/">
@@ -16,11 +17,11 @@
     		</div>
     		<div id="nav-bar-main">
     			<div id="toolbar-main">
-		    	    <a href="#content-main" id="goto-top" class="sr-only">{{trans('resources.header.irAlContenido')}}</a>
-    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Twitter'])}}"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
-    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Facebook'])}}"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
-    				<a href="#" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Instagram'])}}"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
-    				<div id="DolarCO4"><h2><a href="https://dolar.wilkinsonpc.com.co/">Dolar Hoy Colombia</a></h2><a href="https://dolar.wilkinsonpc.com.co/indicadores-economicos-dolar.html">Indicadores Economicos</a></div><script type="text/javascript" src="https://dolar.wilkinsonpc.com.co/widgets/gratis/dolar-cop-usd-4.js"></script>
+		    	    
+    				<a href="https://twitter.com/siturmagdalena?lang=es" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Twitter'])}}"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
+    				<a href="https://www.facebook.com/SITURMag/" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Facebook'])}}"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
+    				<a href="https://www.instagram.com/siturmagdalena" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Instagram'])}}"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
+    				<!--<div id="DolarCO4"><h2><a href="https://dolar.wilkinsonpc.com.co/">Dolar Hoy Colombia</a></h2><a href="https://dolar.wilkinsonpc.com.co/indicadores-economicos-dolar.html">Indicadores Economicos</a></div><script type="text/javascript" src="https://dolar.wilkinsonpc.com.co/widgets/gratis/dolar-cop-usd-4.js"></script>-->
     				<!-- *AQUI IRIA EL PLUGIN DEL CLIMA* -->
     				<p class="weather"><span class="ion-ios-partlysunny" aria-hidden="true"></span><span class="sr-only">Clima</span> <span id="weatherPluginJs"></span></p>
     				<!--<a href="#" class="btn btn-xs btn-link">Mapa del sitio</a>-->
