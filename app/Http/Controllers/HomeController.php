@@ -25,6 +25,7 @@ use App\Models\User;
 use App\Models\Slider;
 use App\Models\Actividad;
 use App\Models\Proveedor;
+use App\Models\Publicacion;
 use App;
 
 class HomeController extends Controller
@@ -66,6 +67,10 @@ class HomeController extends Controller
 	
 	public function getCountActividades(){
 	    return Actividad::where('estado', true)->count();
+        
+	}
+	public function getCountPublicaciones(){
+	    return Publicacion::where('estado', true)->count();
         
 	}
 	
@@ -145,7 +150,7 @@ class HomeController extends Controller
              WHERE rutas.estado = true AND rutas.sugerido = true) ORDER BY tipo LIMIT 3", [$idIdioma, $idIdioma, $idIdioma, $idIdioma, $idIdioma]);
         
         $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',1)->get();
-        return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query, 'sliders' => $this->getSliders(), 'cantActividades' => $this->getCountActividades(), 'cantProveedores' => $this->getCountProveedores()));
+        return view('home.index',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias, 'sugeridos' => $query, 'sliders' => $this->getSliders(), 'cantActividades' => $this->getCountActividades(), 'cantProveedores' => $this->getCountProveedores(), 'cantPublicaciones' => $this->getCountPublicaciones()));
 	}
 	
 	

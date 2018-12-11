@@ -230,7 +230,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     <p>En SITUR Magdalena actualmente se pueden encontrar:</p>
     <ul id="elementosSitur" class="text-center">
         <li>
-            <a href="#">
+            <a href="/quehacer?tipo=1">
                 <span class="big-number">{{$cantActividades}}</span>
                 Actividades que puede realizar
             </a>
@@ -242,14 +242,14 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="/proveedor">
                 <span class="big-number">{{$cantProveedores}}</span>
                 Proveedores de servicios turísticos
             </a>
         </li>
         <li>
-            <a href="#">
-                <span class="big-number">44</span>
+            <a href="/promocionPublicacion/listado">
+                <span class="big-number">{{$cantPublicaciones}}</span>
                 Publicaciones realizadas
             </a>
         </li>
