@@ -183,12 +183,24 @@ situr.controller('editarUsuarioCtrl', ['$scope','usuarioServi', function ($scope
     $("body").attr("class", "charging");
     usuarioServi.getInformacionguardar().then(function (data) {
         $scope.roles = data.roles;
+        $scope.proveedoresRNT = data.proveedoresRNT;
         $("body").attr("class", "cbp-spmenu-push");
         
     }).catch(function () {
         $("body").attr("class", "cbp-spmenu-push");
         swal("Error", "Error en la carga, por favor recarga la página.", "error");
     })
+    
+    $scope.usuario = {'rol':[],'proveedoresRNT':[]};
+    $scope.$watch('usuario.rol', function () {
+        $scope.es_pst = false;
+        for(var i=0;i<$scope.usuario.rol.length; i++){
+            if($scope.usuario.rol[i] == 3){
+                $scope.es_pst = true;
+            }
+        }
+        
+    });
     
     $scope.editarUsuario = function () {
         if (!$scope.crearForm.$valid || $scope.usuario.rol.length == 0) {

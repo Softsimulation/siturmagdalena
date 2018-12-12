@@ -59,10 +59,15 @@ class UsuarioController extends Controller
     public function getInformacioneditar($id){
         
         $roles = Role::all();
-        $user = User::where('id',$id)->with(['roles'])->first();
+        $user = User::where('id',$id)->with(['roles','proveedoresPst'])->first();
+        
         $roles_retornar = [];
+        $proveedoresRetornar = [];
         foreach($user->roles as $rol){
             array_push($roles_retornar,$rol->id);
+        }
+        foreach($user->proveedoresPst as $proveedor){
+            array_push($proveedoresRetornar,$proveedor->id);
         }
         $userRetornar = [];
         
@@ -70,6 +75,7 @@ class UsuarioController extends Controller
         $userRetornar["nombres"] = $user->nombre;
         $userRetornar["email"] = $user->email;
         $userRetornar["rol"] = $roles_retornar;
+        $userRetornar["proveedoresRNT"] = $proveedoresRetornar;
         
         return ['roles'=>$roles, 'usuario'=>$userRetornar];
     }
@@ -201,7 +207,7 @@ class UsuarioController extends Controller
         }
         
         $user->roles()->detach();
-        $user->proveedoresRNT()->detach();
+        $user->proveedoresPst()->detach();
         foreach($request->rol as $rol){
             $user->roles()->attach($rol);
             if($rol == 2){
