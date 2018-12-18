@@ -143,7 +143,7 @@ class TurismoReceptorCorsController extends Controller
 			'Salud' => 'exists:tipos_atencion_salud,id|required_if:Motivo,5',
 			'Horas' => 'required_if:Motivo,3',
 			'Otro' => 'required_if:Motivo,18|max:150',
-			'Actor' => 'required',
+			//'Actor' => 'required',
 			'ocupacion_persona_id' => 'required|exists:ocupaciones_personas,id'
     	],[
        		'Grupo.required' => 'Debe seleccionar el grupo de viaje.',
