@@ -1429,7 +1429,7 @@ class TurismoReceptorCorsController extends Controller
 			'NombreTwitter' => 'max:100',
 			'OtroFuenteAntes' => 'max:100',
 			'OtroFuenteDurante' => 'max:100',
-			'facilidad' => 'required',
+			//'facilidad' => 'required',
 			'conoce_marca' => 'required',
 			'acepta_autorizacion' => 'required',
 			'acepta_tratamiento' => 'required',
