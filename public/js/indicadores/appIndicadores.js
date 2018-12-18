@@ -78,7 +78,7 @@
             
             $scope.options.scales.xAxes[0].display = !validar_tipo_grafica;
             $scope.options.scales.yAxes[0].display = !validar_tipo_grafica;
-            $scope.options.legend.display = validar_tipo_grafica;
+            $scope.options.legend.display = validar_tipo_grafica || ($scope.series.length > 1);
             $scope.override = [];
             
             if( validar_tipo_grafica && $scope.data.length>0 ){
@@ -126,7 +126,7 @@
         }
         
        
-        /*
+        
         Chart.plugins.register({
 			afterDatasetsDraw: function(chart) {
 				var ctx = chart.ctx;
@@ -150,21 +150,19 @@
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'middle';
                             
-                            
+                            var validar_tipo_grafica = ($scope.graficaSelect.codigo=="pie" || $scope.graficaSelect.codigo=="doughnut" || $scope.graficaSelect.codigo=="polarArea" || $scope.graficaSelect.codigo=="radar");
                             dataString = element.hidden ? "" : dataString +' '+ ( $scope.graficaSelect.codigo !='pie' ? ($scope.formato?$scope.formato:'') : '%' );
-                            
-                            
                             
 							var padding = 5;
 							var position = element.tooltipPosition();
-							var y = position.y  +  ($scope.graficaSelect.codigo !='pie' ?  25 : 0) - (fontSize / 2) - padding
+							var y = position.y  +  ( !validar_tipo_grafica ?  12 : 0) - (fontSize / 2) - padding
 							ctx.fillText(dataString, position.x , y );
 						});
 					}
 				});
 			}
 		});
-        */
+        
         
     }]);
    
@@ -296,7 +294,7 @@
         
             return  "rgba("+r1+","+r2+","+r3+", 0.5)";
         }
-        /*
+        
         Chart.plugins.register({
 			afterDatasetsDraw: function(chart) {
 				var ctx = chart.ctx;
@@ -320,21 +318,19 @@
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'middle';
                             
-                            
+                            var validar_tipo_grafica = ($scope.graficaSelect.codigo=="pie" || $scope.graficaSelect.codigo=="doughnut" || $scope.graficaSelect.codigo=="polarArea" || $scope.graficaSelect.codigo=="radar");
                             dataString = element.hidden ? "" : dataString +' '+ ( $scope.graficaSelect.codigo !='pie' ? ($scope.formato?$scope.formato:'') : '%' );
-                            
-                            
                             
 							var padding = 5;
 							var position = element.tooltipPosition();
-							var y = position.y  +  ($scope.graficaSelect.codigo !='pie' ?  25 : 0) - (fontSize / 2) - padding
+							var y = position.y  +  ( !validar_tipo_grafica ?  12 : 0) - (fontSize / 2) - padding
 							ctx.fillText(dataString, position.x , y );
 						});
 					}
 				});
 			}
 		});
-        */
+        
     }]);
     
     
