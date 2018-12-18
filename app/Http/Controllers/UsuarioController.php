@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Role_User;
 use App\Models\Permission;
+use App\Models\Proveedores_rnt;
+use App\Models\Digitador;
 
 class UsuarioController extends Controller
 {
@@ -44,22 +46,28 @@ class UsuarioController extends Controller
             $q->select('id');
         }])->get();
         $roles = Role::all();
+        
         $permisos = Permission::all();
         return ['usuarios'=>$usuarios,'roles'=>$roles, 'permisos'=>$permisos];
     }
     public function getInformacionguardar(){
         
         $roles = Role::all();
-        
-        return ['roles'=>$roles];
+        $proveedores = Proveedores_rnt::where('estado',1)->get();
+        return ['roles'=>$roles,'proveedoresRNT'=>$proveedores];
     }
     public function getInformacioneditar($id){
         
         $roles = Role::all();
-        $user = User::where('id',$id)->with(['roles'])->first();
+        $user = User::where('id',$id)->with(['roles','proveedoresPst'])->first();
+        
         $roles_retornar = [];
+        $proveedoresRetornar = [];
         foreach($user->roles as $rol){
             array_push($roles_retornar,$rol->id);
+        }
+        foreach($user->proveedoresPst as $proveedor){
+            array_push($proveedoresRetornar,$proveedor->id);
         }
         $userRetornar = [];
         
@@ -67,6 +75,7 @@ class UsuarioController extends Controller
         $userRetornar["nombres"] = $user->nombre;
         $userRetornar["email"] = $user->email;
         $userRetornar["rol"] = $roles_retornar;
+        $userRetornar["proveedoresRNT"] = $proveedoresRetornar;
         
         return ['roles'=>$roles, 'usuario'=>$userRetornar];
     }
@@ -105,6 +114,17 @@ class UsuarioController extends Controller
             if(Role::where('id',$rolSeleccionado)->first() == null){
                 $errores["rol"][0] = "Uno de los roles seleccionados no se encuentran registrados en el sistema";
             }
+            if($rolSeleccionado == 3){
+                if(sizeof($request->proveedoresRNT) == 0){
+                    $errores["proveedores"][0] = "Si selecciona el rol PST, debe por lo menos escoger un proveedor.";
+                }else{
+                    foreach($request->proveedoresRNT as $proveedor){
+                        if(Proveedores_rnt::where('id',$proveedor)->first() == null){
+                            $errores["listaProveedore"][0] = "Uno de los proveedores seleccionados no se encuentran registrados en el sistema, favor recargar la página.";
+                        }
+                    }
+                }
+            }
         }
         if(sizeof($errores) > 0){
             return ['success'=>false, 'errores'=>$errores];
@@ -119,6 +139,13 @@ class UsuarioController extends Controller
         
         foreach($request->rol as $rol){
             $user->roles()->attach($rol);
+            if($rol == 2){
+                $digitador = new Digitador();
+                $digitador->user_id = $user->id;
+            }
+        }
+        foreach($request->proveedoresRNT as $proveedor){
+            $user->proveedoresPst()->attach($proveedor);
         }
         return ['success'=> true];
     }
@@ -161,6 +188,17 @@ class UsuarioController extends Controller
             if(Role::where('id',$rolSeleccionado)->first() == null){
                 $errores["rol"][0] = "Uno de los roles seleccionados no se encuentran registrados en el sistema";
             }
+            if($rolSeleccionado == 3){
+                if(sizeof($request->proveedoresRNT) == 0){
+                    $errores["proveedores"][0] = "Si selecciona el rol PST, debe por lo menos escoger un proveedor.";
+                }else{
+                    foreach($request->proveedoresRNT as $proveedor){
+                        if(Proveedores_rnt::where('id',$proveedor)->first() == null){
+                            $errores["listaProveedore"][0] = "Uno de los proveedores seleccionados no se encuentran registrados en el sistema, favor recargar la página.";
+                        }
+                    }
+                }
+            }
         }
         
         
@@ -169,8 +207,19 @@ class UsuarioController extends Controller
         }
         
         $user->roles()->detach();
+        $user->proveedoresPst()->detach();
         foreach($request->rol as $rol){
             $user->roles()->attach($rol);
+            if($rol == 2){
+                $digitador = Digitador::where('user_id',$user->id)->first();
+                if($digitador == null){
+                    $digitador = new Digitador();
+                }
+                $digitador->user_id = $user->id;
+            }
+        }
+        foreach($request->proveedoresRNT as $proveedor){
+            $user->proveedoresPst()->attach($proveedor);
         }
         $user->nombre = $request->nombres;
         $user->username = $request->email;

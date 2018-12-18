@@ -42,6 +42,9 @@ class Proveedores_rnt extends Model
     public function proveedor(){
         return $this->hasMany( "App\Models\Proveedor", 'proveedor_rnt_id'); 
     }
+    public function users(){
+       return $this->belongsToMany('App\Models\User','proveedor_rnt_user','proveedor_rnt_id','user_id');
+   }
     /*
     public function getTipoCategoriaAttribute()
     {

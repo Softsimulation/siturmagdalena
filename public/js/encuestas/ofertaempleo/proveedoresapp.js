@@ -113,10 +113,17 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
 .controller('listadoRnt', ['$scope', 'proveedorServi',function ($scope, proveedorServi) {
    
      $("body").attr("class", "cbp-spmenu-push charging");
-        
+    $scope.proveedores = [];
     proveedorServi.CargarListadoRnt().then(function(data){
                                  $("body").attr("class", "cbp-spmenu-push");
                                 $scope.proveedores = data.proveedores;
+                                for(var i=0;i<$scope.proveedores.length;i++){
+                                    if($scope.proveedores[i].sitio_para_encuesta_id != null){
+                                        $scope.proveedores[i].estado = "Activo";
+                                    }else{
+                                        $scope.proveedores[i].estado = "Desactivado";
+                                    }
+                                }
                                 $scope.categorias = data.categorias;
                                
                 }).catch(function () {
