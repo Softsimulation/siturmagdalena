@@ -396,9 +396,9 @@ class SostenibilidadHogaresController extends Controller
 		
 		$eliminarF = Factor_Calidad_Turismo::where('casas_sostenibilidad_id',$request->id);
 			
-			foreach($eliminarF as $el){
-				$el->delete();
-			}
+		foreach($eliminarF as $el){
+			$el->delete();
+		}
 		
 		if(isset($request->factores)){
 		
@@ -423,9 +423,9 @@ class SostenibilidadHogaresController extends Controller
 		
 		$eliminarF = Factor_Positivo::where('casas_sostenibilidad_id',$request->id);
 			
-			foreach($eliminarF as $el){
-				$el->delete();
-			}
+		foreach($eliminarF as $el){
+			$el->delete();
+		}
 		
 		if(isset($request->factoresPositivos)){
 		
