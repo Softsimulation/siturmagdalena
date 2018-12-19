@@ -445,7 +445,7 @@ class SostenibilidadHogaresController extends Controller
 		}
 		
 		
-		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->where('categorias_riesgo_id',1);
+		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id);
 			
 		foreach($eliminarR as $el){
 			$el->delete();
