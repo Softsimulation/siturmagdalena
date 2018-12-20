@@ -20,6 +20,7 @@ angular.module('receptor.enteran', [])
                 $scope.fuentesDurante = data.fuentesDurante;
                 $scope.redes = data.redes;
                 $scope.enteran.Id = $scope.id;
+                $scope.controlSostenibilidad = data.controlSostenibilidad;
 
                 if (data.invitacion_correo != null) {
                     $scope.enteran.FuentesAntes = data.fuentes_antes;

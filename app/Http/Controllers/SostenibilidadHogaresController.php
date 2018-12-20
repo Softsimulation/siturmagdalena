@@ -458,7 +458,7 @@ class SostenibilidadHogaresController extends Controller
 				$riesgo->criterios_calificacion_id = $ris["calificacion"];
 				$riesgo->casas_sostenibilidad_id = $request->id;
 				if($ris["id"]==8){
-					$riesgo->otro = $ris["otroRiesgo"];
+					$riesgo->otro = isset($ris["otroRiesgo"]) ? $ris["otroRiesgo"] : null;
 				}
 				
 				$riesgo->save();
@@ -691,7 +691,7 @@ class SostenibilidadHogaresController extends Controller
 				$riesgo->criterios_calificacion_id = $ris["calificacion"];
 				$riesgo->casas_sostenibilidad_id = $request->id;
 				if($ris["id"]==21){
-					$riesgo->otro = $ris["otroRiesgo"];
+					$riesgo->otro = isset($ris["otroRiesgo"]) ? $ris["otroRiesgo"] : null;
 				}
 				
 				$riesgo->save();

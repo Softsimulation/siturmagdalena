@@ -132,7 +132,7 @@ class TurismoReceptorCorsController extends Controller
 			'Nombre' => 'required|max:150',
 			'Edad' => 'required|numeric|between:15,150',
 			'Sexo' => 'required',
-			'Email' => 'required|email',
+			'Email' => 'email',
 			'Telefono' => 'max:50',
 			'Celular' => 'max:50',
 			'Nacimiento' => 'required|exists:opciones_lugares,id',
@@ -205,7 +205,7 @@ class TurismoReceptorCorsController extends Controller
 		$visitante->destino_principal = isset($request->Destino) ? $request->Destino : null;
 		$visitante->digitada = $this->user->digitador->id;
 		$visitante->edad = $request->Edad;
-		$visitante->email = $request->Email;
+		$visitante->email = isset($request->Email) ? $request->Email : null;
 		$visitante->encuestador_creada = $request->Encuestador;
 		$visitante->fecha_llegada = $request->Llegada;
 		$visitante->fecha_salida = $request->Salida;
