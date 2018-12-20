@@ -571,7 +571,7 @@
             <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="false" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
               
                 <marker ng-repeat="pro in (proveedores|filter:filtro.busqueda|filter:filterProveedores) as proveedoresFiltrados" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
-                    icon="@{{ getIcono(pro) }}" on-click="showInfoMapa(event,pro,$index)" 
+                    icon="{ url:'@{{ getIcono(pro) }}', scaledSize:[20,20], labelOrigin:[12,-10] }" on-click="showInfoMapa(event,pro,$index)" 
                     draggable="@{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" label="@{{pro.concat}}"  >     
                 </marker>
         
