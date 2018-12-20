@@ -11,7 +11,7 @@
     <link rel="icon" type="image/ico" href="{{asset('Content/icons/favicon-96x96.png')}}" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800|Roboto:100,400,700" rel="stylesheet">
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
     <!--<link href="{{asset('/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />-->
     <link href="{{asset('/css/styleLoading.css')}}" rel='stylesheet' type='text/css' />

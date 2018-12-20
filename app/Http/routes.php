@@ -50,7 +50,7 @@ Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
 
 
-Route::controller('/quehacer', 'QueHacerController');
+
 
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
@@ -134,6 +134,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/Mapa', 'MapaCtrl@getIndex');
     
     // Public Jáder
+    Route::controller('/quehacer', 'QueHacerController');
+    
+    Route::controller('/experiencias', 'ExperienciasController');
+    
     Route::controller('/atracciones', 'AtraccionesController');
     
     Route::controller('/actividades', 'ActividadesController');
