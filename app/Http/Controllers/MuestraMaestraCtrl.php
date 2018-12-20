@@ -351,7 +351,7 @@ class MuestraMaestraCtrl extends Controller
          
             $proveedores = new Collection( DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ) );
             $proveedoresInformales = new Collection( DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) ) );
-            
+           
             $zona->es_generada = true;
             $zona->save();
             

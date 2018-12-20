@@ -394,11 +394,11 @@ class SostenibilidadHogaresController extends Controller
 			}
 		}
 		
-		$eliminarF = Factor_Calidad_Turismo::where('casas_sostenibilidad_id',$request->id);
+		$eliminarF = Factor_Calidad_Turismo::where('casas_sostenibilidad_id',$request->id)->get();
 			
-			foreach($eliminarF as $el){
-				$el->delete();
-			}
+		foreach($eliminarF as $el){
+			$el->delete();
+		}
 		
 		if(isset($request->factores)){
 		
@@ -421,11 +421,11 @@ class SostenibilidadHogaresController extends Controller
 			}
 		}
 		
-		$eliminarF = Factor_Positivo::where('casas_sostenibilidad_id',$request->id);
+		$eliminarF = Factor_Positivo::where('casas_sostenibilidad_id',$request->id)->get();
 			
-			foreach($eliminarF as $el){
-				$el->delete();
-			}
+		foreach($eliminarF as $el){
+			$el->delete();
+		}
 		
 		if(isset($request->factoresPositivos)){
 		
@@ -445,7 +445,7 @@ class SostenibilidadHogaresController extends Controller
 		}
 		
 		
-		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->where('categorias_riesgo_id',1);
+		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->whereHas('tiposRiesgo',function($q){$q->where('categorias_riesgo_id',1);})->get();
 			
 		foreach($eliminarR as $el){
 			$el->delete();
@@ -466,7 +466,7 @@ class SostenibilidadHogaresController extends Controller
 			
 		}
 		
-		$eliminarB = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$request->id);
+		$eliminarB = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$request->id)->get();
 		
 		foreach($eliminarB as $el){
 			$el->delete();
@@ -678,7 +678,7 @@ class SostenibilidadHogaresController extends Controller
 		}
 		
 		
-		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->where('categorias_riesgo_id',2);
+		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->whereHas('tiposRiesgo',function($q){$q->where('categorias_riesgo_id',2);})->get();
 			
 		foreach($eliminarR as $el){
 			$el->delete();

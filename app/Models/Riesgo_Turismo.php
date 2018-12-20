@@ -56,6 +56,6 @@ class Riesgo_Turismo extends Model
      */
     public function tiposRiesgo()
     {
-        return $this->belongsTo('App\Models\TiposRiesgo');
+        return $this->belongsTo('App\Models\Tipo_Riesgo');
     }
 }
