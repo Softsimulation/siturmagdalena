@@ -237,7 +237,7 @@
                                 <tbody>
                                     <tr ng-repeat="item in riesgos">
                                         <td>
-                                            @{{item.nombre}} <input type="text" name="otroRiesgo" ng-required="verificarOtroTabla(riesgos,8)" class="form-control" ng-if="item.id==8" ng-model="item.otroRiesgo" >
+                                            @{{item.nombre}} <input type="text" name="otroRiesgo" class="form-control" ng-if="item.id==8" ng-model="item.otroRiesgo" >
                                             <span class="label label-danger" ng-show="socialForm.riesgo_@{{item.id}}.$error.required && socialForm.$submitted">* Requerido.</span>
                                             <span class="label label-danger" ng-if="item.id==8"  ng-show="socialForm.otroRiesgo.$error.required && socialForm.$submitted">Campo Otro Requerido.</span>
                                         </td>

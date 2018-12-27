@@ -156,6 +156,15 @@
                           <div ng-bind-html="item.display_name | highlight: $select.search"></div>
                         </ui-select-choices>
                       </ui-select>
+                </div>
+                <div class="col-sm-6" ng-if="es_pst">
+                    <label class="form-group">Proveedores RNT</label>
+                    <ui-select multiple sortable="true" ng-model="usuario.proveedoresRNT" theme="select2" title="Escoja proveedor(es)" style="width:100%;">
+                        <ui-select-match placeholder="Seleccione proveedor(es)">@{{$item.razon_social}}</ui-select-match>
+                        <ui-select-choices repeat="item.id as item in proveedoresRNT | filter: $select.search">
+                          <div ng-bind-html="item.razon_social | highlight: $select.search"></div>
+                        </ui-select-choices>
+                      </ui-select>
         
                 </div>
               </div>

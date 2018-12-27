@@ -1471,6 +1471,7 @@ class TurismoReceptorController extends Controller
             'conoce_marca' => $visitante->conoce_marca ? 1 : ($visitante->ultima_sesion == 7 ? -1 : null),
             'acepta_autorizacion' => $visitante->acepta_autorizacion == 1 ? 1 : ($visitante->ultima_sesion == 7 ? -1 : null),
             'acepta_tratamiento' => $visitante->acepta_tratamiento == 1 ? 1 : ($visitante->ultima_sesion == 7 ? -1 : null),
+            'controlSostenibilidad' => $controlSostenibilidad
         ];
         
         return $retorno;
@@ -1578,9 +1579,9 @@ class TurismoReceptorController extends Controller
 		
 		$visitante->invitacion_correo = $request->Correo == 1 ? 1 : 0;
 		$visitante->facilidad = $request->facilidad == 1 ? 1 : 0;
-		$visitante->conoce_marca = $request->conoce_marca == 1 ? 1 : 0;
-		$visitante->acepta_autorizacion = $request->acepta_autorizacion == 1 ? 1 : 0;
-		$visitante->acepta_tratamiento = $request->acepta_tratamiento == 1 ? 1 : 0;
+		$visitante->conoce_marca = isset($request->conoce_marca) ? ($request->conoce_marca == 1 ? 1 : 0 ): 0;
+		$visitante->acepta_autorizacion =  isset($request->acepta_autorizacion) ? ($request->acepta_autorizacion == 1 ? 1 : 0) : 0;
+		$visitante->acepta_tratamiento = isset($request->acepta_tratamiento) ? ($request->acepta_tratamiento == 1 ? 1 : 0) : 0;
 		
 		
 		$visitante->historialEncuestas()->save(new Historial_Encuesta([

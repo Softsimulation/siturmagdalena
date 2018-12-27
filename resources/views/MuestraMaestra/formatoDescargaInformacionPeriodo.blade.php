@@ -28,7 +28,7 @@
           
           @if (count($proveedores) === 0)
              <tr>
-                 <td colspan="15" >No se encontraron proveedores dentro de la zona</td>
+                 <td colspan="16" >No se encontraron proveedores dentro de la zona</td>
              </tr>
           @endif
           

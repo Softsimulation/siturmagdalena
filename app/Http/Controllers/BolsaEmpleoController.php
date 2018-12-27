@@ -21,7 +21,7 @@ class BolsaEmpleoController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        $this->middleware('role:Admin|AdminPst');
         $this->user = \Auth::user();
     }
     
@@ -30,9 +30,16 @@ class BolsaEmpleoController extends Controller
     }
     
     public function getEmpresas(){
-        $proveedores = Proveedores_rnt::all();
+        if(\Entrust::hasRole('Admin')){
+    		$proveedores = Proveedores_rnt::all();	
+    	}else{
+    		$user = $this->user;
+    		$proveedores = Proveedores_rnt::whereHas('users',function($q)use($user){
+    			$q->where('id', $user->id);
+    		})->get();
+    	}
         $nivelesEducacion = Nivel_Educacion::all();
-        $tiposCargos = Tipo_Cargo_Vacante::all();
+        $tiposCargos = Tipo_Cargo_Vacante::where('estado', true)->get();
         $municipio = Municipio::where('departamento_id', 1411)->get();
         
         return ["proveedores" => $proveedores, 'nivelesEducacion' => $nivelesEducacion, 'municipios' => $municipio, 'tiposCargos' => $tiposCargos];
@@ -72,6 +79,10 @@ class BolsaEmpleoController extends Controller
 			}
 		}
 		
+		$proveedor = Proveedores_rnt::find($request->proveedor_id);
+		if( !in_array($this->user->id,$proveedor->users->pluck('id')->toArray()) ){
+			return ["success"=>false,"errores"=> [ ["El proveedor seleccionado no se encuentra asignado a su usuario."] ] ];
+		}
 		
 		$vacante = Oferta_Vacante::create([
 	        'proveedores_rnt_id' => $request->proveedor_id,
@@ -109,11 +120,20 @@ class BolsaEmpleoController extends Controller
     public function getCargareditarvacante($id){
         $vacante = Oferta_Vacante::where('id',$id)->with(['postulaciones','proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante'])->first();
         $vacante['salario'] = floatval($vacante->salario);
-    
-        $proveedores = Proveedores_rnt::all();
+    	
+    	if(\Entrust::hasRole('Admin')){
+    		$proveedores = Proveedores_rnt::all();	
+    	}else{
+    		$user = $this->user;
+    		$proveedores = Proveedores_rnt::whereHas('users',function($q)use($user){
+    			$q->where('id', $user->id);
+    		})->get();
+    	}
+    	
+        
         $nivelesEducacion = Nivel_Educacion::all();
         $municipio = Municipio::where('departamento_id', 1411)->get();
-        $tiposCargos = Tipo_Cargo_Vacante::all();
+        $tiposCargos = Tipo_Cargo_Vacante::where('estado', true)->get();
         
         return ['vacante' => $vacante,"proveedores" => $proveedores, 'tiposCargos' => $tiposCargos ,'nivelesEducacion' => $nivelesEducacion, 'municipios' => $municipio];
         
@@ -153,6 +173,11 @@ class BolsaEmpleoController extends Controller
 			}
 		}
 		
+		$proveedor = Proveedores_rnt::find($request->proveedores_rnt_id);
+		if( !in_array($this->user->id,$proveedor->users->pluck('id')->toArray()) ){
+			return ["success"=>false,"errores"=> [ ["El proveedor seleccionado no se encuentra asignado a su usuario."] ] ];
+		}
+		
 		
 		$vacante = Oferta_Vacante::find($request->id);
 		$vacante->proveedores_rnt_id = $request->proveedores_rnt_id;
@@ -178,7 +203,17 @@ class BolsaEmpleoController extends Controller
     }
     
     public function getCargarvacantes(){
-        $vacantes = Oferta_Vacante::with(['proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante','postulaciones'])->get();
+    	if(\Entrust::hasRole('Admin')){
+    		$vacantes = Oferta_Vacante::with(['proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante','postulaciones'])->get();	
+    	}else{
+    		$user = $this->user;
+    		$vacantes = Oferta_Vacante::whereHas('proveedoresRnt', function($q)use($user){
+    			$q->whereHas('users', function($p)use($user){
+    				$p->where('id', $user->id);
+    			});
+    		})->with(['proveedoresRnt','municipio','nivelEducacion','tiposCargosVacante','postulaciones'])->get();
+    	}
+        
         return ['vacantes' => $vacantes];
     }
     
