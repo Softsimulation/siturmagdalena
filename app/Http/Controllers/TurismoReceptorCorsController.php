@@ -239,7 +239,7 @@ class TurismoReceptorCorsController extends Controller
             'estado_id' => 1,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => 'La encuesta ha sido creada',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
         
         
@@ -418,7 +418,7 @@ class TurismoReceptorCorsController extends Controller
             'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => 'Se ha modificado la sección de información general.',
-            'usuario_id' => $this->user->id
+            'usuario_id' => $this->user->digitador->id
         ]));
     	
     	$visitante->save();
