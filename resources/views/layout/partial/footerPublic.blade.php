@@ -19,9 +19,9 @@
 	            <div class="col-xs-12 col-sm-6 col-md-4 text-center">
 	                <h3>Síguenos en nuestras redes sociales</h3>
 	                <div class="text-center">
-	                    <a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
-        				<a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
-        				<a href="#" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
+	                    <a href="https://twitter.com/siturmagdalena?lang=es" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
+        				<a href="https://www.facebook.com/SITURMag/" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
+        				<a href="https://www.instagram.com/siturmagdalena" target="_blank" rel="noreferrer noopener"><span class="icon-lg ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
 	                </div>
 	                <p>O suscríbete a nuestro boletín de noticias</p>
 	                <div class="row" style="text-align:center; margin-bottom: 1rem;">
@@ -29,7 +29,7 @@
 			        		<form name="guardarSuscriptor" class="form-inline" action="/suscriptores/guardarsuscriptor" method="post">
 			        			<div class="form-group" style="width: 70%;display: inline-block;">
 			        				<label for="inputEmailSuscribe" class="sr-only">Correo electrónico</label>
-		                            <input type="email" class="form-control" id="inputEmailSuscribe" style="width: 100%;" name="emailSuscriptor" id="emailSuscriptor" required maxlength="255" placeholder="Email"/>
+		                            <input type="email" class="form-control" id="inputEmailSuscribe" style="width: 100%;" name="inputEmailSuscribe" required maxlength="255" placeholder="Email"/>
 									
 		                        </div>
 		                        <button type="submit" class="btn btn-info">Enviar</button>

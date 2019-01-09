@@ -293,11 +293,11 @@ class AdministradorProveedoresController extends Controller
         }
         
         Multimedia_Proveedor::where('proveedor_id', $request->id)->delete();
-        
+        Storage::disk('multimedia-proveedor')->deleteDirectory('proveedor-'.$request->id);
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
-        if (Storage::disk('multimedia-proveedor')->exists('proveedor-'.$request->id.'/'.$portadaNombre)){
-            Storage::disk('multimedia-proveedor')->deleteDirectory('proveedor-'.$request->id);
-        }
+        // if (Storage::disk('multimedia-proveedor')->exists('proveedor-'.$request->id.'/'.$portadaNombre)){
+        //     Storage::disk('multimedia-proveedor')->deleteDirectory('proveedor-'.$request->id);
+        // }
         
         $multimedia_proveedor = new Multimedia_Proveedor();
         $multimedia_proveedor->proveedor_id = $request->id;
@@ -328,12 +328,12 @@ class AdministradorProveedoresController extends Controller
             $multimedia_proveedor->save();
         }
         
-        for ($i = 0; $i < 5; $i++){
-            $nombre = "imagen-".$i.".*";
-            if (Storage::disk('multimedia-proveedor')->exists('proveedor-'.$request->id.'/'.$nombre)){
-                Storage::disk('multimedia-proveedor')->delete('proveedor-'.$request->id.'/'.$nombre);
-            }
-        }
+        // for ($i = 0; $i < 5; $i++){
+        //     $nombre = "imagen-".$i.".*";
+        //     if (Storage::disk('multimedia-proveedor')->exists('proveedor-'.$request->id.'/'.$nombre)){
+        //         Storage::disk('multimedia-proveedor')->delete('proveedor-'.$request->id.'/'.$nombre);
+        //     }
+        // }
         
         if ($request->image != null){
             foreach($request->image as $key => $file){

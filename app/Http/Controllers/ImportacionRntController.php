@@ -109,6 +109,7 @@ class ImportacionRntController extends Controller
 		    $registro['campos'] = $validar['campos'];
 		    
 		    if($validar['success'] && !$similar){
+		    	$cantidadProveedores = Proveedores_rnt::where('municipio_id', $registro["municipio_id"])->count();
 	    		$proveedorCrear = Proveedores_rnt::create([
 	        		"categoria_proveedores_id" => $registro["categoria_proveedores_id"],
 	        		"estados_proveedor_id" => $registro["estados_proveedor_id"],
@@ -130,6 +131,7 @@ class ImportacionRntController extends Controller
 	        		"hab2" => isset($registro["hab2"]) ? $registro["hab2"] : null,
 	        		"cam2" => isset($registro["cam2"]) ? $registro["cam2"] : null,
 	        		"emp2" => isset($registro["emp2"]) ? $registro["emp2"] : null,
+	        		"codigo" => ($cantidadProveedores + 1),
 	        		"estado" => 1,
 	        		"user_create" => $this->user->username,
 	        		"user_update" => $this->user->username,
@@ -372,6 +374,7 @@ class ImportacionRntController extends Controller
 			return ["success"=>false,"errores"=> [["El estado ingresado no se encuentra ingresado en el sistema."]] ];
 		}
 		
+		$cantidadProveedores = Proveedores_rnt::where('municipio_id', $municipio->id)->count();
 		$proveedorCrear = Proveedores_rnt::create([
 			"categoria_proveedores_id" => $categoriaProveedor->categoria_proveedores_id,
 			"estados_proveedor_id" => $estado->id,
@@ -393,6 +396,7 @@ class ImportacionRntController extends Controller
     		"hab2" => isset($request["hab2"]) ? $request["hab2"] : null,
     		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
     		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
+    		"codigo" => ($cantidadProveedores + 1),
 			"estado" => 1,
 			"user_create" => $this->user->username,
 			"user_update" => $this->user->username,
@@ -488,6 +492,7 @@ class ImportacionRntController extends Controller
 		$proveedor->estado = 0;
 		$proveedor->save();
 		
+		$cantidadProveedores = Proveedores_rnt::where('municipio_id', $municipio->id)->count();
 		$proveedorCrear = Proveedores_rnt::create([
 			"categoria_proveedores_id" => $categoriaProveedor->categoria_proveedores_id,
 			"estados_proveedor_id" => $estado->id,
@@ -509,6 +514,7 @@ class ImportacionRntController extends Controller
     		"hab2" => isset($request["hab2"]) ? $request["hab2"] : null,
     		"cam2" => isset($request["cam2"]) ? $request["cam2"] : null,
     		"emp2" => isset($request["emp2"]) ? $request["emp2"] : null,
+    		"codigo" => ($cantidadProveedores + 1),
 			"estado" => 1,
 			"user_create" => $this->user->username,
 			"user_update" => $this->user->username,

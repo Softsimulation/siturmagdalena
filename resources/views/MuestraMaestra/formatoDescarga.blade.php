@@ -52,7 +52,7 @@
        
           <tr>
             <th style="width:10%;" >ID</th>
-            <th style="width:10%;" >RNT</th>
+            <th>RNT</th>
             <th colspan="2" >ESTADO</th>
             <th colspan="2" >NOMBRE DEL ESTABLECIMIENTO</th>
             <th colspan="2" >DIRECCIÓN ESTABLECIMIENTO</th>
@@ -68,7 +68,7 @@
             @for ($i = 0; $i < 10; $i++)
                 <tr>
                     <td rowspan="2" style="width:10%;" ></td>
-                    <td rowspan="2" style="width:10%;" ></td>
+                    <td rowspan="2" ></td>
                     <td rowspan="2" style="width:20%;" ></td>    <td style="width:5%; background: #85f185;" >SI</td>
                     <td style="width:25%;" ></td>                <td style="width:5%; background: #85f185;" >SI</td>
                     <td style="width:25%;" ></td>                <td style="width:5%; background: #85f185;" >SI</td>
@@ -97,13 +97,13 @@
           
           @foreach ($proveedores as $proveedor)
               <tr>
-                <td rowspan="2" style="width:10%;" > {{$proveedor->id}} </td>
-                <td rowspan="2" style="width:10%;" > {{$proveedor->rnt}} </td>
+                <td rowspan="2" style="width:10%;" > {{$proveedor->codigo}} </td>
+                <td rowspan="2" > {{$proveedor->rnt}} </td>
                 <td rowspan="2" style="width:20%;" > {{$proveedor->estado}} </td>      <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" > {{$proveedor->nombre}} </td>                  <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" > {{$proveedor->direccion}} </td>               <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" > {{$proveedor->categoria}} </td>               <td style="width:5%; background: #85f185;" >SI</td>
-                <td style="width:25%;" > {{$proveedor->subcategoria}} </td>              <td style="width:5%; background: #85f185;" >SI</td>
+                <td style="width:25%;" > {{$proveedor->subcategoria}} </td>            <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" rowspan="2" ></td>
                 <td style="width:15%;" >FECHA   HORA</td>
                 <td style="width:10%;" >ENTR</td>
@@ -123,7 +123,7 @@
           
           @foreach ($proveedoresInformales as $proveedor)
               <tr>
-                <td rowspan="2" style="width:10%;" > {{$proveedor->id}} </td>
+                <td rowspan="2" style="width:10%;" > {{$proveedor->codigo}} </td>
                 <td rowspan="2" style="width:10%;" > No tiene </td>
                 <td rowspan="2" style="width:20%;" > {{$proveedor->estado}} </td>      <td style="width:5%; background: #85f185;" >SI</td>
                 <td style="width:25%;" > {{$proveedor->nombre}} </td>                  <td style="width:5%; background: #85f185;" >SI</td>

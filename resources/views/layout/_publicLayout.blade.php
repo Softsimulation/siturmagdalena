@@ -192,10 +192,19 @@
 
   gtag('config', 'UA-106392208-1');
 </script>
-<script>
-    window.setTimeout(function(){
-        document.getElementById('widget_valor').style.color = '#333';
-    },100);
+<script async>
+    // window.setTimeout(function(){
+    //     document.getElementById('widget_valor').style.color = '#333';
+    // },100);
+</script>
+<script async>
+    function searchForm(event) {
+        event.preventDefault(); // disable normal form submit behavior
+        var win = window.open("https://www.google.com.co/search?q=site:http://www.siturmagdalena.com+" + document.globalSearchForm.search.value, '_blank');
+        win.focus();
+        
+        return false; // prevent further bubbling of event
+    }
 </script>
  <!-- fin de código de seguimiento-->
 </body>
