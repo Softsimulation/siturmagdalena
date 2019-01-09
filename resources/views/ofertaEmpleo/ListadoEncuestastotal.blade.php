@@ -167,8 +167,8 @@
                             <th>Mes</th>
                             <th>Año</th>
                             <th>Nombre</th>
-                            <th>Tipo</th>
                             <th>Categoría</th>
+                            <th>Sub-Categoría</th>
                             <th>Estado</th>
                             <th style="width: 80px;">Acciones</th>
                         </tr>

@@ -126,8 +126,8 @@
                             <th style="width: 50px;"></th>                           
                             <th>Número de RNT</th>
                             <th>Nombre comercial</th>
+                            <th>Sub-Categoría</th>
                             <th>Categoría</th>
-                            <th>Tipo</th>
                             <th>Encuesta</th>
                             <th style="width: 70px;"></th>
                         </tr>
