@@ -479,6 +479,11 @@
             <hr style="margin: 4%;">
             
             <div id="filtrosZonas" >
+                
+                <div class="checkbox" style="margin:5px;" ng-init="verLabels=false"  >
+                   <label><input type="checkbox" ng-model="verLabels" ng-change="verOcultarLabels()" >Ver etiquestas</label>
+                </div>
+                
                 <div class="checkbox" style="margin:5px;" >
                    <label><input type="checkbox" ng-model="filtro.verZonas" ng-change="verOcultarZonas()" >Ver bloques</label>
                 </div>
@@ -572,7 +577,7 @@
               
                 <marker ng-repeat="pro in (proveedores|filter:filtro.busqueda|filter:filterProveedores) as proveedoresFiltrados" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
                     icon="{ url:'@{{ getIcono(pro) }}', scaledSize:[20,20], labelOrigin:[12,-10] }" on-click="showInfoMapa(event,pro,$index)" 
-                    draggable="@{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" label="@{{pro.concat}}"  >     
+                    draggable="@{{pro.editar}}" on-dragend="ChangedPositionsProveedor()" label="@{{ verLabels ? pro.concat :  null}}"  >     
                 </marker>
         
                 <shape index="fig-@{{$index}}" ng-repeat="item in dataPerido.zonas|filter:filterZonas" fill-color="@{{item.color}}" 
@@ -741,7 +746,7 @@
                                 <span ng-bind="$item.codigo"></span>
                             </ui-select-match>
                             <ui-select-choices repeat="t.id as t in (digitadores |filter:$select.search)">
-                                <span ng-bind="t.codigo" title="@{{t.codigo}}"></span>
+                                <span ng-bind="t.user.nombre" title="@{{t.user.nombre}}"></span>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -838,7 +843,7 @@
                       <p>  
                             <b>ENCARGADOS:</b> 
                             <ul>
-                                <li ng-repeat="it in z.encargados" > @{{it.codigo}} </li> 
+                                <li ng-repeat="it in z.encargados" > @{{it.user.nombre}} </li> 
                             </ul>
                       </p>
                   </td>
