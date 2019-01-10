@@ -51,8 +51,8 @@
                             <tr>                           
                                 <th>Número de RNT</th>
                                 <th>Nombre comercial</th>
+                                <th>Sub-Categoría</th>
                                 <th>Categoría</th>
-                                <th>Tipo</th>
                                 <th>Contacto</th>
       
                                 <th style="width: 110px;"></th>

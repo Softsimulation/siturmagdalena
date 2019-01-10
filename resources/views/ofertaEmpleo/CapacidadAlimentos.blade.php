@@ -200,7 +200,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>¿Qué porcentaje de sus clientes del mes anterior considera son de otras regiones fuera del Atlántico? (%)
+                                <td>¿Qué porcentaje de sus clientes del mes anterior considera son de otras regiones fuera del Magdalena? (%)
                                     <span ng-show="capacidadForm.$submitted || capacidadForm.porcentajeOtrasRegiones.$touched">
                                         <span class="label label-danger" ng-show="capacidadForm.porcentajeOtrasRegiones.$error.number">* El campo recibe solo números.</span>
                                         <span class="label label-danger" ng-show="capacidadForm.porcentajeOtrasRegiones.$error.min">* El campo recibe solo números iguales o mayores que 0.</span>
