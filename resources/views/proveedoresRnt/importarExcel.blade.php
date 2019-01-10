@@ -59,25 +59,24 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" ng-class="{'active': nuevos.length > 0}" id="nuevos" ng-if="nuevos.length > 0">
             <h2 class="title1 text-center">Registros nuevos</h1>
-            <div class="flex-list">
-                 
+            <div class="flex-list" ng-show="nuevos.length > 0">
                 <div class="form-group has-feedback" style="display: inline-block;">
-                    <label class="sr-only" for="inputSearchNew">Búsqueda de registros nuevos</label>
-                    <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputSearchNew" placeholder="Buscar registro...">
-                    <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+                    <button type="button" ng-click="mostrarFiltroNuevos=!mostrarFiltroNuevos" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar registros</button>
                 </div>      
             </div>
-            <div class="text-center" ng-if="(nuevos | filter:prop.search).length > 0 && (prop.search != '' && prop.search != undefined)">
-                <p>Hay @{{(nuevos | filter:prop.search).length}} registro(s) que coinciden con su búsqueda</p>
+            
+            <br/>
+            <div class="text-center" ng-if="(nuevos | filter:searchNuevos).length > 0 && (searchNuevos != undefined && (nuevos | filter:searchNuevos).length != nuevos.length)">
+                <p>Hay @{{(nuevos | filter:searchNuevos).length}} registro(s) que coinciden con su búsqueda</p>
             </div>
             <div class="alert alert-info" ng-if="nuevos.length == 0">
                 <p>No hay registros almacenados</p>
             </div>
-            <div class="alert alert-warning" ng-if="(nuevos | filter:prop.search).length == 0 && nuevos.length > 0">
+            <div class="alert alert-warning" ng-if="(nuevos | filter:searchNuevos).length == 0 && nuevos.length > 0">
                 <p>No existen registros que coincidan con su búsqueda</p>
             </div>
-            <div class="alert alert-info" ng-if="nuevos.length > 0">
-                Los registros resaltados con color <span class="text-success">verde</span> contienen información similar a los registros que ya se encuentran almacenados en el sistema.
+            <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (searchNuevos.numero_rnt.length > 0 || searchNuevos.nombre_comercial.length > 0 || searchNuevos.subcategoria.length > 0 || searchNuevos.categoria.length > 0 || searchNuevos.direccion.length > 0 ||  searchNuevos.estado.length > 0)">
+                Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
             </div>
             <div class="row">
                 <div class="col-xs-12 table-overflow">
@@ -87,19 +86,32 @@
                             <th>Nombre comercial</th>
                             <th>Sub-Categoría</th>
                             <th>Categoría</th>
+                            <th>Dirección</th>
                             <!-- <th>Correo</th> -->
                             <th style="max-width: 80px;">Estado</th>
                             <th style="max-width: 140px;">Estado carga</th>
                             <th style="min-width: 90px;"></th>
                         </tr>
-                        <tr dir-paginate="item in nuevos |filter:prop.search|itemsPerPage:10 as results" pagination-id="paginacion_nuevos" ng-class="{'success': item.es_similar == 1}">
+                        <tr ng-show="mostrarFiltroNuevos == true">       
+                            <td><input type="text" ng-model="searchNuevos.numero_rnt" name="rnt" id="rnt" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.nombre_comercial" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.sub_categoria" name="sub_categoria" id="sub_categoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.categoria" name="categoria" id="categoria" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.direccion_comercial" name="direccion_comercial" id="direccion_comercial" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.estado" name="estado" id="estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.estadoCarga" name="estadoCarga" id="estadoCarga" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td></td>
+                        </tr>
+                        <tr dir-paginate="item in nuevos |filter:searchNuevos|itemsPerPage:10 as results" pagination-id="paginacion_nuevos" ng-class="{'success': item.es_similar == 1}">
                             <td>@{{item.numero_rnt}}</td>
                             <td>@{{item.nombre_comercial}}</td>
                             <td>@{{item.sub_categoria}}</td>
                             <td>@{{item.categoria}}</td>
+                            <td>@{{item.direccion_comercial}}</td>
                             <!-- <td>@{{item.correo}}</td> -->
                             <td>@{{item.estado}}</td>
-                            <td ng-if="item.es_correcto ==1">Correcto</td><td ng-if="item.es_correcto !=1">Incorrecto</td>
+                            <td>@{{item.estadoCarga}}</td>
+                            <!--<td ng-if="item.es_correcto ==1">Correcto</td><td ng-if="item.es_correcto !=1">Incorrecto</td>-->
                             <td style="text-align: center;">
                                 <button type="button" ng-if="item.es_correcto != 1 || item.es_similar == 1 " title="Agregar registro" ng-click="abrirModalCrear(item)" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Agregar registro</span></button>
                                 <button type="button" title="Ver registro" ng-click="abrirModalVer(item)" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver registro</span></button>
@@ -118,22 +130,24 @@
         <div role="tabpanel" class="tab-pane" ng-class="{'active': (nuevos.length == 0 && antiguos.length > 0)}" id="antiguo" ng-if="antiguos.length > 0">
             <h2 class="title1 text-center">Registros antiguos pendientes de revisión</h2>
                         
-            <div class="flex-list">
-                 
+            <div class="flex-list" ng-show="antiguos.length > 0">
                 <div class="form-group has-feedback" style="display: inline-block;">
-                    <label class="sr-only" for="inputSearchNew">Búsqueda de registros antiguos</label>
-                    <input type="text" ng-model="prop.searchAntiguo" class="form-control input-lg" id="inputSearchOld" placeholder="Buscar registro...">
-                    <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+                    <button type="button" ng-click="mostrarFiltroAntiguos=!mostrarFiltroAntiguos" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar registros</button>
                 </div>      
             </div>
-            <div class="text-center" ng-if="(antiguos | filter:prop.searchAntiguo).length > 0 && (prop.searchAntiguo != '' && prop.searchAntiguo != undefined)">
-                <p>Hay @{{(antiguos|filter:prop.searchAntiguo).length}} registro(s) que coinciden con su búsqueda</p>
+            
+            <br/>
+            <div class="text-center" ng-if="(antiguos | filter:searchAntiguos).length > 0 && (searchAntiguos != undefined && (antiguos | filter:searchAntiguos).length != antiguos.length)">
+                <p>Hay @{{(antiguos | filter:searchAntiguos).length}} registro(s) que coinciden con su búsqueda</p>
             </div>
             <div class="alert alert-info" ng-if="antiguos.length == 0">
                 <p>No hay registros almacenados</p>
             </div>
-            <div class="alert alert-warning" ng-if="(antiguos|filter:prop.searchAntiguo).length == 0 && antiguos.length > 0">
+            <div class="alert alert-warning" ng-if="(antiguos | filter:searchAntiguos).length == 0 && antiguos.length > 0">
                 <p>No existen registros que coincidan con su búsqueda</p>
+            </div>
+            <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (searchAntiguos.numero_rnt.length > 0 || searchAntiguos.nombre_comercial.length > 0 || searchAntiguos.subcategoria.length > 0 || searchAntiguos.categoria.length > 0 || searchAntiguos.direccion.length > 0 ||  searchAntiguos.estado.length > 0)">
+                Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
             </div>
             
             <div class="row">
@@ -144,16 +158,27 @@
                             <th>Nombre comercial</th>
                             <th>Sub-Categoría</th>
                             <th>Categoría</th>
+                            <th>Dirección</th>
                             <!-- <th>Correo</th>-->
                             <th>Estado</th>
                             <th style="width: 70px;"></th>
                         </tr>
-                        <tr dir-paginate="item in antiguos|filter:prop.searchAntiguo|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
+                        <tr ng-show="mostrarFiltroAntiguos == true">       
+                            <td><input type="text" ng-model="searchAntiguos.numero_rnt" name="rnt" id="rnt" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.nombre_comercial" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.sub_categoria" name="sub_categoria" id="sub_categoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.categoria" name="categoria" id="categoria" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.direccion_comercial" name="direccion_comercial" id="direccion_comercial" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.estado" name="estado" id="estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td></td>
+                        </tr>
+                        <tr dir-paginate="item in antiguos|filter:searchAntiguos|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
                             
                             <td>@{{item.numero_rnt}}</td>
                             <td>@{{item.nombre_comercial}}</td>
                             <td>@{{item.sub_categoria}}</td>
                             <td>@{{item.categoria}}</td>
+                            <td>@{{item.direccion_comercial}}</td>
                             <!-- <td>@{{item.correo}}</td>-->
                             <td>@{{item.estado}}</td>
                             <td style="text-align: center;">
