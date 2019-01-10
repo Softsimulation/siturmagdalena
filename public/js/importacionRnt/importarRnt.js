@@ -52,6 +52,9 @@ angular.module('importarRntApp', ["checklist-model","proveedorService",'angularU
                 $scope.errores = null;
                 $("body").attr("class", "cbp-spmenu-push");
                 $scope.nuevos = data.nuevos;
+                for(var i=0;i<$scope.nuevos.length;i++){
+                    $scope.nuevos[i].estadoCarga = $scope.nuevos[i].es_correcto == 1 ? 'Exitoso' : 'Incorrecto';
+                }
                 $scope.antiguos = data.antiguos;
             } else {
                 $("body").attr("class", "cbp-spmenu-push");
