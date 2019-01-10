@@ -94,9 +94,7 @@
             box-shadow: none;
             background-color: transparent;
         }
-        #nav-menu-main nav>ul li>a, #left-side-menu {
-            background-color: #131a61;
-        }   
+        
         .title-page{
             background-color: #dfedf4;
             color: #131a61;
@@ -272,22 +270,22 @@
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
-            $(function() {
-              // whenever we hover over a menu item that has a submenu
-              $('#nav-menu-main nav>ul>li').on('mouseover', function() {
-                var $menuItem = $(this),
-                    $submenuWrapper = $('> ul', $menuItem);
+            // $(function() {
+            //   // whenever we hover over a menu item that has a submenu
+            //   $('#nav-menu-main nav>ul>li').on('mouseover', function() {
+            //     var $menuItem = $(this),
+            //         $submenuWrapper = $('> ul', $menuItem);
                 
-                // grab the menu item's position relative to its positioned parent
-                var menuItemPos = $menuItem.position();
+            //     // grab the menu item's position relative to its positioned parent
+            //     var menuItemPos = $menuItem.position();
                 
-                // place the submenu in the correct position relevant to the menu item
-                $submenuWrapper.css({
-                  top: menuItemPos.top,
-                  left: menuItemPos.left + Math.round($menuItem.outerWidth() * 1)
-                });
-              });
-            });
+            //     // place the submenu in the correct position relevant to the menu item
+            //     $submenuWrapper.css({
+            //       top: menuItemPos.top,
+            //       left: menuItemPos.left + Math.round($menuItem.outerWidth() * 1)
+            //     });
+            //   });
+            // });
     </script>
     <script>
         $(".nav-tabs a[data-toggle=tab]").on("click", function(e) { if ($(this).parent().hasClass("disabled")) { e.preventDefault(); return false; } });

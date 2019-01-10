@@ -207,6 +207,26 @@ fieldset{
     position: relative;
     padding-right: 2rem;
 }
+#nav-menu-main nav>ul li>a, #left-side-menu {
+    /*background-color: #131a61;*/
+    background-color: white;
+    color: #5f6368;
+}
+#nav-menu-main nav>ul li>a{
+    font-weight: 500;
+    /*font-size: 0.875rem;*/
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+#nav-menu-main nav>ul li>a:hover, #nav-menu-main nav>ul li>a:focus{
+    background-color: #eee;
+    text-decoration: none;
+}
+#nav-menu-main nav>ul li>a[aria-expanded="true"]{
+    background-color: #dfedf4;
+    color: #005db1;
+}
+
 #nav-menu-main{
     display:none;
 }
