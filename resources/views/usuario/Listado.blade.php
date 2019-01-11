@@ -103,9 +103,9 @@
                                 <td ng-if="usuario.estado != true">Inactivo</td>
                                 <td>
                                     <a href="/usuario/editar/@{{usuario.id}}" type="button" title="Editar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    <button ng-if="usuario.estado == true" ng-click="cambiarEstado(usuario)" role="button" title="Desactivar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ban-circle"></span></a>
-                                    <button ng-if="usuario.estado != true" ng-click="cambiarEstado(usuario)" role="button" title="Activar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok-circle"></span></a>
-                                    <button ng-click="asignarPermisosModal(usuario)" role="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></a>
+                                    <button ng-if="usuario.estado == true" ng-click="cambiarEstado(usuario)" role="button" title="Desactivar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ban-circle"></span></button>
+                                    <button ng-if="usuario.estado != true" ng-click="cambiarEstado(usuario)" role="button" title="Activar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok-circle"></span></button>
+                                    <button ng-click="asignarPermisosModal(usuario)" role="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></button>
                                 </td>
                             </tr>
 
