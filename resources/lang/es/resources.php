@@ -33,7 +33,7 @@ return [
         "seleccionDeIdioma" => "Selección de idioma",
         "espanol" => "Español",
         "ingles" => "Inglés",
-        "cerrarSession" => "Cerrar sesión",
+        "cerrarSesion" => "Cerrar sesión",
         "iniciarSesion" => "Iniciar sesión",
         "menuDeNavegacion" => "Menú de navegación"
     ],

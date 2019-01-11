@@ -39,6 +39,25 @@
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+#options-side-menu{
+    display:block;
+}
+
+#left-side-menu.hidden-menu + #content-page {
+    width: 100%;
+    margin-left: 0;
+}
+#left-side-menu.hidden-menu #nav-menu-main, #left-side-menu.hidden-menu #optionsLoggedUser {
+    display: none;
+}
+
+#left-side-menu.hidden-menu {
+    height: auto;
+    border-bottom-right-radius: 50px;
+}
+
+
 #content-page{
     margin-left: 230px;
     width: calc(100% - 230px);

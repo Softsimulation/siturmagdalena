@@ -227,6 +227,35 @@ fieldset{
     color: #005db1;
 }
 
+#options-side-menu>.btn {
+    color: lightgrey;
+    font-weight: 500;
+    font-size: 1.125rem;
+}
+
+#options-side-menu {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-weight: 500;
+    color: #eee;
+    z-index: 10;
+    display:none;
+}
+
+/*#filtros-buttons {*/
+/*    position: absolute;*/
+/*    left: 0;*/
+/*    top: 4%;*/
+/*    z-index: 20;*/
+/*    background-color: white;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    border-top-right-radius: 2px;*/
+/*    border-bottom-right-radius: 2px;*/
+/*    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;*/
+/*}*/
+
 #nav-menu-main{
     display:none;
 }

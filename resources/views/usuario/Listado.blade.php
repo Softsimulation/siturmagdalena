@@ -1,7 +1,10 @@
 
 @extends('layout._AdminLayout')
 
-@section('title', 'Listado de usuarios')
+@section('title', 'Usuarios')
+
+@section('titulo','Usuarios')
+@section('subtitulo','El siguiente listado cuenta con @{{usuarios.length}} registro(s)')
 
 @section('estilos')
     <style>
@@ -46,43 +49,34 @@
     </style>
 @endsection
 
-@section('TitleSection', 'Listado de usuarios')
-
 @section('app','ng-app="admin.usuario"')
 
 @section('controller','ng-controller="listadoUsuariosCtrl"')
 
 @section('content')
-    
-
-<div class="container">
-    <h1 class="title1">Listado de usuarios</h1>
-    <br />
-    <div class="blank-page widget-shadow scroll" id="style-2 div1">
-        <div class="row">
-            
-            <div class="col-xs-12 col-sm-12 col-md-2" style="text-align: center;">
-                <a href="/usuario/guardar" class="btn btn-primary" style="margin-bottom: .5em;">Crear usuario</a>
-            </div>
-              
-            <div class="col-sm-offset-3 col-sm-4">
-                <div class="form-group input-group">
-                    <input id="input" class="form-control input-search" type="search" placeholder="Búsqueda" ng-model="search" aria-describedby="iconsearch">
-                    <span class="input-group-addon" id="iconsearch"><i class="glyphicon glyphicon-search"></i></span>
-                </div>
-            </div>
-            
-            <div class="col-sm-3">
-                <span class="chip">@{{( usuarios |filter: search|filter: filtroRol).length}} Resultados</span>
-            </div>
-            
-        </div>
-        <br/>
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-2" style="text-align: center;">
-                <a ng-click="enviarCorreos()" class="btn btn-success" style="margin-bottom: .5em;">Enviar correos</a>
-            </div>
-        </div>
+<div class="flex-list">
+    <a href="/usuario/guardar" role="button" class="btn btn-lg btn-success">
+      Crear usuario
+    </a> 
+    <button ng-click="enviarCorreos()" ng-if="usuariosCorreos.ids.length > 0" type="button" class="btn btn-lg btn-primary">
+      Enviar correos
+    </button> 
+    <div class="form-group has-feedback" style="display: inline-block;">
+        <label class="sr-only">Búsqueda de usuarios</label>
+        <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar usuarios...">
+        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+    </div>      
+</div>
+<div class="text-center" ng-if="(usuarios | filter:prop.search).length > 0 && (prop.search != '' && prop.search != undefined)">
+    <p>Hay @{{(usuarios | filter:prop.search).length}} registro(s) que coinciden con su búsqueda</p>
+</div>
+<div class="alert alert-info" ng-if="usuarios.length == 0">
+    <p>No hay registros almacenados</p>
+</div>
+<div class="alert alert-warning" ng-if="(usuarios | filter:prop.search).length == 0 && usuarios.length > 0">
+    <p>No existen registros que coincidan con su búsqueda</p>
+</div>
+<p class="text-muted text-center">Seleccione usuarios para ver más opciones</p>
         <div class="row">
             <div class="col-xs-12" style="overflow: auto;">
                 <div>
@@ -90,18 +84,18 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>#</th>
+                                <!--<th>#</th>-->
                                 <th>Nombres</th>
                                 <th>Email</th>
                                 <th>Roles</th>
                                 <th>Estado</th>
-                                <th>Opciones</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody ng-init="currentPageUsuarios = 1">
-                            <tr dir-paginate="usuario in usuarios|filter:search|itemsPerPage: 10" current-page="currentPageUsuarios" ng-click="verDetalleUsuario($event, usuario)">
+                            <tr dir-paginate="usuario in usuarios|filter:prop.search|itemsPerPage: 10" current-page="currentPageUsuarios" ng-click="verDetalleUsuario($event, usuario)">
                                 <td><input type="checkbox" checklist-model="usuariosCorreos.ids" checklist-value="usuario.id"></td>
-                                <td>@{{($index + 1) + (currentPageUsuarios - 1) * 10}}</td>
+                                <!--<td>@{{($index + 1) + (currentPageUsuarios - 1) * 10}}</td>-->
                                 <td>@{{usuario.nombre}}</td>
                                 <td>@{{usuario.email}}</td>
                                 <td><span ng-repeat="rol in usuario.roles">@{{rol.display_name}}<span ng-if="!$last">,</span></span></td>
@@ -109,22 +103,15 @@
                                 <td ng-if="usuario.estado != true">Inactivo</td>
                                 <td>
                                     <a href="/usuario/editar/@{{usuario.id}}" type="button" title="Editar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    <a href="" ng-if="usuario.estado == true" ng-click="cambiarEstado(usuario)" type="button" title="Desactivar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ban-circle"></span></a>
-                                    <a href="" ng-if="usuario.estado != true" ng-click="cambiarEstado(usuario)" type="button" title="Activar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok-circle"></span></a>
-                                    <a href="" ng-click="asignarPermisosModal(usuario)" type="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></a>
+                                    <button ng-if="usuario.estado == true" ng-click="cambiarEstado(usuario)" role="button" title="Desactivar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ban-circle"></span></a>
+                                    <button ng-if="usuario.estado != true" ng-click="cambiarEstado(usuario)" role="button" title="Activar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                                    <button ng-click="asignarPermisosModal(usuario)" role="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></a>
                                 </td>
                             </tr>
 
                         </tbody>
                     </table>
-                    <div class="col-md-12" ng-if="usuarios.length > 0 && (usuarios|filter:search).length == 0" style="padding-bottom: 1rem;">
-                        <div class="alert alert-info" role="alert"><b>No hay elementos para la búsqueda realizada</b></div>
-                    </div>
-
-                    <div class="col-md-12" ng-if="usuarios.length == 0">
-                        <div class="alert alert-info" role="alert"><b>No hay usuarios registrados en el sistema</b></div>
-                    </div>
-                    <div class="col-md-12 text-center">
+                    <div class="col-xs-12 text-center">
                         <dir-pagination-controls></dir-pagination-controls>
                     </div>
                 </div>
@@ -168,12 +155,9 @@
                 </form>
             </div>
         </div>
-    </div>
     <div class='carga'>
 
     </div>
-</div>
-
 @endsection
 
 @section('javascript')

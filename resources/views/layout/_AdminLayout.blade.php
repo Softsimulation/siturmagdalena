@@ -54,6 +54,7 @@
 
         .table > thead > tr > th {
             text-align: center;
+            font-weight: 500;
         }
 
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
@@ -114,6 +115,9 @@
     </div>
     <div id="content-main">
         <aside id="left-side-menu">
+            <div id="options-side-menu">
+                <button type="button" class="btn btn-link" title="Mostrar / Ocultar el menú"> &#8249; </button>
+            </div>
             <div id="brand">
                 <a href="/">
                     <img src="{{asset('/img/brand/72.png')}}" alt="Logo de Situr Cesar"> 
@@ -269,6 +273,16 @@
             // });
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
+                $('#options-side-menu>.btn').on('click',function(){
+                    
+                    if($('#left-side-menu').hasClass('hidden-menu')){
+                        $('#left-side-menu').removeClass('hidden-menu');
+                        $(this).html('&#8249;');
+                    }else{
+                        $('#left-side-menu').addClass('hidden-menu');
+                        $(this).html('&#8250;');
+                    }
+                });
             });
             // $(function() {
             //   // whenever we hover over a menu item that has a submenu
