@@ -269,44 +269,11 @@ class ApiOfertaEmpleoController extends Controller
     
     public function getEncuestasrealizadas($id){
  
-          $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where sitio_para_encuesta =".$id));
+        $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where sitio_para_encuesta =".$id));
+          
+        $tipo = Sitio_Para_Encuesta::where("id",$id)->first();
         
-          $ruta = null;
-          $ruta2 =null;
-          $tipo = Sitio_Para_Encuesta::where("id",$id)->first();
-         
-          if($tipo->proveedor->categoria->tipoProveedore->id == 1){
-              $ruta = "/ofertaempleo/caracterizacion";
-              $ruta2 = "/ofertaempleo/oferta";
-              }else{
-                  
-                    if($tipo->proveedor->categoria->id == 15){
-                         $ruta = "/ofertaempleo/agenciaviajes";
-                         $ruta2 = "/ofertaempleo/ofertaagenciaviajes";
-                    }
-                     if($tipo->proveedor->categoria->id == 14){
-                         $ruta = "/ofertaempleo/caracterizacionagenciasoperadoras";
-                         $ruta2 = "/ofertaempleo/ocupacionagenciasoperadoras";
-                    }
-                     if($tipo->proveedor->categoria->id == 21){
-                         $ruta = "/ofertaempleo/caracterizacionalquilervehiculo";
-                         $ruta2 = "/ofertaempleo/ofertalquilervehiculo";
-                    }
-                     if($tipo->proveedor->categoria->id == 22){
-                         $ruta = "/ofertaempleo/caracterizaciontransporte";
-                         $ruta2 = "/ofertaempleo/ofertatransporte";
-                    }
-                     if($tipo->proveedor->categoria->id == 12){
-                         $ruta = "/ofertaempleo/caracterizacionalimentos";
-                         $ruta2 = "/ofertaempleo/capacidadalimentos";
-                    }
-                   if($tipo->proveedor->categoria->id == 11){
-                         $ruta = "/ofertaempleo/caracterizacionalimentos";
-                         $ruta2 = "/ofertaempleo/capacidadalimentos";
-                    }
-              }
-         
-        return ["success"=>true, "encuestas"=>$data, 'ruta'=>$ruta, 'ruta2' => $ruta2];
+        return ["success"=>true, "encuestas"=>$data, 'tipo'=>$tipo->proveedor->categoria->tipoProveedore->id, "categoria"=>$tipo->proveedor->categoria->id];
 
     }
     

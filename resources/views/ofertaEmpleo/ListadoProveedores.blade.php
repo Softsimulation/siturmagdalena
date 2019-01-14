@@ -64,7 +64,7 @@
                                 <td><input type="text" ng-model="search.subcategoria" name="subcategoria" id="subcategoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                 <td><input type="text" ng-model="search.categoria" name="categoria" id="categoria" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
                                 <td><input type="text" ng-model="search.email" name="email" id="email" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
-                                <td></td>
+                                <td style="width: 120px;">Acciones</td>
                             </tr>
                         </thead>
                          <tbody>

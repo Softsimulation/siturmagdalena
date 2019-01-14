@@ -135,16 +135,16 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th style="width: 50px;"></th>                           
+                            <!--<th style="width: 50px;"></th>                           -->
                             <th>Número de RNT</th>
                             <th>Nombre comercial</th>
                             <th>Sub-Categoría</th>
                             <th>Categoría</th>
                             <th>Encuesta</th>
-                            <th style="width: 70px;"></th>
+                            <th style="width: 100px;">Acciones</th>
                         </tr>
                         <tr ng-show="mostrarFiltro == true">
-                            <td></td>        
+                            <!--<td></td>        -->
                             <td><input type="text" ng-model="search.rnt" name="rnt" id="rnt" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.nombre" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.subcategoria" name="subcategoria" id="subcategoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
@@ -155,7 +155,7 @@
                         </thead>
                          <tbody>
                         <tr dir-paginate="item in proveedores|filter:search|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
-                                <td>@{{$index+1}}</td>
+                                <!--<td>@{{$index+1}}</td>-->
                                 <td>@{{item.rnt}}</td>
                                 <td>@{{item.nombre}}</td>
                                 <td>@{{item.subcategoria}}</td>
@@ -163,8 +163,8 @@
                                 <td ng-if="item.sitio_para_encuesta_id != null">Activo</td>
                                 <td ng-if="item.sitio_para_encuesta_id == null">Desactivado</td>
                                 <td style="text-align: center;">
-                                  <a  href="/ofertaempleo/activar/@{{item.id}}" class="btn btn-default btn-sm" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
-                                    <a ng-click="abrirEditar(item)" type="button" title="Editar provvedor" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-edit"></span></a>
+                                  <a  href="/ofertaempleo/activar/@{{item.id}}" class="btn btn-default btn-sm" title="Activar proveedor" ><span class="glyphicon glyphicon-ok"></span></a>
+                                    <button ng-click="abrirEditar(item)" role="button" title="Editar proveedor" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span></button>
                                 </td>
                             </tr>
                          </tbody>
