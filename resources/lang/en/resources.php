@@ -14,7 +14,7 @@ return [
         "seleccionDeIdioma" => "Language select",
         "espanol" => "Spanish",
         "ingles" => "English",
-        "cerrarSession" => "Sign out",
+        "cerrarSesion" => "Sign out",
         "iniciarSesion" => "Sign in",
         "menuDeNavegacion" => "Navigation menu"
     ],

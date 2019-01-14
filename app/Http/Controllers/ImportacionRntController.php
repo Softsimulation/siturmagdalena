@@ -191,7 +191,7 @@ class ImportacionRntController extends Controller
 			'municipio' => 'required|max:255',
 			//'departamento' => 'required|max:255',
 			'nombre_comercial' => 'required|max:455',
-			'nombre_comercial_plataforma' => 'required|max:455',
+			'nombre_comercial_plataforma' => 'max:455',
 			'categoria' => 'required|max:255',
 			'sub_categoria' => 'required|max:255',
 			'direccion_comercial' => 'required|max:455',
@@ -206,9 +206,9 @@ class ImportacionRntController extends Controller
 			'turismo_aventura' => 'max:50',
 			'digito_verificacion' => 'required',
 			'ultimo_anio_rnt' => 'required',
-			'hab2' => 'required',
-			'cam2' => 'required',
-			'emp2' => 'required',
+			// 'hab2' => 'required',
+			// 'cam2' => 'required',
+			// 'emp2' => 'required',
     	],[
        		'id.required' => 'Debe seleccionar el registro a editar.',
        		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
@@ -257,16 +257,18 @@ class ImportacionRntController extends Controller
 		$proveedor->user_update = $this->user->username;
 		$proveedor->save();
 		
-		$proveedorIdioma = $proveedor->proveedor_rnt_idioma->where('idioma_id',1)->first();
-		if($proveedorIdioma){
-			$proveedorIdioma->nombre = $request->nombre_comercial_plataforma;
-			$proveedorIdioma->save();
-		}else{
-			Proveedores_rnt_idioma::create([
-    			'idioma_id' => 1,
-    			'proveedor_rnt_id' => $proveedor->id,
-    			'nombre' => $request->nombre_comercial_plataforma
-    		]);
+		if(isset($request->nombre_comercial_plataforma)){
+			$proveedorIdioma = $proveedor->proveedor_rnt_idioma->where('idioma_id',1)->first();
+			if($proveedorIdioma){
+				$proveedorIdioma->nombre = $request->nombre_comercial_plataforma;
+				$proveedorIdioma->save();
+			}else{
+				Proveedores_rnt_idioma::create([
+	    			'idioma_id' => 1,
+	    			'proveedor_rnt_id' => $proveedor->id,
+	    			'nombre' => $request->nombre_comercial_plataforma
+	    		]);
+			}	
 		}
 		
 		$objeto["id"] = $proveedor->id;
@@ -331,7 +333,7 @@ class ImportacionRntController extends Controller
 			'municipio' => 'required|max:255',
 			// 'departamento' => 'required|max:255',
 			'nombre_comercial' => 'required|max:455',
-			'nombre_comercial_plataforma' => 'required|max:455',
+			'nombre_comercial_plataforma' => 'max:455',
 			'categoria' => 'required|max:255',
 			'sub_categoria' => 'required|max:255',
 			'direccion_comercial' => 'required|max:455',
@@ -346,9 +348,9 @@ class ImportacionRntController extends Controller
 			'turismo_aventura' => 'required|max:50',
 			'digito_verificacion' => 'required',
 			'ultimo_anio_rnt' => 'required',
-			'hab2' => 'required',
-			'cam2' => 'required',
-			'emp2' => 'required',
+			// 'hab2' => 'required',
+			// 'cam2' => 'required',
+			// 'emp2' => 'required',
     	],[
        		'id.required' => 'Debe seleccionar el registro a editar.',
        		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
@@ -402,11 +404,14 @@ class ImportacionRntController extends Controller
 			"user_update" => $this->user->username,
 		]);
 		
-		Proveedores_rnt_idioma::create([
-			'idioma_id' => 1,
-			'proveedor_rnt_id' => $proveedorCrear->id,
-			'nombre' => $request["nombre_comercial_plataforma"]
-		]);
+		if(isset($request["nombre_comercial_plataforma"])){
+			Proveedores_rnt_idioma::create([
+				'idioma_id' => 1,
+				'proveedor_rnt_id' => $proveedorCrear->id,
+				'nombre' => $request["nombre_comercial_plataforma"]
+			]);	
+		}
+		
 		
 		$objeto["id"] = $proveedorCrear->id;
 		$objeto["numero_rnt"] = $request->numero_rnt;
@@ -446,7 +451,7 @@ class ImportacionRntController extends Controller
 			'municipio' => 'required|max:255',
 			// 'departamento' => 'required|max:255',
 			'nombre_comercial' => 'required|max:455',
-			'nombre_comercial_plataforma' => 'required|max:455',
+			'nombre_comercial_plataforma' => 'max:455',
 			'categoria' => 'required|max:255',
 			'sub_categoria' => 'required|max:255',
 			'direccion_comercial' => 'required|max:455',
@@ -461,9 +466,9 @@ class ImportacionRntController extends Controller
 			'turismo_aventura' => 'max:50',
 			'digito_verificacion' => 'required',
 			'ultimo_anio_rnt' => 'required',
-			'hab2' => 'required',
-			'cam2' => 'required',
-			'emp2' => 'required',
+			// 'hab2' => 'required',
+			// 'cam2' => 'required',
+			// 'emp2' => 'required',
     	],[
        		'id.required' => 'Debe seleccionar el registro a editar.',
        		'id.exists' => 'El registro seleccionado no se encuentra ingresado en el sistema.',
@@ -520,11 +525,13 @@ class ImportacionRntController extends Controller
 			"user_update" => $this->user->username,
 		]);
 		
-		Proveedores_rnt_idioma::create([
-			'idioma_id' => 1,
-			'proveedor_rnt_id' => $proveedorCrear->id,
-			'nombre' => $request["nombre_comercial_plataforma"]
-		]);
+		if(isset($request["nombre_comercial_plataforma"])){
+			Proveedores_rnt_idioma::create([
+				'idioma_id' => 1,
+				'proveedor_rnt_id' => $proveedorCrear->id,
+				'nombre' => $request["nombre_comercial_plataforma"]
+			]);	
+		}
 		
 		$objeto["id"] = $proveedorCrear->id;
 		$objeto["numero_rnt"] = $request->numero_rnt;

@@ -11,7 +11,7 @@
     <link rel="icon" type="image/ico" href="{{asset('Content/icons/favicon-96x96.png')}}" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800|Roboto:100,400,700" rel="stylesheet">
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
     <!--<link href="{{asset('/css/ionicons.min.css')}}" rel='stylesheet' type='text/css' />-->
     <link href="{{asset('/css/styleLoading.css')}}" rel='stylesheet' type='text/css' />
@@ -54,6 +54,7 @@
 
         .table > thead > tr > th {
             text-align: center;
+            font-weight: 500;
         }
 
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
@@ -94,9 +95,7 @@
             box-shadow: none;
             background-color: transparent;
         }
-        #nav-menu-main nav>ul li>a, #left-side-menu {
-            background-color: #131a61;
-        }   
+        
         .title-page{
             background-color: #dfedf4;
             color: #131a61;
@@ -116,6 +115,9 @@
     </div>
     <div id="content-main">
         <aside id="left-side-menu">
+            <div id="options-side-menu">
+                <button type="button" class="btn btn-link" title="Mostrar / Ocultar el menú"> &#8249; </button>
+            </div>
             <div id="brand">
                 <a href="/">
                     <img src="{{asset('/img/brand/72.png')}}" alt="Logo de Situr Cesar"> 
@@ -303,23 +305,33 @@
             // });
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
-            });
-            $(function() {
-              // whenever we hover over a menu item that has a submenu
-              $('#nav-menu-main nav>ul>li').on('mouseover', function() {
-                var $menuItem = $(this),
-                    $submenuWrapper = $('> ul', $menuItem);
-                
-                // grab the menu item's position relative to its positioned parent
-                var menuItemPos = $menuItem.position();
-                
-                // place the submenu in the correct position relevant to the menu item
-                $submenuWrapper.css({
-                  top: menuItemPos.top,
-                  left: menuItemPos.left + Math.round($menuItem.outerWidth() * 1)
+                $('#options-side-menu>.btn').on('click',function(){
+                    
+                    if($('#left-side-menu').hasClass('hidden-menu')){
+                        $('#left-side-menu').removeClass('hidden-menu');
+                        $(this).html('&#8249;');
+                    }else{
+                        $('#left-side-menu').addClass('hidden-menu');
+                        $(this).html('&#8250;');
+                    }
                 });
-              });
             });
+            // $(function() {
+            //   // whenever we hover over a menu item that has a submenu
+            //   $('#nav-menu-main nav>ul>li').on('mouseover', function() {
+            //     var $menuItem = $(this),
+            //         $submenuWrapper = $('> ul', $menuItem);
+                
+            //     // grab the menu item's position relative to its positioned parent
+            //     var menuItemPos = $menuItem.position();
+                
+            //     // place the submenu in the correct position relevant to the menu item
+            //     $submenuWrapper.css({
+            //       top: menuItemPos.top,
+            //       left: menuItemPos.left + Math.round($menuItem.outerWidth() * 1)
+            //     });
+            //   });
+            // });
     </script>
     <script>
         $(".nav-tabs a[data-toggle=tab]").on("click", function(e) { if ($(this).parent().hasClass("disabled")) { e.preventDefault(); return false; } });
