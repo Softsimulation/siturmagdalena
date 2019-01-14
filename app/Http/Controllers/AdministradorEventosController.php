@@ -228,10 +228,11 @@ class AdministradorEventosController extends Controller
         }
         
         Multimedia_Evento::where('eventos_id', $request->id)->where('portada', true)->delete();
+        Storage::disk('multimedia-evento')->deleteDirectory('evento-'.$request->id);
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName(), PATHINFO_EXTENSION);
-        if (Storage::disk('multimedia-evento')->exists('/evento-'.$request->id.'/'.$portadaNombre)){
-            Storage::disk('multimedia-evento')->deleteDirectory('evento-'.$request->id);
-        }
+        // if (Storage::disk('multimedia-evento')->exists('/evento-'.$request->id.'/'.$portadaNombre)){
+        //     Storage::disk('multimedia-evento')->deleteDirectory('evento-'.$request->id);
+        // }
         
         $multimedia_evento = new Multimedia_Evento();
         $multimedia_evento->eventos_id = $request->id;
@@ -264,12 +265,12 @@ class AdministradorEventosController extends Controller
         }
         
         Multimedia_Evento::where('eventos_id', $request->id)->where('tipo', false)->where('portada', false)->delete();
-        for ($i = 0; $i < 5; $i++){
-            $nombre = "imagen-".$i.".*";
-            if (Storage::disk('multimedia-evento')->exists('evento-'.$request->id.'/'.$nombre)){
-                Storage::disk('multimedia-evento')->delete('evento-'.$request->id.'/'.$nombre);
-            }
-        }
+        // for ($i = 0; $i < 5; $i++){
+        //     $nombre = "imagen-".$i.".*";
+        //     if (Storage::disk('multimedia-evento')->exists('evento-'.$request->id.'/'.$nombre)){
+        //         Storage::disk('multimedia-evento')->delete('evento-'.$request->id.'/'.$nombre);
+        //     }
+        // }
         
         if ($request->image != null){
             foreach($request->image as $key => $file){

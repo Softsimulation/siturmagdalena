@@ -16,7 +16,7 @@ class Proveedores_rnt extends Model
     
     
     
-    protected $fillable = ['categoria_proveedores_id', 'estados_proveedor_id', 'municipio_id', 'razon_social', 'longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email', 'estado', 'user_create', 'created_at', 'updated_at', 'user_update','digito_verificacion','nombre_gerente','ultimo_anio_rnt','sostenibilidad_rnt','turismo_aventura','hab2','cam2','emp2','nit'];
+    protected $fillable = ['categoria_proveedores_id', 'estados_proveedor_id', 'municipio_id', 'razon_social', 'longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email', 'estado', 'user_create', 'created_at', 'updated_at', 'user_update','digito_verificacion','nombre_gerente','ultimo_anio_rnt','sostenibilidad_rnt','turismo_aventura','hab2','cam2','emp2','nit','codigo'];
     
     
     public function idiomas(){
@@ -42,6 +42,9 @@ class Proveedores_rnt extends Model
     public function proveedor(){
         return $this->hasMany( "App\Models\Proveedor", 'proveedor_rnt_id'); 
     }
+    public function users(){
+       return $this->belongsToMany('App\Models\User','proveedor_rnt_user','proveedor_rnt_id','user_id');
+   }
     /*
     public function getTipoCategoriaAttribute()
     {

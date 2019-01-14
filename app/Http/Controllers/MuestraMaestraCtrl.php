@@ -98,9 +98,9 @@ class MuestraMaestraCtrl extends Controller
                 "proveedoresInformales" => DB::select("SELECT *from listado_proveedores_informales"),
                 
                 "periodo"=> Periodos_medicion::where("id",$id)
-                                             ->with([ "zonas"=>function($q){ $q->with(["encargados","coordenadas"]); } ])->first(),
+                                             ->with([ "zonas"=>function($q){ $q->with(["encargados"=>function($qq){ $qq->with("user"); } ,"coordenadas"]); } ])->first(),
                 
-                "digitadores"=>Digitador::get(),
+                "digitadores"=>Digitador::with("user")->get(),
                 
                 "tiposProveedores"=>Tipo_Proveedor::with([ 
                                                        "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
@@ -346,12 +346,12 @@ class MuestraMaestraCtrl extends Controller
     
     public function getExcel($id){ 
 
-        $zona = Zona::where("id",$id)->with("encargados")->first();
+        $zona = Zona::where("id",$id)->with([ "encargados"=>function($qq){ $qq->with("user"); }] )->first();
         if($zona){
          
             $proveedores = new Collection( DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ) );
             $proveedoresInformales = new Collection( DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) ) );
-            
+           
             $zona->es_generada = true;
             $zona->save();
             
@@ -711,6 +711,37 @@ class MuestraMaestraCtrl extends Controller
         $proveedor->longitud = $request->longitud;
         $proveedor->save();
         
+        return [ "success"=>true ];
+    }
+ 
+ 
+    public function getImportar(){ 
+        
+        return Proveedores_informale::get();
+        
+        $rows = Excel::load('storage/datos.xlsx')->get();
+        foreach($rows as $row){
+           $muni = Municipio::whereRaw("lower(nombre) = '" . strtolower($row["municipio"]) . "'" )->first();
+           $cate = Categoria_Proveedor_Con_Idioma::whereRaw("lower(nombre) = '" . strtolower($row["subcategoria"]) . "'" )->first();
+           
+            $proveedor = new Proveedores_informale();
+            $proveedor->estados_proveedor_id = 7;
+            $proveedor->latitud = $row->latitud;
+            $proveedor->longitud = $row->longitud;
+            $proveedor->user_create = "Admin";
+            $proveedor->estado = true;
+            
+            $proveedor->codigo = Proveedores_informale::where( "municipio_id", $muni->id )->max("codigo") + 1;
+                
+            $proveedor->razon_social = $row->nombre;
+            $proveedor->direccion = $row->direccion;
+            $proveedor->telefono = "";
+            $proveedor->categoria_proveedor_id = $cate->categoria_proveedores_id;
+            $proveedor->municipio_id = $muni->id;
+            $proveedor->user_update = "Admin";
+            $proveedor->save();
+           
+        }
         return [ "success"=>true ];
     }
     

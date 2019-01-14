@@ -192,21 +192,6 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             <div id="opciones">
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="mdi mdi-view-sequential" aria-hidden="true"></span><span class="sr-only">Vista de lista</span></button>
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="mdi mdi-view-grid" aria-hidden="true"></span><span class="sr-only">Vista de mosaico</span></button>
-<<<<<<< HEAD
-                <form id="formSearch" method="POST" action="{{URL::action('QueHacerController@postSearch')}}" class="form-inline">
-                    <div class="col-auto">
-                      <label class="sr-only" for="searchMain">Buscador general</label>
-                      <div class="input-group">
-                        <input type="text" class="form-control" name="searchMain" id="searchMain" placeholder="¿Qué desea buscar?" maxlength="255">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text">
-                              <button type="submit" class="btn btn-default" title="Buscar"><span class="mdi mdi-magnify" aria-hidden="true"></span><span class="sr-only">Buscar</span></button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </form>
-=======
                 <!--<form id="formSearch" method="POST" action="{{URL::action('QueHacerController@postSearch')}}" class="form-inline">-->
                 <!--    {{ csrf_field() }}-->
                 <!--    <div class="col-auto">-->
@@ -221,7 +206,6 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
                 <!--      </div>-->
                 <!--    </div>-->
                 <!--</form>-->
->>>>>>> 69dd6118336e5c3937d92e76927cce1d5362767b
                 <!--<button type="button" class="btn btn-default"><span class="mdi mdi-filter" aria-hidden="true" title="Filtrar resultados" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter"></span><span class="sr-only">Filtrar resultados</span></button>-->
             </div>
         </div>

@@ -246,9 +246,10 @@ class AdministradorActividadesController extends Controller
         $actividad = Actividad::find($request->id);
         Multimedia_Actividad::where('actividades_id', $actividad->id)->where('portada', true)->delete();
         $portadaNombre = "portada.".pathinfo($request->portadaIMG->getClientOriginalName())['extension'];
-        if (Storage::disk('multimedia-actividad')->exists('actividad-'.$request->id.'/'.$portadaNombre)){
-            Storage::disk('multimedia-actividad')->deleteDirectory('actividad-'.$request->id);
-        }
+        Storage::disk('multimedia-actividad')->deleteDirectory('actividad-'.$request->id);
+        // if (Storage::disk('multimedia-actividad')->exists('actividad-'.$request->id.'/'.$portadaNombre)){
+        //     Storage::disk('multimedia-actividad')->deleteDirectory('actividad-'.$request->id);
+        // }
         
         $multimedia_actividad = new Multimedia_Actividad();
         $multimedia_actividad->actividades_id = $actividad->id;
@@ -265,13 +266,13 @@ class AdministradorActividadesController extends Controller
         
         Storage::disk('multimedia-actividad')->put('actividad-'.$request->id.'/'.$portadaNombre, File::get($request->portadaIMG));
         
-        Multimedia_Actividad::where('actividades_id', $actividad->id)->where('tipo', false)->where('portada', false)->delete();
-        for ($i = 0; $i < 5; $i++){
-            $nombre = "imagen-".$i.".*";
-            if (Storage::disk('multimedia-actividad')->exists('actividad-'.$request->id.'/'.$nombre)){
-                Storage::disk('multimedia-actividad')->delete('actividad-'.$request->id.'/'.$nombre);
-            }
-        }
+        // Multimedia_Actividad::where('actividades_id', $actividad->id)->where('tipo', false)->where('portada', false)->delete();
+        // for ($i = 0; $i < 5; $i++){
+        //     $nombre = "imagen-".$i.".*";
+        //     if (Storage::disk('multimedia-actividad')->exists('actividad-'.$request->id.'/'.$nombre)){
+        //         Storage::disk('multimedia-actividad')->delete('actividad-'.$request->id.'/portada.*');
+        //     }
+        // }
         //return ['success' => $request->image];
         if ($request->image != null){
             foreach($request->image as $key => $file){

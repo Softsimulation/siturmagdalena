@@ -322,7 +322,7 @@ class SliderController extends Controller
 	    $validator = \Validator::make($request->all(), [
             'textoAlternativoSlider' => 'string|min:1|max:255|required',
             'enlaceInterno' => 'required|min:0|max:2',
-            'imagenSlider.*' => 'mimes:jpg,jpeg,png',
+            'imagenSliderEditar.*' => 'mimes:jpg,jpeg,png',
             'id' => 'required|exists:sliders,id',
             
         ],[
@@ -333,7 +333,7 @@ class SliderController extends Controller
             'enlaceInterno.required' => 'Debe seleccionar a que tipo de enlace pertenece.',
             'enlaceInterno.min' => 'Tipo de enlace no válido, favor recargar la página.',
             'enlaceInterno.max' => 'Tipo de enlace no válido, favor recargar la página.',
-            'imagenSlider.*.mimes' => 'subir solo archivos jpg,png o jgpe',
+            'imagenSliderEditar.*.mimes' => 'subir solo archivos jpg,png o jgpe',
             'id.required' => 'El slider es requerido.',
             'id.exists' => 'El registro que desea editar no se encuentra registrada en la base de datos, favor recargar la página.',
             ]
@@ -434,11 +434,11 @@ class SliderController extends Controller
             $slider->es_interno = false;
             $slider->enlace_acceso = null;
         }
-        if($request->imagenSlider != null){
+        if($request->imagenSliderEditar != null){
             \File::delete(public_path() . $slider->ruta);
             $date = Carbon::now(); 
-            $nombrex = "Slider"."-".date("Ymd-H:i:s").".".$request->imagenSlider->getClientOriginalExtension();
-           \Storage::disk('Sliders')->put($nombrex,  \File::get($request->imagenSlider));
+            $nombrex = "Slider"."-".date("Ymd-H:i:s").".".$request->imagenSliderEditar->getClientOriginalExtension();
+           \Storage::disk('Sliders')->put($nombrex,  \File::get($request->imagenSliderEditar));
             $slider->ruta = "/Sliders/".$nombrex;
         }
         

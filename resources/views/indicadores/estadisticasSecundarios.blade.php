@@ -234,7 +234,6 @@
     <script src="{{asset('/js/plugins/jspdf.min.js')}}"></script>
     <script src="{{asset('/js/plugins/Chart.min.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-chart.min.js')}}"></script>
-    <script src="{{asset('/js/plugins/chartsjs-plugin-data-labels.js')}}"></script>
     <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
     <script src="{{asset('/js/indicadores/appIndicadores.js')}}"></script>
     <script src="{{asset('/js/indicadores/servicios.js')}}"></script>   

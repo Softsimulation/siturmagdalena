@@ -14,7 +14,7 @@ return [
         "seleccionDeIdioma" => "Language select",
         "espanol" => "Spanish",
         "ingles" => "English",
-        "cerrarSession" => "Sign out",
+        "cerrarSesion" => "Sign out",
         "iniciarSesion" => "Sign in",
         "menuDeNavegacion" => "Navigation menu"
     ],
@@ -67,7 +67,8 @@ return [
         "sostenibilidadTuristica" => "Sustainable Tourism",
         "estadisticasSecundarias" => "Secondary statistics"
     ],
-    "mapa" => "Map"
+    "mapa" => "Map",
+    "rangoDeFechaEvento" => "From :fechaInicio to :fechaFin"
     
     
     ];

@@ -12,7 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        
+        '/ofertayempleoapi/*',
         '/temporada/guardartemporada',
         '/temporada/cambiarestado',
         '/turismointerno/barrios',
