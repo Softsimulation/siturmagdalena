@@ -108,7 +108,7 @@
                 </td>
               </tr>
               
-              <tr ng-if="proveedores.length==0" >
+              <tr ng-if="proveedores.length==0 && proveedoresInformales.length==0" >
                   <td colspan="8" class="alert alert-info" >No se encontraron proveedores en la zona.</td>
               </tr>
         </table>

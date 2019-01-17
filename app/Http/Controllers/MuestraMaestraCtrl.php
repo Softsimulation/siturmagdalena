@@ -100,7 +100,7 @@ class MuestraMaestraCtrl extends Controller
                 "periodo"=> Periodos_medicion::where("id",$id)
                                              ->with([ "zonas"=>function($q){ $q->with(["encargados"=>function($qq){ $qq->with("user"); } ,"coordenadas"]); } ])->first(),
                 
-                "digitadores"=>Digitador::with("user")->get(),
+                "digitadores"=>Digitador::whereHas("user", function($q){ $q->where("estado",true); } )->with("user")->get(),
                 
                 "tiposProveedores"=>Tipo_Proveedor::with([ 
                                                        "tipoProveedoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },

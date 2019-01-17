@@ -81,23 +81,49 @@
                                         <option value="" disabled>--Seleccione--</option>
                                         <option value="receptor">Turismo Receptor</option>
                                         <option value="interno">Turismo Interno</option>
+                                        <option value="sostenibilidad">Sostenibilidad PST</option>
+                                        <option value="hogares">Sostenibilidad Hogares</option>
+                                        <option value="ofertayempleo">Oferta y Empleo</option>
                                     </select>
                                 </div>
                             </div>
                             
-                            <div class="col-md-6 col-xs-12 col-sm-12">
+                           <div class="col-md-6 col-xs-12 col-sm-12" ng-show="exportacion.nombre == 'receptor' || exportacion.nombre == 'interno' || exportacion.nombre == 'sostenibilidad' || exportacion.nombre == 'hogares'">
                                 <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.fechainicio.$touched) && addForm.fechainicio.$error.required}">
                                     <label class="control-label" for="fechaInicio"><span class="asterisk">*</span> Fecha inicial</label>
-                                    <adm-dtp name="fechainicio" id="fechaInicio" ng-model="exportacion.fecha_inicial" maxdate="'{{\Carbon\Carbon::now()->format('Y-m-d')}}'" options="optionFecha" required></adm-dtp>
-                                    
+                                    <adm-dtp name="fechainicio" id="fechaInicio" ng-model="exportacion.fecha_inicial" maxdate="'{{\Carbon\Carbon::now()->format('Y-m-d')}}'" options="optionFecha" ng-required="exportacion.nombre == 'receptor' || exportacion.nombre == 'interno' || exportacion.nombre == 'sostenibilidad'"></adm-dtp>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 col-xs-12 col-sm-12">
+                            <div class="col-md-6 col-xs-12 col-sm-12"  ng-show="exportacion.nombre == 'receptor' || exportacion.nombre == 'interno' || exportacion.nombre == 'sostenibilidad' || exportacion.nombre == 'hogares'">
                                 <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.fechafin.$touched) && addForm.fechafin.$error.required}">
                                     <label class="control-label" for="fechaFin"><span class="asterisk">*</span> Fecha final</label>
-                                    <adm-dtp name="fechafin" id="fechaFin" ng-model="exportacion.fecha_final" maxdate="'{{\Carbon\Carbon::now()->format('Y-m-d')}}'" options="optionFecha" required></adm-dtp>
-                                    
+                                    <adm-dtp name="fechafin" id="fechaFin" ng-model="exportacion.fecha_final" maxdate="'{{\Carbon\Carbon::now()->format('Y-m-d')}}'" options="optionFecha" ng-required="exportacion.nombre == 'receptor' || exportacion.nombre == 'interno' || exportacion.nombre == 'sostenibilidad'"></adm-dtp>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 col-xs-12 col-sm-12"  ng-show="exportacion.nombre == 'ofertayempleo'">
+                                <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.categoria.$touched) && addForm.categoria.$error.required}">
+                                    <label class="control-label" for="inputNombre"><span class="asterisk">*</span>Categoria</label>
+                                    <select name="categoria" class="form-control" ng-model="exportacion.categoria" id="inputNombre" ng-required="exportacion.nombre == 'ofertayempleo' ">
+                                        <option value="" disabled>--Seleccione--</option>
+                                        <option value="1">Agencia de viajes</option>
+                                        <option value="2">Agencias Operadoras</option>
+                                        <option value="3">Alojamiento</option>
+                                        <option value="4">Restaurantes</option>
+                                        <option value="5">Transporte</option>
+                                        <option value="6">Empleo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 col-xs-12 col-sm-12"  ng-show="exportacion.nombre == 'ofertayempleo'">
+                                <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.mes.$touched) && addForm.mes.$error.required}">
+                                    <label class="control-label" for="inputNombre"><span class="asterisk">*</span>Mes</label>
+                                    <select name="mes" class="form-control" ng-model="exportacion.mes" id="inputNombre" ng-required="exportacion.nombre == 'ofertayempleo' ">
+                                        <option value="" disabled>--Seleccione--</option>
+                                        <option ng-repeat="mes in meses" value="@{{mes.id}}">@{{mes.mes.nombre}} - @{{mes.anio.anio}}</option>
+                                    </select>
                                 </div>
                             </div>
 
