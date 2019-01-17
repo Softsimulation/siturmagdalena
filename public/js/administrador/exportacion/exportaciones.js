@@ -18,6 +18,17 @@ var pp=angular.module('admin.exportaciones', ['adminservice','angularUtils.direc
         }
     };
     
+     $("body").attr("class", "cbp-spmenu-push charging");
+    adminService.GetMeses()
+        .then(function(data){
+             $scope.meses=data.meses;
+             $("body").attr("class", "cbp-spmenu-push");
+        })
+        .catch(function(){
+             $("body").attr("class", "cbp-spmenu-push");
+             swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+        });
+    
     $scope.exportar=function(){
         
         $scope.exportacion={};
