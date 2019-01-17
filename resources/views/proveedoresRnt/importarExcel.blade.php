@@ -59,25 +59,24 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" ng-class="{'active': nuevos.length > 0}" id="nuevos" ng-if="nuevos.length > 0">
             <h2 class="title1 text-center">Registros nuevos</h1>
-            <div class="flex-list">
-                 
+            <div class="flex-list" ng-show="nuevos.length > 0">
                 <div class="form-group has-feedback" style="display: inline-block;">
-                    <label class="sr-only" for="inputSearchNew">Búsqueda de registros nuevos</label>
-                    <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputSearchNew" placeholder="Buscar registro...">
-                    <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+                    <button type="button" ng-click="mostrarFiltroNuevos=!mostrarFiltroNuevos" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar registros</button>
                 </div>      
             </div>
-            <div class="text-center" ng-if="(nuevos | filter:prop.search).length > 0 && (prop.search != '' && prop.search != undefined)">
-                <p>Hay @{{(nuevos | filter:prop.search).length}} registro(s) que coinciden con su búsqueda</p>
+            
+            <br/>
+            <div class="text-center" ng-if="(nuevos | filter:searchNuevos).length > 0 && (searchNuevos != undefined && (nuevos | filter:searchNuevos).length != nuevos.length)">
+                <p>Hay @{{(nuevos | filter:searchNuevos).length}} registro(s) que coinciden con su búsqueda</p>
             </div>
             <div class="alert alert-info" ng-if="nuevos.length == 0">
                 <p>No hay registros almacenados</p>
             </div>
-            <div class="alert alert-warning" ng-if="(nuevos | filter:prop.search).length == 0 && nuevos.length > 0">
+            <div class="alert alert-warning" ng-if="(nuevos | filter:searchNuevos).length == 0 && nuevos.length > 0">
                 <p>No existen registros que coincidan con su búsqueda</p>
             </div>
-            <div class="alert alert-info" ng-if="nuevos.length > 0">
-                Los registros resaltados con color <span class="text-success">verde</span> contienen información similar a los registros que ya se encuentran almacenados en el sistema.
+            <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (searchNuevos.numero_rnt.length > 0 || searchNuevos.nombre_comercial.length > 0 || searchNuevos.subcategoria.length > 0 || searchNuevos.categoria.length > 0 || searchNuevos.direccion.length > 0 ||  searchNuevos.estado.length > 0)">
+                Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
             </div>
             <div class="row">
                 <div class="col-xs-12 table-overflow">
@@ -87,19 +86,32 @@
                             <th>Nombre comercial</th>
                             <th>Sub-Categoría</th>
                             <th>Categoría</th>
+                            <th>Dirección</th>
                             <!-- <th>Correo</th> -->
                             <th style="max-width: 80px;">Estado</th>
                             <th style="max-width: 140px;">Estado carga</th>
                             <th style="min-width: 90px;"></th>
                         </tr>
-                        <tr dir-paginate="item in nuevos |filter:prop.search|itemsPerPage:10 as results" pagination-id="paginacion_nuevos" ng-class="{'success': item.es_similar == 1}">
+                        <tr ng-show="mostrarFiltroNuevos == true">       
+                            <td><input type="text" ng-model="searchNuevos.numero_rnt" name="rnt" id="rnt" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.nombre_comercial" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.sub_categoria" name="sub_categoria" id="sub_categoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.categoria" name="categoria" id="categoria" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.direccion_comercial" name="direccion_comercial" id="direccion_comercial" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.estado" name="estado" id="estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchNuevos.estadoCarga" name="estadoCarga" id="estadoCarga" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td></td>
+                        </tr>
+                        <tr dir-paginate="item in nuevos |filter:searchNuevos|itemsPerPage:10 as results" pagination-id="paginacion_nuevos" ng-class="{'success': item.es_similar == 1}">
                             <td>@{{item.numero_rnt}}</td>
                             <td>@{{item.nombre_comercial}}</td>
                             <td>@{{item.sub_categoria}}</td>
                             <td>@{{item.categoria}}</td>
+                            <td>@{{item.direccion_comercial}}</td>
                             <!-- <td>@{{item.correo}}</td> -->
                             <td>@{{item.estado}}</td>
-                            <td ng-if="item.es_correcto ==1">Correcto</td><td ng-if="item.es_correcto !=1">Incorrecto</td>
+                            <td>@{{item.estadoCarga}}</td>
+                            <!--<td ng-if="item.es_correcto ==1">Correcto</td><td ng-if="item.es_correcto !=1">Incorrecto</td>-->
                             <td style="text-align: center;">
                                 <button type="button" ng-if="item.es_correcto != 1 || item.es_similar == 1 " title="Agregar registro" ng-click="abrirModalCrear(item)" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Agregar registro</span></button>
                                 <button type="button" title="Ver registro" ng-click="abrirModalVer(item)" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver registro</span></button>
@@ -118,22 +130,24 @@
         <div role="tabpanel" class="tab-pane" ng-class="{'active': (nuevos.length == 0 && antiguos.length > 0)}" id="antiguo" ng-if="antiguos.length > 0">
             <h2 class="title1 text-center">Registros antiguos pendientes de revisión</h2>
                         
-            <div class="flex-list">
-                 
+            <div class="flex-list" ng-show="antiguos.length > 0">
                 <div class="form-group has-feedback" style="display: inline-block;">
-                    <label class="sr-only" for="inputSearchNew">Búsqueda de registros antiguos</label>
-                    <input type="text" ng-model="prop.searchAntiguo" class="form-control input-lg" id="inputSearchOld" placeholder="Buscar registro...">
-                    <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+                    <button type="button" ng-click="mostrarFiltroAntiguos=!mostrarFiltroAntiguos" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar registros</button>
                 </div>      
             </div>
-            <div class="text-center" ng-if="(antiguos | filter:prop.searchAntiguo).length > 0 && (prop.searchAntiguo != '' && prop.searchAntiguo != undefined)">
-                <p>Hay @{{(antiguos|filter:prop.searchAntiguo).length}} registro(s) que coinciden con su búsqueda</p>
+            
+            <br/>
+            <div class="text-center" ng-if="(antiguos | filter:searchAntiguos).length > 0 && (searchAntiguos != undefined && (antiguos | filter:searchAntiguos).length != antiguos.length)">
+                <p>Hay @{{(antiguos | filter:searchAntiguos).length}} registro(s) que coinciden con su búsqueda</p>
             </div>
             <div class="alert alert-info" ng-if="antiguos.length == 0">
                 <p>No hay registros almacenados</p>
             </div>
-            <div class="alert alert-warning" ng-if="(antiguos|filter:prop.searchAntiguo).length == 0 && antiguos.length > 0">
+            <div class="alert alert-warning" ng-if="(antiguos | filter:searchAntiguos).length == 0 && antiguos.length > 0">
                 <p>No existen registros que coincidan con su búsqueda</p>
+            </div>
+            <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (searchAntiguos.numero_rnt.length > 0 || searchAntiguos.nombre_comercial.length > 0 || searchAntiguos.subcategoria.length > 0 || searchAntiguos.categoria.length > 0 || searchAntiguos.direccion.length > 0 ||  searchAntiguos.estado.length > 0)">
+                Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
             </div>
             
             <div class="row">
@@ -144,16 +158,27 @@
                             <th>Nombre comercial</th>
                             <th>Sub-Categoría</th>
                             <th>Categoría</th>
+                            <th>Dirección</th>
                             <!-- <th>Correo</th>-->
                             <th>Estado</th>
                             <th style="width: 70px;"></th>
                         </tr>
-                        <tr dir-paginate="item in antiguos|filter:prop.searchAntiguo|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
+                        <tr ng-show="mostrarFiltroAntiguos == true">       
+                            <td><input type="text" ng-model="searchAntiguos.numero_rnt" name="rnt" id="rnt" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.nombre_comercial" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.sub_categoria" name="sub_categoria" id="sub_categoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.categoria" name="categoria" id="categoria" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.direccion_comercial" name="direccion_comercial" id="direccion_comercial" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="searchAntiguos.estado" name="estado" id="estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                            <td></td>
+                        </tr>
+                        <tr dir-paginate="item in antiguos|filter:searchAntiguos|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
                             
                             <td>@{{item.numero_rnt}}</td>
                             <td>@{{item.nombre_comercial}}</td>
                             <td>@{{item.sub_categoria}}</td>
                             <td>@{{item.categoria}}</td>
+                            <td>@{{item.direccion_comercial}}</td>
                             <!-- <td>@{{item.correo}}</td>-->
                             <td>@{{item.estado}}</td>
                             <td style="text-align: center;">
@@ -233,9 +258,9 @@
         			            </div>
         			        </div>
         			        <div class="col-xs-12 col-sm-12">
-        			            <div class="form-group" ng-class="{'has-error': ((editarForm.$submitted || editarForm.nombre_comercial_plataforma.$touched) && editarForm.nombre_comercial_plataforma.$error.required) || (registro.nombre_comercial_plataforma != registro.nombre_comercial_plataforma2)}">
+        			            <div class="form-group">
         			                <label class="control-label" for="editarForm-nombre_comercial_plataforma"><span class="asterisk">*</span> Nombre comercial plataforma</label>
-        			                <input type="text" class="form-control" ng-model="registro.nombre_comercial_plataforma" name="nombre_comercial_plataforma" id="editarForm-nombre_comercial_plataforma" required>
+        			                <input type="text" class="form-control" ng-model="registro.nombre_comercial_plataforma" name="nombre_comercial_plataforma" id="editarForm-nombre_comercial_plataforma" >
         			                <span class="text-input-alt">@{{registro.nombre_comercial_plataforma2}}</span>
         			            </div>
         			        </div>
@@ -320,21 +345,21 @@
         			        <div class="col-xs-12 col-sm-4">
         			            <div class="form-group" ng-class="{'has-error': ((editarForm.$submitted || editarForm.hab2.$touched) && editarForm.hab2.$error.required) || (registro.hab2 != registro.hab22)}">
         			                <label class="control-label" for="editarForm-hab2"><span class="asterisk">*</span> Hab2</label>
-        			                <input type="number" class="form-control" ng-model="registro.hab2" name="hab2" id="editarForm-hab2" required>
+        			                <input type="number" class="form-control" ng-model="registro.hab2" name="hab2" id="editarForm-hab2" >
         			                <span class="text-input-alt">@{{registro.hab22}}</span>
         			            </div>
         			        </div>
         			        <div class="col-xs-12 col-sm-4">
         			            <div class="form-group" ng-class="{'has-error': ((editarForm.$submitted || editarForm.cam2.$touched) && editarForm.cam2.$error.required) || (registro.cam2 != registro.cam22)}">
         			                <label class="control-label" for="editarForm-cam2"><span class="asterisk">*</span> Cam2</label>
-        			                <input type="number" class="form-control" ng-model="registro.cam2" name="cam2" id="editarForm-cam2" required>
+        			                <input type="number" class="form-control" ng-model="registro.cam2" name="cam2" id="editarForm-cam2" >
         			                <span class="text-input-alt">@{{registro.cam22}}</span>
         			            </div>
         			        </div>
         			        <div class="col-xs-12 col-sm-4">
         			            <div class="form-group" ng-class="{'has-error': ((editarForm.$submitted || editarForm.emp2.$touched) && editarForm.emp2.$error.required) || (registro.emp2 != registro.emp22)}">
         			                <label class="control-label" for="editarForm-emp2"><span class="asterisk">*</span> Emp2</label>
-        			                <input type="number" class="form-control" ng-model="registro.emp2" name="emp2" id="editarForm-emp2" required>
+        			                <input type="number" class="form-control" ng-model="registro.emp2" name="emp2" id="editarForm-emp2" >
         			                <span class="text-input-alt">@{{registro.emp22}}</span>
         			            </div>
         			        </div>
@@ -449,9 +474,9 @@
         			            </div>
         			        </div>
         			        <div class="col-xs-12 col-sm-12">
-        			            <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.nombre_comercial_plataforma.$touched) && addForm.nombre_comercial_plataforma.$error.required}">
+        			            <div class="form-group">
         			                <label class="control-label" for="addForm-nombre_comercial_plataforma"><span class="asterisk">*</span> Nombre comercial plataforma</label>
-        			                <input type="text" class="form-control" ng-model="registro.nombre_comercial_plataforma" name="nombre_comercial_plataforma" id="addForm-nombre_comercial_plataforma" required>
+        			                <input type="text" class="form-control" ng-model="registro.nombre_comercial_plataforma" name="nombre_comercial_plataforma" id="addForm-nombre_comercial_plataforma" >
         			                <span class="text-input-alt" ng-if="registro.es_similar == 1">@{{registro.nombre_comercial_plataforma2}}</span>
         			            </div>
         			        </div>
@@ -536,21 +561,21 @@
         			        <div class="col-xs-12 col-sm-4">
         			            <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.hab2.$touched) && addForm.hab2.$error.required}">
         			                <label class="control-label" for="addForm-hab2"><span class="asterisk">*</span> Hab2</label>
-        			                <input type="number" class="form-control" ng-model="registro.hab2" name="hab2" id="addForm-hab2" required>
+        			                <input type="number" class="form-control" ng-model="registro.hab2" name="hab2" id="addForm-hab2" >
         			                <span class="text-input-alt" ng-if="registro.es_similar == 1">@{{registro.hab22}}</span>
         			            </div>
         			        </div>
         			        <div class="col-xs-12 col-sm-4">
         			            <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.cam2.$touched) && addForm.cam2.$error.required}">
         			                <label class="control-label" for="addForm-cam2"><span class="asterisk">*</span> Cam2</label>
-        			                <input type="number" class="form-control" ng-model="registro.cam2" name="cam2" id="addForm-cam2" required>
+        			                <input type="number" class="form-control" ng-model="registro.cam2" name="cam2" id="addForm-cam2" >
         			                <span class="text-input-alt" ng-if="registro.es_similar == 1">@{{registro.cam22}}</span>
         			            </div>
         			        </div>
         			        <div class="col-xs-12 col-sm-4">
         			            <div class="form-group" ng-class="{'has-error': (addForm.$submitted || addForm.emp2.$touched) && addForm.emp2.$error.required}">
         			                <label class="control-label" for="addForm-emp2"><span class="asterisk">*</span> Emp2</label>
-        			                <input type="number" class="form-control" ng-model="registro.emp2" name="emp2" id="addForm-emp2" required>
+        			                <input type="number" class="form-control" ng-model="registro.emp2" name="emp2" id="addForm-emp2" >
         			                <span class="text-input-alt" ng-if="registro.es_similar == 1">@{{registro.emp22}}</span>
         			            </div>
         			        </div>
@@ -572,133 +597,7 @@
         			                
         			        </div>
         				</div>
-    					
-          <!--              <div class="row">-->
-          <!--                  <div class="col-xs-12">-->
-    						<!--	<table class="table table-striped">-->
-    						<!--		<tr>-->
-    						<!--			<th style="width: 50px;">Columna</th>                           -->
-    						<!--			<th>Nuevo dato</th>-->
-    						<!--			<th ng-if="registro.es_similar == 1">Similar</th>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Numero del RNT</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.numero_rnt" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.numero_rnt2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Estado</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.estado" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.estado2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Municipio</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.municipio" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.municipio2}}</td>-->
-    						<!--		</tr>-->
-    								<!--<tr>-->
-    								<!--	<td>Departamento</td>-->
-    								<!--	<td><input type="text" class="form-control" ng-model="registro.departamento" required></td>-->
-    								<!--	<td ng-if="registro.es_similar == 1">@{{registro.departamento2}}</td>-->
-    								<!--</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Nombre Comercial RNT</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.nombre_comercial" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.nombre_comercial2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Nombre Comercial Plataforma</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.nombre_comercial_plataforma" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.nombre_comercial_plataforma2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Categoría</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.categoria" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.categoria2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Subcategoría</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.sub_categoria" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.sub_categoria2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr ng-class="{'info': (registro.direccion_comercial == registro.direccion_comercial2 && registro.es_similar == 1) }">-->
-    						<!--			<td>Dirección Comercial</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.direccion_comercial" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.direccion_comercial2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Teléfono</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.telefono" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.telefono2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Celular</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.celular" required></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.celular2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr ng-class="{'info': (registro.correo == registro.correo2 && registro.es_similar == 1 && registro.correo.indexOf('@') > 0 ) }">-->
-    						<!--			<td>Correo Electronico</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.correo" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.correo2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Latitud</td>-->
-    						<!--			<td><input type="number" class="form-control" ng-model="registro.latitud"  ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.latitud2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Longitud</td>-->
-    						<!--			<td><input type="number" class="form-control" ng-model="registro.longitud"  ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.longitud2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr ng-class="{'info': (registro.digito_verificacion == registro.digito_verificacion2 && registro.es_similar == 1) }">-->
-    						<!--			<td>Digito verificación</td>-->
-    						<!--			<td><input type="number" class="form-control" ng-model="registro.digito_verificacion" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.digito_verificacion2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr ng-class="{'info': (registro.nit == registro.nit2 && registro.es_similar == 1) }">-->
-    						<!--			<td>NIT</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.nit" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.nit2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Nombre gerente</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.nombre_gerente" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.nombre_gerente2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Ultimo año RNT</td>-->
-    						<!--			<td><input type="number" class="form-control" ng-model="registro.ultimo_anio_rnt" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.ultimo_anio_rnt2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Sostenibilidad RNT</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.sostenibilidad_rnt" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.sostenibilidad_rnt2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Turísmo aventura</td>-->
-    						<!--			<td><input type="text" class="form-control" ng-model="registro.turismo_aventura" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.turismo_aventura2}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Hab2</td>-->
-    						<!--			<td><input type="number" class="form-control" ng-model="registro.hab2" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.hab22}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Cam2</td>-->
-    						<!--			<td><input type="number" class="form-control" ng-model="registro.cam2" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.cam22}}</td>-->
-    						<!--		</tr>-->
-    						<!--		<tr>-->
-    						<!--			<td>Emp2</td>-->
-    						<!--			<td><input type="number" class="form-control" ng-model="registro.emp2" required ></td>-->
-    						<!--			<td ng-if="registro.es_similar == 1">@{{registro.emp22}}</td>-->
-    						<!--		</tr>-->
-    						<!--	</table>-->
-    						<!--</div>-->
-          <!--              </div>-->
+
                         
                         <div class="row" style="display: block;">
                             <ng-map id="mapa" zoom="9" center="[11.24079, -74.19904]" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 

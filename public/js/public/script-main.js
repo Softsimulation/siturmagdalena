@@ -14,6 +14,7 @@ $(document).ready(function(){
             }
             return;
         }
+        $(this).attr("aria-expanded", "false");
         submenu.removeClass('in');
     });
     $('#nav-menu-main nav>ul>li>ul>li>a').on('click', function (e) {
