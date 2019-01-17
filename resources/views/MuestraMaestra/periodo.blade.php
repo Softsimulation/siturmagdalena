@@ -209,7 +209,7 @@
         #filtros-buttons{
             position:absolute;
             left: 0;
-            top: 4%;
+            top: 10%;
             z-index: 20;
             background-color: white;
             display: flex;
@@ -681,7 +681,7 @@
              <div class="item-info" >
                 <p>Encargaddos</p>
                 <p>
-                  <span ng-repeat="it in detalleZona.encargados" > @{{it.codigo}}, </span>
+                  <span ng-repeat="it in detalleZona.encargados" > @{{it.user.nombre}}, </span>
                 <p/>
             </div>
             <div class="item-info" >
@@ -743,7 +743,7 @@
                         <label class="control-label" for="encargado">Encargados</label>
                         <ui-select multiple ng-model="zona.encargados" name="encargado" id="encargado" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione un tipo">
-                                <span ng-bind="$item.codigo"></span>
+                                <span ng-bind="$item.user.nombre"></span>
                             </ui-select-match>
                             <ui-select-choices repeat="t.id as t in (digitadores |filter:$select.search)">
                                 <span ng-bind="t.user.nombre" title="@{{t.user.nombre}}"></span>
