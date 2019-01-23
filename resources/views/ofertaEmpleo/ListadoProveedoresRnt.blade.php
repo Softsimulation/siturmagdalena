@@ -135,12 +135,8 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-<<<<<<< HEAD
                             <th style="width: 50px;"></th>
                             <th>ID</th>
-=======
-                            <!--<th style="width: 50px;"></th>                           -->
->>>>>>> d72d2fd9943ad65dd439922ac3b2836541ccd30b
                             <th>Número de RNT</th>
                             <th>Nombre comercial</th>
                             <th>Sub-Categoría</th>
@@ -149,13 +145,9 @@
                             <th style="width: 100px;">Acciones</th>
                         </tr>
                         <tr ng-show="mostrarFiltro == true">
-<<<<<<< HEAD
                             <td></td>    
                             <td><input type="text" ng-model="search.id" name="id" id="id" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                           
-=======
-                            <!--<td></td>        -->
->>>>>>> d72d2fd9943ad65dd439922ac3b2836541ccd30b
                             <td><input type="text" ng-model="search.rnt" name="rnt" id="rnt" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.nombre" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.subcategoria" name="subcategoria" id="subcategoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
@@ -166,12 +158,8 @@
                         </thead>
                          <tbody>
                         <tr dir-paginate="item in proveedores|filter:search|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
-<<<<<<< HEAD
                                 <td>@{{$index+1}}</td>
                                 <td>@{{item.id}}</td>
-=======
-                                <!--<td>@{{$index+1}}</td>-->
->>>>>>> d72d2fd9943ad65dd439922ac3b2836541ccd30b
                                 <td>@{{item.rnt}}</td>
                                 <td>@{{item.nombre}}</td>
                                 <td>@{{item.subcategoria}}</td>
