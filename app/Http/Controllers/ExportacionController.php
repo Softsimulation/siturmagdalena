@@ -9,6 +9,7 @@ use App\Models\Exportacion;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Mes_Anio;
 
 class ExportacionController extends Controller
 {
@@ -26,6 +27,12 @@ class ExportacionController extends Controller
         
         return view('exportacion.Index');
         
+    }
+    
+    public function getMeses(){
+        
+        $meses=Mes_Anio::with('mes')->with('anio')->orderby('anio_id')->orderby('mes_id')->get();
+        return ["meses"=>$meses];
     }
     
     public function postExportar(Request $request){

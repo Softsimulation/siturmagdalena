@@ -99,6 +99,7 @@
 
 @section('content')
 
+
 <div class="flex-list" ng-show="proveedores.length > 0">
     <div class="form-group has-feedback" style="display: inline-block;">
         <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar registros</button>
@@ -129,6 +130,7 @@
 </div>    
 
 <div class="container">
+    <a type="button" class="btn btn-lg btn-success" href="/ofertaempleo/excelproveedoresrnt">Exportar</a>
        <div class="row">
             <div class="row">
                 <div class="col-xs-12">
