@@ -42,9 +42,13 @@
         -@{{error[0]}}
     </div>
 
-</div>    
-
+</div>     
+<div class="row">
+      <a type="button" class="btn btn-lg btn-success" href="/ofertaempleo/excelproveedores">Exportar</a>
+</div>            
             <div class="row">
+              
+                
                 <div class="col-xs-12 table-overflow">
                     <table class="table table-striped">
                         <thead>
