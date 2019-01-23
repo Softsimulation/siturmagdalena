@@ -64,6 +64,8 @@ use App\Models\Sitio_Para_Encuesta;
 use App\Models\Medio_Actualizacion;
 use App\Models\Proveedores_rnt_idioma;
 
+use Excel;
+
 class OfertaEmpleoController extends Controller
 {
     //
@@ -82,6 +84,52 @@ class OfertaEmpleoController extends Controller
         }
         
     }
+    
+    
+    public function getExcelproveedores(){ 
+
+            $proveedores = new Collection(DB::select("SELECT *from listado_sitios_para_encuestas")); 
+            
+            Excel::create('Proveedores', function($excel) use($proveedores) {
+    
+                    $excel->sheet('data', function($sheet) use($proveedores) {
+                        
+                        $sheet->getStyle('A9:O1000' , $sheet->getHighestRow())->getAlignment()->setWrapText(true);
+                        
+                        $sheet->cells('A9:O1000', function($cells) {
+                            $cells->setAlignment('center');
+                            $cells->setValignment('center');
+                        });
+                        $sheet->loadView('ofertaEmpleo.formatodescargaproveedor', [ 'proveedores'=> $proveedores] );
+                    });
+    
+            })->export('xls');
+    
+    }
+    
+    
+    public function getExcelproveedoresrnt(){ 
+
+            $proveedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
+      
+            Excel::create('ProveedoresRNT', function($excel) use($proveedores) {
+    
+                    $excel->sheet('data', function($sheet) use($proveedores) {
+                        
+                        $sheet->getStyle('A9:O1000' , $sheet->getHighestRow())->getAlignment()->setWrapText(true);
+                        
+                        $sheet->cells('A9:O1000', function($cells) {
+                            $cells->setAlignment('center');
+                            $cells->setValignment('center');
+                        });
+                        $sheet->loadView('ofertaEmpleo.formatodescargaproveedorrnt', [ 'proveedores'=> $proveedores] );
+                    });
+    
+            })->export('xls');
+    
+    }
+    
+    
     
     public function dia($dias, $mesdia){
          $mesid = Mes_Anio::find($mesdia);
@@ -114,6 +162,8 @@ class OfertaEmpleoController extends Controller
         
          return ["success" => true];
     }
+    
+    
     
     public function getEncuestasoferta(){
         

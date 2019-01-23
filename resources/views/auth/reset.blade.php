@@ -32,7 +32,7 @@
 
   <div class="form-group">
    <label for="email">Email:</label>
-   <input type="email" class="form-control" name="email" value="{{Input::old('email')}}" />
+   <input type="email" class="form-control" name="email" value="{{old('email')}}" />
    <div class="text-danger">{{$errors->first('email')}}</div>
   </div>
 
