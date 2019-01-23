@@ -48,7 +48,8 @@
                 <div class="col-xs-12 table-overflow">
                     <table class="table table-striped">
                         <thead>
-                            <tr>                           
+                            <tr>   
+                                <th>IdProveedorRNT</th>
                                 <th>Número de RNT</th>
                                 <th>Nombre comercial</th>
                                 <th>Sub-Categoría</th>
@@ -58,7 +59,8 @@
                                 <th style="width: 110px;"></th>
                             </tr>
                             <tr ng-show="mostrarFiltro == true">
-                                    
+                                 <td><input type="text" ng-model="search.proveedor_rnt_id" name="proveedor_rnt_id" id="proveedor_rnt_id" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                 
                                 <td><input type="text" ng-model="search.rnt" name="rnt" id="rnt" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                 <td><input type="text" ng-model="search.razon_social" name="razon_social" id="razon_social" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                 <td><input type="text" ng-model="search.subcategoria" name="subcategoria" id="subcategoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
@@ -69,7 +71,7 @@
                         </thead>
                          <tbody>
                             <tr dir-paginate="item in proveedores|filter:search|itemsPerPage:10 as results" pagination-id="paginacion_antiguos" >
-                                
+                                <td>@{{item.proveedor_rnt_id}}</td>
                                 <td>@{{item.rnt}}</td>
                                 <td>@{{item.razon_social}}</td>
                                 <td>@{{item.subcategoria}}</td>
