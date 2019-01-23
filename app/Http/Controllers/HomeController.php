@@ -87,6 +87,7 @@ class HomeController extends Controller
         ->join('tipos_noticias_has_idiomas', 'tipos_noticias_has_idiomas.tipos_noticias_id', '=', 'tipos_noticias.id')
         ->where('noticias_has_idiomas.idiomas_id',1)->where('tipos_noticias_has_idiomas.idiomas_id',1)
         ->where('tipos_noticias.estado',1)
+        ->where('noticias.estado',1)
         ->where('noticias_has_idiomas.titulo','like','%'.$request->buscar.'%')
         
         //->where(function($q)use($request){ if( isset($request->tipoNoticia) && $request->tipoNoticia != null ){$q->where('tipos_noticias.id',$request->tipoNoticia);}})
