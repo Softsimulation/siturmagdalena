@@ -63,9 +63,40 @@ use App\Models\Mes_Anio;
 use App\Models\Sitio_Para_Encuesta;
 use App\Models\Medio_Actualizacion;
 use App\Models\Proveedores_rnt_idioma;
+use App\Models\Digitador;
 
 class ApiOfertaEmpleoController extends Controller
 {
+    
+    
+    
+     public function getCargardatos(){
+       
+        $proveedores = new Collection(DB::select("SELECT *from listado_sitios_para_encuestas"));
+        
+        foreach($proveedores as $proveedor){
+            $proveedor->{"encuestas"} = $this->getEncuestaspendientes( $proveedor->id )["encuestas"];
+            $proveedor->{"datos"} = Sitio_Para_Encuesta::where("id", $proveedor->id )->select("nombre_contacto as nombre","cargo_contacto as cargo", "email", "id as Sitio")->first();
+        }
+       
+        return  [
+                 "proveedores"=> [ "proveedores" => $proveedores],
+                 "encuestadores"=> Digitador::with([ 'user'=>function($q){$q->select('id','username');} ])->get(),
+                  
+                  "alojamiento"=> $this->getDataalojamiento(-1),//[ "servicios"=>[ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ] ],
+                  "transporte"=> [],//$this->getInfocaracterizaciontransporte(-1),
+                  "caracterizacionAlimentos"=> $this->getInfocaracterizacionalimentos(-1),
+                  "capacidadAlimentos"=>[ "capacidad"=>[] ], //$this->getInfocapalimentos(-1),
+                  "caracterizacionAgenciasOperadoras"=> $this->getInfocaracterizacionoperadora(-1),
+                  "ocupacionAgenciasOperadoras"=> [ "prestamo"=>null ], //$this->getCargardatosocupacionoperadoras(-1),
+                  "caracterizacionAgenciasViajes"=> $this->getAgencia(-1),
+                  "ofertaAgenciasViajes"=> $this->getOfertaagencia(-1),
+                  "empleoMensual"=> $this->getCargardatosdmplmensual(-1),
+                  "empleo"=> $this->getCargardatosempleo(-1),
+                  "empleoCaracterizacion"=> $this->getCargardatosemplcaract(-1),
+                ];
+    }
+    
     
     
 
@@ -465,7 +496,7 @@ class ApiOfertaEmpleoController extends Controller
         $retorno = [
                 'empleo' => $empleo,
                 'url' => "",
-                'proveedor'=>$data[0]
+                'proveedor'=> count($data)>0 ? $data[0] : null
             ];
             
             return $retorno;
@@ -657,7 +688,7 @@ class ApiOfertaEmpleoController extends Controller
                 'empleo' => $empleo,
                 'tipo_cargo' => $tipo_cargo,
                  'url' => "",
-                 'proveedor' => $data[0]
+                 'proveedor' => count($data)>0 ? $data[0] : null
                   
             ];
         
@@ -701,7 +732,7 @@ class ApiOfertaEmpleoController extends Controller
           $retorno = [
                 'empleo' => $empleo,
                 'data'=> $data,
-                'proveedor' => $dato[0]
+                'proveedor' => count($dato)>0 ? $dato[0] : null
                 
             ];
             
@@ -1450,21 +1481,31 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             $q->with(['viajesTurismosOtro','serviciosAgencias'=>function($r){
                 $r->select('id');
             }]);
-        }])->where('id',$id)->firstOrFail();
+        }])->where('id',$id)->first();
         
         //return $agencia;
         
         $agenciaRetornar = [];
-        $agenciaRetornar["Id"] = $agencia->id;
-        $agenciaRetornar["Comercial"] = $agencia->actividad_comercial;
-        $agenciaRetornar["numeroDias"] = $agencia->numero_dias;
-        if($agencia->caracterizacion){
-            if(sizeof($agencia["viajesTurismos"]) != 0){
-                $agenciaRetornar["TipoServicios"] = sizeof($agencia["viajesTurismos"]) == 0 ? null : $agencia["viajesTurismos"][0];
-                $agenciaRetornar["Planes"] = sizeof($agencia["viajesTurismos"][0]->ofreceplanes) == 0 ? null : $agencia["viajesTurismos"][0]->ofreceplanes;
-                $agenciaRetornar["Otro"] = sizeof($agencia["viajesTurismos"][0]->viajesTurismosOtro["otro"]) == 0 ? null : $agencia["viajesTurismos"][0]->viajesTurismosOtro["otro"];
+        
+        if($agencia){
+          
+            $agenciaRetornar["Id"] = $agencia->id;
+            $agenciaRetornar["Comercial"] = $agencia->actividad_comercial;
+            $agenciaRetornar["numeroDias"] = $agencia->numero_dias;
+            
+            if($agencia->caracterizacion){
+                if(sizeof($agencia["viajesTurismos"]) != 0){
+                    $agenciaRetornar["TipoServicios"] = sizeof($agencia["viajesTurismos"]) == 0 ? null : $agencia["viajesTurismos"][0];
+                    $agenciaRetornar["Planes"] = sizeof($agencia["viajesTurismos"][0]->ofreceplanes) == 0 ? null : $agencia["viajesTurismos"][0]->ofreceplanes;
+                    $agenciaRetornar["Otro"] = sizeof($agencia["viajesTurismos"][0]->viajesTurismosOtro["otro"]) == 0 ? null : $agencia["viajesTurismos"][0]->viajesTurismosOtro["otro"];
+                }
             }
-        }else{
+            
+        }
+        
+        
+        if( array_key_exists( "TipoServicios", $agenciaRetornar) ){
+            
             $encuestaAnterior = Encuesta::with(['viajesTurismos'=>function($q){
                 $q->with(['viajesTurismosOtro','serviciosAgencias'=>function($r){
                     $r->select('id');
@@ -1483,8 +1524,9 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
         }
         
+        
         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
-        return ["agencia" => $agenciaRetornar, "proveedor" => $data[0]];
+        return ["agencia" => $agenciaRetornar, "proveedor" => count($data)>0 ? $data[0] : null];
     }
     
     public function postGuardarcaracterizacion(Request $request)
@@ -1626,7 +1668,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
 
-        return ["agencia" => $agencia, "proveedor"=>$data[0]];
+        return ["agencia" => $agencia, "proveedor"=> count($data)>0 ? $data[0]: null];
     }
     
     public function postGuardarofertaagenciaviajes(Request $request)
@@ -1782,17 +1824,19 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         
     public function getInfocaracterizacionalimentos($id)
-    {
+    {  
+       
         $actividades_servicios = Actividad_Servicio::all();
         $especialidades = Especialidad::all();
         
-        $encuesta = Encuesta::with('sitiosParaEncuesta')->where('id',$id)->firstOrFail();
+        $encuesta = Encuesta::where('id',$id)->with('sitiosParaEncuesta')->first();
         $especialidad = null;
         $sirvePlatos = null;
         $mesas = null;
         $asientos = null;
-        
+       
         if($encuesta != null){
+            
             if($encuesta->caracterizacion){
                 $provisionesAlimentos = Provision_Alimento::where('encuestas_id',$encuesta->id)->first();
                 if($provisionesAlimentos != null){
@@ -1814,16 +1858,18 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                 }
             }
             
+            $encuestaRteornar["Comercial"] = $encuesta->actividad_comercial;
+            $encuestaRteornar["NumeroDias"] = $encuesta->numero_dias;
+            
         }
-        $encuestaRteornar["Comercial"] = $encuesta->actividad_comercial;
-        $encuestaRteornar["NumeroDias"] = $encuesta->numero_dias;
+        
         $provision = [];
         $provision["especialidad"] = $especialidad;
         $provision["sirvePlatos"] = $sirvePlatos;
         $provision["mesas"] = $mesas;
         $provision["asientos"] = $asientos;
         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
-        return ["actividades_servicios"=>$actividades_servicios, "especialidades"=>$especialidades, "provision"=>$provision,"encuesta"=>$encuestaRteornar, "proveedor" => $data[0]];
+        return ["actividades_servicios"=>$actividades_servicios, "especialidades"=>$especialidades, "provision"=>$provision,"encuesta"=>$encuesta, "proveedor" => (count($data)>0 ? $data[0] : null) ];
     }
     
     public function postGuardarcaralimentos(Request $request)
@@ -1978,35 +2024,44 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         $toures = Tour::all();
         
         $encuesta = Encuesta::find($id);
-        $agencia = $encuesta->agenciasOperadoras->first();
         $retornado = null;
-        if($agencia){
-            $retornado["planes"] = $agencia->numero_planes;
-            $retornado["actividades"] = $agencia->actividadesDeportivas->pluck('id');
-            $retornado["Comercial"] = $encuesta->actividad_comercial;
-            $retornado["NumeroDias"] = $encuesta->numero_dias;
-            $retornado["toures"] = $agencia->tours->pluck('id');
-            $retornado["otraC"] = $agencia->otras_actividades;
-            $retornado["otraD"] = count($agencia->otraActividads) > 0 ? $agencia->otraActividads->first()->nombre : null;
-            $retornado["otroT"] = count($agencia->otroTours) > 0 ? $agencia->otroTours->first()->nombre : null;
-        }else{
-                $ultimaEncuesta =  Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["caracterizacion",true] ])->orderby("id", "DES")->first();
-                if($ultimaEncuesta){
-                    $agencia = $ultimaEncuesta->agenciasOperadoras->first();
-                    if($agencia){
-                    $retornado["planes"] = $agencia->numero_planes;
-                    $retornado["actividades"] = $agencia->actividadesDeportivas->pluck('id');
-                    $retornado["toures"] = $agencia->tours->pluck('id');
-                    $retornado["otraC"] = $agencia->otras_actividades;
-                    $retornado["otraD"] = count($agencia->otraActividads) > 0 ? $agencia->otraActividads->first()->nombre : null;
-                    $retornado["otroT"] = count($agencia->otroTours) > 0 ? $agencia->otroTours->first()->nombre : null;
-                    $retornado["Comercial"] = $encuesta->null;
-                    $retornado["NumeroDias"] = $encuesta->null;
-                    }    
-                }  
+        
+        if($encuesta){
+            
+            $agencia = $encuesta->agenciasOperadoras->first();
+            
+            if($agencia){
+                $retornado["planes"] = $agencia->numero_planes;
+                $retornado["actividades"] = $agencia->actividadesDeportivas->pluck('id');
+                $retornado["Comercial"] = $encuesta->actividad_comercial;
+                $retornado["NumeroDias"] = $encuesta->numero_dias;
+                $retornado["toures"] = $agencia->tours->pluck('id');
+                $retornado["otraC"] = $agencia->otras_actividades;
+                $retornado["otraD"] = count($agencia->otraActividads) > 0 ? $agencia->otraActividads->first()->nombre : null;
+                $retornado["otroT"] = count($agencia->otroTours) > 0 ? $agencia->otroTours->first()->nombre : null;
+            }else{
+                    $ultimaEncuesta =  Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["caracterizacion",true] ])->orderby("id", "DES")->first();
+                    if($ultimaEncuesta){
+                        $agencia = $ultimaEncuesta->agenciasOperadoras->first();
+                        if($agencia){
+                        $retornado["planes"] = $agencia->numero_planes;
+                        $retornado["actividades"] = $agencia->actividadesDeportivas->pluck('id');
+                        $retornado["toures"] = $agencia->tours->pluck('id');
+                        $retornado["otraC"] = $agencia->otras_actividades;
+                        $retornado["otraD"] = count($agencia->otraActividads) > 0 ? $agencia->otraActividads->first()->nombre : null;
+                        $retornado["otroT"] = count($agencia->otroTours) > 0 ? $agencia->otroTours->first()->nombre : null;
+                        $retornado["Comercial"] = $encuesta->null;
+                        $retornado["NumeroDias"] = $encuesta->null;
+                        }    
+                    }  
+            }
         }
+        
+        
         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
-        return ['toures' => $toures, 'actividades' => $actividadesDeportivas, 'retornado' => $retornado, "proveedor"=>$data[0]];
+        $data = count($data) > 0 ? $data[0] : null;
+        
+        return ['toures' => $toures , 'actividades' => $actividadesDeportivas, 'retornado' => $retornado, "proveedor"=> $data ];
     }
     
     public function postCrearcaracterizacionoperadora(Request $request){
@@ -3328,7 +3383,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }])->get();
         
          $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
-        return ["oferta"=>$oferta, "ides"=>$ids, "proveedor"=> $data[0]];
+        return ["oferta"=>$oferta, "ides"=>$ids, "proveedor"=> count($data)>0 ? $data[0] : null ];
     }
     
     public function postGuardarofertatransporte(Request $request) {
