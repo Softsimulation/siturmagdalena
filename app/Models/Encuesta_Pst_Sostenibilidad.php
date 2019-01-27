@@ -53,7 +53,7 @@ class Encuesta_Pst_Sostenibilidad extends Model
     /**
      * @var array
      */
-    protected $fillable = ['proveedores_rnt_id', 'nombre_contacto', 'lugar_encuesta', 'cargo', 'fecha_aplicacion', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion','estado_encuesta_id','numero_seccion','digitador_id'];
+    protected $fillable = ['proveedores_rnt_id', 'nombre_contacto', 'lugar_encuesta', 'cargo', 'fecha_aplicacion', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion','estado_encuesta_id','numero_seccion','digitador_id','periodo_sostenibilidad_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -218,5 +218,19 @@ class Encuesta_Pst_Sostenibilidad extends Model
     public function responsabilidadesSociale()
     {
         return $this->hasOne('App\Models\Responsabilidad_Social', 'encuestas_pst_sostenibilidad_id');
+    }
+    
+    public function periodo_sostenibilidad()
+    {
+        return $this->belongsTo('App\Models\Periodo_Sostenibilidad_Pst', 'periodo_sostenibilidad_id');
+    }
+    
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_encuesta_id');
+    }
+    
+     public function digitador(){
+        return $this->belongsTo('App\Models\Digitador', 'digitador_id');
     }
 }

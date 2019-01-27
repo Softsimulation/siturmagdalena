@@ -34,10 +34,17 @@ angular.module('sostenibilidadPst.configuracion', [])
     sostenibilidadPstServi.getProveedoresRnt().then(function (data) {
         $scope.proveedores = data.proveedores;
         $scope.encuestadores = data.encuestadores;
+        $scope.periodos = data.periodos;
         $("body").attr("class", "");
     }).catch(function () {
         $("body").attr("class", "");
         swal("Error", "No se realizo la solicitud, reinicie la página");
+    });
+    
+    $scope.$watch('id', function () {
+        if($scope.id != undefined && $scope.id > 0){
+            $scope.encuesta.periodo = $scope.id;
+        }
     });
     
     $scope.guardar = function(){
@@ -111,6 +118,7 @@ angular.module('sostenibilidadPst.configuracion', [])
             $scope.proveedores = data.proveedores;
             $scope.encuestadores = data.encuestadores;
             $scope.encuesta = data.encuesta;
+            $scope.periodos = data.periodos;
             
             var split1 = data.encuesta.fecha_aplicacion.split(" ");
             var split2 = split1[1].split(":");
