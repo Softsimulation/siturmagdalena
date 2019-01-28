@@ -934,14 +934,14 @@
                   </td>
                   <td>
                         <p>  <b>GENERADA:</b> @{{z.es_generada ? "Si" : "No"}} </p>
-                        <a href  ng-click="exportarFileExcelZona(z)" >
+                        <a href  ng-click="exportarFileExcelZona(z)" title="Descragar excel" >
                             Descargar
                         </a>
                   </td>
                   <td>
                         <p>  <b>TABULADA:</b> @{{z.es_tabulada ? "Si" : "No"}} </p>
                         <p>  <b>TABULADOR:</b> @{{z.tabulador || '-'}} </p>
-                        <a href  ng-click="exportarFileExcelZona(z)" >
+                        <a href="/MuestraMaestra/llenarinfozona/@{{z.id}}" title="Tabular bloque"  >
                             TABULAR
                         </a>
                   </td>

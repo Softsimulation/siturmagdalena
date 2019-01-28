@@ -348,8 +348,8 @@ class MuestraMaestraCtrl extends Controller
         $zona = Zona::where("id",$id)->with([ "encargados"=>function($qq){ $qq->with("user"); }] )->first();
         if($zona){
          
-            $proveedores = new Collection( DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ) );
-            $proveedoresInformales = new Collection( DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) ) );
+            $proveedores = DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) );
+            $proveedoresInformales = DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) );
            
             $zona->es_generada = true;
             $zona->save();
