@@ -689,7 +689,7 @@ class MuestraMaestraCtrl extends Controller
         
         $proveedor->razon_social = $request->nombre;
         $proveedor->direccion = $request->direccion;
-        $proveedor->telefono = $request->telefono;
+        if($request->telefono){ $proveedor->telefono = $request->telefono; }
         $proveedor->categoria_proveedor_id = $request->idcategoria;
         $proveedor->municipio_id = $request->municipio_id;
         $proveedor->user_update = $this->user->username;
