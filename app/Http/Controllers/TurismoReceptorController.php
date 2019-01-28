@@ -1489,8 +1489,8 @@ class TurismoReceptorController extends Controller
 			'NombreTwitter' => 'max:100',
 			'OtroFuenteAntes' => 'max:100',
 			'OtroFuenteDurante' => 'max:100',
-			'facilidad' => 'required',
-			'conoce_marca' => 'required',
+			//'facilidad' => 'required',
+			//'conoce_marca' => 'required',
 			'acepta_autorizacion' => 'required',
 			'acepta_tratamiento' => 'required',
     	],[
@@ -1578,8 +1578,13 @@ class TurismoReceptorController extends Controller
 		}
 		
 		$visitante->invitacion_correo = $request->Correo == 1 ? 1 : 0;
-		$visitante->facilidad = $request->facilidad == 1 ? 1 : 0;
-		$visitante->conoce_marca = isset($request->conoce_marca) ? ($request->conoce_marca == 1 ? 1 : 0 ): 0;
+		$controlSostenibilidad = Control_Sostenibilidad_Receptor::where('fecha_inicial', '<=', $visitante->fecha_llegada)->where('fecha_final', '>=', $visitante->fecha_llegada)->where('estado', true)->count();
+		
+		if($controlSostenibilidad > 0){
+		    $visitante->facilidad = $request->facilidad == 1 ? 1 : 0;
+		    $visitante->conoce_marca = isset($request->conoce_marca) ? ($request->conoce_marca == 1 ? 1 : 0 ): 0;    
+		}
+		
 		$visitante->acepta_autorizacion =  isset($request->acepta_autorizacion) ? ($request->acepta_autorizacion == 1 ? 1 : 0) : 0;
 		$visitante->acepta_tratamiento = isset($request->acepta_tratamiento) ? ($request->acepta_tratamiento == 1 ? 1 : 0) : 0;
 		

@@ -4,7 +4,7 @@
          
     <name>{!! html_entity_decode($periodo['nombre']) !!}</name>
     
-    <description> {{$periodo['fecha_inicio']}} al $periodo['fecha_fin'] </description>
+    <description> {{$periodo['fecha_inicio']}} al {{$periodo['fecha_fin']}} </description>
       
     
     @foreach ($zonas as $zona)
