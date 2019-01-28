@@ -29,9 +29,9 @@ trait ResetsPasswords
      *
      * @return \Illuminate\Http\Response
      */
-    public function getEmail()
+ public function getEmail()
     {
-        return $this->showLinkRequestForm();
+        return view('auth.password');
     }
 
     /**
@@ -58,9 +58,29 @@ trait ResetsPasswords
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postEmail(Request $request)
+  public function postEmail(Request $request)
     {
-        return $this->sendResetLinkEmail($request);
+        
+        $messages = [
+            'email.required' => 'El campo es requerido',
+            'email.email' => 'El formato de email es incorrecto',
+        ];
+        $this->validate($request, ['email' => 'required|email'], $messages);
+
+        $response = Password::sendResetLink($request->only('email'), function (Message $message) {
+           
+                  $message->from(env('CONTACT_MAIL'), env('CONTACT_NAME'));
+                  $message->subject($this->getEmailSubject());
+               
+        });
+
+        switch ($response) {
+            case Password::RESET_LINK_SENT:
+                return redirect()->back()->with('status', 'Hemos enviando un link a tu cuenta de correo electrónico para que puedas resetear el password');
+
+            case Password::INVALID_USER:
+                return redirect()->back()->withErrors(['email' => trans($response)]);
+        }
     }
 
     /**
@@ -128,9 +148,9 @@ trait ResetsPasswords
      *
      * @return string
      */
-    protected function getEmailSubject()
+   protected function getEmailSubject()
     {
-        return property_exists($this, 'subject') ? $this->subject : 'Your Password Reset Link';
+        return property_exists($this, 'subject') ? $this->subject : 'Tu link para resetear el password';
     }
 
     /**

@@ -88,6 +88,8 @@ Route::controller('/noticias','NoticiaController');
 Route::controller('/sliders','SliderController');
 Route::controller('/suscriptores','SuscriptoreController');
 
+Route::controller('/periodoSostenibilidadPst','PeriodoSostenibilidadPstController');
+Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
