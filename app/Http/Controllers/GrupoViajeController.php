@@ -18,7 +18,11 @@ class GrupoViajeController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-grupoViaje|create-grupoViaje|read-grupoViaje|edit-grupoViaje|delete-grupoViaje',['only' => ['getListadogrupos','getGrupos'] ]);
+        $this->middleware('permissions:create-grupoViaje',['only' => ['getGrupoviaje','getInformaciondatoscrear','postGuardargrupo'] ]);
+        $this->middleware('permissions:edit-grupoViaje|read-grupoViaje',['only' => ['getVergrupo','getDetallegrupo'] ]);
+        $this->middleware('permissions:edit-grupoViaje',['only' => ['postEditargrupo','getEditar','getInformacioneditar'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

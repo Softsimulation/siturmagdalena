@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Carbon\Carbon;
 use Storage;
 use File;
@@ -23,7 +24,25 @@ use App\Models\Multimedia_Sitio;
 
 class AdministradorAtraccionController extends Controller
 {
-    
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        
+        $this->middleware('permissions:list-atraccion|create-atraccion|read-atraccion|edit-atraccion|estado-atraccion|sugerir-atraccion',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-atraccion|edit-atraccion',['only' => ['postDesactivarActivar','postGuardaradicional','postGuardarmultimedia'] ]);
+        $this->middleware('permissions:create-atraccion|read-atraccion|edit-atraccion',['only' => ['getDatoscrear'] ]);
+        $this->middleware('permissions:create-atraccion',['only' => ['getCrear','postCrearatraccion'] ]);
+        $this->middleware('permissions:read-atraccion|edit-atraccion',['only' => ['getEditar','getDatosatraccion','getDatosIdioma','getIdioma'] ]);
+        $this->middleware('permissions:edit-atraccion',['only' => ['postEditaridioma','postEditardatosgenerales','postEditaratraccion' ] ]);
+        $this->middleware('permissions:estado-atraccion',['only' => ['postDesactivarActivar'] ]);
+        $this->middleware('permissions:sugerir-atraccion',['only' => ['postSugerir'] ]);
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+    }
     public function getIndex(){
         return view('administradoratracciones.Index');
     }

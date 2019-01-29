@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 use App\Models\Sector;
 use App\Models\Perfil_Usuario;
@@ -21,7 +23,25 @@ use File;
 
 class AdministradorEventosController extends Controller
 {
-    //
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        
+        $this->middleware('permissions:list-evento|create-evento|read-evento|edit-evento|estado-evento|sugerir-evento',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-evento|edit-evento',['only' => ['postDesactivarActivar','postGuardaradicional','postGuardarmultimedia'] ]);
+        $this->middleware('permissions:create-evento|read-evento|edit-evento',['only' => ['getDatoscrear'] ]);
+        $this->middleware('permissions:create-evento',['only' => ['getCrear','postCrearevento'] ]);
+        $this->middleware('permissions:read-evento|edit-evento',['only' => ['getEditar','getDatosevento','getDatosIdioma','getIdioma'] ]);
+        $this->middleware('permissions:edit-evento',['only' => ['postEditaridioma','postEditardatosgenerales','postEditarevento' ] ]);
+        $this->middleware('permissions:estado-evento',['only' => ['postDesactivarActivar'] ]);
+        $this->middleware('permissions:sugerir-evento',['only' => ['postSugerir'] ]);
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+    }
     public function getCrear(){
         return view('administradoreventos.Crear');
     }

@@ -31,17 +31,16 @@ class SliderController extends Controller
        
         $this->middleware('auth');
         
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-slider|create-slider|read-slider|edit-slider|estado-slider|prioridad-slider',['only' => ['getListadosliders','getSliders'] ]);
+        $this->middleware('permissions:create-slider',['only' => ['postGuardarslider'] ]);
+        $this->middleware('permissions:edit-slider',['only' => ['postInfoeditar','postAgregaridiomaslider','postEditarslider'] ]);
+        $this->middleware('permissions:estado-slider',['only' => ['postDesactivarslider','postActivarslider'] ]);
+        $this->middleware('permissions:prioridad-slider',['only' => ['postBajarprioridad','postSubirprioridad'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        /*$this->middleware('permissions:list-noticia',['only' => ['getListadonoticias','getNoticias'] ]);
-        $this->middleware('permissions:create-noticia',['only' => ['getCrearnoticia','getDatoscrearnoticias','postGuardarnoticia',
-        'postGuardarmultimedianoticia','postGuardartextoalternativo','postEliminarmultimedia'] ]);
-        $this->middleware('permissions:read-noticia',['only' => ['getVernoticia','getDatosver'] ]);
-        $this->middleware('permissions:edit-noticia',['only' => ['getNuevoidioma','postGuardarnoticia','postGuardarmultimedianoticia',
-        'postGuardartextoalternativo','postEliminarmultimedia','getVistaeditar','getDatoseditar','postModificarnoticia' ] ]);
-        $this->middleware('permissions:estado-noticia',['only' => ['postCambiarestado'] ]);*/
+        
     }
      
     public function getListadosliders() {
@@ -53,7 +52,8 @@ class SliderController extends Controller
         $sliders = Slider::with('idiomas')->
             join('sliders_idiomas', 'sliders_idiomas.slider_id', '=', 'sliders.id')
             ->where('sliders_idiomas.idioma_id',1)
-            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
+            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider",
+            "sliders_idiomas.descripcion_texto as descripcionTextoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
             "sliders.ruta as rutaSlider","sliders.es_interno as enlaceInterno","sliders_idiomas.nombre as tituloSlider")
             ->orderBy('sliders.estado','DESC')->orderBy('sliders.prioridad')
             ->get();
@@ -254,7 +254,8 @@ class SliderController extends Controller
         $sliders = Slider::with('idiomas')->
             join('sliders_idiomas', 'sliders_idiomas.slider_id', '=', 'sliders.id')
             ->where('sliders_idiomas.idioma_id',1)
-            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
+            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider",
+            "sliders_idiomas.descripcion_texto as descripcionTextoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
             "sliders.ruta as rutaSlider","sliders.es_interno as enlaceInterno","sliders_idiomas.nombre as tituloSlider")
             ->orderBy('sliders.estado','DESC')->orderBy('sliders.prioridad')
             ->get();
@@ -285,7 +286,8 @@ class SliderController extends Controller
             ->where('sliders_idiomas.idioma_id',$request->idiomaId)
             ->where('sliders.id',$request->slider)
             ->where('sliders_idiomas.idioma_id',$request->idiomaId)
-            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
+            ->select("sliders.prioridad as prioridadSlider","sliders.estado as estadoSlider","sliders.id","sliders.enlace_acceso as enlaceAccesoSlider",
+            "sliders_idiomas.descripcion_texto as descripcionTextoSlider","sliders_idiomas.descripcion as textoAlternativoSlider",
             "sliders.ruta as rutaSlider","sliders.es_interno as enlaceInterno","sliders_idiomas.nombre as tituloSlider")->first();
             
         $idiomas = Idioma::all();
@@ -562,6 +564,7 @@ class SliderController extends Controller
             return ["success"=>false,"errores"=>$validator->errors()];
         }
 	    $slider = Slider::find($request->id);
+	    $errores = [];
 	    if($slider->prioridad == 1){
 	        $errores["Prioridad1"][0] = "El slider posee la máxima prioridad.";
 	    }else if($slider->prioridad == 0){
@@ -623,6 +626,7 @@ class SliderController extends Controller
             return ["success"=>false,"errores"=>$validator->errors()];
         }
 	    $slider = Slider::find($request->id);
+	    $errores = [];
 	    if($slider->prioridad == 8){
 	        $errores["Prioridad1"][0] = "El slider posee la mínima prioridad.";
 	    }else if($slider->prioridad == 0){

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Storage;
 use File;
 use DB;
@@ -19,7 +21,25 @@ use App\Models\Sector_Con_Idioma;
 
 class AdministradorDestinosController extends Controller
 {
-    //
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        
+        $this->middleware('permissions:list-destino|create-destino|read-destino|edit-destino|estado-destino|sugerir-destino',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-destino|edit-destino',['only' => ['postDesactivarActivar','postGuardaradicional','postGuardarmultimedia'] ]);
+        $this->middleware('permissions:create-destino|read-destino|edit-destino',['only' => ['getDatoscrear'] ]);
+        $this->middleware('permissions:create-destino',['only' => ['getCrear','postCreardestino'] ]);
+        $this->middleware('permissions:read-destino|edit-destino',['only' => ['getEditar','getDatosdestino','getDatosIdioma','getIdioma'] ]);
+        $this->middleware('permissions:edit-destino',['only' => ['postEditaridioma','postEditardatosgenerales','postEditaridiomasector','getDeletesector','postCrearsector' ] ]);
+        $this->middleware('permissions:estado-destino',['only' => ['postDesactivarActivar'] ]);
+        $this->middleware('permissions:sugerir-destino',['only' => ['postSugerir'] ]);
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+    }
     public function getIndex (){
         return view('administradordestinos.Index');
     }
