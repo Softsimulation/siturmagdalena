@@ -72,7 +72,7 @@
               </tr>
               
               <tr ng-repeat="item in proveedoresInformales" >
-                <th>@{{item.id}}</th>
+                <th>@{{item.codigo}}</th>
                 <td ng-class="{ 'error': ( (form.$submitted || form.rnt@{{$index}}.$touched) && form.rnt@{{$index}}.$invalid  ) }" >  
                     <p title="@{{item.numero_rnt}}" >&nbsp</p> 
                     <input type="number" class="form-control" name="rnt@{{$index}}" min="0" placeholder="RNT" ng-model="item.muestra.rnt" disabled >

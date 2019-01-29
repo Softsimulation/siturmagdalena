@@ -167,7 +167,7 @@
                             <div class="btn-group">
                                 <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/sostenibilidadhogares/encuestas">Volver</a></li>
+                                    <li><a href="/periodoSostenibilidadHogares/listado">Volver</a></li>
                                     
                                 </ul>
                             </div>

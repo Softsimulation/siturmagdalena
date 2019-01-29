@@ -266,7 +266,7 @@ class AdministradorActividadesController extends Controller
         
         Storage::disk('multimedia-actividad')->put('actividad-'.$request->id.'/'.$portadaNombre, File::get($request->portadaIMG));
         
-        // Multimedia_Actividad::where('actividades_id', $actividad->id)->where('tipo', false)->where('portada', false)->delete();
+        Multimedia_Actividad::where('actividades_id', $actividad->id)->where('tipo', false)->where('portada', false)->delete();
         // for ($i = 0; $i < 5; $i++){
         //     $nombre = "imagen-".$i.".*";
         //     if (Storage::disk('multimedia-actividad')->exists('actividad-'.$request->id.'/'.$nombre)){
@@ -276,21 +276,23 @@ class AdministradorActividadesController extends Controller
         //return ['success' => $request->image];
         if ($request->image != null){
             foreach($request->image as $key => $file){
-                $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
-                $multimedia_actividad = new Multimedia_Actividad();
-                $multimedia_actividad->actividades_id = $actividad->id;
-                $multimedia_actividad->ruta = "/multimedia/actividades/actividad-".$request->id."/".$nombre;
-                $multimedia_actividad->texto_alternativo = $request->imageText[$key];
-                $multimedia_actividad->tipo = false;
-                $multimedia_actividad->portada = false;
-                $multimedia_actividad->estado = true;
-                $multimedia_actividad->user_create = "Situr";
-                $multimedia_actividad->user_update = "Situr";
-                $multimedia_actividad->created_at = Carbon::now();
-                $multimedia_actividad->updated_at = Carbon::now();
-                $multimedia_actividad->save();
-                
-                Storage::disk('multimedia-actividad')->put('actividad-'.$request->id.'/'.$nombre, File::get($file));
+                if (!is_string($file)){
+                    $nombre = "imagen-".$key.".".pathinfo($file->getClientOriginalName())['extension'];
+                    $multimedia_actividad = new Multimedia_Actividad();
+                    $multimedia_actividad->actividades_id = $actividad->id;
+                    $multimedia_actividad->ruta = "/multimedia/actividades/actividad-".$request->id."/".$nombre;
+                    $multimedia_actividad->texto_alternativo = $request->imageText[$key];
+                    $multimedia_actividad->tipo = false;
+                    $multimedia_actividad->portada = false;
+                    $multimedia_actividad->estado = true;
+                    $multimedia_actividad->user_create = "Situr";
+                    $multimedia_actividad->user_update = "Situr";
+                    $multimedia_actividad->created_at = Carbon::now();
+                    $multimedia_actividad->updated_at = Carbon::now();
+                    $multimedia_actividad->save();
+                    
+                    Storage::disk('multimedia-actividad')->put('actividad-'.$request->id.'/'.$nombre, File::get($file));
+                }
             }
         }
         

@@ -97,6 +97,9 @@ class ApiOfertaEmpleoController extends Controller
                 ];
     }
     
+    public function getMesencuesta($id){
+        return new Collection( DB::select("SELECT *from listado_encuesta_oferta where id =".$id));
+    }
     
     
 
@@ -339,50 +342,46 @@ class ApiOfertaEmpleoController extends Controller
         ->where("encuestas.sitios_para_encuestas_id", $request->Sitio)
         ->where("meses_de_anio.mes_id", $request->Mes)
         ->where("anios.anio", $request->Anio)
+        ->select("encuestas.id","encuestas.sitios_para_encuestas_id")
         ->first();
      
-        if($encuesta != null){
-            return ["success" => false, "errores" => [["Ya existe una encuesta creada."]] ];
-        }
-  
-  
-        
-       $mesid = Mes_Anio::join("anios","meses_de_anio.anio_id","=","anios.id")
-        ->where("meses_de_anio.mes_id", $request->Mes)
-        ->where("anios.anio", $request->Anio)
-        ->select("meses_de_anio.id")->first();
-        
      
-        if($mesid == null){
-            $mesid = new Mes_Anio();
-            $anio = Anio::where("anio",$request->Anio)->first();
-            if($anio == null){
-                $anio = new Anio();
-                $anio->anio = $request->Anio;
-                $anio->user_create =  $this->user->nombre;
-                $anio->user_update =  $this->user->nombre;
-                $anio->save();
-            }
-            $mesid->mes_id = $request->Mes;
-            $mesid->anio_id = $anio->id;
-            $mesid->save();
+        if( !$encuesta ){
             
+             $mesid = Mes_Anio::join("anios","meses_de_anio.anio_id","=","anios.id")
+            ->where("meses_de_anio.mes_id", $request->Mes)
+            ->where("anios.anio", $request->Anio)
+            ->select("meses_de_anio.id")->first();
+            
+            if($mesid == null){
+                $mesid = new Mes_Anio();
+                $anio = Anio::where("anio",$request->Anio)->first();
+                if($anio == null){
+                    $anio = new Anio();
+                    $anio->anio = $request->Anio;
+                    $anio->user_create =  $this->user->nombre;
+                    $anio->user_update =  $this->user->nombre;
+                    $anio->save();
+                }
+                $mesid->mes_id = $request->Mes;
+                $mesid->anio_id = $anio->id;
+                $mesid->save();
+            }
+    
+            
+            $encuesta = new Encuesta();
+            $encuesta->meses_anio_id = $mesid->id;
+            $encuesta->sitios_para_encuestas_id = $request->Sitio;
+            $encuesta->save();
+            Historial_Encuesta_Oferta::create([
+                   'encuesta_id' => $encuesta->id,
+                   'user_id' => 1,
+                   'estado_encuesta_id' => 1,
+                   'fecha_cambio' => Carbon::now()
+             ]);
+             
         }
-        
-        
-      $ruta = null;
-      $encuesta = new Encuesta();
-      $encuesta->meses_anio_id = $mesid->id;
-      $encuesta->sitios_para_encuestas_id = $request->Sitio;
-      $encuesta->save();
-       Historial_Encuesta_Oferta::create([
-               'encuesta_id' => $encuesta->id,
-               'user_id' => 1,
-               'estado_encuesta_id' => 1,
-               'fecha_cambio' => Carbon::now()
-         ]);
-        
-
+  
         $tipo = Sitio_Para_Encuesta::where("id",$encuesta->sitios_para_encuestas_id)->first();
          
         return ["success"=>true, "idEncuesta"=>$encuesta->id, "tipo"=>$tipo->proveedor->categoria->tipoProveedore->id, "categoria"=>$tipo->proveedor->categoria->id ];
@@ -1476,7 +1475,8 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
 
-    public function getAgencia($id){
+    public function getAgencia($id){ 
+        
         $agencia = Encuesta::with(['viajesTurismos'=>function($q){
             $q->with(['viajesTurismosOtro','serviciosAgencias'=>function($r){
                 $r->select('id');
@@ -1526,7 +1526,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         
         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
-        return ["agencia" => $agenciaRetornar, "proveedor" => count($data)>0 ? $data[0] : null];
+        return ["agencia" => $agenciaRetornar, "servicios" => Servicio_Agencia::all(), "proveedor" => count($data)>0 ? $data[0] : null];
     }
     
     public function postGuardarcaracterizacion(Request $request)
@@ -1668,7 +1668,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
 
-        return ["agencia" => $agencia, "proveedor"=> count($data)>0 ? $data[0]: null];
+        return ["agencia" => $agencia, "destinos" => Opcion_Persona_Destino::all(), "proveedor"=> count($data)>0 ? $data[0]: null];
     }
     
     public function postGuardarofertaagenciaviajes(Request $request)
@@ -2326,6 +2326,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
     }
     
    public function getCargarcaracterizacionalquilervehiculos($id){
+       
         $encuesta = Encuesta::find($id);
 
         $alquilerCargar = null;
@@ -2525,30 +2526,22 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
        
        
         $encuesta = Encuesta::find($id);
+        $servicios = [ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ];
+        $alojamiento = null;
+        
         if($encuesta){
-            $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+            
             $idEncuesta = $id;
-          /*
-            if( !alojamiento::where("encuestas_id",$id)->first() ){
-                $encuesta = Encuesta::find($id);
-                $anterior = Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["id","!=",$id] ])
-                                      ->latest("id")->first();
-                if($anterior){ $idEncuesta = $anterior->id;  }
-            }
-            */
-            
             $alojamiento = alojamiento::where("encuestas_id",$idEncuesta)->with(["casas","campings","habitaciones","apartamentos","cabanas"])->first();
-            
-            $servicios = [ "habitacion"=>false, "apartamento"=>false, "casa"=>false, "cabana"=>false, "camping"=>false ];
-            
-            
-            if(!$alojamiento){
+       
+             if(!$alojamiento){
                 
                 $ultimaEncuesta =  Encuesta::where([ ["sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id], ["caracterizacion",true] ])->orderby("id", "DES")->first();
                 if($ultimaEncuesta){
                     $alojamiento = alojamiento::where("encuestas_id",$ultimaEncuesta->id)->with(["casas","campings","habitaciones","apartamentos","cabanas"])->first();
                 }
                 
+                if($alojamiento){  $alojamiento["id"] = null; }
             }
             
             if($alojamiento){
@@ -2557,17 +2550,13 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
                 $servicios["casa"] = count($alojamiento->casas)>0 ? true : false;
                 $servicios["camping"] = count($alojamiento->campings)>0 ? true : false;
                 $servicios["cabana"] = count($alojamiento->cabanas)>0 ? true : false;
-            }
-            
-            if( $id!=$idEncuesta ){
-                $alojamiento["id"] = null;
-            }
-            
-            return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios, "encuesta"=>$encuesta, "proveedor" => $data[0]  ];
+            }  
             
         }
         
-        return ["success"=>false];    
+        $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
+        
+        return [ "alojamiento"=>$alojamiento, "servicios"=>$servicios, "encuesta"=>$encuesta, "proveedor" => (count($data) > 0 ? $data[0] : null) ];   
     } 
     
     public function postGuardarcaracterizacionalojamientos(Request $request){ 

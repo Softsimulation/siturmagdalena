@@ -23,11 +23,15 @@ class ProveedoresController extends Controller
         $proveedores = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
                 $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion', 'nombre')->orderBy('idioma_id');
-            }])->select('id', 'razon_social');
+            }, 'categoria' => function ($queryCategoria) use ($idioma){
+                $queryCategoria->with(['categoriaProveedoresConIdiomas' => function($queryCategoriaProveedoresConIdiomas) use ($idioma){
+                    $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idioma);
+                }])->select('id');
+            }])->select('id', 'razon_social', 'categoria_proveedores_id');
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
         }])->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id')->where('estado', true)->get();
-        
+
         return view('proveedor.Index', ['proveedores' => $proveedores]);
 	}
 	
