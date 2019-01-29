@@ -35,7 +35,7 @@
               </tr>
              
               <tr ng-repeat="item in proveedores" >
-                <th>@{{item.id}}</th>
+                <th>@{{item.codigo}}</th>
                 <td ng-class="{ 'error': ( (form.$submitted || form.rnt@{{$index}}.$touched) && form.rnt@{{$index}}.$invalid  ) }" >  
                     <p title="@{{item.numero_rnt}}" >@{{item.rnt}}</p> 
                     <input type="number" class="form-control" name="rnt@{{$index}}" min="0" placeholder="RNT" ng-model="item.muestra.rnt" >
@@ -72,7 +72,7 @@
               </tr>
               
               <tr ng-repeat="item in proveedoresInformales" >
-                <th>@{{item.id}}</th>
+                <th>@{{item.codigo}}</th>
                 <td ng-class="{ 'error': ( (form.$submitted || form.rnt@{{$index}}.$touched) && form.rnt@{{$index}}.$invalid  ) }" >  
                     <p title="@{{item.numero_rnt}}" >&nbsp</p> 
                     <input type="number" class="form-control" name="rnt@{{$index}}" min="0" placeholder="RNT" ng-model="item.muestra.rnt" disabled >
@@ -108,7 +108,7 @@
                 </td>
               </tr>
               
-              <tr ng-if="proveedores.length==0" >
+              <tr ng-if="proveedores.length==0 && proveedoresInformales.length==0" >
                   <td colspan="8" class="alert alert-info" >No se encontraron proveedores en la zona.</td>
               </tr>
         </table>

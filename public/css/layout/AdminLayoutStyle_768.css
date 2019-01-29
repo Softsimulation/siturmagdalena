@@ -34,14 +34,36 @@
     top: 0;
     left: 0;
     height: 100%;
-    background: #263238;
+    /*background: #263238;*/
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+#options-side-menu{
+    display:block;
+}
+
+#left-side-menu.hidden-menu + #content-page {
+    width: 100%;
+    margin-left: 0;
+}
+#left-side-menu.hidden-menu #nav-menu-main, #left-side-menu.hidden-menu #optionsLoggedUser {
+    display: none;
+    transition: all .35s ease-out;
+}
+
+#left-side-menu.hidden-menu {
+    height: auto;
+    border-bottom-right-radius: 50px;
+    transition: all .35s ease-out;
+}
+
+
 #content-page{
     margin-left: 230px;
     width: calc(100% - 230px);
+    transition: all .35s ease-out;
 }
 #content-page .container{
     width: 538px;

@@ -1,5 +1,11 @@
 <?php
 
+Route::get('password/email', 'Auth\PasswordController@getEmail');
+Route::post('password/email', 'Auth\PasswordController@postEmail');
+
+Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+Route::post('password/reset', 'Auth\PasswordController@postReset');
+
 
 Route::controller('/InformacionDepartamento','InformacionDepartamentoCtrl');
 
@@ -48,6 +54,13 @@ Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 20228e0fc0f9ebfe82ce286bf9443df657471eff
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
@@ -78,6 +91,8 @@ Route::controller('/noticias','NoticiaController');
 Route::controller('/sliders','SliderController');
 Route::controller('/suscriptores','SuscriptoreController');
 
+Route::controller('/periodoSostenibilidadPst','PeriodoSostenibilidadPstController');
+Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
@@ -108,6 +123,9 @@ Route::group(['middleware' => 'cors'], function(){
         Route::controller('/turismoreceptoroapi','TurismoReceptorCorsController');
         Route::controller('/grupoviajeapi','GrupoViajeCorsController');
    });
+   
+   Route::controller('/ofertayempleoapi','ApiOfertaEmpleoController');
+   
 });
 
 
@@ -130,6 +148,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/Mapa', 'MapaCtrl@getIndex');
     
     // Public Jáder
+    Route::controller('/quehacer', 'QueHacerController');
+    
+    Route::controller('/experiencias', 'ExperienciasController');
+    
     Route::controller('/atracciones', 'AtraccionesController');
     
     Route::controller('/actividades', 'ActividadesController');
@@ -149,3 +171,4 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/','HomeController');
     
 });
+

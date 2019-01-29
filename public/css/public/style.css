@@ -614,8 +614,13 @@ footer{
     text-transform: initial;
     line-height: 1.5;
 }
-footer #logosApoyoSitur{
+#logosApoyoSitur{
     padding: 2% 0;
+}
+#logosApoyoSitur img{
+    margin-bottom: .5rem;
+    margin-right: .25rem;
+    margin-left: .25rem;
 }
 footer a{
     color: white;

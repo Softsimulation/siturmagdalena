@@ -31,7 +31,7 @@ use App\Models\Componente_Tecnico;
 use App\Models\Estados_Encuesta;
 use App\Models\Historial_Encuesta_Hogar_Sostenibilidad;
 use App\Models\ListadoEncuestasHogarSostenibilidad;
-
+use App\Models\Periodo_Sostenibilidad_Hogar;
 
 class SostenibilidadHogaresController extends Controller
 {
@@ -44,16 +44,25 @@ class SostenibilidadHogaresController extends Controller
         $this->user = Auth::user();
     }
     
-    public function getCrear(){
-    	 return view('sostenibilidadHogar.crear');
+    public function getCrear($id = null){
+    	if($id != null){
+    		if(!Periodo_Sostenibilidad_Hogar::find($id)){
+    			return \Redirect::to('/periodoSostenibilidadHogares/listado')->with('message', 'Verifique que el periodo este ingresado en el sistema.')
+                        ->withInput();
+    		}
+    	}else{
+    		$id = -1;
+    	}
+    	 return view('sostenibilidadHogar.crear', ['id' => $id]);
     }
     
     public function getInfocrear(){
     	$estratos = Estrato::all();
         $barrios = Barrio::all();
     	$encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','username');} ])->get();
+    	$periodos = Periodo_Sostenibilidad_Hogar::where('fecha_final','>=', date('Y-m-d') )->where('estado', true)->get();
     	
-    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores];
+    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores, 'periodos' => $periodos];
     }
     
     public function getInfoeditar($id){
@@ -61,7 +70,8 @@ class SostenibilidadHogaresController extends Controller
         $barrios = Barrio::all();
     	$encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','username');} ])->get();
     	$casa = Casa_Sostenibilidad::find($id);
-    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores,"casa"=>$casa];
+    	$periodos = Periodo_Sostenibilidad_Hogar::where('fecha_final','>=', date('Y-m-d') )->where('estado', true)->get();
+    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores,"casa"=>$casa, 'periodos' => $periodos];
     }
     
     public function getEditar($id){
@@ -81,12 +91,22 @@ class SostenibilidadHogaresController extends Controller
 			'direccion' => 'required|string|max:150',
 			'celular' => 'required|string|max:150',
 			'email' => 'required|email|string|max:150',
+			'periodo' => 'required|exists:periodos_sostenibilidad_hogares,id',
     	],[
        		
     	]);
     	
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if( date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) > date('Y-m-d') ){
+		    return ["success"=>false,"errores"=> [ ["La fecha de aplicación no debe ser mayor a la actual."] ] ];
+		}
+		
+		$periodo = Periodo_Sostenibilidad_Hogar::find($request->periodo);
+		if($periodo->fecha_inicial > date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) || $periodo->fecha_final < date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) ){
+			return ["success"=>false,"errores"=> [ ["Verifique que la fecha de aplicación se encuentre dentro el rango del periodo."] ] ];
 		}
 		
 		$casa = new Casa_Sostenibilidad;
@@ -99,6 +119,7 @@ class SostenibilidadHogaresController extends Controller
 		$casa->direccion = $request->direccion;
 		$casa->celular = $request->celular;
 		$casa->email = $request->email;
+		$casa->periodo_sostenibilidad_id = $request->periodo;
 		$casa->estado_encuesta_id = 1;
 		$casa->numero_sesion = 1;
 		$casa->save();
@@ -130,12 +151,22 @@ class SostenibilidadHogaresController extends Controller
 			'direccion' => 'required|string|max:150',
 			'celular' => 'required|string|max:150',
 			'email' => 'required|email|string|max:150',
+			'periodo_sostenibilidad_id' => 'required|exists:periodos_sostenibilidad_hogares,id',
     	],[
        		
     	]);
     	
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if( date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) > date('Y-m-d') ){
+		    return ["success"=>false,"errores"=> [ ["La fecha de aplicación no debe ser mayor a la actual."] ] ];
+		}
+		
+		$periodo = Periodo_Sostenibilidad_Hogar::find($request->periodo_sostenibilidad_id);
+		if($periodo->fecha_inicial > date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) || $periodo->fecha_final < date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) ){
+			return ["success"=>false,"errores"=> [ ["Verifique que la fecha de aplicación se encuentre dentro el rango del periodo."] ] ];
 		}
 		
 		$casa = Casa_Sostenibilidad::find($request->id);
@@ -148,6 +179,7 @@ class SostenibilidadHogaresController extends Controller
 		$casa->direccion = $request->direccion;
 		$casa->celular = $request->celular;
 		$casa->email = $request->email;
+		$casa->periodo_sostenibilidad_id = $request->periodo_sostenibilidad_id;
 		$casa->save();
 		
 		Historial_Encuesta_Hogar_Sostenibilidad::create([
@@ -394,11 +426,11 @@ class SostenibilidadHogaresController extends Controller
 			}
 		}
 		
-		$eliminarF = Factor_Calidad_Turismo::where('casas_sostenibilidad_id',$request->id);
+		$eliminarF = Factor_Calidad_Turismo::where('casas_sostenibilidad_id',$request->id)->get();
 			
-			foreach($eliminarF as $el){
-				$el->delete();
-			}
+		foreach($eliminarF as $el){
+			$el->delete();
+		}
 		
 		if(isset($request->factores)){
 		
@@ -421,11 +453,11 @@ class SostenibilidadHogaresController extends Controller
 			}
 		}
 		
-		$eliminarF = Factor_Positivo::where('casas_sostenibilidad_id',$request->id);
+		$eliminarF = Factor_Positivo::where('casas_sostenibilidad_id',$request->id)->get();
 			
-			foreach($eliminarF as $el){
-				$el->delete();
-			}
+		foreach($eliminarF as $el){
+			$el->delete();
+		}
 		
 		if(isset($request->factoresPositivos)){
 		
@@ -445,7 +477,7 @@ class SostenibilidadHogaresController extends Controller
 		}
 		
 		
-		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->where('categorias_riesgo_id',1);
+		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->whereHas('tiposRiesgo',function($q){$q->where('categorias_riesgo_id',1);})->get();
 			
 		foreach($eliminarR as $el){
 			$el->delete();
@@ -458,7 +490,7 @@ class SostenibilidadHogaresController extends Controller
 				$riesgo->criterios_calificacion_id = $ris["calificacion"];
 				$riesgo->casas_sostenibilidad_id = $request->id;
 				if($ris["id"]==8){
-					$riesgo->otro = $ris["otroRiesgo"];
+					$riesgo->otro = isset($ris["otroRiesgo"]) ? $ris["otroRiesgo"] : null;
 				}
 				
 				$riesgo->save();
@@ -466,7 +498,7 @@ class SostenibilidadHogaresController extends Controller
 			
 		}
 		
-		$eliminarB = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$request->id);
+		$eliminarB = Beneficio_Sociocultural::where('casas_sostenibilidad_id',$request->id)->get();
 		
 		foreach($eliminarB as $el){
 			$el->delete();
@@ -678,7 +710,7 @@ class SostenibilidadHogaresController extends Controller
 		}
 		
 		
-		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->where('categorias_riesgo_id',2);
+		$eliminarR = Riesgo_Turismo::where('casas_sostenibilidad_id',$request->id)->whereHas('tiposRiesgo',function($q){$q->where('categorias_riesgo_id',2);})->get();
 			
 		foreach($eliminarR as $el){
 			$el->delete();
@@ -691,7 +723,7 @@ class SostenibilidadHogaresController extends Controller
 				$riesgo->criterios_calificacion_id = $ris["calificacion"];
 				$riesgo->casas_sostenibilidad_id = $request->id;
 				if($ris["id"]==21){
-					$riesgo->otro = $ris["otroRiesgo"];
+					$riesgo->otro = isset($ris["otroRiesgo"]) ? $ris["otroRiesgo"] : null;
 				}
 				
 				$riesgo->save();

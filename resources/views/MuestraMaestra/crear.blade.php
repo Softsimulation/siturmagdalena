@@ -213,7 +213,7 @@
         #filtros-buttons{
             position:absolute;
             left: 0;
-            top: 4%;
+            top: 10%;
             z-index: 20;
             background-color: white;
             display: flex;
