@@ -384,7 +384,7 @@
         }
         
         $scope.validarProveedoresFueraZona =  function(){
-            ServiMuestra.validarProveedoresFueraZona($scope.proveedores,$scope.dataPerido.zonas) .then(function(data){  $scope.proveedoresFuera = data; });
+            ServiMuestra.validarProveedoresFueraZona($scope.markersProveedores,$scope.sharpesAndPopus) .then(function(data){  $scope.proveedoresFuera = data; });
         }
         
         
@@ -795,16 +795,18 @@
                 
                 if( $scope.filtro.sectoresProv.length > 0){ 
                     
-                    var point = new google.maps.LatLng( pro.latitud , pro.longitud );
                     sw4 = -1;
-                    for (var i = 0; i < $scope.dataPerido.zonas.length; i++) { 
-                        if( $scope.filtro.sectoresProv.indexOf( $scope.dataPerido.zonas[i].sector_id )!=-1 ){
-                            if( google.maps.geometry.poly.containsLocation( point , $scope.map.shapes[i] ) ){
-                                sw4 = 1; break;
+                    
+                    for(var k=0; k<$scope.sharpesAndPopus.length; k++){
+                        
+                        if( $scope.filtro.sectoresProv.indexOf( $scope.sharpesAndPopus[k].sharpe.dataZona.sector_id )!=-1 ){
+                            if( google.maps.geometry.poly.containsLocation( $scope.markersProveedores[i].position , $scope.sharpesAndPopus[k].sharpe ) ){
+                                sw4 = 1; break;    
                             }
-                            
                         }
+                        
                     }
+                    
                 }
                 
                 if( ( (sw0>=0?true:false) && (sw1>=0?true:false) && (sw2>=0?true:false) && (sw3>=0?true:false) && (sw4>=0?true:false) ) ){
@@ -1221,8 +1223,7 @@
         
         $scope.getCantidadPorSector = function(id){
             
-            var sF = 0;
-            var sI = 0;
+            var sF = 0; var sI = 0;
             
             for(var i=0; i<$scope.sharpesAndPopus.length; i++){
                 if($scope.sharpesAndPopus[i].sharpe.dataZona.sector_id==id){
