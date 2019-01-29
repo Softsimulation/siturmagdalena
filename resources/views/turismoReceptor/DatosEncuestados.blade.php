@@ -42,6 +42,7 @@
 @section('content')
     
 <div class="container">
+    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>
         <br />
@@ -60,10 +61,10 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <select name="grupo" class="form-control" ng-model="encuesta.Grupo" ng-required="true">
+                        <select name="grupo" class="form-control" ng-model="encuesta.Grupo" ng-options="item for item in grupos" ng-required="true">
                             <!--P1Select1. Presione aquí para seleccionar un grupo-->
                             <option value="" disabled>Presione aquí para seleccionar algún grupo</option>
-                            <option ng-repeat="item in grupos" value="@{{item}}">@{{item}}</option>
+                            <!--<option ng-repeat="item in grupos" value="@{{item}}">@{{item}}</option>-->
                         </select>
                         <span ng-show="DatosForm.$submitted || DatosForm.grupo.$touched">
                             <!--P1Alert1. El campo grupo de Viaje es requerido.-->
