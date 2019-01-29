@@ -62,46 +62,31 @@
           editarPosicionProveedor: function(data){ return http.post("/MuestraMaestra/editarubicacionproveedor", data);  },
           
           
-          validarProveedoresFueraZona: function(pro, zn){
+          validarProveedoresFueraZona: function(markersProveedores,sharpesAndPopus){
+                
                 var defered = $q.defer();
-                
-                var proveedores = angular.copy(pro);
-                var zonas = angular.copy(zn);
-                
                 var promise = defered.promise;
                 
-                for(var k=0; k<zonas.length; k++){
-                    
-                    for (var i = 0; i<zonas[k].coordenadas.length; i++ ) {
-                        zonas[k].coordenadas[i] = { lat: zonas[k].coordenadas[i][0] , lng: zonas[k].coordenadas[i][1] };    
-                    }
-                    zonas[k].polygono = new google.maps.Polygon({paths: zonas[k].coordenadas});
-                }
-                
                 var proveedoresFuera = []; 
+                var sw = false;
                 
-                for(var k=0; k<proveedores.length; k++){
+                for(var k=0; k<markersProveedores.length; k++){
                     
-                    var point = new google.maps.LatLng( proveedores[k].latitud , proveedores[k].longitud );
-                    var sw = false;
+                    sw = false;
                     
-                    for(var i=0; i<zonas.length; i++){
-                       if( google.maps.geometry.poly.containsLocation( point , zonas[i].polygono ) ){
-                          sw = true; break;
-                       }
-                        
+                    for(var i=0; i<sharpesAndPopus.length; i++){
+                       if( google.maps.geometry.poly.containsLocation( markersProveedores[k].position , sharpesAndPopus[i].sharpe ) ){ sw = true; break; }
                     }
                     
                     if(sw==false){
-                        proveedoresFuera.push( proveedores[k] );
+                        proveedoresFuera.push( markersProveedores[k].dataProveedor );
                     }
                     
                 }
                 
                 defered.resolve(proveedoresFuera); 
             
-         
-                return promise;      
+                return promise; 
             }
           
           
