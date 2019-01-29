@@ -372,20 +372,19 @@
     
     
  
-        <div id="alertProveedores" class="alert alert-info" ng-show="proveedoresFuera.length>0" >
-          <a href="#" class="close" ng-click="proveedoresFuera=[]" >&times;</a>
-          <strong>Atención, prestadores fuera de un bloque!</strong> 
-           <p>Se encontraron @{{proveedoresFuera.length}} prestadores fuera de los bloques.</p> 
-           <details>
-              <summary>Clic para ver prestadores</summary>
-              <ul style="max-height: 300px; overflow: auto;">
-                  <li ng-repeat="it in proveedoresFuera track by $index">
-                     <a ng-click="centrarMapaAlProveedor(it)" href > @{{it.nombre}}</a>
-                  </li>
-              </ul>
-            </details>
-          
-        </div>
+    <div id="alertProveedores" class="alert alert-info" ng-show="proveedoresFuera.length>0" >
+      <a href="#" class="close" ng-click="proveedoresFuera=[]" >&times;</a>
+      <strong>Atención, prestadores fuera de un bloque!</strong> 
+       <p>Se encontraron @{{proveedoresFuera.length}} prestadores fuera de los bloques.</p> 
+       <details>
+          <summary>Clic para ver prestadores</summary>
+          <ul style="max-height: 300px; overflow: auto;">
+              <li ng-repeat="it in proveedoresFuera track by $index">
+                 <a ng-click="centrarMapaAlProveedor(it)" href > @{{it.nombre}}</a>
+              </li>
+          </ul>
+        </details>
+    </div>
 
     <div id="contentPage">
         <div id="cont-filtros" ng-show="!pantallaCompleta">
@@ -935,14 +934,14 @@
                   </td>
                   <td>
                         <p>  <b>GENERADA:</b> @{{z.es_generada ? "Si" : "No"}} </p>
-                        <a href  ng-click="exportarFileExcelZona(z)" >
+                        <a href  ng-click="exportarFileExcelZona(z)" title="Descragar excel" >
                             Descargar
                         </a>
                   </td>
                   <td>
                         <p>  <b>TABULADA:</b> @{{z.es_tabulada ? "Si" : "No"}} </p>
                         <p>  <b>TABULADOR:</b> @{{z.tabulador || '-'}} </p>
-                        <a href  ng-click="exportarFileExcelZona(z)" >
+                        <a href="/MuestraMaestra/llenarinfozona/@{{z.id}}" title="Tabular bloque"  >
                             TABULAR
                         </a>
                   </td>
@@ -1011,7 +1010,7 @@
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.telefono.$touched) && formP.telefono.$error.required}" >
                       <label>Teléfono:</label>
-                      <input type="text" class="form-control"  name="telefono" ng-model="proveedorInformal.telefono" placeholder="Número de teléfono" required >
+                      <input type="text" class="form-control"  name="telefono" ng-model="proveedorInformal.telefono" placeholder="Número de teléfono" >
                     </div>
                 </div>
             </div>

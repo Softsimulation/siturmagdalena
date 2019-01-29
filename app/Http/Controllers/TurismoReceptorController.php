@@ -75,8 +75,16 @@ class TurismoReceptorController extends Controller
         
 	}
     
-    public function getDatosencuestados(){
-        return view('turismoReceptor.DatosEncuestados');
+    public function getDatosencuestados($id = null){
+        if($id != null){
+    		if(!Grupo_Viaje::find($id)){
+    			return \Redirect::to('/grupoviaje/listadogrupos')->with('message', 'Verifique que el grupo este ingresado en el sistema.')
+                        ->withInput();
+    		}
+    	}else{
+    		$id = -1;
+    	}
+        return view('turismoReceptor.DatosEncuestados', ['id' => $id]);
     }
     
     public function getInformaciondatoscrear(){
@@ -1188,12 +1196,12 @@ class TurismoReceptorController extends Controller
     	}
         $visitante->financiadoresViajes()->detach();
         $visitante->financiadoresViajes()->attach($request["Financiadores"]);
-        if($visitante->ultima_sesion<5){
+        if($visitante->ultima_sesion < 5){
             $visitante->ultima_sesion =5;
         }
         
         $visitante->historialEncuestas()->save(new Historial_Encuesta([
-            'estado_id' => 1,
+            'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $visitante->ultima_sesion ==5?"Se ha creado la sección de gastos":"Se ha editado la sección de gastos",
             'usuario_id' => $this->user->digitador->id
