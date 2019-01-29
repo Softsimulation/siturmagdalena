@@ -32,9 +32,9 @@ function getItemType($type){
             $controller = 'EventosController';
             break; 
         case(5):
-            $title = "Rutas turísticas";
-            $name = "Ruta turística";
-            $path = "/rutas/ver/";
+            $title = "Proveedores";
+            $name = "Proveedores";
+            $path = "/proveedor/ver/";
             $controller = 'RutasTuristicasController';
             break;
     }
@@ -214,7 +214,107 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
     
     <div class="container">
         <br/>
-        <div id="listado" class="tiles">
+        <div class="col-md-3">
+            <h4>Filtros</h4>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                  <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#destinos" aria-expanded="true" aria-controls="destinos">
+                      Destinos
+                    </a>
+                  </h4>
+                </div>
+                <div id="destinos" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="panel-body">
+                    @foreach($destinos as $destino)
+                        <label>
+                          <input type="checkbox"> {{$destino->destinoConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#experiencias" aria-expanded="false" aria-controls="experiencias">
+                      Experiencias
+                    </a>
+                  </h4>
+                </div>
+                <div id="experiencias" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body">
+                    @foreach($experiencias as $experiencia)
+                        <label>
+                          <input type="radio" name="experiencia" value="{{$experiencia->id}}"> {{$experiencia->tipoTurismoConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#categorias" aria-expanded="false" aria-controls="categorias">
+                      Categorías de turismo
+                    </a>
+                  </h4>
+                </div>
+                <div id="categorias" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                  <div class="panel-body">
+                    @foreach($categorias as $categoria)
+                        <label>
+                          <input type="checkbox"> {{$categoria->categoriaTurismoConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">
+                      Perfiles de turista
+                    </a>
+                  </h4>
+                </div>
+                <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body">
+                    @foreach($perfiles as $perfil)
+                        <label>
+                          <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">
+                      Tipos de atracción
+                    </a>
+                  </h4>
+                </div>
+                <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body">
+                    @foreach($perfiles as $perfil)
+                        <label>
+                          <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div id="listado" class="tiles col-md-9">
             
             <?php $hasTipo = 0 ?>
             @foreach($query as $entidad)
@@ -317,10 +417,10 @@ function getItemType(type){
             controller = 'EventosController';
             break; 
         case(5):
-            title = "Rutas turísticas";
-            name = "Ruta turística";
-            path = "/rutas/ver/";
-            controller = 'RutasTuristicasController';
+            title = "Proveedores";
+            name = "Proveedores";
+            path = "/proveedor/ver/";
+            controller = 'ProveedorController';
             break;
     }
     return {'name':name, 'path':path, 'title' : title, 'controller' : controller};

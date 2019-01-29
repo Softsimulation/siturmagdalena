@@ -6,15 +6,66 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 
+use App\Models\Destino;
 use App\Models\Idioma;
+use App\Models\Tipo_Turismo;
+use App\Models\Categoria_Turismo;
+use App\Models\Perfil_Usuario;
+use App\Models\Tipo_Atraccion;
+use App\Models\Tipo_Evento;
+use App\Models\Tipo_Proveedor;
+use App\Models\Categoria_Proveedor;
 
 class QueHacerController extends Controller
 {
     public function getIndex(Request $request){
-        return view('quehacer.Index', ['query' => $this->queHacerData($search = null)['query'], 'success' => true]);
+        $idIdioma = Idioma::where('culture', \Config::get('app.locale'))->pluck('id')->first();
+        
+        $destinos = Destino::with(['destinoConIdiomas' => function ($queryDestinoConIdiomas) use ($idIdioma){
+            $queryDestinoConIdiomas->select('nombre', 'destino_id')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        $experiencias = Tipo_Turismo::with(['tipoTurismoConIdiomas' => function ($queryTipoTurismoConIdiomas) use ($idIdioma){
+            $queryTipoTurismoConIdiomas->select('nombre', 'tipo_turismo_id')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        $categorias = Categoria_Turismo::with(['categoriaTurismoConIdiomas' => function ($queryCategoriaTurismoConIdiomas) use ($idIdioma){
+            $queryCategoriaTurismoConIdiomas->select('categoria_turismo_id', 'nombre')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        $perfiles = Perfil_Usuario::with(['perfilesUsuariosConIdiomas' => function($queryPerfilesUsuariosConIdiomas) use ($idIdioma){
+            $queryPerfilesUsuariosConIdiomas->select('perfiles_usuarios_id', 'nombre')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        $tipoAtraccion = Tipo_Atraccion::with(['tipoAtraccionesConIdiomas' => function ($queryTipoAtraccionesConIdiomas) use ($idIdioma){
+            $queryTipoAtraccionesConIdiomas->select('tipo_atracciones_id', 'nombre')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        $tipoEvento = Tipo_Evento::with(['tipoEventosConIdiomas' => function ($queryTipoEventosConIdiomas) use ($idIdioma){
+            $queryTipoEventosConIdiomas->select('tipo_evento_id', 'nombre')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        $tipoProveedor = Tipo_Proveedor::with(['tipoProveedoresConIdiomas' => function ($queryTipoProveedoresConIdiomas) use ($idIdioma){
+            $queryTipoProveedoresConIdiomas->select('tipo_proveedores_id', 'nombre')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        $categoriaProveedor = Categoria_Proveedor::with(['categoriaProveedoresConIdiomas' => function ($queryCategoriaProveedoresConIdiomas) use ($idIdioma){
+            $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idIdioma);
+        }])->select('id')->where('estado', true)->get();
+        
+        //return $destinos;
+        return view('quehacer.Index', 
+        ['query' => $this->queHacerData($search = null)['query'], 
+            'destinos' => $destinos, 
+            'experiencias' => $experiencias,
+            'categorias' => $categorias,
+            'perfiles' => $perfiles,
+            'tiposAtraccion' => $tipoAtraccion,
+            'tiposEvento' => $tipoEvento,
+            'tiposProveedor' => $tipoProveedor,
+            'categoriasProveedor' => $categoriaProveedor,
+            'success' => true]);
     }
-    
-    private $colorTipo = ['bg-primary','bg-success','bg-danger', 'bg-info', 'bg-warning'];
     
     public function postSearch(Request $request){
         //return ['query' => $request->search];
@@ -23,39 +74,6 @@ class QueHacerController extends Controller
         
         return ['query' => $query['success'] ? $query['query']: $this->queHacerData($search = null)['query'], 'success' => $query['success']];
         
-    }
-    
-    
-    public function getItemType($type){
-        $path = ""; $name = ""; $title = "";
-        switch($type){
-            case(1):
-                $title = "Actividades";
-                $name = "Actividad";
-                $path = "/actividades/ver/";
-                break;
-            case(2):
-                $title = "Atracciones";
-                $name = "Atracción";
-                $path = "/atracciones/ver/";
-                break;
-            case(3):
-                $title = "Destinos";
-                $name = "Destino";
-                $path = "/destinos/ver/";
-                break;
-            case(4):
-                $title = "Eventos";
-                $name = "Evento";
-                $path = "/eventos/ver/";
-                break; 
-            case(5):
-                $title = "Rutas turísticas";
-                $name = "Ruta turística";
-                $path = "/rutas/ver/";
-                break;
-        }
-        return (object)array('name'=>$name, 'path'=>$path, 'title' => $title);
     }
     
     /**La función queHacerData pide como parámetro el idioma de la página.
@@ -128,7 +146,7 @@ class QueHacerController extends Controller
         }else {
             //$query = DB::select('SELECT * FROM public.busqueda_promocion(?, ?)', [DB::raw("$idIdioma"), DB::raw("'%$search%'")]);
             $atributo = "%".$search."%";
-            $query = DB::select('SELECT * FROM public.busqueda_promocion(?, ?)', array($idIdioma,$atributo));
+            $query = DB::select('SELECT * FROM public.busqueda_promocion(?, ?)', array($idIdioma, $atributo));
             
         }
              
@@ -143,5 +161,20 @@ class QueHacerController extends Controller
              WHERE rutas.estado = true", [$idIdioma]);*/
              
              return ['query' => $query, 'success' => count($query) > 0];
+    }
+    
+    public function getConsulta(){
+        return $this->actividadesFilter();
+    }
+    
+    private function actividadesFilter(){
+        $idIdioma = \Config::get('app.locale');
+        //$atributo = "%".$search."%";
+        $busqueda = "0";
+        $busqueda2 = "null";
+        $proveedores = DB::select('SELECT * FROM public.busqueda_actividades(?, ?, null, null, null, null, null)', array($idIdioma, $busqueda));
+        $eventos = DB::select('SELECT * FROM public.busqueda_eventos(?, null, null, null, null, null, null, null, null, null)', array($idIdioma));
+        
+        dd (array_merge($proveedores, $eventos));
     }
 }
