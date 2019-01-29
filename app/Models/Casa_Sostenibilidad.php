@@ -45,14 +45,14 @@ class Casa_Sostenibilidad extends Model
     /**
      * @var array
      */
-    protected $fillable = ['barrio_id', 'estrato_id', 'fecha_aplicacion', 'nombre_encuestado', 'direccion', 'sexo', 'celular', 'email', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion','numero_sesion'];
+    protected $fillable = ['barrio_id', 'estrato_id', 'fecha_aplicacion', 'nombre_encuestado', 'direccion', 'sexo', 'celular', 'email', 'conoce_marca', 'autoriza_tratamiento', 'autorizacion','numero_sesion','periodo_sostenibilidad_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function barrio()
     {
-        return $this->belongsTo('App\Barrio');
+        return $this->belongsTo('App\Models\Barrio');
     }
 
     /**
@@ -166,4 +166,14 @@ class Casa_Sostenibilidad extends Model
     {
         return $this->hasOne('App\ComponentesAmbientale', 'casas_sostenibilidad_id');
     }
+    
+    public function digitador(){
+        return $this->belongsTo('App\Models\Digitador', 'digitador_id');
+    }
+    
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_encuesta_id');
+    }
+    
 }

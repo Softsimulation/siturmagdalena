@@ -29,7 +29,8 @@ angular.module('crear', [])
 
         return [year, month, day].join('/');
     }
-    
+  
+  $scope.social = {};  
   
     $("body").attr("class", "cbp-spmenu-push charging");
  
@@ -38,6 +39,7 @@ angular.module('crear', [])
         $scope.estratos = data.estratos;
         $scope.barrios = data.barrios;
         $scope.encuestadores = data.encuestadores;
+        $scope.periodos = data.periodos;
          $("body").attr("class", "cbp-spmenu-push");
     }).catch(function(){
          $("body").attr("class", "cbp-spmenu-push");
@@ -45,7 +47,11 @@ angular.module('crear', [])
      });
         
         
- 
+    $scope.$watch('id', function () {
+        if($scope.id != undefined && $scope.id > 0){
+            $scope.social.periodo = $scope.id;
+        }
+    });
     
     $scope.guardar = function(){
         
@@ -122,6 +128,7 @@ angular.module('crear', [])
                 $scope.barrios = data.barrios;
                 $scope.encuestadores = data.encuestadores;
                 $scope.social = data.casa;
+                $scope.periodos = data.periodos;
                 $scope.social.fecha_aplicacion = $scope.social.fecha_aplicacion.substring(0,$scope.social.fecha_aplicacion.length-3);
                  $("body").attr("class", "cbp-spmenu-push");
             }).catch(function(){

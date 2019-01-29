@@ -259,7 +259,7 @@
             <div class="panel-heading">
 
                 <h3 class="panel-title">
-                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Cabañas(@{{alojamiento.cabanas[0].total}} en total)</b>
+                    <b><span class="asterik glyphicon glyphicon-asterisk"></span>Cabañas (@{{alojamiento.cabanas[0].total}} en total)</b>
                     <span style="float: right;" >Tasa de ocupación</span>
                 </h3>
             </div>

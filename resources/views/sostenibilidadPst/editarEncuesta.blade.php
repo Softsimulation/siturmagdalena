@@ -89,6 +89,30 @@
         
         <div class="panel panel-success">
             <div class="panel-heading p1">
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Periodo</b></h3>
+            </div>
+            <div class="panel-footer"><b>Seleccione periodo</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <ui-select id="periodo"  name="periodo" ng-model="encuesta.periodo_sostenibilidad_id"  ng-required="true">
+                                <ui-select-match placeholder="Seleccione periodo">@{{$select.selected.nombre}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in periodos | filter:$select.search">
+                                    @{{item.nombre}}
+                                </ui-select-choices>
+                            </ui-select>
+                            <span ng-show="datosForm.$submitted || datosForm.periodo.$touched">
+                                <span class="label label-danger" ng-show="datosForm.periodo.$error.required">*El campo es requerido</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading p1">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Establecimmiento</b></h3>
             </div>
             <div class="panel-footer"><b>Seleccione establecimiento</b></div>

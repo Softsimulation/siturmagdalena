@@ -17,6 +17,19 @@ app.factory("adminService", ["$http", "$q", function ($http, $q) {
                 defered.reject(err);
             })
             return promise;
+        },
+        
+        GetMeses: function () {
+            
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/exportacion/meses').success(function (data) {
+             defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
         }
         
         
