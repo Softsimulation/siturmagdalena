@@ -54,10 +54,13 @@ Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
+<<<<<<< HEAD
+=======
 
 
 
 
+>>>>>>> 20228e0fc0f9ebfe82ce286bf9443df657471eff
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
@@ -160,6 +163,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/eventos', 'EventosController');
     
     Route::controller('/proveedor', 'ProveedoresController');
+
+    Route::controller('/quehacer', 'QueHacerController');
+    
+    Route::controller('/turismo', 'TurismoController');
 
     Route::controller('/','HomeController');
     
