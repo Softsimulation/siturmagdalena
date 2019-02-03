@@ -220,16 +220,16 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingOne">
                   <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#destinos" aria-expanded="true" aria-controls="destinos">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#destinos_panel" aria-expanded="true" aria-controls="destinos_panel">
                       Destinos
                     </a>
                   </h4>
                 </div>
-                <div id="destinos" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div id="destinos_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                   <div class="panel-body">
                     @foreach($destinos as $destino)
                         <label>
-                          <input type="checkbox"> {{$destino->destinoConIdiomas[0]->nombre}}
+                          <input onchange="change(this, destinos, {{$destino->id}})" type="checkbox"> {{$destino->destinoConIdiomas[0]->nombre}}
                         </label>
                         <br>
                     @endforeach
@@ -248,7 +248,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
                   <div class="panel-body">
                     @foreach($experiencias as $experiencia)
                         <label>
-                          <input type="radio" name="experiencia" value="{{$experiencia->id}}"> {{$experiencia->tipoTurismoConIdiomas[0]->nombre}}
+                          <input type="radio" onclick="exp = {{$experiencia->id}}" name="experiencia" value="{{$experiencia->id}}"> {{$experiencia->tipoTurismoConIdiomas[0]->nombre}}
                         </label>
                         <br>
                     @endforeach
@@ -258,16 +258,16 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingThree">
                   <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#categorias" aria-expanded="false" aria-controls="categorias">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#categorias_turismo" aria-expanded="false" aria-controls="categorias_turismo">
                       Categorías de turismo
                     </a>
                   </h4>
                 </div>
-                <div id="categorias" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div id="categorias_turismo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                   <div class="panel-body">
                     @foreach($categorias as $categoria)
                         <label>
-                          <input type="checkbox"> {{$categoria->categoriaTurismoConIdiomas[0]->nombre}}
+                          <input onchange="change(this, categorias, {{$categoria->id}})" type="checkbox"> {{$categoria->categoriaTurismoConIdiomas[0]->nombre}}
                         </label>
                         <br>
                     @endforeach
@@ -277,41 +277,54 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingTwo">
                   <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles_panel" aria-expanded="false" aria-controls="perfiles_panel">
                       Perfiles de turista
                     </a>
                   </h4>
                 </div>
-                <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div id="perfiles_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                   <div class="panel-body">
                     @foreach($perfiles as $perfil)
                         <label>
-                          <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
+                          <input onchange="change(this, perfiles, {{$perfil->id}})" type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
                         </label>
                         <br>
                     @endforeach
                   </div>
                 </div>
               </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                  <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">
-                      Tipos de atracción
-                    </a>
-                  </h4>
+              <!--<div class="panel panel-default">-->
+              <!--  <div class="panel-heading" role="tab" id="headingTwo">-->
+              <!--    <h4 class="panel-title">-->
+              <!--      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">-->
+              <!--        Tipos de atracción-->
+              <!--      </a>-->
+              <!--    </h4>-->
+              <!--  </div>-->
+              <!--  <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">-->
+              <!--    <div class="panel-body">-->
+              <!--      @foreach($perfiles as $perfil)-->
+              <!--          <label>-->
+              <!--            <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}-->
+              <!--          </label>-->
+              <!--          <br>-->
+              <!--      @endforeach-->
+              <!--    </div>-->
+              <!--  </div>-->
+              <!--</div>-->
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <input type="text" id="valor_inicial" class="form-control" placeholder="Valor mínimo"/>
                 </div>
-                <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                  <div class="panel-body">
-                    @foreach($perfiles as $perfil)
-                        <label>
-                          <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
-                  </div>
+                <div class="col-xs-6">
+                    <input type="text" id="valor_final" class="form-control" placeholder="Valor máximo"/>
                 </div>
-              </div>
+            </div>
+            <br>
+            <div class="btn-group" role="group" aria-label="...">
+                <button onclick="formSubmit()" type="button" class="btn btn-success">Filtrar</button>
+                <button type="button" class="btn btn-danger">Limpiar</button>
             </div>
         </div>
         <div id="listado" class="tiles col-md-9">
@@ -386,6 +399,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 @section('javascript')
 <!--<script src="{{asset('/js/public/vibrant.js')}}"></script>-->
 <!--<script src="{{asset('/js/public/setProminentColorImg.js')}}"></script>-->
+
 <script>
 
 var colorTipo = ['bg-primary','bg-success','bg-danger', 'bg-info', 'bg-warning'];
@@ -488,5 +502,63 @@ var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tip
         return false;
     });
         
+</script>
+<script src="{{asset('/js/quehacer/script.js')}}"></script>
+
+<script>
+    function formSubmit(){
+    var sw = false;
+    if (destinos.length == 0 && categorias.length == 0 && perfiles.length == 0 && exp == undefined){
+        sw = true;
+    }
+    if (sw){
+        alert('No se ha seleccionado algún filtro');
+        return;
+    }
+    
+    $.ajax({
+          type: "POST",
+          url: '{{URL::action("QueHacerController@postFiltrar")}}',
+          data: {
+              'experiencia': exp,
+              'destinos': destinos,
+              'categorias': categorias,
+              'perfiles': perfiles,
+              'valor_inicial': $('#valor_inicial').val(),
+              'valor_final': $('#valor_final').val()
+          },
+          success: function (data){
+              if (!data.success){
+                  alert('No hay resultados para su búsqueda');
+              }
+              var html = '';
+              for(var i = 0; i < data.query.length; i++){
+                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
+                    html += '<div class="tile tile-overlap">'
+                                +'<div class="tile-img">';
+                        if(data.query[i].portada != ""){
+                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
+                        }
+                    html +=     +'</div>'
+                                    +'<div class="tile-body">'
+                                        +'<div class="tile-caption">'
+                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
+                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
+                                        +'</div>'
+                                        +'<div class="tile-buttons">'
+                                            +'<div class="inline-buttons">';
+                    //Acá falta las fechas en los eventos
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
+              }
+              }
+              $('#listado').html(html);
+          },
+          dataType: 'json'
+        });
+}
 </script>
 @endsection
