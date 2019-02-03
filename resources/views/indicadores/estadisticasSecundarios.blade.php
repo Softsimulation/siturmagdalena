@@ -63,7 +63,10 @@
     }
     .dropdown-menu{
         width: 100%;
-        text-align:center;
+        text-align:left;
+    }
+    .dropdown-menu>li>a{
+        white-space: normal;
     }
     .dropdown-menu>li>button:hover {
         background-color: #eee;
@@ -104,7 +107,7 @@
 <br>
 
 <div ng-if="indicador == undefined" class="text-center">
-    <img src="/res/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
+    <img src="/img/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
 </div>
 <div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" ng-show="indicador != undefined">
     
