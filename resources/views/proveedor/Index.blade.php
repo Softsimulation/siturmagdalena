@@ -215,6 +215,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                 <div class="tile-caption">
                     
                     <h3><a href="proveedores/ver/{{$proveedores[$i]->id}}">{{$proveedores[$i]->proveedorRnt->razon_social}}</a></h3>
+                    <p class="text-muted">{{$proveedores[$i]->proveedorRnt->categoria->categoriaProveedoresConIdiomas[0]->nombre}}</p>
                 </div>
                 <div class="btn-block ranking">
     	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 0.0) ? (($proveedores[$i]->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
