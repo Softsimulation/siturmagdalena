@@ -170,7 +170,7 @@
                 @if($noticia->portada)
                 <img src="{{$noticia->portada}}" alt="" role="presentation">
                 @else
-                <img src="/img/news.png" alt="" role="presentation">
+                <img src="/img/brand/72.png" alt="" role="presentation">
                 @endif
                 <div class="text-overlap">
                     <a class="btn-block" href="/promocionNoticia/listado/?tipoNoticia={{$noticia->nombreTipoNoticia}}"><span class="label label-info">{{$noticia->nombreTipoNoticia}}</span></a>

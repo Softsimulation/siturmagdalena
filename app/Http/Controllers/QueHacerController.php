@@ -76,6 +76,61 @@ class QueHacerController extends Controller
         
     }
     
+    public function postFiltrar(Request $request){
+        $idIdioma = \Config::get('app.locale');
+        
+        $actividades = DB::select('SELECT * FROM public.busqueda_actividades(?, ?, ?, ?, ?, ?, ?)', array($idIdioma, 
+            $this->arrayToString($request->destinos),
+            $request->experiencia,
+            $this->arrayToString($request->categorias),
+            $request->valor_inicial == '' ? null : $request->valor_inicial,
+            $request->valor_final == '' ? null : $request->valor_final,
+            $this->arrayToString($request->perfiles)));
+            
+        $atracciones = DB::select('SELECT * FROM public.busqueda_atracciones(?, ?, ?, ?, ?, ?, ?, null)', array($idIdioma, 
+            $this->arrayToString($request->destinos),
+            $request->experiencia,
+            $this->arrayToString($request->categorias),
+            $request->valor_inicial == '' ? null : $request->valor_inicial,
+            $request->valor_final == '' ? null : $request->valor_final,
+            $this->arrayToString($request->perfiles)));
+            
+        $destinos = DB::select('SELECT * FROM public.busqueda_destino(?, ?, ?, ?)', array($idIdioma, 
+            $request->experiencia,
+            $this->arrayToString($request->categorias),
+            $this->arrayToString($request->perfiles)));    
+            
+        $eventos = DB::select('SELECT * FROM public.busqueda_eventos(?, ?, null, null, null, ?, ?, ?, ?, ?)', array($idIdioma, 
+            $this->arrayToString($request->categorias),
+            $this->arrayToString($request->destinos),
+            $request->experiencia,
+            $request->valor_inicial == '' ? null : $request->valor_inicial,
+            $request->valor_final == '' ? null : $request->valor_final,
+            $this->arrayToString($request->perfiles))); 
+            
+        $proveedores = DB::select('SELECT * FROM public.busqueda_proveedor(?, ?, ?, null, null, ?, ?, ?, ?)', array($idIdioma, 
+            $request->experiencia,
+            $this->arrayToString($request->categorias),
+            $request->valor_inicial == '' ? null : $request->valor_inicial,
+            $request->valor_final == '' ? null : $request->valor_final,
+            $this->arrayToString($request->destinos),
+            $this->arrayToString($request->perfiles)));    
+        return ['success' => true, 'query' => array_merge($actividades, $atracciones, $destinos, $eventos, $proveedores)];
+    }
+    
+    private function arrayToString($array){
+        $string = "0";
+        
+        if ($array == null){
+            return null;
+        }
+        
+        for ($i = 0;$i < count($array); $i++){
+            $string .= ",".$array[$i]."";
+        }
+        
+        return $string;
+    }
     /**La función queHacerData pide como parámetro el idioma de la página.
      * 
      * Los tipos de entidad son:
