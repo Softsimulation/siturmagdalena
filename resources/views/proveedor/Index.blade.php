@@ -197,38 +197,11 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     
     
     <hr/>
-    @if(count($proveedores))
+    @if($proveedores != null && count($proveedores) > 0)
     <div id="listado" class="tiles">
     @for($i = 0; $i < count($proveedores); $i++)
-        <div class="tile">
-            
-            <div class="tile-img">
-                @if($proveedores[$i]->multimediaProveedores != null && count($proveedores[$i]->multimediaProveedores) > 0)
-                <img src="{{$proveedores[$i]->multimediaProveedores[0]->ruta}}" alt="Imagen de presentación de {{$proveedores[$i]->proveedorRnt->razon_social}}"/>
-                @endif
-                <!--<div class="text-overlap">-->
-                <!--    <span class="label label-{{$colorTipo[1]}}">{{getItemType(5)->name}}</span>-->
-                <!--</div>-->
-            </div>
-            
-            <div class="tile-body">
-                <div class="tile-caption">
-                    
-                    <h3><a href="proveedores/ver/{{$proveedores[$i]->id}}">{{$proveedores[$i]->proveedorRnt->razon_social}}</a></h3>
-                    <p class="text-muted">{{$proveedores[$i]->proveedorRnt->categoria->categoriaProveedoresConIdiomas[0]->nombre}}</p>
-                </div>
-                <div class="btn-block ranking">
-    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 0.0) ? (($proveedores[$i]->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
-    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 1.0) ? (($proveedores[$i]->calificacion_legusto <= 1.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
-    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 2.0) ? (($proveedores[$i]->calificacion_legusto <= 2.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
-    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 3.0) ? (($proveedores[$i]->calificacion_legusto <= 3.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
-    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 4.0) ? (($proveedores[$i]->calificacion_legusto <= 5.0) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
-    	              <span class="sr-only">Posee una calificación de {{$proveedores[$i]->calificacion_legusto}}</span>
-    	            
-    	          </div>
-    	          
-            </div>
-        </div>
+        {{$proveedores[$i]}}
+        
     @endfor
     </div>
     @else

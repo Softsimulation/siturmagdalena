@@ -207,5 +207,18 @@
     }
 </script>
  <!-- fin de código de seguimiento-->
+ <script>
+     var srcList = $('#content-main img').map(function() {
+        this.onerror = function(){
+            this.src = "/img/brand/72.png";
+            this.style.width ="auto";
+            this.style.height ="auto";
+            this.style.minWidth ="0";
+            this.style.minHeight ="0";
+        }
+        return this;
+    }).get();
+    console.log(srcList);
+ </script>
 </body>
 </html>
