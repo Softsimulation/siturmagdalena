@@ -359,8 +359,8 @@ class ApiOfertaEmpleoController extends Controller
                 if($anio == null){
                     $anio = new Anio();
                     $anio->anio = $request->Anio;
-                    $anio->user_create =  $this->user->nombre;
-                    $anio->user_update =  $this->user->nombre;
+                    $anio->user_create =  "Admin";
+                    $anio->user_update =  "Admin";
                     $anio->save();
                 }
                 $mesid->mes_id = $request->Mes;

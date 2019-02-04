@@ -32,9 +32,9 @@ function getItemType($type){
             $controller = 'EventosController';
             break; 
         case(5):
-            $title = "Rutas turísticas";
-            $name = "Ruta turística";
-            $path = "/rutas/ver/";
+            $title = "Proveedores";
+            $name = "Proveedores";
+            $path = "/proveedor/ver/";
             $controller = 'RutasTuristicasController';
             break;
     }
@@ -214,7 +214,120 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
     
     <div class="container">
         <br/>
-        <div id="listado" class="tiles">
+        <div class="col-md-3">
+            <h4>Filtros</h4>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                  <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#destinos_panel" aria-expanded="true" aria-controls="destinos_panel">
+                      Destinos
+                    </a>
+                  </h4>
+                </div>
+                <div id="destinos_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="panel-body">
+                    @foreach($destinos as $destino)
+                        <label>
+                          <input onchange="change(this, destinos, {{$destino->id}})" type="checkbox"> {{$destino->destinoConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#experiencias" aria-expanded="false" aria-controls="experiencias">
+                      Experiencias
+                    </a>
+                  </h4>
+                </div>
+                <div id="experiencias" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body">
+                    @foreach($experiencias as $experiencia)
+                        <label>
+                          <input type="radio" onclick="exp = {{$experiencia->id}}" name="experiencia" value="{{$experiencia->id}}"> {{$experiencia->tipoTurismoConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#categorias_turismo" aria-expanded="false" aria-controls="categorias_turismo">
+                      Categorías de turismo
+                    </a>
+                  </h4>
+                </div>
+                <div id="categorias_turismo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                  <div class="panel-body">
+                    @foreach($categorias as $categoria)
+                        <label>
+                          <input onchange="change(this, categorias, {{$categoria->id}})" type="checkbox"> {{$categoria->categoriaTurismoConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles_panel" aria-expanded="false" aria-controls="perfiles_panel">
+                      Perfiles de turista
+                    </a>
+                  </h4>
+                </div>
+                <div id="perfiles_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body">
+                    @foreach($perfiles as $perfil)
+                        <label>
+                          <input onchange="change(this, perfiles, {{$perfil->id}})" type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
+                        </label>
+                        <br>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              <!--<div class="panel panel-default">-->
+              <!--  <div class="panel-heading" role="tab" id="headingTwo">-->
+              <!--    <h4 class="panel-title">-->
+              <!--      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">-->
+              <!--        Tipos de atracción-->
+              <!--      </a>-->
+              <!--    </h4>-->
+              <!--  </div>-->
+              <!--  <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">-->
+              <!--    <div class="panel-body">-->
+              <!--      @foreach($perfiles as $perfil)-->
+              <!--          <label>-->
+              <!--            <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}-->
+              <!--          </label>-->
+              <!--          <br>-->
+              <!--      @endforeach-->
+              <!--    </div>-->
+              <!--  </div>-->
+              <!--</div>-->
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <input type="text" id="valor_inicial" class="form-control" placeholder="Valor mínimo"/>
+                </div>
+                <div class="col-xs-6">
+                    <input type="text" id="valor_final" class="form-control" placeholder="Valor máximo"/>
+                </div>
+            </div>
+            <br>
+            <div class="btn-group" role="group" aria-label="...">
+                <button onclick="formSubmit()" type="button" class="btn btn-success">Filtrar</button>
+                <button type="button" class="btn btn-danger">Limpiar</button>
+            </div>
+        </div>
+        <div id="listado" class="tiles col-md-9">
             
             <?php $hasTipo = 0 ?>
             @foreach($query as $entidad)
@@ -286,6 +399,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 @section('javascript')
 <!--<script src="{{asset('/js/public/vibrant.js')}}"></script>-->
 <!--<script src="{{asset('/js/public/setProminentColorImg.js')}}"></script>-->
+
 <script>
 
 var colorTipo = ['bg-primary','bg-success','bg-danger', 'bg-info', 'bg-warning'];
@@ -317,10 +431,10 @@ function getItemType(type){
             controller = 'EventosController';
             break; 
         case(5):
-            title = "Rutas turísticas";
-            name = "Ruta turística";
-            path = "/rutas/ver/";
-            controller = 'RutasTuristicasController';
+            title = "Proveedores";
+            name = "Proveedores";
+            path = "/proveedor/ver/";
+            controller = 'ProveedorController';
             break;
     }
     return {'name':name, 'path':path, 'title' : title, 'controller' : controller};
@@ -388,5 +502,63 @@ var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tip
         return false;
     });
         
+</script>
+<script src="{{asset('/js/quehacer/script.js')}}"></script>
+
+<script>
+    function formSubmit(){
+    var sw = false;
+    if (destinos.length == 0 && categorias.length == 0 && perfiles.length == 0 && exp == undefined){
+        sw = true;
+    }
+    if (sw){
+        alert('No se ha seleccionado algún filtro');
+        return;
+    }
+    
+    $.ajax({
+          type: "POST",
+          url: '{{URL::action("QueHacerController@postFiltrar")}}',
+          data: {
+              'experiencia': exp,
+              'destinos': destinos,
+              'categorias': categorias,
+              'perfiles': perfiles,
+              'valor_inicial': $('#valor_inicial').val(),
+              'valor_final': $('#valor_final').val()
+          },
+          success: function (data){
+              if (!data.success){
+                  alert('No hay resultados para su búsqueda');
+              }
+              var html = '';
+              for(var i = 0; i < data.query.length; i++){
+                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
+                    html += '<div class="tile tile-overlap">'
+                                +'<div class="tile-img">';
+                        if(data.query[i].portada != ""){
+                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
+                        }
+                    html +=     +'</div>'
+                                    +'<div class="tile-body">'
+                                        +'<div class="tile-caption">'
+                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
+                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
+                                        +'</div>'
+                                        +'<div class="tile-buttons">'
+                                            +'<div class="inline-buttons">';
+                    //Acá falta las fechas en los eventos
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
+              }
+              }
+              $('#listado').html(html);
+          },
+          dataType: 'json'
+        });
+}
 </script>
 @endsection

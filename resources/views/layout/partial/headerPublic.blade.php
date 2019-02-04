@@ -345,25 +345,25 @@
                                 <a role="menuitem" href="#menu-estadisticas" aria-haspopup="true" aria-expanded="false">{{trans('resources.menu.estadisticas')}}</a>
                                 <ul role="menu" aria-label="menu-estadisticas">
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/receptor">{{trans('resources.estadisticas.turismoReceptor')}}</a>
+                                        <a role="menuitem" href="/indicadores/receptor"><span class="mdi stats-mini stats-receptor hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoReceptor')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/interno">{{trans('resources.estadisticas.turismoEmisor')}}</a>
+                                        <a role="menuitem" href="/indicadores/interno"><span class="mdi stats-mini stats-interno hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoEmisor')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/emisor">{{trans('resources.estadisticas.turismoInterno')}}</a>
+                                        <a role="menuitem" href="/indicadores/emisor"><span class="mdi stats-mini stats-emisor hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoInterno')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/oferta">{{trans('resources.estadisticas.ofertaTuristica')}}</a>
+                                        <a role="menuitem" href="/indicadores/oferta"><span class="mdi stats-mini stats-oferta hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.ofertaTuristica')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/empleo">{{trans('resources.estadisticas.impactoEnElEmpleo')}}</a>
+                                        <a role="menuitem" href="/indicadores/empleo"><span class="mdi stats-mini stats-empleo hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.impactoEnElEmpleo')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/sostenibilidad">{{trans('resources.estadisticas.sostenibilidadTuristica')}}</a>
+                                        <a role="menuitem" href="/indicadores/sostenibilidad"><span class="mdi stats-mini stats-sostenible hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.sostenibilidadTuristica')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/secundarios">{{trans('resources.estadisticas.estadisticasSecundarias')}}</a>
+                                        <a role="menuitem" href="/indicadores/secundarios"><span class="mdi stats-mini stats-secundarias hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.estadisticasSecundarias')}}</a>
                                     </li>
                                     <li role="none">
                                         <a role="menuitem" href="/MuestraMaestra/detalles">Verificación de proveedores en RNT</a>
