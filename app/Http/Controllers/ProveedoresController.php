@@ -20,10 +20,8 @@ class ProveedoresController extends Controller
 	
 	public function getIndex($one=null){
 	    $idioma = \Config::get('app.locale') == 'es' ? 1 : 2;
-        $proveedores = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt) use ($idioma,$one){
-            if($one != null){
-                $queryProveedorRnt->where('categoria_proveedores_id',$one);
-            }
+        $proveedores = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
+           
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
                 $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion', 'nombre')->orderBy('idioma_id');
             }, 'categoria' => function ($queryCategoria) use ($idioma){
@@ -34,9 +32,15 @@ class ProveedoresController extends Controller
             
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
-        }])->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id')->where('estado', true)->get();
+        }])->whereHas('proveedorRnt',function($query) use($one){
+            
+             if($one != null){
+                $query->where('categoria_proveedores_id',$one);
+            }
+            
+        })->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id')->where('estado', true)->get();
 
-        return view('proveedor.Index', ['proveedores' => $proveedores]);
+        return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $one]);
 	}
 	
     //

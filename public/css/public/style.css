@@ -441,9 +441,9 @@ footer{
     -webkit-transform: translateY(-50%) translateX(-50%);
     transform: translateY(-50%) translateX(-50%);
 }
-.tile .tile-img img, .tile.inline-tile .tile-img img{
-    max-width: 100%;
-}
+/*.tile .tile-img img, .tile.inline-tile .tile-img img{*/
+/*    max-width: 100%;*/
+/*}*/
 .tile .tile-img.overlap{
     height: 100%;
 }
