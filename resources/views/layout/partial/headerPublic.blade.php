@@ -241,19 +241,19 @@
                                 <!--</div>-->
                                 <ul role="menu" id="menu-queHacer">
                                     <li role="none">
-                                        <a role="menuitem" href="/quehacer/?tipo=4"><span class="mdi mdi-calendar hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.eventos')}}</a>
+                                        <a role="menuitem" href="/quehacer/index?tipo=4"><span class="mdi mdi-calendar hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.eventos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/quehacer/?tipo=2"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.atracciones')}}</a>
+                                        <a role="menuitem" href="/quehacer/index?tipo=2"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.atracciones')}}</a>
                                     </li
                                     <li role="none">
-                                        <a role="menuitem" href="/quehacer/?tipo=1"><span class="mdi mdi-run hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.actividades')}}</a>
+                                        <a role="menuitem" href="/quehacer/index?tipo=1"><span class="mdi mdi-run hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.actividades')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/quehacer/?tipo=3"><span class="mdi mdi-map-marker hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.destinos')}}</a>
+                                        <a role="menuitem" href="/quehacer/index?tipo=3"><span class="mdi mdi-map-marker hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.destinos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/quehacer/?tipo=5"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.rutasTuristicas')}}</a>
+                                        <a role="menuitem" href="/quehacer/index?tipo=5"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.rutasTuristicas')}}</a>
                                     </li> 
                                 </ul>
                             </li>
@@ -322,19 +322,19 @@
                                 <ul role="menu" id="menu-servicios">
                                     
                                     <li role="none">
-                                        <a role="menuitem" href="/proveedor/index/1"><span class="mdi mdi-hotel hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.alojamientos')}}</a>
+                                        <a role="menuitem" href="/proveedor/index?tipo=1"><span class="mdi mdi-hotel hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.alojamientos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/proveedor/index/2"><span class="mdi mdi-silverware-fork-knife hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.establecimientosDeGastronomia')}}</a>
+                                        <a role="menuitem" href="/proveedor/index?tipo=2"><span class="mdi mdi-silverware-fork-knife hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.establecimientosDeGastronomia')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/proveedor/index/3"><span class="mdi mdi-airplane hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.agenciasDeViaje')}}</a>
+                                        <a role="menuitem" href="/proveedor/index?tipo=3"><span class="mdi mdi-airplane hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.agenciasDeViaje')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/proveedor/index/4"><span class="mdi mdi-soccer-field hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.establecimientosDeEsparcimiento')}}</a>
+                                        <a role="menuitem" href="/proveedor/index?tipo=4"><span class="mdi mdi-soccer-field hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.establecimientosDeEsparcimiento')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/proveedor/index/5"><span class="mdi mdi-bus hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.transporteEspecializado')}}</a>
+                                        <a role="menuitem" href="/proveedor/index?tipo=5"><span class="mdi mdi-bus hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.transporteEspecializado')}}</a>
                                     </li>
                                 </ul>
                             </li>

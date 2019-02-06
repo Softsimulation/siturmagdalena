@@ -4,7 +4,7 @@
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
     var example, examples, i, img, len, results;
-    examples = document.querySelectorAll('img');
+    examples = document.querySelectorAll('.tile-img img');
     results = [];
     for (i = 0, len = examples.length; i < len; i++) {
       //example = examples[i];
