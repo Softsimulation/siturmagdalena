@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use App\Http\Requests;
 use App\Models\Proveedor;
 use App\Models\Comentario_Proveedor;
 use Carbon\Carbon;
 use App\Models\Proveedor_Favorito;
+
 class ProveedoresController extends Controller
 {
   
@@ -38,10 +40,11 @@ class ProveedoresController extends Controller
                 $query->where('categoria_proveedores_id',$request->tipo);
             }
             if(isset($request->buscar) && $request->buscar != null){
-                $query->orwhereRaw('lower(razon_social) like lower(?)', ["%{$request->buscar}%"]);
+                $query->whereRaw('lower(razon_social) like lower(?)', ["%{$request->buscar}%"]);
             }
             
         })->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id')->where('estado', true)->paginate(8);
+         
 
         return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $request->tipo]);
 	}

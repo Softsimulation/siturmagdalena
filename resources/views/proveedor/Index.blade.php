@@ -166,7 +166,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             position:relative;
         }
         
-        .header-list:before{
+        .header-list:after{
             content: "";
             position:absolute;
             bottom: 0;
@@ -177,6 +177,24 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             background-size: 100% auto;
             background-repeat: no-repeat;
             background-position: bottom;
+            z-index: 1;
+        }
+        .header-list:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 0;
+            background: rgba(0,0,0,0.3);
+            background: -moz-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,0,0,0.3)), color-stop(100%, rgba(246,41,12,0)));
+            background: -webkit-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: -o-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: -ms-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#f6290c', GradientType=1 );
         }
         .header-list>.container{
             position:relative;
@@ -218,14 +236,14 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         <div id="opciones">
             <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaLista')}}</span></button>
             <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaMosaico')}}</span></button>
-            <form class="form-inline" action="" method="get">
+            <form class="form-inline" action="/proveedor/index" method="get">
                 <div class="form-group">
                     <label class="sr-only" for="searchMain">{{trans('resources.header.campoDeBusqueda')}}</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="searchMain" name="buscar" placeholder="{{trans('resources.header.queDeseaBuscar')}}" maxlength="255">
                         <div class="input-group-addon"><button type="submit" class="btn btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.buscar')}}</span></button></div>
                     </div>
-                    
+                    <input type="hidden" name="tipo" value="{{isset($_GET['tipo']) ? $_GET['tipo'] : ''}}" />
                 </div>
                 
             </form>

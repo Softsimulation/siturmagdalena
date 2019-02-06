@@ -72,7 +72,7 @@ class Proveedor extends Model
      */
     public function comentariosProveedores()
     {
-        return $this->hasMany('App\Models\ComentariosProveedore', 'proveedores_id');
+        return $this->hasMany('App\Models\Comentario_Proveedor', 'proveedores_id');
     }
 
     /**

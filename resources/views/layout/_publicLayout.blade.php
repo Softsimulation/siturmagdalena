@@ -242,8 +242,8 @@
            
         }
     }
-    fitImages(); 
-    
+    fitImages();
+    window.onload = function () { fitImages(); }
     document.getElementsByTagName("BODY")[0].onresize = function() {fitImages()};
  </script>
 </body>
