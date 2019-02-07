@@ -60,11 +60,11 @@
    height: 280px;
 }
 
-.tile.tile-overlap .tile-img img{
-    min-width: 100%;
-    min-height: 100%;
-    max-width: 150%;
-}
+/*.tile.tile-overlap .tile-img img{*/
+/*    min-width: 100%;*/
+/*    min-height: 100%;*/
+/*    max-width: 150%;*/
+/*}*/
 .tile.tile-overlap .tile-body{
     position:absolute;
     bottom: 0;

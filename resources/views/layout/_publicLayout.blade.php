@@ -215,10 +215,36 @@
             this.style.height ="auto";
             this.style.minWidth ="0";
             this.style.minHeight ="0";
+            this.parentElement.className += " img-error";
         }
         return this;
     }).get();
-    console.log(srcList);
+    
+    
+    function fitImages(){
+        var imgs = $('.tile-img:not(.img-error) img');
+        for(var i = 0; i < imgs.length; i++){
+            if(imgs[i].naturalWidth > imgs[i].naturalHeight){
+        		imgs[i].style.width = "100%";
+        		imgs[i].style.height = "auto";
+        		if(imgs[i].offsetHeight < imgs[i].parentElement.offsetHeight){
+        			imgs[i].style.height = "100%";
+        			imgs[i].style.width = "auto";
+        		}
+        	}else{
+    			imgs[i].style.height = "100%";
+        		imgs[i].style.width = "auto";
+        		if(imgs[i].offsetWidth < imgs[i].parentElement.offsetWidth){
+        			imgs[i].style.width = "100%";
+        			imgs[i].style.height = "auto";
+        		}
+            }
+           
+        }
+    }
+    fitImages();
+    window.onload = function () { fitImages(); }
+    document.getElementsByTagName("BODY")[0].onresize = function() {fitImages()};
  </script>
 </body>
 </html>

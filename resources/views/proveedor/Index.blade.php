@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Input;
 header("Access-Control-Allow-Origin: *");
 
 function parse_yturl($url) 
@@ -9,33 +10,41 @@ function parse_yturl($url)
 }
 
 function getItemType($type){
-    $path = ""; $name = "";
+    $path = ""; $name = ""; $headerImg = "";
     switch($type){
         case(1):
-            $name = trans('resources.entidad.actividades');
+            $name = trans('resources.menu.menuServicios.alojamientos');
+            $headerImg = "alojamientos.png";
             $path = "/actividades/ver/";
             break;
         case(2):
-            $name = trans('resources.entidad.atracciones');
+            $name = trans('resources.menu.menuServicios.establecimientosDeGastronomia');
+            $headerImg = "restaurante_1366.png";
             $path = "/atracciones/ver/";
             break;
         case(3):
-            $name = trans('resources.entidad.destinos');
+            $name = trans('resources.menu.menuServicios.agenciasDeViaje');
+            $headerImg = "agencias.png";
             $path = "/destinos/ver/";
             break;
         case(4):
-            $name = trans('resources.entidad.eventos');
+            $name = trans('resources.menu.menuServicios.establecimientosDeEsparcimiento');
+            $headerImg = "esparcimiento.png";
             $path = "/eventos/ver/";
             break; 
         case(5):
-            $name = trans('resources.entidad.rutasTuristicas');
+            $name = trans('resources.menu.menuServicios.transporteEspecializado');
+            $headerImg = "agencias.png";
             $path = "/rutas/ver/";
             break;
     }
-    return (object)array('name'=>$name, 'path'=>$path);
+    return (object)array('name'=>$name, 'path'=>$path, 'headerImg'=>$headerImg);
 }
 
-$tituloPagina = "Proveedores";
+$tituloPagina = "Prestadores de servicios turísticos";
+if(isset($params) && $params != null){
+    $tituloPagina = getItemType($params)->name;
+}
 
 $colorTipo = ['primary','success','danger', 'info', 'warning'];
 
@@ -143,8 +152,65 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             font-weight: 700;
             color: #004a87;
         }
+        
     </style>
-    
+    @if(isset($params))
+    <style>
+        .header-list{
+            background-image: url(../../img/headers/<?php echo getItemType($params)->headerImg ?>);
+            background-size: cover;
+            min-height: 200px;
+            background-position: bottom;
+            display: flex;
+            align-items: flex-end;
+            position:relative;
+        }
+        
+        .header-list:after{
+            content: "";
+            position:absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            min-height: 70px;
+            background-image: url(../../img/headers/banner_bottom.png);
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: bottom;
+            z-index: 1;
+        }
+        .header-list:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 0;
+            background: rgba(0,0,0,0.3);
+            background: -moz-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,0,0,0.3)), color-stop(100%, rgba(246,41,12,0)));
+            background: -webkit-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: -o-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: -ms-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#f6290c', GradientType=1 );
+        }
+        .header-list>.container{
+            position:relative;
+            z-index: 2;
+        }
+        .title-section{
+            color: white;
+            text-shadow: 0px 1px 3px rgba(0,0,0,.65);
+            font-size: 2rem;
+            background-color: rgba(0,0,0,.2);
+            padding: .25rem .5rem;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
+    @endif
 @endsection
 
 @section('TitleSection','Actividades')
@@ -165,26 +231,19 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
 @section('content')
 <div class="header-list">
     <div class="container">
-        @if(isset($_GET['tipo']))
-        <ol class="breadcrumb">
-          
-          <li><a href="/quehacer">{{trans('resources.menu.servicios')}}</a></li>
-          <li class="active">{{$tituloPagina}}</li>
-          
-        </ol>
-        @endif
+        
         <h2 class="title-section">{{$tituloPagina}}</h2>
         <div id="opciones">
             <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaLista')}}</span></button>
             <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaMosaico')}}</span></button>
-            <form class="form-inline">
+            <form class="form-inline" action="/proveedor/index" method="get">
                 <div class="form-group">
                     <label class="sr-only" for="searchMain">{{trans('resources.header.campoDeBusqueda')}}</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="searchMain" placeholder="{{trans('resources.header.queDeseaBuscar')}}" maxlength="255">
+                        <input type="text" class="form-control" id="searchMain" name="buscar" placeholder="{{trans('resources.header.queDeseaBuscar')}}" maxlength="255">
                         <div class="input-group-addon"><button type="submit" class="btn btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.buscar')}}</span></button></div>
                     </div>
-                    
+                    <input type="hidden" name="tipo" value="{{isset($_GET['tipo']) ? $_GET['tipo'] : ''}}" />
                 </div>
                 
             </form>
@@ -200,19 +259,51 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     @if($proveedores != null && count($proveedores) > 0)
     <div id="listado" class="tiles">
     @for($i = 0; $i < count($proveedores); $i++)
-        {{$proveedores[$i]}}
-        
+        <div class="tile">
+            
+            <div class="tile-img">
+                @if($proveedores[$i]->multimediaProveedores != null && count($proveedores[$i]->multimediaProveedores) > 0)
+                <img src="{{$proveedores[$i]->multimediaProveedores[0]->ruta}}" alt="Imagen de presentación de {{$proveedores[$i]->proveedorRnt->razon_social}}"/>
+                @endif
+                <!--<div class="text-overlap">-->
+                <!--    <span class="label label-{{$colorTipo[1]}}">{{getItemType(5)->name}}</span>-->
+                <!--</div>-->
+            </div>
+            
+            <div class="tile-body">
+                <div class="tile-caption">
+                    
+                    <h3><a href="/proveedor/ver/{{$proveedores[$i]->id}}">{{$proveedores[$i]->proveedorRnt->razon_social}}</a></h3>
+                    <p class="text-muted">{{$proveedores[$i]->proveedorRnt->categoria->categoriaProveedoresConIdiomas[0]->nombre}}</p>
+                </div>
+                <div class="btn-block ranking">
+    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 0.0) ? (($proveedores[$i]->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
+    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 1.0) ? (($proveedores[$i]->calificacion_legusto <= 1.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
+    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 2.0) ? (($proveedores[$i]->calificacion_legusto <= 2.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
+    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 3.0) ? (($proveedores[$i]->calificacion_legusto <= 3.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
+    	              <span class="{{ ($proveedores[$i]->calificacion_legusto > 4.0) ? (($proveedores[$i]->calificacion_legusto <= 5.0) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span>
+    	              <span class="sr-only">Posee una calificación de {{$proveedores[$i]->calificacion_legusto}}</span>
+    	            
+    	          </div>
+    	          
+            </div>
+        </div>
     @endfor
+    </div>
+    <div class="text-center">
+        {!!$proveedores->appends(Input::except('page'))->links()!!}
     </div>
     @else
     <div class="alert alert-info">
-        <p>{{trans('resources.listado.noHayElementos')}}</p>
+        <p>No hay prestadores de servicios turísticos publicados actualmente.</p>
     </div>
     @endif
 </div>
     
 @endsection
 @section('javascript')
+<script src="{{asset('/js/vibrant.js')}}"></script>
+<script src="{{asset('/js/public/run_vibrant.js')}}"></script>
 <script>
     $(document).ready(function(){
        $('.nav-bar > .brand a img').attr('src','/res/logo/white/72.png');

@@ -197,6 +197,7 @@ class QueHacerController extends Controller
                  rutas.portada AS portada 
              FROM rutas INNER JOIN rutas_con_idiomas ON rutas.id = rutas_con_idiomas.ruta_id AND rutas_con_idiomas.idioma_id = ?  
              WHERE rutas.estado = true) ORDER BY tipo", [$idIdioma, $idIdioma, $idIdioma, $idIdioma, $idIdioma]);
+           
              
         }else {
             //$query = DB::select('SELECT * FROM public.busqueda_promocion(?, ?)', [DB::raw("$idIdioma"), DB::raw("'%$search%'")]);
