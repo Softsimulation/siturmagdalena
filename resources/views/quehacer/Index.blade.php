@@ -491,10 +491,12 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <input type="text" id="valor_inicial" class="form-control" placeholder="Valor mínimo"/>
+                    <label class="sr-only" for="valor_inicial">Valor inicial</label>
+                    <input type="number" id="valor_inicial" class="form-control input-sm" placeholder="Valor mínimo"/>
                 </div>
                 <div class="col-xs-6">
-                    <input type="text" id="valor_final" class="form-control" placeholder="Valor máximo"/>
+                    <label class="sr-only" for="valor_final">Valor final</label>
+                    <input type="number" id="valor_final" class="form-control input-sm" placeholder="Valor máximo"/>
                 </div>
             </div>
             <br>
@@ -624,13 +626,25 @@ function getParameterByName(name) {
 function toggleFilter(){
     $('.filtros').toggle("fast","linear");
 }
-
+window.addEventListener('click', function(e){
+	
+	if (!document.getElementsByClassName('filtros')[0].contains(e.target) && !document.getElementById('btnFiltros').contains(e.target)){
+      	$('.filtros').fadeOut("fast","linear");
+    }
+})
 var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tipo') : 0 ;
     function changeViewList(obj, idList, view){
         var element, name, arr;
+        $('#'+idList).fadeOut("slow");
         element = document.getElementById(idList);
-        name = view;
-        element.className = "tiles " + name;
+        
+        
+        setTimeout(function(){
+            name = view;
+            element.className = "tiles " + name;
+            $('#'+idList).fadeIn("slow");
+        },350);
+        
     }
         
     $.ajaxSetup({
