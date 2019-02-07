@@ -132,6 +132,12 @@ header {
     font-size: 1rem;
 }
 
+.stats-mini {
+    background-image: url(../../img/icons/sprite-stats.png);
+    background-repeat: no-repeat;
+    background-size: calc(1.5rem + 10px) auto;
+    display: block;
+}
 
 .stats {
     background-image: url(../../img/icons/sprite-stats.png);
@@ -144,11 +150,21 @@ header {
     height: 32px;
     background-position: -5px -5px;
 }
+.stats-mini.stats-emisor {
+    width: 32px;
+    height: 18px;
+    background-position: 0px 0px;
+}
 
 .stats-empleo {
     width: 30px;
     height: 32px;
     background-position: -5px -47px;
+}
+.stats-mini.stats-empleo {
+    width: 18px;
+    height: 24px;
+    background-position: 0px -22px;
 }
 
 .stats-interno {
@@ -157,10 +173,22 @@ header {
     background-position: -5px -89px;
 }
 
+.stats-mini.stats-interno {
+    width: 34px;
+    height: 26px;
+    background-position: 0px -42px;
+}
+
 .stats-oferta {
     width: 22px;
     height: 32px;
     background-position: -5px -131px;
+}
+
+.stats-mini.stats-oferta {
+    width: 18px;
+    height: 24px;
+    background-position: 0px -66px;
 }
 
 .stats-receptor {
@@ -169,16 +197,32 @@ header {
     background-position: -5px -173px;
 }
 
+.stats-mini.stats-receptor {
+    width: 28px;
+    height: 22px;
+    background-position: 0px -90px;
+}
+
 .stats-secundarias {
     width: 32px;
     height: 32px;
     background-position: -5px -215px;
+}
+.stats-mini.stats-secundarias {
+    width: 20px;
+    height: 22px;
+    background-position: 0px -112px;
 }
 
 .stats-sostenible {
     width: 32px;
     height: 32px;
     background-position: -5px -257px;
+}
+.stats-mini.stats-sostenible {
+    width: 22px;
+    height: 18px;
+    background-position: 0px -136px;
 }
 
 footer{
@@ -397,9 +441,9 @@ footer{
     -webkit-transform: translateY(-50%) translateX(-50%);
     transform: translateY(-50%) translateX(-50%);
 }
-.tile .tile-img img, .tile.inline-tile .tile-img img{
-    max-width: 100%;
-}
+/*.tile .tile-img img, .tile.inline-tile .tile-img img{*/
+/*    max-width: 100%;*/
+/*}*/
 .tile .tile-img.overlap{
     height: 100%;
 }

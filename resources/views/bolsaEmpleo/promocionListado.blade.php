@@ -90,9 +90,9 @@ label{
                 </div>
                 <div class="col-xs-12 col-md-3">
                     <div class="form-group">
-                        <label for="proveedor" class="control-label">Proveedor</label>
+                        <label for="proveedor" class="control-label">Prestador de servicio turístico</label>
                         <select class="form-control" id="proveedor" name="proveedor">
-                            <option value="" selected disabled>Seleccione un proveedor</option>
+                            <option value="" selected disabled>Seleccione un PST</option>
                             @foreach($proveedores as $proveedor)
                                 <option value="{{$proveedor->id}}" @if(isset($_GET["proveedor"]) && $_GET['proveedor'] == $proveedor->id) selected @endif>{{$proveedor->razon_social}}</option>
                             @endforeach
