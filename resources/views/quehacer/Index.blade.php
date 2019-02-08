@@ -609,10 +609,10 @@ function getItemType(type){
             controller = 'EventosController';
             break; 
         case(5):
-            title = "Proveedores";
-            name = "Proveedores";
-            path = "/proveedor/ver/";
-            controller = 'ProveedorController';
+            title = "Rutas Turísticas";
+            name = "Rutas Turísticas";
+            path = "/rutas/ver/";
+            controller = 'RutasTuristicasController';
             break;
     }
     return {'name':name, 'path':path, 'title' : title, 'controller' : controller};
