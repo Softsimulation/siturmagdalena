@@ -306,7 +306,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
         .header-list:after{
             content: "";
             position:absolute;
-            bottom: 0;
+            bottom: -1px;
             left: 0;
             width: 100%;
             min-height: 70px;
@@ -609,10 +609,10 @@ function getItemType(type){
             controller = 'EventosController';
             break; 
         case(5):
-            title = "Rutas Turísticas";
-            name = "Rutas Turísticas";
-            path = "/rutas/ver/";
-            controller = 'RutasTuristicasController';
+            title = "Proveedores";
+            name = "Proveedores";
+            path = "/proveedor/ver/";
+            controller = 'ProveedorController';
             break;
     }
     return {'name':name, 'path':path, 'title' : title, 'controller' : controller};
