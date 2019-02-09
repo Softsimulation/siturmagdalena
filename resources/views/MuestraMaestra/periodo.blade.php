@@ -940,7 +940,7 @@
                   </td>
                   <td>
                         <p>  <b>TABULADA:</b> @{{z.es_tabulada ? "Si" : "No"}} </p>
-                        <p>  <b>TABULADOR:</b> @{{z.tabulador || '-'}} </p>
+                        <p>  <b>TABULADOR:</b> @{{z.tabulador.user.nombre || '-'}} </p>
                         <a href="/MuestraMaestra/llenarinfozona/@{{z.id}}" title="Tabular bloque"  >
                             TABULAR
                         </a>
