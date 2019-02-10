@@ -50,7 +50,18 @@ class SostenibilidadPstController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        /*$this->middleware('permissions:list-encuestaSostenibilidadPST|create-encuestaSostenibilidadPST|read-encuestaSostenibilidadPST|edit-encuestaSostenibilidadPST|delete-encuestaSostenibilidadPST',['only' => ['getEncuestas','getListarencuestas'] ]);
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadPST|read-encuestaSostenibilidadPST|edit-encuestaSostenibilidadPST',['only' => ['getEditarencuesta','getCargareditarencuesta','getSociocultural','getCargardatossociocultural','getAmbiental',
+        'getCargardatosambiental','getEconomico','getCargardatoseconomico'] ]);
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadPST|edit-encuestaSostenibilidadPST',['only' => ['postGuardarseccioncultural','postGuardarambiental','postGuardareconomico'] ]);
+        
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadPST',['only' => ['getConfiguracionencuesta','getCargarproveedoresrnt','postGuardarconfiguracion'] ]);
+        
+        $this->middleware('permissions:edit-encuestaSostenibilidadPST',['only' => ['postGuardareditarencuesta'] ]);*/
         $this->user = Auth::user();
     }
     

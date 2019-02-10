@@ -35,7 +35,20 @@ class MuestraMaestraCtrl extends Controller
     {
         
         $this->middleware('auth', ['except' => ['getDetalles','getDatacongiguracion']] );
-        $this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        //$this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        $this->middleware('permissions:list-periodosMuestra|create-periodosMuestra|read-periodosMuestra|edit-periodosMuestra|
+        excel-muestra|KML-muestra|
+        agregar-zona|edit-zona|delete-zona',
+        ['only' => ['getPeriodos','getDatalistado'] ]);
+        $this->middleware('permissions:create-periodosMuestra',['only' => ['getDatacongiguracion','postCrearperiodo'] ]);
+        $this->middleware('permissions:edit-periodosMuestra',['only' => ['postEditarperiodo'] ]);
+        
+        $this->middleware('permissions:excel-muestra',['only' => ['getExcelinfoperiodo'] ]);
+        $this->middleware('permissions:KML-muestra',['only' => ['getGeojsonzone'] ]);
+        $this->middleware('permissions:agregar-zona',['only' => ['postAgregarzona'] ]);
+        $this->middleware('permissions:edit-zona',['only' => ['postEditarzona','postEditarposicionzona'] ]);
+        $this->middleware('permissions:delete-zona',['only' => ['postEliminarzona'] ]);
+        $this->middleware('permissions:excel-bloque',['only' => ['getExcel'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

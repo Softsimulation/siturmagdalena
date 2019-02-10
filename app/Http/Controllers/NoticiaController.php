@@ -27,7 +27,7 @@ class NoticiaController extends Controller
         
         //$this->middleware('role:Admin');
         
-        $this->middleware('permissions:list-noticia',['only' => ['getListadonoticias','getNoticias'] ]);
+        $this->middleware('permissions:list-noticia|create-noticia|create-noticia|read-noticia|edit-noticia|estado-noticia',['only' => ['getListadonoticias','getNoticias'] ]);
         $this->middleware('permissions:create-noticia',['only' => ['getCrearnoticia','getDatoscrearnoticias','postGuardarnoticia',
         'postGuardarmultimedianoticia','postGuardartextoalternativo','postEliminarmultimedia'] ]);
         $this->middleware('permissions:read-noticia',['only' => ['getVernoticia','getDatosver'] ]);
