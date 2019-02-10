@@ -67,7 +67,7 @@
 @media only screen and (min-width: 992px) {
     #stats-links{
         position: absolute;
-        top: calc(100px + 2%);
+        top: calc(72px + 2%);
         left: 0;
         max-width: 120px;
         z-index: 5;

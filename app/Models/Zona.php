@@ -19,5 +19,8 @@ class Zona extends Model
         return $this->hasMany('App\Models\Proveedores_rnt', 'zona_id');
     }
     
+    public function tabulador(){
+        return $this->belongsTo('App\Models\Digitador', 'tabulador');
+    }
     
 }
