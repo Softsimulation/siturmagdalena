@@ -37,6 +37,7 @@ function parse_yturl($url)
 @section('TitleSection',$atraccion->sitio->sitiosConIdiomas[0]->nombre)
 
 @section('content')
+    @if(count($atraccion->sitio->multimediaSitios) > 0)
     <div id="carousel-main-page" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
@@ -95,6 +96,7 @@ function parse_yturl($url)
       <!--  <span class="sr-only">Siguiente</span>-->
       <!--</a>-->
     </div>
+    @endif
     <div id="menu-page">
         <div class="container">
             <ul id="menu-page-list">
@@ -130,7 +132,23 @@ function parse_yturl($url)
      
     <section id="informacionGeneral" class="section active">
         <div class="container">
+            @if(count($atraccion->sitio->multimediaSitios) > 0)
             <h3 class="title-section">{{$atraccion->sitio->sitiosConIdiomas[0]->nombre}}</h3>
+            @else
+            <div class="text-center">
+                <h2 class="title-section">{{$atraccion->sitio->sitiosConIdiomas[0]->nombre}}
+                      <small class="btn-block">
+        	              <span class="{{ ($atraccion->calificacion_legusto > 0.0) ? (($atraccion->calificacion_legusto <= 0.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+        	              <span class="{{ ($atraccion->calificacion_legusto > 1.0) ? (($atraccion->calificacion_legusto <= 1.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+        	              <span class="{{ ($atraccion->calificacion_legusto > 2.0) ? (($atraccion->calificacion_legusto <= 2.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+        	              <span class="{{ ($atraccion->calificacion_legusto > 3.0) ? (($atraccion->calificacion_legusto <= 3.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+        	              <span class="{{ ($atraccion->calificacion_legusto > 4.0) ? (($atraccion->calificacion_legusto <= 5.0) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+        	              <span class="sr-only">Posee una calificación de {{$atraccion->calificacion_legusto}}</span>
+        	            
+        	          </small>
+                  </h2>
+            </div>
+            @endif
             @if(Session::has('message'))
                 <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
             @endif

@@ -144,7 +144,17 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
           <img src="{{$sliders[$i]->rutaSlider}}" alt="{{$sliders[$i]->textoAlternativoSlider}}">
           @if($sliders[$i]->tituloSlider != null && $sliders[$i]->tituloSlider != "")
           <div class="carousel-caption">
-            <h2>{{$sliders[$i]->tituloSlider}} @if($sliders[$i]->descripcionSlider != null && $sliders[$i]->descripcionSlider != "")<small>{{$sliders[$i]->descripcionSlider}}</small>@endif</h2>
+              
+            @if($sliders[$i]->enlaceAccesoSlider != null && $sliders[$i]->enlaceAccesoSlider != "")
+                
+                <a href="{{$sliders[$i]->enlaceAccesoSlider}}" @if(!$sliders[$i]->enlaceInterno) target="_blank" @endif>
+                <h2>{{$sliders[$i]->tituloSlider}} @if($sliders[$i]->descripcionSlider != null && $sliders[$i]->descripcionSlider != "") @if(!$sliders[$i]->enlaceInterno)<span class="glyphicon glyphicon-new-window text-small" aria-hidden="true"></span>@else<span class="glyphicon glyphicon-link text-small" aria-hidden="true"></span>@endif<small>{{$sliders[$i]->descripcionSlider}}</small>@endif</h2>
+                </a>
+            @else
+                <h2>{{$sliders[$i]->tituloSlider}} @if($sliders[$i]->descripcionSlider != null && $sliders[$i]->descripcionSlider != "")<small>{{$sliders[$i]->descripcionSlider}}</small>@endif</h2>
+            @endif
+            
+            
           </div>
           @endif
         </div>
@@ -230,26 +240,26 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     <p>En SITUR Magdalena actualmente se pueden encontrar:</p>
     <ul id="elementosSitur" class="text-center">
         <li>
-            <a href="/quehacer?tipo=1">
-                <span class="big-number">{{$cantActividades}}</span>
+            <a id="cantidadActividades" href="/quehacer?tipo=1">
+                <span class="big-number text-blue">{{$cantActividades}}</span>
                 Actividades que puede realizar
             </a>
         </li>
         <li>
-            <a href="#">
-                <span class="big-number">85</span>
+            <a id="cantidadExperiencias" href="#">
+                <span class="big-number text-red">85</span>
                 Experiencias que no se puede perder
             </a>
         </li>
         <li>
-            <a href="/proveedor">
-                <span class="big-number">{{$cantProveedores}}</span>
+            <a id="cantidadPST" href="/proveedor">
+                <span class="big-number text-orange">{{$cantProveedores}}</span>
                 Proveedores de servicios turísticos
             </a>
         </li>
         <li>
-            <a href="/promocionPublicacion/listado">
-                <span class="big-number">{{$cantPublicaciones}}</span>
+            <a id="cantidadPublicaciones" href="/promocionPublicacion/listado">
+                <span class="big-number text-green">{{$cantPublicaciones}}</span>
                 Publicaciones realizadas
             </a>
         </li>
