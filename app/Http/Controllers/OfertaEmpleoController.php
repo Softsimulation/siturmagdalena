@@ -78,7 +78,9 @@ class OfertaEmpleoController extends Controller
                                     'getCaracterizacionagenciasoperadoras','getAlojamientomensual','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
                                     
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:create-encuestaOferta|edit-encuestaOferta');
+        //$this->middleware('permissions:list-proveedoresOferta',['only' => ['getListadoproveedores','getListado','getExcelproveedores'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

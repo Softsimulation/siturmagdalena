@@ -16,7 +16,25 @@ use File;
 
 class AdministradorRutasController extends Controller
 {
-    //
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        
+        $this->middleware('permissions:list-ruta|create-ruta|read-ruta|edit-ruta|estado-ruta|sugerir-ruta',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-ruta|edit-ruta',['only' => ['postDesactivarActivar','postGuardaradicional','postGuardarmultimedia'] ]);
+        $this->middleware('permissions:create-ruta|read-ruta|edit-ruta',['only' => ['getDatoscrear'] ]);
+        $this->middleware('permissions:create-ruta',['only' => ['getCrear','postCrearruta'] ]);
+        $this->middleware('permissions:read-ruta|edit-ruta',['only' => ['getEditar','getDatosruta','getDatosIdioma','getIdioma'] ]);
+        $this->middleware('permissions:edit-ruta',['only' => ['postEditaridioma','postEditardatosgenerales','postEditarproveedor'] ]);
+        $this->middleware('permissions:estado-ruta',['only' => ['postDesactivarActivar'] ]);
+        $this->middleware('permissions:sugerir-ruta',['only' => ['postSugerir'] ]);
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+    }
     public function getCrear() {
         return view('administradorrutas.Crear');
     }

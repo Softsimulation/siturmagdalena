@@ -4,7 +4,7 @@
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
     var example, examples, i, img, len, results;
-    examples = document.querySelectorAll('img');
+    examples = document.querySelectorAll('.tile-img:not(.img-error) img');
     results = [];
     for (i = 0, len = examples.length; i < len; i++) {
       //example = examples[i];
@@ -14,9 +14,9 @@
         var color, colorHolder, colorName, colors, j, len1, panel, profile, profileName, profiles, results1, vibrant;
         vibrant = new Vibrant(this);
         panel = e.target;
-        panel.parentElement.style.backgroundColor = vibrant.VibrantSwatch.getHex();
-        panel.style.backgroundColor = vibrant.VibrantSwatch.getHex();
-        panel.style.color = vibrant.VibrantSwatch.getTitleTextColor();
+        panel.parentElement.style.backgroundColor = vibrant.MutedSwatch.getHex();
+        panel.style.backgroundColor = vibrant.MutedSwatch.getHex();
+        panel.style.color = vibrant.MutedSwatch.getTitleTextColor();
         //colors = document.createElement('div');
         //colors.classList.add('colors');
         //panel.querySelector('.panel-body').appendChild(colors);

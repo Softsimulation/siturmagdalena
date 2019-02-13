@@ -20,7 +20,13 @@ angular.module('encuestas.datos_encuestado', [])
             $("body").attr("class", "");
             swal("Error", "No se realizo la solicitud, reinicie la página");
         });
-    })
+    });
+    
+    $scope.$watch('id', function () {
+        if($scope.id != undefined && $scope.id > 0){
+            $scope.encuesta.Grupo = $scope.id;
+        }
+    });
 
     $scope.otro = function () {
         if ($scope.encuesta.Otro == "") {

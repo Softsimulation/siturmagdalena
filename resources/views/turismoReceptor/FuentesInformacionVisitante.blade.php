@@ -200,7 +200,7 @@
             </div>
         </div>
 
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> Sostenibilidad ¿Fue fácil encontrar los servicios, productos y atractivos de Magdalena?</b></h3>
             </div>
@@ -228,7 +228,7 @@
             </div>
         </div>
         
-        <div class="panel panel-success">
+        <div class="panel panel-success" ng-if="controlSostenibilidad > 0">
             <div class="panel-heading">
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Conoce la marca que acaba de ver?</b></h3>
             </div>

@@ -17,7 +17,7 @@
 
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <div class="text-center">
-        <a href="/turismoreceptor/datosencuestados" class="btn btn-lg btn-success">Crear encuesta</a>
+        <a href="/turismoreceptor/datosencuestados/{{$id}}" class="btn btn-lg btn-success">Crear encuesta</a>
         <a href="/grupoviaje/editar/{{$id}}" class="btn btn-lg btn-warning">Editar grupo</a>
     </div>
     <hr/>

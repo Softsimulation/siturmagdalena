@@ -55,9 +55,6 @@ Route::get('/actividades', 'TurismoReceptorController@actividades');
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
 
-
-
-
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
@@ -88,6 +85,8 @@ Route::controller('/noticias','NoticiaController');
 Route::controller('/sliders','SliderController');
 Route::controller('/suscriptores','SuscriptoreController');
 
+Route::controller('/periodoSostenibilidadPst','PeriodoSostenibilidadPstController');
+Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
@@ -158,6 +157,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/eventos', 'EventosController');
     
     Route::controller('/proveedor', 'ProveedoresController');
+
+    Route::controller('/quehacer', 'QueHacerController');
+    
+    Route::controller('/turismo', 'TurismoController');
 
     Route::controller('/','HomeController');
     

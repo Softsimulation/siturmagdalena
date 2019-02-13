@@ -31,7 +31,7 @@ use App\Models\Componente_Tecnico;
 use App\Models\Estados_Encuesta;
 use App\Models\Historial_Encuesta_Hogar_Sostenibilidad;
 use App\Models\ListadoEncuestasHogarSostenibilidad;
-
+use App\Models\Periodo_Sostenibilidad_Hogar;
 
 class SostenibilidadHogaresController extends Controller
 {
@@ -40,20 +40,40 @@ class SostenibilidadHogaresController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        /*$this->middleware('permissions:list-encuestaSostenibilidadHogares|create-encuestaSostenibilidadHogares|read-encuestaSostenibilidadHogares|edit-encuestaSostenibilidadHogares|delete-encuestaSostenibilidadHogares',['only' => ['getEncuestas','getListarencuestas'] ]);
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadHogares|read-encuestaSostenibilidadHogares|edit-encuestaSostenibilidadHogares',['only' => ['getInfoeditar','getEditar','getComponentesocial','getInfocomponentesocial','getComponenteambiental','getInfocomponenteambiental',
+        'getEconomico','getCargardatoseconomico'] ]);
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadHogares|edit-encuestaSostenibilidadHogares',['only' => ['postGuardarcomponentesocial','postGuardarcomponenteambiental','postGuardareconomico'] ]);
+        
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadHogares',['only' => ['getCrear','getInfocrear','postGuardarencuesta'] ]);
+        
+        $this->middleware('permissions:edit-encuestaSostenibilidadHogares',['only' => ['postEditarencuesta'] ]);*/
         $this->user = Auth::user();
     }
     
-    public function getCrear(){
-    	 return view('sostenibilidadHogar.crear');
+    public function getCrear($id = null){
+    	if($id != null){
+    		if(!Periodo_Sostenibilidad_Hogar::find($id)){
+    			return \Redirect::to('/periodoSostenibilidadHogares/listado')->with('message', 'Verifique que el periodo este ingresado en el sistema.')
+                        ->withInput();
+    		}
+    	}else{
+    		$id = -1;
+    	}
+    	 return view('sostenibilidadHogar.crear', ['id' => $id]);
     }
     
     public function getInfocrear(){
     	$estratos = Estrato::all();
         $barrios = Barrio::all();
     	$encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','username');} ])->get();
+    	$periodos = Periodo_Sostenibilidad_Hogar::where('fecha_final','>=', date('Y-m-d') )->where('estado', true)->get();
     	
-    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores];
+    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores, 'periodos' => $periodos];
     }
     
     public function getInfoeditar($id){
@@ -61,7 +81,8 @@ class SostenibilidadHogaresController extends Controller
         $barrios = Barrio::all();
     	$encuestadores = Digitador::with([ 'user'=>function($q){$q->select('id','username');} ])->get();
     	$casa = Casa_Sostenibilidad::find($id);
-    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores,"casa"=>$casa];
+    	$periodos = Periodo_Sostenibilidad_Hogar::where('fecha_final','>=', date('Y-m-d') )->where('estado', true)->get();
+    	return ["estratos"=>$estratos,"barrios"=>$barrios,"encuestadores"=>$encuestadores,"casa"=>$casa, 'periodos' => $periodos];
     }
     
     public function getEditar($id){
@@ -81,12 +102,22 @@ class SostenibilidadHogaresController extends Controller
 			'direccion' => 'required|string|max:150',
 			'celular' => 'required|string|max:150',
 			'email' => 'required|email|string|max:150',
+			'periodo' => 'required|exists:periodos_sostenibilidad_hogares,id',
     	],[
        		
     	]);
     	
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if( date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) > date('Y-m-d') ){
+		    return ["success"=>false,"errores"=> [ ["La fecha de aplicación no debe ser mayor a la actual."] ] ];
+		}
+		
+		$periodo = Periodo_Sostenibilidad_Hogar::find($request->periodo);
+		if($periodo->fecha_inicial > date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) || $periodo->fecha_final < date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) ){
+			return ["success"=>false,"errores"=> [ ["Verifique que la fecha de aplicación se encuentre dentro el rango del periodo."] ] ];
 		}
 		
 		$casa = new Casa_Sostenibilidad;
@@ -99,6 +130,7 @@ class SostenibilidadHogaresController extends Controller
 		$casa->direccion = $request->direccion;
 		$casa->celular = $request->celular;
 		$casa->email = $request->email;
+		$casa->periodo_sostenibilidad_id = $request->periodo;
 		$casa->estado_encuesta_id = 1;
 		$casa->numero_sesion = 1;
 		$casa->save();
@@ -130,12 +162,22 @@ class SostenibilidadHogaresController extends Controller
 			'direccion' => 'required|string|max:150',
 			'celular' => 'required|string|max:150',
 			'email' => 'required|email|string|max:150',
+			'periodo_sostenibilidad_id' => 'required|exists:periodos_sostenibilidad_hogares,id',
     	],[
        		
     	]);
     	
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+		if( date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) > date('Y-m-d') ){
+		    return ["success"=>false,"errores"=> [ ["La fecha de aplicación no debe ser mayor a la actual."] ] ];
+		}
+		
+		$periodo = Periodo_Sostenibilidad_Hogar::find($request->periodo_sostenibilidad_id);
+		if($periodo->fecha_inicial > date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) || $periodo->fecha_final < date('Y-m-d',strtotime(str_replace("/","-",$request->fecha_aplicacion))) ){
+			return ["success"=>false,"errores"=> [ ["Verifique que la fecha de aplicación se encuentre dentro el rango del periodo."] ] ];
 		}
 		
 		$casa = Casa_Sostenibilidad::find($request->id);
@@ -148,6 +190,7 @@ class SostenibilidadHogaresController extends Controller
 		$casa->direccion = $request->direccion;
 		$casa->celular = $request->celular;
 		$casa->email = $request->email;
+		$casa->periodo_sostenibilidad_id = $request->periodo_sostenibilidad_id;
 		$casa->save();
 		
 		Historial_Encuesta_Hogar_Sostenibilidad::create([

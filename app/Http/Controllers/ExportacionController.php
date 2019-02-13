@@ -17,7 +17,20 @@ class ExportacionController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin|Estadistico');
+        //$this->middleware('role:Admin|Estadistico');
+        $this->middleware('permissions:export-medicionReceptor|export-medicionOferta|export-medicionInternoEmisor|export-sostenibilidadHogar|export-sostenibilidadPST',
+        ['only' => ['getIndex','getMeses','postExportar'] ]);
+        
+        $this->middleware('permissions:export-medicionReceptor',['only' => ['ExportacionTurismoReceptor2'] ]);
+        
+        $this->middleware('permissions:export-medicionInternoEmisor',['only' => ['ExportacionTurismoInterno2'] ]);
+        
+        $this->middleware('permissions:export-sostenibilidadPST',['only' => ['ExportacionSostenibilidadpst'] ]);
+        
+        $this->middleware('permissions:export-sostenibilidadHogar',['only' => ['ExportacionSostenibilidadhogares'] ]);
+        
+        $this->middleware('permissions:export-medicionOferta',['only' => ['ExportacionOfertayEmpleo'] ]);
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

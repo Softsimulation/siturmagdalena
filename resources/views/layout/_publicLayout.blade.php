@@ -207,5 +207,64 @@
     }
 </script>
  <!-- fin de código de seguimiento-->
+ <script>
+     var srcList = $('#content-main img').map(function() {
+        this.onerror = function(){
+            this.src = "/img/brand/72.png";
+            this.style.width ="auto";
+            this.style.height ="auto";
+            this.style.minWidth ="0";
+            this.style.minHeight ="0";
+            this.parentElement.className += " img-error";
+        }
+        return this;
+    }).get();
+    
+    
+    function fitImages(){
+        var imgs = $('.tile-img:not(.img-error) img');
+        for(var i = 0; i < imgs.length; i++){
+            if(imgs[i].naturalWidth > imgs[i].naturalHeight){
+        		imgs[i].style.width = "100%";
+        		imgs[i].style.height = "auto";
+        		if(imgs[i].offsetHeight < imgs[i].parentElement.offsetHeight){
+        			imgs[i].style.height = "100%";
+        			imgs[i].style.width = "auto";
+        		}
+        	}else{
+    			imgs[i].style.height = "100%";
+        		imgs[i].style.width = "auto";
+        		if(imgs[i].offsetWidth < imgs[i].parentElement.offsetWidth){
+        			imgs[i].style.width = "100%";
+        			imgs[i].style.height = "auto";
+        		}
+            }
+           
+        }
+    }
+    //fitImages();
+    var imgs = $('.tile-img:not(.img-error) img');
+    for(var i = 0; i < imgs.length; i++){
+        imgs[i].onload = function(){
+            if(this.naturalWidth > this.naturalHeight){
+        		this.style.width = "100%";
+        		this.style.height = "auto";
+        		if(this.offsetHeight < this.parentElement.offsetHeight){
+        			this.style.height = "100%";
+        			this.style.width = "auto";
+        		}
+        	}else{
+    			this.style.height = "100%";
+        		this.style.width = "auto";
+        		if(this.offsetWidth < this.parentElement.offsetWidth){
+        			this.style.width = "100%";
+        			this.style.height = "auto";
+        		}
+            }
+        };
+    }
+    window.onload = function () { fitImages(); }
+    document.getElementsByTagName("BODY")[0].onresize = function() {fitImages()};
+ </script>
 </body>
 </html>
