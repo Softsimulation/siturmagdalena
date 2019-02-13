@@ -306,7 +306,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
         .header-list:after{
             content: "";
             position:absolute;
-            bottom: 0;
+            bottom: -1px;
             left: 0;
             width: 100%;
             min-height: 70px;
@@ -520,7 +520,9 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
                 <div class="tile-body">
                     <div class="tile-caption">
                         <h3><a href="{{URL::action(getItemType($entidad->tipo)->controller.'@getVer', ['id' => $entidad->id])}}">{{ $entidad->nombre }}</a></h3>
+                        @if(!isset($_GET['tipo']))
                         <span class="label {{$colorTipo[$entidad->tipo - 1]}}">{{getItemType($entidad->tipo)->name}}</span>
+                        @endif
                         @if($entidad->tipo == 4)
                         <p class="label tile-date">Del {{date('d/m/Y', strtotime($entidad->fecha_inicio))}} al {{date('d/m/Y', strtotime($entidad->fecha_fin))}}</p>
                         @endif
@@ -609,10 +611,10 @@ function getItemType(type){
             controller = 'EventosController';
             break; 
         case(5):
-            title = "Rutas Turísticas";
-            name = "Rutas Turísticas";
-            path = "/rutas/ver/";
-            controller = 'RutasTuristicasController';
+            title = "Proveedores";
+            name = "Proveedores";
+            path = "/proveedor/ver/";
+            controller = 'ProveedorController';
             break;
     }
     return {'name':name, 'path':path, 'title' : title, 'controller' : controller};
