@@ -20,7 +20,7 @@ class UsuarioController extends Controller
        
         $this->middleware('auth');
         
-        //$this->middleware('role:Admin');
+        $this->middleware('role:Admin');
         /*$this->middleware('permissions:list-usuario|create-usuario|read-usuario|edit-usuario|estado-usuario|delete-usuario',['only' => ['getListadousuarios','getUsuarios','getDatosasignarpermisos'] ]);
         $this->middleware('permissions:create-usuario|edit-usuario',['only' => ['getInformacionguardar'] ]);
         $this->middleware('permissions:create-usuario',['only' => ['postGuardarusuario'] ]);
