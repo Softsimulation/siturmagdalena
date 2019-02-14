@@ -96,7 +96,8 @@
                   <td>@{{x.nombreTipoNoticia}}</td>
                   <td >@{{x.estado == true ? 'Activo' : 'Inactivo'}}</td>
                   <td>
-                    <a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-xs btn-default" title="Editar noticia"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-xs btn-default" title="Editar noticia"><span class="glyphicon glyphicon-pencil"></span></a>
+                    
                     <a href="/noticias/vernoticia/@{{x.idNoticia}}" class="btn btn-xs btn-default" title="Ver noticia"><span class="glyphicon glyphicon-search"></span></a>
                     <button type="button" ng-click="cambiarEstado(x)" class="btn btn-xs btn-default" title="Cambiar estado">
                         <span ng-if="!x.estado" class="glyphicon glyphicon-eye-open"></span>

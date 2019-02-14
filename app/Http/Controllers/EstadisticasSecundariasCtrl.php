@@ -23,7 +23,16 @@ class EstadisticasSecundariasCtrl extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:create-estadisticaSecundaria|edit-estadisticaSecundaria|estado-estadisticaSecundaria|datos-estadisticaSecundaria|delete-estadisticaSecundaria'
+        ,['only' => ['getConfiguracion','getDataconfiguracion','getDataEstadisticas'] ]);
+        
+        $this->middleware('permissions:create-estadisticaSecundaria|edit-estadisticaSecundaria',['only' => ['postGuardarindicador'] ]);
+        
+        $this->middleware('permissions:datos-estadisticaSecundaria',['only' => ['postGuardardata'] ]);
+        
+        $this->middleware('permissions:estado-estadisticaSecundaria',['only' => ['postCambiarestadoindicador'] ]);
+        $this->middleware('permissions:delete-estadisticaSecundaria',['only' => ['postEliminarindicador'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

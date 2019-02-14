@@ -24,7 +24,8 @@ class ApiAuthController extends Controller
         }catch(JWTException $ex){
             return response(['mensaje' => 'Error interno del servidor'],500);
         }
-        
-        return response()->json(compact('token'));
+        $user = JWTAuth::toUser($token);
+
+        return response()->json(compact('token', 'user'));
     }
 }

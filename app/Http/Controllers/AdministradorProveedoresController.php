@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Carbon\Carbon;
 use Storage;
 use File;
@@ -23,7 +25,25 @@ use App\Models\Idioma;
 
 class AdministradorProveedoresController extends Controller
 {
-    //
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        
+        $this->middleware('permissions:list-proveedor|create-proveedor|read-proveedor|edit-proveedor|estado-proveedor|sugerir-proveedor',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-proveedor|edit-proveedor',['only' => ['postDesactivarActivar','postGuardaradicional','postGuardarmultimedia'] ]);
+        $this->middleware('permissions:create-proveedor|read-proveedor|edit-proveedor',['only' => ['getDatoscrear'] ]);
+        $this->middleware('permissions:create-proveedor',['only' => ['getCrear','postCrearproveedor'] ]);
+        $this->middleware('permissions:read-proveedor|edit-proveedor',['only' => ['getEditar','getDatosproveedor','getDatosIdioma','getIdioma'] ]);
+        $this->middleware('permissions:edit-proveedor',['only' => ['postEditaridioma','postEditardatosgenerales','postEditarproveedor'] ]);
+        $this->middleware('permissions:estado-proveedor',['only' => ['postDesactivarActivar'] ]);
+        $this->middleware('permissions:sugerir-proveedor',['only' => ['postSugerir'] ]);
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+    }
     
     public function getCrear(){
         return view('administradorproveedores.Crear');
