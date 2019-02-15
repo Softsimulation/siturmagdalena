@@ -81,7 +81,7 @@ class ExperienciasController extends Controller
         $query = $this->queHacerData($request->search);
         
         
-        return ['query' => $query['success'] ? $query['query']: $this->queHacerData($search = null)['query'], 'success' => $query['success']];
+        return ['query' => $query['success'] ? $query['query']: $this->queHacerData($search = null)['query'], 'success' => $query['success'], "tipo" => $id];
         
     }
     
