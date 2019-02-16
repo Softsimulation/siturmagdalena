@@ -75,8 +75,28 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 @section ('estilos')
     <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
     <link href="//cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="{{asset('/css/slider/ion.rangeSlider.min.css')}}" rel="stylesheet">
     <style>
-        
+        .carga {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.57) url(http://situr-jader-jeffrj.c9users.io/Content/Cargando.gif) 50% 50% no-repeat;
+            background-image: url(http://situr-jader-jeffrj.c9users.io/Content/Cargando.gif);
+            background-position-x: 50%;
+            background-position-y: 50%;
+            background-size: initial;
+            background-repeat-x: no-repeat;
+            background-repeat-y: no-repeat;
+            background-attachment: initial;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(0, 0, 0, 0.57);
+        }
         #opciones{
             text-align:right;
             /*background-color: white;*/
@@ -490,19 +510,17 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
               <!--</div>-->
             </div>
             <div class="row">
-                <div class="col-xs-6">
-                    <label class="sr-only" for="valor_inicial">Valor inicial</label>
-                    <input type="number" id="valor_inicial" class="form-control input-sm" placeholder="Valor mínimo"/>
+                <div class="col-xs-12">
+                    <p>Rango de precios</p>
                 </div>
-                <div class="col-xs-6">
-                    <label class="sr-only" for="valor_final">Valor final</label>
-                    <input type="number" id="valor_final" class="form-control input-sm" placeholder="Valor máximo"/>
+                <div class="col-xs-12">
+                    <input id="demo" type="text" class="js-range-slider" name="my_range" value="" />
                 </div>
             </div>
             <br>
             <div class="btn-group" role="group" aria-label="...">
                 <button onclick="formSubmit()" type="button" class="btn btn-success">Filtrar</button>
-                <button type="button" class="btn btn-danger">Limpiar</button>
+                <button onclick="clearFilters()" type="button" class="btn btn-danger">Limpiar</button>
             </div>
         </div>
         <div id="listado" class="tiles">
@@ -573,6 +591,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             </div>
         @endif
     </div>
+    <div class="carga"></div>
 
 @endsection
 
@@ -648,12 +667,13 @@ var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tip
         },350);
         
     }
-        
     $.ajaxSetup({
     headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    var url = '{{URL::action("QueHacerController@postFiltrar")}}';
+    var resetUrl = '{{URL::action("QueHacerController@getReset")}}';
     
     $('#formSearch').submit(function(){
         $.ajax({
@@ -698,61 +718,6 @@ var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tip
     });
         
 </script>
+<script src="{{asset('/js/plugins/slider/ion.rangeSlider.min.js')}}"></script>
 <script src="{{asset('/js/quehacer/script.js')}}"></script>
-
-<script>
-    function formSubmit(){
-    var sw = false;
-    if (destinos.length == 0 && categorias.length == 0 && perfiles.length == 0 && exp == undefined){
-        sw = true;
-    }
-    if (sw){
-        alert('No se ha seleccionado algún filtro');
-        return;
-    }
-    
-    $.ajax({
-          type: "POST",
-          url: '{{URL::action("QueHacerController@postFiltrar")}}',
-          data: {
-              'experiencia': exp,
-              'destinos': destinos,
-              'categorias': categorias,
-              'perfiles': perfiles,
-              'valor_inicial': $('#valor_inicial').val(),
-              'valor_final': $('#valor_final').val()
-          },
-          success: function (data){
-              if (!data.success){
-                  alert('No hay resultados para su búsqueda');
-              }
-              var html = '';
-              for(var i = 0; i < data.query.length; i++){
-                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
-                    html += '<div class="tile tile-overlap">'
-                                +'<div class="tile-img">';
-                        if(data.query[i].portada != ""){
-                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
-                        }
-                    html +=     +'</div>'
-                                    +'<div class="tile-body">'
-                                        +'<div class="tile-caption">'
-                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
-                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
-                                        +'</div>'
-                                        +'<div class="tile-buttons">'
-                                            +'<div class="inline-buttons">';
-                    //Acá falta las fechas en los eventos
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
-              }
-              }
-              $('#listado').html(html);
-          },
-          dataType: 'json'
-        });
-}
-</script>
+@endsection

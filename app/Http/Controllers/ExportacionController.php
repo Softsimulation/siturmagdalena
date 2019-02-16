@@ -50,7 +50,14 @@ class ExportacionController extends Controller
     
     public function postExportar(Request $request){
         
-        $validator=\Validator::make($request->all(),['nombre'=>'required','fecha_inicial'=>'required|date|before:tomorrow','fecha_final'=>'required|date|before:tomorrow']);
+        $validator=\Validator::make($request->all(),[
+                                                     'nombre'=>'required',
+                                                     'fecha_inicial'=>'required_if:nombre,receptor,interno,sostenibilidad|date|before:tomorrow',
+                                                     'fecha_final'=>'required_if:nombre,receptor,interno,sostenibilidad|date|before:tomorrow',
+                                                     'categoria'=>'required_if:nombre,ofertayempleo|in:1,2,3,4,5,6',
+                                                     'mes'=>'required_if:nombre,ofertayempleo|exists:meses_de_anio,id'
+        
+        ]);
         $url='';
         if($validator->fails()){
             
