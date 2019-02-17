@@ -14,12 +14,16 @@
 
 @section('content')
 <div class="flex-list">
-    <button type="button" class="btn btn-lg btn-success" ng-click="nuevoPaisModal()">
-      Agregar país
-    </button> 
-    <button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Importar CSV
-    </button> 
+    @if(Auth::user()->contienePermiso('create-pais'))
+        <button type="button" class="btn btn-lg btn-success" ng-click="nuevoPaisModal()">
+          Agregar país
+        </button>
+    @endif
+    @if(Auth::user()->contienePermiso('importar-pais'))
+        <button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Importar CSV
+        </button>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de países</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar país...">
@@ -88,17 +92,21 @@
                         <td>@{{pais.updated_at | date:'dd/MM/yyyy'}}</td>
                         <td>@{{pais.user_update}}</td>
                         <td style="text-align: center;">
-                            <button type="button" class="btn btn-xs btn-default" ng-click="verPaisModal(pais, pais.paises_con_idiomas[0].idioma_id)">
-                                <span class="glyphicon glyphicon-eye-open" title="Ver país"></span><span class="sr-only">Ver detalles</span>
-                            </button> 
-                            <button type="button" class="btn btn-xs btn-default" ng-repeat="idioma in pais.paises_con_idiomas" ng-click="editarPaisModal(pais, idioma.idioma.id)" title="Editar @{{idioma.idioma.nombre}}">
-                                @{{idioma.idioma.culture | uppercase}} 
-                            </button>
-                            <button type="button" class="btn btn-xs btn-default" ng-click="agregarNombre(pais)" ng-if="pais.paises_con_idiomas.length != idiomas.length" title="Agregar nombre en otro idioma">
-                                <span class="glyphicon glyphicon-plus">
-                                    
-                                </span><span class="sr-only">Agregar nombre en otro idioma</span>
-                            </button>
+                            @if(Auth::user()->contienePermiso('read-pais'))
+                                <button type="button" class="btn btn-xs btn-default" ng-click="verPaisModal(pais, pais.paises_con_idiomas[0].idioma_id)">
+                                    <span class="glyphicon glyphicon-eye-open" title="Ver país"></span><span class="sr-only">Ver detalles</span>
+                                </button>
+                            @endif
+                            @if(Auth::user()->contienePermiso('edit-pais'))
+                                <button type="button" class="btn btn-xs btn-default" ng-repeat="idioma in pais.paises_con_idiomas" ng-click="editarPaisModal(pais, idioma.idioma.id)" title="Editar @{{idioma.idioma.nombre}}">
+                                    @{{idioma.idioma.culture | uppercase}} 
+                                </button>
+                                <button type="button" class="btn btn-xs btn-default" ng-click="agregarNombre(pais)" ng-if="pais.paises_con_idiomas.length != idiomas.length" title="Agregar nombre en otro idioma">
+                                    <span class="glyphicon glyphicon-plus">
+                                        
+                                    </span><span class="sr-only">Agregar nombre en otro idioma</span>
+                                </button>
+                            @endif
                         </td>
                     </tr>
                 </table>

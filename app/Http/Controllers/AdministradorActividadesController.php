@@ -42,7 +42,7 @@ class AdministradorActividadesController extends Controller
         }
     }
     public function getIndex(){
-        return view('administradoractividades.Index');
+        return view('administradoractividades.Index',['user'=>User::where('id',Auth::user()->id)->first()]);
     }
     
     public function getCrear(){

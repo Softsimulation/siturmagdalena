@@ -80,7 +80,10 @@
                           
                           <td align="center">@{{item.mes}}</td>
                           <td align="center">@{{item.anio}}</td>
-                          <td style="width: 180px;"><a ng-click="guardar(item)" class="btn btn-raised btn-default btn-sm" title="Llenar encuesta" style="margin: 0;"><i class="material-icons">assignment</i> Llenar encuesta</a>
+                          <td style="width: 180px;">
+                              @if(Auth::user()->contienePermiso('create-encuestaOfertaEmpleo'))
+                                  <a ng-click="guardar(item)" class="btn btn-raised btn-default btn-sm" title="Llenar encuesta" style="margin: 0;"><i class="material-icons">assignment</i> Llenar encuesta</a>
+                              @endif
                           </td>
                         
                         </tr>

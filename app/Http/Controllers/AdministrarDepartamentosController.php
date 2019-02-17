@@ -21,7 +21,7 @@ class AdministrarDepartamentosController extends Controller
         
         $this->middleware('auth');
         //$this->middleware('role:Admin');
-        $this->middleware('permissions:list-departamento|create-departamento|importar-departamento|edit-departamento',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:list-departamento|create-departamento|importar-departamento|edit-departamento|ver-departamento',['only' => ['getIndex','getDatos'] ]);
         $this->middleware('permissions:create-departamento',['only' => ['postCreardepartamento'] ]);
         $this->middleware('permissions:edit-departamento',['only' => ['postEditardepartamento'] ]);
         $this->middleware('permissions:importar-departamento',['only' => ['postImportexcel'] ]);

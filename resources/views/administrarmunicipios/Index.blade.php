@@ -12,12 +12,16 @@
 
 @section('content')
 <div class="flex-list">
-    <button type="button" class="btn btn-lg btn-success" ng-click="nuevoMunicipioModal()">
-      Agregar municipio
-    </button> 
-    <button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Importar CSV
-    </button> 
+    @if(Auth::user()->contienePermiso('create-municipio'))
+        <button type="button" class="btn btn-lg btn-success" ng-click="nuevoMunicipioModal()">
+          Agregar municipio
+        </button>
+    @endif
+    @if(Auth::user()->contienePermiso('importar-municipio'))
+        <button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Importar CSV
+        </button>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de municipios</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar municipio...">
@@ -86,9 +90,11 @@
                             <td>@{{municipio.updated_at | date:'dd-MM-yyyy'}}</td>
                             <td>@{{municipio.user_update}}</td>
                             <td style="text-align: center;">
-                                <button type="button" class="btn btn-xs btn-default" ng-click="verMunicipioModal(municipio)">
-                                    <span class="glyphicon glyphicon-eye-open" title="Ver municipio"></span><span class="sr-only">Ver municipio</span>
-                                </button> 
+                                @if(Auth::user()->contienePermiso('read-municipio'))
+                                    <button type="button" class="btn btn-xs btn-default" ng-click="verMunicipioModal(municipio)">
+                                        <span class="glyphicon glyphicon-eye-open" title="Ver municipio"></span><span class="sr-only">Ver municipio</span>
+                                    </button>
+                                @endif
                                 <!--<a ng-repeat="idioma in pais.paises_con_idiomas" ng-click="editarPaisModal(pais, idioma.idioma.id)" title="Editar @{{idioma.idioma.nombre}}" href="javascript:void(0)">-->
                                 <!--    @{{idioma.idioma.culture | uppercase}} -->
                                 <!--</a>-->
@@ -97,9 +103,11 @@
                                         
                                 <!--    </span>-->
                                 <!--</a>-->
-                                <button type="button" class="btn btn-xs btn-default" ng-click="editarMunicipioModal(municipio)">
-                                    <span class="glyphicon glyphicon-pencil" title="Editar municipio"></span><span class="sr-only">Ver municipio</span>
-                                </button> 
+                                @if(Auth::user()->contienePermiso('edit-municipio'))
+                                    <button type="button" class="btn btn-xs btn-default" ng-click="editarMunicipioModal(municipio)">
+                                        <span class="glyphicon glyphicon-pencil" title="Editar municipio"></span><span class="sr-only">Editar municipio</span>
+                                    </button> 
+                                @endif
                             </td>
                         </tr>
                     </tbody>

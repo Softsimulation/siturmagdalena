@@ -32,11 +32,11 @@ class SliderController extends Controller
         $this->middleware('auth');
         
         //$this->middleware('role:Admin');
-        /*$this->middleware('permissions:list-slider|create-slider|read-slider|edit-slider|estado-slider|prioridad-slider',['only' => ['getListadosliders','getSliders'] ]);
+        $this->middleware('permissions:list-slider|create-slider|read-slider|edit-slider|estado-slider|prioridad-slider',['only' => ['getListadosliders','getSliders'] ]);
         $this->middleware('permissions:create-slider',['only' => ['postGuardarslider'] ]);
         $this->middleware('permissions:edit-slider',['only' => ['postInfoeditar','postAgregaridiomaslider','postEditarslider'] ]);
         $this->middleware('permissions:estado-slider',['only' => ['postDesactivarslider','postActivarslider'] ]);
-        $this->middleware('permissions:prioridad-slider',['only' => ['postBajarprioridad','postSubirprioridad'] ]);*/
+        $this->middleware('permissions:prioridad-slider',['only' => ['postBajarprioridad','postSubirprioridad'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
