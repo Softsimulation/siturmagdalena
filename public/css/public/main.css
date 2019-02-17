@@ -60,6 +60,14 @@
     background-color: #eee;
 }
 
+#infoMunicipio .infoMunicipio-text{
+    font-size: 85%;
+}
+#infoMunicipio-PST, #infoMunicipio-camas, #infoMunicipio-empleos, #infoMunicipio-habitaciones{
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
 
 @media only screen and (min-width: 768px) {
     #stats-links ul li{

@@ -197,26 +197,28 @@
                             <td>@{{item.estado}}</td>
                             
                             <td>
-                                <div class="dropdown">
-                                  <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu@{{item.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <span class="glyphicon glyphicon-pencil"></span> Editar encuentas
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu@{{item.id}}">
-                                    <li>
-                                        <button class="btn btn-sm btn-block btn-default" ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' ) || (item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)" ng-click = "caracterizacionEmpleo(item)">Encuesta de caracterización <span ng-show="item.caracterizacion" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.caracterizacion" class="ion-help text-muted" title="No realizada"></span></button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-block btn-default" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad ==1 && ((item.mes_id%3 == 0) || (item.tipo_id == 1)) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1))" ng-click="ofertaEmpleo(item)">Encuesta oferta <span ng-show="item.oferta" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.oferta" class="ion-help text-muted" title="No realizada"></span></button>
-                                    </li>
-                                    <li>
-                                        <a href="/ofertaempleo/empleomensual/@{{item.id}}" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad == 1 ) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1)">Encuesta empleo <span ng-show="item.empleo" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.empleo" class="ion-help text-muted" title="No realizada"></span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad == 1 ) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1)">Encuesta empleo de capacitaciones <span ng-show="item.capacitacion" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.capacitacion" class="ion-help text-muted" title="No realizada"></span></a>
-                                    </li>
-                                  </ul>
-                                </div>
+                                @if(Auth::user()->contienePermiso('edit-encuestaOfertaEmpleo|create-encuestaOfertaEmpleo'))
+                                    <div class="dropdown">
+                                      <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu@{{item.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="glyphicon glyphicon-pencil"></span> Editar encuentas
+                                        <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu@{{item.id}}">
+                                        <li>
+                                            <button class="btn btn-sm btn-block btn-default" ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' ) || (item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)" ng-click = "caracterizacionEmpleo(item)">Encuesta de caracterización <span ng-show="item.caracterizacion" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.caracterizacion" class="ion-help text-muted" title="No realizada"></span></button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-block btn-default" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad ==1 && ((item.mes_id%3 == 0) || (item.tipo_id == 1)) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1))" ng-click="ofertaEmpleo(item)">Encuesta oferta <span ng-show="item.oferta" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.oferta" class="ion-help text-muted" title="No realizada"></span></button>
+                                        </li>
+                                        <li>
+                                            <a href="/ofertaempleo/empleomensual/@{{item.id}}" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad == 1 ) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1)">Encuesta empleo <span ng-show="item.empleo" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.empleo" class="ion-help text-muted" title="No realizada"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad == 1 ) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1)">Encuesta empleo de capacitaciones <span ng-show="item.capacitacion" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.capacitacion" class="ion-help text-muted" title="No realizada"></span></a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                @endif
                                 <!--<div>-->
                                 <!--<button ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' )" ng-click = "caracterizacionEmpleo(item)" class="btn btn-default btn-sm" title="Editar encuesta caracterizacion" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)"><span class="glyphicon glyphicon-edit"></span></button><p ng-show="item.caracterizacion == true">Realizó</p><p ng-show="item.caracterizacion != true">No realizó</p>-->
                                 <!--</div>-->

@@ -60,7 +60,7 @@ class ExperienciasController extends Controller
         // }])->select('id')->where('estado', true)->get();
         
         
-        $query = DB::select('SELECT * FROM public.listado_promocion(?, ?) LIMIT 9', array($idIdioma, $id));
+        $query = DB::select('(SELECT * FROM public.listado_promocion(?, ?, 0)) ORDER BY calificacion_legusto', array($idIdioma, $id));
         
         //return $categorias;
         return view('experiencias.Index', 
@@ -81,7 +81,7 @@ class ExperienciasController extends Controller
         $query = $this->queHacerData($request->search);
         
         
-        return ['query' => $query['success'] ? $query['query']: $this->queHacerData($search = null)['query'], 'success' => $query['success']];
+        return ['query' => $query['success'] ? $query['query']: $this->queHacerData($search = null)['query'], 'success' => $query['success'], "tipo" => $id];
         
     }
     

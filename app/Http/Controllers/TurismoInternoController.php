@@ -108,6 +108,7 @@ class TurismoInternoController extends Controller
         
         $this->middleware('permissions:edit-encuestaInterno',['only' => ['getEditardatos','getCargareditardatos','postEliminarpersona','postGuardareditarhogar',
         ] ]);
+        $this->middleware('permissions:create-encuestaInterno|edit-encuestaInterno|read-encuestaInterno|delete-encuestaInterno');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

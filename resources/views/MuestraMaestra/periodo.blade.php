@@ -643,13 +643,23 @@
                              <i class="material-icons">menu</i>
                           </a>
                           <ul class="dropdown-menu">
-                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
-                            <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Descargar excel de la muestra</a></li>
-                            <li>
-                                <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
-                            </li>
-                            <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
-                            <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar bloque</a></li>
+                              @if(Auth::user()->contienePermiso('list-bloque'))
+                                  <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
+                              @endif
+                              @if(Auth::user()->contienePermiso('excel-muestra'))
+                                  <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Descargar excel de la muestra</a></li>
+                              @endif
+                              @if(Auth::user()->contienePermiso('KML-muestra'))
+                                <li>
+                                    <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
+                                </li>
+                             @endif
+                             @if(Auth::user()->contienePermiso('create-proveedorMuestra'))
+                                <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
+                             @endif
+                            @if(Auth::user()->contienePermiso('create-zona'))
+                                <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar bloque</a></li>
+                            @endif
                           </ul>
                     </div>
                     
@@ -710,15 +720,15 @@
                 <p class="form-control-static">@{{proveedor.subcategoria}}</p>
             </div>
             
-            
-            <button class="btn btn-block btn-success btn-sm" ng-click="openModalZonaProveedores(proveedor)"  ng-if="!proveedor.rnt" >
-                <i class="glyphicon glyphicon-pencil"></i> Editar información
-            </button>
-              
-            <button class="btn btn-block btn-primary btn-sm" ng-click="editarPosicionProveedor()" ng-show="!proveedor.editar" >
-               <i class="glyphicon glyphicon-map-marker"></i> Cambiar ubicación
-            </button>
-            
+            @if(Auth::user()->contienePermiso('edit-proveedorMuestra'))
+                <button class="btn btn-block btn-success btn-sm" ng-click="openModalZonaProveedores(proveedor)"  ng-if="!proveedor.rnt" >
+                    <i class="glyphicon glyphicon-pencil"></i> Editar información
+                </button>
+                  
+                <button class="btn btn-block btn-primary btn-sm" ng-click="editarPosicionProveedor()" ng-show="!proveedor.editar" >
+                   <i class="glyphicon glyphicon-map-marker"></i> Cambiar ubicación
+                </button>
+            @endif
             <br>
             <div class="btn-group" role="group"  ng-show="proveedor.editar" style="width:100%;" >
               <button type="button" class="btn btn-danger" ng-click="cancelarEditarPosicionProveedor()" style="width:50%;">Cancelar</button>
@@ -762,11 +772,19 @@
             
             <br>
             <ul class="list-details" >
-                <li><a href ng-click="openModalZona(detalleZona)" ><i class="material-icons">edit</i> Ver/Editar</a></li>
-                <li><a href ng-click="editarPosicionZona(detalleZona)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
-                <li><a href ng-click="eliminarZona(detalleZona)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
-                <li><a href ng-click="exportarFileExcelZona(detalleZona)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
-                <li><a href="/MuestraMaestra/llenarinfozona/@{{detalleZona.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
+                @if(Auth::user()->contienePermiso('edit-zona'))
+                    <li><a href ng-click="openModalZona(detalleZona)" ><i class="material-icons">edit</i> Ver/Editar</a></li>
+                    <li><a href ng-click="editarPosicionZona(detalleZona)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('delete-zona'))
+                    <li><a href ng-click="eliminarZona(detalleZona)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('excel-zona'))
+                    <li><a href ng-click="exportarFileExcelZona(detalleZona)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('llenarInfo-zona|excel-infoZona'))
+                    <li><a href="/MuestraMaestra/llenarinfozona/@{{detalleZona.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
+                @endif
             </ul>
             
             <div class="btn-group" role="group"  ng-show="detalleZona.editar" style="width:100%;" >

@@ -48,8 +48,7 @@ class EncuestaDinamicaCtrl extends Controller
         $this->middleware('permissions:create-encuestaADHOC',['only' => ['postAgregarencuesta'] ]);
         
         $this->middleware('permissions:edit-encuestaADHOC|read-encuestaADHOC',['only' => ['getConfigurar','getDataconfiguracion',
-        'getListar','getListadoencuestas',
-        'getEstadisticas','getEstadisticasencuesta'] ]);
+        'getListar','getListadoencuestas'] ]);
         
         $this->middleware('permissions:edit-encuestaADHOC',['only' => ['postGuardaridiomaencuesta',
         'postAgregarseccion','postAgregarpregunta','postActivardesactivarpregunta','postEliminarpregunta','postGuardarordenpreguntas','postGuardaridiomapregunta',
@@ -62,6 +61,8 @@ class EncuestaDinamicaCtrl extends Controller
         
         
         $this->middleware('permissions:descargarDatos-encuestaADHOC',['only' => ['getExcel'] ]);
+        
+        $this->middleware('permissions:estadisticas-encuestaADHOC',['only' => ['getEstadisticas','getEstadisticasencuesta'] ]);
         
         
         

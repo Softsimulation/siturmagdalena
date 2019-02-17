@@ -71,7 +71,7 @@ class QueHacerController extends Controller
     
     public function getReset(){
         $idIdioma = Idioma::where('culture', \Config::get('app.locale'))->pluck('id')->first();
-        $query = DB::select('SELECT * FROM public.listado_promocion(?, null) LIMIT 9', array($idIdioma));
+        $query = DB::select('SELECT * FROM public.listado_promocion(?, null, null) LIMIT 9', array($idIdioma));
         
         return ['query' => $query];
     }
