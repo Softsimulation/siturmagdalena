@@ -339,9 +339,8 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         </section>
     @endif
 <div id="statsMap">
-     *AQUI VA EL SVG O EL PLUGIN QUE SE HAGA PARA EL MAPA Y SUS INDICADORE 
     
-    <div style="width: 100%; background-color: #eee;text-align:center;display:flex;align-items: center; justify-content: center;flex-wrap: wrap;">
+    <div style="width: 100%; background-color: whitesmoke;text-align:center;display:flex;align-items: center; justify-content: center;flex-wrap: wrap;">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-md-4">
@@ -361,7 +360,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                        y="0px"
                        viewBox="-191 -348.2 895.5 1496.2"
                        xml:space="preserve"
-                       width="450"
+                       width="260"
                        height="370"><metadata
                          id="metadata81"><rdf:RDF><cc:Work
                              rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
@@ -765,15 +764,48 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                            style="display:inline;fill:#323232;fill-opacity:0.39220001" /></g></svg>
                 </div>
                 <div class="col-xs-12 col-md-8" id="infoMunicipio">
-                    <h2 id="infoMunicipio-nombre"></h2>
-                    <div class="d-flex align-items-center">
-                        
-                        <span id="infoMunicipio-PST"></span>
-                    </div>
+                    <h2 class="text-uppercase" id="infoMunicipio-nombre"></h2>
                     
-                    <span id="infoMunicipio-habitaciones"></span>
-                    <span id="infoMunicipio-camas"></span>
-                    <span id="infoMunicipio-empleos"></span>
+                    <div class="row d-flex align-items-center text-uppercase mb-3">
+                        <div class="col-xs-2 text-center">
+                            <img src="/img/mapa/pst.png" style="height: 48px"/>    
+                        </div>
+                        <div class="col-xs-10 text-left infoMunicipio-text">
+                            <span id="infoMunicipio-PST" class="d-block font-weight-bold"></span>
+                            prestadores de servicios turísticos en el RNT (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre PST</span></small></a>
+                        </div>
+                        
+                    </div>
+                    <div class="row d-flex align-items-center text-uppercase mb-3">
+                        <div class="col-xs-2 text-center">
+                            <img src="/img/mapa/habitaciones.png" style="height: 48px"/>    
+                        </div>
+                        <div class="col-xs-10 text-left infoMunicipio-text">
+                            <span id="infoMunicipio-habitaciones" class="d-block font-weight-bold"></span>
+                            habitaciones de alojamiento turístico (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre habitaciones</span></small></a>
+                        </div>
+                        
+                    </div>
+                    <div class="row d-flex align-items-center text-uppercase mb-3">
+                        <div class="col-xs-2 text-center">
+                            <img src="/img/mapa/camas.png" style="height: 48px"/>    
+                        </div>
+                        <div class="col-xs-10 text-left infoMunicipio-text">
+                            <span id="infoMunicipio-camas" class="d-block font-weight-bold"></span>
+                            camas de alojamiento turístico (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre camas</span></small></a>
+                        </div>
+                        
+                    </div>
+                    <div class="row d-flex align-items-center text-uppercase mb-3">
+                        <div class="col-xs-2 text-center">
+                            <img src="/img/mapa/empleo.png" style="height: 48px"/>    
+                        </div>
+                        <div class="col-xs-10 text-left infoMunicipio-text">
+                            <span id="infoMunicipio-empleos" class="d-block font-weight-bold"></span>
+                            número de empleos directos reportados en el RNT (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre empleos</span></small></a>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -797,9 +829,11 @@ $(document).ready(function(){
     $.getJSON( "/testMunicipios.json", function( data ) {
       municipios = data;
     });
+    setTimeout(function(){cambiar(4747,'path5103')},750);
     
 });
 function getMunicipio(id){
+    
         for(var i = 0; i < municipios.length; i++){
             if(municipios[i].id == id){
                 return municipios[i];
@@ -808,14 +842,20 @@ function getMunicipio(id){
         return null;
     }
 function cambiar(id, idElement){
-    console.log(id);
+    
     $('#layer9 path').css('fill','#d9d9d9');//#d9d9d9
     document.getElementById(idElement).style.fill = 'blue';
     var municipio = getMunicipio(id);
     if(municipio != null){
-        console.log(municipio);
-        var h2 = '<h2>' + municipio.municipio + '</h2>'
-        document.getElementById('infoMunicipio').innerHTML = h2
+        // var h2 = '<h2>' + municipio.municipio + '</h2>'
+        // document.getElementById('infoMunicipio').innerHTML = h2
+        document.getElementById('infoMunicipio-nombre').innerHTML = municipio.municipio;
+        document.getElementById('infoMunicipio-PST').innerHTML = municipio.PST;
+        document.getElementById('infoMunicipio-habitaciones').innerHTML = municipio.habitaciones;
+        document.getElementById('infoMunicipio-camas').innerHTML = municipio.camas;
+        document.getElementById('infoMunicipio-empleos').innerHTML = municipio.empleos;
+        document.getElementById('infoMunicipio-anio').innerHTML = municipio.anio;
+        document.getElementById('infoMunicipio-mes').innerHTML = municipio.mes;
     }
     
 }

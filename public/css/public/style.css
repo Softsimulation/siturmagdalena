@@ -758,6 +758,45 @@ hr{
     font-size: 65%;
 }
 
+/*Bootstrap v4*/
+
+.d-flex{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+}
+.d-block{
+    display:block;
+}
+
+.flex-wrap{
+    flex-wrap: normal;
+}
+
+.align-items-center{
+    align-items: center;
+}
+
+.justify-content-center{
+    justify-content: center;
+}
+
+.font-weight-bold{
+    font-weight: bold;
+}
+
+.ml-3{
+    margin-left: 1rem;
+}
+
+.mb-3{
+    margin-bottom: 1rem;
+}
+
+
 /*Fonts*/
 @font-face {
     font-family: 'Futura';
