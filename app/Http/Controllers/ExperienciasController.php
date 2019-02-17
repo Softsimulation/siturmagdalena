@@ -60,7 +60,7 @@ class ExperienciasController extends Controller
         // }])->select('id')->where('estado', true)->get();
         
         
-        $query = DB::select('SELECT * FROM public.listado_promocion(?, ?) LIMIT 9', array($idIdioma, $id));
+        $query = DB::select('(SELECT * FROM public.listado_promocion(?, ?, 0)) ORDER BY calificacion_legusto', array($idIdioma, $id));
         
         //return $categorias;
         return view('experiencias.Index', 
