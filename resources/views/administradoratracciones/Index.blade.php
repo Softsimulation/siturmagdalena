@@ -34,9 +34,11 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/administradoratracciones/crear" role="button" class="btn btn-lg btn-success">
-      Agregar atracciones
-    </a> 
+    @if(Auth::user()->contienePermiso('create-atraccion'))
+        <a href="/administradoratracciones/crear" role="button" class="btn btn-lg btn-success">
+          Agregar atracciones
+        </a>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de atracciones</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar atracción...">
@@ -64,11 +66,19 @@
             </div>
             <p>@{{atraccion.sitio.sitios_con_idiomas[0].descripcion | limitTo:255}}<span ng-if="atraccion.sitio.sitios_con_idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
-                <a href="/administradoratracciones/editar/@{{atraccion.id}}" class="btn btn-warning">Editar</a>
-                <button class="btn btn-@{{atraccion.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(atraccion)">@{{atraccion.estado ? 'Desactivar' : 'Activar'}}</button>
-                <button title="@{{atraccion.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(atraccion)"><span class="glyphicon glyphicon-@{{atraccion.sugerido ? 'star' : 'star-empty'}}"></span></button>
-                <a href="/administradoratracciones/idioma/@{{atraccion.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in atraccion.sitio.sitios_con_idiomas"> @{{traduccion.idioma.culture}}</a>
-                <button type="button" ng-click="modalIdioma(atraccion)" class="btn btn-default" ng-if="atraccion.sitio.sitios_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                @if(Auth::user()->contienePermiso('edit-atraccion'))
+                    <a href="/administradoratracciones/editar/@{{atraccion.id}}" class="btn btn-warning">Editar</a>
+                @endif
+                @if(Auth::user()->contienePermiso('estado-atraccion'))
+                    <button class="btn btn-@{{atraccion.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(atraccion)">@{{atraccion.estado ? 'Desactivar' : 'Activar'}}</button>
+                @endif
+                @if(Auth::user()->contienePermiso('sugerir-atraccion'))
+                    <button title="@{{atraccion.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(atraccion)"><span class="glyphicon glyphicon-@{{atraccion.sugerido ? 'star' : 'star-empty'}}"></span></button>
+                @endif
+                @if(Auth::user()->contienePermiso('edit-atraccion'))
+                    <a href="/administradoratracciones/idioma/@{{atraccion.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in atraccion.sitio.sitios_con_idiomas"> @{{traduccion.idioma.culture}}</a>
+                    <button type="button" ng-click="modalIdioma(atraccion)" class="btn btn-default" ng-if="atraccion.sitio.sitios_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                @endif
             </div>  
             
         </div>

@@ -79,8 +79,31 @@ class OfertaEmpleoController extends Controller
                                     
         $this->middleware('auth');
         //$this->middleware('role:Admin');
-        $this->middleware('permissions:create-encuestaOferta|edit-encuestaOferta');
-        //$this->middleware('permissions:list-proveedoresOferta',['only' => ['getListadoproveedores','getListado','getExcelproveedores'] ]);
+        /*$this->middleware('permissions:list-encuestaOferta|edit-encuestaOferta',['only' => ['getEncuestasrealizadastotales','getEncuestasoferta'] ]);
+        $this->middleware('permissions:list-proveedoresRNT|edit-proveedoresRNT|export-proveedoresRNT',['only' => ['getListadoproveedoresrnt','getListadornt'] ]);
+        $this->middleware('permissions:edit-proveedoresRNT',['only' => ['postGuardarproveedorrnt'] ]);
+        $this->middleware('permissions:export-proveedoresRNT',['only' => ['getExcelproveedoresrnt'] ]);*/
+        
+        $this->middleware('permissions:list-encuestaOfertaEmpleo|create-encuestaOfertaEmpleo|edit-encuestaOfertaEmpleo|list-proveedoresOferta|list-proveedoresRNTOferta|exportar-proveedoresRNTOferta|edit-proveedoresRNTOferta|exportar-proveedoresOferta|activar-proveedoresOferta');
+        
+        $this->middleware('permissions:list-proveedoresOferta|exportar-proveedoresferta',['only' => ['getListadoproveedores','getListado'] ]);
+        
+        $this->middleware('permissions:list-proveedoresRNTOferta|exportar-proveedoresRNTOferta|edit-proveedoresRNTferta',['only' => ['getListadoproveedoresrnt','getListadornt'] ]);
+        
+        $this->middleware('permissions:edit-proveedoresRNTOferta',['only' => ['postGuardarproveedorrnt'] ]);
+        
+        $this->middleware('permissions:exportar-proveedoresOferta',['only' => ['getExcelproveedores'] ]);
+        
+        $this->middleware('permissions:exportar-proveedoresRNTOferta',['only' => ['getExcelproveedoresrnt'] ]);
+        
+        $this->middleware('permissions:activar-proveedoresOferta',['only' => ['getActivar','postGuardaractivar'] ]);
+        
+        $this->middleware('permissions:list-encuestaOfertaEmpleo',['only' => ['getEncuestasrealizadas','getEncuestaspendientes','getEncuesta','getEncuestas','getEncuestasrealizadastotales',
+        'getEncuestasoferta'] ]);
+        
+        
+        
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

@@ -21,7 +21,7 @@ class Tiempo_Indicador extends Model
      * @var string
      */
     protected $table = 'tiempo_indicador';
-
+    public $timestamps = false;
     /**
      * @var array
      */

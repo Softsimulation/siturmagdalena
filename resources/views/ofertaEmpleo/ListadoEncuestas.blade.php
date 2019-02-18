@@ -155,16 +155,19 @@
                             <td>@{{item.mes}}</td>
                             <td>@{{item.anio}}</td>
                             <td>@{{item.estado}}</td>
-                             <td><a ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' )" href="@{{ruta}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta caracterizacion" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)"><span class="glyphicon glyphicon-edit"></span></a><p ng-show="item.caracterizacion == true">Realizó</p><p ng-show="item.caracterizacion != true">No realizó</p>
-                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad ==1 &&((item.mes_id%3 == 0) || (ruta == '/ofertaempleo/caracterizacion')) )">
-                                    <a  href="@{{ruta2}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta oferta" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-edit"></span></a><p   ng-show="item.oferta == true">Realizó</p><p ng-show="item.oferta != true">No realizó</p>
-                                </div>
-                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
-                                    <a  href="/ofertaempleo/empleomensual/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-pencil"></span></a>  <p ng-show="item.empleo == true">Realizó</p><p ng-show="item.empleo != true">No realizó</p>
-                                </div>
-                                <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
-                                    <a  href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo capacitaciones" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-lock"></span></a><p ng-show="item.capacitacion == true">Realizó</p><p ng-show="item.capacitacion != true">No realizó</p>  
-                                </div>
+                             <td>
+                                 @if(Auth::user()->contienePermiso('create-encuestaOfertaEmpleo|edit-encuestaOfertaEmpleo'))
+                                     <a ng-if="(item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular' )" href="@{{ruta}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta caracterizacion" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)"><span class="glyphicon glyphicon-edit"></span></a><p ng-show="item.caracterizacion == true">Realizó</p><p ng-show="item.caracterizacion != true">No realizó</p>
+                                    <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad ==1 &&((item.mes_id%3 == 0) || (ruta == '/ofertaempleo/caracterizacion')) )">
+                                        <a  href="@{{ruta2}}/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta oferta" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-edit"></span></a><p   ng-show="item.oferta == true">Realizó</p><p ng-show="item.oferta != true">No realizó</p>
+                                    </div>
+                                    <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
+                                        <a  href="/ofertaempleo/empleomensual/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-pencil"></span></a>  <p ng-show="item.empleo == true">Realizó</p><p ng-show="item.empleo != true">No realizó</p>
+                                    </div>
+                                    <div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">
+                                        <a  href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo capacitaciones" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-lock"></span></a><p ng-show="item.capacitacion == true">Realizó</p><p ng-show="item.capacitacion != true">No realizó</p>  
+                                    </div>
+                                @endif
                                </td>
                         
                         </tr>

@@ -79,11 +79,21 @@
                                     <label class="control-label" for="inputNombre"><span class="asterisk">*</span> Exportacion a realizar</label>
                                     <select name="nombre" class="form-control" ng-model="exportacion.nombre" id="inputNombre" required>
                                         <option value="" disabled>--Seleccione--</option>
-                                        <option value="receptor">Turismo Receptor</option>
-                                        <option value="interno">Turismo Interno</option>
-                                        <option value="sostenibilidad">Sostenibilidad PST</option>
-                                        <option value="hogares">Sostenibilidad Hogares</option>
-                                        <option value="ofertayempleo">Oferta y Empleo</option>
+                                        @if(Auth::user()->contienePermiso('export-medicionReceptor'))
+                                            <option value="receptor">Turismo Receptor</option>
+                                        @endif
+                                        @if(Auth::user()->contienePermiso('export-medicionInternoEmisor'))
+                                            <option value="interno">Turismo Interno</option>
+                                        @endif
+                                        @if(Auth::user()->contienePermiso('export-sostenibilidadPST'))
+                                            <option value="sostenibilidad">Sostenibilidad PST</option>
+                                        @endif
+                                        @if(Auth::user()->contienePermiso('export-sostenibilidadHogar'))
+                                            <option value="hogares">Sostenibilidad Hogares</option>
+                                        @endif
+                                        @if(Auth::user()->contienePermiso('export-medicionOferta'))
+                                            <option value="ofertayempleo">Oferta y Empleo</option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>

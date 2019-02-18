@@ -35,7 +35,28 @@ class MuestraMaestraCtrl extends Controller
     {
         
         $this->middleware('auth', ['except' => ['getDetalles','getDatacongiguracion']] );
-        $this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        //$this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        
+        $this->middleware('permissions:list-periodosMuestra|create-periodosMuestra|read-periodosMuestra|edit-periodosMuestra|
+        excel-muestra|KML-muestra|
+        agregar-zona|edit-zona|delete-zona',
+        ['only' => ['getPeriodos','getDatalistado']]);
+        $this->middleware('permissions:read-muestraMaestra|create-periodosMuestra',['only' => ['getDatacongiguracion'] ]);
+        $this->middleware('permissions:create-periodosMuestra',['only' => ['postCrearperiodo'] ]);
+        $this->middleware('permissions:edit-periodosMuestra',['only' => ['postEditarperiodo'] ]);
+        
+        $this->middleware('permissions:excel-muestra',['only' => ['getExcelinfoperiodo'] ]);
+        $this->middleware('permissions:KML-muestra',['only' => ['getGeojsonzone'] ]);
+        $this->middleware('permissions:agregar-zona',['only' => ['postAgregarzona'] ]);
+        $this->middleware('permissions:edit-zona',['only' => ['postEditarzona','postEditarposicionzona'] ]);
+        $this->middleware('permissions:delete-zona',['only' => ['postEliminarzona'] ]);
+        $this->middleware('permissions:excel-zona',['only' => ['getExcel'] ]);
+        $this->middleware('permissions:llenarInfo-zona|excel-infoZona',['only' => ['postGuardarinfozona','getLlenarinfozona','getExcelinfozona'] ]);
+        $this->middleware('permissions:create-proveedorMuestra|edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal'] ]);
+        $this->middleware('permissions:edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal','postEditarubicacionproveedor'] ]);
+        
+        
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
