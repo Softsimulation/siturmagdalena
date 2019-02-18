@@ -55,6 +55,60 @@
     .tile .tile-img, .tiles .tile .tile-img {
         height: 280px;
     }
+    .header-list{
+        background-image: url(../../img/headers/puerto.jpg);
+        background-size: cover;
+        min-height: 200px;
+        background-position: bottom;
+        display: flex;
+        align-items: flex-end;
+        position:relative;
+    }
+    
+    .header-list:after{
+        content: "";
+        position:absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        min-height: 70px;
+        background-image: url(../../img/headers/banner_bottom.png);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        z-index: 1;
+    }
+    .header-list:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        z-index: 0;
+        background: rgba(0,0,0,0.3);
+        background: -moz-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,0,0,0.3)), color-stop(100%, rgba(246,41,12,0)));
+        background: -webkit-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+        background: -o-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+        background: -ms-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+        background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(246,41,12,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#f6290c', GradientType=1 );
+    }
+    .header-list>.container{
+        position:relative;
+        z-index: 2;
+    }
+    .title-section{
+        color: white;
+        text-shadow: 0px 1px 3px rgba(0,0,0,.65);
+        font-size: 2.5rem;
+        background-color: rgba(0,0,0,.2);
+        padding: .25rem .5rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        display: inline-block;
+    }
     @media only screen and (min-width: 768px) {
         .tile .tile-img img{
             height: 100%;
@@ -87,10 +141,13 @@
 @endsection
 
 @section('content')
-<div class="content-head">
-    <div class="container">
-        <h2 class="text-uppercase">Informes</h2>
-        <hr/>
+<div class="header-list">
+    <div class="container text-center">
+        <h2 class="title-section text-uppercase text-blue">Informes</h2>
+    </div>
+</div>
+<div class="container">
+    <div class="well mt-3">
         <form method="GET" action="/promocionInforme/listado">
             <div class="row">
                 
@@ -128,8 +185,6 @@
             </div>
         </form>
     </div>
-</div>
-<div class="container">
     @if(isset($_GET['buscar']) || isset($_GET['categoriaInforme']) || isset($_GET['tipoInforme']))
     <div class="text-center">
         <a href="/promocionInforme/listado" class="btn btn-default">Limpiar filtros</a>

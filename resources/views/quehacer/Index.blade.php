@@ -239,7 +239,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             background: white;
             padding: .5rem;
             height: 100%;
-            max-width: 270px;
+            width: 270px;
             box-shadow: 0px 4px 12px 0px rgba(0,0,0,.35);
             overflow: auto;
             display:none;

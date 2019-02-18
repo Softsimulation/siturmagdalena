@@ -62,10 +62,11 @@
 
 #infoMunicipio .infoMunicipio-text{
     font-size: 85%;
+    font-weight: 500;
 }
 #infoMunicipio-PST, #infoMunicipio-camas, #infoMunicipio-empleos, #infoMunicipio-habitaciones{
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 

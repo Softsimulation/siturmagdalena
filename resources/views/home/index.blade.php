@@ -332,7 +332,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                     @endforeach
                 </div>
                 <div class="text-center">
-                    <a href="/promocionNoticia/listado" class="btn btn-success">Ver todo</a>
+                    <a href="/promocionNoticia/listado" class="btn btn-success mb-3">Ver todo</a>
                 </div>
             </div>
             
@@ -767,42 +767,42 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                     <h2 class="text-uppercase" id="infoMunicipio-nombre"></h2>
                     
                     <div class="row d-flex align-items-center text-uppercase mb-3">
-                        <div class="col-xs-2 text-center">
+                        <div class="col-xs-4 col-sm-2 text-center">
                             <img src="/img/mapa/pst.png" style="height: 48px"/>    
                         </div>
-                        <div class="col-xs-10 text-left infoMunicipio-text">
+                        <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-blue">
                             <span id="infoMunicipio-PST" class="d-block font-weight-bold"></span>
-                            prestadores de servicios turísticos en el RNT (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre PST</span></small></a>
+                            prestadores de servicios turísticos en el RNT (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre PST</span></small></a>
                         </div>
                         
                     </div>
                     <div class="row d-flex align-items-center text-uppercase mb-3">
-                        <div class="col-xs-2 text-center">
+                        <div class="col-xs-4 col-sm-2 text-center">
                             <img src="/img/mapa/habitaciones.png" style="height: 48px"/>    
                         </div>
-                        <div class="col-xs-10 text-left infoMunicipio-text">
+                        <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-red">
                             <span id="infoMunicipio-habitaciones" class="d-block font-weight-bold"></span>
-                            habitaciones de alojamiento turístico (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre habitaciones</span></small></a>
+                            habitaciones de alojamiento turístico (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre habitaciones</span></small></a>
                         </div>
                         
                     </div>
                     <div class="row d-flex align-items-center text-uppercase mb-3">
-                        <div class="col-xs-2 text-center">
+                        <div class="col-xs-4 col-sm-2 text-center">
                             <img src="/img/mapa/camas.png" style="height: 48px"/>    
                         </div>
-                        <div class="col-xs-10 text-left infoMunicipio-text">
+                        <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-green">
                             <span id="infoMunicipio-camas" class="d-block font-weight-bold"></span>
-                            camas de alojamiento turístico (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre camas</span></small></a>
+                            camas de alojamiento turístico (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre camas</span></small></a>
                         </div>
                         
                     </div>
                     <div class="row d-flex align-items-center text-uppercase mb-3">
-                        <div class="col-xs-2 text-center">
+                        <div class="col-xs-4 col-sm-2 text-center">
                             <img src="/img/mapa/empleo.png" style="height: 48px"/>    
                         </div>
-                        <div class="col-xs-10 text-left infoMunicipio-text">
+                        <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-orange">
                             <span id="infoMunicipio-empleos" class="d-block font-weight-bold"></span>
-                            número de empleos directos reportados en el RNT (<span id="infoMunicipio-anio"></span>-<span id="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre empleos</span></small></a>
+                            número de empleos directos reportados en el RNT (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre empleos</span></small></a>
                         </div>
                         
                     </div>
@@ -854,8 +854,15 @@ function cambiar(id, idElement){
         document.getElementById('infoMunicipio-habitaciones').innerHTML = municipio.habitaciones;
         document.getElementById('infoMunicipio-camas').innerHTML = municipio.camas;
         document.getElementById('infoMunicipio-empleos').innerHTML = municipio.empleos;
-        document.getElementById('infoMunicipio-anio').innerHTML = municipio.anio;
-        document.getElementById('infoMunicipio-mes').innerHTML = municipio.mes;
+        var anios = Array.from(document.getElementsByClassName('infoMunicipio-anio')); 
+        console.log(anios);
+        anios.map(function(item, index) {
+          item.innerHTML = municipio.anio;
+        });
+        var meses = Array.from(document.getElementsByClassName('infoMunicipio-mes')); 
+        meses.map(function(item, index) {
+          item.innerHTML = municipio.mes;
+        });
     }
     
 }
