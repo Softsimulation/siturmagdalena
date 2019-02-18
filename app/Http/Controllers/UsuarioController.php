@@ -17,14 +17,20 @@ class UsuarioController extends Controller
 {
     public function __construct()
     {
-        
+       
         $this->middleware('auth');
+        
         $this->middleware('role:Admin');
+        /*$this->middleware('permissions:list-usuario|create-usuario|read-usuario|edit-usuario|estado-usuario|delete-usuario',['only' => ['getListadousuarios','getUsuarios','getDatosasignarpermisos'] ]);
+        $this->middleware('permissions:create-usuario|edit-usuario',['only' => ['getInformacionguardar'] ]);
+        $this->middleware('permissions:create-usuario',['only' => ['postGuardarusuario'] ]);
+        $this->middleware('permissions:edit-usuario|read-usuario',['only' => ['getEditar','getInformacioneditar'] ]);
+        $this->middleware('permissions:edit-usuario',['only' => ['postEditarusuario'] ]);
+        $this->middleware('permissions:estado-usuario',['only' => ['postCambiarestado'] ]);
+        $this->middleware('permissions:asignar-permiso',['only' => ['postAsignacionpermisos'] ]);*/
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        
-        
         
     }
     public function getListadousuarios(){

@@ -130,7 +130,9 @@
 </div>    
 
 <div class="container">
-    <a type="button" class="btn btn-lg btn-success" href="/ofertaempleo/excelproveedoresrnt">Exportar</a>
+    @if(Auth::user()->contienePermiso('exportar-proveedoresRNTOferta'))
+        <a type="button" class="btn btn-lg btn-success" href="/ofertaempleo/excelproveedoresrnt">Exportar</a>
+   @endif
        <div class="row">
             <div class="row">
                 <div class="col-xs-12">
@@ -169,8 +171,12 @@
                                 <td ng-if="item.sitio_para_encuesta_id != null">Activo</td>
                                 <td ng-if="item.sitio_para_encuesta_id == null">Desactivado</td>
                                 <td style="text-align: center;">
-                                  <a  href="/ofertaempleo/activar/@{{item.id}}" class="btn btn-default btn-sm" title="Activar proveedor" ><span class="glyphicon glyphicon-ok"></span></a>
-                                    <button ng-click="abrirEditar(item)" role="button" title="Editar proveedor" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                    @if(Auth::user()->contienePermiso('activar-proveedoresOferta'))
+                                          <a  href="/ofertaempleo/activar/@{{item.id}}" class="btn btn-default btn-sm" title="Activar proveedor" ><span class="glyphicon glyphicon-ok"></span></a>
+                                    @endif
+                                    @if(Auth::user()->contienePermiso('edit-proveedoresRNTOferta'))
+                                        <button ng-click="abrirEditar(item)" role="button" title="Editar proveedor" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                    @endif
                                 </td>
                             </tr>
                          </tbody>

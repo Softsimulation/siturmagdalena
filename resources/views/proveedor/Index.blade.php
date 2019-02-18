@@ -169,7 +169,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         .header-list:after{
             content: "";
             position:absolute;
-            bottom: 0;
+            bottom: -1px;
             left: 0;
             width: 100%;
             min-height: 70px;

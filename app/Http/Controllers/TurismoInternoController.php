@@ -90,7 +90,25 @@ class TurismoInternoController extends Controller
     {
         $this->middleware('interno', ['only' => ['getViajesrealizados','getActividadesrealizadas']]);
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        /*$this->middleware('permissions:list-hogar|create-hogar|read-hogar|edit-hogar|delete-hogar',['only' => ['getListadogrupos','getGrupos'] ]);
+        $this->middleware('permissions:create-hogar',['only' => ['getDatoshogar','getHogar','postGuardarhogar'] ]);
+        $this->middleware('permissions:edit-hogar|read-hogar',['only' => ['getEditarhogar','postDatoseditar'] ]);
+        $this->middleware('permissions:edit-hogar',['only' => ['postGuardareditarhogar'] ]);*/
+        
+        
+        $this->middleware('permissions:create-encuestaInterno|edit-encuestaInterno|read-encuestaInterno',['only' => ['getDatoshogar',
+        'getEditarhogar','postDatoseditar','getActividadesrealizadas','getActividades','getFuentesinformacion','getCargardatosfuentes','getGastos',
+        'postDatagastos','getTransporte','getCargartransporte','getViajesrealizados','getViajes','getViaje'] ]);
+        
+        $this->middleware('permissions:create-encuestaInterno|edit-encuestaInterno',['only' => ['postCrearestancia','postGuardarfuentesinformacion',
+        'postGuardargastos','postGuardartransporte','postCreateviaje','postEliminarviaje','postSiguienteviaje'] ]);
+        
+        $this->middleware('permissions:create-encuestaInterno',['only' => ['getHogar','postGuardarhogar'] ]);
+        
+        $this->middleware('permissions:edit-encuestaInterno',['only' => ['getEditardatos','getCargareditardatos','postEliminarpersona','postGuardareditarhogar',
+        ] ]);
+        $this->middleware('permissions:create-encuestaInterno|edit-encuestaInterno|read-encuestaInterno|delete-encuestaInterno');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

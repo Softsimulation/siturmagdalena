@@ -41,6 +41,31 @@ class EncuestaDinamicaCtrl extends Controller
         
         $this->middleware('auth')->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
         $this->middleware('role:Admin')->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        $this->middleware('permissions:create-encuestaADHOC|read-encuestaADHOC|edit-encuestaADHOC|estado-encuestaADHOC|duplicar-encuestaADHOC|descargarDatos-encuestaADHOC',
+        ['only' => ['getListado','getListadoencuestasdinamicas'] ]);
+        
+        $this->middleware('permissions:create-encuestaADHOC',['only' => ['postAgregarencuesta'] ]);
+        
+        $this->middleware('permissions:edit-encuestaADHOC|read-encuestaADHOC',['only' => ['getConfigurar','getDataconfiguracion',
+        'getListar','getListadoencuestas'] ]);
+        
+        $this->middleware('permissions:edit-encuestaADHOC',['only' => ['postGuardaridiomaencuesta',
+        'postAgregarseccion','postAgregarpregunta','postActivardesactivarpregunta','postEliminarpregunta','postGuardarordenpreguntas','postGuardaridiomapregunta',
+        'postAgregaropcionpregunta','postEliminaropcionpregunta',
+        'postDuplicarpregunta','DuplicarPregunta'] ]);
+        
+        $this->middleware('permissions:estado-encuestaADHOC',['only' => ['postCambiarestadoencuesta'] ]);
+        
+        $this->middleware('permissions:duplicar-encuestaADHOC',['only' => ['postDuplicarencuesta'] ]);
+        
+        
+        $this->middleware('permissions:descargarDatos-encuestaADHOC',['only' => ['getExcel'] ]);
+        
+        $this->middleware('permissions:estadisticas-encuestaADHOC',['only' => ['getEstadisticas','getEstadisticasencuesta'] ]);
+        
+        
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

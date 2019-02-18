@@ -21,6 +21,25 @@ use App\Models\Suscriptore;
 
 class PublicacionController extends Controller
 { 
+    public function __construct()
+    {
+        
+        $this->middleware('auth');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-publicaciones|create-publicaciones|read-publicaciones|edit-publicaciones|delete-publicaciones',['only' => ['getListado','ListadoPublicacionesAdmin'] ]);
+        
+        $this->middleware('permissions:create-publicaciones',['only' => ['CrearPublicacion','getPublicacion','guardarPublicacion'] ]);
+        
+        $this->middleware('permissions:edit-publicaciones|read-publicaciones',['only' => ['EditarPublicacion','getPublicacionEdit','editPublicacion'] ]);
+        
+        $this->middleware('permissions:edit-publicaciones',['only' => ['editPublicacion'] ]);
+        
+        $this->middleware('permissions:estado-publicaciones',['only' => ['cambiarEstadoPublicacion','EstadoPublicacion'] ]);
+        
+        $this->middleware('permissions:delete-publicaciones',['only' => ['eliminarPublicacion'] ]);
+        
+        $this->user = Auth::user();
+    }
     
     public function publicaciones() {
         return view('publicaciones.publicaciones');

@@ -53,9 +53,11 @@ class QueHacerController extends Controller
             $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idIdioma);
         }])->select('id')->where('estado', true)->get();
         
+        $query = DB::select('SELECT * FROM public.listado_promocion(?, null) LIMIT 9', array($idIdioma));
+        
         //return $destinos;
         return view('quehacer.Index', 
-        ['query' => $this->queHacerData($search = null)['query'], 
+        ['query' => $query, 
             'destinos' => $destinos, 
             'experiencias' => $experiencias,
             'categorias' => $categorias,
@@ -65,6 +67,13 @@ class QueHacerController extends Controller
             'tiposProveedor' => $tipoProveedor,
             'categoriasProveedor' => $categoriaProveedor,
             'success' => true]);
+    }
+    
+    public function getReset(){
+        $idIdioma = Idioma::where('culture', \Config::get('app.locale'))->pluck('id')->first();
+        $query = DB::select('SELECT * FROM public.listado_promocion(?, null, null) LIMIT 9', array($idIdioma));
+        
+        return ['query' => $query];
     }
     
     public function postSearch(Request $request){

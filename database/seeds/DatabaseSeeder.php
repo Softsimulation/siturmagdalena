@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $editAtraccion = Permission::create(['name' => 'edit-atraccion', 'display_name' => 'Editar atracción']);
         $estadoAtraccion = Permission::create(['name' => 'estado-atraccion', 'display_name' => 'Cambiar estado de atracción']);
         $deleteAtraccion = Permission::create(['name' => 'delete-atraccion', 'display_name' => 'Eliminar atracción']);
+        $sugerirAtraccion = Permission::create(['name' => 'sugerir-atraccion', 'display_name' => 'Sugerir atracción']);
         
         $createActividad = Permission::create(['name'=>'create-actividad', 'display_name' => 'Crear actividad']);
         $readActividad = Permission::create(['name' => 'read-actividad', 'display_name' => 'Ver actividad']);
@@ -34,20 +35,7 @@ class DatabaseSeeder extends Seeder
         $editActividad = Permission::create(['name' => 'edit-actividad', 'display_name' => 'Editar actividad']);
         $estadoActividad = Permission::create(['name' => 'estado-actividad', 'display_name' => 'Cambiar estado de actividad']);
         $deleteActividad = Permission::create(['name' => 'delete-actividad', 'display_name' => 'Eliminar actividad']);
-        
-        $createProveedor = Permission::create(['name'=>'create-proveedor', 'display_name' => 'Crear proveedor']);
-        $readProveedor = Permission::create(['name' => 'read-proveedor', 'display_name' => 'Ver proveedor']);
-        $listProveedor = Permission::create(['name' => 'list-proveedor', 'display_name' => 'Listar proveedores']);
-        $editProveedor = Permission::create(['name' => 'edit-proveedor', 'display_name' => 'Editar proveedor']);
-        $estadoProveedor = Permission::create(['name' => 'estado-proveedor', 'display_name' => 'Cambiar estado de proveedor']);
-        $deleteProveedor = Permission::create(['name' => 'delete-proveedor', 'display_name' => 'Eliminar proveedor']);
-        
-        $createEvento = Permission::create(['name'=>'create-evento', 'display_name' => 'Crear evento']);
-        $readEvento = Permission::create(['name' => 'read-evento', 'display_name' => 'Ver evento']);
-        $listEvento = Permission::create(['name' => 'list-evento', 'display_name' => 'Listar eventos']);
-        $editEvento = Permission::create(['name' => 'edit-evento', 'display_name' => 'Editar evento']);
-        $estadoEvento = Permission::create(['name' => 'estado-evento', 'display_name' => 'Cambiar estado de evento']);
-        $deleteEvento = Permission::create(['name' => 'delete-evento', 'display_name' => 'Eliminar evento']);
+        $sugerirActividad = Permission::create(['name' => 'sugerir-actividad', 'display_name' => 'Sugerir actividad']);
         
         $createDestino = Permission::create(['name'=>'create-destino', 'display_name' => 'Crear destino']);
         $readDestino = Permission::create(['name' => 'read-destino', 'display_name' => 'Ver destino']);
@@ -55,6 +43,15 @@ class DatabaseSeeder extends Seeder
         $editDestino = Permission::create(['name' => 'edit-destino', 'display_name' => 'Editar destino']);
         $estadoDestino = Permission::create(['name' => 'estado-destino', 'display_name' => 'Cambiar estado de destino']);
         $deleteDestino = Permission::create(['name' => 'delete-destino', 'display_name' => 'Eliminar destino']);
+        $sugerirDestino = Permission::create(['name' => 'sugerir-destino', 'display_name' => 'Sugerir destino']);
+        
+        $createEvento = Permission::create(['name'=>'create-evento', 'display_name' => 'Crear evento']);
+        $readEvento = Permission::create(['name' => 'read-evento', 'display_name' => 'Ver evento']);
+        $listEvento = Permission::create(['name' => 'list-evento', 'display_name' => 'Listar eventos']);
+        $editEvento = Permission::create(['name' => 'edit-evento', 'display_name' => 'Editar evento']);
+        $estadoEvento = Permission::create(['name' => 'estado-evento', 'display_name' => 'Cambiar estado de evento']);
+        $deleteEvento = Permission::create(['name' => 'delete-evento', 'display_name' => 'Eliminar evento']);
+        $sugerirEvento = Permission::create(['name' => 'sugerir-evento', 'display_name' => 'Sugerir evento']);
         
         $createRuta = Permission::create(['name'=>'create-ruta', 'display_name' => 'Crear ruta turística']);
         $readRuta = Permission::create(['name' => 'read-ruta', 'display_name' => 'Ver ruta turística']);
@@ -62,6 +59,67 @@ class DatabaseSeeder extends Seeder
         $editRuta = Permission::create(['name' => 'edit-ruta', 'display_name' => 'Editar ruta turística']);
         $estadoRuta = Permission::create(['name' => 'estado-ruta', 'display_name' => 'Cambiar estado de ruta turística']);
         $deleteRuta = Permission::create(['name' => 'delete-ruta', 'display_name' => 'Eliminar ruta turística']);
+        $sugerirRuta = Permission::create(['name' => 'sugerir-ruta', 'display_name' => 'Sugerir ruta']);
+        
+        $createProveedor = Permission::create(['name'=>'create-proveedor', 'display_name' => 'Crear proveedor']);
+        $readProveedor = Permission::create(['name' => 'read-proveedor', 'display_name' => 'Ver proveedor']);
+        $listProveedor = Permission::create(['name' => 'list-proveedor', 'display_name' => 'Listar proveedores']);
+        $editProveedor = Permission::create(['name' => 'edit-proveedor', 'display_name' => 'Editar proveedor']);
+        $estadoProveedor = Permission::create(['name' => 'estado-proveedor', 'display_name' => 'Cambiar estado de proveedor']);
+        $deleteProveedor = Permission::create(['name' => 'delete-proveedor', 'display_name' => 'Eliminar proveedor']);
+        $sugerirProveedor = Permission::create(['name' => 'sugerir-proveedor', 'display_name' => 'Sugerir proveedor']);
+        
+        $createDepartamento= Permission::create(['name'=>'create-departamento', 'display_name' => 'Crear departamento']);
+        $readDepartamento = Permission::create(['name' => 'read-departamento', 'display_name' => 'Ver departamento']);
+        $listDepartamento  = Permission::create(['name' => 'list-departamento', 'display_name' => 'Listar departamentos']);
+        $editDepartamento  = Permission::create(['name' => 'edit-departamento', 'display_name' => 'Editar departamento']);
+        $deleteDepartamento  = Permission::create(['name' => 'delete-departamento', 'display_name' => 'Eliminar departamento']);
+        $importarDepartamento  = Permission::create(['name' => 'importar-departamento', 'display_name' => 'Importar departamentos']);
+        
+        $createMunicipio= Permission::create(['name'=>'create-municipio', 'display_name' => 'Crear municipio']);
+        $readMunicipio = Permission::create(['name' => 'read-municipio', 'display_name' => 'Ver municipio']);
+        $listMunicipio  = Permission::create(['name' => 'list-municipio', 'display_name' => 'Listar municipios']);
+        $editMunicipio  = Permission::create(['name' => 'edit-municipio', 'display_name' => 'Editar municipio']);
+        $deleteMunicipio  = Permission::create(['name' => 'delete-municipio', 'display_name' => 'Eliminar municipio']);
+        $importarMunicipio  = Permission::create(['name' => 'importar-municipio', 'display_name' => 'Importar municipios']);
+        
+        $createPais= Permission::create(['name'=>'create-pais', 'display_name' => 'Crear pais']);
+        $readPais  = Permission::create(['name' => 'read-pais', 'display_name' => 'Ver pais']);
+        $listPais  = Permission::create(['name' => 'list-pais', 'display_name' => 'Listar paises']);
+        $editPais  = Permission::create(['name' => 'edit-pais', 'display_name' => 'Editar pais']);
+        $deletePais  = Permission::create(['name' => 'delete-pais', 'display_name' => 'Eliminar pais']);
+        $importarPais  = Permission::create(['name' => 'importar-pais', 'display_name' => 'Importar pais']);
+        
+        $acercaDepartamento  = Permission::create(['name' => 'acerca-departamento', 'display_name' => 'Configuración acerca del departamento']);
+        $requisitosViaje  = Permission::create(['name' => 'requisitos-viaje', 'display_name' => 'Configuración requisitos de viaje']);
+        
+        $createSlider= Permission::create(['name'=>'create-slider', 'display_name' => 'Crear slider']);
+        $readSlider  = Permission::create(['name' => 'read-slider', 'display_name' => 'Ver slider']);
+        $listSlider  = Permission::create(['name' => 'list-slider', 'display_name' => 'Listar sliders']);
+        $editSlider  = Permission::create(['name' => 'edit-slider', 'display_name' => 'Editar slider']);
+        $estadoSlider  = Permission::create(['name' => 'estado-slider', 'display_name' => 'Cambiar estado de slider']);
+        $prioridadSlider  = Permission::create(['name' => 'prioridad-slider', 'display_name' => 'Cambiar prioridad de slider']);
+        $deleteSlider  = Permission::create(['name' => 'delete-slider', 'display_name' => 'Eliminar slider']);
+        
+        $createNoticia= Permission::create(['name'=>'create-noticia', 'display_name' => 'Crear noticia']);
+        $readNoticia  = Permission::create(['name' => 'read-noticia', 'display_name' => 'Ver noticia']);
+        $listNoticia  = Permission::create(['name' => 'list-noticia', 'display_name' => 'Listar noticias']);
+        $editNoticia  = Permission::create(['name' => 'edit-noticia', 'display_name' => 'Editar noticia']);
+        $estadoNoticia  = Permission::create(['name' => 'estado-noticia', 'display_name' => 'Cambiar estado de noticia']);
+        $deleteNoticia  = Permission::create(['name' => 'delete-noticia', 'display_name' => 'Eliminar noticia']);
+        
+        $createPublicacion= Permission::create(['name'=>'create-publicaciones', 'display_name' => 'Crear publicación']);
+        $readPublicacion  = Permission::create(['name' => 'read-publicaciones', 'display_name' => 'Ver publicación']);
+        $listPublicacion  = Permission::create(['name' => 'list-publicaciones', 'display_name' => 'Listar publicaciones']);
+        $editPublicacion  = Permission::create(['name' => 'edit-publicaciones', 'display_name' => 'Editar publicación']);
+        $estadoPublicacion  = Permission::create(['name' => 'estado-publicaciones', 'display_name' => 'Cambiar estado de publicación']);
+        $deletePublicacion  = Permission::create(['name' => 'delete-publicaciones', 'display_name' => 'Eliminar publicación']);
+        
+        $exportarMedicionReceptor = Permission::create(['name' => 'export-medicionReceptor', 'display_name' => 'Exportar medición receptor']);
+        $exportarMedicionOferta = Permission::create(['name' => 'export-medicionOferta', 'display_name' => 'Exportar medición oferta y empleo']);
+        $exportarMedicionInternoEmisor = Permission::create(['name' => 'export-medicionInternoEmisor', 'display_name' => 'Exportar medición de interno y emisor']);
+        $exportarMedicionSostHogar = Permission::create(['name' => 'export-sostenibilidadHogar', 'display_name' => 'Exportar medición de sostenibilidad hogar']);
+        $exportarMedicionSostPST = Permission::create(['name' => 'export-sostenibilidadPST', 'display_name' => 'Exportar medición de sostenibilidad PST']);
         
         $createEncuestaReceptor = Permission::create(['name'=>'create-encuestaReceptor', 'display_name' => 'Crear encuesta receptor']);
         $readEncuestaReceptor = Permission::create(['name' => 'read-encuestaReceptor', 'display_name' => 'Ver encuesta receptor']);
@@ -74,8 +132,6 @@ class DatabaseSeeder extends Seeder
         $listGrupoViaje = Permission::create(['name' => 'list-grupoViaje', 'display_name' => 'Listar grupos de viajes']);
         $editGrupoViaje = Permission::create(['name' => 'edit-grupoViaje', 'display_name' => 'Editar grupo de viaje']);
         $deleteGrupoViaje = Permission::create(['name' => 'delete-grupoViaje', 'display_name' => 'Eliminar grupo de viaje']);
-        
-        
         
         $createEncuestaOferta = Permission::create(['name'=>'create-encuestaOfertaEmpleo', 'display_name' => 'Crear encuesta oferta y empleo']);
         $readEncuestaOferta = Permission::create(['name' => 'read-encuestaOfertaEmpleo', 'display_name' => 'Ver encuesta oferta y empleo']);
@@ -90,60 +146,64 @@ class DatabaseSeeder extends Seeder
         $estadoTemporada = Permission::create(['name' => 'estado-temporada', 'display_name' => 'Cambiar estado de temporada']);
         $deleteTemporada = Permission::create(['name' => 'delete-temporada', 'display_name' => 'Eliminar temporada']);
         
-        $createPoblacionDane = Permission::create(['name'=>'create-poblacionDane', 'display_name' => 'Crear población DANE']);
-        $readPoblacionDane = Permission::create(['name' => 'read-poblacionDane', 'display_name' => 'Ver población DANE']);
-        $listPoblacionDane = Permission::create(['name' => 'list-poblacionDane', 'display_name' => 'Listar población DANE']);
-        $editPoblacionDane = Permission::create(['name' => 'edit-poblacionDane', 'display_name' => 'Editar población DANE']);
+        $createInternoEmisor = Permission::create(['name' => 'create-encuestaInterno', 'display_name' => 'Crear encuesta interno']);
+        $editInternoEmisor = Permission::create(['name' => 'read-encuestaInterno', 'display_name' => 'Ver encuesta interno']);
+        $deleteInternoEmisor = Permission::create(['name' => 'edit-encuestaInterno', 'display_name' => 'Editar encuesta interno']);
+        $listInternoEmisor = Permission::create(['name' => 'delete-encuestaInterno', 'display_name' => 'Eliminar encuesta interno']);
+        $readInternoEmisor = Permission::create(['name' => 'list-encuestaInterno', 'display_name' => 'Listar encuestas interno']);
         
-        $createMedicion = Permission::create(['name'=>'create-medicion', 'display_name' => 'Crear medicion']);
-        $readMedicion = Permission::create(['name' => 'read-medicion', 'display_name' => 'Ver medicion']);
-        $listMedicion = Permission::create(['name' => 'list-medicion', 'display_name' => 'Listar mediciones']);
-        $editMedicion = Permission::create(['name' => 'edit-medicion', 'display_name' => 'Editar medicion']);
-        $estadoMedicion = Permission::create(['name' => 'estado-medicion', 'display_name' => 'Cambiar estado de medicion']);
-        $deleteMedicion = Permission::create(['name' => 'delete-medicion', 'display_name' => 'Eliminar medicion']);
+        $createSostHogar = Permission::create(['name' => 'create-encuestaSostenibilidadHogares', 'display_name' => 'Crear encuesta sostenibilidad hogar']);
+        $editSostHogar = Permission::create(['name' => 'read-encuestaSostenibilidadHogares', 'display_name' => 'Ver encuesta sostenibilidad hogar']);
+        $deleteSostHogar = Permission::create(['name' => 'edit-encuestaSostenibilidadHogares', 'display_name' => 'Editar encuesta sostenibilidad hogar']);
+        $listSostHogar = Permission::create(['name' => 'delete-encuestaSostenibilidadHogares', 'display_name' => 'Eliminar encuesta sostenibilidad hogar']);
+        $listSostHogar = Permission::create(['name' => 'list-encuestaSostenibilidadHogares', 'display_name' => 'Listar encuesta sostenibilidad hogar']);
         
-        $createPrestador = Permission::create(['name'=>'create-prestador', 'display_name' => 'Crear prestador']);
-        $readPrestador = Permission::create(['name' => 'read-prestador', 'display_name' => 'Ver prestador']);
-        $listPrestador = Permission::create(['name' => 'list-prestador', 'display_name' => 'Listar prestadores']);
-        $editPrestador = Permission::create(['name' => 'edit-prestador', 'display_name' => 'Editar medicion']);
-        $estadoPrestador = Permission::create(['name' => 'estado-prestador', 'display_name' => 'Cambiar estado de prestador']);
-        $deletePrestador = Permission::create(['name' => 'delete-prestador', 'display_name' => 'Eliminar prestador']);
+        $createSostPST = Permission::create(['name'=>'create-encuestaSostenibilidadPST', 'display_name' => 'Crear encuesta sostenibilidad PST']);
+        $readSostPST = Permission::create(['name' => 'read-encuestaSostenibilidadPST', 'display_name' => 'Ver encuesta sostenibilidad PST']);
+        $listSostPST = Permission::create(['name' => 'list-encuestaSostenibilidadPST', 'display_name' => 'Listar encuestas sostenibilidad PST']);
+        $editSostPST = Permission::create(['name' => 'edit-encuestaSostenibilidadPST', 'display_name' => 'Editar encuesta sostenibilidad PST']);
+        $deleteSostPST = Permission::create(['name' => 'delete-encuestaSostenibilidadPST', 'display_name' => 'Eliminar encuesta sostenibilidad PST']);
         
-        $createBloque = Permission::create(['name'=>'create-bloque', 'display_name' => 'Crear bloque']);
-        $readBloque  = Permission::create(['name' => 'read-bloque', 'display_name' => 'Ver bloque']);
-        $listBloque  = Permission::create(['name' => 'list-bloque', 'display_name' => 'Listar bloques']);
-        $editBloque  = Permission::create(['name' => 'edit-bloque', 'display_name' => 'Editar bloque']);
-        $estadoBloque  = Permission::create(['name' => 'estado-bloque', 'display_name' => 'Cambiar estado de bloque']);
-        $deleteBloque  = Permission::create(['name' => 'delete-bloque', 'display_name' => 'Eliminar bloque']);
+        $createEstadisticaSecundariaADHOC = Permission::create(['name'=>'create-estadisticaSecundaria', 'display_name' => 'Crear estadística secundaria']);
+        $readEstadisticaSecundariaADHOC  = Permission::create(['name' => 'read-estadisticaSecundaria', 'display_name' => 'Ver estadística secundaria']);
+        $listEstadisticaSecundariaADHOC  = Permission::create(['name' => 'list-estadisticaSecundariaC', 'display_name' => 'Listar estadísticas secundarias']);
+        $editEstadisticaSecundariaADHOC  = Permission::create(['name' => 'edit-estadisticaSecundariaC', 'display_name' => 'Editar estadística secundaria']);
+        $estadoEstadisticaSecundariaADHOC  = Permission::create(['name' => 'estado-estadisticaSecundaria', 'display_name' => 'Cambiar estado de estadística secundaria']);
+        $deleteEstadisticaSecundariaADHOC  = Permission::create(['name' => 'delete-estadisticaSecundaria', 'display_name' => 'Eliminar estadística secundaria']);
         
-        $createEstadisticaSecundariaADHOC = Permission::create(['name'=>'create-estadisticaSecundariaADHOC', 'display_name' => 'Crear estadística secundaria']);
-        $readEstadisticaSecundariaADHOC  = Permission::create(['name' => 'read-estadisticaSecundariaADHOC', 'display_name' => 'Ver estadística secundaria']);
-        $listEstadisticaSecundariaADHOC  = Permission::create(['name' => 'list-estadisticaSecundariaADHOC', 'display_name' => 'Listar estadísticas secundarias']);
-        $editEstadisticaSecundariaADHOC  = Permission::create(['name' => 'edit-estadisticaSecundariaADHOC', 'display_name' => 'Editar estadística secundaria']);
-        $estadoEstadisticaSecundariaADHOC  = Permission::create(['name' => 'estado-estadisticaSecundariaADHOC', 'display_name' => 'Cambiar estado de estadística secundaria']);
-        $deleteEstadisticaSecundariaADHOC  = Permission::create(['name' => 'delete-estadisticaSecundariaADHOC', 'display_name' => 'Eliminar estadística secundaria']);
+        $createEncuestaADHOC = Permission::create(['name'=>'create-encuestaADHOC', 'display_name' => 'Crear encuesta ADHOC']);
+        $readEncuestaADHOC  = Permission::create(['name' => 'read-encuestaADHOC', 'display_name' => 'Ver encuesta ADHOC']);
+        $listEncuestaADHOC  = Permission::create(['name' => 'list-encuestaADHOC', 'display_name' => 'Listar encuesta ADHOC']);
+        $editEncuestaADHOC  = Permission::create(['name' => 'edit-encuestaADHOC', 'display_name' => 'Editar encuesta ADHOC']);
+        $estadoEncuestaADHOC  = Permission::create(['name' => 'estado-encuestaADHOC', 'display_name' => 'Cambiar estado de encuesta ADHOC']);
+        $deleteEncuestaADHOC  = Permission::create(['name' => 'delete-encuestaADHOC', 'display_name' => 'Eliminar encuesta ADHOC']);
+        $duplicarEncuestaADHOC  = Permission::create(['name' => 'duplicar-encuestaADHOC', 'display_name' => 'Duplicar encuesta ADHOC']);
+        $estadisticasEncuestaADHOC  = Permission::create(['name' => 'estadisticas-encuestaADHOC', 'display_name' => 'Ver estadisticas de encuesta ADHOC']);
         
-        $createEncuestaADHOC = Permission::create(['name'=>'create-encuestaOfertaADHOC', 'display_name' => 'Crear encuesta ADHOC']);
-        $readEncuestaADHOC = Permission::create(['name' => 'read-encuestaOfertaADHOC', 'display_name' => 'Ver encuesta ADHOC']);
-        $listEncuestaADHOC = Permission::create(['name' => 'list-encuestaOfertaADHOC', 'display_name' => 'Listar encuestas ADHOC']);
-        $editEncuestaADHOC = Permission::create(['name' => 'edit-encuestaOfertaADHOC', 'display_name' => 'Editar encuesta ADHOC']);
-        $deleteEncuestaADHOC = Permission::create(['name' => 'delete-encuestaOfertaADHOC', 'display_name' => 'Eliminar encuesta ADHOC']);
-
-        $listExportacionesReceptor = Permission::create(['name' => 'list-exportacionesReceptor', 'display_name' => 'Listar exportaciones de mediciones de receptor']);
-        $exportarMedicionReceptor = Permission::create(['name' => 'export-medicionReceptor', 'display_name' => 'Exportar medición receptor']);
-        
-        $listExportacionesOferta = Permission::create(['name' => 'list-exportacionesOferta', 'display_name' => 'Listar exportaciones de mediciones de oferta y empleo']);
-        $exportarMedicionOferta = Permission::create(['name' => 'export-medicionOferta', 'display_name' => 'Exportar medición oferta y empleo']);
-        
-        $listExportacionesInternoEmisor = Permission::create(['name' => 'list-exportacionesInternoEmisor', 'display_name' => 'Listar exportaciones de mediciones de interno y emisor']);
-        $exportarMedicionInternoEmisor = Permission::create(['name' => 'export-medicionInternoEmisor', 'display_name' => 'Exportar medición de interno y emisor']);
-        
-        $listExportacionesMuestraMaestra = Permission::create(['name' => 'list-exportacionesMuestraMaestra', 'display_name' => 'Listar exportaciones de mediciones de muestra maestra']);
-        $exportarMedicionMuestraMaestra = Permission::create(['name' => 'export-medicionMuestraMaestra', 'display_name' => 'Exportar medición de muestra maestra']);
-        
-        $listImportacionesRNT = Permission::create(['name' => 'list-importacionesRNT', 'display_name' => 'Listar RNT']);
         $importarRNT = Permission::create(['name' => 'import-RNT', 'display_name' => 'Importar RNT']);
-        $deleteRNT = Permission::create(['name' => 'delete-RNT', 'display_name' => 'Eliminar encuesta RNT']);
+        $excelMuestra = Permission::create(['name'=>'excel-muestra', 'display_name' => 'Excel muestra maestra']);
+        $kmlMuestra = Permission::create(['name'=>'KML-muestra', 'display_name' => 'Archivo KML muestra maestra']);
+        $excelInfoZona = Permission::create(['name'=>'excel-infoZona', 'display_name' => 'Excel Información zona']);
+        $excelZona = Permission::create(['name'=>'excel-zona', 'display_name' => 'Excel de zona']);
+        
+        $llenarInfoZona = Permission::create(['name'=>'llenarInfo-zona', 'display_name' => 'Ingresar información zona']);
+        
+        $createBloque = Permission::create(['name'=>'create-zona', 'display_name' => 'Crear bloque']);
+        $readBloque  = Permission::create(['name' => 'read-zona', 'display_name' => 'Ver bloque']);
+        $listBloque  = Permission::create(['name' => 'list-zona', 'display_name' => 'Listar bloques']);
+        $editBloque  = Permission::create(['name' => 'edit-zona', 'display_name' => 'Editar bloque']);
+        $estadoBloque  = Permission::create(['name' => 'estado-zona', 'display_name' => 'Cambiar estado de bloque']);
+        $deleteBloque  = Permission::create(['name' => 'delete-zona', 'display_name' => 'Eliminar bloque']);
+        
+        $createPeriodoMuestra = Permission::create(['name'=>'create-periodosMuestra', 'display_name' => 'Crear periodos muestra maestra']);
+        $readPeriodoMuestra  = Permission::create(['name' => 'read-periodosMuestra', 'display_name' => 'Ver periodos muestra maestra']);
+        $listPeriodoMuestra  = Permission::create(['name' => 'list-periodosMuestra', 'display_name' => 'Listar periodos muestra maestra']);
+        $editPeriodoMuestra  = Permission::create(['name' => 'edit-periodosMuestra', 'display_name' => 'Editar periodos muestra maestra']);
+        $estadoPeriodoMuestra  = Permission::create(['name' => 'estado-periodosMuestra', 'display_name' => 'Cambiar estado de periodos muestra maestra']);
+        
+        $createProveedorMuestra  = Permission::create(['name' => 'create-proveedorMuestra', 'display_name' => 'Crear proveedor muestra maestra']);
+        $editProveedorMuestra  = Permission::create(['name' => 'edit-proveedorMuestra', 'display_name' => 'Editar proveedor muestra maestra']);
+        $verMuestraMaestra = Permission::create(['name'=>'read-muestraMaestra', 'display_name' => 'Ver muestra maestra']);
         
         $createInforme= Permission::create(['name'=>'create-informe', 'display_name' => 'Crear informe']);
         $readInforme  = Permission::create(['name' => 'read-informe', 'display_name' => 'Ver informe']);
@@ -152,30 +212,14 @@ class DatabaseSeeder extends Seeder
         $estadoInforme  = Permission::create(['name' => 'estado-informe', 'display_name' => 'Cambiar estado de informe']);
         $deleteInforme  = Permission::create(['name' => 'delete-informe', 'display_name' => 'Eliminar informe']);
         
-        $createNoticia= Permission::create(['name'=>'create-noticia', 'display_name' => 'Crear noticia']);
-        $readNoticia  = Permission::create(['name' => 'read-noticia', 'display_name' => 'Ver noticia']);
-        $listNoticia  = Permission::create(['name' => 'list-noticia', 'display_name' => 'Listar noticias']);
-        $editNoticia  = Permission::create(['name' => 'edit-noticia', 'display_name' => 'Editar noticia']);
-        $estadoNoticia  = Permission::create(['name' => 'estado-noticia', 'display_name' => 'Cambiar estado de noticia']);
-        $deleteNoticia  = Permission::create(['name' => 'delete-noticia', 'display_name' => 'Eliminar noticia']);
+        $listProveedorOferta  = Permission::create(['name' => 'list-proveedoresOferta', 'display_name' => 'Listar proveedores oferta']);
+        $listProveedorRNTOferta  = Permission::create(['name' => 'list-proveedoresRNTOferta', 'display_name' => 'Listar proveedores RNT oferta']);
+        $exportProveedorRNTOferta  = Permission::create(['name' => 'exportar-proveedoresRNTOferta', 'display_name' => 'Exportar proveedores RNT oferta']);
+        $exportProveedorOferta  = Permission::create(['name' => 'exportar-proveedoresOferta', 'display_name' => 'Exportar proveedores oferta']);
+        $editProveedorRNTOferta  = Permission::create(['name' => 'edit-proveedoresRNTOferta', 'display_name' => 'Editar proveedores RNT oferta']);
+        $activarProveedorOferta  = Permission::create(['name' => 'activar-proveedoresOferta', 'display_name' => 'Activar proveedor oferta']);
         
-        $createPais= Permission::create(['name'=>'create-pais', 'display_name' => 'Crear pais']);
-        $readPais  = Permission::create(['name' => 'read-pais', 'display_name' => 'Ver pais']);
-        $listPais  = Permission::create(['name' => 'list-pais', 'display_name' => 'Listar paises']);
-        $editPais  = Permission::create(['name' => 'edit-pais', 'display_name' => 'Editar pais']);
-        $deletePais  = Permission::create(['name' => 'delete-pais', 'display_name' => 'Eliminar pais']);
         
-        $createDepartamento= Permission::create(['name'=>'create-departamento', 'display_name' => 'Crear departamento']);
-        $readDepartamento = Permission::create(['name' => 'read-departamento', 'display_name' => 'Ver departamento']);
-        $listDepartamento  = Permission::create(['name' => 'list-departamento', 'display_name' => 'Listar departamentos']);
-        $editDepartamento  = Permission::create(['name' => 'edit-departamento', 'display_name' => 'Editar departamento']);
-        $deleteDepartamento  = Permission::create(['name' => 'delete-departamento', 'display_name' => 'Eliminar departamento']);
-        
-        $createMunicipio= Permission::create(['name'=>'create-municipio', 'display_name' => 'Crear municipio']);
-        $readMunicipio = Permission::create(['name' => 'read-municipio', 'display_name' => 'Ver municipio']);
-        $listMunicipio  = Permission::create(['name' => 'list-municipio', 'display_name' => 'Listar municipios']);
-        $editMunicipio  = Permission::create(['name' => 'edit-municipio', 'display_name' => 'Editar municipio']);
-        $deleteMunicipio  = Permission::create(['name' => 'delete-municipio', 'display_name' => 'Eliminar municipio']);
         
     }
 }

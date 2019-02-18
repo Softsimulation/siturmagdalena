@@ -35,7 +35,28 @@ class MuestraMaestraCtrl extends Controller
     {
         
         $this->middleware('auth', ['except' => ['getDetalles','getDatacongiguracion']] );
-        $this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        //$this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        
+        $this->middleware('permissions:list-periodosMuestra|create-periodosMuestra|read-periodosMuestra|edit-periodosMuestra|
+        excel-muestra|KML-muestra|
+        agregar-zona|edit-zona|delete-zona',
+        ['only' => ['getPeriodos','getDatalistado']]);
+        $this->middleware('permissions:read-muestraMaestra|create-periodosMuestra',['only' => ['getDatacongiguracion'] ]);
+        $this->middleware('permissions:create-periodosMuestra',['only' => ['postCrearperiodo'] ]);
+        $this->middleware('permissions:edit-periodosMuestra',['only' => ['postEditarperiodo'] ]);
+        
+        $this->middleware('permissions:excel-muestra',['only' => ['getExcelinfoperiodo'] ]);
+        $this->middleware('permissions:KML-muestra',['only' => ['getGeojsonzone'] ]);
+        $this->middleware('permissions:agregar-zona',['only' => ['postAgregarzona'] ]);
+        $this->middleware('permissions:edit-zona',['only' => ['postEditarzona','postEditarposicionzona'] ]);
+        $this->middleware('permissions:delete-zona',['only' => ['postEliminarzona'] ]);
+        $this->middleware('permissions:excel-zona',['only' => ['getExcel'] ]);
+        $this->middleware('permissions:llenarInfo-zona|excel-infoZona',['only' => ['postGuardarinfozona','getLlenarinfozona','getExcelinfozona'] ]);
+        $this->middleware('permissions:create-proveedorMuestra|edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal'] ]);
+        $this->middleware('permissions:edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal','postEditarubicacionproveedor'] ]);
+        
+        
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -91,10 +112,10 @@ class MuestraMaestraCtrl extends Controller
     public function getDatacongiguracion($id){
         
         
-        return json_encode( [
+        return [
                
                 "proveedores"=> DB::select("SELECT *from proveedores_formales"),
-                                    
+                                     
                 "proveedoresInformales" => DB::select("SELECT *from listado_proveedores_informales"),
                 
                 "periodo"=> Periodos_medicion::where("id",$id)
@@ -110,16 +131,17 @@ class MuestraMaestraCtrl extends Controller
                                                                 } ]); 
                                                            },
                                             ])->select("id")->get(),
-                                       
+                                            
                 "sectores"=> Sector::where("estado",true)->with([ 
                                                                  "sectoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
                                                                  "destino"=>function($q){ $q->with( ["destinoConIdiomas"=>function($qq){ $qq->where("idiomas_id",1); }] ); }
                                                                 ])->get(),
                 "estados"=> Estado_proveedor::where("id","!=",7)->get(),
                 
-                "municipios"=> municipio::where("departamento_id",1411)->select('id','nombre')->get()  
+                "municipios"=> municipio::where("departamento_id",1411)->select('id','nombre')->get() 
+                //Proveedores_rnt::join("municipios","municipios.id","=","municipio_id")->select('municipios.id','municipios.nombre')->distinct()->get()
                 
-            ]);
+            ];
     }
     
     
@@ -290,7 +312,7 @@ class MuestraMaestraCtrl extends Controller
         $zona->encargados()->detach();
         $zona->encargados()->attach( $request->encargados );
         
-        return [ "success"=> true, "zona"=> Zona::where("id",$zona->id)->with(["encargados"=>function($qq){ $qq->with("user");}])->first() ];
+        return [ "success"=> true, "zona"=> Zona::where("id",$zona->id)->with(["encargados"])->first() ];
         
     }
     
@@ -348,8 +370,8 @@ class MuestraMaestraCtrl extends Controller
         $zona = Zona::where("id",$id)->with([ "encargados"=>function($qq){ $qq->with("user"); }] )->first();
         if($zona){
          
-            $proveedores = DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) );
-            $proveedoresInformales = DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) );
+            $proveedores = new Collection( DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ) );
+            $proveedoresInformales = new Collection( DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) ) );
            
             $zona->es_generada = true;
             $zona->save();
@@ -543,39 +565,22 @@ class MuestraMaestraCtrl extends Controller
             
             $muestra = Muestra_proveedor::where([ ["zona_id",$request->zona], ["proveedor_rnt_id",$item["id"]] ])->first();
             
-            if($item["muestra"]){
-            
-                if( !$muestra ){
-                    $muestra = new Muestra_proveedor();
-                    $muestra->zona_id = $request->zona;
-                    $muestra->proveedor_rnt_id = $item["id"];
-                    $muestra->user_create = $this->user->username;
-                    $muestra->estado = true;
-                }
-                
-                if ( isset ($item["muestra"]["estado_proveedor_id"]) ) {
-                    $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
-                }
-                if ( isset ($item["muestra"]["rnt"]) ) {
-                    $muestra->rnt = $item["muestra"]["rnt"];
-                }
-                if ( isset ($item["muestra"]["nombre_proveedor"]) ) {
-                    $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
-                }
-                if ( isset ($item["muestra"]["direccion"]) ) {
-                    $muestra->direccion = $item["muestra"]["direccion"];
-                }
-                if ( isset ($item["muestra"]["categoria_proveedor_id"]) ) {
-                    $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
-                }
-                if ( isset ($item["muestra"]["observaciones"]) ) {
-                    $muestra->observaciones = $item["muestra"]["observaciones"];
-                }
-                
-                $muestra->user_update = $this->user->username;
-                $muestra->save();
+            if( !$muestra ){
+                $muestra = new Muestra_proveedor();
+                $muestra->zona_id = $request->zona;
+                $muestra->proveedor_rnt_id = $item["id"];
+                $muestra->user_create = $this->user->username;
+                $muestra->estado = true;
             }
-           
+            
+            $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
+            $muestra->rnt = $item["muestra"]["rnt"];
+            $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
+            $muestra->direccion = $item["muestra"]["direccion"];
+            $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
+            $muestra->observaciones = $item["muestra"]["observaciones"];
+            $muestra->user_update = $this->user->username;
+            $muestra->save();
         }
         
         
@@ -583,35 +588,21 @@ class MuestraMaestraCtrl extends Controller
             
             $muestra = Muestra_proveedores_informale::where([ ["zona_id",$request->zona], ["proveedores_informal_id",$item["id"]] ])->first();
             
-            if($item["muestra"]){
-            
-                if( !$muestra ){
-                    $muestra = new Muestra_proveedores_informale();
-                    $muestra->zona_id = $request->zona;
-                    $muestra->proveedores_informal_id = $item["id"];
-                    $muestra->user_create = $this->user->username;
-                    $muestra->estado = true;
-                }
-                
-                if ( isset ($item["muestra"]["estado_proveedor_id"]) ) {
-                    $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
-                }
-                if ( isset ($item["muestra"]["nombre_proveedor"]) ) {
-                    $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
-                }
-                if ( isset ($item["muestra"]["direccion"]) ) {
-                    $muestra->direccion = $item["muestra"]["direccion"];
-                }
-                if ( isset ($item["muestra"]["categoria_proveedor_id"]) ) {
-                    $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
-                }
-                if ( isset ($item["muestra"]["observaciones"]) ) {
-                    $muestra->observaciones = $item["muestra"]["observaciones"];
-                }
-                
-                $muestra->user_update = $this->user->username;
-                $muestra->save();
+            if( !$muestra ){
+                $muestra = new Muestra_proveedores_informale();
+                $muestra->zona_id = $request->zona;
+                $muestra->proveedores_informal_id = $item["id"];
+                $muestra->user_create = $this->user->username;
+                $muestra->estado = true;
             }
+            
+            $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
+            $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
+            $muestra->direccion = $item["muestra"]["direccion"];
+            $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
+            $muestra->observaciones = $item["muestra"]["observaciones"];
+            $muestra->user_update = $this->user->username;
+            $muestra->save();
         }
         
         
@@ -708,7 +699,7 @@ class MuestraMaestraCtrl extends Controller
         
         $proveedor->razon_social = $request->nombre;
         $proveedor->direccion = $request->direccion;
-        if($request->telefono){ $proveedor->telefono = $request->telefono; }
+        $proveedor->telefono = $request->telefono;
         $proveedor->categoria_proveedor_id = $request->idcategoria;
         $proveedor->municipio_id = $request->municipio_id;
         $proveedor->user_update = $this->user->username;
@@ -718,6 +709,7 @@ class MuestraMaestraCtrl extends Controller
     }
     
     public function postEditarubicacionproveedor(Request $request){
+        
         
         $validator = \Validator::make($request->all(), [
 			'id' => 'required',
@@ -740,7 +732,7 @@ class MuestraMaestraCtrl extends Controller
         $proveedor->longitud = $request->longitud;
         $proveedor->save();
         
-        return [ "success"=>true, "id"=> $request->id , "latitud"=>$request->latitud , "longitud"=>$request->longitud ];
+        return [ "success"=>true ];
     }
  
  

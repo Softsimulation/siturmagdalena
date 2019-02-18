@@ -28,19 +28,21 @@ class AdministradorActividadesController extends Controller
         $this->middleware('auth');
         
         //$this->middleware('role:Admin');
+        
+        $this->middleware('permissions:list-actividad|create-actividad|read-actividad|edit-actividad|estado-actividad|sugerir-actividad',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-actividad|edit-actividad',['only' => ['postDesactivarActivar','postGuardaradicional','postGuardarmultimedia'] ]);
+        $this->middleware('permissions:create-actividad|read-actividad|edit-actividad',['only' => ['getDatoscrear'] ]);
+        $this->middleware('permissions:create-actividad',['only' => ['getCrear','postCrearactividad'] ]);
+        $this->middleware('permissions:read-actividad|edit-actividad',['only' => ['getEditar','getDatosactividad','getIdioma'] ]);
+        $this->middleware('permissions:edit-actividad',['only' => ['postEditaridioma','postEditardatosgenerales' ] ]);
+        $this->middleware('permissions:estado-actividad',['only' => ['postDesactivarActivar'] ]);
+        $this->middleware('permissions:sugerir-actividad',['only' => ['postSugerir'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
-        }/*
-        $this->middleware('permissions:list-actividad',['only' => ['getIndex','getDatos'] ]);
-        $this->middleware('permissions:create-actividad',['only' => ['getCrear','getDatoscrear','getIdioma','getDatoscrearnoticias','postGuardarnoticia',
-        'postGuardarmultimedianoticia','postGuardartextoalternativo','postEliminarmultimedia'] ]);
-        $this->middleware('permissions:read-actividad',['only' => ['getVernoticia','getDatosver','getListadonoticias','getNoticias'] ]);
-        $this->middleware('permissions:edit-actividad',['only' => ['getListadonoticias','getNoticias','getNuevoidioma','postGuardarnoticia','postGuardarmultimedianoticia',
-        'postGuardartextoalternativo','postEliminarmultimedia','getVistaeditar','getDatoseditar','postModificarnoticia' ] ]);
-        $this->middleware('permissions:estado-actividad',['only' => ['getListadonoticias','getNoticias','postCambiarestado'] ]);*/
+        }
     }
     public function getIndex(){
-        return view('administradoractividades.Index');
+        return view('administradoractividades.Index',['user'=>User::where('id',Auth::user()->id)->first()]);
     }
     
     public function getCrear(){
