@@ -69,7 +69,7 @@ Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 Route::controller('/informes','InformesCtrl');
 
-
+Route::controller('/calcularindicadores', 'IndicadorAdministradorController');
 Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 
 Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
