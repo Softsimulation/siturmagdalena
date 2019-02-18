@@ -150,19 +150,19 @@
                                 
                                 <ul role="menu" aria-label="menuSitur">
                                     <li role="none">
-                                        <a role="menuitem" href="#1"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.solYPlaya')}}</a>
+                                        <a role="menuitem" href="/experiencias/tipo/1"><span class="mdi mdi-beach hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.solYPlaya')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#2"><span class="mdi mdi-arch hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.cultura')}}</a>
+                                        <a role="menuitem" href="/experiencias/tipo/2"><span class="mdi mdi-arch hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.cultura')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#3"><span class="mdi mdi-leaf hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.naturaleza')}}</a>
+                                        <a role="menuitem" href="/experiencias/tipo/3"><span class="mdi mdi-leaf hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.naturaleza')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#4"><span class="mdi mdi-swim hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.nautico')}}</a>
+                                        <a role="menuitem" href="/experiencias/tipo/4"><span class="mdi mdi-swim hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.nautico')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="#5"><span class="mdi mdi-church hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.religioso')}}</a>
+                                        <a role="menuitem" href="/experiencias/tipo/5"><span class="mdi mdi-church hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.religioso')}}</a>
                                     </li>
                                     <li role="none">
                                         <a role="menuitem" href="#"><span class="mdi mdi-calendar-clock hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuExperiencias.reunionesYEventos')}}</a>

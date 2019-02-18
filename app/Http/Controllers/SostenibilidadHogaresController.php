@@ -40,7 +40,18 @@ class SostenibilidadHogaresController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-encuestaSostenibilidadHogares|create-encuestaSostenibilidadHogares|read-encuestaSostenibilidadHogares|edit-encuestaSostenibilidadHogares|delete-encuestaSostenibilidadHogares',['only' => ['getEncuestas','getListarencuestas'] ]);
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadHogares|read-encuestaSostenibilidadHogares|edit-encuestaSostenibilidadHogares',['only' => ['getInfoeditar','getEditar','getComponentesocial','getInfocomponentesocial','getComponenteambiental','getInfocomponenteambiental',
+        'getEconomico','getCargardatoseconomico'] ]);
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadHogares|edit-encuestaSostenibilidadHogares',['only' => ['postGuardarcomponentesocial','postGuardarcomponenteambiental','postGuardareconomico'] ]);
+        
+        
+        $this->middleware('permissions:create-encuestaSostenibilidadHogares',['only' => ['getCrear','getInfocrear','postGuardarencuesta'] ]);
+        
+        $this->middleware('permissions:edit-encuestaSostenibilidadHogares',['only' => ['postEditarencuesta'] ]);
         $this->user = Auth::user();
     }
     

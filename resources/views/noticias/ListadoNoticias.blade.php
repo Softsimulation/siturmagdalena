@@ -54,9 +54,11 @@
 @section('content')
     <div class="container">
         <div class="flex-list">
-            <a href="/noticias/crearnoticia" class="btn btn-lg btn-success" class="btn btn-lg btn-success">
-                Crear noticia
-            </a>
+            @if(Auth::user()->contienePermiso('create-noticia'))
+                <a href="/noticias/crearnoticia" class="btn btn-lg btn-success" class="btn btn-lg btn-success">
+                    Crear noticia
+                </a>
+            @endif
             <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
         </div>
         <br/>
@@ -96,15 +98,23 @@
                   <td>@{{x.nombreTipoNoticia}}</td>
                   <td >@{{x.estado == true ? 'Activo' : 'Inactivo'}}</td>
                   <td>
-                    <a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-xs btn-default" title="Editar noticia"><span class="glyphicon glyphicon-pencil"></span></a>
-                    <a href="/noticias/vernoticia/@{{x.idNoticia}}" class="btn btn-xs btn-default" title="Ver noticia"><span class="glyphicon glyphicon-search"></span></a>
-                    <button type="button" ng-click="cambiarEstado(x)" class="btn btn-xs btn-default" title="Cambiar estado">
-                        <span ng-if="!x.estado" class="glyphicon glyphicon-eye-open"></span>
-                        <span ng-if="x.estado" class="glyphicon glyphicon-eye-close"></span>
-                    </button>
+                      @if(Auth::user()->contienePermiso('edit-noticia'))
+                            <a href="/noticias/vistaeditar/@{{x.idNoticia}}/1" class="btn btn-xs btn-default" title="Editar noticia"><span class="glyphicon glyphicon-pencil"></span></a>
+                       @endif
+                        @if(Auth::user()->contienePermiso('read-noticia'))   
+                            <a href="/noticias/vernoticia/@{{x.idNoticia}}" class="btn btn-xs btn-default" title="Ver noticia"><span class="glyphicon glyphicon-search"></span></a>
+                        @endif
+                        @if(Auth::user()->contienePermiso('estado-noticia'))
+                            <button type="button" ng-click="cambiarEstado(x)" class="btn btn-xs btn-default" title="Cambiar estado">
+                                <span ng-if="!x.estado" class="glyphicon glyphicon-eye-open"></span>
+                                <span ng-if="x.estado" class="glyphicon glyphicon-eye-close"></span>
+                            </button>
+                        @endif
                     <!--<a href="" ng-click="eliminarNoticia(x)" class="btn btn-default" title="Eliminar noticia" style="float:left"><span class="glyphicon glyphicon-remove"></span></a>-->
-                    <a ng-repeat="idioma in x.idiomas[0].idiomas" href="/noticias/vistaeditar/@{{x.idNoticia}}/@{{idioma.id}}" class="btn btn-xs btn-default" title="Editar @{{idioma.nombre}}">@{{idioma.culture}}</a>
-                      <a ng-if="x.idiomas[0].idiomas.length < cantIdiomas" href="/noticias/nuevoidioma/@{{x.idNoticia}}" class="btn btn-xs btn-default" title="Agregar idioma"><span class="glyphicon glyphicon-plus"></span></a>
+                        @if(Auth::user()->contienePermiso('edit-noticia'))
+                            <a ng-repeat="idioma in x.idiomas[0].idiomas" href="/noticias/vistaeditar/@{{x.idNoticia}}/@{{idioma.id}}" class="btn btn-xs btn-default" title="Editar @{{idioma.nombre}}">@{{idioma.culture}}</a>
+                              <a ng-if="x.idiomas[0].idiomas.length < cantIdiomas" href="/noticias/nuevoidioma/@{{x.idNoticia}}" class="btn btn-xs btn-default" title="Agregar idioma"><span class="glyphicon glyphicon-plus"></span></a>
+                        @endif
                   </td>
               </tr>
           </tbody>

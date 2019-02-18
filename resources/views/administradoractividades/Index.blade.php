@@ -13,9 +13,11 @@
 @section('subtitulo','El siguiente listado cuenta con @{{actividades.length}} registro(s)')
 @section('content')
 <div class="flex-list">
-    <a href="/administradoractividades/crear" type="button" class="btn btn-lg btn-success">
-      Agregar actividad
-    </a> 
+    @if(Auth::user()->contienePermiso('create-actividad'))
+        <a href="/administradoractividades/crear" type="button" class="btn btn-lg btn-success">
+          Agregar actividad
+        </a>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de proveedor</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar actividad...">
@@ -42,11 +44,19 @@
             </div>
             <p>@{{actividad.actividades_con_idiomas[0].descripcion | limitTo: 255}}<span ng-if="actividad.actividades_con_idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
-                <a href="/administradoractividades/editar/@{{actividad.id}}" class="btn btn-warning">Editar</a>
-                <button class="btn btn-@{{actividad.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(actividad)">@{{actividad.estado ? 'Desactivar' : 'Activar'}}</button>
-                <button title="@{{actividad.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(actividad)"><span class="glyphicon glyphicon-@{{actividad.sugerido ? 'star' : 'star-empty'}}"></span></button>
-                <a href="/administradoractividades/idioma/@{{actividad.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in actividad.actividades_con_idiomas" class="btn btn-default"> @{{traduccion.idioma.culture}}</a>
-                <button type="button" class="btn btn-default" ng-click="modalIdioma(actividad)" ng-if="actividad.actividades_con_idiomas.length < idiomas.length" title="Agregar idioma"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                @if(Auth::user()->contienePermiso('edit-actividad'))
+                    <a href="/administradoractividades/editar/@{{actividad.id}}" class="btn btn-warning">Editar</a>
+                @endif
+                @if(Auth::user()->contienePermiso('estado-actividad'))
+                    <button class="btn btn-@{{actividad.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(actividad)">@{{actividad.estado ? 'Desactivar' : 'Activar'}}</button>
+                @endif
+                @if(Auth::user()->contienePermiso('sugerir-actividad'))
+                    <button title="@{{actividad.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(actividad)"><span class="glyphicon glyphicon-@{{actividad.sugerido ? 'star' : 'star-empty'}}"></span></button>
+                @endif
+                @if(Auth::user()->contienePermiso('edit-actividad'))
+                    <a href="/administradoractividades/idioma/@{{actividad.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in actividad.actividades_con_idiomas" class="btn btn-default"> @{{traduccion.idioma.culture}}</a>
+                    <button type="button" class="btn btn-default" ng-click="modalIdioma(actividad)" ng-if="actividad.actividades_con_idiomas.length < idiomas.length" title="Agregar idioma"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                @endif
             </div>  
             
         </div>

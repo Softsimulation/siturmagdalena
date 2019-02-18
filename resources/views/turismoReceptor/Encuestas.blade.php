@@ -21,9 +21,11 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/turismoreceptor/datosencuestados" type="button" class="btn btn-lg btn-success">
-      Agregar encuesta
-    </a> 
+    @if(Auth::user()->contienePermiso('create-encuestaReceptor'))
+        <a href="/turismoreceptor/datosencuestados" type="button" class="btn btn-lg btn-success">
+          Agregar encuesta
+        </a>
+    @ENDIF
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
 </div>
 <div class="text-center" ng-if="(encuestas | filter:search).length > 0 && (search != undefined)">
@@ -82,21 +84,23 @@
                             <td>@{{item.estado}}</td>
                             <td style="text-align: center;">@{{item.ultima}}</td>
                             <td style="text-align: center;">
-                                <div class="dropdown" style="display: inline-block;">
-                                  <button  id="dLabel" type="button" class="btn btn-xs btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Ir a la sección de la encuesta">
-                                    Ir a
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dLabel">
-                                    <li><a href="/turismoreceptor/seccionestancia/@{{item.id}}">Estancia y visitados</a></li>
-                                    <li><a href="/turismoreceptor/secciontransporte/@{{item.id}}">Transporte</a></li>
-                                    <li><a href="/turismoreceptor/secciongrupoviaje/@{{item.id}}">Viaje en grupo</a></li>
-                                    <li><a href="/turismoreceptor/secciongastos/@{{item.id}}">Gastos</a></li>
-                                    <li><a href="/turismoreceptor/seccionpercepcionviaje/@{{item.id}}">Percepcción del viaje</a></li>
-                                    <li><a href="/turismoreceptor/seccionfuentesinformacion/@{{item.id}}">Fuentes de información</a></li>
-                                  </ul>
-                                </div>
-                                <a class="btn btn-xs btn-default" href="/turismoreceptor/editardatos/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                @if(Auth::user()->contienePermiso('edit-encuestaReceptor'))
+                                    <div class="dropdown" style="display: inline-block;">
+                                      <button  id="dLabel" type="button" class="btn btn-xs btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Ir a la sección de la encuesta">
+                                        Ir a
+                                        <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                        <li><a href="/turismoreceptor/seccionestancia/@{{item.id}}">Estancia y visitados</a></li>
+                                        <li><a href="/turismoreceptor/secciontransporte/@{{item.id}}">Transporte</a></li>
+                                        <li><a href="/turismoreceptor/secciongrupoviaje/@{{item.id}}">Viaje en grupo</a></li>
+                                        <li><a href="/turismoreceptor/secciongastos/@{{item.id}}">Gastos</a></li>
+                                        <li><a href="/turismoreceptor/seccionpercepcionviaje/@{{item.id}}">Percepcción del viaje</a></li>
+                                        <li><a href="/turismoreceptor/seccionfuentesinformacion/@{{item.id}}">Fuentes de información</a></li>
+                                      </ul>
+                                    </div>
+                                    <a class="btn btn-xs btn-default" href="/turismoreceptor/editardatos/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                @endif
                             </td>
                         </tr>    
                     </tbody>

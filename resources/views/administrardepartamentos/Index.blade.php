@@ -12,12 +12,16 @@
 
 @section('content')
 <div class="flex-list">
-    <button type="button" class="btn btn-lg btn-success" ng-click="nuevoDepartamentoModal()">
-      Agregar departamento
-    </button> 
-    <button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Importar CSV
-    </button> 
+    @if(Auth::user()->contienePermiso('create-departamento'))
+        <button type="button" class="btn btn-lg btn-success" ng-click="nuevoDepartamentoModal()">
+          Agregar departamento
+        </button>
+    @endif
+    @if(Auth::user()->contienePermiso('importar-departamento'))
+        <button type="button" class="btn btn-lg btn-primary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Importar CSV
+        </button> 
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de departamento</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar departamento...">
@@ -82,10 +86,12 @@
                         <td>@{{departamento.updated_at | date:'dd-MM-yyyy'}}</td>
                         <td>@{{departamento.user_update}}</td>
                         <td style="text-align: center;">
-                            <button type="button" class="btn btn-xs btn-default" ng-click="verDepartamentoModal(departamento)">
-                                <span class="glyphicon glyphicon-eye-open" title="Ver departamento"></span>
-                                <span class="sr-only">Ver departamento</span>
-                            </button> 
+                            @if(Auth::user()->contienePermiso('read-departamento'))
+                                <button type="button" class="btn btn-xs btn-default" ng-click="verDepartamentoModal(departamento)">
+                                    <span class="glyphicon glyphicon-eye-open" title="Ver departamento"></span>
+                                    <span class="sr-only">Ver departamento</span>
+                                </button>
+                            @endif
                             <!--<a ng-repeat="idioma in pais.paises_con_idiomas" ng-click="editarPaisModal(pais, idioma.idioma.id)" title="Editar @{{idioma.idioma.nombre}}" href="javascript:void(0)">-->
                             <!--    @{{idioma.idioma.culture | uppercase}} -->
                             <!--</a>-->
@@ -94,10 +100,12 @@
                                     
                             <!--    </span>-->
                             <!--</a>-->
-                            <button type="button" class="btn btn-xs btn-default" ng-click="editarDepartamentoModal(departamento)">
-                                <span class="glyphicon glyphicon-pencil" title="Editar departamento"></span>
-                                <span class="sr-only">Editar departamento</span>
-                            </button> 
+                            @if(Auth::user()->contienePermiso('edit-departamento'))
+                                <button type="button" class="btn btn-xs btn-default" ng-click="editarDepartamentoModal(departamento)">
+                                    <span class="glyphicon glyphicon-pencil" title="Editar departamento"></span>
+                                    <span class="sr-only">Editar departamento</span>
+                                </button>
+                            @endif
                         </td>
                     </tr>
                 </table>

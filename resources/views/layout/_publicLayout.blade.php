@@ -211,10 +211,12 @@
      var srcList = $('#content-main img').map(function() {
         this.onerror = function(){
             this.src = "/img/brand/72.png";
+            
             this.style.width ="auto";
             this.style.height ="auto";
             this.style.minWidth ="0";
             this.style.minHeight ="0";
+            
             this.parentElement.className += " img-error";
         }
         return this;
@@ -242,7 +244,29 @@
            
         }
     }
-    fitImages();
+    //fitImages();
+    // var imgs = $('.tile-img:not(.img-error) img');
+    // console.log(Array.from(imgs));
+    // for(var i = 0; i < imgs.length; i++){
+    //     imgs[i].onload = function(){
+    //         console.log("primero onload");
+    //         if(this.naturalWidth > this.naturalHeight){
+    //     		this.style.width = "100%";
+    //     		this.style.height = "auto";
+    //     		if(this.offsetHeight < this.parentElement.offsetHeight){
+    //     			this.style.height = "100%";
+    //     			this.style.width = "auto";
+    //     		}
+    //     	}else{
+    // 			this.style.height = "100%";
+    //     		this.style.width = "auto";
+    //     		if(this.offsetWidth < this.parentElement.offsetWidth){
+    //     			this.style.width = "100%";
+    //     			this.style.height = "auto";
+    //     		}
+    //         }
+    //     };
+    // }
     window.onload = function () { fitImages(); }
     document.getElementsByTagName("BODY")[0].onresize = function() {fitImages()};
  </script>

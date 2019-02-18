@@ -20,7 +20,11 @@ class AdministrarMunicipiosController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-municipio|create-municipio|importar-municipio|edit-municipio',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-municipio',['only' => ['postCrearmunicipio'] ]);
+        $this->middleware('permissions:edit-municipio',['only' => ['postEditarmunicipio'] ]);
+        $this->middleware('permissions:importar-municipio',['only' => ['postImportexcel'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

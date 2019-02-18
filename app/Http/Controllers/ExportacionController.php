@@ -17,7 +17,20 @@ class ExportacionController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin|Estadistico');
+        //$this->middleware('role:Admin|Estadistico');
+        $this->middleware('permissions:export-medicionReceptor|export-medicionOferta|export-medicionInternoEmisor|export-sostenibilidadHogar|export-sostenibilidadPST',
+        ['only' => ['getIndex','getMeses','postExportar'] ]);
+        
+        $this->middleware('permissions:export-medicionReceptor',['only' => ['ExportacionTurismoReceptor2'] ]);
+        
+        $this->middleware('permissions:export-medicionInternoEmisor',['only' => ['ExportacionTurismoInterno2'] ]);
+        
+        $this->middleware('permissions:export-sostenibilidadPST',['only' => ['ExportacionSostenibilidadpst'] ]);
+        
+        $this->middleware('permissions:export-sostenibilidadHogar',['only' => ['ExportacionSostenibilidadhogares'] ]);
+        
+        $this->middleware('permissions:export-medicionOferta',['only' => ['ExportacionOfertayEmpleo'] ]);
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -37,7 +50,14 @@ class ExportacionController extends Controller
     
     public function postExportar(Request $request){
         
-        $validator=\Validator::make($request->all(),['nombre'=>'required','fecha_inicial'=>'required|date|before:tomorrow','fecha_final'=>'required|date|before:tomorrow']);
+        $validator=\Validator::make($request->all(),[
+                                                     'nombre'=>'required',
+                                                     'fecha_inicial'=>'required_if:nombre,receptor,interno,sostenibilidad|date|before:tomorrow',
+                                                     'fecha_final'=>'required_if:nombre,receptor,interno,sostenibilidad|date|before:tomorrow',
+                                                     'categoria'=>'required_if:nombre,ofertayempleo|in:1,2,3,4,5,6',
+                                                     'mes'=>'required_if:nombre,ofertayempleo|exists:meses_de_anio,id'
+        
+        ]);
         $url='';
         if($validator->fails()){
             
