@@ -199,7 +199,7 @@
         <div>
             <div class="loader"></div>
             <h1>{{ trans('resources.LabelPreloader') }}</h1>
-            <h4>Resource.LabelPorFavorEspere</h4>
+            <h4>Por Favor Espere</h4>
             <img src="{{asset('Content/image/logo.min.png')}}" width="200" />
         </div>
     </div>
