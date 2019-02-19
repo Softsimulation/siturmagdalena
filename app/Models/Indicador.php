@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +23,7 @@ class Indicador extends Model
      * @var string
      */
     protected $table = 'indicadores';
-
+    public $timestamps = false;
     /**
      * @var array
      */

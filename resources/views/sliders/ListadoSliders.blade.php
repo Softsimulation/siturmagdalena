@@ -166,9 +166,11 @@
 @section('subtitulo','El siguiente listado cuenta con @{{sliders.length}} registro(s)')
 
 @section('content')
-    <div class="text-center">
-        <button class="btn btn-lg btn-success" type="button" ng-click="abrirModalCrearSlider()">Agregar imagen</button>
-    </div>
+    @if(Auth::user()->contienePermiso('create-slider'))
+        <div class="text-center">
+            <button class="btn btn-lg btn-success" type="button" ng-click="abrirModalCrearSlider()">Agregar imagen</button>
+        </div>
+    @endif
     <hr>
     
     <div>
@@ -189,12 +191,18 @@
                             <span class="glyphicon glyphicon-option-vertical"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li ng-if="slider.estadoSlider==0"><a href="" ng-click="activarSlider(slider)">Activar</a></li>
-                            <li ng-if="slider.estadoSlider==1"><a href="" ng-click="desactivarSlider(slider)" >Desactivar</a></li>
-                            <li ng-if="slider.noIdiomas.length != 0"><a href="" ng-click="abrirModalAgregarIdiomaSlider(slider)" >Agregar idioma</a></li>
-                            <li ng-repeat="idioma in slider.idiomas"><a href="" ng-click="abirModalEditarSlider(idioma.id,slider)" >Editar @{{idioma.nombre}} </a>
-                            <li ng-if="slider.prioridadSlider!=1 && slider.prioridadSlider !=0"><a href="" ng-click="subirPrioridadSlider(slider)" >Subir Prioridad</a></li>
-                            <li ng-if="slider.prioridadSlider!=8 && slider.prioridadSlider !=0"><a href="" ng-click="bajarPrioridadSlider(slider)" >Bajar Prioridad</a></li>
+                            @if(Auth::user()->contienePermiso('estado-slider'))
+                                <li ng-if="slider.estadoSlider==0"><a href="" ng-click="activarSlider(slider)">Activar</a></li>
+                                <li ng-if="slider.estadoSlider==1"><a href="" ng-click="desactivarSlider(slider)" >Desactivar</a></li>
+                            @endif
+                            @if(Auth::user()->contienePermiso('edit-slider'))
+                                <li ng-if="slider.noIdiomas.length != 0"><a href="" ng-click="abrirModalAgregarIdiomaSlider(slider)" >Agregar idioma</a></li>
+                                <li ng-repeat="idioma in slider.idiomas"><a href="" ng-click="abirModalEditarSlider(idioma.id,slider)" >Editar @{{idioma.nombre}} </a>
+                            @endif
+                            @if(Auth::user()->contienePermiso('prioridad-slider'))
+                                <li ng-if="slider.prioridadSlider!=1 && slider.prioridadSlider !=0"><a href="" ng-click="subirPrioridadSlider(slider)" >Subir Prioridad</a></li>
+                                <li ng-if="slider.prioridadSlider!=8 && slider.prioridadSlider !=0"><a href="" ng-click="bajarPrioridadSlider(slider)" >Bajar Prioridad</a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>

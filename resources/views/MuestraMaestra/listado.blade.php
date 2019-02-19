@@ -11,9 +11,11 @@
 @section('content')
 @section('content')
 <div class="flex-list">
-    <a href="/MuestraMaestra/crearperiodo" type="button" class="btn btn-lg btn-success">
-      Agregar periodo
-    </a> 
+    @if(Auth::user()->contienePermiso('create-periodosMuestra'))
+        <a href="/MuestraMaestra/crearperiodo" type="button" class="btn btn-lg btn-success">
+          Agregar periodo
+        </a>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
     </div>      
@@ -60,8 +62,12 @@
                 <td>@{{item.fecha_inicio}}</td>
                 <td>@{{item.fecha_fin}}</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-xs btn-default" ng-click="openModalEditPeriodo(item,$index)" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span> <span class="sr-only">Editar</span> </button>
-                    <a class="btn btn-xs btn-default" href="/MuestraMaestra/periodo/@{{item.id}}" title="Ver detalles"><span class="glyphicon glyphicon-eye-open"></span> <span class="sr-only">Ver</span> </a>
+                    @if(Auth::user()->contienePermiso('edit-periodosMuestra'))
+                        <button type="button" class="btn btn-xs btn-default" ng-click="openModalEditPeriodo(item,$index)" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span> <span class="sr-only">Editar</span> </button>
+                    @endif
+                    @if(Auth::user()->contienePermiso('read-periodosMuestra'))
+                        <a class="btn btn-xs btn-default" href="/MuestraMaestra/periodo/@{{item.id}}" title="Ver detalles"><span class="glyphicon glyphicon-eye-open"></span> <span class="sr-only">Ver</span> </a>
+                    @endif
                 </td>
               </tr>
             </tbody>

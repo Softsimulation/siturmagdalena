@@ -35,26 +35,26 @@ class Migrate05092018Permission extends Migration
         });*/
 
         // Create table for storing permissions
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('display_name')->nullable();
-            $table->string('description')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('permissions', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('name')->unique();
+        //     $table->string('display_name')->nullable();
+        //     $table->string('description')->nullable();
+        //     $table->timestamps();
+        // });
 
         // Create table for associating permissions to roles (Many-to-Many)
-        Schema::create('permission_user', function (Blueprint $table) {
-            $table->integer('permission_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+        // Schema::create('permission_user', function (Blueprint $table) {
+        //     $table->integer('permission_id')->unsigned();
+        //     $table->integer('user_id')->unsigned();
 
-            $table->foreign('permission_id')->references('id')->on('permissions')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('cascade');
+        //     $table->foreign('permission_id')->references('id')->on('permissions')
+        //         ->onUpdate('cascade')->onDelete('cascade');
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //         ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['permission_id', 'user_id']);
-        });
+        //     $table->primary(['permission_id', 'user_id']);
+        // });
     }
 
     /**
@@ -64,8 +64,8 @@ class Migrate05092018Permission extends Migration
      */
     public function down()
     {
-        Schema::drop('permission_user');
-        Schema::drop('permissions');
+        // Schema::drop('permission_user');
+        // Schema::drop('permissions');
         //Schema::drop('role_user');
         //Schema::drop('roles');
     }

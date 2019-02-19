@@ -10,9 +10,11 @@
 
 @section('content')
 <div class="flex-list">
-    <button type="button" class="btn btn-lg btn-success" ng-click="openModalAddEncuesta()" class="btn btn-lg btn-success">
-      Agregar encuesta
-    </button> 
+    @if(Auth::user()->contienePermiso('create-encuestaADHOC'))
+        <button type="button" class="btn btn-lg btn-success" ng-click="openModalAddEncuesta()" class="btn btn-lg btn-success">
+          Agregar encuesta
+        </button>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
     </div>      
@@ -58,7 +60,9 @@
                 <td>@{{ encuesta.tipo.nombre }}</td>
                 <td>@{{ encuesta.estado.nombre }}</td>
                 <td>
-                    <a class="btn btn-xs btn-default" href="/encuesta/configurar/@{{encuesta.id}}" role="button" title="Ver encuesta"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver encuesta</span></a>
+                    @if(Auth::user()->contienePermiso('read-encuestaADHOC|edit-encuestaADHOC'))
+                        <a class="btn btn-xs btn-default" href="/encuesta/configurar/@{{encuesta.id}}" role="button" title="Ver encuesta"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver encuesta</span></a>
+                    @endif
                     <div class="dropdown" style="display: inline-block" >
                         <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"  >
                             Más opciones
@@ -72,39 +76,51 @@
                                     Copiar enlace
                                 </a>
                             </li>
+                            @if(Auth::user()->contienePermiso('estado-encuestaADHOC'))
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="OpenModalCambiarEstado(encuesta)" >
+                                        Cambiar estado
+                                    </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->contienePermiso('edit-encuestaADHOC'))
+                                <li>
+                                    <a href="/encuesta/listar/@{{encuesta.id}}" >
+                                        Listado de respuestas
+                                    </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->contienePermiso('estadisticas-encuestaADHOC'))
+                                <li>
+                                    <a href="/encuesta/estadisticas/@{{encuesta.id}}" >
+                                        Estadísticas
+                                    </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->contienePermiso('descargarDatos-encuestaADHOC'))
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="exportarData(encuesta.id)" >
+                                        Descargar datos
+                                    </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->contienePermiso('duplicar-encuestaADHOC'))
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta)" >
+                                        Duplicar encuesta
+                                    </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->contienePermiso('edit-encuestaADHOC'))
+                                <li class="divider"></li>
                             
-                            <li>
-                                <a href="javascript:void(0)" ng-click="OpenModalCambiarEstado(encuesta)" >
-                                    Cambiar estado
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/encuesta/listar/@{{encuesta.id}}" >
-                                    Listado de respuestas
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/encuesta/estadisticas/@{{encuesta.id}}" >
-                                    Estadísticas
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" ng-click="exportarData(encuesta.id)" >
-                                    Descargar datos
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta)" >
-                                    Duplicar encuesta
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li ng-repeat="item in encuesta.idiomas" >
-                              <a href="javascript:void(0)" ng-click="OpenModalIdiomaEncuesta(encuesta,item)">Información en @{{item.idioma.nombre}} </a>
-                            </li>
-                            <li ng-if="encuesta.estados_encuestas_id==1" >
-                                <a href="javascript:void(0)" ng-click="OpenModalIdiomaEncuesta(encuesta)" >Agregar información en otro idioma</a>
-                            </li>
+                                <li ng-repeat="item in encuesta.idiomas" >
+                                  <a href="javascript:void(0)" ng-click="OpenModalIdiomaEncuesta(encuesta,item)">Información en @{{item.idioma.nombre}} </a>
+                                </li>
+                                <li ng-if="encuesta.estados_encuestas_id==1" >
+                                    <a href="javascript:void(0)" ng-click="OpenModalIdiomaEncuesta(encuesta)" >Agregar información en otro idioma</a>
+                                </li>
+                            @endif
                             
                         </ul> 
                     </div>

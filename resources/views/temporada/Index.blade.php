@@ -19,7 +19,9 @@
         
         <div class="row">
             <div class="col-xs-12 text-center">
-                <input type="button" ng-click="pasarC()" class="btn btn-lg btn-success" value="Crear temporada" />
+                @if(Auth::user()->contienePermiso('create-temporada'))
+                    <input type="button" ng-click="pasarC()" class="btn btn-lg btn-success" value="Crear temporada" />
+                @endif
                 <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
             </div>
         </div>
@@ -69,18 +71,24 @@
                                 <label ng-if="!item.Estado" >Desactivado</label>
                             </td>
                             <td style="width: 130px;">
-                                <button class="btn btn-default btn-xs" ng-click="pasarE(item)" title="Editar">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="sr-only">Editar</span>
-                                </button>
-                                <button class="btn btn-default btn-xs" ng-if="!item.Estado" ng-click="cambiarEstado(item)" title="Activar">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Activar</span>
-                                </button>
-                                <button class="btn btn-default btn-xs" ng-if="item.Estado" ng-click="cambiarEstado(item)" title="Desactivar">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Desactivar</span>
-                                </button>
-                                <a ng-if="item.Estado" href="/temporada/ver/@{{item.id}}" title="Ver" class="btn btn-default btn-xs">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span><span class="sr-only">Ver</span>
-                                </a>
+                                @if(Auth::user()->contienePermiso('edit-temporada'))
+                                    <button class="btn btn-default btn-xs" ng-click="pasarE(item)" title="Editar">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="sr-only">Editar</span>
+                                    </button>
+                                @endif
+                                @if(Auth::user()->contienePermiso('estado-temporada'))
+                                    <button class="btn btn-default btn-xs" ng-if="!item.Estado" ng-click="cambiarEstado(item)" title="Activar">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Activar</span>
+                                    </button>
+                                    <button class="btn btn-default btn-xs" ng-if="item.Estado" ng-click="cambiarEstado(item)" title="Desactivar">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Desactivar</span>
+                                    </button>
+                                @endif
+                                @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno|read-temporada'))
+                                    <a ng-if="item.Estado" href="/temporada/ver/@{{item.id}}" title="Ver" class="btn btn-default btn-xs">
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span><span class="sr-only">Ver</span>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     </tbody>

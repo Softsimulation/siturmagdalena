@@ -24,7 +24,7 @@ class ImportacionRntController extends Controller
         
         $this->middleware('auth');
         //$this->middleware('role:Admin');
-        $this->middleware('permissions:importar-proveedores');
+        $this->middleware('permissions:import-RNT');
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

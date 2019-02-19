@@ -48,7 +48,7 @@ function getItemType($type){
 
 $tipoItem = (isset($_GET['tipo'])) ? $_GET['tipo'] : 0 ;
 
-$tituloPagina = ($tipoItem) ? getItemType($tipoItem)->title : "Qué hacer";
+$tituloPagina = ($tipoItem) ? getItemType($tipoItem)->title : "Experiencias";
 
 $countItems = false;
 
@@ -362,130 +362,13 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             </ol>
             @endif
             <h2 class="title-section">{{$experiencia->tipoTurismoConIdiomas[0]->nombre}}</h2>
-            
-            <div id="opciones">
-                <button type="button" id="btnFiltros" class="btn btn-default" title="Mostrar filtros" onclick="toggleFilter();"><span class="mdi mdi-filter"></span> <span class="d-none d-sm-inline-block sr-only">Mostrar filtros</span></button>
-                <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="mdi mdi-view-sequential" aria-hidden="true"></span><span class="sr-only">Vista de lista</span></button>
-                <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="mdi mdi-view-grid" aria-hidden="true"></span><span class="sr-only">Vista de mosaico</span></button>
-                <!--<form id="formSearch" method="POST" action="{{URL::action('QueHacerController@postSearch')}}" class="form-inline">-->
-                <!--    {{ csrf_field() }}-->
-                <!--    <div class="col-auto">-->
-                <!--      <label class="sr-only" for="searchMain">Buscador general</label>-->
-                <!--      <div class="input-group">-->
-                <!--        <input type="text" class="form-control" name="searchMain" id="searchMain" placeholder="¿Qué desea buscar?" maxlength="255">-->
-                <!--        <div class="input-group-prepend">-->
-                <!--          <div class="input-group-text">-->
-                <!--              <button type="submit" class="btn btn-default" title="Buscar"><span class="mdi mdi-magnify" aria-hidden="true"></span><span class="sr-only">Buscar</span></button>-->
-                <!--          </div>-->
-                <!--        </div>-->
-                <!--      </div>-->
-                <!--    </div>-->
-                <!--</form>-->
-                <!--<button type="button" class="btn btn-default"><span class="mdi mdi-filter" aria-hidden="true" title="Filtrar resultados" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter"></span><span class="sr-only">Filtrar resultados</span></button>-->
-            </div>
+           
         </div>
         
     </div>
     
     <div class="container">
         <br/>
-        <div class="filtros">
-            <h4>Filtros</h4>
-            <button id="btnClose" class="btn btn-xs btn-link" title="Cerrar filtros" onclick="toggleFilter();">&times;</button>
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                  <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#destinos_panel" aria-expanded="true" aria-controls="destinos_panel">
-                      Destinos
-                    </a>
-                  </h4>
-                </div>
-                <div id="destinos_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                  <div class="panel-body">
-                    @foreach($destinos as $destino)
-                        <label>
-                          <input onchange="change(this, destinos, {{$destino->id}})" type="checkbox"> {{$destino->destinoConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
-                  </div>
-                </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingThree">
-                  <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#categorias_turismo" aria-expanded="false" aria-controls="categorias_turismo">
-                      Categorías de turismo
-                    </a>
-                  </h4>
-                </div>
-                <div id="categorias_turismo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                  <div class="panel-body">
-                    @foreach($categorias as $categoria)
-                        <label>
-                          <input onchange="change(this, categorias, {{$categoria->id}})" type="checkbox"> {{$categoria->categoriaTurismoConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
-                  </div>
-                </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                  <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles_panel" aria-expanded="false" aria-controls="perfiles_panel">
-                      Perfiles de turista
-                    </a>
-                  </h4>
-                </div>
-                <div id="perfiles_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                  <div class="panel-body">
-                    @foreach($perfiles as $perfil)
-                        <label>
-                          <input onchange="change(this, perfiles, {{$perfil->id}})" type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
-                  </div>
-                </div>
-              </div>
-              <!--<div class="panel panel-default">-->
-              <!--  <div class="panel-heading" role="tab" id="headingTwo">-->
-              <!--    <h4 class="panel-title">-->
-              <!--      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">-->
-              <!--        Tipos de atracción-->
-              <!--      </a>-->
-              <!--    </h4>-->
-              <!--  </div>-->
-              <!--  <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">-->
-              <!--    <div class="panel-body">-->
-              <!--      @foreach($perfiles as $perfil)-->
-              <!--          <label>-->
-              <!--            <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}-->
-              <!--          </label>-->
-              <!--          <br>-->
-              <!--      @endforeach-->
-              <!--    </div>-->
-              <!--  </div>-->
-              <!--</div>-->
-            </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <label class="sr-only" for="valor_inicial">Valor inicial</label>
-                    <input type="number" id="valor_inicial" class="form-control input-sm" placeholder="Valor mínimo"/>
-                </div>
-                <div class="col-xs-6">
-                    <label class="sr-only" for="valor_final">Valor final</label>
-                    <input type="number" id="valor_final" class="form-control input-sm" placeholder="Valor máximo"/>
-                </div>
-            </div>
-            <br>
-            <div class="btn-group" role="group" aria-label="...">
-                <button onclick="formSubmit()" type="button" class="btn btn-success">Filtrar</button>
-                <button type="button" class="btn btn-danger">Limpiar</button>
-            </div>
-        </div>
         <div id="listado" class="tiles">
             
             <?php $hasTipo = 0 ?>

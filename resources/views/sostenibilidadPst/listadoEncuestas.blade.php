@@ -12,9 +12,11 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/sostenibilidadpst/configuracionencuesta" type="button" class="btn btn-lg btn-success">
-      Agregar encuesta
-    </a> 
+    @if(Auth::user()->contienePermiso('create-encuestaSostenibilidadPST'))
+        <a href="/sostenibilidadpst/configuracionencuesta" type="button" class="btn btn-lg btn-success">
+          Agregar encuesta
+        </a>
+    @endif
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>      
 </div>
 <div class="text-center" ng-if="(encuestas | filter:search).length > 0 && (search != undefined)">
@@ -69,7 +71,11 @@
                             <td>@{{item.encuestador}}</td>
                             <td>@{{item.estadoEncuesta}}</td>
                             <td style="text-align: right;">@{{item.numeroSeccion}}</td>
-                            <td style="text-align: center;"><a href="/sostenibilidadpst/editarencuesta/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a></td>
+                            <td style="text-align: center;">
+                                @if(Auth::user()->contienePermiso('edit-encuestaSostenibilidadPST'))
+                                    <a href="/sostenibilidadpst/editarencuesta/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                @endif
+                            </td>
                         </tr>
                     </tbody>
                     

@@ -10,9 +10,9 @@
 @section('content')
 
 <div>
-    
-   <a type="button" class="btn btn-success" ng-click="OpenModalIndicador()" >Agregar nueva estadística</a> 
-   
+    @if(Auth::user()->contienePermiso('create-estadisticaSecundaria'))
+        <a type="button" class="btn btn-success" ng-click="OpenModalIndicador()" >Agregar nueva estadística</a> 
+    @endif
    <br><br>
    
    <div class="panel-group"  ng-repeat="item in data" >
@@ -25,14 +25,18 @@
       <div id="collapse@{{$index}}" class="panel-collapse collapse">
         <div class="panel-body">
                 
-                
-                <a type="button" class="btn  btn-xs btn-add" ng-class="{ 'btn-success':!item.es_visible , 'btn-danger':item.es_visible }" ng-click="activarDesactivarIndicador(item)" >
-                    @{{ !item.es_visible ? "Visible" : "Ocultar" }}
-                </a>
-                
-                <a type="button" class="btn btn-danger btn-xs btn-add" ng-click="eliminarIndicador(item,$index)" >Eliminar</a>
-                <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModalIndicador(item)" >Editar</a>
-                <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModal(true,null,item,dataValoresTiempo,dataValoresRotulos)" >Agregar</a>
+                @if(Auth::user()->contienePermiso('estado-estadisticaSecundaria'))
+                    <a type="button" class="btn  btn-xs btn-add" ng-class="{ 'btn-success':!item.es_visible , 'btn-danger':item.es_visible }" ng-click="activarDesactivarIndicador(item)" >
+                        @{{ !item.es_visible ? "Visible" : "Ocultar" }}
+                    </a>
+                @endif
+                @if(Auth::user()->contienePermiso('delete-estadisticaSecundaria'))
+                    <a type="button" class="btn btn-danger btn-xs btn-add" ng-click="eliminarIndicador(item,$index)" >Eliminar</a>
+                @endif
+                @if(Auth::user()->contienePermiso('edit-estadisticaSecundaria'))
+                    <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModalIndicador(item)" >Editar</a>
+                    <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModal(true,null,item,dataValoresTiempo,dataValoresRotulos)" >Agregar</a>
+                @endif
                 <table class="table table-hover">
                     <thead>
                         <th>Años</th>
@@ -44,9 +48,11 @@
                         <tr ng-repeat="it in item.series[0].valores_tiempo | groupBy: 'anio_id' as dataValoresTiempo " >
                             <td>@{{ (anios|filter:{'id':it[0].anio_id} )[0].anio }}</td>
                             <td>
-                                <button type="submit" class="btn btn-default btn-xs" ng-click="OpenModal(false,it[0].anio_id,item)" >
-                                  Ver/Editar
-                                </button>
+                                @if(Auth::user()->contienePermiso('read-estadisticaSecundaria'))
+                                    <button type="submit" class="btn btn-default btn-xs" ng-click="OpenModal(false,it[0].anio_id,item)" >
+                                      Ver/Editar
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                         

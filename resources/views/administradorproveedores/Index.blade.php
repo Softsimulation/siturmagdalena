@@ -30,9 +30,11 @@
 @section('subtitulo','El siguiente listado cuenta con @{{proveedores.length}} registro(s)')
 @section('content')
 <div class="flex-list">
-    <a href="/administradorproveedores/crear" type="button" class="btn btn-lg btn-success" data-toggle="tooltip" data-placement="bottom" title="Esta acción permitirá publicar un proveedor que se encuentre almacenado en el sistema.">
-      Publicar proveedor
-    </a> 
+    @if(Auth::user()->contienePermiso('create-proveedor'))
+        <a href="/administradorproveedores/crear" type="button" class="btn btn-lg btn-success" data-toggle="tooltip" data-placement="bottom" title="Esta acción permitirá publicar un proveedor que se encuentre almacenado en el sistema.">
+          Publicar proveedor
+        </a>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de proveedor</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar proveedor...">
@@ -60,12 +62,19 @@
             </div>
             <p>@{{proveedor.proveedor_rnt.idiomas[0].descripcion | limitTo:255}}<span ng-if="proveedor.proveedor_rnt.idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
-                <a href="/administradorproveedores/editar/@{{proveedor.id}}" class="btn btn-warning">Editar</a>
-                <button class="btn btn-@{{proveedor.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(proveedor)">@{{proveedor.estado ? 'Desactivar' : 'Activar'}}</button>
-                <button title="@{{proveedor.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(proveedor)"><span class="glyphicon glyphicon-@{{proveedor.sugerido ? 'star' : 'star-empty'}}"></span></button>
-                <a href="/administradorproveedores/idioma/@{{proveedor.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in proveedor.proveedor_rnt.idiomas" class="btn btn-default" title="@{{traduccion.idioma.culture}}"> @{{traduccion.idioma.culture}}</a>
-                <a href="javascript:void(0)" ng-click="modalIdioma(proveedor)" ng-if="proveedor.proveedor_rnt.idiomas.length < idiomas.length" class="btn btn-default" title="Agregar idioma"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></a>
-                
+                @if(Auth::user()->contienePermiso('edit-proveedor'))
+                    <a href="/administradorproveedores/editar/@{{proveedor.id}}" class="btn btn-warning">Editar</a>
+                @endif
+                @if(Auth::user()->contienePermiso('estado-proveedor'))
+                    <button class="btn btn-@{{proveedor.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(proveedor)">@{{proveedor.estado ? 'Desactivar' : 'Activar'}}</button>
+                @endif
+                @if(Auth::user()->contienePermiso('sugerir-proveedor'))
+                    <button title="@{{proveedor.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(proveedor)"><span class="glyphicon glyphicon-@{{proveedor.sugerido ? 'star' : 'star-empty'}}"></span></button>
+                @endif
+                @if(Auth::user()->contienePermiso('edit-proveedor'))
+                    <a href="/administradorproveedores/idioma/@{{proveedor.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in proveedor.proveedor_rnt.idiomas" class="btn btn-default" title="@{{traduccion.idioma.culture}}"> @{{traduccion.idioma.culture}}</a>
+                    <a href="javascript:void(0)" ng-click="modalIdioma(proveedor)" ng-if="proveedor.proveedor_rnt.idiomas.length < idiomas.length" class="btn btn-default" title="Agregar idioma"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></a>
+                @endif
             </div>  
             
         </div>
