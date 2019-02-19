@@ -8,9 +8,11 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/publicaciones/crear" class="btn btn-lg btn-success" class="btn btn-lg btn-success">
-        Crear publicaciones
-    </a> 
+    @if(Auth::user()->contienePermiso('create-publicaciones'))
+        <a href="/publicaciones/crear" class="btn btn-lg btn-success" class="btn btn-lg btn-success">
+            Crear publicaciones
+        </a>
+    @endif
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>     
 </div>
 <div class="text-center" ng-if="(publicaciones | filter:search).length > 0 && (search != undefined)">
@@ -61,15 +63,21 @@
                         <span ng-show="!publicacion.estado">No</span>
                     </td>
                     <td>
-                        <a href="/publicaciones/editar/@{{publicacion.id}}" role="button" title="Editar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>  
-                        <button ng-click="cambiarEstado(publicacion)" type="button" title="Cambiar estado de visualización" class="btn btn-xs btn-default">
-                            <span class="glyphicon glyphicon-eye-open" ng-show="!publicacion.estado"></span>
-                            <span class="glyphicon glyphicon-eye-close" ng-show="publicacion.estado"></span>
-                            <span class="sr-only">Cambiar estado de visualización</span>
-                        </button>    
+                        @if(Auth::user()->contienePermiso('edit-publicaciones'))
+                            <a href="/publicaciones/editar/@{{publicacion.id}}" role="button" title="Editar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>  
+                        @endif
+                        @if(Auth::user()->contienePermiso('estado-publicaciones'))
+                            <button ng-click="cambiarEstado(publicacion)" type="button" title="Cambiar estado de visualización" class="btn btn-xs btn-default">
+                                <span class="glyphicon glyphicon-eye-open" ng-show="!publicacion.estado"></span>
+                                <span class="glyphicon glyphicon-eye-close" ng-show="publicacion.estado"></span>
+                                <span class="sr-only">Cambiar estado de visualización</span>
+                            </button>
                             
-                         <button ng-click="cambiarEstadoPublicacion(publicacion)" type="button" title="Cambiar estado de publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-transfer"></span></button> 
-                         <button ng-click="eliminar(publicacion)" type="button" title="Eliminar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></button>
+                             <button ng-click="cambiarEstadoPublicacion(publicacion)" type="button" title="Cambiar estado de publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-transfer"></span></button> 
+                        @endif
+                        @if(Auth::user()->contienePermiso('delete-publicaciones'))
+                            <button ng-click="eliminar(publicacion)" type="button" title="Eliminar publicación" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></button>
+                        @endif
                     </td>
                 </tr>
                 

@@ -444,6 +444,9 @@ footer{
 }
 .tile .tile-img:hover img {
     transform: translateY(-50%) translateX(-50%) scale(1.3);
+    transition-delay: 350ms;
+    transition-duration: 1000ms;
+    transition-timing-function: ease-in-out;
 }
 /*.tile .tile-img img, .tile.inline-tile .tile-img img{*/
 /*    max-width: 100%;*/
@@ -501,12 +504,19 @@ footer{
     background: linear-gradient(to bottom, rgba(0,0,0,0.025) 0%, rgba(0,0,0,0.65) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#000000', GradientType=0 );
 }
+.tile .tile-img .text-overlap .tile-label-top{
+    position: absolute;
+    top: 4%;
+    left: 0;
+    width: auto;
+}
 .tile .tile-img .text-overlap p a, .tile .tile-img .text-overlap h3 a{
     color:white;
 }
 .tile .tile-img .text-overlap p a:hover, .tile .tile-img .text-overlap h3 a:hover{
-    text-decoration: underline;
-    text-decoration-style: solid 
+    text-decoration: none;
+    text-decoration-style: solid;
+    text-shadow: 0px 4px 8px rgba(0,0,0,.65);
 }
 .tile .tile-body {
     padding: .5rem 4%;
@@ -756,6 +766,111 @@ hr{
 }
 .text-small{
     font-size: 65%;
+}
+
+/*Bootstrap v4*/
+
+.d-flex{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+}
+.d-block{
+    display:block;
+}
+
+.flex-wrap{
+    flex-wrap: normal;
+}
+
+.align-items-center{
+    align-items: center;
+}
+
+.justify-content-center{
+    justify-content: center;
+}
+
+.font-weight-bold{
+    font-weight: bold;
+}
+
+.m-0{
+    margin: 0!important;
+}
+.mt-3{
+    margin-top: 1rem;
+}
+
+.ml-3{
+    margin-left: 1rem;
+}
+
+.mr-1{
+    margin-right: 0.25rem;
+}
+
+.mr-2{
+    margin-right: 0.5rem;
+}
+
+.mb-3{
+    margin-bottom: 1rem;
+}
+
+.p-3 {
+    padding: 1rem!important;
+}
+.mb-5, .my-5 {
+    margin-bottom: 3rem!important;
+}
+.shadow {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+.rounded {
+    border-radius: .25rem!important;
+}
+.bg-white {
+    background-color: #fff!important;
+}
+.btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+.btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.text-blue{
+    color: #145f9e;
+}
+
+.text-red{
+    color: #cd2c24;
+}
+
+.text-green{
+    color:#00963f;
+}
+
+.text-orange{
+    color: orange;
 }
 
 /*Fonts*/

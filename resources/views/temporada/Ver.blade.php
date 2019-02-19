@@ -11,9 +11,11 @@
 
 <div class="main-page" ng-controller="verTemporadaCtrl">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <div class="text-center">
-        <a href="/turismointerno/hogar/@{{id}}" class="btn btn-lg btn-success">Crear hogar</a><br /><br />    
-    </div>
+    @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
+        <div class="text-center">
+            <a href="/turismointerno/hogar/@{{id}}" class="btn btn-lg btn-success">Crear hogar</a><br /><br />    
+        </div>
+    @endif
     
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>@Resource.EncuestaMsgError:</b></label>
@@ -110,7 +112,9 @@
                                     <td>@{{item.edificacione.nombre_entrevistado}}</td>
                                     <td>@{{item.fecha_realizacion | date:'dd-MM-yyyy' }}</td>
                                     <td>
-                                        <a href="/turismointerno/editarhogar/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
+                                            <a href="/turismointerno/editarhogar/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @endif
                                     </td>
                                 </tr>
 
@@ -176,7 +180,9 @@
                                     <td>@{{item.fecha_inicio}}</td>
                                     <td>@{{item.ultima_sesion}}</td>
                                     <td>
-                                        <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
+                                            <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @endif
                                     </td>
                                 </tr>
 
