@@ -17,7 +17,7 @@ class InformacionDepartamentoCtrl extends Controller
     public function __construct()
     {
         $this->middleware('auth',['except' => ['AcercaDe','Requisitos', 'PlanificaTuViaje'] ]);
-        $this->middleware('permissions:acerca-departamento|requisitos-viaje',['except' => ['AcercaDe','Requisitos', 'PlanificaTuViaje'] ]);
+        //$this->middleware('permissions:acerca-departamento|requisitos-viaje',['except' => ['AcercaDe','Requisitos', 'PlanificaTuViaje'] ]);
         
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
