@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Destino;
+use App\Models\Municipio;
+use App\Models\Proveedores_rnt;
 
 class DestinosController extends Controller
 {
@@ -28,16 +30,14 @@ class DestinosController extends Controller
         }, 'sectores' => function($querySectores){
             $querySectores->with(['sectoresConIdiomas' => function($querySectoresConIdiomas){
                 $querySectoresConIdiomas->select('idiomas_id', 'sectores_id', 'nombre');
-            }, 'sitios' => function ($querySitios){
-                $querySitios->with(['proveedores' => function($queryProveedores){
-                    $queryProveedores->with(['proveedorRnt' => function ($queryProveedorRnt){
-                        $queryProveedorRnt->select('razon_social', 'longitud', 'latitud', 'id');
-                    }])->select('id', 'proveedor_rnt_id');
-                }])->select('id', 'sectores_id');
             }])->select('id', 'destino_id', 'es_urbano');
         }])->select('id', 'tipo_destino_id', 'latitud', 'longitud', 'calificacion_legusto', 'calificacion_llegar', 'calificacion_recomendar', 'calificacion_volveria')->first();
         
-        return ['detinos' => $destino];
+        $idMunicipio = Municipio::where('nombre', $destino->destinoConIdiomas[0]->nombre)->pluck('id')->first();
+        
+        $pst = Proveedores_rnt::where('municipio_id', $idMunicipio)->select('id', 'razon_social', 'latitud', 'longitud')->get();
+        
+        //return ['detinos' => $pst];
         
         $video_promocional = Destino::where('id', $id)->with(['multimediaDestinos' => function($queryMultimediaDestinos){
             $queryMultimediaDestinos->where('tipo', true);
@@ -50,6 +50,6 @@ class DestinosController extends Controller
         }
         
         //return ['destino' => $destino, 'video_promocional' => $video_promocional];
-        return view('destinos.Ver', ['destino' => $destino, 'video_promocional' => $video_promocional]);
+        return view('destinos.Ver', ['destino' => $destino, 'video_promocional' => $video_promocional, 'pst' => $pst]);
     }
 }
