@@ -23,7 +23,7 @@ class ProveedoresController extends Controller
 	
 	public function getIndex(Request $request){
 	    $idioma = \Config::get('app.locale') == 'es' ? 1 : 2;
-        $proveedores = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
+        $proveedores1 = Proveedor::with(['proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
            
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
                 $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion', 'nombre')->orderBy('idioma_id');
@@ -46,7 +46,7 @@ class ProveedoresController extends Controller
             
         })->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id')->where('estado', true)->paginate(8);
          
-        $prove = Proveedores_rnt::with(['proveedor' => function ($queryProveedor) use ($idioma){
+        $proveedores = Proveedores_rnt::with(['proveedor' => function ($queryProveedor) use ($idioma){
             $queryProveedor->with(['multimediaProveedores' => function ($queryMultimediaProveedores){
                 $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
             }])->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id')->where('estado', true)->paginate(8);
@@ -56,9 +56,9 @@ class ProveedoresController extends Controller
             $queryCategoria->with(['categoriaProveedoresConIdiomas' => function ($queryCategoriaProveedoresConIdiomas) use ($idioma){
                 $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idioma);
             }])->select('id');
-        }])->select('id', 'razon_social', 'categoria_proveedores_id')->get();
+        }])->select('id', 'razon_social', 'categoria_proveedores_id')->take(8)->get();
 
-        //return ['query' => $prove];
+        //return ['query' => $proveedores];
 
         return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $request->tipo]);
 	}
