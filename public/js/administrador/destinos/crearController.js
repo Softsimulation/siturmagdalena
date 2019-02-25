@@ -18,6 +18,31 @@ angular.module('destinos.crear', [])
         adicional: {}
     };
     
+    $uploadCrop = $('#upload-demo').croppie({
+        enableExif: true,
+        viewport: {
+            width: 300,
+            height: 126,
+        },
+        boundary: {
+            width: 300,
+            height: 200
+        }
+    });
+    
+    $('#upload').on('change', function () { 
+            	var reader = new FileReader();
+                reader.onload = function (e) {
+                	$uploadCrop.croppie('bind', {
+                		url: e.target.result,
+                		zoom: 0
+                	}).then(function(){
+                		console.log('jQuery bind complete');
+                	});
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+    
     $scope.groupByDestino = function (item) {
         // by returning this, it will attach this as the group by key
         // and automatically group your items by this
