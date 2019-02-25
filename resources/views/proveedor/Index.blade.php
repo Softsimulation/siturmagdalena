@@ -293,7 +293,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     @endfor
     </div>
     <div class="text-center">
-        {{--!!$proveedores->appends(Input::except('page'))->links()!!--}}
+        {!!$proveedores->appends(Input::except('page'))->links()!!}
     </div>
     @else
     <div class="alert alert-info">

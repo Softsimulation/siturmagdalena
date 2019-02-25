@@ -767,6 +767,9 @@ hr{
 .text-small{
     font-size: 65%;
 }
+.carousel-control{
+    z-index: 11;
+}
 
 /*Bootstrap v4*/
 

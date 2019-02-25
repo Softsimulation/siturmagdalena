@@ -17,7 +17,7 @@
     		</div>
     		<div id="nav-bar-main">
     			<div id="toolbar-main">
-		    	    
+		    	    <img src="/img/brand/others/mincit.jpg" style="height: 2rem;margin-right: auto;">
     				<a href="https://twitter.com/siturmagdalena?lang=es" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Twitter'])}}"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
     				<a href="https://www.facebook.com/SITURMag/" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Facebook'])}}"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
     				<a href="https://www.instagram.com/siturmagdalena" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Instagram'])}}"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
@@ -50,6 +50,12 @@
                       new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'de,en,es,fr,it,pt,ru,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
                     }
                     </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                    
+                    @if(Auth::check())
+                    <a href="/visitante/misfavoritos" class="btn btn-xs btn-link" title="Mis favoritos"><span class="ion-heart" aria-hidden="true"></span> <span class="sr-only">Mis favoritos</span></a>
+                    @else
+                    <a href="/login/login" class="btn btn-xs btn-link" title="{{trans('resources.header.iniciarSesion')}}"><span class="ion-heart" aria-hidden="true"></span> <span class="hidden-xs">{{trans('resources.header.iniciarSesion')}}</span></a>
+                    @endif
                             
     				@if(Auth::check())
                     <a href="/login/cerrarsesion" class="btn btn-xs btn-link" title="{{trans('resources.header.cerrarSesion')}}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <span class="sr-only">{{trans('resources.header.cerrarSesion')}}</span></a>
