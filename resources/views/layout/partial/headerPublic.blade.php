@@ -54,13 +54,13 @@
                     @if(Auth::check())
                     <a href="/visitante/misfavoritos" class="btn btn-xs btn-link" title="Mis favoritos"><span class="ion-heart" aria-hidden="true"></span> <span class="sr-only">Mis favoritos</span></a>
                     @else
-                    <a href="/login/login" class="btn btn-xs btn-link" title="{{trans('resources.header.iniciarSesion')}}"><span class="ion-heart" aria-hidden="true"></span> <span class="hidden-xs">{{trans('resources.header.iniciarSesion')}}</span></a>
+                    <a href="/login/login" class="btn btn-xs btn-link" title="{{trans('resources.header.iniciarSesion')}}"><span class="ion-heart" aria-hidden="true"></span> <span class="hidden-md">{{trans('resources.header.iniciarSesion')}}</span></a>
                     @endif
                             
     				@if(Auth::check())
                     <a href="/login/cerrarsesion" class="btn btn-xs btn-link" title="{{trans('resources.header.cerrarSesion')}}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <span class="sr-only">{{trans('resources.header.cerrarSesion')}}</span></a>
                     @else
-                    <a href="/login/login" class="btn btn-xs btn-link" title="{{trans('resources.header.iniciarSesion')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="hidden-xs">{{trans('resources.header.iniciarSesion')}}</span></a>
+                    <a href="/login/login" class="btn btn-xs btn-link" title="{{trans('resources.header.iniciarSesion')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="hidden-md">{{trans('resources.header.iniciarSesion')}}</span></a>
                     @endif
     				
     			</div>
@@ -70,7 +70,7 @@
     			<div id="nav-menu-main">
     				<nav role="navigation" id="nav-main">
                         <ul role="menubar">
-                            <li>
+                            <li class="hidden-md">
                                 <a role="menuitem" href="/">{{trans('resources.menu.inicio')}}</a>
                             </li>
                             <li>

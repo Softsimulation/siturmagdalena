@@ -285,6 +285,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                             @if($sugerido->tipo == 4)
                             <small class="btn-block" style="color: white;font-style: italic">{{trans('resources.rangoDeFechaEvento', ['fechaInicio' => date('d/m/Y', strtotime($sugerido->fecha_inicio)), 'fechaFin' => date('d/m/Y', strtotime($sugerido->fecha_fin))])}}</small>
                             @endif
+                            <div class="text-right"><a href="{{getItemType($sugerido->tipo)->path}}{{$sugerido->id}}" class="btn btn-xs btn-info">Ver más <span class="sr-only">acerca de {{$sugerido->nombre}}</span></a></div>
                         </h3>
                         
                     </div>
@@ -340,7 +341,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     @endif
 <div id="statsMap">
     
-    <div style="width: 100%; background-color: whitesmoke;text-align:center;display:flex;align-items: center; justify-content: center;flex-wrap: wrap;">
+    <div style="width: 100%; background-color: rgba(0,0,0,.005);text-align:center;display:flex;align-items: center; justify-content: center;flex-wrap: wrap;">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-md-4">
