@@ -10,14 +10,14 @@
     	<header>
     		<div id="situr-main-brand" class="brand">
     			<a href="/">
-    				<img src="{{asset('img/brand/default.png')}}" alt="Logo de SITUR Magdalena">
+    				<img src="{{asset('img/brand/default.png')}}" alt="Logo de SITUR Magdalena" class="hover-icon">
     				<h1 class="sr-only">SITUR Magdalena</h1>
     			</a>
     			
     		</div>
     		<div id="nav-bar-main">
     			<div id="toolbar-main">
-		    	    <img src="/img/brand/others/mincit.jpg" style="height: 2rem;margin-right: auto;">
+		    	    <img src="/img/brand/others/mincit.jpg" alt="Logo del MinCIT" style="height: 2rem;margin-right: auto;"  class="hover-icon">
     				<a href="https://twitter.com/siturmagdalena?lang=es" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Twitter'])}}"><span class="ion-social-twitter" aria-hidden="true"></span> <span class="sr-only">Twitter</span></a>
     				<a href="https://www.facebook.com/SITURMag/" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Facebook'])}}"><span class="ion-social-facebook" aria-hidden="true"></span> <span class="sr-only">Facebook</span></a>
     				<a href="https://www.instagram.com/siturmagdalena" target="_blank" class="btn btn-xs btn-link" rel="noreferrer noopener" title="{{trans('resources.header.irA', ['destino' => 'Instagram'])}}"><span class="ion-social-instagram" aria-hidden="true"></span> <span class="sr-only">Instagram</span></a>
