@@ -20,7 +20,7 @@
         }
         div[dir="ltr"] {
             top:auto!important;
-            bottom: 30px!important;
+            /*bottom: 30px!important;*/
         }
         
     </style>
