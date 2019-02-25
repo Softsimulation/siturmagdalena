@@ -30,7 +30,7 @@ class IndicadorAdministradorController extends Controller
                                     
         $indicadoresMedicion = new Collection(DB::select("SELECT *from indicadores_calculados "));
         $tiposMedicion = Tipo_Medicion_Indicador::all();
-        return ["anios"=>$anios,"meses"=>$meses,"indicadores"=>$indicadores,"tiposMedicion"=>$tiposMedicion];
+        return ["anios"=>$anios,"meses"=>$meses,"indicadores"=>$indicadores,"tiposMedicion"=>$tiposMedicion,"indicadoresMedicion"=>$indicadoresMedicion];
     }
     
     public function postRecalcularindicador(Request $request){

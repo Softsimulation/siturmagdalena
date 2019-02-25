@@ -59,7 +59,7 @@ Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
 
-//Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
+Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
 
 
 Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );
@@ -87,6 +87,8 @@ Route::controller('/suscriptores','SuscriptoreController');
 
 Route::controller('/periodoSostenibilidadPst','PeriodoSostenibilidadPstController');
 Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarController');
+
+Route::controller('/DashBoard','DashBoardController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     

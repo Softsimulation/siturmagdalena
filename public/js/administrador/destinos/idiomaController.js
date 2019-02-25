@@ -12,7 +12,10 @@ angular.module('destinos.idioma', [])
             if (data.success){
                 $scope.destino.datosGenerales = {
                     'nombre': data.destino.destino_con_idiomas[0].nombre,
-                    'descripcion' : data.destino.destino_con_idiomas[0].descripcion
+                    'descripcion' : data.destino.destino_con_idiomas[0].descripcion,
+                    'reglas' : data.destino.destino_con_idiomas[0].reglas,
+                    'como_llegar' : data.destino.destino_con_idiomas[0].como_llegar,
+                    'informacion_practica' : data.destino.destino_con_idiomas[0].informacion_practica
                 };
             }
             $scope.idioma = data.idioma;
@@ -34,7 +37,10 @@ angular.module('destinos.idioma', [])
             if (data.success){
                 $scope.destino.datosGenerales = {
                     'nombre': data.destino.destino_con_idiomas[0].nombre,
-                    'descripcion' : data.destino.destino_con_idiomas[0].descripcion
+                    'descripcion' : data.destino.destino_con_idiomas[0].descripcion,
+                    'reglas' : data.destino.destino_con_idiomas[0].reglas,
+                    'como_llegar' : data.destino.destino_con_idiomas[0].como_llegar,
+                    'informacion_practica' : data.destino.destino_con_idiomas[0].informacion_practica
                 };
                 swal('¡Éxito!', 'Destino modificado con éxito.', 'success');
             }else{
