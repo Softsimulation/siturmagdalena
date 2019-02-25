@@ -148,7 +148,7 @@
 <br>
 
 <div ng-if="indicador == undefined" class="text-center">
-    <img src="/res/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
+    <img src="/img/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
 </div>
 
 <div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" ng-show="indicador != undefined">
@@ -367,12 +367,12 @@
             var imgData = canvas.toDataURL();
             var pdf = new jsPDF('l', 'pt', 'letter');
             pdf.addImage(imgData, 'JPEG', 0, 20, 800,400);
-            pdf.save("download.pdf");
+            pdf.save( $("#tituloIndicadorGrafica").html() +".pdf");
         });
         
         function descargar(img){
             var link = document.createElement("a");
-            link.download = "Grafica";
+            link.download = $("#tituloIndicadorGrafica").html();
             link.href = img;
             document.body.appendChild(link);
             link.click();
@@ -393,7 +393,7 @@
             var ctx = { worksheet : 'Worksheet', table : htmls };
 
             var link = document.createElement("a");
-            link.download = "datos.xls";
+            link.download = $("#tituloIndicadorGrafica").html();
             link.href = uri + base64(format(template, ctx));
             link.click();
         });
@@ -418,7 +418,7 @@
                     'width': margins.width, // max width of content on PDF
                     'elementHandlers': { '#bypassme': function (element, renderer) { return true; } }
                 },
-                function (dispose) { pdf.save('datos.pdf'); },
+                function (dispose) { pdf.save( $("#tituloIndicadorGrafica").html() +'.pdf'); },
                 margins
             );
             
@@ -438,7 +438,7 @@
             var ctx = { worksheet : 'Worksheet', table : htmls };
 
             var link = document.createElement("a");
-            link.download = "datos.xls";
+            link.download = $("#tituloIndicadorGrafica").html();
             link.href = uri + base64(format(template, ctx));
             link.click();
         });

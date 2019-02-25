@@ -1,78 +1,38 @@
+<?php
+//$paraTenerEnCuentaContieneAlgo = $atraccion->atraccionesConIdiomas[0]->recomendaciones != "" || $atraccion->atraccionesConIdiomas[0]->reglas != "" || $atraccion->atraccionesConIdiomas[0]->como_llegar != "" || count($atraccion->sitio->sitiosConActividades) > 0;
+function parse_yturl($url) 
+{
+    $pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=|/watch\?.+&v=))([\w-]{11})(?:.+)?$#x';
+    preg_match($pattern, $url, $matches);
+    return (isset($matches[1])) ? $matches[1] : false;
+}
+?>
 
 @extends('layout._publicLayout')
+
+@section ('estilos')
+    <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
+    <style>
+        .section{
+            display: none;
+        }
+        .section.active{
+            display:block;
+        }
+    </style>
+@endsection
+
+@section('meta_og')
+<meta property="og:title" content="Conoce {{$proveedor->proveedorRnt->razon_social}} en el departamento del Magdalena" />
+<meta property="og:image" content="{{asset('/res/img/brand/128.png')}}" />
+<meta property="og:description" content="{{$proveedor->proveedorRnt->razon_social}}"/>
+@endsection
 
 @section('Title','Proveedores')
 
 @section('TitleSection','Proveedores')
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-            <h1>Nombre: {{$proveedor->proveedorRnt->razon_social}}</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-            Descripción: {{$proveedor->proveedorRnt->idiomas[1]->descripcion}}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-            Valor mínimo: {{$proveedor->valor_min}} Valor máximo: {{$proveedor->valor_max}}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4 col-md-4 col-xs-12 text-center">
-            Horario: {{$proveedor->proveedoresConIdiomas[0]->horario}}
-        </div>
-        <div class="col-sm-4 col-md-4 col-xs-12 text-center">
-            Página web: {{$proveedor->sitio_web}}
-        </div>
-        <div class="col-sm-4 col-md-4 col-xs-12 text-center">
-            Teléfono: {{$proveedor->telefono}}
-        </div>
-    </div>
-    {{-- La posición  0 es la portada --}}
-    <div class="row">
-        Portada:
-        <img src="{{$proveedor->multimediaProveedores[0]->ruta}}"></img>
-    </div>
-    <div class="row">
-        Imágenes:
-        @for ($i = 1; $i < count($proveedor->multimediaProveedores); $i++)
-            <img src="{{$proveedor->multimediaProveedores[$i]->ruta}}"></img>
-        @endfor
-    </div>
-    <div class="row">
-        Video Promocional
-        <iframe src="{{$video_promocional}}">
-        </iframe>
-    </div>
-    Actividades
-    <div class="row">
-        @foreach ($proveedor->actividadesProveedores as $actividad)
-        <div class="col-sm-12 col-md-12 col-xs-12">
-            Actividad {{$actividad->id}}: {{$actividad->actividadesConIdiomas[0]->nombre}}
-        </div>
-        @endforeach
-    </div>
+{{$proveedor}}
     
-    <div class="text-center">
-    @if(Auth::check())
-        <form role="form" action="/proveedor/favorito" method="post">
-            {{ csrf_field() }}
-            <input type="hidden" name="proveedor_id" value="{{$proveedor->id}}" />
-            <button type="submit" class="btn btn-lg btn-circled btn-favorite">
-              <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
-            </button>    
-        </form>
-    @else
-        <button type="button" class="btn btn-lg btn-circled" title="Marcar como favorito" data-toggle="modal" data-target="#modalIniciarSesion">
-          <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
-        </button>
-    @endif
-    @if(Session::has('message'))
-        <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
-    @endif  
-  </div>
 @endsection

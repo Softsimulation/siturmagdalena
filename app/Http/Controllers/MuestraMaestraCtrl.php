@@ -35,7 +35,26 @@ class MuestraMaestraCtrl extends Controller
     {
         
         $this->middleware('auth', ['except' => ['getDetalles','getDatacongiguracion']] );
-        $this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        //$this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
+        
+        $this->middleware('permissions:list-periodosMuestra|create-periodosMuestra|read-periodosMuestra|edit-periodosMuestra|
+        excel-muestra|KML-muestra|
+        agregar-zona|edit-zona|delete-zona',
+        ['only' => ['getPeriodos','getDatalistado']]);
+        $this->middleware('permissions:read-muestraMaestra|create-periodosMuestra',['only' => ['getDatacongiguracion'] ]);
+        $this->middleware('permissions:create-periodosMuestra',['only' => ['postCrearperiodo'] ]);
+        $this->middleware('permissions:edit-periodosMuestra',['only' => ['postEditarperiodo'] ]);
+        
+        $this->middleware('permissions:excel-muestra',['only' => ['getExcelinfoperiodo'] ]);
+        $this->middleware('permissions:KML-muestra',['only' => ['getGeojsonzone'] ]);
+        $this->middleware('permissions:create-zona',['only' => ['postAgregarzona'] ]);
+        $this->middleware('permissions:edit-zona',['only' => ['postEditarzona','postEditarposicionzona'] ]);
+        $this->middleware('permissions:delete-zona',['only' => ['postEliminarzona'] ]);
+        $this->middleware('permissions:excel-zona',['only' => ['getExcel'] ]);
+        $this->middleware('permissions:llenarInfo-zona|excel-infoZona',['only' => ['postGuardarinfozona','getLlenarinfozona','getExcelinfozona'] ]);
+        $this->middleware('permissions:create-proveedorMuestra|edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal'] ]);
+        $this->middleware('permissions:edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal','postEditarubicacionproveedor'] ]);
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -113,8 +132,8 @@ class MuestraMaestraCtrl extends Controller
                                             
                 "sectores"=> Sector::where("estado",true)->with([ 
                                                                  "sectoresConIdiomas"=>function($q){ $q->where("idiomas_id",1); },
-                                                                 "destino"=>function($q){ $q->with( ["destinoConIdiomas"=>function($qq){ $qq->where("idiomas_id",1); }] ); }
-                                                                ])->get(),
+                                                                 "destino"=>function($q){ $q->with( ["destinoConIdiomas"=>function($qq){ $qq->where("idiomas_id",1)->select("id","idiomas_id","destino_id","nombre"); }] )->select("id"); }
+                                                                ])->select("id","destino_id")->get(),
                 "estados"=> Estado_proveedor::where("id","!=",7)->get(),
                 
                 "municipios"=> municipio::where("departamento_id",1411)->select('id','nombre')->get() 
@@ -626,7 +645,7 @@ class MuestraMaestraCtrl extends Controller
     
     
     public function getExcelinfoperiodo($id){
-        
+        return new Collection(DB::select("SELECT *from proveedores_periodos(?)", array($id) ));
         
         $proveedores = new Collection(DB::select("SELECT *from proveedores_periodos(?)", array($id) ));
         $proveedoresInformales = new Collection(DB::select("SELECT *from proveedores_informales_periodos(?)", array($id) ));

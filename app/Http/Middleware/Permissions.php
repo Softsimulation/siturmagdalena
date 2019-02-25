@@ -17,9 +17,14 @@ class Permissions
      */
     public function handle($request, Closure $next, $permiso)
     {
-        $user = User::whereHas('permissions', function ($query) use($permiso) {
-            $query->where('name',$permiso);
+        $arrayRoles = explode("|", $permiso);
+        $user = User::where('id', \Auth::user()->id)->whereHas('permissions', function($q)use($arrayRoles){
+            $q->whereIn('name',$arrayRoles);
         })->first();
+        
+        /*$user = User::whereHas('permissions', function ($query) use($permiso) {
+            $query->where('name',$permiso);
+        })->first();*/
         
         if($user == null){
             return \Redirect::to('/');

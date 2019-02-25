@@ -33,9 +33,11 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/administradordestinos/crear" role="button" class="btn btn-lg btn-success">
-      Agregar destinos
-    </a> 
+    @if(Auth::user()->contienePermiso('create-destino'))
+        <a href="/administradordestinos/crear" role="button" class="btn btn-lg btn-success">
+          Agregar destinos
+        </a> 
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de destinos</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar destino...">
@@ -63,11 +65,19 @@
             </div>
             <p>@{{destino.destino_con_idiomas[0].descripcion | limitTo:255}}<span ng-if="destino.destino_con_idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
-                <a href="/administradordestinos/editar/@{{destino.id}}" class="btn btn-warning">Editar</a>
-                <button class="btn btn-@{{destino.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(destino)">@{{destino.estado ? 'Desactivar' : 'Activar'}}</button>
-                <button title="@{{destino.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(destino)"><span class="glyphicon glyphicon-@{{destino.sugerido ? 'star' : 'star-empty'}}"></span></button>
-                <a href="/administradordestinos/idioma/@{{destino.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in destino.destino_con_idiomas"> @{{traduccion.idioma.culture}}</a>
+                @if(Auth::user()->contienePermiso('edit-destino'))
+                    <a href="/administradordestinos/editar/@{{destino.id}}" class="btn btn-warning">Editar</a>
+                @endif
+                @if(Auth::user()->contienePermiso('estado-destino'))
+                    <button class="btn btn-@{{destino.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(destino)">@{{destino.estado ? 'Desactivar' : 'Activar'}}</button>
+                @endif
+                @if(Auth::user()->contienePermiso('sugerir-destino'))
+                    <button title="@{{destino.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(destino)"><span class="glyphicon glyphicon-@{{destino.sugerido ? 'star' : 'star-empty'}}"></span></button>
+                @endif
+                @if(Auth::user()->contienePermiso('edit-destino'))
+                    <a href="/administradordestinos/idioma/@{{destino.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in destino.destino_con_idiomas"> @{{traduccion.idioma.culture}}</a>
                 <button type="button" ng-click="modalIdioma(destino)" class="btn btn-default" ng-if="destino.destino_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                @endif
             </div>  
             
         </div>

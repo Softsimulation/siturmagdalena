@@ -17,8 +17,12 @@
 
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <div class="text-center">
-        <a href="/turismoreceptor/datosencuestados" class="btn btn-lg btn-success">Crear encuesta</a>
-        <a href="/grupoviaje/editar/{{$id}}" class="btn btn-lg btn-warning">Editar grupo</a>
+        @if(Auth::user()->contienePermiso('create-encuestaReceptor'))
+            <a href="/turismoreceptor/datosencuestados/{{$id}}" class="btn btn-lg btn-success">Crear encuesta</a>
+        @endif
+        @if(Auth::user()->contienePermiso('edit-grupoViaje'))
+            <a href="/grupoviaje/editar/{{$id}}" class="btn btn-lg btn-warning">Editar grupo</a>
+        @endif
     </div>
     <hr/>
         <div class="row">
@@ -108,7 +112,9 @@
                                     <td ng-if="e.sexo">M</td><td ng-if="!e.sexo">F</td>
                                     <td>@{{e.email}}</td>
                                     <td>@{{e.historial_encuestas[0].estados_encuesta.nombre}}</td>
-                                    <td class="text-center"><a href="/turismoreceptor/editardatos/@{{e.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a></td>
+                                    @if(Auth::user()->contienePermiso('edit-encuestaReceptor'))
+                                        <td class="text-center"><a href="/turismoreceptor/editardatos/@{{e.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a></td>
+                                    @endif
                                 </tr>
                             </tbody>
                         </table>

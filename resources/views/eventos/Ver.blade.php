@@ -35,6 +35,7 @@ function parse_yturl($url)
 @endsection
 
 @section('content')
+    @if(count($evento->multimediaEventos) > 0)
     <div id="carousel-main-page" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
@@ -81,15 +82,16 @@ function parse_yturl($url)
           </div>
       </div>
       <!-- Controls -->
-      <!--<a class="left carousel-control" href="#carousel-main-page" role="button" data-slide="prev">-->
-      <!--  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
-      <!--  <span class="sr-only">Anterior</span>-->
-      <!--</a>-->
-      <!--<a class="right carousel-control" href="#carousel-main-page" role="button" data-slide="next">-->
-      <!--  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
-      <!--  <span class="sr-only">Siguiente</span>-->
-      <!--</a>-->
+      <a class="left carousel-control" href="#carousel-main-page" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+      </a>
+      <a class="right carousel-control" href="#carousel-main-page" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
     </div>
+    @endif
     <div id="menu-page">
         <div class="container">
             <ul id="menu-page-list">
@@ -111,8 +113,21 @@ function parse_yturl($url)
     
     <section id="informacionGeneral" class="section active">
         <div class="container">
+            @if(count($evento->multimediaEventos) > 0)
             <h3 class="title-section">{{$evento->eventosConIdiomas[0]->nombre}}
-               
+            @else
+            <div class="text-center">
+                <h2>{{$evento->eventosConIdiomas[0]->nombre}}
+                  @if($evento->eventosConIdiomas[0]->edicion)
+                  <small class="btn-block">
+    	              Ed. {{$evento->eventosConIdiomas[0]->edicion}} del {{date("j/m/y", strtotime($evento->fecha_in))}} al {{date("j/m/y", strtotime($evento->fecha_fin))}}
+    	            
+    	          </small>
+    	          @endif
+              </h2>
+            </div>
+            @endif
+             
             </h3>
             <div class="row">
                 <div class="col-xs-12">

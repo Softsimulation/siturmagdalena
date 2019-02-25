@@ -70,13 +70,31 @@ class TurismoReceptorController extends Controller
 	{
 	    $this->middleware('auth');
 	    $this->middleware('receptor',['only' =>  ['getSeccionestancia','getSecciontransporte','getSecciongrupoviaje','getSecciongastos','getSeccionpercepcionviaje','getSeccionfuentesinformacion'] ]);
-	    $this->middleware('role:Admin');
+	    //$this->middleware('role:Admin');
+	    $this->middleware('permissions:list-encuestaReceptor|create-encuestaReceptor|read-encuestaReceptor|edit-encuestaReceptor|delete-encuestaReceptor',['only' => ['getEncuestas','getListadoencuestas'] ]);
+        
+        $this->middleware('permissions:create-encuestaReceptor|edit-encuestaReceptor|read-encuestaReceptor',['only' => ['getInformaciondatoscrear','getSeccionestancia',
+        'getCargardatosseccionestancia','getSecciontransporte','getCargardatostransporte','getSecciongrupoviaje','getCargardatosseccionviaje',
+        'getSecciongastos','getInfogasto','getSeccionpercepcionviaje','getCargardatospercepcion','getSeccionfuentesinformacion','getCargardatosseccioninformacion'] ]);
+        
+        $this->middleware('permissions:create-encuestaReceptor|edit-encuestaReceptor',['only' => ['postCrearestancia','postGuardarsecciontransporte','postGuardarseccionviajegrupo',
+        'postGuardargastos','postGuardarseccionpercepcion','postGuardarseccioninformacion'] ]);
+        $this->middleware('permissions:create-encuestaReceptor',['only' => ['getDatosencuestados','postGuardardatos'] ]);
+        $this->middleware('permissions:edit-encuestaReceptor',['only' => ['getEditardatos','getCargareditardatos','postGuardareditardatos'] ]);
 	    $this->user = Auth::user();
         
 	}
     
-    public function getDatosencuestados(){
-        return view('turismoReceptor.DatosEncuestados');
+    public function getDatosencuestados($id = null){
+        if($id != null){
+    		if(!Grupo_Viaje::find($id)){
+    			return \Redirect::to('/grupoviaje/listadogrupos')->with('message', 'Verifique que el grupo este ingresado en el sistema.')
+                        ->withInput();
+    		}
+    	}else{
+    		$id = -1;
+    	}
+        return view('turismoReceptor.DatosEncuestados', ['id' => $id]);
     }
     
     public function getInformaciondatoscrear(){
@@ -1188,12 +1206,12 @@ class TurismoReceptorController extends Controller
     	}
         $visitante->financiadoresViajes()->detach();
         $visitante->financiadoresViajes()->attach($request["Financiadores"]);
-        if($visitante->ultima_sesion<5){
+        if($visitante->ultima_sesion < 5){
             $visitante->ultima_sesion =5;
         }
         
         $visitante->historialEncuestas()->save(new Historial_Encuesta([
-            'estado_id' => 1,
+            'estado_id' => $visitante->ultima_sesion != 7 ? 2 : 3,
             'fecha_cambio' => date('Y-m-d H:i:s'), 
             'mensaje' => $visitante->ultima_sesion ==5?"Se ha creado la sección de gastos":"Se ha editado la sección de gastos",
             'usuario_id' => $this->user->digitador->id
@@ -1489,8 +1507,8 @@ class TurismoReceptorController extends Controller
 			'NombreTwitter' => 'max:100',
 			'OtroFuenteAntes' => 'max:100',
 			'OtroFuenteDurante' => 'max:100',
-			'facilidad' => 'required',
-			'conoce_marca' => 'required',
+			//'facilidad' => 'required',
+			//'conoce_marca' => 'required',
 			'acepta_autorizacion' => 'required',
 			'acepta_tratamiento' => 'required',
     	],[
@@ -1578,8 +1596,13 @@ class TurismoReceptorController extends Controller
 		}
 		
 		$visitante->invitacion_correo = $request->Correo == 1 ? 1 : 0;
-		$visitante->facilidad = $request->facilidad == 1 ? 1 : 0;
-		$visitante->conoce_marca = isset($request->conoce_marca) ? ($request->conoce_marca == 1 ? 1 : 0 ): 0;
+		$controlSostenibilidad = Control_Sostenibilidad_Receptor::where('fecha_inicial', '<=', $visitante->fecha_llegada)->where('fecha_final', '>=', $visitante->fecha_llegada)->where('estado', true)->count();
+		
+		if($controlSostenibilidad > 0){
+		    $visitante->facilidad = $request->facilidad == 1 ? 1 : 0;
+		    $visitante->conoce_marca = isset($request->conoce_marca) ? ($request->conoce_marca == 1 ? 1 : 0 ): 0;    
+		}
+		
 		$visitante->acepta_autorizacion =  isset($request->acepta_autorizacion) ? ($request->acepta_autorizacion == 1 ? 1 : 0) : 0;
 		$visitante->acepta_tratamiento = isset($request->acepta_tratamiento) ? ($request->acepta_tratamiento == 1 ? 1 : 0) : 0;
 		

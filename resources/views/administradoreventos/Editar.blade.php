@@ -143,7 +143,7 @@
                             <div class="col-xs-12">
                                 <br/>
                                 <label>Subir imágenes</label>
-                                <file-input text="previewImagenesText" preview="previewImagenes" ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes." multiple max-files="5"></file-input>
+                                <file-input text="previewImagenesText" preview="previewImagenes" ng-model="imagenes" accept="image/*" icon-class="glyphicon glyphicon-plus" id-input="imagenes" label="Seleccione las imágenes." multiple max-files="19"></file-input>
                                 
                             </div>
                             <div class="col-sm-12">

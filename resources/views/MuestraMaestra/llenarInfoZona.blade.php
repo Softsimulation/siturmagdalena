@@ -18,11 +18,15 @@
         
         <div class="btn-group">
             <a href="/MuestraMaestra/periodo/@{{zona.periodo_medicion_id}}"  class="btn btn-primary" >Volver</a>
-            <button type="submit" class="btn btn-success" ng-click="guardar()" >Guardar</button>
-            <a ng-click="exportarFileExcelZona()"  class="btn btn-primary" >Descargar excel</a>
+            @if(Auth::user()->contienePermiso('llenarInfo-zona'))
+                <button type="submit" class="btn btn-success" ng-click="guardar()" >Guardar</button>
+            @endif
+            @if(Auth::user()->contienePermiso('excel-infoZona'))
+                <a ng-click="exportarFileExcelZona()"  class="btn btn-primary" >Descargar excel</a>
+            @endif
         </div>
-        
-        <table>
+        @if(Auth::user()->contienePermiso('llenarInfo-zona'))
+            <table>
               <tr>
                 <th style="width:4%">ID</th>
                 <th style="width:8%" >RNT</th>
@@ -72,7 +76,7 @@
               </tr>
               
               <tr ng-repeat="item in proveedoresInformales" >
-                <th>@{{item.id}}</th>
+                <th>@{{item.codigo}}</th>
                 <td ng-class="{ 'error': ( (form.$submitted || form.rnt@{{$index}}.$touched) && form.rnt@{{$index}}.$invalid  ) }" >  
                     <p title="@{{item.numero_rnt}}" >&nbsp</p> 
                     <input type="number" class="form-control" name="rnt@{{$index}}" min="0" placeholder="RNT" ng-model="item.muestra.rnt" disabled >
@@ -112,7 +116,7 @@
                   <td colspan="8" class="alert alert-info" >No se encontraron proveedores en la zona.</td>
               </tr>
         </table>
-       
+        @endif
     </form>
     
     <style>

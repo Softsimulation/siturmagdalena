@@ -35,9 +35,11 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/administradorrutas/crear" role="button" class="btn btn-lg btn-success">
-      Agregar ruta turística
-    </a> 
+    @if(Auth::user()->contienePermiso('create-ruta'))
+        <a href="/administradorrutas/crear" role="button" class="btn btn-lg btn-success">
+          Agregar ruta turística
+        </a>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de rutas turísticas</label>
         <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar ruta turística...">
@@ -65,11 +67,19 @@
             </div>
             <p>@{{ruta.rutas_con_idiomas[0].descripcion | limitTo:255}}<span ng-if="ruta.rutas_con_idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
-                <a href="/administradorrutas/editar/@{{ruta.id}}" class="btn btn-warning">Editar</a>
-                <button class="btn btn-@{{ruta.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(ruta)">@{{ruta.estado ? 'Desactivar' : 'Activar'}}</button>
-                <button title="@{{ruta.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(ruta)"><span class="glyphicon glyphicon-@{{ruta.sugerido ? 'star' : 'star-empty'}}"></span></button>
-                <a href="/administradorrutas/idioma/@{{ruta.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in ruta.rutas_con_idiomas"> @{{traduccion.idioma.culture}}</a>
-                <button type="button" ng-click="modalIdioma(ruta)" class="btn btn-default" ng-if="ruta.rutas_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                @if(Auth::user()->contienePermiso('edit-ruta'))
+                    <a href="/administradorrutas/editar/@{{ruta.id}}" class="btn btn-warning">Editar</a>
+                @endif
+                @if(Auth::user()->contienePermiso('estado-ruta'))
+                    <button class="btn btn-@{{ruta.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(ruta)">@{{ruta.estado ? 'Desactivar' : 'Activar'}}</button>
+                @endif
+                @if(Auth::user()->contienePermiso('sugerir-ruta'))
+                    <button title="@{{ruta.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(ruta)"><span class="glyphicon glyphicon-@{{ruta.sugerido ? 'star' : 'star-empty'}}"></span></button>
+                @endif
+                @if(Auth::user()->contienePermiso('edit-ruta'))
+                    <a href="/administradorrutas/idioma/@{{ruta.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in ruta.rutas_con_idiomas"> @{{traduccion.idioma.culture}}</a>
+                    <button type="button" ng-click="modalIdioma(ruta)" class="btn btn-default" ng-if="ruta.rutas_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                @endif
             </div>  
             
         </div>

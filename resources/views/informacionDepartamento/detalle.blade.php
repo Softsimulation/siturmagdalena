@@ -51,13 +51,15 @@ function parse_yturl($url)
 @endsection
 
 @section('meta_og')
+@if($informacion != null)
 <meta property="og:title" content="{{$informacion->titulo}}. Miralo en SITUR Magdalena" />
+@endif
 <meta property="og:image" content="{{asset('/img/brand/96.png')}}" />
 @endsection
 
 @section('content')
 
-
+    @if($informacion != null)
     <div class="container">
         <ol class="breadcrumb">
           <li>{{trans('resources.menu.conoceElMagdalena')}}</li>
@@ -84,50 +86,54 @@ function parse_yturl($url)
           </div>
         
           <!-- Controls -->
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
           </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Siguiente</span>
           </a>
         </div>
         <br>
         @endif
-    <div id="contentDetalle">
-        <div class="row">
-            @if($informacion->video)
-            <div class="col-xs-12 col-md-6">
-                <iframe src="https://www.youtube.com/embed/<?php echo parse_yturl($informacion->video) ?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 300px;"></iframe>
+        <div id="contentDetalle">
+            <div class="row">
+                @if($informacion->video)
+                <div class="col-xs-12 col-md-6">
+                    <iframe src="https://www.youtube.com/embed/<?php echo parse_yturl($informacion->video) ?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 300px;"></iframe>
+                    
+                </div>
+                @endif
+                <div class="col-xs-12 @if($informacion->video) col-md-6 @endif">
+                    {!! $informacion->cuerpo !!}
+                </div>
                 
-            </div>
-            @endif
-            <div class="col-xs-12 @if($informacion->video) col-md-6 @endif">
-                {!! $informacion->cuerpo !!}
             </div>
             
         </div>
-        
-    </div>
     
     
-    <div id="shareButtons" class="text-center">
-        <p>Comparte esta información</p>
-        <a href="https://www.facebook.com/sharer/sharer.php?u={{\Request::url()}}" role="button" class="btn btn-primary" title="Compartir en Facebook" target="_blank" rel="noopener noreferrer">
-            <span class="ion-social-facebook" aria-hidden="true"></span>
-            <span class="d-none d-sm-inline-block">Facebook</span>
-        </a>
-        <a href="https://twitter.com/home?status= {{$informacion->titulo}} por SITUR Magdalena. Lee más en {{\Request::url()}}" role="button" class="btn btn-info" title="Compartir en Twitter" target="_blank" rel="noopener noreferrer">
-            <span class="ion-social-twitter" aria-hidden="true"></span>
-            <span class="d-none d-sm-inline-block">Twitter</span>
-        </a>
-        <a href="https://plus.google.com/share?url={{\Request::url()}}" role="button" class="btn btn-danger" title="Compartir en Google +" target="_blank" rel="noopener noreferrer">
-            <span class="ion-social-googleplus" aria-hidden="true"></span>
-            <span class="d-none d-sm-inline-block">Google +</span>
-        </a>
+        <div id="shareButtons" class="text-center">
+            <p>Comparte esta información</p>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{\Request::url()}}" role="button" class="btn btn-primary" title="Compartir en Facebook" target="_blank" rel="noopener noreferrer">
+                <span class="ion-social-facebook" aria-hidden="true"></span>
+                <span class="d-none d-sm-inline-block">Facebook</span>
+            </a>
+            <a href="https://twitter.com/home?status= {{$informacion->titulo}} por SITUR Magdalena. Lee más en {{\Request::url()}}" role="button" class="btn btn-info" title="Compartir en Twitter" target="_blank" rel="noopener noreferrer">
+                <span class="ion-social-twitter" aria-hidden="true"></span>
+                <span class="d-none d-sm-inline-block">Twitter</span>
+            </a>
+            <!--<a href="https://plus.google.com/share?url={{\Request::url()}}" role="button" class="btn btn-danger" title="Compartir en Google +" target="_blank" rel="noopener noreferrer">-->
+            <!--    <span class="ion-social-googleplus" aria-hidden="true"></span>-->
+            <!--    <span class="d-none d-sm-inline-block">Google +</span>-->
+            <!--</a>-->
+        </div>
     </div>
+    @else
+    <div class="alert alert-info text-center">
+        No se ha publicado información acerca de este tema
     </div>
-    
+    @endif
     
 @endsection

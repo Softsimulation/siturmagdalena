@@ -16,9 +16,11 @@
 </div>
 <div class="flex-list">
     @if($puedeEditar==true)
-        <button type="button" role="button" class="btn btn-lg btn-success" ng-click="agregarSeccion()">
-          Agregar sección
-        </button>
+        @if(Auth::user()->contienePermiso('edit-encuestaADHOC'))
+            <button type="button" role="button" class="btn btn-lg btn-success" ng-click="agregarSeccion()">
+              Agregar sección
+            </button>
+        @endif
         <a class="btn btn-lg btn-link" href="/encuesta/listado" >Volver al listado</a>
     @endif
           
@@ -62,7 +64,7 @@
                             <th>Pregunta</th>
                             <th>Tipo campo</th>
                             <th style="width:  70px;">Estado</th>
-                            <th style="width: 152px;">Opciones</th>
+                            <th style="width: 180px;">Opciones</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -72,40 +74,44 @@
                               <td>@{{pregunta.es_visible ? 'Activa' : 'Inactiva'}}</td>
                               <td>
                                     @if($puedeEditar)
-                                        <button type="button" class="btn btn-xs btn-default" ng-click="verDetallePregunta(pregunta)"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver detalle</span></button>
-                                        <div class="dropdown" style="display:inline-block" >
-                                              <button type="button" class="btn btn-xs btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                 Más opciones
-                                                 <span class="caret"></span>
-                                              </button>
-                                              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                                   <li>
-                                                        <a href ng-click="activarDesactivarPregunta(pregunta)" >
-                                                             @{{ !pregunta.es_visible ? 'Activar' : 'Desactivar'}}
-                                                        </a>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                    <li>
-                                                     <a href ng-click="eliminarPregunta(pregunta,$index)" >
-                                                         Eliminar
-                                                     </a>
-                                                     <li>
-                                                     <a href ng-click="duplicarPregunta(pregunta)" >
-                                                         Duplicar
-                                                     </a>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                    <li ng-repeat="item in pregunta.idiomas" >
-                                                      <a href ng-click="OpenModalEditarIdiomaPregunta(pregunta,item)" >Información en @{{item.idioma.nombre}} </a>
-                                                    </li>
-                                                    <li><a href ng-click="OpenModalAgregarIdiomaPregunta(pregunta)" >Agregar información en otro idioma</a></li>
-                                                    <li class="divider"></li>
-                                                    <li ng-if="pregunta.tipo_campos_id==3 || pregunta.tipo_campos_id==5 || pregunta.tipo_campos_id==6 || pregunta.tipo_campos_id==7">
-                                                        <a href ng-click="openModalAgregarOpcion(pregunta)" >Agregar opción</a>
-                                                    </li>
-                                                    
-                                              </ul> 
-                                        </div>
+                                        @if(Auth::user()->contienePermiso('edit-encuestaADHOC|read-encuestaADHOC'))                                
+                                            <button type="button" class="btn btn-xs btn-default" ng-click="verDetallePregunta(pregunta)"><span class="glyphicon glyphicon-eye-open"></span><span class="sr-only">Ver detalle</span></button>
+                                        @endif
+                                        @if(Auth::user()->contienePermiso('edit-encuestaADHOC'))
+                                            <div class="dropdown" style="display:inline-block" >
+                                                  <button type="button" class="btn btn-xs btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                     Más opciones
+                                                     <span class="caret"></span>
+                                                  </button>
+                                                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                                                       <li>
+                                                            <a href ng-click="activarDesactivarPregunta(pregunta)" >
+                                                                 @{{ !pregunta.es_visible ? 'Activar' : 'Desactivar'}}
+                                                            </a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li>
+                                                         <a href ng-click="eliminarPregunta(pregunta,$index)" >
+                                                             Eliminar
+                                                         </a>
+                                                         <li>
+                                                         <a href ng-click="duplicarPregunta(pregunta)" >
+                                                             Duplicar
+                                                         </a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li ng-repeat="item in pregunta.idiomas" >
+                                                          <a href ng-click="OpenModalEditarIdiomaPregunta(pregunta,item)" >Información en @{{item.idioma.nombre}} </a>
+                                                        </li>
+                                                        <li><a href ng-click="OpenModalAgregarIdiomaPregunta(pregunta)" >Agregar información en otro idioma</a></li>
+                                                        <li class="divider"></li>
+                                                        <li ng-if="pregunta.tipo_campos_id==3 || pregunta.tipo_campos_id==5 || pregunta.tipo_campos_id==6 || pregunta.tipo_campos_id==7">
+                                                            <a href ng-click="openModalAgregarOpcion(pregunta)" >Agregar opción</a>
+                                                        </li>
+                                                        
+                                                  </ul> 
+                                            </div>
+                                        @endif
                                     @else
                                         <div class="dropdown" style="float: right;" >
                                                   <button type="button" class="btn btn-xs btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -172,8 +178,8 @@
                   </div>
                   <div class="modal-footer center">
                     
-                    <button type="submit" ng-click="guardarOrdenPreguntas()" class="btn btn-success">Guardar</button>
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-click="guardarOrdenPreguntas()" class="btn btn-success">Guardar</button>
                   </div>
                 </div>
             
@@ -342,8 +348,8 @@
                             </div>
                             <div class="modal-footer" >
                                 
-                                <button type="submit" ng-click="guardarPregunta()" class="btn btn-success">Guardar</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" ng-click="guardarPregunta()" class="btn btn-success">Guardar</button>
                             </div>
                         </form>
                     </div>
@@ -409,28 +415,29 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="row" ng-if="detallePregunta.tipo_campos_id==3 || detallePregunta.tipo_campos_id==5 || detallePregunta.tipo_campos_id==6 || detallePregunta.tipo_campos_id==7"  >
-                                    <div class="col-xs-12 col-md-12">
-                                       
-                                          <ul class="list-group">
-                                            
-                                            <li class="list-group-item list-group-item-action flex-column align-items-start active">
-                                              Opciones <button type="button" class="btn btn-xs btn-default" ng-click="openModalAgregarOpcion(detallePregunta);"><span class="glyphicon glyphicon-plus"></span> Agregar</button>
-                                            </li>
-                                            
-                                            <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="item in detallePregunta.opciones track by $index" style="cursor:default" >
-                                               @{{ (item.idiomas|filter:{ 'idiomas_id':1 })[0].nombre }} <span ng-if="item.es_otro" >(Otro)</span> <button type="button" class="btn btn-xs btn-default" ng-click="eliminarOpionPregunta($index,item.id);"><span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar</span></button>
-                                            </li>
-                                            
-                                            <li class="list-group-item d-flex justify-content-between align-items-center" ng-if="detallePregunta.opciones.length==0" >
-                                                0 opciones agregadas
-                                            </li>
-                                            
-                                          </ul>
-                                       
+                                @if(Auth::user()->contienePermiso('edit-encuestaADHOC'))
+                                    <div class="row" ng-if="detallePregunta.tipo_campos_id==3 || detallePregunta.tipo_campos_id==5 || detallePregunta.tipo_campos_id==6 || detallePregunta.tipo_campos_id==7"  >
+                                        <div class="col-xs-12 col-md-12">
+                                           
+                                              <ul class="list-group">
+                                                
+                                                <li class="list-group-item list-group-item-action flex-column align-items-start active">
+                                                  Opciones <button type="button" class="btn btn-xs btn-default" ng-click="openModalAgregarOpcion(detallePregunta);"><span class="glyphicon glyphicon-plus"></span> Agregar</button>
+                                                </li>
+                                                
+                                                <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="item in detallePregunta.opciones track by $index" style="cursor:default" >
+                                                   @{{ (item.idiomas|filter:{ 'idiomas_id':1 })[0].nombre }} <span ng-if="item.es_otro" >(Otro)</span> <button type="button" class="btn btn-xs btn-default" ng-click="eliminarOpionPregunta($index,item.id);"><span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar</span></button>
+                                                </li>
+                                                
+                                                <li class="list-group-item d-flex justify-content-between align-items-center" ng-if="detallePregunta.opciones.length==0" >
+                                                    0 opciones agregadas
+                                                </li>
+                                                
+                                              </ul>
+                                           
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                                 
                                 
                                 <div class="row" ng-if="detallePregunta.tipo_campos_id==8 || detallePregunta.tipo_campos_id==9 || detallePregunta.tipo_campos_id==10 || detallePregunta.tipo_campos_id==11"  >
@@ -590,8 +597,9 @@
                             </div>
                             <div class="modal-footer">
                                 
-                                <button type="submit" ng-click="guardarIdiomaPregunta()" class="btn btn-success">Guardar</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" ng-click="guardarIdiomaPregunta()" class="btn btn-success">Guardar</button>
+                                
                             </div>
                         </form>
                     </div>
@@ -647,8 +655,9 @@
                             </div>
                             <div class="modal-footer center" >
                                 
-                                <button type="submit" ng-click="guardarOpcionPregunta()" class="btn btn-success">Guardar</button>
+                                
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" ng-click="guardarOpcionPregunta()" class="btn btn-success">Guardar</button>
                             </div>
                         </form>
                     </div>
@@ -689,8 +698,9 @@
                   </div>
                   <div class="modal-footer">
                     
-                    <button type="submit" ng-click="guardarDuplicadoPregunta()" class="btn btn-success">Guardar</button>
+                    
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-click="guardarDuplicadoPregunta()" class="btn btn-success">Guardar</button>
                   </div>
                 </div>
             
