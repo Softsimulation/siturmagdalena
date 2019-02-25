@@ -14,6 +14,7 @@
                                 <th>Nombre comercial</th>
                                 <th>Sub-Categoría</th>
                                 <th>Categoría</th>
+                                <th>Direccion</th>
                                 <th>Contacto</th>
                              
                             </tr>
@@ -28,6 +29,7 @@
                                 <td>{{$proveedor->razon_social}}</td>
                                 <td>{{$proveedor->subcategoria}}</td>
                                 <td>{{$proveedor->categoria}}</td>
+                                <td>{{$proveedor->direccion}}</td>
                                  @if ($proveedor->email != null)
                                    <td >{{$proveedor->email}}</td>
                                
