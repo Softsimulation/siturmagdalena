@@ -150,8 +150,13 @@
         					    <li role="none"><a role="menuitem" href="{{asset('administradorrutas')}}">Administrar rutas</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionacercade')}}">Acerca del departamento</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionrequisitos')}}">Requisitos de viaje</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionplanificatuviaje')}}">Planifica tu viaje</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('bolsaEmpleo/vacantes')}}">Bolsa de empleo</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('sliders/listadosliders')}}">Galería de imágenes</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('/informes/configuracion')}}">Informes</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('/publicaciones/listadoadmin')}}">Biblioteca Digítal</a></li>
+        					     <li role="none"><a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a></li>
+        					    
         					</ul>
                         </li>
                         <li>
@@ -171,6 +176,7 @@
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('ofertaempleo/listadoproveedores')}}">Listado de proveedores</a>
                                 </li>
+                                 <li role="none"><a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedoresrnt')}}">Listado de proveedores RNT</a></li>
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('ofertaempleo/listadoproveedoresrnt')}}">Activar proveedores</a>
                                 </li>
@@ -180,6 +186,7 @@
                                   <li role="none">
                                     <a role="menuitem" href="{{asset('importarRnt')}}">Importar RNT</a>
                                 </li>
+                                
                             </ul>
                         </li>
                         
@@ -206,15 +213,15 @@
                         <li>
                             <a role="menuitem" href="{{asset('encuesta/listado')}}">Encuestas ADHOC</a>
                         </li>
-                        <li>
-                            <a role="menuitem" href="{{asset('/publicaciones/listadoadmin')}}">Biblioteca digital</a>
-                        </li>
-                        <li>
-                            <a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a>
-                        </li>
+                      
+                     
                         <li>
                             <a role="menuitem" href="{{asset('/exportacion')}}">Exportaciones</a>
                         </li>
+                        <li>
+                            <a role="menuitem" href="{{asset('/calcularindicadores')}}">Calcular Indicadores</a>
+                        </li>
+
                         <li>
                             <a role="menuitem" href="#menuPaises" aria-haspopup="true" aria-expanded="false">Administrar países</a>
                             <ul role="menu" id="menuPaises" aria-label="Administrar países">

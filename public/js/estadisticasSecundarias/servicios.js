@@ -29,7 +29,9 @@
         
         eliminarIndicador: function(data){ return http.post("/EstadisticasSecundarias/eliminarindicador", data);  },
         cambiarEstadoIndicador: function(data){ return http.post("/EstadisticasSecundarias/cambiarestadoindicador", data);  },
-        
+        eliminarDatosIndicador: function(data){ return http.post("/EstadisticasSecundarias/eliminardatosindicador", data);  },
+        eliminarSerieIndicador: function(data){ return http.post("/EstadisticasSecundarias/eliminarserieindicador", data);  },
+        eliminarRotuloIndicador: function(data){ return http.post("/EstadisticasSecundarias/eliminarrotuloindicador", data);  },
       };
       
       

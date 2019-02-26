@@ -59,7 +59,7 @@ Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
 
-//Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
+Route::controller('/MuestraMaestra','MuestraMaestraCtrl');
 
 
 Route::get('/encuestaAdHoc/{encuesta}/registro', 'EncuestaDinamicaCtrl@getRegistrodeusuarios' );

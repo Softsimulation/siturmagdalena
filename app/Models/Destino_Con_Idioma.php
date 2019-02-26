@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $idiomas_id
  * @property string $nombre
  * @property string $descripcion
+ * @property string informacion_practica
+ * @property string reglas
+ * @property string como_llegar
  */
 class Destino_Con_Idioma extends Model
 {
@@ -31,7 +34,7 @@ class Destino_Con_Idioma extends Model
     /**
      * @var array
      */
-    protected $fillable = ['destino_id', 'idiomas_id', 'nombre', 'descripcion'];
+    protected $fillable = ['destino_id', 'idiomas_id', 'nombre', 'descripcion', 'informacion_practica', 'reglas', 'como_llegar'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
