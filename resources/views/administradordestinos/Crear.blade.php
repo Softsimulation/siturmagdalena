@@ -4,6 +4,7 @@
 @section('title', 'Formulario para el registro de destinos')
 
 @section('estilos')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.3/croppie.min.css" type="text/css" />
     <style>
         
         .ui-select-container{
@@ -86,6 +87,24 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="form-group">
+                                    <label for="informacion_practica">Información práctica</label>
+                                    <textarea style="resize: none;" rows="6" class="form-control" id="informacion_practica" name="informacion_practica" ng-model="destino.datosGenerales.informacion_practica" placeholder="Máximo 1,000 caracteres."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="form-group">
+                                    <label for="reglas">Reglas</label>
+                                    <textarea style="resize: none;" rows="6" class="form-control" id="reglas" name="reglas" ng-model="destino.datosGenerales.reglas" placeholder="Reglas o normas que deben seguir los visitantes. Máximo 1,000 caracteres."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="form-group">
+                                    <label for="como_llegar">Cómo llegar</label>
+                                    <textarea style="resize: none;" rows="6" class="form-control" id="como_llegar" name="como_llegar" ng-model="destino.datosGenerales.como_llegar" placeholder="Pasos o indicaciones para llegar al lugar. Máximo 1,000 caracteres."></textarea>
+                                </div>
+                            </div>
                             <div class="col-xs-12 form-inline text-center">
                                 <div class="form-group">
                                     <label for="adress">Dirección</label>
@@ -164,4 +183,5 @@
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
 <script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.3/croppie.min.js"></script>
 @endsection

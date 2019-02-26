@@ -44,7 +44,7 @@
                 <th>Encuesta</th>
                 <th>Tipo</th>
                 <th style="width: 20px;" >Estado</th>
-                <th style="width: 152px;">Opciones</th>
+                <th style="width: 190px;">Opciones</th>
               </tr>
               <tr ng-show="mostrarFiltro == true">
                                     
@@ -99,7 +99,7 @@
                             @endif
                             @if(Auth::user()->contienePermiso('descargarDatos-encuestaADHOC'))
                                 <li>
-                                    <a href="javascript:void(0)" ng-click="exportarData(encuesta.id)" >
+                                    <a href="javascript:void(0)" ng-click="exportarData(encuesta.id, (encuesta.idiomas|filter:{ 'idiomas_id':1 })[0].nombre)" >
                                         Descargar datos
                                     </a>
                                 </li>

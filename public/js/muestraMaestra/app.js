@@ -680,6 +680,8 @@
                                     $scope.sharpesAndPopus[i].sharpe.dataZona.encargados = data.zona.encargados;
                                     $scope.sharpesAndPopus[i].sharpe.dataZona.color = data.zona.color;
                                     $scope.sharpesAndPopus[i].sharpe.set('fillColor',data.zona.color);
+                                    $scope.sharpesAndPopus[i].popup.anchor.childNodes[0].children[0].innerHTML = data.zona.nombre;
+                                    
                                     $scope.detalleZona = angular.copy( $scope.sharpesAndPopus[i].sharpe.dataZona );
                                     break;
                                 }

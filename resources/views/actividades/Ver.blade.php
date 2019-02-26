@@ -82,15 +82,14 @@ function parse_yturl($url)
             @endif
           </div>
       </div>
-      <!-- Controls -->
-      <!--<a class="left carousel-control" href="#carousel-main-page" role="button" data-slide="prev">-->
-      <!--  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
-      <!--  <span class="sr-only">Anterior</span>-->
-      <!--</a>-->
-      <!--<a class="right carousel-control" href="#carousel-main-page" role="button" data-slide="next">-->
-      <!--  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
-      <!--  <span class="sr-only">Siguiente</span>-->
-      <!--</a>-->
+      <a class="left carousel-control" href="#carousel-main-page" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+      </a>
+      <a class="right carousel-control" href="#carousel-main-page" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
     </div>
     @endif
     <div id="menu-page">

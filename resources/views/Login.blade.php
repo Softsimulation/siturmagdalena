@@ -18,7 +18,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- lined-icons -->
 <link rel="stylesheet" href="{{asset('css/dashboardcss/icon-font.min.css')}}" type='text/css' />
 <!-- //lined-icons -->
-
+<style>
+	.error_page{
+		background-image: url('/img/bg-login.jpg');
+		background-size: cover;
+		background-position: center;
+	}
+	.login input[type="submit"]{
+		border: 2px solid #019bd3;
+		background: #1b5f9d;
+	}
+</style>
 <!--clock init-->
 </head> 
 <body>
@@ -30,6 +40,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 													<div class="error-top">
 													
 													    <div class="login">
+													    	<img src="{{asset('img/brand/default.png')}}" alt="Logo de SITUR Magdalena" style="margin-bottom: 1rem;">
 														<h3 class="inner-tittle t-inner">Inicio de Sesión</h3>
 														 @if(Session::has('message'))
                                                             <span class="messages">
@@ -73,7 +84,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												<div class="error-btn">
 															
 															</div>
-										   <p>Situr Magdalena 2018 | Design by <a href="#" target="_blank">SOFTSIMULATION S.A.S</a></p>
+										   <p>Situr Magdalena 2018 | Desarrollado por <a href="https://softsimulation.com/" target="_blank">Softsimulation S.A.S</a></p>
 										</div>
 									<!--footer section end-->
 									<!--/404-->
