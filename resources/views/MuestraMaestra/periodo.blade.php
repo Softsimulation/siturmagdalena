@@ -675,7 +675,7 @@
                     <i class="material-icons">arrow_forward</i>
                 </button>  
             </div>
-            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="false" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
+            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="true" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
                 <drawing-manager ng-if="es_crear_zona || es_crear_proveedor"
                       on-overlaycomplete="onMapOverlayCompleted()"
                       drawing-control-options="{position: 'TOP_CENTER',drawingModes:['@{{figuraCrear}}']}"
@@ -1019,18 +1019,20 @@
             <br>
         
             <div class="row">    
-                <div class="col-md-6">
+                <div class="col-md-12" style="padding-right:15px!important; padding-left:15px!important;" >
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.ditecionP.$touched) && formP.ditecionP.$error.required}" >
                       <label>Dirección:</label>
                       <input type="text" class="form-control"  name="ditecionP" ng-model="proveedorInformal.direccion" placeholder="Direción" required >
                     </div>
                 </div>
+                <!--
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.telefono.$touched) && formP.telefono.$error.required}" >
                       <label>Teléfono:</label>
                       <input type="text" class="form-control"  name="telefono" ng-model="proveedorInformal.telefono" placeholder="Número de teléfono" >
                     </div>
                 </div>
+                -->
             </div>
             
             <br>

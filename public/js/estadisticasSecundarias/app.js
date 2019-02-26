@@ -251,7 +251,116 @@
                 }, 500);
             });
         }
+     
+     
+        $scope.eliminarDatosIndicador = function (id,anio) {
+            swal({
+                title: "Eliminar datos indicador",
+                text: "¿Esta seguro de eliminar los datos?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                setTimeout(function () {
+                    $('#processing').addClass('process-in');
+                    
+                    
+                    estadisticasSecundariasServi
+                    .eliminarDatosIndicador( { indicador:id, anio:anio } )
+                    .then(function (data) {
+                        if (data.success) {
+                            $scope.data = data.data;
+                            swal("¡Eliminado!", "El se ha eliminado exitosamente", "success");
+                        }
+                        else {
+                            sweetAlert("Oops...", "Ha ocurrido un error.", "error");
+                        }
+                    }).catch(function () {
+                        swal("Error", "Error en la carga, por favor recarga la página", "error");
+                    });
+    
+                }, 500);
+            });
+        }   
         
+        $scope.eliminarSerie = function(id,index){
+            
+            if($scope.indicadorCrearEditar.es_crear){
+                $scope.indicadorCrearEditar.series.splice(index,1);
+            }
+            else{
+                
+                swal({
+                    title: "Eliminar serie indicador",
+                    text: "¿Esta seguro de eliminar la serie?",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                }, function () {
+                    setTimeout(function () {
+                        $('#processing').addClass('process-in');
+                        estadisticasSecundariasServi
+                        .eliminarSerieIndicador( { id:id } )
+                        .then(function (data) {
+                            if (data.success) {
+                                $scope.data = data.data;
+                                $scope.indicadorCrearEditar.series.splice(index,1);
+                                swal("¡Eliminado!", "El se ha eliminado exitosamente", "success");
+                            }
+                            else {
+                                sweetAlert("Error", "La serie no puede ser eliminada, debido a que tiene datos asociados.");
+                            }
+                        }).catch(function () {
+                            swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        });
+        
+                    }, 500);
+                }); 
+                
+            }
+            
+        }
+        
+        $scope.eliminarRotulo = function(id,index){
+            
+            if($scope.indicadorCrearEditar.es_crear){
+                $scope.indicadorCrearEditar.rotulos.splice(index,1);
+            }
+            else{
+                
+                swal({
+                    title: "Eliminar serie indicador",
+                    text: "¿Esta seguro de eliminar la serie?",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                }, function () {
+                    setTimeout(function () {
+                        $('#processing').addClass('process-in');
+                        estadisticasSecundariasServi
+                        .eliminarRotuloIndicador( { id:id } )
+                        .then(function (data) {
+                            if (data.success) {
+                                $scope.data = data.data;
+                                $scope.indicadorCrearEditar.rotulos.splice(index,1);
+                                swal("¡Eliminado!", "El se ha eliminado exitosamente", "success");
+                            }
+                            else {
+                                sweetAlert("Error", "El rorulo no puede ser eliminado, debido a que tiene datos asociados.");
+                            }
+                        }).catch(function () {
+                            swal("Error", "Error en la carga, por favor recarga la página", "error");
+                        });
+        
+                    }, 500);
+                }); 
+                
+            }
+            
+        }
      
     }])
     
