@@ -47,7 +47,7 @@ class MuestraMaestraCtrl extends Controller
         
         $this->middleware('permissions:excel-muestra',['only' => ['getExcelinfoperiodo'] ]);
         $this->middleware('permissions:KML-muestra',['only' => ['getGeojsonzone'] ]);
-        $this->middleware('permissions:agregar-zona',['only' => ['postAgregarzona'] ]);
+        $this->middleware('permissions:create-zona',['only' => ['postAgregarzona'] ]);
         $this->middleware('permissions:edit-zona',['only' => ['postEditarzona','postEditarposicionzona'] ]);
         $this->middleware('permissions:delete-zona',['only' => ['postEliminarzona'] ]);
         $this->middleware('permissions:excel-zona',['only' => ['getExcel'] ]);
