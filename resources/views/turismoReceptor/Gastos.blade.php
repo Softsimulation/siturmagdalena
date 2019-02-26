@@ -174,7 +174,7 @@
                                     <label for="pago" class="col-md-12 control-label" style="color:dimgray;">¿Cuánto pagó usted por el paquete turístico o excursión?</label>
 
                                     <div class="col-md-12">
-                                        <input type="number" ng-required="encuestaReceptor.ViajoDepartamento==1" class="form-control" min="1" name="pago" ng-model="encuestaReceptor.CostoPaquete" placeholder="Solo números">
+                                        <input type="text" onkeyup="formatoMoneda(this,0)" ng-required="encuestaReceptor.ViajoDepartamento==1" class="form-control" min="1" name="pago" ng-model="encuestaReceptor.CostoPaquete" placeholder="Solo números">
                                         <span ng-show="GastoForm.$submitted || GastoForm.pago.$touched">
                                             <span class="label label-danger" ng-show="GastoForm.pago.$error.min">* El valor debe ser mayor a 0.</span>
                                             <span class="label label-danger" ng-show="GastoForm.pago.$error.required">* Campo requerido.</span>
@@ -456,7 +456,7 @@
                                                             <div class="col-xs-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="gastoFuera" class="control-label" style="color:dimgray;">Cantidad Dentro</label>
-                                                                    <input type="number" class="form-control" name="cantDentro@{{$index}}" min="1" placeholder="Cantidad" ng-model="rub.gastos_visitantes[0].cantidad_pagada_magdalena" ng-required ="rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].cantidad_pagada_fuera == null" >
+                                                                    <input type="text" onkeyup="formatoMoneda(this,0)" class="form-control" name="cantDentro@{{$index}}" min="1" placeholder="Cantidad" ng-model="rub.gastos_visitantes[0].cantidad_pagada_magdalena" ng-required ="rub.gastos_visitantes[0].divisas_magdalena != null || rub.gastos_visitantes[0].personas_cubiertas != null && rub.gastos_visitantes[0].cantidad_pagada_fuera == null" >
                                                                     <span ng-show="GastoForm.$submitted || GastoForm.cantDentro@{{$index}}.$touched">
                                                                         <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.min">*El valor debe ser mayor a 0</span>
                                                                         <span class="label label-danger" ng-show="GastoForm.cantDentro@{{$index}}.$error.number">* Solo números.</span>
@@ -542,67 +542,6 @@
         
         </div>
         
-        <!--<div class="panel panel-success" ng-show="abrirTerrestre">-->
-        <!--    <div class="panel-heading">-->
-                <!-- ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?-->
-        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál es el nombre de la empresa de transporte terrestre de pasajeros utilizado desde una ciudad de Colombia al Magdalena?</b></h3>-->
-        <!--    </div>-->
-        <!--    <div class="panel-body">-->
-        <!--        <div class="row">-->
-        <!--            <div class="col-md-12">-->
-        <!--                <input type="text" name="empresa" ng-minlength="1" ng-maxlength="150" class="form-control" ng-model="encuestaReceptor.Empresa" ng-required="abrirTerrestre" placeholder="Presione aquí para ingresar la empresa de transporte"/>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--        <span  ng-show="GastoForm.$submitted || GastoForm.empresa.$touched">-->
-        <!--            <span class="label label-danger" ng-show="GastoForm.empresa.$error.maxlength">* El campo no debe superar los 150 caracteres.</span>-->
-        <!--            <span class="label label-danger" ng-show="GastoForm.empresa.$error.required">* El campo es requerido.</span>-->
-        <!--        </span>-->
-        <!--    </div>-->
-        <!--</div>-->
-        
-        <!--<div class="panel panel-success" ng-show="abrirAlquiler">-->
-        <!--    <div class="panel-heading">-->
-                <!-- >El alquiler de vehículo fue realizado en:-->
-        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> El alquiler de vehículo fue realizado en</b></h3>-->
-        <!--    </div>-->
-        <!--    <div class="panel-footer"><b>Pregunta con selección única</b></div>-->
-        <!--    <div class="panel-body">-->
-        <!--        <div class="row">-->
-        <!--            <div class="col-md-12">-->
-        <!--                <div class="radio" ng-repeat="item in opciones">-->
-        <!--                    <label ng-show="item.id != 3">-->
-        <!--                        <input type="radio" name="alquiler" ng-value="item.id" ng-model="encuestaReceptor.Alquiler" ng-required="abrirAlquiler"> @{{item.nombre}}-->
-        <!--                    </label>-->
-
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--        <span  ng-show="GastoForm.$submitted || GastoForm.alquiler.$touched">-->
-        <!--            <span class="label label-danger" ng-show="GastoForm.alquiler.$error.required">* El campo es requerido.</span>-->
-        <!--        </span>-->
-        <!--    </div>-->
-        <!--</div>-->
-        <!--<div class="panel panel-success" ng-show="abrirRopa">-->
-        <!--    <div class="panel-heading">-->
-        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> En dónde fue realizado el mayor gasto de productos como ropa, calzado,  artesanías etc. (bienes duraderos) antes y durante el viaje a Atlántico : Respuesta única</b></h3>-->
-        <!--    </div>-->
-        <!--    <div class="panel-footer"><b>Pregunta con selección única</b></div>-->
-        <!--    <div class="panel-body">-->
-        <!--        <div class="row">-->
-        <!--            <div class="col-md-12">-->
-        <!--                <div class="radio" ng-repeat="item in opciones">-->
-        <!--                    <label>-->
-        <!--                        <input type="radio" name="ropa" ng-value="item.id" ng-model="encuestaReceptor.Ropa" ng-required="abrirRopa"> @{{item.nombre}}-->
-        <!--                    </label>-->
-
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--        <span  ng-show="GastoForm.$submitted || GastoForm.ropa.$touched">-->
-        <!--            <span class="label label-danger" ng-show="GastoForm.ropa.$error.required">* El campo es requerido.</span>-->
-        <!--        </span>-->
-        <!--    </div>-->
-        <!--</div>-->
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P10. Los gastos de las personas que conformaron el grupo de viaje fueron pagados por:-->
@@ -640,6 +579,29 @@
 
 @section('javascript')
     // <script>
+    
+        function formatoMoneda(input, decimals) {
+    		amount = input.value;
+    		amount += ''; // por si pasan un numero en vez de un string
+            amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
+        
+            decimals = decimals || 0; // por si la variable no fue fue pasada
+        
+            // si no es un numero o es igual a cero retorno el mismo cero
+            if (isNaN(amount) || amount === 0) 
+                return parseFloat(0).toFixed(decimals);
+        
+            // si es mayor o menor que cero retorno el valor formateado como numero
+            amount = '' + amount.toFixed(decimals);
+        
+            var amount_parts = amount.split('.'),
+                regexp = /(\d+)(\d{3})/;
+        
+            while (regexp.test(amount_parts[0]))
+                amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
+        	input.value = amount_parts.join('.');
+            //return amount_parts.join('.');
+        }
     //     $(window).on('scroll', function () {
             
     //         if ($('#tgastos').length && $(this).width() > 992) {

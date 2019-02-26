@@ -58,10 +58,10 @@ class IndicadoresCtrl extends Controller
         
         $estadistica = null;
         if($idioma == 1){
-            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")->select("id","nombre" ,"label_x" ,"label_y" )->first();
+            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")->select("id","nombre" ,"label_x" ,"label_y", "descripcion_es as descripcion" )->first();
         }
         else{
-            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")-select("id","name as nombre" ,"label_x_en as label_x" ,"label_y_en as label_y" )->first();
+            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")-select("id","name as nombre" ,"label_x_en as label_x" ,"label_y_en as label_y", "descripcion_en as descripcion" )->first();
         }
         
         
@@ -114,7 +114,7 @@ class IndicadoresCtrl extends Controller
                 foreach($estadistica->series as $serie){
                     
                     $meses = Valor_serie_tiempo::join("mes_indicador","mes_indicador.id","=","mes_indicador_id")
-                                               ->where([ ["series_estadistica_id",$serie->id], ["anio_id",$year] ])->distinct()->get(["mes_indicador.*"]);
+                                               ->where([ ["series_estadistica_id",$serie->id], ["anio_id",$year] ])->distinct()->orderBy("mes_indicador.id")->get(["mes_indicador.*"]);
                 
                     $dt = [];
                     foreach($meses as $mes){                         
