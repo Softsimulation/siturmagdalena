@@ -359,7 +359,7 @@ class SliderController extends Controller
                         }
                         break;
                     case 2:
-                        if(Atracciones::find($request->atraccionIdSlider) == null)
+                        if(Atracciones::where('id',$request->atraccionIdSlider)->first() == null)
                         {
                             $errores["Atraccion"][0] = "La atracción seleccionada no se encuentra en la base de datos, favor recargar la página.";
                         }
@@ -393,7 +393,7 @@ class SliderController extends Controller
                         break;
                 }
 	    }
-	    
+	    //return $errores;
 	    if(sizeof($errores) > 0){
             return ['success'=>false, 'errores'=>$errores];
         }
