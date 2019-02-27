@@ -242,3 +242,46 @@ situr.controller('editarUsuarioCtrl', ['$scope','usuarioServi', function ($scope
         
     });
 }])
+
+situr.controller('asignacionPermisosCtrl', ['$scope','usuarioServi', function ($scope,usuarioServi) {
+    $scope.permisos = [];
+    $scope.$watch('id', function () {
+        $("body").attr("class", "charging");
+        usuarioServi.getPermisosUsuario($scope.id).then(function (data) {
+            $scope.permisos = data.permisos;
+            $("body").attr("class", "cbp-spmenu-push");
+            
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+        
+    });
+    
+    $scope.asignacionPermisos = function () {
+        $("body").attr("class", "charging");
+        usuarioServi.asignacionPermisos($scope.permisos,$scope.id).then(function (data) {
+            if (data.success) {
+                swal({
+                    title: "Realizado",
+                    text: "Acción realizada satisfactoriamente.",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    $('#modalAsignacionPermiso').modal('hide');
+                    window.location.href = "/usuario/listadousuarios"
+                }, 1000);
+            } else {
+                swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                $scope.errores = data.errores;
+            }
+            $("body").attr("class", "cbp-spmenu-push");
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+    }
+    
+}])
