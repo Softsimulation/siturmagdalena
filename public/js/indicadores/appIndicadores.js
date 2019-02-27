@@ -207,7 +207,7 @@
                     $scope.filtro.id = $scope.yearSelect.id;
                     if($scope.yearSelect.mes){ $scope.filtro.mes = $scope.yearSelect.mes; }
                     else if($scope.yearSelect.meses){ $scope.filtro.mes = $scope.yearSelect.meses[0].id; }
-                    $scope.filtro.mes = $scope.yearSelect.mes;
+                    //$scope.filtro.mes = $scope.yearSelect.mes;
                     $scope.filtro.temporada =  $scope.yearSelect.temporadas ? $scope.yearSelect.temporadas[0].id : null;
                     
                     $scope.label_x = data.indicador.idiomas[0].eje_x;

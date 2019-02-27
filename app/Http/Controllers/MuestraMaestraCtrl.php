@@ -465,7 +465,7 @@ class MuestraMaestraCtrl extends Controller
         
         foreach($periodo->zonas as $zona){
             
-            return $proveedores = new Collection(DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ));
+            $proveedores = new Collection(DB::select("SELECT *from proveedor_zonas(?)", array( $zona->id ) ));
             $proveedoresInformales = new Collection(DB::select("SELECT *from proveedor_informal_zonas(?)", array( $zona->id ) ));
             
             $zona["formales"] = count($proveedores);
@@ -559,50 +559,91 @@ class MuestraMaestraCtrl extends Controller
     
     public function postGuardarinfozona(Request $request){
         
-        foreach($request->proveedores as $item){
-            
-            $muestra = Muestra_proveedor::where([ ["zona_id",$request->zona], ["proveedor_rnt_id",$item["id"]] ])->first();
-            
-            if( !$muestra ){
-                $muestra = new Muestra_proveedor();
-                $muestra->zona_id = $request->zona;
-                $muestra->proveedor_rnt_id = $item["id"];
-                $muestra->user_create = $this->user->username;
-                $muestra->estado = true;
+        $zona = Zona::find($request->zona);
+        
+        if($zona){
+        
+            foreach($request->proveedores as $item){
+                
+                $muestra = Muestra_proveedor::where([ ["zona_id",$request->zona], ["proveedor_rnt_id",$item["id"]] ])->first();
+                
+                if($item["muestra"]){
+                
+                    if( !$muestra ){
+                        $muestra = new Muestra_proveedor();
+                        $muestra->zona_id = $request->zona;
+                        $muestra->proveedor_rnt_id = $item["id"];
+                        $muestra->user_create = $this->user->username;
+                        $muestra->estado = true;
+                    }
+                    
+                    if ( isset ($item["muestra"]["estado_proveedor_id"]) ) {
+                        $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
+                    }
+                    if ( isset ($item["muestra"]["rnt"]) ) {
+                        $muestra->rnt = $item["muestra"]["rnt"];
+                    }
+                    if ( isset ($item["muestra"]["nombre_proveedor"]) ) {
+                        $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
+                    }
+                    if ( isset ($item["muestra"]["direccion"]) ) {
+                        $muestra->direccion = $item["muestra"]["direccion"];
+                    }
+                    if ( isset ($item["muestra"]["categoria_proveedor_id"]) ) {
+                        $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
+                    }
+                    if ( isset ($item["muestra"]["observaciones"]) ) {
+                        $muestra->observaciones = $item["muestra"]["observaciones"];
+                    }
+                    
+                    $muestra->user_update = $this->user->username;
+                    $muestra->save();
+                }
+               
             }
             
-            $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
-            $muestra->rnt = $item["muestra"]["rnt"];
-            $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
-            $muestra->direccion = $item["muestra"]["direccion"];
-            $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
-            $muestra->observaciones = $item["muestra"]["observaciones"];
-            $muestra->user_update = $this->user->username;
-            $muestra->save();
-        }
-        
-        
-        foreach($request->proveedoresInformales as $item){
             
-            $muestra = Muestra_proveedores_informale::where([ ["zona_id",$request->zona], ["proveedores_informal_id",$item["id"]] ])->first();
-            
-            if( !$muestra ){
-                $muestra = new Muestra_proveedores_informale();
-                $muestra->zona_id = $request->zona;
-                $muestra->proveedores_informal_id = $item["id"];
-                $muestra->user_create = $this->user->username;
-                $muestra->estado = true;
+            foreach($request->proveedoresInformales as $item){
+                
+                $muestra = Muestra_proveedores_informale::where([ ["zona_id",$request->zona], ["proveedores_informal_id",$item["id"]] ])->first();
+                
+                if($item["muestra"]){
+                
+                    if( !$muestra ){
+                        $muestra = new Muestra_proveedores_informale();
+                        $muestra->zona_id = $request->zona;
+                        $muestra->proveedores_informal_id = $item["id"];
+                        $muestra->user_create = $this->user->username;
+                        $muestra->estado = true;
+                    }
+                    
+                    if ( isset ($item["muestra"]["estado_proveedor_id"]) ) {
+                        $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
+                    }
+                    if ( isset ($item["muestra"]["nombre_proveedor"]) ) {
+                        $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
+                    }
+                    if ( isset ($item["muestra"]["direccion"]) ) {
+                        $muestra->direccion = $item["muestra"]["direccion"];
+                    }
+                    if ( isset ($item["muestra"]["categoria_proveedor_id"]) ) {
+                        $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
+                    }
+                    if ( isset ($item["muestra"]["observaciones"]) ) {
+                        $muestra->observaciones = $item["muestra"]["observaciones"];
+                    }
+                    
+                    $muestra->user_update = $this->user->username;
+                    $muestra->save();
+                }
             }
             
-            $muestra->estado_proveedor_id = $item["muestra"]["estado_proveedor_id"];
-            $muestra->nombre_proveedor = $item["muestra"]["nombre_proveedor"];
-            $muestra->direccion = $item["muestra"]["direccion"];
-            $muestra->categoria_proveedor_id = $item["muestra"]["categoria_proveedor_id"];
-            $muestra->observaciones = $item["muestra"]["observaciones"];
-            $muestra->user_update = $this->user->username;
-            $muestra->save();
+            if( $zona->es_tabulada != true ){
+                $zona->es_tabulada = true;
+                $zona->tabulador = $this->user->digitador->id;
+                $zona->save();
+            }
         }
-        
         
         return [ "success"=>true ];
     }
@@ -645,18 +686,41 @@ class MuestraMaestraCtrl extends Controller
     
     
     public function getExcelinfoperiodo($id){
-        return new Collection(DB::select("SELECT *from proveedores_periodos(?)", array($id) ));
         
-        $proveedores = new Collection(DB::select("SELECT *from proveedores_periodos(?)", array($id) ));
-        $proveedoresInformales = new Collection(DB::select("SELECT *from proveedores_informales_periodos(?)", array($id) ));
+        return DB::select("SELECT *from proveedores_informales_periodos_completos", array(1) );
         
-                           
+        
+        
+        //$proveedores = new Collection(DB::select("SELECT *from proveedores_periodos_completos(?)", array($id) ));
+        //$proveedoresInformales = new Collection(DB::select("SELECT *from proveedores_informales_periodos_completos", array($id) ));
         //return View("MuestraMaestra.formatoDescargaInformacionPeriodo", [ "proveedores"=> $proveedores, "proveedoresInformales"=> $proveedoresInformales ]);
-        Excel::create('Data', function($excel) use($proveedores, $proveedoresInformales) {
+        Excel::create('Data', function($excel) use($id) {
     
-                    $excel->sheet('data', function($sheet) use($proveedores, $proveedoresInformales) {
+                    $excel->sheet('data', function($sheet) use($id) {
+                        
                         $sheet->setAutoFilter('A1:O1');
-                        $sheet->loadView('MuestraMaestra.formatoDescargaInformacionPeriodo', [ 'proveedores'=> $proveedores, "proveedoresInformales"=> $proveedoresInformales ] );
+                        
+                        $sheet->row(1, [
+                            'RNT', 'ActRNT', 'Estado', 'ActEstado', 'Nombre Comercial', 'ActNombreComercial', 'Direccion Comercial', 'ActDirComercial', 'CodCategoria', 'ActCodCategoria', 'CodSubcategoria', 'ActCodSubcategoria', 'Municipio', 'ActMunicipio', 'Novedades', 'GEOPOSICIÓN - LATITUD Y LONGITUD'
+                        ]);
+                        
+                        $proveedores = new Collection(DB::select("SELECT *from proveedores_periodos_completos(?)", array($id) ));
+                        $proveedoresInformales = new Collection(DB::select("SELECT *from proveedores_informales_periodos_completos", array($id) ));
+                        
+                        foreach($proveedores as $index => $proveedor) {
+                            $sheet->row($index+2, [
+                                $proveedor->rnt_proveedor, $proveedor->rnt_muestra, $proveedor->estado_proveedor, $proveedor->estado_muestra, $proveedor->nombre_proveedor, $proveedor->nombre_proveedor_muestra, $proveedor->direccion_proveedor, $proveedor->direccion_muestra, $proveedor->categoria_proveedor, $proveedor->categoria_muestra, $proveedor->subcategoria_proveedor, $proveedor->subcategoria_muestra, $proveedor->municipio, $proveedor->municipio,  $proveedor->observaciones_muestra, $proveedor->latitud .' '. $proveedor->longitud
+                            ]);	
+                        }
+                       
+                        $cantidad = count($proveedores) + 2; 
+                        foreach($proveedoresInformales as $index => $proveedor) {
+                            $sheet->row($index+$cantidad, [
+                                '---','---', $proveedor->estado_proveedor, $proveedor->estado_muestra, $proveedor->nombre_proveedor, $proveedor->nombre_proveedor_muestra, $proveedor->direccion_proveedor, $proveedor->direccion_muestra, $proveedor->categoria_proveedor, $proveedor->categoria_muestra, $proveedor->subcategoria_proveedor, $proveedor->subcategoria_muestra, 'municipio', 'municipio',  $proveedor->observaciones_muestra, $proveedor->latitud .' '. $proveedor->longitud
+                            ]);	
+                        }
+                        
+                        //$sheet->loadView('MuestraMaestra.formatoDescargaInformacionPeriodo', [ 'proveedores'=> $proveedores, "proveedoresInformales"=> $proveedoresInformales ] );
                     });
     
             })->export('xls');

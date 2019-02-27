@@ -44,8 +44,8 @@ class UsuarioController extends Controller
     public function getEditar($id){
         return view('usuario.Editar',array('id' => $id));
     }
-    public function getAsignarpermisos(){
-        return view('usuario.AsignarPermisos');
+    public function getAsignarpermisos($id){
+        return view('usuario.AsignarPermisos',array('id' => $id));
     }
     public function getUsuarios(){
         
@@ -265,16 +265,17 @@ class UsuarioController extends Controller
         return ['usuarios'=>$usuarios,'permisos'=>$permisos];
     }
     public function postAsignacionpermisos(Request $request){
+        
         $validator = \Validator::make($request->all(),[
         
             'idUsuario' => 'required|exists:users,id',
-            'permisos' => 'required',
+            //'permisos' => 'required',
             
             
         ],[
             'idUsuario.required' => 'El usuario es requerido.',
             'idUsuario.exists' => 'El usuario seleccionado no se encuentra en registrado en el sistema.',
-            'permisos.required' => 'Es necesario haber seleccionar por lo menos un permiso.',
+            //'permisos.required' => 'Es necesario haber seleccionar por lo menos un permiso.',
             ]
         );
         
@@ -282,23 +283,55 @@ class UsuarioController extends Controller
             return ["success"=>false,"errores"=>$validator->errors()];
         }
         $errores = [];
-        foreach($request->permisos as $permisoSeleccionado){
-            if(Permission::where('id',$permisoSeleccionado)->first() == null){
-                $errores["permission"][0] = "Uno de los permisos seleccionados no se encuentran registrados en el sistema";
+        $idsPermisos = [];
+        if(sizeof($request->permisos) > 0){
+            foreach($request->permisos as $permisoSeleccionado){
+                $auxPermiso = Permission::where('name',$permisoSeleccionado)->first();
+                
+                if($auxPermiso == null){
+                    return $permisoSeleccionado;
+                    $errores["permission"][0] = "Uno de los permisos seleccionados no se encuentran registrados en el sistema";
+                }else{
+                    if (!in_array($auxPermiso->id, $idsPermisos)) {
+                        array_push($idsPermisos, $auxPermiso->id);
+                    }
+                    
+                }
             }
         }
         
         if(sizeof($errores) > 0){
             return ['success'=>false, 'errores'=>$errores];
         }
+        
         $user = User::where('id',$request->idUsuario)->first();
         $user->permissions()->detach();
-        $permisos = [];
-        foreach($request->permisos as $permiso){
-            $user->permissions()->attach($permiso);
-            array_push($permisos, $permiso);
-        }
-        return ['success'=> true, 'permisos'=>$permisos];
         
+        if(sizeof($idsPermisos) > 0){
+            foreach($idsPermisos as $permiso){
+                $user->permissions()->attach($permiso);
+            }
+        }
+        
+        return ['success'=> true];
+        
+    }
+    public function getPermisosusuario($id){
+        //return $id;
+        $usuario = User::where('id',$id)->with(['permissions'=>function($q){
+            $q->select('permissions.name');
+        }])->first();
+        //return $usuario->permissions;
+        $permisos = [];
+        for($i=0;$i<sizeof($usuario->permissions);$i++){
+            array_push($permisos, $usuario->permissions[$i]->name);
+        }
+        return ['permisos'=>$permisos];
+    }
+    public function getArreglo(){
+        $permiso = Permission::where('id',267)->first();
+        $permiso->name = "edit-estadisticaSecundaria";
+        $permiso->save();
+        return $permiso;
     }
 }
