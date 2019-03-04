@@ -86,11 +86,11 @@ app.factory("usuarioServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-        asignacionPermisos: function (data) {
+        asignacionPermisos: function (permisos,id) {
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.post('/usuario/asignacionpermisos', data)
+            $http.post('/usuario/asignacionpermisos', {'permisos':permisos,'idUsuario':id})
             .success(function (data) {
                 defered.resolve(data);
             }).error(function (err) {
@@ -98,6 +98,19 @@ app.factory("usuarioServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        getPermisosUsuario: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/usuario/permisosusuario/'+id)
+            .success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        
         
     }
 }]);
