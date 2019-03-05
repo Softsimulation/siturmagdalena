@@ -775,7 +775,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                         </div>
                         <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-blue">
                             <span id="infoMunicipio-PST" class="d-block font-weight-bold"></span>
-                            prestadores de servicios turísticos en el RNT (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre PST</span></small></a>
+                            prestadores de servicios turísticos en el RNT <!-- (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre PST</span></small></a> -->
                         </div>
                         
                     </div>
@@ -785,7 +785,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                         </div>
                         <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-red">
                             <span id="infoMunicipio-habitaciones" class="d-block font-weight-bold"></span>
-                            habitaciones de alojamiento turístico (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre habitaciones</span></small></a>
+                            habitaciones de alojamiento turístico <!-- (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre habitaciones</span></small></a>-->
                         </div>
                         
                     </div>
@@ -795,7 +795,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                         </div>
                         <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-green">
                             <span id="infoMunicipio-camas" class="d-block font-weight-bold"></span>
-                            camas de alojamiento turístico (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre camas</span></small></a>
+                            camas de alojamiento turístico <!-- (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre camas</span></small></a>-->
                         </div>
                         
                     </div>
@@ -805,7 +805,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                         </div>
                         <div class="col-xs-8 col-sm-10 text-left infoMunicipio-text text-orange">
                             <span id="infoMunicipio-empleos" class="d-block font-weight-bold"></span>
-                            número de empleos directos reportados en el RNT (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre empleos</span></small></a>
+                            número de empleos directos reportados en el RNT <!-- (<span class="infoMunicipio-anio"></span>-<span class="infoMunicipio-mes"></span>) <a href="#"><small>+ info <span class="sr-only">Sobre empleos</span></small></a>-->
                         </div>
                         
                     </div>
@@ -829,10 +829,11 @@ var municipios = [];
 $(document).ready(function(){
     
     
-    $.getJSON( "/testMunicipios.json", function( data ) {
-      municipios = data;
+    $.getJSON( "/datosmapa", function( data ) {
+      municipios = data.municipios;
+      cambiar(4747,'path5103');
     });
-    setTimeout(function(){cambiar(4747,'path5103')},750);
+    
     
 });
 function getMunicipio(id){

@@ -26,6 +26,7 @@ use App\Models\Slider;
 use App\Models\Actividad;
 use App\Models\Proveedor;
 use App\Models\Publicacion;
+use App\Models\DatosMapa;
 use App;
 
 class HomeController extends Controller
@@ -72,6 +73,13 @@ class HomeController extends Controller
 	public function getCountPublicaciones(){
 	    return Publicacion::where('estado', true)->count();
         
+	}
+	
+	public function Datosmapa(){
+	    
+	    $datos=DatosMapa::get();
+	    return ["municipios"=>$datos];
+	    
 	}
 	
 	public function getIndex(Request $request) {

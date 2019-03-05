@@ -68,8 +68,7 @@ class ExportacionController extends Controller
         switch($request->nombre){
             
             case 'receptor': 
-                $this->ExportacionTurismoReceptor2($request->fecha_inicial,$request->fecha_final);
-                $url='/excel/exports/Exportacion.xlsx';
+                $url=$this->ExportacionTurismoReceptor2($request->fecha_inicial,$request->fecha_final);
             break;
              case 'interno': 
                $url= $this->ExportacionTurismoInterno2($request->fecha_inicial,$request->fecha_final);
@@ -105,9 +104,13 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
-        try{
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
         
-               \Excel::create('Exportacion', function($excel) use($datos) {
+        
+        try{
+               $nombre='Exp_turismo-receptor_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Turismo receptor', function($sheet) use($datos) {
                        
@@ -124,7 +127,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/Exportacion.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -156,9 +159,12 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
-        try{
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
         
-               \Excel::create('ExportacionInterno', function($excel) use($datos) {
+        try{
+               $nombre='Exp_turismo-interno_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Turismo interno', function($sheet) use($datos) {
                        
@@ -175,7 +181,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionInterno.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -206,9 +212,13 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
-        try{
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
         
-               \Excel::create('ExportacionSostenibilidadPst', function($excel) use($datos) {
+        try{
+               $nombre='Exp_sostenibilidad_pst_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
+        
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Sostenibilidad pst', function($sheet) use($datos) {
                        
@@ -225,7 +235,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionSostenibilidadPst.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -256,7 +266,11 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
+        
         try{
+               $nombre='Exp_sostenibilidad_hogares_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
         
                \Excel::create('ExportacionSostenibilidadhogares', function($excel) use($datos) {
         
@@ -275,7 +289,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionSostenibilidadhogares.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -334,7 +348,7 @@ class ExportacionController extends Controller
         
         try{
         
-               \Excel::create('ExportacionOfertayEmpleo', function($excel) use($datos,$nombre) {
+               \Excel::create($nombre, function($excel) use($datos,$nombre) {
         
                     $excel->sheet($nombre, function($sheet) use($datos) {
                        
@@ -351,7 +365,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionOfertayEmpleo.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
