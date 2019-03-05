@@ -84,6 +84,7 @@
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
+                                    <th>Municipio</th>
                                     <th>Barrio</th>
                                     <th>Dirección</th>
                                     <th>Estrato</th>
@@ -93,7 +94,7 @@
                                     <th></th>
                                 </tr>
                                 <tr ng-show="mostrarFiltro == true">
-                                    
+                                    <td><input type="text" ng-model="search.edificacione.barrio.municipio.nombre" name="nombreMunicipio" id="nombreMunicipio" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                     <td><input type="text" ng-model="search.edificacione.barrio.nombre" name="nombreBarrio" id="nombreBarrio" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                     <td><input type="text" ng-model="search.edificacione.direccion" name="direccion" id="direccion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                     <td><input type="text" ng-model="search.edificacione.estrato.nombre" name="nombreEstrato" id="nombreEstrato" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
@@ -105,6 +106,7 @@
                             </thead>
                             <tbody>
                                 <tr dir-paginate="item in temporada.Hogares|filter:search|itemsPerPage:10 as results" pagination-id="hogarP" style="border-bottom: .5px solid lightgray">
+                                    <td>@{{item.edificacione.barrio.municipio.nombre}}</td>
                                     <td>@{{item.edificacione.barrio.nombre}}</td>
                                     <td>@{{item.edificacione.direccion}}</td>
                                     <td>@{{item.edificacione.estrato.nombre}}</td>

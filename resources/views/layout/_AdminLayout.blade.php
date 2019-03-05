@@ -126,7 +126,7 @@
                 
             </div>
             <div id="optionsLoggedUser">
-                <p class="text-overflow text-center">usuario@correo.com</p>
+                <p class="text-overflow text-center">{{\Auth::user()->email}}</p>
                 <ul>
     			    <li><a href="#" title="Tablero de usuario"><span class="sr-only">Perfil de usuario</span><i class="ion-person"></i></a></li>
     				<li><a href="#" title="Configuración"><span class="sr-only">Configuración</span><i class="ion-gear-a"></i></a></li>
