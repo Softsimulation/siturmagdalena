@@ -89,7 +89,6 @@ class UsuarioController extends Controller
         //return $request->all();
         $validator = \Validator::make($request->all(), [
             'nombres' => 'string|min:1|max:255|required',
-            'rol' => 'required',
             'email' => 'required',
             'password1' => 'required',
             'password2' =>'required',
@@ -99,7 +98,6 @@ class UsuarioController extends Controller
             'nombres.min' => 'El nombre debe ser mínimo de 1 caracter.',
             'nombres.max' => 'El nombre debe ser maximo de 255 caracteres.',
             'nombres.required' => 'El nombre es requerido.',
-            'rol.required' => 'Es necesario haber seleccionar por lo menos un rol.',
             'email.required' => 'El email es requerido.',
             'password1.required' => 'La contraseña es requerida.',
             'password2.required' => 'La confirmación de la contraseña es requerida.',
@@ -161,7 +159,6 @@ class UsuarioController extends Controller
         
             'id' => 'required|exists:users,id',
             'nombres' => 'string|min:1|max:255|required',
-            'rol' => 'required',
             'email' => 'required',
             
         ],[
@@ -171,7 +168,6 @@ class UsuarioController extends Controller
             'nombres.min' => 'El nombre debe ser mínimo de 1 caracter.',
             'nombres.max' => 'El nombre debe ser maximo de 255 caracteres.',
             'nombres.required' => 'El nombre es requerido.',
-            'rol.required' => 'Es necesario haber seleccionar por lo menos un rol.',
             'email.required' => 'El email es requerido.',
             ]
         );
