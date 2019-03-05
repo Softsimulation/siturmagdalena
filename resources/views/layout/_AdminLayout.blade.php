@@ -1,3 +1,8 @@
+<?php
+    session(['previousURL' => session()->get('currentUrl')]);
+    session(['currentUrl' => url()->current()]);
+?>
+
 <!DOCTYPE html>
 
 <html lang="es">

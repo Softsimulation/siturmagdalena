@@ -123,7 +123,7 @@
                     <div class="col-xs-12 text-center">
                         <hr/>
                         <button type="submit" ng-click="guardarDatosGenerales()" class="btn btn-lg btn-success">Guardar</button>
-                        <a href="{{ url()->previous() }}" class="btn btn-lg btn-default">Volver</a>
+                        <a href="{{ session()->get('previousURL') }}" class="btn btn-lg btn-default">Volver</a>
                     </div>
                 </div>
             </fieldset>
@@ -154,7 +154,7 @@
                     <div class="col-sm-12 text-center">
                         <hr/>
                         <button ng-click="guardarMultimedia()" type="submit" ng-class="{'disabled': (actividad.id == -1)}" class="btn btn-lg btn-success" >Guardar</button>
-                        <a href="{{asset('/administradoractividades')}}" class="btn btn-lg btn-default">Cancelar</a>
+                        <a href="{{ session()->get('previousURL') }}" class="btn btn-lg btn-default">Volver</a>
                     </div>
                 </div>
             </form>    
@@ -213,7 +213,7 @@
                 <div class="col-sm-12 text-center">
                     <hr/>
                     <button type="submit"  class="btn btn-lg btn-success" ng-class="{'disabled': (actividad.id == -1)}" ng-click="guardarAdicional()">Guardar</button>
-                    <a href="{{asset('/administradoractividades')}}" class="btn btn-lg btn-default">Cancelar</a>
+                    <a href="{{ session()->get('previousURL') }}" class="btn btn-lg btn-default">Volver</a>
                 </div>
             </fieldset>
             
