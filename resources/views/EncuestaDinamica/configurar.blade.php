@@ -64,7 +64,7 @@
                             <th>Pregunta</th>
                             <th>Tipo campo</th>
                             <th style="width:  70px;">Estado</th>
-                            <th style="width: 152px;">Opciones</th>
+                            <th style="width: 180px;">Opciones</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -178,8 +178,8 @@
                   </div>
                   <div class="modal-footer center">
                     
-                    <button type="submit" ng-click="guardarOrdenPreguntas()" class="btn btn-success">Guardar</button>
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-click="guardarOrdenPreguntas()" class="btn btn-success">Guardar</button>
                   </div>
                 </div>
             
@@ -348,8 +348,8 @@
                             </div>
                             <div class="modal-footer" >
                                 
-                                <button type="submit" ng-click="guardarPregunta()" class="btn btn-success">Guardar</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" ng-click="guardarPregunta()" class="btn btn-success">Guardar</button>
                             </div>
                         </form>
                     </div>
@@ -597,8 +597,9 @@
                             </div>
                             <div class="modal-footer">
                                 
-                                <button type="submit" ng-click="guardarIdiomaPregunta()" class="btn btn-success">Guardar</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" ng-click="guardarIdiomaPregunta()" class="btn btn-success">Guardar</button>
+                                
                             </div>
                         </form>
                     </div>
@@ -654,8 +655,9 @@
                             </div>
                             <div class="modal-footer center" >
                                 
-                                <button type="submit" ng-click="guardarOpcionPregunta()" class="btn btn-success">Guardar</button>
+                                
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" ng-click="guardarOpcionPregunta()" class="btn btn-success">Guardar</button>
                             </div>
                         </form>
                     </div>
@@ -696,8 +698,9 @@
                   </div>
                   <div class="modal-footer">
                     
-                    <button type="submit" ng-click="guardarDuplicadoPregunta()" class="btn btn-success">Guardar</button>
+                    
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-click="guardarDuplicadoPregunta()" class="btn btn-success">Guardar</button>
                   </div>
                 </div>
             

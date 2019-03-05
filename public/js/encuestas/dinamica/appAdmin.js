@@ -745,7 +745,7 @@
             document.execCommand("copy");
         }  
         
-        $scope.exportarData = function(id){
+        $scope.exportarData = function(id, nombre){
             
             $("body").attr("class", "cbp-spmenu-push charging");
             
@@ -753,11 +753,11 @@
                 .then(function(response){ 
                     var link = document.createElement("a");
                     link.href = window.URL.createObjectURL(response);
+                    link.download = nombre;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
                     $("body").attr("class", "cbp-spmenu-push");
-                    zona.es_generada = true;
                 });
             
         }

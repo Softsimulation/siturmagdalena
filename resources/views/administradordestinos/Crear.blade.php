@@ -4,6 +4,7 @@
 @section('title', 'Formulario para el registro de destinos')
 
 @section('estilos')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.3/croppie.min.css" type="text/css" />
     <style>
         
         .ui-select-container{
@@ -182,4 +183,5 @@
 <script src="{{asset('/js/plugins/gmaps.js')}}"></script>
 <script src="{{asset('/js/plugins/ckeditor/ckeditor.js')}}"></script>
 <script src="{{asset('/js/plugins/ckeditor/ngCkeditor-v2.0.1.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.3/croppie.min.js"></script>
 @endsection

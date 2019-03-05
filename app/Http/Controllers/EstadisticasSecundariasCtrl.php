@@ -23,6 +23,7 @@ class EstadisticasSecundariasCtrl extends Controller
     {
         
         $this->middleware('auth');
+       /*
         //$this->middleware('role:Admin');
         $this->middleware('permissions:list-estadisticaSecundaria|create-estadisticaSecundaria|edit-estadisticaSecundaria|estado-estadisticaSecundaria|datos-estadisticaSecundaria|delete-estadisticaSecundaria'
         ,['only' => ['getConfiguracion','getDataconfiguracion','getDataEstadisticas'] ]);
@@ -33,6 +34,8 @@ class EstadisticasSecundariasCtrl extends Controller
         
         $this->middleware('permissions:estado-estadisticaSecundaria',['only' => ['postCambiarestadoindicador'] ]);
         $this->middleware('permissions:delete-estadisticaSecundaria',['only' => ['postEliminarindicador'] ]);
+        
+        */
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -104,8 +107,11 @@ class EstadisticasSecundariasCtrl extends Controller
         $validate = \ Validator::make($request->all(),
                     [ 
                       "nombre" => "required|max:150",
+                      "name" => "required|max:150",
                       "label_x" => "required|max:150",
                       "label_y" => "required|max:150",
+                      "descripcion_es" => "required|max:500",
+                      "descripcion_en" => "required|max:500",
                       "graficas.*.id" => "required|exists:tipos_graficas,id",
                       "series" => "required|array|min:1",
                       "series.*.nombre" => "required|max:150",
@@ -129,6 +135,8 @@ class EstadisticasSecundariasCtrl extends Controller
         
         $indicador->nombre = $request->nombre;
         $indicador->name   = $request->name;
+        $indicador->descripcion_es = $request->descripcion_es;
+        $indicador->descripcion_en   = $request->descripcion_en;
 
         $indicador->user_update = $this->user->username;
 
@@ -179,14 +187,41 @@ class EstadisticasSecundariasCtrl extends Controller
                                                  
         }  
         
-        
-        return [ 
-                  "success"=>true, 
-                  "data"=> $this->getDataEstadisticas(),
-               ];
+        return [  "success"=>true, "data"=> $this->getDataEstadisticas() ];
         
     }
     
+    public function postEliminarserieindicador(Request $request){
+        
+        $serie = Series_estadistica::find($request->id); 
+        
+        if( $serie ){ 
+          if( count($serie->valores_rotulo)==0 && count($serie->valores_tiempo)==0 ){
+            
+            $serie->delete();
+            return [ "success"=>true, "data"=> $this->getDataEstadisticas() ];
+          }    
+        }
+        
+        return [ "success"=>false ];
+    }
+    public function postEliminarrotuloindicador(Request $request){
+        
+        $rotulo = Rotulos_estadistica::find($request->id);
+        
+        if( $rotulo ){
+        
+          $serie = Series_estadistica::where("estadisticas_secundaria_id",$rotulo->estadisticas_secundaria_id)->first(); 
+          
+          if( count($serie->valores_rotulo)==0 ){
+            $rotulo->delete();
+            return [ "success"=>true, "data"=> $this->getDataEstadisticas()  ];
+          }  
+          
+        }
+        
+        return [ "success"=>false ];
+    }
     
     public function postEliminarindicador(Request $request){
         
@@ -217,6 +252,23 @@ class EstadisticasSecundariasCtrl extends Controller
         return [ "success"=>false ];
     }
     
+    
+    public function postEliminardatosindicador(Request $request){ 
+        
+        $series = Series_estadistica::where("estadisticas_secundaria_id",$request->indicador)->get();
+        
+        if($series){
+            foreach($series as $serie){
+               $serie->valores_rotulo()->where("anio_id",$request->anio)->delete();
+               $serie->valores_tiempo()->where("anio_id",$request->anio)->delete();
+            }
+        } 
+        
+        return [ 
+                  "success"=>true, 
+                  "data"=> $this->getDataEstadisticas()
+               ];
+    }
     
     private function getDataEstadisticas(){
         

@@ -643,9 +643,9 @@
                              <i class="material-icons">menu</i>
                           </a>
                           <ul class="dropdown-menu">
-                              @if(Auth::user()->contienePermiso('list-bloque'))
+                              
                                   <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
-                              @endif
+                          
                               @if(Auth::user()->contienePermiso('excel-muestra'))
                                   <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Descargar excel de la muestra</a></li>
                               @endif
@@ -675,7 +675,7 @@
                     <i class="material-icons">arrow_forward</i>
                 </button>  
             </div>
-            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="false" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
+            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="true" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
                 <drawing-manager ng-if="es_crear_zona || es_crear_proveedor"
                       on-overlaycomplete="onMapOverlayCompleted()"
                       drawing-control-options="{position: 'TOP_CENTER',drawingModes:['@{{figuraCrear}}']}"
@@ -697,7 +697,7 @@
         <div class="contenido" ng-show="proveedor" >
             <div class="form-group">
                 <label class="control-label">Nombre</label>
-                <p class="form-control-static">@{{proveedor.nombre}}</p>
+                <p class="form-control-static">@{{proveedor.nombre_rnt}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">RNT</label>
@@ -705,19 +705,19 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Estado</label>
-                <p class="form-control-static">@{{proveedor.estado || 'No tiene'}}</p>
+                <p class="form-control-static">@{{proveedor.estado_rnt || 'No tiene'}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Dirección</label>
-                <p class="form-control-static">@{{proveedor.direccion}}</p>
+                <p class="form-control-static">@{{proveedor.direccion_rnt}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Categoría</label>
-                <p class="form-control-static">@{{proveedor.categoria}}</p>
+                <p class="form-control-static">@{{proveedor.categoria_rnt}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Subcategoría</label>
-                <p class="form-control-static">@{{proveedor.subcategoria}}</p>
+                <p class="form-control-static">@{{proveedor.subcategoria_rnt}}</p>
             </div>
             
             @if(Auth::user()->contienePermiso('edit-proveedorMuestra'))
@@ -997,13 +997,13 @@
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.nombreP.$touched) && formP.nombreP.$error.required}" >
                       <label>Nombre:</label>
-                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.nombre" placeholder="Nombre del establecimiento" required >
+                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.nombre_rnt" placeholder="Nombre del establecimiento" required >
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.muniP.$touched) && formP.muniP.$error.required}">
                         <label class="control-label" for="muniP">Municipio</label>
-                        <ui-select  ng-model="proveedorInformal.municipio_id" name="muniP" id="muniP" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <ui-select  ng-model="proveedorInformal.municipio_rnt_id" name="muniP" id="muniP" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione una categoria">
                                 <span ng-bind="$select.selected.nombre"></span>
                             </ui-select-match>
@@ -1019,18 +1019,20 @@
             <br>
         
             <div class="row">    
-                <div class="col-md-6">
+                <div class="col-md-12" style="padding-right:15px!important; padding-left:15px!important;" >
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.ditecionP.$touched) && formP.ditecionP.$error.required}" >
                       <label>Dirección:</label>
-                      <input type="text" class="form-control"  name="ditecionP" ng-model="proveedorInformal.direccion" placeholder="Direción" required >
+                      <input type="text" class="form-control"  name="ditecionP" ng-model="proveedorInformal.direccion_rnt" placeholder="Direción" required >
                     </div>
                 </div>
+                <!--
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.telefono.$touched) && formP.telefono.$error.required}" >
                       <label>Teléfono:</label>
                       <input type="text" class="form-control"  name="telefono" ng-model="proveedorInformal.telefono" placeholder="Número de teléfono" >
                     </div>
                 </div>
+                -->
             </div>
             
             <br>
@@ -1053,7 +1055,7 @@
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.tipoP.$touched) && formP.tipoP.$error.required}">
                         <label class="control-label" for="tipoP">Subcategoría</label>
-                        <ui-select  ng-model="proveedorInformal.idcategoria" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <ui-select  ng-model="proveedorInformal.subcategoria_rnt_id" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione una categoria">
                                 <span ng-bind="$select.selected.categoria_proveedores_con_idiomas[0].nombre"></span>
                             </ui-select-match>
