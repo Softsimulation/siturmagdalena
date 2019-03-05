@@ -73,42 +73,48 @@
     <Folder>
       <name>Prestadores formales</name>
       @foreach ($proveedores as $proveedor)
-        <Placemark>
-          <name>{!! html_entity_decode($proveedor['razon_social']) !!}</name>
-          <ExtendedData>
-            <Data name='RNT'><value>{{$proveedor['numero_rnt']}}</value></Data>
-            <Data name='ESTADO'><value>{!! html_entity_decode($proveedor['estadoP']['nombre']) !!}</value></Data>
-            <Data name='NOMBRE DEL ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor['razon_social']) !!}</value></Data>
-            <Data name='DIRECCIÓN ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor['direccion']) !!}</value></Data>
-            <Data name='CATEGORIA'><value>{!! html_entity_decode($proveedor['tipoCategoria']['categoria']) !!}</value></Data>
-            <Data name='SUBCATEGORIA'><value>{!! html_entity_decode($proveedor['tipoCategoria']['tipo']) !!}</value></Data>
-          </ExtendedData>
-          <Point>
-            <coordinates>
-              {{$proveedor['longitud']}},{{$proveedor['latitud']}},0
-            </coordinates>
-          </Point>
-        </Placemark>
+        @if( $proveedor->rnt )
+          <Placemark>
+            <name>{!! html_entity_decode($proveedor->nombre_rnt) !!}</name>
+            <ExtendedData>
+              <Data name='RNT'><value>{{$proveedor->rnt}}</value></Data>
+              <Data name='ESTADO'><value>{!! html_entity_decode($proveedor->estado_rnt) !!}</value></Data>
+              <Data name='NOMBRE DEL ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor->nombre_rnt) !!}</value></Data>
+              <Data name='DIRECCIÓN ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor->direccion_rnt) !!}</value></Data>
+              <Data name='CATEGORIA'><value>{!! html_entity_decode($proveedor->categoria_rnt) !!}</value></Data>
+              <Data name='SUBCATEGORIA'><value>{!! html_entity_decode($proveedor->subcategoria_rnt) !!}</value></Data>
+            </ExtendedData>
+            <Point>
+              <coordinates>
+                {{$proveedor->longitud}},{{$proveedor->latitud}},0
+              </coordinates>
+            </Point>
+          </Placemark>
+        @endif
       @endforeach
     </Folder>
     
     <Folder>
       <name>Prestadores informales</name>
-      @foreach ($proveedoresInformales as $proveedor)
-        <Placemark>
-          <name>{!! html_entity_decode($proveedor['razon_social']) !!}</name>
-          <ExtendedData>
-            <Data name='NOMBRE DEL ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor['razon_social']) !!}</value></Data>
-            <Data name='DIRECCIÓN ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor['direccion']) !!}</value></Data>
-            <Data name='CATEGORIA'><value>{!! html_entity_decode($proveedor['tipoCategoria']['categoria']) !!}</value></Data>
-            <Data name='SUBCATEGORIA'><value>{!! html_entity_decode($proveedor['tipoCategoria']['tipo']) !!}</value></Data>
-          </ExtendedData>
-          <Point>
-            <coordinates>
-              {{$proveedor['longitud']}},{{$proveedor['latitud']}},0
-            </coordinates>
-          </Point>
-        </Placemark>
+      @foreach ($proveedores as $proveedor)
+        @if( !$proveedor->rnt )
+          <Placemark>
+            <name>{!! html_entity_decode($proveedor->nombre_rnt) !!}</name>
+            <ExtendedData>
+              <Data name='RNT'><value>No tiene</value></Data>
+              <Data name='ESTADO'><value>{!! html_entity_decode($proveedor->estado_rnt) !!}</value></Data>
+              <Data name='NOMBRE DEL ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor->nombre_rnt) !!}</value></Data>
+              <Data name='DIRECCIÓN ESTABLECIMIENTO'><value>{!! html_entity_decode($proveedor->direccion_rnt) !!}</value></Data>
+              <Data name='CATEGORIA'><value>{!! html_entity_decode($proveedor->categoria_rnt) !!}</value></Data>
+              <Data name='SUBCATEGORIA'><value>{!! html_entity_decode($proveedor->subcategoria_rnt) !!}</value></Data>
+            </ExtendedData>
+            <Point>
+              <coordinates>
+                {{$proveedor->longitud}},{{$proveedor->latitud}},0
+              </coordinates>
+            </Point>
+          </Placemark>
+        @endif
       @endforeach
     </Folder>
     
