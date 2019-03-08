@@ -160,7 +160,12 @@
             
             <div class="row" style="text-align: center;">
                 <div class="col-xs-12">
-                       
+                       <a class="btn btn-primary" href="/registrar/autenticacion/facebook">
+                            Facebook
+                        </a>
+                        <a class="btn btn-primary" href="/registrar/autenticacion/google">
+                            Google
+                        </a>
                 </div>
             </div>
         </form>
