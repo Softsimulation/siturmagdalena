@@ -9,13 +9,15 @@ situr.controller('listadoUsuariosCtrl', ['$scope','usuarioServi', function ($sco
     usuarioServi.getUsuarios().then(function (data) {
         $scope.usuarios = data.usuarios;
         for(var i=0; i<$scope.usuarios.length; i++){
-            $scope.usuarios[i].permisos = [];
-            for(var j=0; j<$scope.usuarios[i].permissions.length > 0; j++){
-                
-                $scope.usuarios[i].permisos.push($scope.usuarios[i].permissions[j].id);
+            $scope.usuarios[i].nombreEstado = $scope.usuarios[i].estado == true ? "Activo" : "Inactivo";
+            $scope.usuarios[i].nombresRoles = "";
+            for(var j=0; j<$scope.usuarios[i].roles.length;j++){
+               if(j==0){
+                   $scope.usuarios[i].nombresRoles = $scope.usuarios[i].roles[j].display_name;
+               }else{
+                   $scope.usuarios[i].nombresRoles = $scope.usuarios[i].nombresRoles+"," + $scope.usuarios[i].roles[j].display_name;
+               } 
             }
-            
-            
         }
         $scope.roles = data.roles;
         $scope.permisos = data.permisos;
@@ -148,7 +150,7 @@ situr.controller('guardarUsuarioCtrl', ['$scope','usuarioServi', function ($scop
     });
     
     $scope.guardarUsuario = function () {
-        if (!$scope.crearForm.$valid || $scope.usuario.rol.length == 0 || ($scope.es_pst == true && $scope.usuario.proveedoresRNT.length == 0)) {
+        if (!$scope.crearForm.$valid || ($scope.es_pst == true && $scope.usuario.proveedoresRNT.length == 0)) {
             return;
         }
         $("body").attr("class", "charging");
@@ -203,7 +205,7 @@ situr.controller('editarUsuarioCtrl', ['$scope','usuarioServi', function ($scope
     });
     
     $scope.editarUsuario = function () {
-        if (!$scope.crearForm.$valid || $scope.usuario.rol.length == 0) {
+        if (!$scope.crearForm.$valid || ($scope.es_pst == true && $scope.usuario.proveedoresRNT.length == 0)) {
             return;
         }
         $("body").attr("class", "charging");
