@@ -272,7 +272,7 @@ class ExportacionController extends Controller
         try{
                $nombre='Exp_sostenibilidad_hogares_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
         
-               \Excel::create('ExportacionSostenibilidadhogares', function($excel) use($datos) {
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Sostenibilidad hogares ', function($sheet) use($datos) {
                        
