@@ -1,5 +1,5 @@
 <?php
-
+Route::get('datosmapa','HomeController@Datosmapa');
 Route::get('password/email', 'Auth\PasswordController@getEmail');
 Route::post('password/email', 'Auth\PasswordController@postEmail');
 
@@ -166,6 +166,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/turismo', 'TurismoController');
 
     Route::controller('/','HomeController');
+    
+    
     
 });
 
