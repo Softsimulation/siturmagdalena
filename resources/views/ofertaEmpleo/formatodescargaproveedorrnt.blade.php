@@ -15,8 +15,9 @@
                             <th>Nombre comercial</th>
                             <th>Sub-Categoría</th>
                             <th>Categoría</th>
+                            <th>Direccion</th>
                             <th>Encuesta</th>
-                           
+                       
                              
                             </tr>
            
@@ -29,6 +30,7 @@
                                 <td>{{$proveedor->nombre}}</td>
                                 <td>{{$proveedor->subcategoria}}</td>
                                 <td>{{$proveedor->categoria}}</td>
+                                <td>{{$proveedor->direccion}}</td>
                                 @if ($proveedor->sitio_para_encuesta_id != null)
                                    <td >Activo</td>
                                

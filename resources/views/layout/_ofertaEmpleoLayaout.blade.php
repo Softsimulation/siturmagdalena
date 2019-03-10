@@ -154,13 +154,23 @@
                         <div class="col-xs-12 col-md-9">
                             <h1 style="margin-top: 0.8em; font-size: 2em"><strong>Encuesta de oferta y empleo</strong></h1>
                         </div>
+                         <div class="col-xs-12 col-md-1">
+                            <div class="btn-group">
+                                <a href="bootstrap-elements.html" data-target="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="material-icons">menu</i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{asset('ofertaempleo/listadoproveedores')}}">Volver listado proveedores</a></li>
+                                     <li><a href="{{asset('ofertaempleo/encuestasoferta')}}">Volver listado de encuestas</a></li>
+                                      <li><a href="{{asset('/ofertaempleo/encuestas')}}/@{{proveedor.sitio_para_encuesta}}">Volver listado de encuestas @{{ proveedor.razon_social }} </a></li>
+                                </ul>
+                            </div>
+                        </div>
                         
                     </div>
                 </div>
                 
             </div>
             <div class="title-section">
-                <h3 style="margin-top: 0.5em;"><strong>@yield('establecimeinto')</strong></h3>
+                <h3 style="margin-top: 0.5em;"><strong>@yield('establecimie   nto')</strong></h3>
             </div>
             <div class="progress progress-striped active">
                 <div class="progress-bar progress-bar-info" style="width: @yield('Progreso')">@yield('NumSeccion')</div>

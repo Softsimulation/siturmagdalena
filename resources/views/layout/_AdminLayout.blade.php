@@ -126,7 +126,7 @@
                 
             </div>
             <div id="optionsLoggedUser">
-                <p class="text-overflow text-center">usuario@correo.com</p>
+                <p class="text-overflow text-center">{{\Auth::user()->email}}</p>
                 <ul>
     			    <li><a href="#" title="Tablero de usuario"><span class="sr-only">Perfil de usuario</span><i class="ion-person"></i></a></li>
     				<li><a href="#" title="Configuración"><span class="sr-only">Configuración</span><i class="ion-gear-a"></i></a></li>
@@ -153,6 +153,10 @@
         					    <li role="none"><a role="menuitem" href="{{asset('InformacionDepartamento/configuracionplanificatuviaje')}}">Planifica tu viaje</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('bolsaEmpleo/vacantes')}}">Bolsa de empleo</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('sliders/listadosliders')}}">Galería de imágenes</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('/informes/configuracion')}}">Informes</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('/publicaciones/listadoadmin')}}">Biblioteca Digítal</a></li>
+        					     <li role="none"><a role="menuitem" href="{{asset('/noticias/listadonoticias')}}">Noticias</a></li>
+        					    
         					</ul>
                         </li>
                         <li>
@@ -172,6 +176,7 @@
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('ofertaempleo/listadoproveedores')}}">Listado de proveedores</a>
                                 </li>
+                                 <li role="none"><a role="menuitem" href="{{asset('/ofertaempleo/listadoproveedoresrnt')}}">Listado de proveedores RNT</a></li>
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('ofertaempleo/listadoproveedoresrnt')}}">Activar proveedores</a>
                                 </li>
@@ -181,6 +186,7 @@
                                   <li role="none">
                                     <a role="menuitem" href="{{asset('importarRnt')}}">Importar RNT</a>
                                 </li>
+                                
                             </ul>
                         </li>
                         
@@ -190,8 +196,11 @@
                             <a role="menuitem" href="#menuSostenibilidad" aria-haspopup="true" aria-expanded="false">Sostenibilidad</a>
                             <ul role="menu" id="menuSostenibilidad" aria-label="Sostenibilidad">
                                 <li role="none">
-                                    <a role="menuitem" href="{{asset('sostenibilidadhogares/encuestas')}}">Hogares</a>
-                                    <a role="menuitem" href="{{asset('/sostenibilidadpst/encuestas')}}">PST</a>
+                                    
+                                     <a role="menuitem" href="{{asset('periodoSostenibilidadHogares/listado')}}">Crear Temporada Hogares</a>
+                                     <a role="menuitem" href="{{asset('sostenibilidadhogares/encuestas')}}">Listado de encuestas Hogares</a>
+                                     <a role="menuitem" href="{{asset('/periodoSostenibilidadPst/listado')}}">Crear temporada PST</a>
+                                     <a role="menuitem" href="{{asset('/sostenibilidadpst/encuestas')}}">Listado de encuestas PST</a>
                                 </li>
                             </ul>
                         </li>
@@ -215,6 +224,9 @@
                         <li>
                             <a role="menuitem" href="{{asset('/calcularindicadores')}}">Calcular Indicadores</a>
                         </li>
+                           <li>
+                            <a role="menuitem" href="{{asset('/usuario/listadousuarios')}}">Gestión de usuarios</a>
+                        </li>
 
                         <li>
                             <a role="menuitem" href="#menuPaises" aria-haspopup="true" aria-expanded="false">Administrar países</a>
@@ -228,6 +240,7 @@
                                 <li role="none">
                                     <a role="menuitem" href="{{asset('administrarmunicipios')}}">Municipios</a>
                                 </li>
+                                /usuario/listadousuarios
                             </ul>
                         </li>
                         <li>

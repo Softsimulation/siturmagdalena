@@ -58,24 +58,23 @@
     <a href="/usuario/guardar" role="button" class="btn btn-lg btn-success">
       Crear usuario
     </a> 
+    <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
     <button ng-click="enviarCorreos()" ng-if="usuariosCorreos.ids.length > 0" type="button" class="btn btn-lg btn-primary">
       Enviar correos
-    </button> 
-    <div class="form-group has-feedback" style="display: inline-block;">
-        <label class="sr-only">Búsqueda de usuarios</label>
-        <input type="text" ng-model="prop.search" class="form-control input-lg" id="inputEmail3" placeholder="Buscar usuarios...">
-        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-    </div>      
+    </button>     
 </div>
-<div class="text-center" ng-if="(usuarios | filter:prop.search).length > 0 && (prop.search != '' && prop.search != undefined)">
-    <p>Hay @{{(usuarios | filter:prop.search).length}} registro(s) que coinciden con su búsqueda</p>
+<div class="text-center" ng-if="(usuarios | filter:search).length > 0 && (usuarios != undefined)">
+    <p>Hay @{{(usuarios | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
 </div>
 <div class="alert alert-info" ng-if="usuarios.length == 0">
     <p>No hay registros almacenados</p>
 </div>
-<div class="alert alert-warning" ng-if="(usuarios | filter:prop.search).length == 0 && usuarios.length > 0">
+<div class="alert alert-warning" ng-if="(usuarios | filter:search).length == 0 && usuarios.length > 0">
     <p>No existen registros que coincidan con su búsqueda</p>
 </div>
+<div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.nombre.length > 0 || search.nombreEstado.length > 0 || search.email.length > 0)">
+    Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
+</div>   
 <p class="text-muted text-center">Seleccione usuarios para ver más opciones</p>
         <div class="row">
             <div class="col-xs-12" style="overflow: auto;">
@@ -91,21 +90,30 @@
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
+                            <tr ng-show="mostrarFiltro == true">
+                                    
+                                <td></td>
+                                <td><input type="text" ng-model="search.nombre" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                <td><input type="text" ng-model="search.email" name="email" id="email" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                <td><input type="text" ng-model="search.nombresRoles" name="nombresRoles" id="nombresRoles" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                <td><input type="text" ng-model="search.nombreEstado" name="nombreEstado" id="nombreEstado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                                <td></td>
+                            </tr>
                         </thead>
                         <tbody ng-init="currentPageUsuarios = 1">
-                            <tr dir-paginate="usuario in usuarios|filter:prop.search|itemsPerPage: 10" current-page="currentPageUsuarios" ng-click="verDetalleUsuario($event, usuario)">
+                            <tr dir-paginate="usuario in usuarios|filter:search|itemsPerPage: 10" current-page="currentPageUsuarios" ng-click="verDetalleUsuario($event, usuario)">
                                 <td><input type="checkbox" checklist-model="usuariosCorreos.ids" checklist-value="usuario.id"></td>
                                 <!--<td>@{{($index + 1) + (currentPageUsuarios - 1) * 10}}</td>-->
                                 <td>@{{usuario.nombre}}</td>
                                 <td>@{{usuario.email}}</td>
-                                <td><span ng-repeat="rol in usuario.roles">@{{rol.display_name}}<span ng-if="!$last">,</span></span></td>
-                                <td ng-if="usuario.estado == true">Activo</td>
-                                <td ng-if="usuario.estado != true">Inactivo</td>
+                                <td>@{{usuario.nombresRoles}}</td>
+                                <td>@{{usuario.nombreEstado}}</td>
                                 <td>
                                     <a href="/usuario/editar/@{{usuario.id}}" type="button" title="Editar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
                                     <button ng-if="usuario.estado == true" ng-click="cambiarEstado(usuario)" role="button" title="Desactivar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ban-circle"></span></button>
                                     <button ng-if="usuario.estado != true" ng-click="cambiarEstado(usuario)" role="button" title="Activar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok-circle"></span></button>
-                                    <button ng-click="asignarPermisosModal(usuario)" role="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></button>
+                                    <a href="/usuario/asignarpermisos/@{{usuario.id}}" type="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></a>
+                                    <!--<button ng-click="asignarPermisosModal(usuario)" role="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></button>-->
                                 </td>
                             </tr>
 

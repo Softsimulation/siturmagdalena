@@ -245,7 +245,7 @@
                 <p class="text-muted">{{$informe->descripcion}}</p>
                 <div class="text-right">
                     <!--<a href="/promocionInforme/ver/{{$informe->id}}" class="btn btn-xs btn-link">Descargar PDF</a>-->
-                    <a href="{{$informe->ruta}}" target="_blank" class="btn btn-xs btn-success">Descargar PDF</a>
+                    <a href="{{$informe->ruta}}" download="{{$informe->tituloInforme}}" class="btn btn-xs btn-success">Descargar PDF</a>
                 </div>
             </div>
         </div>
@@ -260,7 +260,7 @@
         <p>No hay elementos publicados en este momento.</p>
     </div>
     @endif
-    {!!$informes->links()!!}
+    
 </div>
 
     
