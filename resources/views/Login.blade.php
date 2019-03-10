@@ -3,10 +3,28 @@
 <html>
 <head>
 <title>Inicio de Sesión de SITUR MAGDALENA</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Augment Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<meta name="description" content="Sistema de Información Turística del Magdalena y de Santa Marta D.T.C.H">
+<meta name="keywords" content="SITUR Magdalena, Visita Magdalena, Visit Magdalena, Turismo en el Magdalena, estadisticas Magdalena, Magdalena" />
+<meta name="author" content="Softsimulation S.A.S" />
+<meta name="copyright" content="SITUR Capítulo Magdalena, Softsimulation S.A.S" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{\Request::url()}}" />
+<link rel='manifest' href='{{asset("/manifest.json")}}'>
+<meta name='mobile-web-app-capable' content='yes'>
+<meta name='apple-mobile-web-app-capable' content='yes'>
+<meta name='application-name' content='SITUR Magdalena'>
+<meta name='apple-mobile-web-app-status-bar-style' content='blue'>
+<meta name='apple-mobile-web-app-title' content='SITUR Magdalena'>
+<link rel='icon' sizes='192x192' href='{{asset("/img/brand/192.png")}}'>
+<link rel='apple-touch-icon' href='{{asset("/img/brand/192.png")}}'>
+<meta name='msapplication-TileImage' content='{{asset("/img/brand/144.png")}}'>
+<meta name='msapplication-TileColor' content='#004A87'>
+<meta name="theme-color" content="#004A87" />
+<meta http-equiv="cache-Control" content="max-age=21600" />
+<meta http-equiv="cache-control" content="no-cache" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
  <!-- Bootstrap Core CSS -->
 <link href="{{asset('css/bootstrap.min.css')}}" rel='stylesheet' type='text/css' />
