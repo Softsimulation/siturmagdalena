@@ -48,7 +48,7 @@
         padding-top:20px !important;
     }
     .icono{
-        height: 22px;
+        height: 20px;
         margin-right: 5px;
     }
     .btn-outline-primary{
