@@ -125,27 +125,17 @@
             });
             
         </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.1.0/jquery.simpleWeather.min.js"></script>
         <script>
-        // v3.1.0
-        //Docs at http://simpleweatherjs.com
         $(document).ready(function() {
-          $.simpleWeather({
-            location: 'Magdalena, Colombia',
-            woeid: '',
-            unit: 'c',
-            success: function(weather) {
-            //   html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
-            //   html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
-            //   html += '<li class="currently">'+weather.currently+'</li>';
-            //   html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';
-          
-              $("#weatherPluginJs").html(weather.temp+'&deg;'+weather.units.temp);
-            },
-            error: function(error) {
-              $("#weatherPluginJs").html('error');
+            
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                $("#weatherPluginJs").html(JSON.parse(xmlHttp.responseText).main.temp + "°C");
             }
-          });
+            xmlHttp.open("GET", "http://api.openweathermap.org/data/2.5/weather?id=3668605&units=metric&APPID=08adc9a38979ce8b46e5fe3c0f50cd4a", true); // true for asynchronous 
+            xmlHttp.send(null);
+            
         });
 
     </script>

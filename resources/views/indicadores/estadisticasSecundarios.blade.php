@@ -175,6 +175,9 @@
         </div>
     </div>
     
+    <p ng-if="indicador.descripcion" >
+       Descripción: @{{indicador.descripcion}}
+    </p>
     
     <div class="panel panel-default" ng-show="data.length>0" >
             <div class="panel-heading">
