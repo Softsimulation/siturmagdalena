@@ -48,9 +48,11 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/grupoviaje/grupoviaje" type="button" class="btn btn-lg btn-success">
-      Agregar grupo
-    </a> 
+    @if(Auth::user()->contienePermiso('create-grupoViaje'))
+        <a href="/grupoviaje/grupoviaje" type="button" class="btn btn-lg btn-success">
+          Agregar grupo
+        </a>
+    @endif
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>     
 </div>
 <div class="text-center" ng-if="(grupos | filter:search).length > 0 && (grupos != undefined)">
@@ -98,11 +100,13 @@
                             <td>@{{g.lugares_aplicacion_encuestum.nombre}}</td>
                             <td>@{{g.digitadore.user.nombre}}</td>
                             <td>@{{g.visitantes.length}}/@{{g.personas_encuestadas}}</td>
-                            <td style="text-align: center;">
-                                <a href="/grupoviaje/vergrupo/@{{g.id}}" class="btn btn-xs btn-default" title="Ver información del grupo">
-                                    <span class="glyphicon glyphicon-eye-open"aria-hidden="true"></span><span class="sr-only">Ver detalles</span>
-                                </a>
-                            </td>
+                            @if(Auth::user()->contienePermiso('read-grupoViaje|edit-grupoViaje'))
+                                <td style="text-align: center;">
+                                    <a href="/grupoviaje/vergrupo/@{{g.id}}" class="btn btn-xs btn-default" title="Ver información del grupo">
+                                        <span class="glyphicon glyphicon-eye-open"aria-hidden="true"></span><span class="sr-only">Ver detalles</span>
+                                    </a>
+                                </td>
+                            @endif
                         </tr>
                     </tbody>
                     

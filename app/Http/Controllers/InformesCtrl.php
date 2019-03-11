@@ -14,8 +14,26 @@ use App\Models\Publicaciones_idioma;
 use App\Models\Idioma;
 use App\Models\Suscriptore;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 class InformesCtrl extends Controller
 {
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-informe|create-informe|read-informe|edit-informe|estado-informe|delete-informe',['only' => ['getConfiguracion','getDataconfiguracion'] ]);
+        $this->middleware('permissions:create-informe|edit-informe',['only' => ['postGuardaridioama'] ]);
+        $this->middleware('permissions:create-informe',['only' => ['postCrear'] ]);
+        $this->middleware('permissions:edit-informe',['only' => ['postEditar','postEliminaridioma'] ]);
+        $this->middleware('permissions:estado-informe',['only' => ['postCambiarestado'] ]);
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+    }
     
     function getConfiguracion(){
         return View("informes.configuracion");

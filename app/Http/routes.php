@@ -1,5 +1,5 @@
 <?php
-
+Route::get('datosmapa','HomeController@Datosmapa');
 Route::get('password/email', 'Auth\PasswordController@getEmail');
 Route::post('password/email', 'Auth\PasswordController@postEmail');
 
@@ -55,9 +55,6 @@ Route::get('/actividades', 'TurismoReceptorController@actividades');
 Route::controller('/administrarpaises', 'AdministrarPaisesController');
 
 
-
-
-
 Route::get('/CrearGrupoViaje', function () {
     return view('CrearGrupoViaje');
 });
@@ -72,7 +69,7 @@ Route::controller('/encuesta','EncuestaDinamicaCtrl');
 
 Route::controller('/informes','InformesCtrl');
 
-
+Route::controller('/calcularindicadores', 'IndicadorAdministradorController');
 Route::controller('/bolsaEmpleo','BolsaEmpleoController');
 
 Route::controller('/promocionBolsaEmpleo','PublicoBolsaEmpleoController');
@@ -90,6 +87,8 @@ Route::controller('/suscriptores','SuscriptoreController');
 
 Route::controller('/periodoSostenibilidadPst','PeriodoSostenibilidadPstController');
 Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarController');
+
+Route::controller('/DashBoard','DashBoardController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
@@ -161,7 +160,13 @@ Route::group(['middleware' => ['web']], function () {
     
     Route::controller('/proveedor', 'ProveedoresController');
 
+    Route::controller('/quehacer', 'QueHacerController');
+    
+    Route::controller('/turismo', 'TurismoController');
+
     Route::controller('/','HomeController');
+    
+    
     
 });
 

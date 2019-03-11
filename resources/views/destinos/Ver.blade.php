@@ -37,6 +37,7 @@ function parse_yturl($url)
 @section('TitleSection','Destinos')
 
 @section('content')
+    @if(count($destino->multimediaDestinos) > 0)
     <div id="carousel-main-page" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
@@ -71,15 +72,18 @@ function parse_yturl($url)
           </h2>
       </div>
       <!-- Controls -->
-      <!--<a class="left carousel-control" href="#carousel-main-page" role="button" data-slide="prev">-->
-      <!--  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
-      <!--  <span class="sr-only">Anterior</span>-->
-      <!--</a>-->
-      <!--<a class="right carousel-control" href="#carousel-main-page" role="button" data-slide="next">-->
-      <!--  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
-      <!--  <span class="sr-only">Siguiente</span>-->
-      <!--</a>-->
+      <a class="left carousel-control" href="#carousel-main-page" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+      </a>
+      <a class="right carousel-control" href="#carousel-main-page" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
     </div>
+    
+    
+    @endif
     <div id="menu-page">
         <div class="container">
             <ul id="menu-page-list">
@@ -114,7 +118,25 @@ function parse_yturl($url)
     </div>
 <section id="informacionGeneral" class="section active">
         <div class="container">
-            <h3 class="title-section">{{$destino->destinoConIdiomas[0]->nombre}}</h3>
+            
+            @if(count($destino->multimediaDestinos) > 0)
+                <h3 class="title-section">{{$destino->destinoConIdiomas[0]->nombre}}</h3>    
+            @else
+            <div class="text-center">
+                <h2 class="title-section">
+                    {{$destino->destinoConIdiomas[0]->nombre}} {{-- {{$destino->tipoDestino->tipoDestinoConIdiomas[0]->nombre}} --}}
+                  <small class="btn-block">
+                      <span class="{{ ($destino->calificacion_legusto > 0.0) ? (($destino->calificacion_legusto <= 0.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+                      <span class="{{ ($destino->calificacion_legusto > 1.0) ? (($destino->calificacion_legusto <= 1.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+                      <span class="{{ ($destino->calificacion_legusto > 2.0) ? (($destino->calificacion_legusto <= 2.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+                      <span class="{{ ($destino->calificacion_legusto > 3.0) ? (($destino->calificacion_legusto <= 3.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+                      <span class="{{ ($destino->calificacion_legusto > 4.0) ? (($destino->calificacion_legusto <= 5.0) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+                      <span class="sr-only">Posee una calificación de {{$destino->calificacion_legusto}}</span>
+                    
+                  </small>
+              </h2>
+            </div>
+            @endif
             <div class="row">
                 <div class="col-xs-12">
                     @if($video_promocional != null)

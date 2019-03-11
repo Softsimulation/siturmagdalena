@@ -44,7 +44,9 @@
 
 </div>     
 <div class="row">
+    @if(Auth::user()->contienePermiso('exportar-proveedoresOferta'))
       <a type="button" class="btn btn-lg btn-success" href="/ofertaempleo/excelproveedores">Exportar</a>
+    @endif
 </div>            
             <div class="row">
               
@@ -83,9 +85,13 @@
                                 <td style="overflow: hidden; text-overflow:ellipsis;">@{{item.email}}</td>
                       
                                 <td style="text-align: center;">
-                                <a href="/ofertaempleo/activar/@{{item.proveedor_rnt_id}}" class="btn btn-default btn-xs" title="Editar" ><span class="ionicons-padding ion-edit"></span><span class="sr-only">Editar</span></a>
-                                <a href="/ofertaempleo/encuesta/@{{item.id}}" class="btn btn-default btn-xs" title="Encuesta sin realizar"><span class="ionicons ion-document"></span><span class="sr-only">Encuestas sin realizar</span></a>
-                                <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-default btn-xs" title="Encuesta realizadas"><span class="ionicons ion-clipboard"></span><span class="sr-only">Encuestas realizadas</span></a>
+                                    @if(Auth::user()->contienePermiso('activar-proveedoresOferta'))
+                                        <a href="/ofertaempleo/activar/@{{item.proveedor_rnt_id}}" class="btn btn-default btn-xs" title="Editar" ><span class="ionicons-padding ion-edit"></span><span class="sr-only">Editar</span></a>
+                                    @endif
+                                    @if(Auth::user()->contienePermiso('list-encuestaOfertaEmpleo|create-encuestaOfertaEmpleo|edit-encuestaOfertaEmpleo'))
+                                        <a href="/ofertaempleo/encuesta/@{{item.id}}" class="btn btn-default btn-xs" title="Encuesta sin realizar"><span class="ionicons ion-document"></span><span class="sr-only">Encuestas sin realizar</span></a>
+                                        <a href="/ofertaempleo/encuestas/@{{item.id}}" class="btn btn-default btn-xs" title="Encuesta realizadas"><span class="ionicons ion-clipboard"></span><span class="sr-only">Encuestas realizadas</span></a>
+                                    @endif
                                 </td>
                             </tr>
                          </tbody>

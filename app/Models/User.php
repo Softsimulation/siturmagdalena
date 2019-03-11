@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use JWTAuth;
+use App\Models\Permiso;
 
 
 class User extends Authenticatable
@@ -60,5 +61,18 @@ class User extends Authenticatable
     {   
         $user = JWTAuth::parseToken()->authenticate();
         return $user;
+    }
+    public function contienePermiso($permiso){
+        $arrayPermisos = explode("|", $permiso);
+        $user = \Auth::user();
+        for($i=0;$i<sizeof($user->permissions);$i++){
+            for($j=0;$j<sizeof($arrayPermisos);$j++){
+                if($user->permissions[$i]->name == $arrayPermisos[$j]){
+                    return true;
+                }
+            }
+            
+        }
+        return false;
     }
 }

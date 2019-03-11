@@ -18,7 +18,11 @@ class TemporadaController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-temporada|create-temporada|read-temporada|edit-temporada|estado-temporada|create-encuestaInterno|edit-encuestaInterno',['only' => ['getIndex','getGettemporadas'] ]);
+        $this->middleware('permissions:create-temporada|edit-temporada',['only' => ['postGuardartemporada'] ]);
+        $this->middleware('permissions:read-temporada',['only' => ['getVer','getCargardatos'] ]);
+        $this->middleware('permissions:estado-temporada',['only' => ['postCambiarestado'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -53,7 +57,7 @@ class TemporadaController extends Controller
                   
         $temporada->Hogares=Hogar::whereHas('edificacione',function($q)use($temporada){
             $q->where('temporada_id',$temporada->id);
-        })->with('edificacione.barrio')->with('edificacione.estrato')->with('digitadore.user')->get();
+        })->with('edificacione.barrio.municipio')->with('edificacione.estrato')->with('digitadore.user')->get();
         
         $encuestas=Viaje::where('es_principal',true)->whereHas('persona.hogare.edificacione',function($q)use($temporada){
             $q->where('temporada_id',$temporada->id);

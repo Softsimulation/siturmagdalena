@@ -10,7 +10,7 @@
     .controller("CrearPeriodoCtrl", ["$scope","ServiMuestra", "NgMap", "$interval", function($scope,ServiMuestra,NgMap, $interval){
         
         
-        
+        $("body").attr("class", "cbp-spmenu-push charging");
         $scope.dataPerido = { zonas:[] };
         $scope.zona = {};
         $scope.styloMapa = [{featureType:'poi.school',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.business',elementType:'labels',stylers:[{visibility:'off'}]} , {featureType:'poi.attraction',elementType:'labels',stylers:[{visibility:'off'}]} ];
@@ -44,14 +44,8 @@
                 
                 $("body").attr("class", "cbp-spmenu-push");
                 
-                $scope.validarProveedoresFueraZona();
-                //$interval( function(){ $scope.validarProveedoresFueraZona(); } , 20000);
             });
         
-        $scope.validarProveedoresFueraZona =  function(){
-            ServiMuestra.validarProveedoresFueraZona($scope.proveedores,$scope.dataPerido.zonas) .then(function(data){  $scope.proveedoresFuera = data; });
-        }
-       
         $scope.guardar = function(){
             
             if (!$scope.formCrear.$valid) {
@@ -156,41 +150,42 @@
         }
     
         $scope.getIcono = function( p ){
-            
-            var ruta = "/Content/IconsMap/";
-            
-            switch ( p.idtipo ) {
-                case 1: ruta  += "alojamientos/"; break;
-                case 2: ruta  += "establecimiento_gastronomia/"; break;
-                case 3: ruta  += "agencias_viajes/"; break;
-                //case 4: ruta  += "esparcimiento/"; break;
-                case 5: ruta  += "empresa_transporte/"; break;
-                case 6: ruta  += "arrendadores_vehiculos/"; break;
-                case 7: ruta  += "concesionarios_servicios/"; break;
-                case 8: ruta  += "empresa_tiempo/"; break;
-                case 9: ruta  += "empresas_captadoras/"; break;
-                case 10: ruta += "guia_turismo/"; break;
-                case 11: ruta += "oficina_turistica/"; break;
-                case 12: ruta += "operadores_profesionales/"; break;
-                case 13: ruta += "parques_tematicos/"; break;
-                case 14: ruta += "usuarios_operadores/"; break;
-                default: return null;
-            }
-            
-            if(p.rnt){
-                switch ( p.idestado ) {
-                    case 1: ruta += "activo.png";     break;  // Activo
-                    case 2: ruta += "cancelado.png";  break;  // Nnulado
-                    case 3: ruta += "cancelado.png";  break;  // Cancelado
-                    case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
-                    case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
-                    case 6: ruta += "cancelado.png";  break;  // Suspendido
+            if(p){
+                var ruta = "/Content/IconsMap/";
+                
+                switch ( p.categoria_rnt_id ) {
+                    case 1: ruta  += "alojamientos/"; break;
+                    case 2: ruta  += "establecimiento_gastronomia/"; break;
+                    case 3: ruta  += "agencias_viajes/"; break;
+                    //case 4: ruta  += "esparcimiento/"; break;
+                    case 5: ruta  += "empresa_transporte/"; break;
+                    case 6: ruta  += "arrendadores_vehiculos/"; break;
+                    case 7: ruta  += "concesionarios_servicios/"; break;
+                    case 8: ruta  += "empresa_tiempo/"; break;
+                    case 9: ruta  += "empresas_captadoras/"; break;
+                    case 10: ruta += "guia_turismo/"; break;
+                    case 11: ruta += "oficina_turistica/"; break;
+                    case 12: ruta += "operadores_profesionales/"; break;
+                    case 13: ruta += "parques_tematicos/"; break;
+                    case 14: ruta += "usuarios_operadores/"; break;
                     default: return null;
                 }
+                
+                if(p.rnt){
+                    switch ( p.estado_rnt_id ) {
+                        case 1: ruta += "activo.png";     break;  // Activo
+                        case 2: ruta += "cancelado.png";  break;  // Nnulado
+                        case 3: ruta += "cancelado.png";  break;  // Cancelado
+                        case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
+                        case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
+                        case 6: ruta += "cancelado.png";  break;  // Suspendido
+                        default: return null;
+                    }
+                }
+                else{ ruta += "informal.png";  }
+                
+                return  ruta;
             }
-            else{ ruta += "informal.png";  }
-            
-            return  ruta;
         }
         
         $scope.getCoordenadas = function(coordenadas){
@@ -200,30 +195,6 @@
             }
             return array;
         }
-        
-        
-        $scope.showInfoMapa = function(event, proveedor){
-            $scope.proveedor = proveedor;
-            $scope.map.showInfoWindow('infoProveedor', this );
-            
-        }  
-        
-        $scope.showInfoNumeroPS = function(event, zona, proveedores){
-            
-            var numeroPrestadores = 0 ;
-            for(var i=0; i<proveedores.length; i++){
-                
-                var point = new google.maps.LatLng( proveedores[i].latitud , proveedores[i].longitud );
-                if( google.maps.geometry.poly.containsLocation( point , this) ){
-                      numeroPrestadores++;
-                }
-            }
-            
-            
-            PrestadoresInfowindow.setContent( "Numero de prestadores: "+numeroPrestadores );
-            PrestadoresInfowindow.setPosition(event.latLng);
-            PrestadoresInfowindow.open($scope.map);
-        }  
         
         NgMap.getMap().then(function(map) { 
             $scope.map = map;
@@ -274,20 +245,17 @@
                 $scope.dataPerido = data.periodo;
                 $scope.digitadores = data.digitadores; 
                 $scope.digitadores2 = data.digitadores; 
-                $scope.proveedores = data.proveedores.concat(data.proveedoresInformales);
-                
-                $scope.TotalFormales = data.proveedores.length;
-                $scope.TotalInformales = data.proveedoresInformales.length;
+                $scope.proveedores = data.proveedores;
                 
                 $scope.tiposProveedoresInfo = [];
                 
                 for(var i=0; i<data.tiposProveedores.length; i++){
                     $scope.tiposProveedoresInfo.push( { id:data.tiposProveedores[i].id , nombre:data.tiposProveedores[i].tipo_proveedores_con_idiomas[0].nombre, cantidad:[0,0] } );
                     
-                    data.tiposProveedores[i].cantidad = $scope.getCantidadProveedores( data.tiposProveedores[i].id, "idtipo" );
+                    data.tiposProveedores[i].cantidad = $scope.getCantidadProveedores( data.tiposProveedores[i].id, "categoria_rnt_id" );
                     
                     for(var j=0; j<data.tiposProveedores[i].categoria_proveedores.length; j++){
-                        data.tiposProveedores[i].categoria_proveedores[j].cantidad = $scope.getCantidadProveedores( data.tiposProveedores[i].categoria_proveedores[j].id, "idcategoria" );
+                        data.tiposProveedores[i].categoria_proveedores[j].cantidad = $scope.getCantidadProveedores( data.tiposProveedores[i].categoria_proveedores[j].id, "subcategoria_rnt_id" );
                     }
                     
                 }
@@ -297,7 +265,7 @@
                 }
                 
                 for(var i=0; i<data.municipios.length; i++){
-                    data.municipios[i].cantidad = $scope.getCantidadProveedores(data.municipios[i].id, "municipio_id");
+                    data.municipios[i].cantidad = $scope.getCantidadProveedores(data.municipios[i].id, "municipio_rnt_id");
                 }
                 
                 $scope.tiposProveedores = data.tiposProveedores;
@@ -305,12 +273,18 @@
                 $scope.estados = data.estados;
                 $scope.municipios = data.municipios;
                 
+                $scope.TotalFormales = 0;
+                $scope.TotalInformales = 0;
                 $scope.dynMarkers = [];
                 
                 for (var i=0; i<$scope.proveedores.length; i++) {  
                     var marker = $scope.crearMarker($scope.proveedores[i]);
                     $scope.markersProveedores.push( marker );
                     $scope.dynMarkers.push( marker );
+                    
+                    if($scope.proveedores[i].rnt){ $scope.TotalFormales +=1; }
+                    else{ $scope.TotalInformales +=1; }
+                    
                 };
               
                 $scope.clusterProveedores = new MarkerClusterer($scope.map, $scope.dynMarkers, {});
@@ -400,14 +374,6 @@
                     a.href = URL.createObjectURL(file);
                     a.download = "mapa.kml"; 
                     a.click();
-                    /*
-                    var link = document.createElement("a");
-                    link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(geojson);
-                    link.download = $scope.dataPerido.nombre + ".kml";
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    */
                     $("body").attr("class", "cbp-spmenu-push");
                 });
             
@@ -540,11 +506,13 @@
             
             if(pro){
                 $scope.proveedorInformal = angular.copy(pro);
-                $scope.TipoProveedorInformal.select = $scope.buscarAbjetoInArray( $scope.tiposProveedores, pro.idtipo );
+                $scope.TipoProveedorInformal.select = $scope.buscarAbjetoInArray( $scope.tiposProveedores, pro.categoria_rnt_id );
             }
             else{
                 $scope.proveedorInformal = { latitud: $scope.figura.position.lat(),  longitud: $scope.figura.position.lng() };
             }
+           
+            $scope.proveedorInformal.idPeriodo = $("#periodo").val();
            
             $scope.formP.$setPristine();
             $scope.formP.$setUntouched();
@@ -579,19 +547,32 @@
             }
             
             $("body").attr("class", "cbp-spmenu-push charging");
-            
+
             ServiMuestra.agregarProveedorInformal($scope.proveedorInformal)
                     .then(function (data) {
                        
                         if (data.success) {
                             if(!$scope.proveedorInformal.id){
-                               $scope.markersProveedores.push( $scope.crearMarker(data.proveedor) );
-                               $scope.validarProveedoresFueraZona();
+                                $scope.markersProveedores.push( $scope.crearMarker(data.proveedor) );
+                                $scope.validarProveedoresFueraZona();
+                                $scope.TotalInformales +=1;
+                                for(var i=0; i<$scope.tiposProveedores.length; i++){
+                                    if($scope.tiposProveedores[i].id==data.proveedor.categoria_rnt_id){
+                                        $scope.tiposProveedores[i].cantidad.informales +=1;
+                                        for(var j=0; j<$scope.tiposProveedores[i].categoria_proveedores.length; j++){
+                                            if($scope.tiposProveedores[i].categoria_proveedores[j].id==data.proveedor.subcategoria_rnt_id){
+                                                $scope.tiposProveedores[i].categoria_proveedores[j].cantidad.informales +=1; break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
                             }
                             else{
                                 for(var i=0; i<$scope.markersProveedores.length; i++){
                                     if( $scope.markersProveedores[i].dataProveedor.id==data.proveedor.id && !$scope.markersProveedores[i].dataProveedor.rnt ){
                                         $scope.markersProveedores[i].dataProveedor = data.proveedor;
+                                        $scope.proveedorInformal = angular.copy(data.proveedor);
                                         break;
                                     }
                                 }
@@ -680,6 +661,8 @@
                                     $scope.sharpesAndPopus[i].sharpe.dataZona.encargados = data.zona.encargados;
                                     $scope.sharpesAndPopus[i].sharpe.dataZona.color = data.zona.color;
                                     $scope.sharpesAndPopus[i].sharpe.set('fillColor',data.zona.color);
+                                    $scope.sharpesAndPopus[i].popup.anchor.childNodes[0].children[0].innerHTML = data.zona.nombre;
+                                    
                                     $scope.detalleZona = angular.copy( $scope.sharpesAndPopus[i].sharpe.dataZona );
                                     break;
                                 }
@@ -784,14 +767,14 @@
                 }
                 
                 if($scope.filtro.tipo.length>0){
-                    sw1 = $scope.filtro.tipo.indexOf(pro.idtipo);
+                    sw1 = $scope.filtro.tipo.indexOf(pro.categoria_rnt_id);
                     
-                    if($scope.filtro.categorias.length>0){ sw1 =  $scope.filtro.categorias.indexOf(pro.idcategoria); }
+                    if($scope.filtro.categorias.length>0){ sw1 =  $scope.filtro.categorias.indexOf(pro.subcategoria_rnt_id); }
                 }
                 
-                if($scope.filtro.estados.length>0){ sw2 = $scope.filtro.estados.indexOf(pro.idestado); }
+                if($scope.filtro.estados.length>0){ sw2 = $scope.filtro.estados.indexOf(pro.estado_rnt_id); }
                 
-                if($scope.filtro.municipios.length>0){ sw3 = $scope.filtro.municipios.indexOf(pro.municipio_id); }
+                if($scope.filtro.municipios.length>0){ sw3 = $scope.filtro.municipios.indexOf(pro.municipio_rnt_id); }
                 
                 if( $scope.filtro.sectoresProv.length > 0){ 
                     
@@ -856,42 +839,44 @@
         
         $scope.getIcono = function( p ){
             
-            var ruta = "";
-            
-            switch ( p.idtipo ) {
-                case 1: ruta  += "/Content/IconsMap/alojamientos/"; break;
-                case 2: ruta  += "/Content/IconsMap/establecimiento_gastronomia/"; break;
-                case 3: ruta  += "/Content/IconsMap/agencias_viajes/"; break;
-                //case 4: ruta  += "esparcimiento/"; break;
-                case 5: ruta  += "/Content/IconsMap/empresa_transporte/"; break;
-                case 6: ruta  += "/Content/IconsMap/arrendadores_vehiculos/"; break;
-                case 7: ruta  += "/Content/IconsMap/concesionarios_servicios/"; break;
-                case 8: ruta  += "/Content/IconsMap/empresa_tiempo/"; break;
-                case 9: ruta  += "/Content/IconsMap/empresas_captadoras/"; break;
-                case 10: ruta += "/Content/IconsMap/guia_turismo/"; break;
-                case 11: ruta += "/Content/IconsMap/oficina_turistica/"; break;
-                case 12: ruta += "/Content/IconsMap/operadores_profesionales/"; break;
-                case 13: ruta += "/Content/IconsMap/parques_tematicos/"; break;
-                case 14: ruta += "/Content/IconsMap/usuarios_operadores/"; break;
-                default: break;
-            }
-            
-            if(ruta != ""){
-                if(p.rnt){
-                    switch ( p.idestado ) {
-                        case 1: ruta += "activo.png";     break;  // Activo
-                        case 2: ruta += "cancelado.png";  break;  // Nnulado
-                        case 3: ruta += "cancelado.png";  break;  // Cancelado
-                        case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
-                        case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
-                        case 6: ruta += "cancelado.png";  break;  // Suspendido
-                        default: return null;
-                    }
+            if(p){
+                var ruta = "";
+                
+                switch ( p.categoria_rnt_id ) {
+                    case 1: ruta  += "/Content/IconsMap/alojamientos/"; break;
+                    case 2: ruta  += "/Content/IconsMap/establecimiento_gastronomia/"; break;
+                    case 3: ruta  += "/Content/IconsMap/agencias_viajes/"; break;
+                    //case 4: ruta  += "esparcimiento/"; break;
+                    case 5: ruta  += "/Content/IconsMap/empresa_transporte/"; break;
+                    case 6: ruta  += "/Content/IconsMap/arrendadores_vehiculos/"; break;
+                    case 7: ruta  += "/Content/IconsMap/concesionarios_servicios/"; break;
+                    case 8: ruta  += "/Content/IconsMap/empresa_tiempo/"; break;
+                    case 9: ruta  += "/Content/IconsMap/empresas_captadoras/"; break;
+                    case 10: ruta += "/Content/IconsMap/guia_turismo/"; break;
+                    case 11: ruta += "/Content/IconsMap/oficina_turistica/"; break;
+                    case 12: ruta += "/Content/IconsMap/operadores_profesionales/"; break;
+                    case 13: ruta += "/Content/IconsMap/parques_tematicos/"; break;
+                    case 14: ruta += "/Content/IconsMap/usuarios_operadores/"; break;
+                    default: break;
                 }
-                else{ ruta += "informal.png";  }
+                
+                if(ruta != ""){
+                    if(p.rnt){
+                        switch ( p.estado_rnt_id ) {
+                            case 1: ruta += "activo.png";     break;  // Activo
+                            case 2: ruta += "cancelado.png";  break;  // Nnulado
+                            case 3: ruta += "cancelado.png";  break;  // Cancelado
+                            case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
+                            case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
+                            case 6: ruta += "cancelado.png";  break;  // Suspendido
+                            default: return null;
+                        }
+                    }
+                    else{ ruta += "informal.png";  }
+                }
+                
+                return  ruta;
             }
-            
-            return  ruta;
         }
         
         $scope.getCoordenadas = function(coordenadas){
@@ -963,12 +948,11 @@
             
             for(var i=0; i<proveedores.length; i++){
                 
-                var point = new google.maps.LatLng( proveedores[i].dataProveedor.latitud , proveedores[i].dataProveedor.longitud );
-                if( google.maps.geometry.poly.containsLocation( point , this) ){
+                if( google.maps.geometry.poly.containsLocation( proveedores[i].position , this) ){
                     
                     for(var j=0; j<tiposProveedores.length; j++){ 
                         
-                        if(tiposProveedores[j].id==proveedores[i].dataProveedor.idtipo){
+                        if(tiposProveedores[j].id==proveedores[i].dataProveedor.categoria_rnt_id){
                             
                             if(proveedores[i].dataProveedor.rnt){ tiposProveedores[j].cantidad[0] += 1; numeroPrestadoresFormales+=1; }
                             else{ tiposProveedores[j].cantidad[1] += 1; numeroPrestadoresInformales+=1; }
@@ -978,7 +962,7 @@
                     }  
                     
                     for(var j=0; j< estadosProveedores.length; j++){ 
-                       if( estadosProveedores[j].id == proveedores[i].dataProveedor.idestado ){
+                       if( estadosProveedores[j].id == proveedores[i].dataProveedor.estado_rnt_id ){
                             estadosProveedores[j].cantidad += 1; break;
                         } 
                     } 
@@ -1168,7 +1152,7 @@
                             
                             
                             for(var j=0; j< tiposProveedores.length; j++){ 
-                                if(tiposProveedores[j].id==$scope.markersProveedores[k].dataProveedor.idtipo){
+                                if(tiposProveedores[j].id==$scope.markersProveedores[k].dataProveedor.categoria_rnt_id){
                                 
                                     if($scope.proveedores[k].rnt){ tiposProveedores[j].cantidad[0] += 1; }
                                     else{ tiposProveedores[j].cantidad[1] += 1; }
@@ -1177,7 +1161,7 @@
                             }  
                             
                             for(var j=0; j< estadosProveedores.length; j++){ 
-                                if( estadosProveedores[j].id == $scope.markersProveedores[k].dataProveedor.idestado ){
+                                if( estadosProveedores[j].id == $scope.markersProveedores[k].dataProveedor.estado_rnt_id ){
                                     estadosProveedores[j].cantidad += 1; break;
                                 }
                             } 
@@ -1216,7 +1200,7 @@
             
             var s = 0;
             for (var i = 0; i < $scope.proveedores.length; i++) {
-                if( $scope.proveedores[i].idestado==id ){  s+=1;  }
+                if( $scope.proveedores[i].estado_rnt_id==id ){  s+=1;  }
             }
             return s;
         }
@@ -1699,7 +1683,6 @@
             .then(function(data){ 
                 $scope.zona = data.zona; 
                 $scope.proveedores = data.proveedores; 
-                $scope.proveedoresInformales = data.proveedoresInformales; 
                 $scope.tiposProveedores = data.tiposProveedores;
                 $scope.estados = data.estados;
                 $("body").attr("class", "cbp-spmenu-push");
@@ -1727,7 +1710,6 @@
             var data = {
                 zona: $("#id").val(),
                 proveedores: $scope.proveedores,
-                proveedoresInformales: $scope.proveedoresInformales,
             };
             
             ServiMuestra.guardarDataInfoZona(data)
@@ -1756,9 +1738,7 @@
             
             if(id){
                 for(var i=0; i<$scope.tiposProveedores.length; i++){
-                    for(var j=0; j<$scope.tiposProveedores[i].categoria_proveedores.length; j++){
-                        if($scope.tiposProveedores[i].categoria_proveedores[j].id==id){ return $scope.tiposProveedores[i]; }
-                    }
+                    if($scope.tiposProveedores[i].id==id){ return $scope.tiposProveedores[i]; }
                 }
             }
             return null;

@@ -58,10 +58,10 @@ class IndicadoresCtrl extends Controller
         
         $estadistica = null;
         if($idioma == 1){
-            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")->select("id","nombre" ,"label_x" ,"label_y" )->first();
+            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")->select("id","nombre" ,"label_x" ,"label_y", "descripcion_es as descripcion" )->first();
         }
         else{
-            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")-select("id","name as nombre" ,"label_x_en as label_x" ,"label_y_en as label_y" )->first();
+            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")-select("id","name as nombre" ,"label_x_en as label_x" ,"label_y_en as label_y", "descripcion_en as descripcion" )->first();
         }
         
         
@@ -114,7 +114,7 @@ class IndicadoresCtrl extends Controller
                 foreach($estadistica->series as $serie){
                     
                     $meses = Valor_serie_tiempo::join("mes_indicador","mes_indicador.id","=","mes_indicador_id")
-                                               ->where([ ["series_estadistica_id",$serie->id], ["anio_id",$year] ])->distinct()->get(["mes_indicador.*"]);
+                                               ->where([ ["series_estadistica_id",$serie->id], ["anio_id",$year] ])->distinct()->orderBy("mes_indicador.id")->get(["mes_indicador.*"]);
                 
                     $dt = [];
                     foreach($meses as $mes){                         
@@ -248,72 +248,72 @@ class IndicadoresCtrl extends Controller
         
             ////////////////////////////////OFERTA/////////////////////////////////////////          
             case 20: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_numero_establecimiento", $periodos[0], $cultura);
                      break; 
                      
             case 21: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_agencia_viaje_operadoras", $periodos[0], $cultura);  
                      break;
                      
             case 22: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB_Meses("estadistica_tasa_ocupacion_oferta", $periodos[0], $cultura);  
                      break;
             
             case 23: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB_Meses("estadistica_platos_comida", $periodos[0], $cultura);  
                      break;
             
             case 24: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB_Meses("estadistica_unidades_comida", $periodos[0], $cultura);  
                      break;
             
             case 25: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB_Meses("estadistica_agencia_viaje_emisor", $periodos[0], $cultura);  
                      break;
             
             case 26: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
-                     $data = $this->getDataIndicadorGastos_temporada("estadistica_agencia_viaje_interno", $periodos[0], $cultura);  
+                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
+                     $data = $this->getDataIndicadorDB_Meses("estadistica_agencia_viaje_interno", $periodos[0], $cultura);  
                      break;
             
             ////////////////////////////////EMPLEO/////////////////////////////////////////          
             case 27: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_vinculacion_laboral", $periodos[0], $cultura);
                      break; 
                      
            case 28: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_total_personas", $periodos[0], $cultura);
                      break; 
                      
             case 29: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_dominio_ingles", $periodos[0], $cultura);
                      break; 
             
             case 30: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC");  
                      $data = $this->getDataIndicadorDB("estadistica_numero_empleados", $periodos[0], $cultura);
                      break; 
                      
             case 31: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_numero_empleados_tc", $periodos[0], $cultura);
                      break; 
             case 32: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_remuneracion_promedio", $periodos[0], $cultura);
                      break; 
             
             case 33: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores"); 
+                     $periodos = DB::select("SELECT *from tiempo_indicadores order by year DESC, mes_id DESC"); 
                      $data = $this->getDataIndicadorDB("estadistica_vacantes", $periodos[0], $cultura);
                      break; 
                 
@@ -419,12 +419,16 @@ class IndicadoresCtrl extends Controller
        
         $labels = [];
         $data = [];
-        foreach(Mes_Indicador::get() as $mes){
+        
+        $meses = DB::select("SELECT *from tiempo_indicadores where year =". $request->year); 
+        
+        foreach($meses as $mes){
+            
             $d =  DB::select("SELECT *from ".$procedimiento."(?,?)", array($mes->id ,$idioma)); 
             if($d!=null){
                 $d = (new Collection($d))->pluck('cantidad')->first();
                 array_push($data, $this->redondearNumero($d) );
-                array_push($labels, $mes->nombre);
+                array_push($labels, $mes->mes);
             }
         }
     

@@ -40,7 +40,39 @@ class EncuestaDinamicaCtrl extends Controller
     {
         
         $this->middleware('auth')->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
-        $this->middleware('role:Admin')->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        //$this->middleware('role:Admin')->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        /*
+        $this->middleware('permissions:list-encuestaADHOC|create-encuestaADHOC|read-encuestaADHOC|edit-encuestaADHOC|estado-encuestaADHOC|duplicar-encuestaADHOC|descargarDatos-encuestaADHOC',
+        ['only' => ['getListado','getListadoencuestasdinamicas'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        $this->middleware('permissions:create-encuestaADHOC',['only' => ['postAgregarencuesta'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        $this->middleware('permissions:edit-encuestaADHOC|read-encuestaADHOC',['only' => ['getConfigurar','getDataconfiguracion',
+        'getListar','getListadoencuestas'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        $this->middleware('permissions:edit-encuestaADHOC',['only' => ['postGuardaridiomaencuesta',
+        'postAgregarseccion','postAgregarpregunta','postActivardesactivarpregunta','postEliminarpregunta','postGuardarordenpreguntas','postGuardaridiomapregunta',
+        'postAgregaropcionpregunta','postEliminaropcionpregunta',
+        'postDuplicarpregunta','DuplicarPregunta'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        $this->middleware('permissions:estado-encuestaADHOC',['only' => ['postCambiarestadoencuesta'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        $this->middleware('permissions:duplicar-encuestaADHOC',['only' => ['postDuplicarencuesta'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        
+        $this->middleware('permissions:descargarDatos-encuestaADHOC',['only' => ['getExcel'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        
+        $this->middleware('permissions:estadisticas-encuestaADHOC',['only' => ['getEstadisticas','getEstadisticasencuesta'] ])
+        ->except([ 'anonimos','getRegistrodeusuarios', 'postRegistrousuarioencuesta', 'encuesta', 'postGuardarencuestausuarios', 'postDataseccionencuestausuarios']);
+        */
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -525,7 +557,7 @@ class EncuestaDinamicaCtrl extends Controller
         
         $validate = \ Validator::make($request->all(),
                     [ 
-                      "idEncuesta" => "required|exists:Encuestas_dinamicas,id",
+                      "idEncuesta" => "required|exists:encuestas_dinamicas,id",
                       "idPregunta" => "required|exists:preguntas,id"
                     ],
                     [
@@ -1058,8 +1090,6 @@ class EncuestaDinamicaCtrl extends Controller
             $usuario->estados_encuestas_usuarios_id = 1;
             $usuario->nombres = "ANONIMO";
             $usuario->apellidos = "";
-            $usuario->email = "ANONIMO@ANONIMO.COM";
-            $usuario->telefono = "0000000000";
             $usuario->ultima_seccion = 0;
             $usuario->codigo = $this->generarCodigo();
             $usuario->estado = true;

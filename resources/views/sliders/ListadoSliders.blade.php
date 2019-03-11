@@ -166,9 +166,11 @@
 @section('subtitulo','El siguiente listado cuenta con @{{sliders.length}} registro(s)')
 
 @section('content')
-    <div class="text-center">
-        <button class="btn btn-lg btn-success" type="button" ng-click="abrirModalCrearSlider()">Agregar imagen</button>
-    </div>
+    @if(Auth::user()->contienePermiso('create-slider'))
+        <div class="text-center">
+            <button class="btn btn-lg btn-success" type="button" ng-click="abrirModalCrearSlider()">Agregar imagen</button>
+        </div>
+    @endif
     <hr>
     
     <div>
@@ -189,12 +191,18 @@
                             <span class="glyphicon glyphicon-option-vertical"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li ng-if="slider.estadoSlider==0"><a href="" ng-click="activarSlider(slider)">Activar</a></li>
-                            <li ng-if="slider.estadoSlider==1"><a href="" ng-click="desactivarSlider(slider)" >Desactivar</a></li>
-                            <li ng-if="slider.noIdiomas.length != 0"><a href="" ng-click="abrirModalAgregarIdiomaSlider(slider)" >Agregar idioma</a></li>
-                            <li ng-repeat="idioma in slider.idiomas"><a href="" ng-click="abirModalEditarSlider(idioma.id,slider)" >Editar @{{idioma.nombre}} </a>
-                            <li ng-if="slider.prioridadSlider!=1 && slider.prioridadSlider !=0"><a href="" ng-click="subirPrioridadSlider(slider)" >Subir Prioridad</a></li>
-                            <li ng-if="slider.prioridadSlider!=8 && slider.prioridadSlider !=0"><a href="" ng-click="bajarPrioridadSlider(slider)" >Bajar Prioridad</a></li>
+                            @if(Auth::user()->contienePermiso('estado-slider'))
+                                <li ng-if="slider.estadoSlider==0"><a href="" ng-click="activarSlider(slider)">Activar</a></li>
+                                <li ng-if="slider.estadoSlider==1"><a href="" ng-click="desactivarSlider(slider)" >Desactivar</a></li>
+                            @endif
+                            @if(Auth::user()->contienePermiso('edit-slider'))
+                                <li ng-if="slider.noIdiomas.length != 0"><a href="" ng-click="abrirModalAgregarIdiomaSlider(slider)" >Agregar idioma</a></li>
+                                <li ng-repeat="idioma in slider.idiomas"><a href="" ng-click="abirModalEditarSlider(idioma.id,slider)" >Editar @{{idioma.nombre}} </a>
+                            @endif
+                            @if(Auth::user()->contienePermiso('prioridad-slider'))
+                                <li ng-if="slider.prioridadSlider!=1 && slider.prioridadSlider !=0"><a href="" ng-click="subirPrioridadSlider(slider)" >Subir Prioridad</a></li>
+                                <li ng-if="slider.prioridadSlider!=8 && slider.prioridadSlider !=0"><a href="" ng-click="bajarPrioridadSlider(slider)" >Bajar Prioridad</a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -311,7 +319,7 @@
                                     <label for="atraccionIdSlider" class="control-label"><span class="asterisk">*</span> Atracción</label>
                                     <ui-select ng-model="slider.atraccionIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione atracción">@{{$select.selected.nombre}}</ui-select-match>
-                                        <ui-select-choices repeat="item.id as item in atracciones | filter:$select.search">
+                                        <ui-select-choices repeat="item.idAtraccion as item in atracciones | filter:$select.search">
                                             <div ng-bind-html="item.nombre | highlight: $select.search"></div>
                                         </ui-select-choices>
                                     </ui-select>
@@ -464,7 +472,7 @@
                         </div>
                         <div class="row" ng-if="sliderEditar.enlaceInterno==1">
                             <div class="col-xs-12">
-                                <div class="form-group" ng-class="{'has-error': (crearsliderEditarForm.$submitted || crearsliderEditarForm.tipoEntidadIdSliderEditar.$touched) && crearsliderEditarForm.tipoEntidadIdSliderEditar.$error.required }">
+                                <div class="form-group" ng-class="{'has-error': (editarSliderForm.$submitted || editarSliderForm.tipoEntidadIdSliderEditar.$touched) && editarSliderForm.tipoEntidadIdSliderEditar.$error.required }">
                                     <label class="control-label" for="tipoEntidadIdSliderEditar"><span class="asterisk">*</span>Tipo de Entidad</label>
                                     <select ng-model="sliderEditar.tipoEntidadIdSlider" class="form-control" id="tipoEntidadIdSliderEditar" name="tipoEntidadIdSliderEditar" ng-required="sliderEditar.enlaceInterno==1 && sliderEditar.enlaceAccesoSlider == null">
                                         <option value="" selected disabled>Seleccione el tipo de entidad</option>
@@ -478,9 +486,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-if="sliderEditar.enlaceInterno==1 && sliderEditar.tipoEntidadIdsliderEditar==1">
+                        <div class="row" ng-if="sliderEditar.enlaceInterno==1 && sliderEditar.tipoEntidadIdSlider==1">
                             <div class="col-xs-12 ">
-                                <div class="form-group" ng-class="{'has-error': (crearsliderEditarForm.$submitted || crearsliderEditarForm.actividadIdSliderEditar.$touched) && sliderEditar.actividadIdSlider == null }">
+                                <div class="form-group" ng-class="{'has-error': (editarSliderForm.$submitted || editarSliderForm.actividadIdSliderEditar.$touched) && sliderEditar.actividadIdSlider == null }">
                                     <label for="actividadIdSliderEditar"><span class="asterisk">*</span>Actividad</label>
                                     <ui-select ng-model="sliderEditar.actividadIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione actividad">@{{$select.selected.nombre}}</ui-select-match>
@@ -493,11 +501,11 @@
                         </div>
                         <div class="row" ng-if="sliderEditar.enlaceInterno==1 && sliderEditar.tipoEntidadIdSlider==2">
                             <div class="col-xs-12 ">
-                                <div class="form-group" ng-class="{'has-error': (crearsliderEditarForm.$submitted || crearsliderEditarForm.atraccionIdsliderEditar.$touched) && sliderEditar.atraccionIdSlider == null }">
+                                <div class="form-group" ng-class="{'has-error': (editarSliderForm.$submitted || editarSliderForm.atraccionIdsliderEditar.$touched) && sliderEditar.atraccionIdSlider == null }">
                                     <label for="atraccionIdsliderEditar"><span class="asterisk">*</span>Atracción</label>
                                     <ui-select ng-model="sliderEditar.atraccionIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione atracción">@{{$select.selected.nombre}}</ui-select-match>
-                                        <ui-select-choices repeat="item.id as item in atracciones | filter:$select.search">
+                                        <ui-select-choices repeat="item.idAtraccion as item in atracciones | filter:$select.search">
                                             <div ng-bind-html="item.nombre | highlight: $select.search"></div>
                                         </ui-select-choices>
                                     </ui-select>
@@ -506,7 +514,7 @@
                         </div>
                         <div class="row" ng-if="sliderEditar.enlaceInterno==1 && sliderEditar.tipoEntidadIdSlider==3">
                             <div class="col-xs-12 ">
-                                <div class="form-group" ng-class="{'has-error': (crearsliderEditarForm.$submitted || crearsliderEditarForm.destinoIdsliderEditar.$touched) && sliderEditar.destinoIdSlider == null }">
+                                <div class="form-group" ng-class="{'has-error': (editarSliderForm.$submitted || editarSliderForm.destinoIdsliderEditar.$touched) && sliderEditar.destinoIdSlider == null }">
                                     <label for="atraccionIdsliderEditar"><span class="asterisk">*</span>Destino</label>
                                     <ui-select ng-model="sliderEditar.destinoIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione destino">@{{$select.selected.nombre}}</ui-select-match>
@@ -519,7 +527,7 @@
                         </div>
                         <div class="row" ng-if="sliderEditar.enlaceInterno==1 && sliderEditar.tipoEntidadIdSlider==4">
                             <div class="col-xs-12 ">
-                                <div class="form-group" ng-class="{'has-error': (crearsliderEditarForm.$submitted || crearsliderEditarForm.eventoIdsliderEditar.$touched) && sliderEditar.eventoIdSlider == null }">
+                                <div class="form-group" ng-class="{'has-error': (editarSliderForm.$submitted || editarSliderForm.eventoIdsliderEditar.$touched) && sliderEditar.eventoIdSlider == null }">
                                     <label for="eventoIdsliderEditar"><span class="asterisk">*</span>Evento</label>
                                     <ui-select ng-model="sliderEditar.eventoIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione evento">@{{$select.selected.nombre}}</ui-select-match>
@@ -532,7 +540,7 @@
                         </div>
                         <div class="row" ng-if="sliderEditar.enlaceInterno==1 && sliderEditar.tipoEntidadIdSlider==5">
                             <div class="col-xs-12 ">
-                                <div class="form-group" ng-class="{'has-error': (crearsliderEditarForm.$submitted || crearsliderEditarForm.rutaIdsliderEditar.$touched) && sliderEditar.rutaIdSlider == null }">
+                                <div class="form-group" ng-class="{'has-error': (editarSliderForm.$submitted || editarSliderForm.rutaIdsliderEditar.$touched) && sliderEditar.rutaIdSlider == null }">
                                     <label for="rutaIdsliderEditar"><span class="asterisk">*</span>Ruta</label>
                                     <ui-select ng-model="sliderEditar.rutaIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione ruta">@{{$select.selected.nombre}}</ui-select-match>
@@ -545,7 +553,7 @@
                         </div>
                         <div class="row" ng-if="sliderEditar.enlaceInterno==1 && sliderEditar.tipoEntidadIdSlider==6">
                             <div class="col-xs-12 ">
-                                <div class="form-group" ng-class="{'error': (crearsliderEditarForm.$submitted || crearsliderEditarForm.proveedorIdsliderEditar.$touched) && sliderEditar.proveedorIdSlider == null }">
+                                <div class="form-group" ng-class="{'error': (editarSliderForm.$submitted || editarSliderForm.proveedorIdsliderEditar.$touched) && sliderEditar.proveedorIdSlider == null }">
                                     <label for="proveedorIdsliderEditar"><span class="asterisk">*</span>Proveedor</label>
                                     <ui-select ng-model="sliderEditar.proveedorIdSlider" theme="bootstrap">
                                         <ui-select-match placeholder="Seleccione proveedor">@{{$select.selected.nombre}}</ui-select-match>

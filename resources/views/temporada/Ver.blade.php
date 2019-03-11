@@ -11,9 +11,11 @@
 
 <div class="main-page" ng-controller="verTemporadaCtrl">
     <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
-    <div class="text-center">
-        <a href="/turismointerno/hogar/@{{id}}" class="btn btn-lg btn-success">Crear hogar</a><br /><br />    
-    </div>
+    @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
+        <div class="text-center">
+            <a href="/turismointerno/hogar/@{{id}}" class="btn btn-lg btn-success">Crear hogar</a><br /><br />    
+        </div>
+    @endif
     
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>@Resource.EncuestaMsgError:</b></label>
@@ -82,6 +84,7 @@
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
+                                    <th>Municipio</th>
                                     <th>Barrio</th>
                                     <th>Dirección</th>
                                     <th>Estrato</th>
@@ -91,7 +94,7 @@
                                     <th></th>
                                 </tr>
                                 <tr ng-show="mostrarFiltro == true">
-                                    
+                                    <td><input type="text" ng-model="search.edificacione.barrio.municipio.nombre" name="nombreMunicipio" id="nombreMunicipio" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                     <td><input type="text" ng-model="search.edificacione.barrio.nombre" name="nombreBarrio" id="nombreBarrio" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                     <td><input type="text" ng-model="search.edificacione.direccion" name="direccion" id="direccion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                     <td><input type="text" ng-model="search.edificacione.estrato.nombre" name="nombreEstrato" id="nombreEstrato" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
@@ -103,6 +106,7 @@
                             </thead>
                             <tbody>
                                 <tr dir-paginate="item in temporada.Hogares|filter:search|itemsPerPage:10 as results" pagination-id="hogarP" style="border-bottom: .5px solid lightgray">
+                                    <td>@{{item.edificacione.barrio.municipio.nombre}}</td>
                                     <td>@{{item.edificacione.barrio.nombre}}</td>
                                     <td>@{{item.edificacione.direccion}}</td>
                                     <td>@{{item.edificacione.estrato.nombre}}</td>
@@ -110,7 +114,9 @@
                                     <td>@{{item.edificacione.nombre_entrevistado}}</td>
                                     <td>@{{item.fecha_realizacion | date:'dd-MM-yyyy' }}</td>
                                     <td>
-                                        <a href="/turismointerno/editarhogar/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
+                                            <a href="/turismointerno/editarhogar/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @endif
                                     </td>
                                 </tr>
 
@@ -176,7 +182,9 @@
                                     <td>@{{item.fecha_inicio}}</td>
                                     <td>@{{item.ultima_sesion}}</td>
                                     <td>
-                                        <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
+                                            <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                        @endif
                                     </td>
                                 </tr>
 

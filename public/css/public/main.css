@@ -53,8 +53,22 @@
     display:block;
     margin: 0 auto;
     font-weight: 700;
-    font-size: 2rem;
+    font-size: 2.5rem;
 }
+#elementosSitur li a:hover{
+    text-decoration: none;
+    background-color: #eee;
+}
+
+#infoMunicipio .infoMunicipio-text{
+    font-size: 85%;
+    font-weight: 500;
+}
+#infoMunicipio-PST, #infoMunicipio-camas, #infoMunicipio-empleos, #infoMunicipio-habitaciones{
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
 
 @media only screen and (min-width: 768px) {
     #stats-links ul li{
@@ -67,7 +81,7 @@
 @media only screen and (min-width: 992px) {
     #stats-links{
         position: absolute;
-        top: calc(100px + 2%);
+        top: calc(72px + 2%);
         left: 0;
         max-width: 120px;
         z-index: 5;

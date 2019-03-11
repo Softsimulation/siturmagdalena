@@ -643,13 +643,23 @@
                              <i class="material-icons">menu</i>
                           </a>
                           <ul class="dropdown-menu">
-                            <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
-                            <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Descargar excel de la muestra</a></li>
-                            <li>
-                                <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
-                            </li>
-                            <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
-                            <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar bloque</a></li>
+                              
+                                  <li><a href ng-click="verTablaZonas()" ><i class="material-icons">table_chart</i> Ver tabla de bloques</a></li>
+                          
+                              @if(Auth::user()->contienePermiso('excel-muestra'))
+                                  <li><a href ng-click="exportarFileExcelGeneral()" ><i class="material-icons">arrow_downward</i> Descargar excel de la muestra</a></li>
+                              @endif
+                              @if(Auth::user()->contienePermiso('KML-muestra'))
+                                <li>
+                                    <a href ng-click="exportarFileKML()" ><i class="material-icons">arrow_downward</i> Exportar KML</a>
+                                </li>
+                             @endif
+                             @if(Auth::user()->contienePermiso('create-proveedorMuestra'))
+                                <li><a href ng-click="openMensajeAddProveedorInformal()" ><i class="material-icons">add_location</i> Agregar proveedor informal</a></li>
+                             @endif
+                            @if(Auth::user()->contienePermiso('create-zona'))
+                                <li><a href ng-click="openMensajeAddZona()" ng-show="!es_crear_zona" ><i class="material-icons">add</i> Agregar bloque</a></li>
+                            @endif
                           </ul>
                     </div>
                     
@@ -665,7 +675,7 @@
                     <i class="material-icons">arrow_forward</i>
                 </button>  
             </div>
-            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="false" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
+            <ng-map id="mapa" zoom="9" center="@{{centro}}" styles="@{{styloMapa}}" map-type-control="true" street-view-control="true" street-view-control-options="{position: 'RIGHT_BOTTOM'}"  > 
                 <drawing-manager ng-if="es_crear_zona || es_crear_proveedor"
                       on-overlaycomplete="onMapOverlayCompleted()"
                       drawing-control-options="{position: 'TOP_CENTER',drawingModes:['@{{figuraCrear}}']}"
@@ -687,7 +697,7 @@
         <div class="contenido" ng-show="proveedor" >
             <div class="form-group">
                 <label class="control-label">Nombre</label>
-                <p class="form-control-static">@{{proveedor.nombre}}</p>
+                <p class="form-control-static">@{{proveedor.nombre_rnt}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">RNT</label>
@@ -695,30 +705,30 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Estado</label>
-                <p class="form-control-static">@{{proveedor.estado || 'No tiene'}}</p>
+                <p class="form-control-static">@{{proveedor.estado_rnt || 'No tiene'}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Dirección</label>
-                <p class="form-control-static">@{{proveedor.direccion}}</p>
+                <p class="form-control-static">@{{proveedor.direccion_rnt}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Categoría</label>
-                <p class="form-control-static">@{{proveedor.categoria}}</p>
+                <p class="form-control-static">@{{proveedor.categoria_rnt}}</p>
             </div>
             <div class="form-group">
                 <label class="control-label">Subcategoría</label>
-                <p class="form-control-static">@{{proveedor.subcategoria}}</p>
+                <p class="form-control-static">@{{proveedor.subcategoria_rnt}}</p>
             </div>
             
-            
-            <button class="btn btn-block btn-success btn-sm" ng-click="openModalZonaProveedores(proveedor)"  ng-if="!proveedor.rnt" >
-                <i class="glyphicon glyphicon-pencil"></i> Editar información
-            </button>
-              
-            <button class="btn btn-block btn-primary btn-sm" ng-click="editarPosicionProveedor()" ng-show="!proveedor.editar" >
-               <i class="glyphicon glyphicon-map-marker"></i> Cambiar ubicación
-            </button>
-            
+            @if(Auth::user()->contienePermiso('edit-proveedorMuestra'))
+                <button class="btn btn-block btn-success btn-sm" ng-click="openModalZonaProveedores(proveedor)"  ng-if="!proveedor.rnt" >
+                    <i class="glyphicon glyphicon-pencil"></i> Editar información
+                </button>
+                  
+                <button class="btn btn-block btn-primary btn-sm" ng-click="editarPosicionProveedor()" ng-show="!proveedor.editar" >
+                   <i class="glyphicon glyphicon-map-marker"></i> Cambiar ubicación
+                </button>
+            @endif
             <br>
             <div class="btn-group" role="group"  ng-show="proveedor.editar" style="width:100%;" >
               <button type="button" class="btn btn-danger" ng-click="cancelarEditarPosicionProveedor()" style="width:50%;">Cancelar</button>
@@ -762,11 +772,19 @@
             
             <br>
             <ul class="list-details" >
-                <li><a href ng-click="openModalZona(detalleZona)" ><i class="material-icons">edit</i> Ver/Editar</a></li>
-                <li><a href ng-click="editarPosicionZona(detalleZona)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
-                <li><a href ng-click="eliminarZona(detalleZona)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
-                <li><a href ng-click="exportarFileExcelZona(detalleZona)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
-                <li><a href="/MuestraMaestra/llenarinfozona/@{{detalleZona.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
+                @if(Auth::user()->contienePermiso('edit-zona'))
+                    <li><a href ng-click="openModalZona(detalleZona)" ><i class="material-icons">edit</i> Ver/Editar</a></li>
+                    <li><a href ng-click="editarPosicionZona(detalleZona)" ><i class="material-icons">edit</i> Editar ubicación</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('delete-zona'))
+                    <li><a href ng-click="eliminarZona(detalleZona)" ><i class="material-icons">delete_forever</i> Eliminar</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('excel-zona'))
+                    <li><a href ng-click="exportarFileExcelZona(detalleZona)" ><i class="material-icons">arrow_downward</i> Generar Excel</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('llenarInfo-zona|excel-infoZona'))
+                    <li><a href="/MuestraMaestra/llenarinfozona/@{{detalleZona.id}}" ><i class="material-icons">border_color</i> Tabular bloque</a></li>
+                @endif
             </ul>
             
             <div class="btn-group" role="group"  ng-show="detalleZona.editar" style="width:100%;" >
@@ -940,7 +958,7 @@
                   </td>
                   <td>
                         <p>  <b>TABULADA:</b> @{{z.es_tabulada ? "Si" : "No"}} </p>
-                        <p>  <b>TABULADOR:</b> @{{z.tabulador || '-'}} </p>
+                        <p>  <b>TABULADOR:</b> @{{z.tabulador.user.nombre || '-'}} </p>
                         <a href="/MuestraMaestra/llenarinfozona/@{{z.id}}" title="Tabular bloque"  >
                             TABULAR
                         </a>
@@ -979,13 +997,13 @@
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.nombreP.$touched) && formP.nombreP.$error.required}" >
                       <label>Nombre:</label>
-                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.nombre" placeholder="Nombre del establecimiento" required >
+                      <input type="text" class="form-control"  name="nombreP" ng-model="proveedorInformal.nombre_rnt" placeholder="Nombre del establecimiento" required >
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.muniP.$touched) && formP.muniP.$error.required}">
                         <label class="control-label" for="muniP">Municipio</label>
-                        <ui-select  ng-model="proveedorInformal.municipio_id" name="muniP" id="muniP" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <ui-select  ng-model="proveedorInformal.municipio_rnt_id" name="muniP" id="muniP" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione una categoria">
                                 <span ng-bind="$select.selected.nombre"></span>
                             </ui-select-match>
@@ -1001,18 +1019,20 @@
             <br>
         
             <div class="row">    
-                <div class="col-md-6">
+                <div class="col-md-12" style="padding-right:15px!important; padding-left:15px!important;" >
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.ditecionP.$touched) && formP.ditecionP.$error.required}" >
                       <label>Dirección:</label>
-                      <input type="text" class="form-control"  name="ditecionP" ng-model="proveedorInformal.direccion" placeholder="Direción" required >
+                      <input type="text" class="form-control"  name="ditecionP" ng-model="proveedorInformal.direccion_rnt" placeholder="Direción" required >
                     </div>
                 </div>
+                <!--
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.telefono.$touched) && formP.telefono.$error.required}" >
                       <label>Teléfono:</label>
                       <input type="text" class="form-control"  name="telefono" ng-model="proveedorInformal.telefono" placeholder="Número de teléfono" >
                     </div>
                 </div>
+                -->
             </div>
             
             <br>
@@ -1035,7 +1055,7 @@
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'error' : (formP.$submitted || formP.tipoP.$touched) && formP.tipoP.$error.required}">
                         <label class="control-label" for="tipoP">Subcategoría</label>
-                        <ui-select  ng-model="proveedorInformal.idcategoria" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
+                        <ui-select  ng-model="proveedorInformal.subcategoria_rnt_id" name="tipoP" id="tipoP" theme="bootstrap" sortable="true"  ng-required="true" >
                             <ui-select-match placeholder="Seleccione una categoria">
                                 <span ng-bind="$select.selected.categoria_proveedores_con_idiomas[0].nombre"></span>
                             </ui-select-match>

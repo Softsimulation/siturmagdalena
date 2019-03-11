@@ -18,11 +18,15 @@
         
         <div class="btn-group">
             <a href="/MuestraMaestra/periodo/@{{zona.periodo_medicion_id}}"  class="btn btn-primary" >Volver</a>
-            <button type="submit" class="btn btn-success" ng-click="guardar()" >Guardar</button>
-            <a ng-click="exportarFileExcelZona()"  class="btn btn-primary" >Descargar excel</a>
+            @if(Auth::user()->contienePermiso('llenarInfo-zona'))
+                <button type="submit" class="btn btn-success" ng-click="guardar()" >Guardar</button>
+            @endif
+            @if(Auth::user()->contienePermiso('excel-infoZona'))
+                <a ng-click="exportarFileExcelZona()"  class="btn btn-primary" >Descargar excel</a>
+            @endif
         </div>
-        
-        <table>
+        @if(Auth::user()->contienePermiso('llenarInfo-zona'))
+            <table>
               <tr>
                 <th style="width:4%">ID</th>
                 <th style="width:8%" >RNT</th>
@@ -37,82 +41,46 @@
               <tr ng-repeat="item in proveedores" >
                 <th>@{{item.codigo}}</th>
                 <td ng-class="{ 'error': ( (form.$submitted || form.rnt@{{$index}}.$touched) && form.rnt@{{$index}}.$invalid  ) }" >  
-                    <p title="@{{item.numero_rnt}}" >@{{item.rnt}}</p> 
-                    <input type="number" class="form-control" name="rnt@{{$index}}" min="0" placeholder="RNT" ng-model="item.muestra.rnt" >
+                    <p title="@{{item.numero_rnt}}" >@{{item.rnt || 'No tiene'}}</p> 
+                    <input type="number" class="form-control" name="rnt@{{$index}}" min="0" placeholder="RNT" ng-model="item.rnt_muestra" ng-disabled="!item.rnt" >
                 </td>
                 <td ng-class="{ 'error': ( (form.$submitted || form.estado@{{$index}}.$touched) && form.estado@{{$index}}.$invalid  ) }" >
-                    <p title="@{{item.estadop.nombre}}" >@{{item.estado}} </p> 
-                    <select class="form-control" name="estado@{{$index}}"  ng-options="it.id as it.nombre for it in estados" ng-model="item.muestra.estado_proveedor_id" >
+                    <p title="@{{item.estadop.nombre}}" >@{{item.estado_rnt}} </p> 
+                    <select class="form-control" name="estado@{{$index}}"  ng-options="it.id as it.nombre for it in estados" ng-model="item.estado_muestra_id" >
                         <option value="" selected disabled >Estado</option>
                     </select>
                 </td>
                 <td ng-class="{ 'error': ( (form.$submitted || form.rz@{{$index}}.$touched) && form.rz@{{$index}}.$invalid  ) }" >
-                    <p class="text-table" title="@{{item.razon_social}}" >@{{item.nombre}}</p> 
-                    <input type="text" class="form-control" name="rz@{{$index}}" placeholder="Nombre" ng-model="item.muestra.nombre_proveedor" > 
+                    <p class="text-table" title="@{{item.razon_social}}" >@{{item.nombre_rnt}}</p> 
+                    <input type="text" class="form-control" name="rz@{{$index}}" placeholder="Nombre" ng-model="item.nombre_muestra" > 
                 </td>
                 <td ng-class="{ 'error': ( (form.$submitted || form.dir@{{$index}}.$touched) && form.dir@{{$index}}.$invalid  ) }" >
-                    <p class="text-table" title="@{{item.direccion}}" >@{{item.direccion}}</p> 
-                    <input type="text" class="form-control" name="dir@{{$index}}" placeholder="Dirección" ng-model="item.muestra.direccion" >
+                    <p class="text-table" title="@{{item.direccion}}" >@{{item.direccion_rnt}}</p> 
+                    <input type="text" class="form-control" name="dir@{{$index}}" placeholder="Dirección" ng-model="item.direccion_muestra" >
                 </td>
-                <td ng-init="selectTipo=initSelectTipo(item.muestra.categoria_proveedor_id)" ng-class="{ 'error': ( (form.$submitted || form.tp@{{$index}}.$touched) && form.tp@{{$index}}.$invalid  ) }" >
-                    <p class="text-table" title="@{{item.tipo}}" >@{{item.categoria}}</p>
-                    <select class="form-control" name="tp@{{$index}}" ng-options="it as it.tipo_proveedores_con_idiomas[0].nombre for it in tiposProveedores" ng-model="selectTipo" >
-                        <option value="" selected disabled >Tipo proveedor</option>
-                    </select>
-                </td>
-                <td ng-class="{ 'error': ( (form.$submitted || form.ctg@{{$index}}.$touched) && form.ctg@{{$index}}.$invalid  ) }">
-                    <p class="text-table" title="@{{item.nombreCategoria}}" >@{{item.subcategoria}}</p>
-                    <select class="form-control" name="ctg@{{$index}}" ng-options="it.id as it.categoria_proveedores_con_idiomas[0].nombre for it in selectTipo.categoria_proveedores" ng-model="item.muestra.categoria_proveedor_id" >
+                <td ng-class="{ 'error': ( (form.$submitted || form.tp@{{$index}}.$touched) && form.tp@{{$index}}.$invalid  ) }" >
+                    <p class="text-table" title="@{{item.tipo}}" >@{{item.categoria_rnt}}</p>
+                    <select class="form-control" name="tp@{{$index}}" ng-options="it as it.tipo_proveedores_con_idiomas[0].nombre for it in tiposProveedores" ng-model="selectTipo" ng-init="selectTipo=initSelectTipo(item.categoria_muestra_id)" >
                         <option value="" selected disabled >Categoria proveedor</option>
                     </select>
                 </td>
-                <td ng-class="{ 'error': ( (form.$submitted || form.obs@{{$index}}.$touched) && form.obs@{{$index}}.$invalid  ) }">
-                     <textarea class="form-control" name="obs@{{$index}}" style="resize:none" placeholder="Novedades" ng-model="item.muestra.observaciones" ></textarea>
-                </td>
-              </tr>
-              
-              <tr ng-repeat="item in proveedoresInformales" >
-                <th>@{{item.codigo}}</th>
-                <td ng-class="{ 'error': ( (form.$submitted || form.rnt@{{$index}}.$touched) && form.rnt@{{$index}}.$invalid  ) }" >  
-                    <p title="@{{item.numero_rnt}}" >&nbsp</p> 
-                    <input type="number" class="form-control" name="rnt@{{$index}}" min="0" placeholder="RNT" ng-model="item.muestra.rnt" disabled >
-                </td>
-                <td ng-class="{ 'error': ( (form.$submitted || form.estado@{{$index}}.$touched) && form.estado@{{$index}}.$invalid  ) }" >
-                    <p title="@{{item.estadop.nombre}}" >@{{item.estado}} </p> 
-                    <select class="form-control" name="estado@{{$index}}"  ng-options="it.id as it.nombre for it in estados" ng-model="item.muestra.estado_proveedor_id" >
-                        <option value="" selected disabled >Estado</option>
-                    </select>
-                </td>
-                <td ng-class="{ 'error': ( (form.$submitted || form.rz@{{$index}}.$touched) && form.rz@{{$index}}.$invalid  ) }" >
-                    <p class="text-table" title="@{{item.razon_social}}" >@{{item.nombre}}</p> 
-                    <input type="text" class="form-control" name="rz@{{$index}}" placeholder="Nombre" ng-model="item.muestra.nombre_proveedor" > 
-                </td>
-                <td ng-class="{ 'error': ( (form.$submitted || form.dir@{{$index}}.$touched) && form.dir@{{$index}}.$invalid  ) }" >
-                    <p class="text-table" title="@{{item.direccion}}" >@{{item.direccion}}</p> 
-                    <input type="text" class="form-control" name="dir@{{$index}}" placeholder="Dirección" ng-model="item.muestra.direccion" >
-                </td>
-                <td ng-init="selectTipo=initSelectTipo(item.muestra.categoria_proveedor_id)" ng-class="{ 'error': ( (form.$submitted || form.tp@{{$index}}.$touched) && form.tp@{{$index}}.$invalid  ) }" >
-                    <p class="text-table" title="@{{item.tipo}}" >@{{item.categoria}}</p>
-                    <select class="form-control" name="tp@{{$index}}" ng-options="it as it.tipo_proveedores_con_idiomas[0].nombre for it in tiposProveedores" ng-model="selectTipo" >
-                        <option value="" selected disabled >Tipo proveedor</option>
-                    </select>
-                </td>
                 <td ng-class="{ 'error': ( (form.$submitted || form.ctg@{{$index}}.$touched) && form.ctg@{{$index}}.$invalid  ) }">
-                    <p class="text-table" title="@{{item.nombreCategoria}}" >@{{item.subcategoria}}</p>
-                    <select class="form-control" name="ctg@{{$index}}" ng-options="it.id as it.categoria_proveedores_con_idiomas[0].nombre for it in selectTipo.categoria_proveedores" ng-model="item.muestra.categoria_proveedor_id" >
-                        <option value="" selected disabled >Categoria proveedor</option>
+                    <p class="text-table" title="@{{item.nombreCategoria}}" >@{{item.subcategoria_rnt}}</p>
+                    <select class="form-control" name="ctg@{{$index}}" ng-options="it.id as it.categoria_proveedores_con_idiomas[0].nombre for it in selectTipo.categoria_proveedores" ng-model="item.subcategoria_muestra_id" >
+                        <option value="" selected disabled >Subcategoria proveedor</option>
                     </select>
                 </td>
                 <td ng-class="{ 'error': ( (form.$submitted || form.obs@{{$index}}.$touched) && form.obs@{{$index}}.$invalid  ) }">
-                     <textarea class="form-control" name="obs@{{$index}}" style="resize:none" placeholder="Novedades" ng-model="item.muestra.observaciones" ></textarea>
+                     <textarea class="form-control" name="obs@{{$index}}" style="resize:none" placeholder="Novedades" ng-model="item.observaciones_muestra" ></textarea>
                 </td>
               </tr>
               
-              <tr ng-if="proveedores.length==0 && proveedoresInformales.length==0" >
+              
+              <tr ng-if="proveedores.length==0" >
                   <td colspan="8" class="alert alert-info" >No se encontraron proveedores en la zona.</td>
               </tr>
         </table>
-       
+        @endif
     </form>
     
     <style>

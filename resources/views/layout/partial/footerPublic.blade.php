@@ -1,10 +1,10 @@
 <footer>
     <div id="logosApoyoSitur" class="container text-center">
-    	<a href="https://id.presidencia.gov.co/Paginas/presidencia.aspx" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/logo_gobierno.png')}}" alt="Logo de Gobierno de Colombia"></a>
+    	<!--<a href="https://id.presidencia.gov.co/Paginas/presidencia.aspx" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/logo_gobierno.png')}}" alt="Logo de Gobierno de Colombia"></a>-->
         
-        <a href="http://www.mincit.gov.co/" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/logo_mincit.png')}}" alt="Logo de Ministerio de Comercio, Industria y Turismo"></a>
-        <a href="https://fontur.com.co/" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/logo_fontur.png')}}" alt="Logo de FONTUR"></a>
-        <a href="http://cotelcomagdalena.co/" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/logo_cotelco.png')}}" alt="Logo de Cotelco Magdalena"></a>
+        <!--<a href="http://www.mincit.gov.co/" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/mincit.jpg')}}" alt="Logo de Ministerio de Comercio, Industria y Turismo" class="hover-icon"></a>-->
+        <a href="https://fontur.com.co/" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/logo_fontur.png')}}" alt="Logo de FONTUR" class="hover-icon"></a>
+        <a href="http://cotelcomagdalena.co/" target="_blank" rel="noopener noreferrer"><img src="{{asset('img/brand/others/logo_cotelco.png')}}" alt="Logo de Cotelco Magdalena" class="hover-icon"></a>
     </div>
     <div class="info-footer">
         <div class="container">

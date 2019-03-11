@@ -36,7 +36,9 @@
     @endif
 @endif
 <div class="flex-list">
-    <button type="button" class="btn btn-lg btn-success" data-target="#modalCrear" data-toggle="modal" data-placement="bottom" title="Crear Informe">Añadir informe</button>
+    @if(Auth::user()->contienePermiso('create-informe'))
+        <button type="button" class="btn btn-lg btn-success" data-target="#modalCrear" data-toggle="modal" data-placement="bottom" title="Crear Informe">Añadir informe</button>
+    @endif
     <div class="form-group has-feedback" style="display: inline-block;">
         <label class="sr-only">Búsqueda de informes</label>
         <input type="text" ng-model="searchinforme" class="form-control input-lg" id="inputEmail3" placeholder="Buscar informe...">
@@ -73,20 +75,22 @@
                 <span class="label label-primary">Periodo: @{{informe.fecha_creacion|date:'MMMM/yyyy'}}</span>
             </p>
             <div class="inline-buttons">
-                <button type="button" class="btn btn-warning" data-target="#modalEditar" ng-click="editarInforme(informe)" data-toggle="modal" data-placement="bottom" title="Editar informe">Editar</button>
-                
-                <button ng-if="informe.estado" type="button" class="btn btn-danger" ng-click="cambiarEstado(informe)">Desactivar</button>
-                <button ng-if="!informe.estado" type="button" class="btn btn-success" ng-click="cambiarEstado(informe)">Activar</button>
-
+                @if(Auth::user()->contienePermiso('edit-informe'))
+                    <button type="button" class="btn btn-warning" data-target="#modalEditar" ng-click="editarInforme(informe)" data-toggle="modal" data-placement="bottom" title="Editar informe">Editar</button>
+                @endif
+                @if(Auth::user()->contienePermiso('estado-informe'))
+                    <button ng-if="informe.estado" type="button" class="btn btn-danger" ng-click="cambiarEstado(informe)">Desactivar</button>
+                    <button ng-if="!informe.estado" type="button" class="btn btn-success" ng-click="cambiarEstado(informe)">Activar</button>
+                @endif
                 
                 <button type="button" ng-repeat="i in informe.idiomas" class="btn button-default" ng-click="ModalIdiomas(i, informe)" >
                     @{{i.idioma.culture}}
                 </button>
-                
-                <a role="button" href="/administradoractividades/idioma/@{{actividad.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in actividad.actividades_con_idiomas" class="btn btn-default"> @{{traduccion.idioma.culture}}</a>
-                <button type="button" class="btn btn-default" ng-click="ModalIdiomas(null,informe)" ng-if="informe.idiomas.length<idiomas.length" title="Ingresar idioma"><span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
-                <button type="button" class="btn btn-default" ng-click="ModalEliminarIdioma(informe)"  ng-if="informe.idiomas.length > 1" title="Eliminar información de un idioma"><span class="glyphicon glyphicon-minus"></span><span class="sr-only">Remover idioma</span></button>
-                
+                @if(Auth::user()->contienePermiso('edit-informe'))
+                    <a role="button" href="/administradoractividades/idioma/@{{actividad.id}}/@{{traduccion.idioma.id}}" ng-repeat="traduccion in actividad.actividades_con_idiomas" class="btn btn-default"> @{{traduccion.idioma.culture}}</a>
+                    <button type="button" class="btn btn-default" ng-click="ModalIdiomas(null,informe)" ng-if="informe.idiomas.length<idiomas.length" title="Ingresar idioma"><span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                    <button type="button" class="btn btn-default" ng-click="ModalEliminarIdioma(informe)"  ng-if="informe.idiomas.length > 1" title="Eliminar información de un idioma"><span class="glyphicon glyphicon-minus"></span><span class="sr-only">Remover idioma</span></button>
+                @endif
                 
             </div>  
             

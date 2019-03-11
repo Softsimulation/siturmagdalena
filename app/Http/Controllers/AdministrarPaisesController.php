@@ -19,7 +19,11 @@ class AdministrarPaisesController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-pais|create-pais|importar-pais|edit-pais',['only' => ['getIndex','getDatos'] ]);
+        $this->middleware('permissions:create-pais',['only' => ['postCrearpais'] ]);
+        $this->middleware('permissions:edit-pais',['only' => ['postEditarpais','postAgregarnombre'] ]);
+        $this->middleware('permissions:importar-pais',['only' => ['postImportexcel'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

@@ -17,7 +17,20 @@ class ExportacionController extends Controller
     {
         
         $this->middleware('auth');
-        $this->middleware('role:Admin|Estadistico');
+        //$this->middleware('role:Admin|Estadistico');
+        $this->middleware('permissions:export-medicionReceptor|export-medicionOferta|export-medicionInternoEmisor|export-sostenibilidadHogar|export-sostenibilidadPST',
+        ['only' => ['getIndex','getMeses','postExportar'] ]);
+        
+        $this->middleware('permissions:export-medicionReceptor',['only' => ['ExportacionTurismoReceptor2'] ]);
+        
+        $this->middleware('permissions:export-medicionInternoEmisor',['only' => ['ExportacionTurismoInterno2'] ]);
+        
+        $this->middleware('permissions:export-sostenibilidadPST',['only' => ['ExportacionSostenibilidadpst'] ]);
+        
+        $this->middleware('permissions:export-sostenibilidadHogar',['only' => ['ExportacionSostenibilidadhogares'] ]);
+        
+        $this->middleware('permissions:export-medicionOferta',['only' => ['ExportacionOfertayEmpleo'] ]);
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -37,7 +50,14 @@ class ExportacionController extends Controller
     
     public function postExportar(Request $request){
         
-        $validator=\Validator::make($request->all(),['nombre'=>'required','fecha_inicial'=>'required|date|before:tomorrow','fecha_final'=>'required|date|before:tomorrow']);
+        $validator=\Validator::make($request->all(),[
+                                                     'nombre'=>'required',
+                                                     'fecha_inicial'=>'required_if:nombre,receptor,interno,sostenibilidad|date|before:tomorrow',
+                                                     'fecha_final'=>'required_if:nombre,receptor,interno,sostenibilidad|date|before:tomorrow',
+                                                     'categoria'=>'required_if:nombre,ofertayempleo|in:1,2,3,4,5,6',
+                                                     'mes'=>'required_if:nombre,ofertayempleo|exists:meses_de_anio,id'
+        
+        ]);
         $url='';
         if($validator->fails()){
             
@@ -48,8 +68,7 @@ class ExportacionController extends Controller
         switch($request->nombre){
             
             case 'receptor': 
-                $this->ExportacionTurismoReceptor2($request->fecha_inicial,$request->fecha_final);
-                $url='/excel/exports/Exportacion.xlsx';
+                $url=$this->ExportacionTurismoReceptor2($request->fecha_inicial,$request->fecha_final);
             break;
              case 'interno': 
                $url= $this->ExportacionTurismoInterno2($request->fecha_inicial,$request->fecha_final);
@@ -85,9 +104,13 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
-        try{
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
         
-               \Excel::create('Exportacion', function($excel) use($datos) {
+        
+        try{
+               $nombre='Exp_turismo-receptor_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Turismo receptor', function($sheet) use($datos) {
                        
@@ -104,7 +127,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/Exportacion.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -136,9 +159,12 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
-        try{
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
         
-               \Excel::create('ExportacionInterno', function($excel) use($datos) {
+        try{
+               $nombre='Exp_turismo-interno_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Turismo interno', function($sheet) use($datos) {
                        
@@ -155,7 +181,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionInterno.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -186,9 +212,13 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
-        try{
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
         
-               \Excel::create('ExportacionSostenibilidadPst', function($excel) use($datos) {
+        try{
+               $nombre='Exp_sostenibilidad_pst_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
+        
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Sostenibilidad pst', function($sheet) use($datos) {
                        
@@ -205,7 +235,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionSostenibilidadPst.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -236,9 +266,13 @@ class ExportacionController extends Controller
         $array= json_decode( json_encode($datos), true);
         $datos=$array;
         
-        try{
+        $fechainicial=new \Carbon\Carbon($fecha_inicial);
+        $fechafinal=new \Carbon\Carbon($fecha_final);
         
-               \Excel::create('ExportacionSostenibilidadhogares', function($excel) use($datos) {
+        try{
+               $nombre='Exp_sostenibilidad_hogares_'.$fechainicial->format('d-m-Y').'_'.$fechafinal->format('d-m-Y');
+        
+               \Excel::create($nombre, function($excel) use($datos) {
         
                     $excel->sheet('Sostenibilidad hogares ', function($sheet) use($datos) {
                        
@@ -255,7 +289,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionSostenibilidadhogares.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){
@@ -314,7 +348,7 @@ class ExportacionController extends Controller
         
         try{
         
-               \Excel::create('ExportacionOfertayEmpleo', function($excel) use($datos,$nombre) {
+               \Excel::create($nombre, function($excel) use($datos,$nombre) {
         
                     $excel->sheet($nombre, function($sheet) use($datos) {
                        
@@ -331,7 +365,7 @@ class ExportacionController extends Controller
                 $exportacion->hora_fin=\Carbon\Carbon::now()->format('h:i:s');
                 $exportacion->save();
                 
-                return '/excel/exports/ExportacionOfertayEmpleo.xlsx'; 
+                return '/excel/exports/'.$nombre.'.xlsx'; 
         
         
         }catch(Exception $e){

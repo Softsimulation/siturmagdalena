@@ -10,9 +10,9 @@
 @section('content')
 
 <div>
-    
-   <a type="button" class="btn btn-success" ng-click="OpenModalIndicador()" >Agregar nueva estadística</a> 
-   
+    @if(Auth::user()->contienePermiso('create-estadisticaSecundaria'))
+        <a type="button" class="btn btn-success" ng-click="OpenModalIndicador()" >Agregar nueva estadística</a> 
+    @endif
    <br><br>
    
    <div class="panel-group"  ng-repeat="item in data" >
@@ -25,18 +25,22 @@
       <div id="collapse@{{$index}}" class="panel-collapse collapse">
         <div class="panel-body">
                 
-                
-                <a type="button" class="btn  btn-xs btn-add" ng-class="{ 'btn-success':!item.es_visible , 'btn-danger':item.es_visible }" ng-click="activarDesactivarIndicador(item)" >
-                    @{{ !item.es_visible ? "Visible" : "Ocultar" }}
-                </a>
-                
-                <a type="button" class="btn btn-danger btn-xs btn-add" ng-click="eliminarIndicador(item,$index)" >Eliminar</a>
-                <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModalIndicador(item)" >Editar</a>
-                <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModal(true,null,item,dataValoresTiempo,dataValoresRotulos)" >Agregar</a>
+                @if(Auth::user()->contienePermiso('estado-estadisticaSecundaria'))
+                    <a type="button" class="btn  btn-xs btn-add" ng-class="{ 'btn-success':!item.es_visible , 'btn-danger':item.es_visible }" ng-click="activarDesactivarIndicador(item)" >
+                        @{{ !item.es_visible ? "Hacer visible público" : "Ocultar al público" }}
+                    </a>
+                @endif
+                @if(Auth::user()->contienePermiso('delete-estadisticaSecundaria'))
+                    <a type="button" class="btn btn-danger btn-xs btn-add" ng-click="eliminarIndicador(item,$index)" >Eliminar indicador</a>
+                @endif
+                @if(Auth::user()->contienePermiso('edit-estadisticaSecundaria'))
+                    <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModalIndicador(item)" >Editar indicador</a>
+                    <a type="button" class="btn btn-success btn-xs btn-add" ng-click="OpenModal(true,null,item,dataValoresTiempo,dataValoresRotulos)" >Agregar datos</a>
+                @endif
                 <table class="table table-hover">
                     <thead>
                         <th>Años</th>
-                        <th style="width:60px" ></th>
+                        <th style="width:200px" ></th>
                     </thead>
                     
                     <tbody>
@@ -47,6 +51,9 @@
                                 <button type="submit" class="btn btn-default btn-xs" ng-click="OpenModal(false,it[0].anio_id,item)" >
                                   Ver/Editar
                                 </button>
+                                 <button type="submit" class="btn btn-danger btn-xs" ng-click="eliminarDatosIndicador(item.id,it[0].anio_id)" >
+                                  Eliminar
+                                </button>
                             </td>
                         </tr>
                         
@@ -55,6 +62,9 @@
                             <td>
                                 <button type="submit" class="btn btn-default btn-xs" ng-click="OpenModal(false,it[0].anio_id,item)" >
                                   Ver/Editar
+                                </button>
+                                <button type="submit" class="btn btn-danger btn-xs" ng-click="eliminarDatosIndicador(item.id,it[0].anio_id)" >
+                                  Eliminar
                                 </button>
                             </td>
                         </tr>
@@ -174,205 +184,239 @@
           
           <div class="modal-body">
             
-            <div class="row" >
-                <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.nombre.$touched) && formCrear.nombre.$error.required}" >
-                  <label for="nombre">Nombre español:</label>
-                  <input type="text" class="form-control" id="nombre" name="nombre" ng-model="indicadorCrearEditar.nombre" placeholder="Nombres en español" required  >
-                </div>
-                <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.name.$touched) && formCrear.name.$error.required}" >
-                  <label for="name">Nombre inglés:</label>
-                  <input type="text" class="form-control" id="name" name="name" ng-model="indicadorCrearEditar.name" placeholder="Nombres en inglés" required >
-                </div>
-            </div>
-            
-            <br>
-            
-             <div class="row" >
-                <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejexe.$touched) && formCrear.ejexe.$error.required}" >
-                  <label for="ejexe">Label eje X español:</label>
-                  <input type="text" class="form-control" id="ejexe" name="ejexe" ng-model="indicadorCrearEditar.label_x" placeholder="Label eje X en español" required  >
-                </div>
-                <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejexi.$touched) && formCrear.ejexi.$error.required}" >
-                  <label for="ejexi">Label eje X inglés:</label>
-                  <input type="text" class="form-control" id="ejexi" name="ejexi" ng-model="indicadorCrearEditar.label_x_en" placeholder="Label eje X en inglés" required >
-                </div>
-                
-                <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejeye.$touched) && formCrear.ejeye.$error.required}"  >
-                  <label for="ejeye">Label eje Y español:</label>
-                  <input type="text" class="form-control" id="ejeye" name="ejeye" ng-model="indicadorCrearEditar.label_y" placeholder="Label eje Y en español" required >
-                </div>
-                <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejeyi.$touched) && formCrear.ejeyi.$error.required}" >
-                  <label for="ejeyi">Label eje Y inglés:</label>
-                  <input type="text" class="form-control" id="ejeyi" name="ejeyi" ng-model="indicadorCrearEditar.label_y_en" placeholder="Label eje Y en inglés" required >
-                </div>
-            </div>
-            
-            
-            <hr>
-            
-            <div class="row" >
-                                          
-                 <div class="col-md-12">
-                   
-                    <div class="form-group" >
-                        <label class="control-label" >Gráficas</label>
-                        <div class="input-group">
-                          <select class="form-control" ng-model="grafica" ng-change="grafica.pivot.principal=false"  ng-options="x as x.nombre for x in graficas" >
-                              <opcion value="" selected >Selecione un tipo</opcion>
-                          </select>
-                          
-                          <div class="input-group-addon checkbox" style="padding-bottom: 1px;padding-top: 8px;" >
-                              <label><input type="checkbox" name="principal" ng-model="grafica.pivot.principal" >principal</label>
-                          </div>
-                          
-                          <div class="input-group-btn">
-                            <button class="btn btn-success" type="button" ng-click="agregarTipoGrafica()" ng-disabled="!grafica" >
-                                 Agregar
-                            </button>
-                          </div>
-                        </div>
-                    </div>
-                    
-                 </div>
-             </div>
-             
-             <ul class="list-group">
-                
-                <li href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-                  Tipos de graficas
-                </li>
-                
-                <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="item in indicadorCrearEditar.graficas track by $index" style="cursor:default" >
-                    @{{item.nombre}} <span ng-show="item.pivot.principal" >(Es principal)</span>  <span class="badge" style="background: #da534e;" ng-click="indicadorCrearEditar.graficas.splice($index,1);" >X</span>
-                </li>
-                
-                <li class="list-group-item d-flex justify-content-between align-items-center" ng-if="indicadorCrearEditar.graficas.length==0" >
-                    0 tipos de graficas agregadas
-                </li>
-                
-                <li class="list-group-item alert-danger" ng-show="formCrear.$submitted && indicadorCrearEditar.graficas.length==0" >
-                        Debe seleccionar por lo menos un tipo de grafica.
-                </li>
-                
+            <ul class="nav nav-tabs" id="myTabs" >
+              <li class="active"><a data-toggle="tab" href="#home">Información general</a></li>
+              <li><a data-toggle="tab" href="#menu1">Series y rotulos</a></li>
             </ul>
             
-            <hr>
-            
-            <div class="row" >
-                <div class="col-md-12">
-                   
-                   <div class="panel panel-info" style="padding: 0;" >
-                      <div class="panel-heading"><b>Series</b> <a type="button" class="btn btn-success btn-xs" ng-click="indicadorCrearEditar.series.push({})" style="padding: 1px 12px;font-weight:bold;"  >Agregar</a></div>
-                      <div class="panel-body" style="padding:0" >
-                      
-                            <table class="table table-hover">
-                                <thead>
-                                    <th>Serie en español</th>
-                                    <th>Serie en inglés </th>
-                                    <th></th>
-                                </thead>
-                                
-                                <tbody>
-                                    
-                                    <tr ng-repeat="it in indicadorCrearEditar.series" >
-                                        <td ng-class="{'error' : (formCrear.$submitted || formCrear.nombreS@{{$index}}.$touched) && formCrear.nombreS@{{$index}}.$error.required}" >
-                                            <input type="text" class="form-control" id="nombreS@{{$index}}" name="nombreS@{{$index}}" ng-model="it.nombre" placeholder="Nombres en español" required >
-                                        </td>
-                                        <td ng-class="{'error' : (formCrear.$submitted || formCrear.nombreS2@{{$index}}.$touched) && formCrear.nombreS2@{{$index}}.$error.required}" >
-                                            <input type="text" class="form-control" id="nombreS2@{{$index}}" name="nombreS2@{{$index}}" ng-model="it.name" placeholder="Nombres en inglés" required >
-                                        </td>
-                                        <td ng-show="indicadorCrearEditar.es_crear" >
-                                            <button class="btn btn-xs btn-danger" ng-click="indicadorCrearEditar.series.splice($index,1);">X</button>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr ng-if="indicadorCrearEditar.series.length==0" >
-                                        <td colspan="3" >
-                                            <div class="alert-warning " style="margin-bottom:0" >No se encontraron series</div>
-                                        </td>
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        
-                        <div class="alert-danger" ng-show="formCrear.$submitted && indicadorCrearEditar.series.length==0" >
-                            Debe seleccionar por lo menos una serie.
+            <div class="tab-content">
+              <div id="home" class="tab-pane fade in active">
+                
+                <div class="row" >
+                    <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.nombre.$touched) && formCrear.nombre.$error.required}" >
+                      <label for="nombre">Nombre español:</label>
+                      <input type="text" class="form-control" id="nombre" name="nombre" ng-model="indicadorCrearEditar.nombre" placeholder="Nombres en español" required  >
+                    </div>
+                    <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.name.$touched) && formCrear.name.$error.required}" >
+                      <label for="name">Nombre inglés:</label>
+                      <input type="text" class="form-control" id="name" name="name" ng-model="indicadorCrearEditar.name" placeholder="Nombres en inglés" required >
+                    </div>
+                </div>
+                
+                <br>
+                
+                 <div class="row" >
+                    <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejexe.$touched) && formCrear.ejexe.$error.required}" >
+                      <label for="ejexe">Label eje X español:</label>
+                      <input type="text" class="form-control" id="ejexe" name="ejexe" ng-model="indicadorCrearEditar.label_x" placeholder="Label eje X en español" required  >
+                    </div>
+                    <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejexi.$touched) && formCrear.ejexi.$error.required}" >
+                      <label for="ejexi">Label eje X inglés:</label>
+                      <input type="text" class="form-control" id="ejexi" name="ejexi" ng-model="indicadorCrearEditar.label_x_en" placeholder="Label eje X en inglés" required >
+                    </div>
+                    
+                    <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejeye.$touched) && formCrear.ejeye.$error.required}"  >
+                      <label for="ejeye">Label eje Y español:</label>
+                      <input type="text" class="form-control" id="ejeye" name="ejeye" ng-model="indicadorCrearEditar.label_y" placeholder="Label eje Y en español" required >
+                    </div>
+                    <div class="col-md-3 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.ejeyi.$touched) && formCrear.ejeyi.$error.required}" >
+                      <label for="ejeyi">Label eje Y inglés:</label>
+                      <input type="text" class="form-control" id="ejeyi" name="ejeyi" ng-model="indicadorCrearEditar.label_y_en" placeholder="Label eje Y en inglés" required >
+                    </div>
+                </div>
+                
+                <br>
+                
+                <div class="row" >
+                    <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.descripcion_es.$touched) && formCrear.descripcion_es.$error.required}" >
+                      <label for="descripcion_es">Descripción español:</label>
+                      <textarea class="form-control" rows="5" id="descripcion_es" name="descripcion_es" ng-model="indicadorCrearEditar.descripcion_es" placeholder="Descripción en español" required ></textarea>
+                    </div>
+                    <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.descripcion_en.$touched) && formCrear.descripcion_en.$error.required}" >
+                      <label for="descripcion_es">Descripción inglés:</label>
+                      <textarea  class="form-control" rows="5" id="descripcion_es" name="descripcion_en" ng-model="indicadorCrearEditar.descripcion_en" placeholder="Descripción en inglés" required ></textarea>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row" >
+                                          
+                     <div class="col-md-12">
+                       
+                        <div class="form-group" >
+                            <label class="control-label" >Gráficas</label>
+                            <div class="input-group">
+                              <select class="form-control" ng-model="grafica" ng-change="grafica.pivot.principal=false"  ng-options="x as x.nombre for x in graficas" >
+                                  <opcion value="" selected >Selecione un tipo</opcion>
+                              </select>
+                              
+                              <div class="input-group-addon checkbox" style="padding-bottom: 1px;padding-top: 8px;" >
+                                  <label><input type="checkbox" name="principal" ng-model="grafica.pivot.principal" >principal</label>
+                              </div>
+                              
+                              <div class="input-group-btn">
+                                <button class="btn btn-success" type="button" ng-click="agregarTipoGrafica()" ng-disabled="!grafica" >
+                                     Agregar
+                                </button>
+                              </div>
+                            </div>
                         </div>
                         
-                      </div>
-                    </div>
-                   
+                     </div>
+                 </div>
+                 
+                <ul class="list-group">
+                    
+                    <li href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+                      Tipos de graficas
+                    </li>
+                    
+                    <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="item in indicadorCrearEditar.graficas track by $index" style="cursor:default" >
+                        @{{item.nombre}} <span ng-show="item.pivot.principal" >(Es principal)</span>  <span class="badge" style="background: #da534e;" ng-click="indicadorCrearEditar.graficas.splice($index,1);" >X</span>
+                    </li>
+                    
+                    <li class="list-group-item d-flex justify-content-between align-items-center" ng-if="indicadorCrearEditar.graficas.length==0" >
+                        0 tipos de graficas agregadas
+                    </li>
+                    
+                    <li class="list-group-item alert-danger" ng-show="formCrear.$submitted && indicadorCrearEditar.graficas.length==0" >
+                            Debe seleccionar por lo menos un tipo de grafica.
+                    </li>
+                    
+                </ul>
+                
+                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="siguiente">Siguiente</button>
                 </div>
-            </div>
-            
-            <hr>
-            
-            <div class="row" >
-                <div class="col-md-12" >
-                    <b>Rótulos: </b>
-                    <label class="radio-inline">
-                      <input type="radio" id="inlineCheckbox1" value="0" ng-model="incluirRorulos" ng-click="indicadorCrearEditar.rotulos=[]" > Meses
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" id="inlineCheckbox2" value="1" ng-model="incluirRorulos" > Personalizado
-                    </label>
-                </div>
-            </div>
-            
-            <br>
-            
-            <div ng-show="incluirRorulos==1" class="row" >
-                <div class="col-md-12">
-                   
-                   <div class="panel panel-info" style="padding: 0;" >
-                      <div class="panel-heading"><b>Rótulos</b> <a type="button" class="btn btn-success btn-xs" ng-click="indicadorCrearEditar.rotulos.push({})" style="padding: 1px 12px;font-weight:bold;" >Agregar</a></div>
-                      <div class="panel-body" style="padding:0" >
-                      
-                            <table class="table table-hover">
-                                <thead>
-                                    <th>Rótulo en español</th>
-                                    <th>Rótulo en inglés </th>
-                                    <th></th>
-                                </thead>
-                                
-                                <tbody>
+                
+                
+              </div>
+              <div id="menu1" class="tab-pane fade">
+                
+                <div class="row" >
+                    <div class="col-md-12">
+                       
+                       <div class="panel panel-info" style="padding: 0;" >
+                          <div class="panel-heading"><b>Series</b> <a type="button" class="btn btn-success btn-xs" ng-click="indicadorCrearEditar.series.push({})" style="padding: 1px 12px;font-weight:bold;"  >Agregar</a></div>
+                          <div class="panel-body" style="padding:0" >
+                          
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>Serie en español</th>
+                                        <th>Serie en inglés </th>
+                                        <th></th>
+                                    </thead>
                                     
-                                    <tr ng-repeat="it in indicadorCrearEditar.rotulos" >
-                                        <td ng-class="{'error' : (formCrear.$submitted || formCrear.nameR1@{{$index}}.$touched) && formCrear.nameR1@{{$index}}.$error.required}" >
-                                            <input type="text" class="form-control" id="nameR1@{{$index}}" name="nameR1@{{$index}}" ng-model="it.nombre" placeholder="Nombres en español" required >
-                                        </td>
-                                        <td ng-class="{'error' : (formCrear.$submitted || formCrear.nameR2@{{$index}}.$touched) && formCrear.nameR2@{{$index}}.$error.required}" >
-                                            <input type="text" class="form-control" id="nameR2@{{$index}}" name="nameR2@{{$index}}" ng-model="it.name" placeholder="Nombres en inglés" required >
-                                        </td>
-                                        <td ng-show="indicadorCrearEditar.es_crear" >
-                                            <button class="btn btn-xs btn-danger" ng-click="indicadorCrearEditar.rotulos.splice($index,1);">X</button>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr ng-if="indicadorCrearEditar.rotulos.length==0" >
-                                        <td colspan="3" >
-                                            <div class="alert alert-warning " style="margin-bottom:0" >No se encontraron rotulos</div>
-                                        </td>
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
+                                    <tbody>
+                                        
+                                        <tr ng-repeat="it in indicadorCrearEditar.series" >
+                                            <td ng-class="{'error' : (formCrear.$submitted || formCrear.nombreS@{{$index}}.$touched) && formCrear.nombreS@{{$index}}.$error.required}" >
+                                                <input type="text" class="form-control" id="nombreS@{{$index}}" name="nombreS@{{$index}}" ng-model="it.nombre" placeholder="Nombres en español" required >
+                                            </td>
+                                            <td ng-class="{'error' : (formCrear.$submitted || formCrear.nombreS2@{{$index}}.$touched) && formCrear.nombreS2@{{$index}}.$error.required}" >
+                                                <input type="text" class="form-control" id="nombreS2@{{$index}}" name="nombreS2@{{$index}}" ng-model="it.name" placeholder="Nombres en inglés" required >
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-xs btn-danger" ng-click="eliminarSerie(it.id,$index)">X</button>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr ng-if="indicadorCrearEditar.series.length==0" >
+                                            <td colspan="3" >
+                                                <div class="alert-warning " style="margin-bottom:0" >No se encontraron series</div>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
                             
-                            <div class="alert-danger" ng-show="formCrear.$submitted && indicadorCrearEditar.rotulos.length==0" >
-                                Debe seleccionar por lo menos uno rotulo.
+                            <div class="alert-danger" ng-show="formCrear.$submitted && indicadorCrearEditar.series.length==0" >
+                                Debe seleccionar por lo menos una serie.
                             </div>
-                      
-                      </div>
+                            
+                          </div>
+                        </div>
+                       
                     </div>
-                   
                 </div>
+                
+                <hr>
+                
+                <div class="row" >
+                    <div class="col-md-12" >
+                        <b>Rótulos: </b>
+                        <label class="radio-inline">
+                          <input type="radio" id="inlineCheckbox1" value="0" ng-model="incluirRorulos" ng-click="indicadorCrearEditar.rotulos=[]" > Meses
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" id="inlineCheckbox2" value="1" ng-model="incluirRorulos" > Personalizado
+                        </label>
+                    </div>
+                </div>
+                
+                <br>
+                
+                <div ng-show="incluirRorulos==1" class="row" >
+                    <div class="col-md-12">
+                       
+                       <div class="panel panel-info" style="padding: 0;" >
+                          <div class="panel-heading"><b>Rótulos</b> <a type="button" class="btn btn-success btn-xs" ng-click="indicadorCrearEditar.rotulos.push({})" style="padding: 1px 12px;font-weight:bold;" >Agregar</a></div>
+                          <div class="panel-body" style="padding:0" >
+                          
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>Rótulo en español</th>
+                                        <th>Rótulo en inglés </th>
+                                        <th></th>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                        <tr ng-repeat="it in indicadorCrearEditar.rotulos" >
+                                            <td ng-class="{'error' : (formCrear.$submitted || formCrear.nameR1@{{$index}}.$touched) && formCrear.nameR1@{{$index}}.$error.required}" >
+                                                <input type="text" class="form-control" id="nameR1@{{$index}}" name="nameR1@{{$index}}" ng-model="it.nombre" placeholder="Nombres en español" required >
+                                            </td>
+                                            <td ng-class="{'error' : (formCrear.$submitted || formCrear.nameR2@{{$index}}.$touched) && formCrear.nameR2@{{$index}}.$error.required}" >
+                                                <input type="text" class="form-control" id="nameR2@{{$index}}" name="nameR2@{{$index}}" ng-model="it.name" placeholder="Nombres en inglés" required >
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-xs btn-danger" ng-click="eliminarRotulo(it.id,$index)" >X</button>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr ng-if="indicadorCrearEditar.rotulos.length==0" >
+                                            <td colspan="3" >
+                                                <div class="alert alert-warning " style="margin-bottom:0" >No se encontraron rotulos</div>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                                
+                                <div class="alert-danger" ng-show="formCrear.$submitted && indicadorCrearEditar.rotulos.length==0" >
+                                    Debe seleccionar por lo menos uno rotulo.
+                                </div>
+                          
+                          </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" ng-click="guardarIndicador()" >Guardar</button>
+                </div>
+                
+              </div>
             </div>
             
+            
+            
+            
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success" ng-click="guardarIndicador()" >Guardar</button>
-          </div>
+         
       </form>
       
     </div>
@@ -419,6 +463,13 @@
 @section('javascript')
     <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
     <script src="{{asset('/js/estadisticasSecundarias/servicios.js')}}"></script>
-     <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
+    <script src="{{asset('/js/plugins/angular-filter.js')}}"></script>
     <script src="{{asset('/js/estadisticasSecundarias/app.js')}}"></script>
+    <script type="text/javascript">
+        
+        $('#siguiente').on('click', function (e) {
+          $('#myTabs a[href="#menu1"]').tab('show')
+        });
+        
+    </script>
 @endsection

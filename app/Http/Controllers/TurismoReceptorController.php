@@ -70,7 +70,17 @@ class TurismoReceptorController extends Controller
 	{
 	    $this->middleware('auth');
 	    $this->middleware('receptor',['only' =>  ['getSeccionestancia','getSecciontransporte','getSecciongrupoviaje','getSecciongastos','getSeccionpercepcionviaje','getSeccionfuentesinformacion'] ]);
-	    $this->middleware('role:Admin');
+	    //$this->middleware('role:Admin');
+	    $this->middleware('permissions:list-encuestaReceptor|create-encuestaReceptor|read-encuestaReceptor|edit-encuestaReceptor|delete-encuestaReceptor',['only' => ['getEncuestas','getListadoencuestas'] ]);
+        
+        $this->middleware('permissions:create-encuestaReceptor|edit-encuestaReceptor|read-encuestaReceptor',['only' => ['getInformaciondatoscrear','getSeccionestancia',
+        'getCargardatosseccionestancia','getSecciontransporte','getCargardatostransporte','getSecciongrupoviaje','getCargardatosseccionviaje',
+        'getSecciongastos','getInfogasto','getSeccionpercepcionviaje','getCargardatospercepcion','getSeccionfuentesinformacion','getCargardatosseccioninformacion'] ]);
+        
+        $this->middleware('permissions:create-encuestaReceptor|edit-encuestaReceptor',['only' => ['postCrearestancia','postGuardarsecciontransporte','postGuardarseccionviajegrupo',
+        'postGuardargastos','postGuardarseccionpercepcion','postGuardarseccioninformacion'] ]);
+        $this->middleware('permissions:create-encuestaReceptor',['only' => ['getDatosencuestados','postGuardardatos'] ]);
+        $this->middleware('permissions:edit-encuestaReceptor',['only' => ['getEditardatos','getCargareditardatos','postGuardareditardatos'] ]);
 	    $this->user = Auth::user();
         
 	}

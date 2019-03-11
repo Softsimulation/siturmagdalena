@@ -395,12 +395,12 @@
             <ng-map id="mapa" zoom="9" center="[10.4113014,-74.4056612]" styles="@{{styloMapa}}" map-type-control="true" map-type-control-options="{position:'BOTTOM_CENTER'}"  > 
               
                 <marker ng-repeat="pro in proveedores" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
-                    icon="@{{ getIcono(pro) }}" on-click="showInfoMapa(event,pro,$index)"  >     
+                    icon="@{{ getIcono(pro) }}"  >     
                 </marker>
         
         
                <shape index="fig-@{{$index}}" ng-repeat="item in dataPerido.zonas" fill-color="@{{item.color}}"
-                    name="polygon" paths="@{{item.coordenadas}}" on-click="showInfoNumeroPS(event, item, proveedores)" >
+                    name="polygon" paths="@{{item.coordenadas}}">
                     
                      <custom-marker position="@{{item.coordenadas[0][0]}},@{{item.coordenadas[0][1]}}" >
                         
@@ -436,51 +436,6 @@
     
     
     <br>
-    
-    <!--
-    <div class="row"  >                
-        
-        <div class="col-md-12">
-            
-            <ng-map id="mapa" zoom="9" center="[10.4113014,-74.4056612]" styles="@{{styloMapa}}" map-type-control="false" street-view-control="false" > 
-              
-                <marker ng-repeat="pro in proveedores" position="@{{pro.latitud}},@{{pro.longitud}}"  id="@{{pro.id}}"
-                    icon="@{{ getIcono(pro.estados_proveedor_id) }}" on-click="showInfoMapa(event,pro)">
-                </marker>
-                
-                <info-window id="infoProveedor" >
-                        <div style="text-align:center" >
-                            <h4 class="positive" style="text-align:center" >@{{proveedor.idiomas[0].nombre}} </h4>
-                        </div>
-                </info-window>
-              
-                <shape index="fig-@{{$index}}" ng-repeat="item in dataPerido.zonas" fill-color="@{{item.color}}"
-                    name="polygon" paths="@{{item.coordenadas}}" on-click="showInfoNumeroPS(event, item, proveedores)" >
-                    
-                     <custom-marker position="@{{item.coordenadas[0][0]}},@{{item.coordenadas[0][1]}}" >
-                        
-                        <div>
-                            <div class="dropdown">
-                              <button class="btn btn-xs btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                 @{{item.nombre}} <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li><a href ng-click="openModalZona(item)" ><span class="glyphicon glyphicon-pencil"></span> Ver/Editar</a></li>
-                                <li><a href ng-click="eliminarZona(item.nombre,$index)" ><span class="glyphicon glyphicon-trash"></span>  Eliminar</a></li>
-                              </ul>
-                            </div>
-                        </div>
-                           
-                     </custom-marker>
-                </shape>
-              
-            </ng-map>
-            
-        </div>
-      
-    </div>
-    
-    -->
 
   <!-- Modal para gregar zona -->
 <div id="modalAddZona" class="modal fade" role="dialog">

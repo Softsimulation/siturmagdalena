@@ -30,14 +30,7 @@
 <!-- lined-icons -->
 <link rel="stylesheet" href="{{asset('css/dashboard/icon-font.min.css')}}" type='text/css' />
 <!-- //lined-icons -->
-<script src="{{asset('js/administrador/dashboard/jquery-1.10.2.min.js')}}"></script>
-<script src="{{asset('js/administrador/dashboard/amcharts.js')}}"></script>	
-<script src="{{asset('js/administrador/dashboard/serial.js')}}"></script>	
-<script src="{{asset('js/administrador/dashboard/light.js')}}"></script>	
-<script src="{{asset('js/administrador/dashboard/radar.js')}}"></script>	
-<link href="{{asset('css/dashboard/barChart.css')}}" rel='stylesheet' type='text/css' />
-<link href="{{asset('css/dashboard/fabochart.css')}}" rel='stylesheet' type='text/css' />
-<!--clock init-->
+
 
 
 
@@ -199,7 +192,7 @@
         <div>
             <div class="loader"></div>
             <h1>{{ trans('resources.LabelPreloader') }}</h1>
-            <h4>Resource.LabelPorFavorEspere</h4>
+            <h4>Por Favor Espere</h4>
             <img src="{{asset('Content/image/logo.min.png')}}" width="200" />
         </div>
     </div>
@@ -301,12 +294,6 @@
     <script src="{{asset('/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('/js/dir-pagination.js')}}"></script>
     
-    <script src="{{asset('/js/administrador/administrador.js')}}"></script>
-    <script src="{{asset('/js/administrador/grupo_viaje.js')}}"></script>
-    <script src="{{asset('/js/administrador/grupoViajeServices.js')}}"></script>
-    <script src="{{asset('/js/administrador/temporadas.js')}}"></script>
-  
-    <script src="{{asset('/js/importacionRnt/importarRnt.js')}}"></script>
     <script src="{{asset('/js/importacionRnt/proveedorService.js')}}"></script>
     
     <script>
