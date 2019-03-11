@@ -989,7 +989,7 @@
         <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
         <h4 class="modal-title">Proveedor</h4>
       </div>
-      <form name="formP" >
+      <form name="formP">
       
           <div class="modal-body">
             
