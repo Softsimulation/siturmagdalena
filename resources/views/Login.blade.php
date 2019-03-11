@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Inicio de Sesión de SITUR MAGDALENA</title>
+<title>Inicio de Sesión de SITUR Atlántico</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Augment Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -50,14 +50,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 																		<input type="password" name="password" placeholder="Contraseña">
 																		<div class="submit"><input type="submit" value="Iniciar"/></div>
 																		<div class="clearfix"></div>
-																		
+																		<div><a href="/postulado/crear">Registro de usuario</a></div>
 																		<div class="new">																
 																			<div class="clearfix"></div>
 																		</div>
 																	</form>
-																	<div>
-																		<a href="/postulado/crear">Registrar usuario</a>
-																	</div>
 														</div>
 
 														
@@ -73,7 +70,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												<div class="error-btn">
 															
 															</div>
-										   <p>Situr Magdalena 2018 | Design by <a href="#" target="_blank">SOFTSIMULATION S.A.S</a></p>
+										   <p>Situr Atlántico 2018 | Design by <a href="#" target="_blank">SOFTSIMULATION S.A.S</a></p>
 										</div>
 									<!--footer section end-->
 									<!--/404-->
