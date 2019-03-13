@@ -48,7 +48,7 @@
         padding-top:20px !important;
     }
     .icono{
-        height: 22px;
+        height: 20px;
         margin-right: 5px;
     }
     .btn-outline-primary{
@@ -175,6 +175,9 @@
         </div>
     </div>
     
+    <p ng-if="indicador.descripcion" >
+       Descripción: @{{indicador.descripcion}}
+    </p>
     
     <div class="panel panel-default" ng-show="data.length>0" >
             <div class="panel-heading">
