@@ -737,10 +737,10 @@ class MuestraMaestraCtrl extends Controller
         
         $proveedor = null;
         if($request->rnt){
-            $proveedor = Proveedores_rnt::find($request->id);
+            $proveedor = Muestra_proveedor::find($request->id);
         }
         else{
-            $proveedor = Proveedores_informale::find($request->id);
+            $proveedor = Muestra_proveedores_informale::find($request->id);
         } 
         $proveedor->latitud  = $request->latitud;
         $proveedor->longitud = $request->longitud;
