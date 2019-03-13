@@ -52,7 +52,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
 ?>
 @extends('layout._publicLayout')
 
-@section('Title', '¿Qué hacer?')
+@section('Title', $tituloPagina)
 
 @section('estilos')
     <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
@@ -259,6 +259,11 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     @if($proveedores != null && count($proveedores) > 0)
     <div id="listado" class="tiles">
     @for($i = 0; $i < count($proveedores); $i++)
+    @if(count($proveedores[$i]->proveedor) > 0)
+    @if(count($proveedores[$i]->proveedor[0]->multimediaProveedores) > 0)
+    {{$proveedores[$i]->proveedor[0]->multimediaProveedores}}
+    @endif
+    @endif
         <div class="tile">
             
             <div class="tile-img">
@@ -273,6 +278,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             </div>
             
             <div class="tile-body">
+                
                 <div class="tile-caption">
                     
                     <h3><a href="/proveedor/ver/{{$proveedores[$i]->id}}">{{$proveedores[$i]->razon_social}}</a></h3>

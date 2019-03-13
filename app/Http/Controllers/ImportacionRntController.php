@@ -28,10 +28,8 @@ class ImportacionRntController extends Controller
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
-        
-        
-        
     }
+    
     public function getIndex(){
         return view('proveedoresRnt.importarExcel');
     }
