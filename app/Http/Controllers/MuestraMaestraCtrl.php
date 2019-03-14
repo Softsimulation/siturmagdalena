@@ -606,7 +606,6 @@ class MuestraMaestraCtrl extends Controller
                         
                         $muestra->user_update = $this->user->username;
                         $muestra->save();
-                        return $muestra;
                     }
                 }
                 
