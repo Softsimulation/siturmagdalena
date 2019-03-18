@@ -54,7 +54,6 @@ class ProveedoresController extends Controller
             $queryCategoria->with(['categoriaProveedoresConIdiomas' => function ($queryCategoriaProveedoresConIdiomas) use ($idioma){
                 $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idioma);
             }])->select('id');
-<<<<<<< HEAD
         }])->select('id', 'razon_social', 'categoria_proveedores_id')->where('estado', true)->get();
 
         //$proveedores = $proveedores->sortByDesc('proveedor')->values();
@@ -71,9 +70,6 @@ class ProveedoresController extends Controller
         }*/ 'proveedor')->values()->take(8);
 
         //dd($proveedores);
-=======
-        }])->select('id', 'razon_social', 'categoria_proveedores_id')->paginate(9);
->>>>>>> eeeff3bd7d3679a87f0318b56e9ef9bc51fcb1c0
         //return ['query' => $proveedores];
 
         return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $request->tipo]);
