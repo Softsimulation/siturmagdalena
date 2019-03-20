@@ -53,7 +53,7 @@ class QueHacerController extends Controller
             $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idIdioma);
         }])->select('id')->where('estado', true)->get();
         
-        $query = DB::select('SELECT * FROM public.listado_promocion(?, null, null) LIMIT 9', array($idIdioma));
+        $query = DB::select('SELECT * FROM public.listado_promocion(?, null, null) WHERE tipo = 3', array($idIdioma));
         
         //return $destinos;
         return view('quehacer.Index', 

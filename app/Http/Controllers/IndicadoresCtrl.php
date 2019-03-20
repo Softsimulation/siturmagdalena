@@ -156,25 +156,25 @@ class IndicadoresCtrl extends Controller
         switch($id){
             
             ////////////////////////////RECEPTOR/////////////////////////////
-            case 1: $periodos = DB::select("SELECT *from tiempo_motivos(?)", array($cultura) );
+            case 1: $periodos = DB::select("SELECT *from tiempo_motivos(?) order by id DESC", array($cultura) );
                     $data = $this->MotivoPrincipalViajeReceptor($periodos[0],$cultura); break;
                 
-            case 2: $periodos = DB::select("SELECT *from tiempo_tipo_alojamiento_receptor(?)", array($cultura) );
+            case 2: $periodos = DB::select("SELECT *from tiempo_tipo_alojamiento_receptor(?) order by id DESC", array($cultura) );
                     $data = $this->TipoAlojamientoUtilizadoReceptor($periodos[0],$cultura); break;
             
-            case 3: $periodos = DB::select("SELECT *from tiempo_tipo_alojamiento_receptor(?)", array($cultura) );
+            case 3: $periodos = DB::select("SELECT *from tiempo_tipo_alojamiento_receptor(?) order by id DESC", array($cultura) );
                     $data = $this->MedioTransporteReceptor($periodos[0],$cultura);  break;
                 
-            case 4: $periodos = DB::select("SELECT *from tiempo_gasto_medio_receptor(?)", array($cultura) );
+            case 4: $periodos = DB::select("SELECT *from tiempo_gasto_medio_receptor(?) order by id DESC", array($cultura) );
                     $data = $this->GastoMedioReceptor($periodos[0],$cultura);  break;
                 
-            case 5: $periodos = DB::select("SELECT id, year from tiempo_gasto_medio_rubro_receptor(?)", array($cultura) );
+            case 5: $periodos = DB::select("SELECT id, year from tiempo_gasto_medio_rubro_receptor(?) order by id DESC", array($cultura) );
                     $data = $this->GastoMedioBienesServiciosReceptor( $periodos[0] ,$cultura);  break;
                 
-            case 6: $periodos = DB::select("SELECT id, year from tiempo_duracion_media_receptor(?)", array($cultura) );
+            case 6: $periodos = DB::select("SELECT id, year from tiempo_duracion_media_receptor(?) order by id DESC", array($cultura) );
                     $data = $this->DuracionMediaEstanciaReceptor($periodos[0],$cultura); break;
                 
-            case 7: $periodos = DB::select("SELECT id, year from tiempo_tamanio_grupo_viaje(?)", array($cultura) );
+            case 7: $periodos = DB::select("SELECT id, year from tiempo_tamanio_grupo_viaje(?) order by id DESC", array($cultura) );
                     $data = $this->TamanoMedioGrupoViajeReceptor($periodos[0],$cultura);  break;
                 
             ////////////////////////////////INTERNO/////////////////////////////////////////
