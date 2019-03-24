@@ -867,10 +867,10 @@ function cambiar(id, idElement){
         // var h2 = '<h2>' + municipio.municipio + '</h2>'
         // document.getElementById('infoMunicipio').innerHTML = h2
         document.getElementById('infoMunicipio-nombre').innerHTML = municipio.municipio;
-        document.getElementById('infoMunicipio-PST').innerHTML = municipio.PST;
-        document.getElementById('infoMunicipio-habitaciones').innerHTML = municipio.habitaciones;
-        document.getElementById('infoMunicipio-camas').innerHTML = municipio.camas;
-        document.getElementById('infoMunicipio-empleos').innerHTML = municipio.empleos;
+        document.getElementById('infoMunicipio-PST').innerHTML = new Intl.NumberFormat().format(municipio.PST);
+        document.getElementById('infoMunicipio-habitaciones').innerHTML = new Intl.NumberFormat().format(municipio.habitaciones);
+        document.getElementById('infoMunicipio-camas').innerHTML = new Intl.NumberFormat().format(municipio.camas);
+        document.getElementById('infoMunicipio-empleos').innerHTML = new Intl.NumberFormat().format(municipio.empleos);
         var anios = Array.from(document.getElementsByClassName('infoMunicipio-anio')); 
         console.log(anios);
         anios.map(function(item, index) {

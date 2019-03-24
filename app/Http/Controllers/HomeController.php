@@ -27,12 +27,19 @@ use App\Models\Actividad;
 use App\Models\Proveedor;
 use App\Models\Publicacion;
 use App\Models\DatosMapa;
+
+
 use App;
 
 class HomeController extends Controller
 {
 
-
+    public function __construct()
+    {
+        
+        $this->user = \Auth::user();
+        
+    }
     /**
      * 
      * Los tipos de entidad son:
@@ -83,6 +90,7 @@ class HomeController extends Controller
 	}
 	
 	public function getIndex(Request $request) {
+	    
 	    
 	    $noticias = Noticia::
         join('noticias_has_idiomas', 'noticias_has_idiomas.noticias_id', '=', 'noticias.id')
