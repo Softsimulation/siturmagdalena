@@ -1135,15 +1135,13 @@
             
                 $scope.detalle = [];
                 var zona = null;
-                var tiposProveedoresAux =  angular.copy($scope.tiposProveedoresInfo);
-                var estadosProveedoresAux =  angular.copy($scope.estados);
-                for(var j=0; j<estadosProveedoresAux.length; j++){ estadosProveedoresAux[j].cantidad = 0;  }
-                
                 
                 for(var i=0; i<$scope.sharpesAndPopus.length; i++){
                     
-                    var tiposProveedores =  tiposProveedoresAux;
-                    var estadosProveedores =  estadosProveedoresAux;
+                    var tiposProveedores =  angular.copy($scope.tiposProveedoresInfo);
+                    var estadosProveedores =  angular.copy($scope.estados);
+                    for(var j=0; j<estadosProveedores.length; j++){ estadosProveedores[j].cantidad = 0;  }
+                    
                     zona = angular.copy($scope.sharpesAndPopus[i].sharpe.dataZona);
                     
                     for(var k=0; k<$scope.markersProveedores.length; k++){

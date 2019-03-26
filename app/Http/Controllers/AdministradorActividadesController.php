@@ -46,7 +46,8 @@ class AdministradorActividadesController extends Controller
     }
     
     public function getCrear(){
-        return view('administradoractividades.Crear');
+        $previous = url()->previous();
+        return view('administradoractividades.Crear', ['previous' => $previous]);
     }
     
     public function getIdioma($id, $idIdioma){

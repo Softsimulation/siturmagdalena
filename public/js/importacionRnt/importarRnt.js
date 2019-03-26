@@ -70,6 +70,12 @@ angular.module('importarRntApp', ["checklist-model","proveedorService",'angularU
    
    $scope.abrirModalEditar = function(registro){
         $scope.registro = angular.copy(registro);
+        if($scope.registro.latitud == undefined || $scope.registro.latitud == ''){
+           $scope.registro.latitud = parseFloat($scope.registro.latitud2); 
+        }
+        if($scope.registro.longitud == undefined || $scope.registro.longitud == ''){
+           $scope.registro.longitud = parseFloat($scope.registro.longitud2); 
+        }
         $scope.indexEditar = $scope.antiguos.indexOf(registro);
         $scope.editarForm.$setPristine();
         $scope.editarForm.$setUntouched();

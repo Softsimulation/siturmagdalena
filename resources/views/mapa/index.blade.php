@@ -133,7 +133,7 @@
                                 position="@{{prov.latitud}},@{{prov.longitud}}"
                                 icon="@{{prov.icono}}"
                                 id="@{{prov.id}}"
-                                on-click="showInfo(event, prov.id, prov.razon_social,prov.proveedor[0].multimedia_proveedores[0].ruta, prov.latitud, prov.longitud, '/Proveedor/ver/' + prov.id, prov.direccion)"
+                                on-click="showInfo(event, prov.id, prov.razon_social,prov.proveedor[0].multimedia_proveedores[0].ruta, prov.latitud, prov.longitud, '/proveedor/ver/' + prov.id, prov.direccion)"
                                 title="Proveedor: @{{prov.razon_social}}"></marker>
                                 
                     </ng-map>
