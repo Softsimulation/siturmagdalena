@@ -12,4 +12,8 @@ class AspNetUser extends Model
     
     protected $primaryKey = 'id';
     
+    public function lugaresFavoritos()
+    {
+        return $this->hasMany('App\Model\Lugar_Favorito', 'usuario_id');
+    }
 }

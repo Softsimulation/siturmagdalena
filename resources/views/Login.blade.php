@@ -2,12 +2,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<<<<<<< HEAD
-<title>Inicio de Sesión de SITUR Atlántico</title>
-=======
 <title>Inicio de Sesión de SITUR MAGDALENA</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
->>>>>>> 30c786f838aca73eb16c11be3f02106ec265aea6
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Sistema de Información Turística del Magdalena y de Santa Marta D.T.C.H">
 <meta name="keywords" content="SITUR Magdalena, Visita Magdalena, Visit Magdalena, Turismo en el Magdalena, estadisticas Magdalena, Magdalena" />

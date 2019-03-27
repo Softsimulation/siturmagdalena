@@ -241,7 +241,16 @@
             
             <div class="row" style="text-align: center;">
                 <div class="col-xs-12">
+<<<<<<< HEAD
+                       <a class="btn btn-primary" href="/registrar/autenticacion/facebook">
+                            Facebook
+                        </a>
+                        <a class="btn btn-primary" href="/registrar/autenticacion/google">
+                            Google
+                        </a>
+=======
                     <button type="submit" class="btn btn-success" ng-click="guardarUsuario()" >Guardar</button>    
+>>>>>>> 24f1e1ca8b8fdbc4d9adc1bb2361f26cadd63c04
                 </div>
             </div>
         </form>
