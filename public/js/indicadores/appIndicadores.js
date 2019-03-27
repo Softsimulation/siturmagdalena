@@ -273,9 +273,10 @@
         }
         
         $scope.changePeriodo = function(){
+            $scope.mesSelect = $scope.yearSelect;
             $scope.filtro.year = $scope.yearSelect.year;
             $scope.filtro.id =   $scope.yearSelect.id;
-            $scope.mesSelect = $scope.yearSelect;
+            $scope.filtro.mes = $scope.mesSelect.mes;
             $scope.filtrarDatos();
         }
         

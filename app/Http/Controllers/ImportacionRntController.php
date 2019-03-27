@@ -137,7 +137,7 @@ class ImportacionRntController extends Controller
 	        	]);
 	        	
 	        	if($registro["nombre_comercial_plataforma"] != null){
-	        		$proveedorIdioma = $proveedorCrear->proveedor_rnt_idioma->where('idioma_id',1)->first();
+	        		$proveedorIdioma = $proveedorCrear->idiomas->where('idioma_id',1)->first();
 					if($proveedorIdioma){
 						$proveedorIdioma->nombre = $request->nombre_comercial_plataforma;
 						$proveedorIdioma->save();
@@ -257,7 +257,7 @@ class ImportacionRntController extends Controller
 		$proveedor->save();
 		
 		if(isset($request->nombre_comercial_plataforma)){
-			$proveedorIdioma = $proveedor->proveedor_rnt_idioma->where('idioma_id',1)->first();
+			$proveedorIdioma = $proveedor->idiomas->where('idioma_id',1)->first();
 			if($proveedorIdioma){
 				$proveedorIdioma->nombre = $request->nombre_comercial_plataforma;
 				$proveedorIdioma->save();

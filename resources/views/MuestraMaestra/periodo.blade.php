@@ -989,7 +989,7 @@
         <button type="button" class="close" data-dismiss="modal" ng-click="cancelarAgregarZona()">&times;</button>
         <h4 class="modal-title">Proveedor</h4>
       </div>
-      <form name="formP" >
+      <form name="formP">
       
           <div class="modal-body">
             
@@ -1102,14 +1102,8 @@
 
 @section('javascript')
     <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/testapp/scripts/markerclusterer.js"></script>
-    <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
-    <script src="{{asset('/js/plugins/select.min.js')}}"></script>
-    <script src="{{asset('/js/plugins/checklist-model.js')}}"></script>
-    <script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
-    <script src="/js/plugins/tokml.js"></script>
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyC55uUNZFEafP0702kEyGLlSmGE29R9s5k&libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="/js/plugins/ng-map.js"></script>
-    <script src="/js/plugins/geoxml3.js"></script>
     <script src="{{asset('/js/muestraMaestra/servicios.js')}}"></script>
     <script src="{{asset('/js/muestraMaestra/app.js')}}"></script>
 @endsection

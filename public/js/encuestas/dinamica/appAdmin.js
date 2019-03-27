@@ -594,7 +594,9 @@
         
         $scope.OpenModalCambiarEstado = function(encuesta){
            
-            $scope.CambiarEstado = angular.copy(encuesta);;
+            $scope.CambiarEstado = angular.copy(encuesta);
+            $scope.CambiarEstado.estados_encuestas_id = $scope.CambiarEstado.estados_encuestas_id+"";
+            $scope.CambiarEstado.estadoVaidar = $scope.CambiarEstado.estados_encuestas_id; 
             $scope.errores = null;
             $scope.formEncuestaE.$setPristine();
             $scope.formEncuestaE.$setUntouched();
@@ -728,7 +730,7 @@
         
         $scope.openModalCopiar = function(item){
             
-            if(item.tipos_encuestas_dinamica_id==1){
+            if(item.tipos_encuestas_dinamica_id==1 || item.estados_encuestas_id==4){
                 $scope.link = $scope.host +  "/llenarEncuestaAdHoc/" +item.id;
             }
             else if(item.tipos_encuestas_dinamica_id==2){
