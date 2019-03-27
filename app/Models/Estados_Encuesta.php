@@ -23,6 +23,7 @@ class Estados_Encuesta extends Model
      * @var string
      */
     protected $table = 'estados_encuesta';
+    
 
     /**
      * @var array

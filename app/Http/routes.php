@@ -9,6 +9,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::controller('/InformacionDepartamento','InformacionDepartamentoCtrl');
 
+Route::controller('/registrar','RegistrarController');
 
 Route::get('/Mapa/getData', 'MapaCtrl@getData');
 //Route::controller('/Mapa', 'MapaCtrl');

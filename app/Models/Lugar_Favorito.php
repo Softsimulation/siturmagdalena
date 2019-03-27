@@ -30,4 +30,5 @@ class Lugar_Favorito extends Model
     {
         return $this->belongsTo('App\AspNetUser', 'usuario_id', '"Id"');
     }
+    
 }

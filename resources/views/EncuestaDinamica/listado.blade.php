@@ -71,9 +71,14 @@
                         
                         <ul class="dropdown-menu" >
                             
-                            <li ng-if=" (encuesta.tipos_encuestas_dinamica_id==1 || encuesta.tipos_encuestas_dinamica_id==2) && encuesta.estados_encuestas_id>1 ">
+                            <li ng-if="(encuesta.tipos_encuestas_dinamica_id==1 || encuesta.tipos_encuestas_dinamica_id==2) && encuesta.estados_encuestas_id>1 ">
                                 <a href="javascript:void(0)" ng-click="openModalCopiar(encuesta)" >
                                     Copiar enlace
+                                </a>
+                            </li>
+                            <li ng-if="encuesta.estados_encuestas_id==4">
+                                <a href="javascript:void(0)" ng-click="openModalCopiar(encuesta)" >
+                                    Copiar enlace de prueba
                                 </a>
                             </li>
                             @if(Auth::user()->contienePermiso('estado-encuestaADHOC'))
@@ -180,7 +185,6 @@
         </div>
     </div>
     
-    
     <!-- Modal agregar encuesta-->
     <div class="modal fade" id="modalAgregarEncuesta" tabindex="-1" >
         <div class="modal-dialog" role="document">
@@ -220,9 +224,8 @@
                         
                     </div>
                     <div class="modal-footer center" >
-                        
-                        <button type="submit" ng-click="guardarEncuesta()" class="btn btn-success">Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" ng-click="guardarEncuesta()" class="btn btn-success">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -268,16 +271,14 @@
                         
                     </div>
                     <div class="modal-footer center" >
-                        
-                        <button type="submit" ng-click="guardarIdiomaEncuesta()" class="btn btn-success">Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" ng-click="guardarIdiomaEncuesta()" class="btn btn-success">Guardar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    
     <!-- Modal cambiar estado encuesta-->
     <div class="modal fade" id="modalEstadosEncuesta" tabindex="-1" >
         <div class="modal-dialog" role="document">
@@ -298,8 +299,9 @@
                             <div class="col-md-12">
                                 <div class="form-group" ng-class="{'has-error' : (formEncuestaE.$submitted || formEncuestaE.idioma.$touched) && formEncuestaE.idioma.$error.required}">
                                     <label class="control-label" for="idioma"><span class="asterisk">*</span> Estado de encuesta</label>
-                                    <select class="form-control" id="idioma" name="idioma" ng-model="CambiarEstado.estados_encuestas_id" ng-options="item.id as item.nombre for item in estados" required>
+                                    <select class="form-control" id="idioma" name="idioma" ng-model="CambiarEstado.estados_encuestas_id" required>
                                         <option value="" disabled selected >Selecciones un estado</option>
+                                        <option ng-repeat="item in estados" value="@{{item.id}}" ng-if="!(CambiarEstado.estadoVaidar!=1 && item.id==4)" >@{{item.nombre}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -309,16 +311,13 @@
                         
                     </div>
                     <div class="modal-footer center" >
-                        
-                        <button type="submit" ng-click="guardarEstadoEncuesta()" class="btn btn-success">Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" ng-click="guardarEstadoEncuesta()" class="btn btn-success">Guardar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    
-    
     
     <!-- Modal copiar link -->
     <div class="modal fade" id="modalCopyLink" tabindex="-1" >

@@ -120,7 +120,7 @@ class Proveedor extends Model
      */
     public function multimediaProveedores()
     {
-        return $this->hasMany('App\Models\Multimedia_Proveedor', 'proveedor_id');
+        return $this->hasMany('App\Models\Multimedia_Proveedor', 'proveedor_id')->orderBy('ruta');
     }
     
     /**
