@@ -34,18 +34,6 @@
             font-size: 1.5em;
             font-weight: bold;
         }
-        /* Cuando el body tiene la clase 'loading' ocultamos la barra de navegacion */
-        body.charging {
-            z-index: 1000;
-            display: block;
-            overflow: hidden;
-        }
-
-        /* Siempre que el body tenga la clase 'loading' mostramos el modal del loading */
-        body.charging .carga {
-            z-index: 1000;
-            display: block;
-        }
     </style>
 @endsection
 
@@ -55,9 +43,6 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="/usuario/guardar" role="button" class="btn btn-lg btn-success">
-      Crear usuario
-    </a> 
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
          
 </div>
@@ -70,7 +55,7 @@
 <div class="alert alert-warning" ng-if="(indicadores | filter:search).length == 0 && indicadores.length > 0">
     <p>No existen registros que coincidan con su búsqueda</p>
 </div>
-<div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.nombre.length > 0 || search.nombreEstado.length > 0 || search.email.length > 0)">
+<div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.nombre.length > 0 || search.estadoIndicador.length > 0 || search.categoria.length > 0)">
     Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
 </div>   
 <p class="text-muted text-center">Seleccione indicadores para ver más opciones</p>
@@ -80,32 +65,27 @@
                     <table class="table table-hover table-responsive Table">
                         <thead>
                             <tr>
-                                <th></th>
-                                <!--<th>#</th>-->
                                 <th>Nombre</th>
+                                <th>Categoría</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                             <tr ng-show="mostrarFiltro == true">
                                     
-                                <td></td>
                                 <td><input type="text" ng-model="search.nombre" name="nombre" id="nombre" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                                <td><input type="text" ng-model="search.email" name="email" id="email" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                                <td><input type="text" ng-model="search.nombresRoles" name="nombresRoles" id="nombresRoles" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
-                                <td><input type="text" ng-model="search.nombreEstado" name="nombreEstado" id="nombreEstado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                                <td><input type="text" ng-model="search.categoria" name="categoria" id="categoria" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                <td><input type="text" ng-model="search.estadoIndicador" name="estadoIndicador" id="estadoIndicador" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                                 <td></td>
                             </tr>
                         </thead>
                         <tbody ng-init="currentPageUsuarios = 1">
                             <tr dir-paginate="indicador in indicadores|filter:search|itemsPerPage: 10" current-page="currentPageUsuarios" ng-click="verDetalleUsuario($event, usuario)">
-                                <td>@{{indicador.idiomas[0].nombre}}</td>
-                                <td>@{{indicador.estado}}</td>
+                                <td>@{{indicador.nombre}}</td>
+                                <td>@{{indicador.categoria}}</td>
+                                <td>@{{indicador.estadoIndicador}}</td>
                                 <td>
-                                    <a href="/usuario/editar/@{{usuario.id}}" type="button" title="Editar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    <button ng-if="usuario.estado == true" ng-click="cambiarEstado(usuario)" role="button" title="Desactivar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ban-circle"></span></button>
-                                    <button ng-if="usuario.estado != true" ng-click="cambiarEstado(usuario)" role="button" title="Activar usuario" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok-circle"></span></button>
-                                    <a href="/usuario/asignarpermisos/@{{usuario.id}}" type="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></a>
-                                    <!--<button ng-click="asignarPermisosModal(usuario)" role="button" title="Asignar permisos" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-lock"></span></button>-->
+                                    <a href="" ng-repeat="idioma in indicador.tieneIdiomas" class="btn btn-default" ng-click="editarIndicadorModal(indicador,idioma.id)" >@{{idioma.culture}} </a>
+                                    <button type="button" ng-click="modalIdioma(indicador)" class="btn btn-default" ng-if="idiomas.length != indicador.tieneIdiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
                                 </td>
                             </tr>
 
@@ -115,6 +95,162 @@
                         <dir-pagination-controls></dir-pagination-controls>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalEditarIndicador" role="dialog">
+            <div class="modal-dialog">
+                <form role="form" name="editarIndicadorForm"  novalidate>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Editar indicador</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" ng-if="errores != null">
+                            <h6>Errores</h6>
+                            <span class="messages" ng-repeat="error in errores">
+                                  <span>*@{{error[0]}}</span><br/>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="nombreIndicador"><span class="asterisk">*</span>Nombre</label>
+                                <input type="text" class="form-control" name="nombreIndicador" id="nombreIndicador" ng-model="editarIndicador.nombre" required/>
+                                <span class="messages" ng-show="editarIndicadorForm.$submitted || editarIndicadorForm.nombreIndicador.$touched">
+                                    <span ng-show="editarIndicadorForm.nombreIndicador.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label for="ejeX"><span class="asterisk">*</span>Eje x</label>
+                                <input type="text" class="form-control" name="ejeX" id="ejeX" ng-model="editarIndicador.eje_x" required/>
+                                <span class="messages" ng-show="editarIndicadorForm.$submitted || editarIndicadorForm.ejeX.$touched">
+                                    <span ng-show="editarIndicadorForm.ejeX.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label for="ejeY"><span class="asterisk">*</span>Eje y</label>
+                                <input type="text" class="form-control" name="ejeY" id="ejeY" ng-model="editarIndicador.eje_y" required/>
+                                <span class="messages" ng-show="editarIndicadorForm.$submitted || editarIndicadorForm.ejeY.$touched">
+                                    <span ng-show="editarIndicadorForm.ejeY.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="descripcionIndicador"><span class="asterisk">*</span>Descripción</label>
+                                <textarea class="form-control" name="descripcionIndicador" id="descripcionIndicador" ng-model="editarIndicador.descripcion" row="3" required></textarea>
+                                <span class="messages" ng-show="editarIndicadorForm.$submitted || editarIndicadorForm.descripcionIndicador.$touched">
+                                    <span ng-show="editarIndicadorForm.descripcionIndicador.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="editarIndicador.idioma_id == 1">
+                            <div class="col-xs-12">
+                                <label for="formato"><span class="asterisk">*</span>Formato</label>
+                                <input type="text" class="form-control" name="formato" id="formato" ng-model="editarIndicador.formato" ng-required="editarIndicador.idioma_id == 1"/>
+                                <span class="messages" ng-show="editarIndicadorForm.$submitted || editarIndicadorForm.formato.$touched">
+                                    <span ng-show="editarIndicadorForm.formato.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="editarIndicador.idioma_id == 1">
+                            <div class="col-sm-12">
+                                <div class="form-tiposGraficas" ng-class="{'has-error': (editarIndicadorForm.$submitted || editarIndicadorForm.tiposGraficas.$touched) && editarIndicadorForm.tiposGraficas.$error.required}">
+                                    <label for="tiposGraficas"><span class="asterisk">*</span> Tipos gráficas <span class="text-error text-msg">(Seleccione al menos un tipo de gráfica)</span></label>
+                                    <ui-select name="tiposGraficas" id="tiposGraficas" multiple ng-required="editarIndicador.idioma_id == 1" ng-model="editarIndicador.idsGraficas" theme="bootstrap" close-on-select="false" >
+                                        <ui-select-match placeholder="Seleccione uno o varios tipos de gráficas.">
+                                            <span ng-bind="$item.nombre"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="tipo.id as tipo in (tiposGraficas| filter: $select.search)">
+                                            <span ng-bind="tipo.nombre" title="@{{tipo.nombre}}"></span>
+                                        </ui-select-choices>
+                                    </ui-select>    
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" ng-click="guardarIndicador()">Guardar</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="modalIdiomaIndicador" role="dialog">
+            <div class="modal-dialog">
+                <form role="form" name="idiomaIndicadorForm"  novalidate>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Agregar idioma</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" ng-if="errores != null">
+                            <h6>Errores</h6>
+                            <span class="messages" ng-repeat="error in errores">
+                                  <span>*@{{error[0]}}</span><br/>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group" ng-class="{'has-error': (idiomaIndicadorForm.$submitted || idiomaIndicadorForm.idiomaIdIndicador.$touched) && idiomaIndicadorForm.idiomaIdIndicador.$error.required }">
+                                    <label class="control-label" for="idiomaIdIndicador"><span class="asterisk">*</span> Nuevo idioma</label>
+                                    <select ng-options="item.id as item.nombre for item in idiomaIndicador.noIdiomas" ng-model="idiomaIndicador.idioma_id" class="form-control" id="idiomaIdIndicador" name="idiomaIdIndicador" required>
+                                        <option value="" selected disabled>Seleccione un idioma</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="nombreIndicadorIdioma"><span class="asterisk">*</span>Nombre</label>
+                                <input type="text" class="form-control" name="nombreIndicador" id="nombreIndicadorIdioma" ng-model="idiomaIndicador.nombre" required/>
+                                <span class="messages" ng-show="idiomaIndicadorForm.$submitted || idiomaIndicadorForm.nombreIndicador.$touched">
+                                    <span ng-show="idiomaIndicadorForm.nombreIndicador.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label for="ejeXIdioma"><span class="asterisk">*</span>Eje x</label>
+                                <input type="text" class="form-control" name="ejeX" id="ejeXIdioma" ng-model="idiomaIndicador.eje_x" required/>
+                                <span class="messages" ng-show="idiomaIndicadorForm.$submitted || idiomaIndicadorForm.ejeX.$touched">
+                                    <span ng-show="idiomaIndicadorForm.ejeX.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label for="ejeYIdioma"><span class="asterisk">*</span>Eje y</label>
+                                <input type="text" class="form-control" name="ejeY" id="ejeYIdioma" ng-model="idiomaIndicador.eje_y" required/>
+                                <span class="messages" ng-show="idiomaIndicadorForm.$submitted || idiomaIndicadorForm.ejeY.$touched">
+                                    <span ng-show="idiomaIndicadorForm.ejeY.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="descripcionIndicadorIdioma"><span class="asterisk">*</span>Descripción</label>
+                                <textarea class="form-control" id="descripcionIndicadorIdioma" name="descripcionIndicador" ng-model="idiomaIndicador.descripcion" row="3" required></textarea>
+                                <span class="messages" ng-show="idiomaIndicadorForm.$submitted || idiomaIndicadorForm.descripcionIndicador.$touched">
+                                    <span ng-show="idiomaIndicadorForm.descripcionIndicador.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" ng-click="guardarIndicadorIdioma()">Guardar</button>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
     <div class='carga'>
