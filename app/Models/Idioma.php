@@ -401,4 +401,8 @@ class Idioma extends Model
     {
         return $this->belongsToMany('App\Models\Slider', 'sliders_idiomas', 'slider_id', 'idioma_id');
     }
+    public function indicadoresMedicion()
+    {
+        return $this->belongsToMany('App\Models\Indicadores_medicion', 'indicadores_mediciones_idioma', 'indicadores_medicion_id', 'idioma_id');
+    }
 }

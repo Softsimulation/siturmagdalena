@@ -168,7 +168,7 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Chumper\Zipper\ZipperServiceProvider::class,
-        
+          Laravel\Socialite\SocialiteServiceProvider::class,
         //Auth token
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider'
 
@@ -227,7 +227,8 @@ return [
         'CsvWriter' => Wilgucki\Csv\Facades\Writer::class,
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
-        'Zipper' => Chumper\Zipper\Zipper::class
+        'Zipper' => Chumper\Zipper\Zipper::class,
+          'Socialite'=> Laravel\Socialite\Facades\Socialite::class
     ],
 
 ];
