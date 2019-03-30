@@ -39,6 +39,8 @@ Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
+Route::controller('/infografias', 'InfografiasController');
+
 Route::controller('/importarRnt','ImportacionRntController');
 
 Route::controller('/administradorproveedores', 'AdministradorProveedoresController');
