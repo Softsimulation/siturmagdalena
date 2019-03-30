@@ -51,6 +51,12 @@ class InfografiasController extends Controller
         $datos['duracionpromedio']=\DB::select("SELECT *from duracionpromedioviaje(?,?)", array($request->anio,$request->mes));
         $datos['destinoprincipalviaje']=\DB::select("SELECT *from destinoprincipal(?,?) limit 4", array($request->anio,$request->mes));
         $datos['tamaniogrupo']=\DB::select("SELECT *from tamaniogrupo(?,?) limit 1", array($request->anio,$request->mes));
+        $datos['promediotiporubro']=\DB::select("SELECT *from promediotiporubro(?,?) limit 4", array($request->anio,$request->mes));
+        $datos['motivoviaje']=\DB::select("SELECT *from motivoviaje(?,?) limit 2", array($request->anio,$request->mes));
+        $datos['motivopersonalviaje']=\DB::select("SELECT *from motivoviajepersonal(?,?) limit 2", array($request->anio,$request->mes));
+        $datos['motivoviajeprofesional']=\DB::select("SELECT *from motivoviajeprofesional(?,?) limit 2", array($request->anio,$request->mes));
+        
+       
     
         return ["success"=>true,'datos'=>$datos];
     }
