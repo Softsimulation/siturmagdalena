@@ -369,7 +369,7 @@ class OfertaEmpleoController extends Controller
               $ruta2 = "/ofertaempleo/oferta";
               }else{
                   
-                    if($tipo->proveedor->categoria->id == 15){
+                    if($tipo->proveedor->categoria->id == 15 || $tipo->proveedor->categoria->id == 13){
                          $ruta = "/ofertaempleo/agenciaviajes";
                          $ruta2 = "/ofertaempleo/ofertaagenciaviajes";
                     }
@@ -484,7 +484,7 @@ class OfertaEmpleoController extends Controller
               $ruta = "/ofertaempleo/caracterizacion";
               }else{
                   
-                    if($tipo->proveedor->categoria->id == 15){
+                    if($tipo->proveedor->categoria->id == 15 || $tipo->proveedor->categoria->id == 13){
                          $ruta = "/ofertaempleo/agenciaviajes";
                     }
                     
@@ -763,7 +763,7 @@ class OfertaEmpleoController extends Controller
               $ruta = "/ofertaempleo/caracterizacion";
               }else{
                   
-                    if($tipo->proveedor->categoria->id == 15){
+                    if($tipo->proveedor->categoria->id == 15 || $tipo->proveedor->categoria->id == 13 ){
                          $ruta = "/ofertaempleo/agenciaviajes";
                     }
                      if($tipo->proveedor->categoria->id == 14){
