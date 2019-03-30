@@ -371,7 +371,6 @@
     <input type="hidden" id="periodo" value="{{$periodo->id}}" />
     
     
- 
     <div id="alertProveedores" class="alert alert-info" ng-show="proveedoresFuera.length>0" >
       <a href="#" class="close" ng-click="proveedoresFuera=[]" >&times;</a>
       <strong>Atención, prestadores fuera de un bloque!</strong> 
@@ -380,7 +379,7 @@
           <summary>Clic para ver prestadores</summary>
           <ul style="max-height: 300px; overflow: auto;">
               <li ng-repeat="it in proveedoresFuera track by $index">
-                 <a ng-click="centrarMapaAlProveedor(it)" href > @{{it.nombre}}</a>
+                 <a ng-click="centrarMapaAlProveedor(it)" href > @{{it.nombre_rnt}}</a>
               </li>
           </ul>
         </details>
