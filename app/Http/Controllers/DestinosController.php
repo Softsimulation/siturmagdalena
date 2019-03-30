@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use DB;
 use App\Models\Destino;
 use App\Models\Municipio;
 use App\Models\Proveedores_rnt;
@@ -39,6 +40,11 @@ class DestinosController extends Controller
         
         //return ['detinos' => $pst];
         
+        $proveedores = Proveedores_rnt::select(DB::raw('proveedores_rnt.id AS id, proveedores_rnt.razon_social AS razon_social, proveedores_rnt.latitud AS latitud, proveedores_rnt.longitud AS longitud'))
+        ->join('municipios', 'municipios.id', '=', 'proveedores_rnt.municipio_id')
+        ->where('municipios.nombre', $destino->destinoConIdiomas[0]->nombre)->get();
+        
+        
         $video_promocional = Destino::where('id', $id)->with(['multimediaDestinos' => function($queryMultimediaDestinos){
             $queryMultimediaDestinos->where('tipo', true);
         }])->first()->multimediaDestinos;
@@ -50,6 +56,6 @@ class DestinosController extends Controller
         }
         
         //return ['destino' => $destino, 'video_promocional' => $video_promocional];
-        return view('destinos.Ver', ['destino' => $destino, 'video_promocional' => $video_promocional, 'pst' => $pst]);
+        return view('destinos.Ver', ['destino' => $destino, 'video_promocional' => $video_promocional, 'pst' => $pst, 'proveedores' => $proveedores]);
     }
 }

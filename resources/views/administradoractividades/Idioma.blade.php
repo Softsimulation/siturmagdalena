@@ -98,7 +98,7 @@
                 <div class="col-sm-12 text-center">
                     <hr/>
                     <button type="submit" ng-click="guardarDatosGenerales()" class="btn btn-lg btn-success">Guardar</button>
-                    <a href="{{asset('/administradoractividades')}}" class="btn btn-lg btn-default">Cancelar</a>
+                    <a href="{{ session()->get('previousURL') }}" class="btn btn-lg btn-default">Volver</a>
                 </div>
             </div>
         </form>
