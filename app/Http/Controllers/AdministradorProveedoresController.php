@@ -50,19 +50,25 @@ class AdministradorProveedoresController extends Controller
     }
     
     public function getIndex (){
+        \Session::forget('destinoCurrentPage');
+        \Session::forget('rutaCurrentPage');
+        \Session::forget('actividadCurrentPage');
+        \Session::forget('atraccionCurrentPage');
+        \Session::forget('eventoCurrentPage');
         return view('administradorproveedores.Index');
     }
     
-    public function getEditar($id){
+    public function getEditar($id, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Proveedor::find($id) == null){
             return response('Not found.', 404);
         }
+        \Session::set('proveedorCurrentPage', $currentPage);
         return view('administradorproveedores.Editar', ['id' => $id]);
     }
     
-    public function getIdioma($id, $idIdioma){
+    public function getIdioma($id, $idIdioma, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Proveedor::find($id) == null){
@@ -73,6 +79,7 @@ class AdministradorProveedoresController extends Controller
         }elseif(Idioma::find($idIdioma) == null){
             return response('Not found.', 404);
         }
+        \Session::set('proveedorCurrentPage', $currentPage);
         return view('administradorproveedores.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
     }
     

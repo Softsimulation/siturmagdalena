@@ -35,6 +35,11 @@
 
 @section('content')
 <div class="flex-list">
+    @if( Session::has('eventoCurrentPage') )
+        <input type="hidden"  ng-init="currentPageEventos={{Session::get('eventoCurrentPage')}}" />
+    @else
+        <input type="hidden"  ng-init="currentPageEventos=1" />
+    @endif
     @if(Auth::user()->contienePermiso('create-evento'))
         <a href="/administradoreventos/crear" role="button" class="btn btn-lg btn-success">
           Agregar eventos
@@ -57,7 +62,7 @@
 </div>
 
 <div class="tiles">
-    <div class="tile inline-tile" dir-paginate="evento in eventos | filter:prop.search | itemsPerPage:10" pagination-id="pagination_eventos">
+    <div class="tile inline-tile" dir-paginate="evento in eventos | filter:prop.search | itemsPerPage:10" pagination-id="pagination_eventos" current-page="currentPageEventos">
         <div class="tile-img">
             <img ng-src="@{{evento.multimedia_eventos.length > 0 ?  evento.multimedia_eventos[0].ruta : 'img/app/noimage.jpg'}}" alt="@{{evento.eventos_con_idiomas[0].nombre}}"/>
         </div>
@@ -68,7 +73,7 @@
             <p>@{{evento.eventos_con_idiomas[0].descripcion | limitTo:255}}<span ng-if="evento.eventos_con_idiomas[0].descripcion.length > 255">...</span></p>
             <div class="inline-buttons">
                 @if(Auth::user()->contienePermiso('edit-evento'))
-                    <a href="/administradoreventos/editar/@{{evento.id}}" class="btn btn-warning">Editar</a>
+                    <a href="/administradoreventos/editar/@{{evento.id}}/@{{currentPageEventos}}" class="btn btn-warning">Editar</a>
                 @endif
                 @if(Auth::user()->contienePermiso('estado-evento'))
                     <button class="btn btn-@{{evento.estado ? 'danger' : 'success'}}" ng-click="desactivarActivar(evento)">@{{evento.estado ? 'Desactivar' : 'Activar'}}</button>
@@ -77,7 +82,7 @@
                     <button title="@{{evento.sugerido ? 'No sugerir' : 'Sugerir'}}" class="btn btn-info" ng-click="sugerir(evento)"><span class="glyphicon glyphicon-@{{evento.sugerido ? 'star' : 'star-empty'}}"></span></button>
                 @endif
                 @if(Auth::user()->contienePermiso('edit-evento'))
-                    <a href="/administradoreventos/idioma/@{{evento.id}}/@{{traduccion.idioma.id}}" class="btn btn-default" ng-repeat="traduccion in evento.eventos_con_idiomas"> @{{traduccion.idioma.culture}}</a>
+                    <a href="/administradoreventos/idioma/@{{evento.id}}/@{{traduccion.idioma.id}}/@{{currentPageEventos}}" class="btn btn-default" ng-repeat="traduccion in evento.eventos_con_idiomas"> @{{traduccion.idioma.culture}}</a>
                     <button type="button" ng-click="modalIdioma(evento)" class="btn btn-default" ng-if="evento.eventos_con_idiomas.length < idiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
                 @endif
             </div>  
