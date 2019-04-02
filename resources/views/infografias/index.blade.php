@@ -2739,7 +2739,7 @@ QUE ES TURISMO RECEPTOR<tspan
 <script src="{{asset('/js/public/svgtopng.js')}}" async defer></script>
 
 <script src="https://d3js.org/d3.v3.min.js" async></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js" sync defer></script>
+<!--<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js" sync defer></script>-->
 
 
 @endsection 

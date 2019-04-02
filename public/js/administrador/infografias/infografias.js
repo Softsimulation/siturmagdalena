@@ -41,12 +41,7 @@ var pp=angular.module('admin.infografias', ['infografiasservice'])
                     
                    $scope.datoinfografia=data.datos;
                    
-                   console.log($scope.getItemByName('sexo','Femenino'));
-                   
-                   //console.log($scope.getBase64Img("http://situr-magdalena-pitrineca.c9users.io/infografia/origen_internacional/9.png"));
-                   //d3.selectAll(".wrap").call($scope.wrap, 60);
                    $timeout(function(){
-                       //d3.selectAll(".wrap").call($scope.wrap, 60);
                        
                        d3.selectAll(".wrap").call($scope.wrap, 70);
                        var images = document.querySelectorAll('image');
@@ -106,17 +101,8 @@ var pp=angular.module('admin.infografias', ['infografiasservice'])
     }
     
     $scope.download = function(){
-        saveSvgAsPng(document.getElementById("svgInfografia"), "diagram.png", {scale: 2});
-//         html2canvas(document.getElementById("svgInfografia"), {
-// 				onrendered: function(canvas) {
-// 					var dataURL = canvas.toDataURL();
-//         	    	console.log(dataURL);
-// 				},
-// 			});
-        // html2canvas(document.getElementById("svgInfografia")).then(function(canvas) {
-        //     //document.body.appendChild(canvas)
-        //     console.log(canvas);
-        // });
+        saveSvgAsPng(document.getElementById("svgInfografia"), "infografia " + $scope.getPeriodo() + ".png", {scale: 2});
+
     }
     
     $scope.wrap = function(text, width) {
