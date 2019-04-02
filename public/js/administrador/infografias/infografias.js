@@ -47,6 +47,7 @@ var pp=angular.module('admin.infografias', ['infografiasservice'])
                    //d3.selectAll(".wrap").call($scope.wrap, 60);
                    $timeout(function(){
                        //d3.selectAll(".wrap").call($scope.wrap, 60);
+                       
                        d3.selectAll(".wrap").call($scope.wrap, 70);
                        var images = document.querySelectorAll('image');
                        var countImg = 0;
@@ -99,14 +100,19 @@ var pp=angular.module('admin.infografias', ['infografiasservice'])
         return (percentage * 70.8661)/100;
     }
     
+    $scope.getPeriodo = function(){
+        var month = Object.assign([],$scope.meses).filter(function(item){return item.id == $scope.infografia.mes}).shift(), year = $scope.infografia.anio;
+        return month.nombre + " " + year;
+    }
+    
     $scope.download = function(){
-        
-        html2canvas(document.getElementById("svgInfografia"), {
-				onrendered: function(canvas) {
-					var dataURL = canvas.toDataURL();
-        	    	console.log(dataURL);
-				},
-			});
+        saveSvgAsPng(document.getElementById("svgInfografia"), "diagram.png", {scale: 2});
+//         html2canvas(document.getElementById("svgInfografia"), {
+// 				onrendered: function(canvas) {
+// 					var dataURL = canvas.toDataURL();
+//         	    	console.log(dataURL);
+// 				},
+// 			});
         // html2canvas(document.getElementById("svgInfografia")).then(function(canvas) {
         //     //document.body.appendChild(canvas)
         //     console.log(canvas);
