@@ -55,9 +55,6 @@ class InfografiasController extends Controller
         $datos['motivoviaje']=\DB::select("SELECT *from motivoviaje(?,?) limit 2", array($request->anio,$request->mes));
         $datos['motivopersonalviaje']=\DB::select("SELECT *from motivoviajepersonal(?,?) limit 2", array($request->anio,$request->mes));
         $datos['motivoviajeprofesional']=\DB::select("SELECT *from motivoviajeprofesional(?,?) limit 2", array($request->anio,$request->mes));
-        
-       
-    
         return ["success"=>true,'datos'=>$datos];
     }
 }
