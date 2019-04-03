@@ -1,6 +1,6 @@
 @extends('layout._AdminLayout')
 
-@section('Title','Administrador de Exportaciones :: SITUR Atlántico')
+@section('Title','Administrador de Exportaciones :: SITUR Magdalena')
 @section('app','ng-app="admin.exportaciones"')
 
 @section('controller','ng-controller="ExportacionCtrl"')

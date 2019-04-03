@@ -42,6 +42,11 @@ class AdministradorActividadesController extends Controller
         }
     }
     public function getIndex(){
+        \Session::forget('destinoCurrentPage');
+        \Session::forget('rutaCurrentPage');
+        \Session::forget('atraccionCurrentPage');
+        \Session::forget('proveedorCurrentPage');
+        \Session::forget('eventoCurrentPage');
         return view('administradoractividades.Index',['user'=>User::where('id',Auth::user()->id)->first()]);
     }
     
@@ -50,7 +55,7 @@ class AdministradorActividadesController extends Controller
         return view('administradoractividades.Crear', ['previous' => $previous]);
     }
     
-    public function getIdioma($id, $idIdioma){
+    public function getIdioma($id, $idIdioma,$currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Actividad::find($id) == null){
@@ -61,6 +66,7 @@ class AdministradorActividadesController extends Controller
         }elseif(Idioma::find($idIdioma) == null){
             return response('Not found.', 404);
         }
+        \Session::set('actividadCurrentPage', $currentPage);
         return view('administradoractividades.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
     }
     
@@ -90,12 +96,13 @@ class AdministradorActividadesController extends Controller
             'imagenes' => $imagenes];
     }
     
-    public function getEditar($id){
+    public function getEditar($id, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Actividad::find($id) == null){
             return response('Not found.', 404);
         }
+        \Session::set('actividadCurrentPage', $currentPage);
         return view('administradoractividades.Editar', ['id' => $id]);
     }
     
