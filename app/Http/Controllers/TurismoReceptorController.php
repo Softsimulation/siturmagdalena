@@ -868,7 +868,7 @@ class TurismoReceptorController extends Controller
             $q->whereHas('idioma', function($p){
                 $p->where('culture','es');
             });
-        }])->get();
+        }])->orderBy('codigo')->get();
         
         $personas = $visitante->tiposAcompañantesVisitantes()->pluck('id')->toArray();
         
