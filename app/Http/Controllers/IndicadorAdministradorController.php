@@ -147,7 +147,8 @@ class IndicadorAdministradorController extends Controller
     public function calcularReceptor($indicadorMedicion, $dTiempo,$fecha_inicio,$fecha_final,$indicador){
         
         $importar = DB::select("SELECT *from importar_receptor()");
-        
+        $importar = DB::select("SELECT *from importar_dimensiones_adicionales()");
+
 
         try{
             switch($indicadorMedicion){
@@ -173,6 +174,52 @@ class IndicadorAdministradorController extends Controller
                 case 7:
                     $importar = DB::select("SELECT *from etl_tamanio_grupo_viaje_receptor_1 (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
                     break;
+                case 34:
+                    $importar = DB::select("SELECT *from etl_residencia_visitante_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 46:
+                    $importar = DB::select("SELECT *from etl_municipios_promedio_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 37:
+                    $importar = DB::select("SELECT *from etl_distribucion_viaje_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 38:
+                    $importar = DB::select("SELECT *from etl_medios_reserva_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 39:
+                    $importar = DB::select("SELECT *from etl_opciones_nacimiento_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 43:
+                    $importar = DB::select("SELECT *from etl_actividades_realizadas_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 40:
+                    $importar = DB::select("SELECT *from etl_redes_sociales_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 41:
+                    $importar = DB::select("SELECT *from etl_fuente_antes_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 42:
+                    $importar = DB::select("SELECT *from etl_fuente_despues_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 44:
+                    $importar = DB::select("SELECT *from etl_promedio_percepcion (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 45:
+                    $importar = DB::select("SELECT *from etl_tipo_transporte_dentro_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 46:
+                    $importar = DB::select("SELECT *from etl_municipios_interno_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 49:
+                    $importar = DB::select("SELECT *from etl_financiadores_viajes_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 47:
+                    $importar = DB::select("SELECT *from etl_viajes_paquete_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+                case 48:
+                    $importar = DB::select("SELECT *from etl_costo_paquete_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
+                    break;
+
             }
             
             $indicador = Indicador::find($indicador);
