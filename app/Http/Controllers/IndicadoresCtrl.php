@@ -237,7 +237,26 @@ class IndicadoresCtrl extends Controller
                      
                      $data = $this->getDataReceptorPercepcion($object,$cultura);  break;
                      break; 
-            
+            case 45: 
+                     $periodos = DB::select("SELECT * from tiempo_transporte_interno_receptor(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataReceptor("transporte_interno_receptor",$periodos[0],$cultura);  break;
+                     break;
+            case 46: 
+                     $periodos = DB::select("SELECT * from tiempo_municipios_interno_receptor(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataReceptor("municipios_interno_receptor",$periodos[0],$cultura);  break;
+                     break;
+            case 47: 
+                     $periodos = DB::select("SELECT * from tiempo_porcentaje_paquete_receptor(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataReceptor("porcentaje_paquete_receptor",$periodos[0],$cultura);  break;
+                     break;
+            case 48: 
+                     $periodos = DB::select("SELECT id,year from tiempo_costo_paquete_receptor(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataReceptorCostoPromedioTuristico($periodos[0],$cultura);  break;
+                     break;
+            case 49: 
+                     $periodos = DB::select("SELECT * from tiempo_financiadore_viajes_receptor(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataReceptor("financiadore_viajes_receptor",$periodos[0],$cultura);  break;
+                     break;
             
                 
             ////////////////////////////////INTERNO/////////////////////////////////////////
@@ -411,7 +430,12 @@ class IndicadoresCtrl extends Controller
             case 42: $data = $this->getDataReceptor("fuente_antes_receptor",$request,$idioma);  break;
             case 43: $data = $this->getDataReceptor("actividades_realizadas_receptor",$request,$idioma);  break;
             case 44: $data = $this->getDataReceptorPercepcion($request,$idioma);  break;
-                
+            case 45: $data = $this->getDataReceptor("transporte_interno_receptor",$request,$idioma);  break;
+            case 46: $data = $this->getDataReceptor("municipios_interno_receptor",$request,$idioma);  break;
+            case 47: $data = $this->getDataReceptor("porcentaje_paquete_receptor",$request,$idioma);  break;
+            case 48: $data = $this->getDataReceptorCostoPromedioTuristico($request,$idioma);  break;
+            case 49: $data = $this->getDataReceptor("financiadore_viajes_receptor",$request,$idioma);  break;
+            
             ////////////////////////////////INTERNO/////////////////////////////////////////
             case 8:  $data = $this->getDataIndicadorInternoEmisor("motivo_viaje_interno_emisor", $request, $idioma, true); break;  
             case 9:  $data = $this->getDataIndicadorInternoEmisor("tipo_alojamiento_interno_emisor", $request, $idioma, true); break;
@@ -519,6 +543,24 @@ class IndicadoresCtrl extends Controller
                     break;
             case 43:
                     $metodo = 'actividades_realizadas_receptor_vista';
+                    break;
+            case 44:
+                    $metodo = 'percepcion_viaje_receptor_vista';
+                    break;
+            case 45:
+                    $metodo = 'transporte_interno_receptor_vista';
+                    break;
+            case 46:
+                    $metodo = 'municipio_interno_receptor_vista';
+                    break;
+            case 47:
+                    $metodo = 'porcentaje_paquete_receptor_vista';
+                    break;
+            case 48:
+                    $metodo = 'costo_paquete_receptor_vista';
+                    break;
+            case 49:
+                    $metodo = 'financiadores_viajes_receptor_vista';
                     break;
             
             ////////////////////INTERNO//////////////////////
@@ -698,6 +740,14 @@ class IndicadoresCtrl extends Controller
   
     private function getDataReceptorPercepcion($request,$idioma){
         $data = new Collection( DB::select("SELECT *from percepcion_viaje_receptor(?,?,?,?)", array($request->year ,$idioma, $request->mes, (!$request->aspecto || $request->aspecto=="" ? null :$request->aspecto) )) );
+        return [
+            "labels"=> $data->lists('tipo')->toArray(),
+            "data"=>   $this->redondearArray($data->lists('cantidad')->toArray())
+        ];
+    }
+    
+    private function getDataReceptorCostoPromedioTuristico($request,$idioma){
+        $data = new Collection( DB::select("SELECT *from costo_paquete_receptor(?,?)", array($request->year ,$idioma)) );
         return [
             "labels"=> $data->lists('tipo')->toArray(),
             "data"=>   $this->redondearArray($data->lists('cantidad')->toArray())
