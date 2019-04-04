@@ -148,7 +148,7 @@ class IndicadorAdministradorController extends Controller
         
         $importar = DB::select("SELECT *from importar_receptor()");
         $importar = DB::select("SELECT *from importar_dimensiones_adicionales()");
-
+        $indicador = Indicador::find($indicador);
 
         try{
             switch($indicadorMedicion){
@@ -222,7 +222,7 @@ class IndicadorAdministradorController extends Controller
 
             }
             
-            $indicador = Indicador::find($indicador);
+            
             $indicador->estado_indicador_id = 2;
             $indicador->fecha_finalizacion=date('Y-m-d H:i:s');
             $indicador->save();
