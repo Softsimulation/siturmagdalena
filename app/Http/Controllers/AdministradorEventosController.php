@@ -47,10 +47,15 @@ class AdministradorEventosController extends Controller
     }
     
     public function getIndex(){
+        \Session::forget('destinoCurrentPage');
+        \Session::forget('rutaCurrentPage');
+        \Session::forget('actividadCurrentPage');
+        \Session::forget('atraccionCurrentPage');
+        \Session::forget('proveedorCurrentPage');
         return view('administradoreventos.Index');
     }
     
-    public function getIdioma($id, $idIdioma){
+    public function getIdioma($id, $idIdioma, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Evento::find($id) == null){
@@ -61,15 +66,17 @@ class AdministradorEventosController extends Controller
         }elseif(Idioma::find($idIdioma) == null){
             return response('Not found.', 404);
         }
+        \Session::set('eventoCurrentPage', $currentPage);
         return view('administradoreventos.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
     }
     
-    public function getEditar($id){
+    public function getEditar($id, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Evento::find($id) == null){
             return response('Not found.', 404);
         }
+        \Session::set('eventoCurrentPage', $currentPage);
         return view('administradoreventos.Editar', ['id' => $id]);
     }
     

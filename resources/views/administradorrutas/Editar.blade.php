@@ -88,7 +88,7 @@
                             <div class="col-xs-12 text-center">
                                 <hr/>
                                 <button type="submit"  class="btn btn-lg btn-success" ng-click="guardarAdicional()">Guardar</button>
-                                 <a href="{{asset('/administradorrutas')}}" class="btn btn-lg btn-default">Cancelar</a>
+                                 <a href="/administradorrutas" class="btn btn-lg btn-default">Cancelar</a>
                             </div>
                         </div>
                     </fieldset>

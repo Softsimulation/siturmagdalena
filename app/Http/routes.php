@@ -40,6 +40,8 @@ Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
 
+Route::controller('/infografias', 'InfografiasController');
+
 Route::controller('/importarRnt','ImportacionRntController');
 
 Route::controller('/administradorproveedores', 'AdministradorProveedoresController');
@@ -90,6 +92,7 @@ Route::controller('/periodoSostenibilidadPst','PeriodoSostenibilidadPstControlle
 Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarController');
 
 Route::controller('/DashBoard','DashBoardController');
+Route::controller('/indicadoresMedicion','IndicadoresMedicionController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     

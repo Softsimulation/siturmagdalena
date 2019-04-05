@@ -230,7 +230,8 @@ class MuestraMaestraCtrl extends Controller
             $zona->encargados()->attach( $z["encargados"] );
         }
         
-        DB::select("SELECT *from crear_info_muestra_proveedores(?)", array($periodo->id) );
+        DB::select("SELECT *from crear_info_muestra_proveedores(?)",  array($periodo->id) );
+        DB::select("SELECT *from creacion_proveedores_informales(?)", array($periodo->id) );
         
         return [ "success"=>true , "id"=>$periodo->id ];
         
@@ -677,7 +678,7 @@ class MuestraMaestraCtrl extends Controller
     
     
     //////////////////////////////////////////
-    
+    public function getPrueba(){ dd(Muestra_proveedor::where("id","<",100)->get()); }
     
     public function postGuardarproveedorinformal(Request $request){
         
@@ -693,32 +694,52 @@ class MuestraMaestraCtrl extends Controller
     	if($validator->fails()){
     		return ["success"=>false,"errores"=>$validator->errors()];
 		}
-        
-        $proveedor = Muestra_proveedores_informale::find($request->id);
-        if(!$proveedor){
-            $proveedor =  new Muestra_proveedores_informale();
-            $proveedor->periodos_medicion_id = $request->idPeriodo;
-            $proveedor->estado_proveedor_informal = 7;
-            $proveedor->latitud = $request->latitud;
-            $proveedor->longitud = $request->longitud;
-            $proveedor->user_create = $this->user->username;
-            $proveedor->estado = true;
+		
+		$proveedor_informal = Proveedores_informale::find($request->id);
+        if(!$proveedor_informal){
+            $proveedor_informal =  new Proveedores_informale();
+            $proveedor_informal->estados_proveedor_id = 7;
+            $proveedor_informal->latitud = $request->latitud;
+            $proveedor_informal->longitud = $request->longitud;
+            $proveedor_informal->user_create = $this->user->username;
+            $proveedor_informal->estado = true;
             
-            $proveedor->codigo = Muestra_proveedores_informale::where( "municipio_id", $request->municipio_id )->max("codigo") + 1;
-            
+            $proveedor_informal->codigo = Proveedores_informale::where( "municipio_id", $request->municipio_rnt_id )->max("codigo") + 1;
         }
         
-        $proveedor->nombre_proveedor_informal = $request->nombre_rnt;
-        $proveedor->direccion_informal = $request->direccion_rnt;
-        $proveedor->categoria_proveedor_informal = $request->subcategoria_rnt_id;
-        $proveedor->municipio_id = $request->municipio_rnt_id;
-        $proveedor->user_update = $this->user->username;
-        $proveedor->save();
+        $proveedor_informal->razon_social = $request->nombre_rnt;
+        $proveedor_informal->direccion = $request->direccion_rnt;
+        $proveedor_informal->categoria_proveedor_id = $request->subcategoria_rnt_id;
+        $proveedor_informal->municipio_id = $request->municipio_rnt_id;
+        $proveedor_informal->user_update = $this->user->username;
+        $proveedor_informal->save();
+        		
+        
+        $proveedor_muestra = Muestra_proveedores_informale::find($request->id);
+        if(!$proveedor_muestra){
+            $proveedor_muestra =  new Muestra_proveedores_informale();
+            $proveedor_muestra->proveedores_informal_id = $proveedor_informal->id;
+            $proveedor_muestra->periodos_medicion_id = $request->idPeriodo;
+            $proveedor_muestra->estado_proveedor_informal = 7;
+            $proveedor_muestra->latitud = $request->latitud;
+            $proveedor_muestra->longitud = $request->longitud;
+            $proveedor_muestra->user_create = $this->user->username;
+            $proveedor_muestra->estado = true;
+            
+            $proveedor_muestra->codigo = Muestra_proveedores_informale::where( "municipio_id", $request->municipio_rnt_id )->max("codigo") + 1;
+        }
+        
+        $proveedor_muestra->nombre_proveedor_informal = $request->nombre_rnt;
+        $proveedor_muestra->direccion_informal = $request->direccion_rnt;
+        $proveedor_muestra->categoria_proveedor_informal = $request->subcategoria_rnt_id;
+        $proveedor_muestra->municipio_id = $request->municipio_rnt_id;
+        $proveedor_muestra->user_update = $this->user->username;
+        $proveedor_muestra->save();
         
         
-        $proveedores = new Collection(DB::select("SELECT *from informacion_proveedores_muestra_maestra(?)", array($proveedor->periodos_medicion_id) ));
+        $proveedores = new Collection(DB::select("SELECT *from informacion_proveedores_muestra_maestra(?)", array($proveedor_muestra->periodos_medicion_id) ));
        
-        return [ "success"=>true,"proveedor"=> $proveedores->where("id",$proveedor->id)->where("rnt",null)->first() ];
+        return json_encode([ "success"=>true,"proveedor"=> $proveedores->where("id",$proveedor_muestra->id)->where("rnt",null)->first() ]);
     }
     
     public function postEditarubicacionproveedor(Request $request){
@@ -735,15 +756,26 @@ class MuestraMaestraCtrl extends Controller
 		}
         
         $proveedor = null;
+        $proveedor_muestra = null;
+        
         if($request->rnt){
-            $proveedor = Muestra_proveedor::find($request->id);
+            $proveedor_muestra = Muestra_proveedor::find($request->id);
+            if($proveedor_muestra){ $proveedor = Proveedores_rnt::find($proveedor_muestra->proveedor_rnt_id); }
         }
         else{
-            $proveedor = Muestra_proveedores_informale::find($request->id);
-        } 
-        $proveedor->latitud  = $request->latitud;
-        $proveedor->longitud = $request->longitud;
-        $proveedor->save();
+            $proveedor_muestra = Muestra_proveedores_informale::find($request->id);
+            if($proveedor_muestra){ $proveedor = Proveedores_informale::find($proveedor_muestra->proveedores_informal_id); }
+        }
+        
+        if($proveedor && $proveedor_muestra){
+            $proveedor->latitud  = $request->latitud;
+            $proveedor->longitud = $request->longitud;
+            $proveedor->save();
+            
+            $proveedor_muestra->latitud  = $request->latitud;
+            $proveedor_muestra->longitud = $request->longitud;
+            $proveedor_muestra->save();
+        }
         
         return [ "success"=>true ];
     }

@@ -44,6 +44,11 @@ class AdministradorAtraccionController extends Controller
         }
     }
     public function getIndex(){
+        \Session::forget('destinoCurrentPage');
+        \Session::forget('rutaCurrentPage');
+        \Session::forget('actividadCurrentPage');
+        \Session::forget('proveedorCurrentPage');
+        \Session::forget('eventoCurrentPage');
         return view('administradoratracciones.Index');
     }
     
@@ -51,7 +56,7 @@ class AdministradorAtraccionController extends Controller
         return view('administradoratracciones.Crear');
     }
     
-    public function getIdioma($id, $idIdioma){
+    public function getIdioma($id, $idIdioma,$currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Atracciones::find($id) == null){
@@ -62,6 +67,7 @@ class AdministradorAtraccionController extends Controller
         }elseif(Idioma::find($idIdioma) == null){
             return response('Not found.', 404);
         }
+        \Session::set('atraccionCurrentPage', $currentPage);
         return view('administradoratracciones.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
     }
     
@@ -103,12 +109,13 @@ class AdministradorAtraccionController extends Controller
             'video_promocional' => $video];
     }
     
-    public function getEditar($id){
+    public function getEditar($id,$currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Atracciones::find($id) == null){
             return response('Not found.', 404);
         }
+        \Session::set('atraccionCurrentPage', $currentPage);
         return view('administradoratracciones.Editar', ['id' => $id]);
     }
     
