@@ -11,6 +11,7 @@ var pp=angular.module('admin.indicadores', ['serviceIndicadores','angularUtils.d
             $scope.indicadores = data.indicadores;
             $scope.tiposMedicion = data.tiposMedicion;
             $scope.indicadoresMedicion = data.indicadoresMedicion;
+            $scope.temporadas = data.temporadas;
         })
         .catch(function(){
             $("body").attr("class", "cbp-spmenu-push");
@@ -19,6 +20,7 @@ var pp=angular.module('admin.indicadores', ['serviceIndicadores','angularUtils.d
 
     $scope.abrirModal = function(){
         $scope.indicador={};
+        $scope.errores = null;
         $scope.indicadorForm.$setPristine();
         $scope.indicadorForm.$setUntouched();
         $('#calcularIndicadores').modal();
