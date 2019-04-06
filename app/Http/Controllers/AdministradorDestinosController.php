@@ -41,6 +41,11 @@ class AdministradorDestinosController extends Controller
         }
     }
     public function getIndex (){
+        \Session::forget('rutaCurrentPage');
+        \Session::forget('actividadCurrentPage');
+        \Session::forget('atraccionCurrentPage');
+        \Session::forget('proveedorCurrentPage');
+        \Session::forget('eventoCurrentPage');
         return view('administradordestinos.Index');
     }
     
@@ -48,7 +53,7 @@ class AdministradorDestinosController extends Controller
         return view('administradordestinos.Crear');
     }
     
-    public function getIdioma($id, $idIdioma){
+    public function getIdioma($id, $idIdioma, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Destino::find($id) == null){
@@ -59,6 +64,7 @@ class AdministradorDestinosController extends Controller
         }elseif(Idioma::find($idIdioma) == null){
             return response('Not found.', 404);
         }
+        \Session::set('destinoCurrentPage', $currentPage);
         return view('administradordestinos.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
     }
     
@@ -67,12 +73,13 @@ class AdministradorDestinosController extends Controller
         return $td;
     }
     
-    public function getEditar($id){
+    public function getEditar($id, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Destino::find($id) == null){
             return response('Not found.', 404);
         }
+        \Session::set('destinoCurrentPage', $currentPage);
         return view('administradordestinos.Editar', ['id' => $id]);
     }
     

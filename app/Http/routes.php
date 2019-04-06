@@ -9,6 +9,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::controller('/InformacionDepartamento','InformacionDepartamentoCtrl');
 
+Route::controller('/registrar','RegistrarController');
 
 Route::get('/Mapa/getData', 'MapaCtrl@getData');
 //Route::controller('/Mapa', 'MapaCtrl');
@@ -38,6 +39,8 @@ Route::controller('/administrarmunicipios', 'AdministrarMunicipiosController');
 
 
 Route::controller('/sostenibilidadpst', 'SostenibilidadPstController');
+
+Route::controller('/infografias', 'InfografiasController');
 
 Route::controller('/importarRnt','ImportacionRntController');
 
@@ -89,6 +92,7 @@ Route::controller('/periodoSostenibilidadPst','PeriodoSostenibilidadPstControlle
 Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarController');
 
 Route::controller('/DashBoard','DashBoardController');
+Route::controller('/indicadoresMedicion','IndicadoresMedicionController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     

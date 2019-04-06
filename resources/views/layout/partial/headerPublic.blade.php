@@ -1,3 +1,7 @@
+<?php 
+use App\Models\Layout;
+$fav = Layout::favoritos();
+?>
 <div id="preloader" aria-hidden="true">
             <div>
                 <div class="loader"></div>
@@ -52,7 +56,7 @@
                     </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
                     
                     @if(Auth::check())
-                    <a href="/visitante/misfavoritos" class="btn btn-xs btn-link" title="Mis favoritos"><span class="ion-heart" aria-hidden="true"></span> <span class="sr-only">Mis favoritos</span></a>
+                    <a href="/visitante/misfavoritos" class="btn btn-xs btn-link" title="Mis favoritos"><span class="ion-heart" aria-hidden="true"></span> <span class="sr-only">Mis favoritos</span> @if(isset($fav) && $fav != null) {{$fav}} @endif</a>
                     @else
                     <a href="/login/login" class="btn btn-xs btn-link" title="{{trans('resources.header.iniciarSesion')}}"><span class="ion-heart" aria-hidden="true"></span> <span class="hidden-md">Mis favoritos</span></a>
                     @endif

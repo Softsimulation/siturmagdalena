@@ -7,7 +7,10 @@ use App\Models\Ruta;
 use App\Models\Ruta_Con_Idioma;
 use App\Models\Ruta_Con_Atraccion;
 use App\Models\Idioma;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
+=======
+>>>>>>> 3856115714b6764242457a9394d807aeda12e25b
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -33,8 +36,8 @@ class AdministradorRutasController extends Controller
         $this->middleware('permissions:edit-ruta',['only' => ['postEditaridioma','postEditardatosgenerales','postEditarproveedor'] ]);
         $this->middleware('permissions:estado-ruta',['only' => ['postDesactivarActivar'] ]);
         $this->middleware('permissions:sugerir-ruta',['only' => ['postSugerir'] ]);
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
+        if(\Auth::user() != null){
+            $this->user = User::where('id',\Auth::user()->id)->first(); 
         }
     }
     public function getCrear() {
@@ -42,10 +45,15 @@ class AdministradorRutasController extends Controller
     }
     
     public function getIndex(){
+        \Session::forget('destinoCurrentPage');
+        \Session::forget('actividadCurrentPage');
+        \Session::forget('atraccionCurrentPage');
+        \Session::forget('proveedorCurrentPage');
+        \Session::forget('eventoCurrentPage');
         return view('administradorrutas.Index');
     }
     
-    public function getIdioma($id, $idIdioma){
+    public function getIdioma($id, $idIdioma, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Ruta::find($id) == null){
@@ -56,15 +64,17 @@ class AdministradorRutasController extends Controller
         }elseif(Idioma::find($idIdioma) == null){
             return response('Not found.', 404);
         }
+        \Session::set('rutaCurrentPage', $currentPage);
         return view('administradorrutas.Idioma', ['id' => $id, 'idIdioma' => $idIdioma]);
     }
     
-    public function getEditar($id){
+    public function getEditar($id, $currentPage = 1){
         if ($id == null){
             return response('Bad request.', 400);
         }elseif(Ruta::find($id) == null){
             return response('Not found.', 404);
         }
+        \Session::set('rutaCurrentPage', $currentPage);
         return view('administradorrutas.Editar', ['id' => $id]);
     }
     
