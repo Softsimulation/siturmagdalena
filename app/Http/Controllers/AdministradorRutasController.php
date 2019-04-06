@@ -7,10 +7,7 @@ use App\Models\Ruta;
 use App\Models\Ruta_Con_Idioma;
 use App\Models\Ruta_Con_Atraccion;
 use App\Models\Idioma;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
-=======
->>>>>>> 3856115714b6764242457a9394d807aeda12e25b
 use App\Models\User;
 
 use Illuminate\Http\Request;
