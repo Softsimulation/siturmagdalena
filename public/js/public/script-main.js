@@ -48,8 +48,9 @@ $(document).ready(function(){
                     var target = $(this.hash);
                     target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
                     if (target.length) {
+                        var top = document.getElementById('menu-page') != null ? target.offset().top - document.getElementById('menu-page').offsetHeight - 16 : target.offset().top;
                         $('html, body').animate({
-                            scrollTop: target.offset().top
+                            scrollTop: top
                         }, 500);
                         return false;
                     }

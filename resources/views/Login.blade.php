@@ -56,7 +56,7 @@
 												<!--/login-top-->
 												
 													<div class="error-top">
-													
+									
 													    <div class="login">
 													    	<img src="{{asset('img/brand/default.png')}}" alt="Logo de SITUR Magdalena" style="margin-bottom: 1rem;">
 														<h3 class="inner-tittle t-inner">Inicio de Sesión</h3>
@@ -80,6 +80,7 @@
 																		<div class="submit"><input type="submit" value="Iniciar"/></div>
 																		<div class="clearfix"></div>
 																		<div><a href="/postulado/crear">Registro de usuario</a></div>
+																		<div><a href="/password/email">Recordar contraseña</a></div>
 																		<div class="new">																
 																			<div class="clearfix"></div>
 																		</div>
