@@ -15,6 +15,9 @@ use App\Models\Tipo_Atraccion;
 use App\Models\Tipo_Evento;
 use App\Models\Tipo_Proveedor;
 use App\Models\Categoria_Proveedor;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Route;
+use Illuminate\Input;
 
 class QueHacerController extends Controller
 {
@@ -53,11 +56,21 @@ class QueHacerController extends Controller
             $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idIdioma);
         }])->select('id')->where('estado', true)->get();
         
-        $query = DB::select('SELECT * FROM public.listado_promocion(?, null, null) WHERE tipo = 3', array($idIdioma));
         
-        //return $destinos;
+        $queryBasic = collect(DB::select(DB::raw('SELECT * FROM public.listado_promocion(?, null, null)'), array($idIdioma)));
+        $count = count($queryBasic);
+        if ($request->has('page')){
+            $query = array_slice( $queryBasic->toArray(), ($request->page-1)*9, 9);
+            $paginator = new LengthAwarePaginator($query, $count, 9, $request->page);
+        }else{
+            $query = $queryBasic->take(9);
+            $paginator = new LengthAwarePaginator($query, $count, 9);
+        }
+        $paginator->setPath(url()->current());
+        
+        //return [$paginator];
         return view('quehacer.Index', 
-        ['query' => $query, 
+        ['query' => $paginator, 
             'destinos' => $destinos, 
             'experiencias' => $experiencias,
             'categorias' => $categorias,

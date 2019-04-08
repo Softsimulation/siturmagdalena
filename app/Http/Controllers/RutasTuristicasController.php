@@ -26,7 +26,7 @@ class RutasTuristicasController extends Controller
                 }, 'multimediaSitios' => function($queryMultimediaSitios){
                     $queryMultimediaSitios->select('sitios_id', 'ruta')->orderBy('portada', 'desc')->where('tipo', false);
                 }])->select('id');
-            }])->select('atracciones.id', 'atracciones.sitios_id');
+            }])->select('atraccion_id', 'atracciones.sitios_id');
         }])->select('id', 'portada')->first();
         
         //return ['ruta' => $ruta];
