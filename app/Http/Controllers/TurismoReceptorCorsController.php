@@ -822,6 +822,12 @@ class TurismoReceptorCorsController extends Controller
         return $retorno;
     }
     
+    public function getEncuestasrango($fecha_inicial, $fecha_final){
+        $encuestas = \DB::select('select * from encuestas_turismo_receptor(?,?)',array($fecha_inicial,$fecha_final));
+        
+        return ["encuestas" => $encuestas];
+    }
+    
     public function postGuardarseccionviajegrupo(Request $request){
         $validator = \Validator::make($request->all(), [
 			'Id' => 'required|exists:visitantes,id',
