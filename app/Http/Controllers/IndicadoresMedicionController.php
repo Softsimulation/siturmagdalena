@@ -11,6 +11,9 @@ use App\Models\Indicadores_medicion;
 use App\Models\Tipos_grafica;
 use App\Models\Idioma;
 use App\Models\Indicadores_mediciones_idioma;
+use App\Models\Tipo_Medicion_Indicador;
+use Carbon\Carbon;
+
 
 
 class IndicadoresMedicionController extends Controller
@@ -33,6 +36,7 @@ class IndicadoresMedicionController extends Controller
     public function getIndicadoresmedicion(){
         //return "si";
         $tiposGraficas = Tipos_grafica::get();
+        $tiposMedicion = Tipo_Medicion_Indicador::where('estado',1)->get();
         //$idiomas = Idioma::where('estado',1)->get();
         
         $indicadores = Indicadores_medicion::
@@ -59,7 +63,7 @@ class IndicadoresMedicionController extends Controller
             $indicadores[$i]["noIdiomas"] = $idiomasConsultados;
             $indicadores[$i]["tieneIdiomas"] = $tieneIdiomas; 
         }                         
-        return ["indicadores"=>$indicadores,"tiposGraficas"=>$tiposGraficas,"idiomas"=>$idiomas];
+        return ["indicadores"=>$indicadores,"tiposGraficas"=>$tiposGraficas,"idiomas"=>$idiomas,"tiposMediciones"=>$tiposMedicion];
     }
     public function getInformacioneditar($id,$idioma_id){
         //return $idioma_id;
@@ -75,6 +79,7 @@ class IndicadoresMedicionController extends Controller
         $validator = \Validator::make($request->all(), [
             'descripcion' => 'required',
             'id' => 'required|exists:indicadores_mediciones,id',
+            'graficaPrincipal' => 'required|exists:tipos_graficas,id',
             'eje_x' => 'required',
             'eje_y' => 'required',
             'nombre' =>'required',
@@ -84,6 +89,8 @@ class IndicadoresMedicionController extends Controller
             'descripcion.required' => 'La descripción es requerida.',
             'nombre.required' => 'El nombre es requerido.',
             'idsGraficas.required' => 'Se debe seleccionar por lo menos un tipo de gráfica.',
+            'graficaPrincipal.required' => 'Se debe seleccionar una gráfica principal.',
+            'graficaPrincipal.exists' => 'El tipo de gráfica principal, no se encuentra registrada en el sistema.',
             'id.exists' => 'El indicador no se encuentra en la base de datos, favor recargar la página.',
             'idioma_id.required' => 'Es necesario seleccionar el idioma que desea editar.',
             'idioma_id.exists' => 'El idioma seleccionado no se encuentra en la base de datos, favor recargar la página.',
@@ -95,7 +102,10 @@ class IndicadoresMedicionController extends Controller
         if($validator->fails()){
             return ["success"=>false,"errores"=>$validator->errors()];
         }
-        $indicadorIdioma = Indicadores_mediciones_idioma::where('indicadores_medicion_id',$request->id)->where('idioma_id',2)->first();
+        if (in_array($request->graficaPrincipal, $request->idsGraficas)) {
+            return ["success"=>false,"errores"=>["Se debe seleccionar en el listado, la gráfica principal."]];
+        }
+        $indicadorIdioma = Indicadores_mediciones_idioma::where('indicadores_medicion_id',$request->id)->where('idioma_id',$request->idioma_id)->first();
         if($request->idioma_id == 1){
             if(sizeof($request->idsGraficas) == 0){
                 return ["success"=>false,"errores"=>["Se debe seleccionar por lo menos un tipo de gráfica."]];
@@ -126,11 +136,78 @@ class IndicadoresMedicionController extends Controller
             $indicador->save();
             $indicador->graficas()->detach();
             for($i=0;$i<sizeof($request->idsGraficas);$i++){
-                $indicador->graficas()->attach($request->idsGraficas[$i]);
+                if($request->idsGraficas == $request->graficaPrincipal){
+                    $indicador->graficas()->attach($request->idsGraficas[$i],["es_principal",1]);
+                }else{
+                    $indicador->graficas()->attach($request->idsGraficas[$i]);
+                }
             }
             
         }
         
+        
+        return ["success"=>true];
+    }
+    public function postCrearindicador(Request $request){
+        //return $request->all();
+        $validator = \Validator::make($request->all(), [
+            'descripcion' => 'required',
+            'idsGraficas' => 'required',
+            'graficaPrincipal' => 'required|exists:tipos_graficas,id',
+            'eje_x' => 'required',
+            'eje_y' => 'required',
+            'nombre' =>'required',
+            
+        ],[
+            'descripcion.required' => 'La descripción es requerida.',
+            'nombre.required' => 'El nombre es requerido.',
+            'idsGraficas.required' => 'Se debe seleccionar por lo menos un tipo de gráfica.',
+            'graficaPrincipal.required' => 'Se debe seleccionar una gráfica principal.',
+            'graficaPrincipal.exists' => 'El tipo de gráfica principal, no se encuentra registrada en el sistema.',
+            'eje_x.required' => 'El valor para el eje x es requerido.',
+            'eje_y.required' => 'El valor para el eje y es requerido.',
+            ]
+        );
+        
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        if (in_array($request->graficaPrincipal, $request->idsGraficas)) {
+            return ["success"=>false,"errores"=>["Se debe seleccionar en el listado, la gráfica principal."]];
+        }
+        for($i=0;$i<sizeof($request->idsGraficas);$i++){
+            if(Tipos_grafica::where('id',$request->idsGraficas[$i])->first() == null){
+                return ["success"=>false,"errores"=>["Uno de los tipos de gráficas seleccionados no se encuentra en la base de datos."]];
+            }
+        }
+        
+        $indicador = new Indicadores_medicion();
+        $indicador->formato = $request->formato;
+        $indicador->peso = 1;
+        $indicador->tipo_medicion_indicador_id = $request->tipo_medicion_indicador_id;
+        $indicador->estado = 1;
+        $indicador->user_create = $this->user->username;
+        $indicador->user_update = $this->user->username;
+        $indicador->updated_at = Carbon::now();
+        $indicador->created_at = Carbon::now();
+        $indicador->save();
+        for($i=0;$i<sizeof($request->idsGraficas);$i++){
+            if($request->idsGraficas == $request->graficaPrincipal){
+                $indicador->graficas()->attach($request->idsGraficas[$i],["es_principal",1]);
+            }else{
+                $indicador->graficas()->attach($request->idsGraficas[$i]);
+            }
+        }
+        //$indicador->save();
+            
+        $indicadorIdioma = new Indicadores_mediciones_idioma();
+        $indicadorIdioma->indicadores_medicion_id = $indicador->id;
+        $indicadorIdioma->idioma_id = 1;
+        $indicadorIdioma->descripcion = $request->descripcion;
+        $indicadorIdioma->nombre = $request->nombre;
+        $indicadorIdioma->eje_x = $request->eje_x;
+        $indicadorIdioma->eje_y = $request->eje_y;
+        $indicadorIdioma->save();
         
         return ["success"=>true];
     }

@@ -185,7 +185,10 @@ app.controller('listadoSlidersCtrl', function($scope, sliderServi) {
             swal("Error", "Error en la carga, por favor recarga la página.", "error");
         })
     }
-
+    $scope.abrirModalAjustarImagen = function (slider) {
+        $scope.rutaAjustarImagen = slider.rutaSlider;
+        $('#modalAjustarImagen').modal('show');
+    }
     $scope.abrirModalAgregarIdiomaSlider = function (slider) {
         $scope.indexSliderAgregarIdioma = $scope.sliders.indexOf(slider);
         $scope.errores = null;
@@ -400,5 +403,84 @@ app.controller('listadoSlidersCtrl', function($scope, sliderServi) {
             $("body").attr("class", "cbp-spmenu-push");
             swal("Error", "Error en la carga, por favor recarga la página.", "error");
         })
+    }
+});
+
+app.controller('ajustarImagenCtrl', function($scope, sliderServi) {
+    $scope.$watch('id', function () {
+       $("body").attr("class", "charging");
+        sliderServi.obtenerSlider($scope.id).then(function (data) {
+            $scope.slider = data.slider;
+            $scope.slider.ruta = window.location.origin+$scope.slider.ruta;
+            var ruta = $scope.slider.ruta;
+            basic.croppie('bind', {
+        		url: ruta
+        	}).then(function(){
+        		console.log('jQuery bind complete');
+        	});
+            $("body").attr("class", "cbp-spmenu-push");
+            
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Hubo un error en la petición intentalo nuevamente", "error");
+        });
+    });
+    var basic = $('#imagen').croppie({
+        viewport: {
+            width: 450,
+            height: 159
+        },
+        boundary: {
+            width: 450,
+            height: 250
+        },
+    });
+    
+    $('#portada').change(function cambiar() {
+        
+         var reader = new FileReader();
+         //var ruta = "http://siturmagdalena-luifer.c9users.io"+$scope.slider.ruta;
+        reader.onload = function (e) {
+        	
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+    $scope.guardarAjuste=function(){
+                        
+        basic.croppie('result', {
+           	type: 'base64',
+           	size: {width: 1920}
+           	}
+       	).then(function(html) {
+            
+            $("body").attr("class", "charging");
+            sliderServi.ajustarImagen(html,$scope.id).then(function (data) {
+                if(data.success){
+                    swal({
+                        title: "Realizado",
+                        text: "Acción realizada satisfactoriamente.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function () {
+    
+                        window.location.href = "/sliders/listadosliders";
+                    }, 1000);
+                    
+                }else{
+                    swal("Error", "No se pudo efectuar la operación, favor intentar nuevamente.", "error");
+                    $scope.errores = data.errores;
+                }
+                $("body").attr("class", "cbp-spmenu-push");
+                
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Hubo un error en la petición intentalo nuevamente", "error");
+            });
+            console.log(html);
+            
+        });
+        
     }
 });

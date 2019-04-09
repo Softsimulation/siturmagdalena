@@ -20,6 +20,7 @@
             } 
       };
       
+      
       return {
             
         getDataIndicador: function(id){ return http.get("/indicadores/dataindicador/"+id);  },
@@ -27,7 +28,6 @@
         
         getDataSecundarios: function(id){ return http.get("/indicadores/datasencundarios/"+id);  },
         filtrarDataSecundarias: function(data){ return http.get("/indicadores/filtrardatasecundaria/"+ data.indicador+ "/"+ data.year );  },
-        
         
         getDataPivoTable: function(indicador){
             
@@ -51,10 +51,7 @@
                     if(data){
                         
                         $("#tablaDinamica").pivotUI(data, {
-                            onRefresh: function (config) {
-                                config.rows = [];
-                                config.cols = [];
-                            },
+                            onRefresh: function (config) { config.rows = []; config.cols = []; },
                             aggregators: aggregators,
                             hiddenAttributes: ["cantidad"],
                             renderers: $.extend( $.pivotUtilities.renderers, $.pivotUtilities.c3_renderers, $.pivotUtilities.d3_renderers ),
