@@ -27,15 +27,19 @@
         color: #fff!important;
         font-weight: 700!important;
     }
-    .menu-descraga, .menu-descraga .dropdown{
+    .menu-descarga{
+        position: absolute;
+        right: 80px;
+    }
+    .menu-descarga, .menu-descarga .dropdown{
             float: right;
     }
-    .menu-descraga .dropdown button{
+    .menu-descarga .dropdown button{
         display:flex;
         align-items:center;
         background: transparent;
     }
-    .menu-descraga .dropdown button .material-icons{
+    .menu-descarga .dropdown button .material-icons{
         margin-right: .5rem;
     }
     #descargarTABLA{
@@ -103,10 +107,10 @@
         color: #fff!important;
         font-weight: 700!important;
     }
-    .menu-descraga, .menu-descraga .dropdown{
+    .menu-descarga, .menu-descarga .dropdown{
             float: right;
     }
-    .menu-descraga .dropdown button{
+    .menu-descarga .dropdown button{
         border: none;
         background: transparent;
     }
@@ -157,7 +161,7 @@
     
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#tab1">Información</a></li>
-      <li><a data-toggle="tab" href="#tab2">Tabla dinamica</a></li>
+      <li ><a data-toggle="tab" href="#tab2" >Tabla dinamica</a></li>
     </ul>
     
     <div class="tab-content">
@@ -183,23 +187,29 @@
                                 </div>
                             </div>
                             
-                            <div class="col-xs-12 col-md-3" ng-show="yearSelect.meses" >
+                            <div class="col-xs-12 col-md-4" ng-show="yearSelect.temporada" >
                                 <div class="input-group">
-                                    <label class="input-group-addon">Meses</label>
-                                    <select class="form-control" ng-model="filtro.mes" ng-change="filtrarDatos()" ng-options="m.id as m.nombre for m in yearSelect.meses" ng-requerid="yearSelect.meses"  >
+                                    <label class="input-group-addon">Temporadas</label>
+                                    <select class="form-control" id="SelectTemporada" ng-model="filtro.id" ng-change="filtrarDatos()" ng-options="t.id as t.temporada for t in periodos | filter:{ 'year': yearSelect.year }" ng-requerid="yearSelect.temporada"  >
                                     </select>
                                 </div>
                             </div>
                             
-                            <div class="col-xs-12 col-md-3" ng-show="yearSelect.temporadas" >
-                                <div class="input-group">
-                                    <label class="input-group-addon">Temporada</label>
-                                    <select class="form-control" ng-model="filtro.temporada" ng-change="filtrarDatos()" ng-options="m.id as m.nombre for m in yearSelect.temporadas" ng-requerid="yearSelect.temporadas"  >
+                            @if( isset($aspectos) )
+                            <div class="col-xs-12 col-md-3" ng-if="indicadorSelect==44">
+                                <div class="input-group" >
+                                    <label class="input-group-addon colorInd">Aspecto </label>
+                                    <select class="form-control" ng-model="filtro.aspecto" id="aspecto" ng-change="filtrarDatos()" >
+                                        <option value="" selectd >Todos</option>
+                                        @for ($i = 0; $i < count($aspectos); $i++)
+                                           <option value="{{$aspectos[$i]->aspecto_evaluacion}}" >{{$aspectos[$i]->nombre}}</option>
+                                        @endfor
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             
-                            <div class="col-xs-12 col-md-4" ng-if="indicadorSelect==5 || indicadorSelect==13 || indicadorSelect==19">
+                            <div class="col-xs-12 col-md-3" ng-if="indicadorSelect==5">
                                 <div class="input-group" >
                                     <label class="input-group-addon colorInd">Gasto promedio </label>
                                     <select class="form-control" ng-model="filtro.tipoGasto" id="SelectTipoGasto" ng-change="filtrarDatos()" >
@@ -228,25 +238,27 @@
                                 </div>
                             </div> 
                             
-                            <div class="col-xs-12 col-md-2 menu-descraga" >
-                            
-                                <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                                      <i class="material-icons">cloud_download</i> Descargar
-                                  </button>
-                                  <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href id="descargarPNG" >Descargar gráfica : PNG</a></li>
-                                   <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
-                                    <li><a href id="descargarPDF" >Descargar gráfica : PDF</a></li>
-                                    <li><a href id="descargarGraficaTabla" >Descargar gráfica y tabla de datos : PDF</a></li>
-                                  </ul>
-                                </div>
-                                
-                            </div>
                         </div>    
                     </form>
                 </div>
                 <div class="panel-body">
+                    
+                    <div class="menu-descarga" >
+                            
+                        <div class="dropdown">
+                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                              <i class="material-icons">cloud_download</i> Descargar
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href id="descargarPNG" >Descargar gráfica : PNG</a></li>
+                           <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
+                            <li><a href id="descargarPDF" >Descargar gráfica : PDF</a></li>
+                            <li><a href id="descargarGraficaTabla" >Descargar gráfica y tabla de datos : PDF</a></li>
+                          </ul>
+                        </div>
+                        
+                    </div>
+                    
                     <canvas id="base" class="chart-base" chart-type="graficaSelect.codigo" fill="black" style="background: white;"
                       chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colores" chart-dataset-override="override" >
                     </canvas>

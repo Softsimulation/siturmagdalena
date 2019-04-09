@@ -33,7 +33,9 @@
                 <table class="table table-hover" ng-show="indicadoresMedicion.length > 0">
                     <thead>
                         <tr>
+                            <th>Medición</th>
                             <th>Nombre del Indicador</th>
+                            <th>Temporada</th>
                             <th>Mes</th>
                             <th>Año</th>
                             <th>Estado</th>
@@ -54,6 +56,7 @@
                     <tbody>
                         <tr dir-paginate="item in indicadoresMedicion |filter:search | itemsPerPage: 10">
                             <td>@{{item.indicador}}</td>
+                            <td>@{{item.temporada}}</td>
                             <td>@{{item.mes}}</td>
                             <td>@{{item.anio}}</td>
                             <td>@{{item.estado}}</td>
@@ -111,24 +114,35 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-6 col-xs-6 col-sm-6">
+                            <div class="col-md-6 col-xs-6 col-sm-6" ng-show="indicador.tipo != 2 && indicador.tipo != 3 ">
                                 <div class="form-group" ng-class="{'has-error': (indicadorForm.$submitted || indicadorForm.mes.$touched) && indicadorForm.mes.$error.required}">
                                     <label class="control-label" for="mes"><span class="asterisk">*</span> Meses</label>
-                                    <select name="mes" class="form-control" ng-model="indicador.mes" id="inputMes" ng-options ="it.id as it.nombre for it in meses" required>
+                                    <select name="mes" class="form-control" ng-model="indicador.mes" id="inputMes" ng-options ="it.id as it.nombre for it in meses" ng-required="indicador.tipo != 2 && indicador.tipo != 3">
                                         <option value="" disabled>--Seleccione--</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 col-xs-6 col-sm-6">
+                            <div class="col-md-6 col-xs-6 col-sm-6" ng-show="indicador.tipo != 2 && indicador.tipo != 3 ">
                                 <div class="form-group" ng-class="{'has-error': (indicadorForm.$submitted || indicadorForm.anio.$touched) && indicadorForm.anio.$error.required}">
                                     <label class="control-label" for="anio"><span class="asterisk">*</span> Años</label>
-                                    <select name="anios" class="form-control" ng-model="indicador.anio" id="inputAnios" ng-options ="it.id as it.anio for it in anios" required>
+                                    <select name="anios" class="form-control" ng-model="indicador.anio" id="inputAnios" ng-options ="it.id as it.anio for it in anios" ng-required="indicador.tipo != 2 && indicador.tipo != 3">
                                         <option value="" disabled>--Seleccione--</option>
                                     </select>
                                 </div>
                             </div>
-
+    
+                            
+                            
+                            <div class="col-md-12 col-xs-12 col-sm-12" ng-show="indicador.tipo == 2 || indicador.tipo == 3">
+                                <div class="form-group" ng-class="{'has-error': (indicadorForm.$submitted || indicadorForm.temporada.$touched) && indicadorForm.temporada.$error.required}">
+                                        <label class="control-label" for="temporada"><span class="asterisk">*</span> Temporada</label>
+                                        <select name="temporada" class="form-control" ng-model="indicador.temporada" id="inputTemporada" ng-options ="it.id as it.nombre for it in temporadas" ng-required="indicador.tipo == 2 || indicador.tipo == 3">
+                                            <option value="" disabled>--Seleccione--</option>
+                                        </select>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -136,6 +136,20 @@ class ImportacionRntController extends Controller
 	        		"user_update" => $this->user->username,
 	        	]);
 	        	
+	        	//crear usuario para proveedor
+	        	$user = User::where('email',strtolower($registro["correo"]))->first(); 
+	        	if(!$user){
+	        		$user = new User();
+	        		$user->username = $registro["nombre_comercial"];
+			        $user->nombre = $registro["nombre_comercial"];
+			        $user->password = strtolower($registro["correo"]);
+			        $user->email = strtolower($registro["correo"]);
+			        $user->estado = 1;
+			        $user->save();
+	        	}
+		        
+		        $user->proveedoresPst()->attach($proveedorCrear);
+	        	
 	        	if($registro["nombre_comercial_plataforma"] != null){
 	        		$proveedorIdioma = $proveedorCrear->idiomas->where('idioma_id',1)->first();
 					if($proveedorIdioma){
@@ -403,6 +417,20 @@ class ImportacionRntController extends Controller
 			"user_update" => $this->user->username,
 		]);
 		
+		//crear usuario para proveedor
+    	$user = User::where('email',strtolower($registro["correo"]))->first(); 
+    	if(!$user){
+    		$user = new User();
+    		$user->username = $registro["nombre_comercial"];
+	        $user->nombre = $registro["nombre_comercial"];
+	        $user->password = strtolower($registro["correo"]);
+	        $user->email = strtolower($registro["correo"]);
+	        $user->estado = 1;
+	        $user->save();
+    	}
+        
+        $user->proveedoresPst()->attach($proveedorCrear);
+		
 		if(isset($request["nombre_comercial_plataforma"])){
 			Proveedores_rnt_idioma::create([
 				'idioma_id' => 1,
@@ -523,6 +551,20 @@ class ImportacionRntController extends Controller
 			"user_create" => $this->user->username,
 			"user_update" => $this->user->username,
 		]);
+		
+		//crear usuario para proveedor
+    	$user = User::where('email',strtolower($registro["correo"]))->first(); 
+    	if(!$user){
+    		$user = new User();
+    		$user->username = $registro["nombre_comercial"];
+	        $user->nombre = $registro["nombre_comercial"];
+	        $user->password = strtolower($registro["correo"]);
+	        $user->email = strtolower($registro["correo"]);
+	        $user->estado = 1;
+	        $user->save();
+    	}
+        
+        $user->proveedoresPst()->attach($proveedorCrear);
 		
 		if(isset($request["nombre_comercial_plataforma"])){
 			Proveedores_rnt_idioma::create([
