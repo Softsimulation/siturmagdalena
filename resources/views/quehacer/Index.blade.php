@@ -585,6 +585,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             </div> -->
             
         </div>
+        {!! $query->render() !!}
         @if(!$hasTipo)
             <div class="alert alert-info">
                 <p>No hay registro que mostrar</p>
