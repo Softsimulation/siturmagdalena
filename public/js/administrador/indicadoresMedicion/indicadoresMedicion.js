@@ -35,8 +35,10 @@ app.controller('listadoIndicadoresMedicionCtrl', function($scope, indicadorMedic
         $scope.indicadores = [];
         $scope.indicadores = dato.indicadores;
         $scope.idiomas = dato.idiomas;
+        $scope.tiposMediciones = dato.tiposMediciones;
         for(var i=0;i<$scope.indicadores.length;i++){
             $scope.indicadores[i].idsGraficas = [];
+            $scope.indicadores[i].graficaPrincipal = null;
             $scope.indicadores[i].categoria = $scope.indicadores[i].tipo_indicador.nombre;
             $scope.indicadores[i].nombre = $scope.indicadores[i].idiomas[0].nombre;
             $scope.indicadores[i].descripcion = $scope.indicadores[i].idiomas[0].descripcion;
@@ -45,6 +47,9 @@ app.controller('listadoIndicadoresMedicionCtrl', function($scope, indicadorMedic
             $scope.indicadores[i].estadoIndicador = $scope.indicadores[i].estado == true ? "Activo" : "Inactivo";
             for(var j=0;j<$scope.indicadores[i].graficas.length;j++){
                 $scope.indicadores[i].idsGraficas.push($scope.indicadores[i].graficas[j].id);
+                if($scope.indicadores[i].graficas[j].pivot.es_principal){
+                    $scope.indicadores[i].graficaPrincipal = $scope.indicadores[i].graficas[j].id;
+                }
             }
         }
         $scope.tiposGraficas = dato.tiposGraficas;
@@ -69,6 +74,7 @@ app.controller('listadoIndicadoresMedicionCtrl', function($scope, indicadorMedic
             $scope.editarIndicador.eje_x = dato.indicador.idiomas[0].eje_x;
             $scope.editarIndicador.eje_y = dato.indicador.idiomas[0].eje_y;
             $scope.editarIndicador.idsGraficas = indicador.idsGraficas;
+            $scope.editarIndicador.graficaPrincipal = indicador.graficaPrincipal;
             $scope.editarIndicador.id = dato.indicador.id;
             $scope.editarIndicador.idioma_id = dato.indicador.idiomas[0].idioma_id;
             $("body").attr("class", "cbp-spmenu-push");
@@ -141,6 +147,46 @@ app.controller('listadoIndicadoresMedicionCtrl', function($scope, indicadorMedic
                 });
                 setTimeout(function () {
                     $('#modalIdiomaIndicador').modal('hide');
+                    window.location.href = "/indicadoresMedicion/listado"
+                }, 1000);
+            } else {
+                swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                $scope.errores = dato.errores;
+            }
+            
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "Hubo un error en la petición intentalo nuevamente", "error");
+        });
+    }
+    
+    $scope.crearIndicadorModal = function(indicador,idioma_id){
+        $scope.crearIndicador = {};
+        $scope.crearIndicadorForm.$setPristine();
+        $scope.crearIndicadorForm.$setUntouched();
+        $scope.crearIndicadorForm.$submitted = false;
+        $scope.errores = null;
+        $('#modalCrearIndicador').modal('show');
+        
+    }
+    
+    $scope.crearIndicadorMetodo = function(){
+        if (!$scope.crearIndicadorForm.$valid || $scope.crearIndicador.idsGraficas.length == 0 ) {
+            return;
+        }
+        $("body").attr("class", "charging");
+        indicadorMedicionServi.crearIndicador($scope.crearIndicador).then(function (dato) {
+            $("body").attr("class", "cbp-spmenu-push");
+            if (dato.success) {
+                swal({
+                    title: "Realizado",
+                    text: "Acción realizada satisfactoriamente.",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    $('#modalCrearIndicador').modal('hide');
                     window.location.href = "/indicadoresMedicion/listado"
                 }, 1000);
             } else {

@@ -153,7 +153,9 @@
                     <div class="text-right">
                         <a href="/promocionPublicacion/ver/{{$publicacion->idPublicacion}}" class="btn btn-xs btn-link">Ver más</a>
                     </div>
-                
+                    <div class="text-right">
+                        <a href="{{$publicacion->ruta}}" download="{{$publicacion->titulo}}" class="btn btn-xs btn-success">Descargar PDF</a>
+                    </div>
                     
                 </div>
             </div>
