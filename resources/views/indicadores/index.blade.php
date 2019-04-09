@@ -161,7 +161,7 @@
     
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#tab1">Información</a></li>
-      <li ><a data-toggle="tab" href="#tab2">Tabla dinamica</a></li>
+      <li ><a data-toggle="tab" href="#tab2" ng-show="verPivoTable" >Tabla dinamica</a></li>
     </ul>
     
     <div class="tab-content">

@@ -488,28 +488,28 @@ class IndicadoresCtrl extends Controller
             
             case 1: 
                     $metodo = 'motivo_viaje_receptor';
-                    $select = $idioma=="es" ?  'sexo,anio,mes,opcionesnacimiento as "opciones nacimiento",municipioresidencia as "municipio residencia",departamentoresidencia as "departamento residencia",país,edad,motivoviaje' : 
-                                               'birthoptions,country,month,tripreason,sex,municipioresidencia,opcionesnacimiento';
+                    $select = $idioma=="es" ?  'sexo,anio,mes,opcionesnacimiento as "opciones nacimiento",municipioresidencia as "municipio residencia",departamentoresidencia as "departamento residencia",país,edad,motivoviaje, cantidad' : 
+                                               'birthoptions,country,month,tripreason,sex,municipioresidencia,opcionesnacimiento, cantidad';
                 break;
             case 2: 
                     $metodo = 'alojamiento_receptor';
-                    $select = $idioma=="es" ?  'anio,departamentoresidencia as "departamento residencia",edad,mes,motivoviaje as "motivo viaje",municipioresidencia as "municipio residencia",país,sexo,tipoalojamiento as "tipo alojamiento"' : 
-                                               'anio as "year",departamentoresidencia as "departamento residencia",edad as "age" "",month,tripreason,municipioresidencia as "municipio residencia",country,sex,accommodationtype as "accommodation type"';
+                    $select = $idioma=="es" ?  'anio,departamentoresidencia as "departamento residencia",edad,mes,motivoviaje as "motivo viaje",municipioresidencia as "municipio residencia",país,sexo,tipoalojamiento as "tipo alojamiento", cantidad' : 
+                                               'anio as "year",departamentoresidencia as "departamento residencia",edad as "age" "",month,tripreason,municipioresidencia as "municipio residencia",country,sex,accommodationtype as "accommodation type", cantidad';
                 break;
             case 3: 
                     $metodo = 'medio_transporte_receptor';
-                    $select = $idioma=="es" ?  'anio,departamentoresidencia as "departamento residencia",edad,mes,motivoviaje as "motivo viaje",municipioresidencia as "municipio residencia",país,sexo,tipotransporte as "tipo transporte"' : 
-                                               'anio as "year",departamentoresidencia as "departamento residencia",edad as "age" "",month,tripreason,municipioresidencia as "municipio residencia",country,sex,transporttype as "transport type"';
+                    $select = $idioma=="es" ?  'anio,departamentoresidencia as "departamento residencia",edad,mes,motivoviaje as "motivo viaje",municipioresidencia as "municipio residencia",país,sexo,tipotransporte as "tipo transporte", cantidad' : 
+                                               'anio as "year",departamentoresidencia as "departamento residencia",edad as "age" "",month,tripreason,municipioresidencia as "municipio residencia",country,sex,transporttype as "transport type", cantidad';
                 break;
             case 4: 
                     $metodo = 'gasto_medio_receptor';
-                    $select = $idioma=="es" ?  'anio,departamento,edad,mes,motivoviaje as "motivo viaje",municipio,opcionesnacimiento as "opciones nacimiento",pais,rubro,sexo' : 
-                                               'anio as "year",departamento,edad as "age",month,tripreason,municipio,birthoptions as "birth options",country,category,sex';
+                    $select = $idioma=="es" ?  'anio,departamento,edad,mes,motivoviaje as "motivo viaje",municipio,opcionesnacimiento as "opciones nacimiento",pais,rubro,sexo, cantidad' : 
+                                               'anio as "year",departamento,edad as "age",month,tripreason,municipio,birthoptions as "birth options",country,category,sex, cantidad';
                     break;
             case 5:
                     $metodo = 'gasto_medio_total_receptor';
-                    $select = $idioma=="es" ?  'anio,departamento,edad,mes,motivoviaje as "motivo viaje",municipio,opcionesnacimiento as "opciones nacimiento",pais,rubro,sexo' : 
-                                               'anio as "year",departamento,edad as "age",month,tripreason,municipio,birthoptions as "birth options",country,category,sex';
+                    $select = $idioma=="es" ?  'anio,departamento,edad,mes,motivoviaje as "motivo viaje",municipio,opcionesnacimiento as "opciones nacimiento",pais,rubro,sexo, cantidad' : 
+                                               'anio as "year",departamento,edad as "age",month,tripreason,municipio,birthoptions as "birth options",country,category,sex, cantidad';
                     break;
             
             case 34:
