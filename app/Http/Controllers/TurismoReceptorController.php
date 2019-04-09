@@ -723,6 +723,12 @@ class TurismoReceptorController extends Controller
         return $encuestas;
     }
     
+    public function getEncuestasrango($fecha_inicial, $fecha_final){
+        $encuestas = \DB::select('select * from encuestas_turismo_receptor(?,?)',array($fecha_inicial,$fecha_final));
+        
+        return ["encuestas" => $encuestas];
+    }
+    
     public function getListadoencuestas(){
         return view('turismoReceptor.Encuestas');
     }

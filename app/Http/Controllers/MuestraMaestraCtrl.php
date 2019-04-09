@@ -230,7 +230,8 @@ class MuestraMaestraCtrl extends Controller
             $zona->encargados()->attach( $z["encargados"] );
         }
         
-        DB::select("SELECT *from crear_info_muestra_proveedores(?)", array($periodo->id) );
+        DB::select("SELECT *from crear_info_muestra_proveedores(?)",  array($periodo->id) );
+        DB::select("SELECT *from creacion_proveedores_informales(?)", array($periodo->id) );
         
         return [ "success"=>true , "id"=>$periodo->id ];
         

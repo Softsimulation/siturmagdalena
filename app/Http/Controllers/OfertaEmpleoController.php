@@ -533,21 +533,21 @@ class OfertaEmpleoController extends Controller
         foreach($meses as $me){
             $nombreMes = Mes::find($me->month);
             $anio = Anio::where('anio',$me->year)->get();
-            if($anio == null){
+            if($anio == null  && collect($pendientes)->where("mesId",$me->month)->where("anio",$me->year)->first() == null){
                  array_push($pendientes,["mesId"=>$me->month,"mes"=>$nombreMes->nombre,"anio"=>$me->year]);
             }else{
                 $meses_anio = Mes_Anio::where('mes_id',$me->month)->whereHas('anio',function($q) use ($me){
                     $q->where('anio',$me->year);
                 })->first();
                 
-                if($meses_anio == null){
+                if($meses_anio == null  && collect($pendientes)->where("mesId",$me->month)->where("anio",$me->year)->first() == null){
                       array_push($pendientes,["mesId"=>$me->month,"mes"=>$nombreMes->nombre,"anio"=>$me->year]);
                 }else{
                     
                     $encuesta = Encuesta::where('sitios_para_encuestas_id',$id)->where('meses_anio_id',$meses_anio->id)->first();
 
                     
-                    if($encuesta ==null ){
+                    if($encuesta ==null && collect($pendientes)->where("mesId",$me->month)->where("anio",$me->year)->first() == null){
                         array_push($pendientes,["mesId"=>$me->month,"mes"=>$nombreMes->nombre,"anio"=>$me->year]);
                     }
                 }
@@ -556,6 +556,8 @@ class OfertaEmpleoController extends Controller
             
             
         }
+        
+        
         
         return ["success"=>true, "encuestas" => $pendientes];
 
