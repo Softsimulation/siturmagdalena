@@ -203,6 +203,9 @@
                                 <li ng-if="slider.prioridadSlider!=1 && slider.prioridadSlider !=0"><a href="" ng-click="subirPrioridadSlider(slider)" >Subir Prioridad</a></li>
                                 <li ng-if="slider.prioridadSlider!=8 && slider.prioridadSlider !=0"><a href="" ng-click="bajarPrioridadSlider(slider)" >Bajar Prioridad</a></li>
                             @endif
+                            @if(Auth::user()->contienePermiso('ajustar-slider'))
+                                <li><a href="ajustar/@{{slider.id}}" ng-click="" >Ajustar imagen</a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -676,7 +679,7 @@
                 </form>
             </div>
         </div>
-    </div>        
+    </div>
 @endsection
 
 @section('javascript')
@@ -692,7 +695,6 @@
 <script src="{{asset('/js/plugins/angular-sanitize.js')}}"></script>
 <script src="{{asset('/js/administrador/sliders/sliders.js')}}"></script>
 <script src="{{asset('/js/administrador/sliders/sliderServices.js')}}"></script>
-
 <script defer>
 
     function readURL(input , idPreview) {
