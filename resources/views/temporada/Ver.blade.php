@@ -140,19 +140,22 @@
 
             <div role="tabpanel" class="tab-pane fade" id="personas">
                 
-                <div class="flex-list">
-                    <input type="text" style="margin-bottom: .5em;" ng-model="prop.searchPersona" class="form-control" id="inputSearch" placeholder="Buscar persona...">
+                <div class="flex-list" ng-show="temporada.Personas.length > 0">
+                    <button type="button" ng-click="mostrarFiltroPersonas=!mostrarFiltroPersonas" class="btn btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span> Filtrar resultados</button>
                 </div>
                 
                 
-                <div class="text-center" ng-if="(temporada.Personas | filter:searchPersona).length > 0 && (searchPersona != undefined)">
-                    <p>Hay @{{(temporada.Personas | filter:searchPersona).length}} registro(s) que coinciden con su búsqueda</p>
+                <div class="text-center" ng-if="(temporada.Personas | filter:searchPersonas).length > 0 && (searchPersonas != undefined)">
+                    <p>Hay @{{(temporada.Personas | filter:searchPersonas).length}} registro(s) que coinciden con su búsqueda</p>
                 </div>
                 <div class="alert alert-info" ng-if="temporada.Personas.length == 0">
                     <p>No hay registros almacenados</p>
                 </div>
-                <div class="alert alert-warning" ng-if="(temporada.Personas | filter:searchPersona).length == 0 && temporada.Personas.length > 0">
+                <div class="alert alert-warning" ng-if="(temporada.Personas | filter:searchPersonas).length == 0 && temporada.Personas.length > 0">
                     <p>No existen registros que coincidan con su búsqueda</p>
+                </div>
+                <div class="alert alert-info" role="alert"  ng-show="mostrarFiltroPersonas == false && (searchPersonas.edificacione.barrio.nombre.length > 0 || search.edificacione.direccion.length > 0 || search.edificacione.estrato.nombre.length > 0 || search.digitadore.user.username.length > 0 || search.edificacione.nombre_entrevistado.length > 0 || search.fecha_realizacion.length > 0)">
+                    Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
                 </div>
                 
                 <div class="row" ng-show="temporada.Personas.length > 0">
@@ -170,9 +173,21 @@
                                     <th>Última sección</th>
                                     <th></th>
                                 </tr>
+                                <tr ng-show="mostrarFiltroPersonas == true">
+                                    <td><input type="text" ng-model="searchPersonas.persona.id" name="idPersona" id="idPersona" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                    <td><input type="text" ng-model="searchPersonas.persona.hogare.id" name="idHogar" id="idHogar" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                    <td><input type="text" ng-model="searchPersonas.persona.nombre" name="nombrePersona" id="nombrePersona" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                    <td><input type="text" ng-model="searchPersonas.persona.hogare.edificacione.direccion" name="direccion" id="direccion" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                                    <td><input type="text" ng-model="searchPersonas.persona.hogare.edificacione.estrato.nombre" name="estrato" id="estrato" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                                    <td><input type="text" ng-model="searchPersonas.persona.hogare.digitadore.user.username" name="digitador" id="digitador" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
+                                    <td><input type="text" ng-model="searchPersonas.fecha_inicio" name="fecha_inicio" id="fecha_inicio" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                    <td><input type="text" ng-model="searchPersonas.ultima_sesion" name="ultima_sesion" id="ultima_sesion" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                                    
+                                    <td></td>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr dir-paginate="item in temporada.Personas|filter:prop.search|itemsPerPage:10 as results" pagination-id="personaP" style="border-bottom: .5px solid lightgray">
+                                <tr dir-paginate="item in temporada.Personas|filter:searchPersonas|itemsPerPage:10 as results" pagination-id="personaP" style="border-bottom: .5px solid lightgray">
                                     <td>@{{item.persona.id}}</td>
                                     <td>@{{item.persona.hogare.id}}</td>
                                     <td>@{{item.persona.nombre}}</td>

@@ -15,6 +15,30 @@ app.factory("sliderServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        obtenerSlider: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/sliders/obtenerslider/'+id).success(function (data) {
+             defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        ajustarImagen: function (imagen,id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/sliders/ajustarimagen', {'imagen':imagen,'id':id
+            
+            }).success(function (data) {
+                defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
         agregarSlider: function (data) {
             var defered = $q.defer();
             var promise = defered.promise;

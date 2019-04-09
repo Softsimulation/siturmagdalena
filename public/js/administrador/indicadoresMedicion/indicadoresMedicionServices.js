@@ -37,5 +37,16 @@ app.factory("indicadorMedicionServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
+        crearIndicador: function (dato) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.post('/indicadoresMedicion/crearindicador',dato).success(function (data) {
+             defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
     }
 }]);
