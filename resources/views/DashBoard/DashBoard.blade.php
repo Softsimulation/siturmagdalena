@@ -144,7 +144,12 @@
             @if(Auth::user()->contienePermiso('list-estadisticaSecundaria'))
                 <li><a href="/EstadisticasSecundarias/configuracion">Listado de estadísticas secundarias</a></li>
             @endif
-            
+            @if(Auth::user()->contienePermiso('list-indicadorMedicion'))
+                <li><a href="/indicadoresMedicion/listado">Listado de indicadores</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-indicadorMedicion|calcular-indicadorMedicion|recalcular-indicadorMedicion'))
+                <li><a href="/calcularindicadores">Listado de indicadores calculados</a></li>
+            @endif
         </ul>
     </div>
 </div>
