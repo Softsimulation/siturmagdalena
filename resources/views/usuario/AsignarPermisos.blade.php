@@ -82,12 +82,15 @@
                           <th>Sugerir</th>
                           <th>Borrar</th>
                           <th>Prioridad</th>
+                          <th>Ajustar imagen</th>
                           <th>Importar</th>
                           <th>Exportar</th>
                           <th>Activar proveedor oferta</th>
                           <th>Duplicar</th>
                           <th>Obtener estadística</th>
                           <th>Archivo KML</th>
+                          <th>Calcular</th>
+                          <th>Recalcular</th>
                         </tr>
                         <tr>
                           <td rowspan="13">Promoción</td>
@@ -101,7 +104,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-actividad'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'sugerir-actividad'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-actividad'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Atracciones</td>
@@ -112,7 +115,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-atraccion'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'sugerir-atraccion'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-atraccion'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Destinos</td>
@@ -123,7 +126,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-destino'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'sugerir-destino'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-destino'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Eventos</td>
@@ -134,7 +137,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-evento'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'sugerir-evento'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-evento'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Rutas turísticas</td>
@@ -145,7 +148,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-ruta'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'sugerir-ruta'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-ruta'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Proveedores</td>
@@ -156,7 +159,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-proveedor'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'sugerir-proveedor'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-proveedor'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Informes</td>
@@ -167,7 +170,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-informe'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-informe'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Biblioteca digital</td>
@@ -178,7 +181,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-publicaciones'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-publicaciones'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Noticias</td>
@@ -189,7 +192,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-noticia'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-noticia'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Galería de imágenes</td>
@@ -201,7 +204,8 @@
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-slider'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'prioridad-slider'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'ajustar-slider'"></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Requisitos de viaje</td>
@@ -212,7 +216,7 @@
                           <td class="text-center"></td>
                           <td class="text-center"></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Acerca del departamento</td>
@@ -223,7 +227,7 @@
                           <td class="text-center"></td>
                           <td class="text-center"></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td rowspan="4">Turismo receptor</td>
@@ -237,7 +241,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-grupoViaje'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-grupoViaje'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Encuesta turismo receptor</td>
@@ -248,15 +252,15 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-encuestaReceptor'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-encuestaReceptor'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Medición</td>
                           <td></td><td></td><td></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'export-medicionReceptor'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td rowspan="4">Turismo interno y emisor</td>
@@ -270,7 +274,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-temporada'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-temporada'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Encuesta interno y emisor</td>
@@ -281,15 +285,15 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-encuestaInterno'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-encuestaInterno'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Medición</td>
                           <td></td><td></td><td></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'export-medicionInternoEmisor'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td rowspan="5">Oferta y empleo</td>
@@ -303,34 +307,34 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-encuestaOfertaEmpleo'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-encuestaOfertaEmpleo'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Proveedores oferta</td>
                           <td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'list-proveedoresOferta'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'exportar-proveedoresOferta'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'activar-proveedoresOferta'"></td>
-                          <td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Proveedores RNT oferta</td>
                           <td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'edit-proveedoresRNTOferta'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'list-proveedoresRNTOferta'"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'import-RNT'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'exportar-proveedoresRNTOferta'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Medición</td>
                           <td></td><td></td><td></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'export-medicionOferta'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td rowspan="5">Sostenibilidad</td>
@@ -344,15 +348,15 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-encuestaSostenibilidadHogares'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-encuestaSostenibilidadHogares'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Medición Hogar</td>
                           <td></td><td></td><td></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'export-sostenibilidadHogar'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Encuesta sostenibilidad PST</td>
@@ -363,15 +367,15 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-encuestaSostenibilidadPST'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-encuestaSostenibilidadPST'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Medición PST</td>
                           <td></td><td></td><td></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'export-sostenibilidadPST'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td rowspan="4">Administrador paises</td>
@@ -385,9 +389,9 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-pais'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-pais'"></td>
-                          <td></td>
+                          <td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'importar-pais'"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Departamentos</td>
@@ -398,9 +402,9 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-departamento'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-departamento'"></td>
-                          <td></td>
+                          <td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'importar-departamento'"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Municipios</td>
@@ -411,9 +415,9 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-municipio'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-municipio'"></td>
-                          <td></td>
+                          <td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'importar-municipio'"></td>
-                          <td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td rowspan="2'"></td>
@@ -427,7 +431,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-estadisticaSecundaria'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-estadisticaSecundaria'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                 
                         </tr>
                         <tr>
@@ -442,10 +446,10 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-encuestaADHOC'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-encuestaADHOC'"></td>
-                          <td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'duplicar-encuestaADHOC'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'estadisticas-encuestaADHOC'"></td>
-                          <td></td>
+                          <td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td rowspan="6">Muestra Maestra</td>
@@ -454,10 +458,11 @@
                           <td>Muestra muestra</td>
                           <td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-muestraMaestra'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'excel-muestra'"></td>
                           <td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'KML-muestra'"></td>
+                          <td></td><td></td>
                         </tr>
                         <tr>
                           <td>Períodos</td>
@@ -468,7 +473,7 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-periodosMuestra'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                         <tr>
                           <td>Bloques</td>
@@ -479,26 +484,42 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'read-zona'"></td>
                           <td class="text-center"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'delete-zona'"></td>
-                          <td></td><td></td>
+                          <td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'excel-zona'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           
                         </tr>
                         <tr>
                           <td>Información de zona</td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'llenarInfo-zona'"></td>
-                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'excel-infoZona'"></td>
-                          <td></td><td></td><td></td><td></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td>
                           
                         </tr>
                         <tr>
                           <td>Proveedores Muestra Maestra</td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'create-proveedorMuestra'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'edit-proveedorMuestra'"></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                           <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                          <td></td><td></td><td></td><td></td><td></td>
                           
+                        </tr>
+                        <tr>
+                          <td rowspan="2'"></td>
+                        </tr>
+                        <tr>
+                          <td>Indicadores</td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'create-indicadorMedicion'"></td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'edit-indicadorMedicion'"></td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'list-indicadorMedicion'"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'calcular-indicadorMedicion'"></td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'recalcular-indicadorMedicion'"></td>
                         </tr>
                       </tbody>
                     </table>
