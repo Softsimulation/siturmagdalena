@@ -229,6 +229,12 @@
                         <li>
                             <a role="menuitem" href="{{asset('/calcularindicadores')}}">Calcular Indicadores</a>
                         </li>
+                         <li>
+                            <a role="menuitem" href="{{asset('/infografias')}}">Generar infografías </a>
+                        </li>
+                          <li>
+                            <a role="menuitem" href="{{asset('/indicadoresMedicion/listado')}}">Gestión de gráficos</a>
+                        </li>
                            <li>
                             <a role="menuitem" href="{{asset('/usuario/listadousuarios')}}">Gestión de usuarios</a>
                         </li>

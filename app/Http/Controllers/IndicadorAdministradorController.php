@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Anio;
 use App\Models\Mes_Indicador;
 use App\Models\Indicadores_medicion;
@@ -20,6 +22,20 @@ use App\Http\Requests;
 class IndicadorAdministradorController extends Controller
 {
     //
+    public function __construct()
+    {
+       
+        $this->middleware('auth');
+        
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:calcular-indicadorMedicion|recalcular-indicadorMedicion|list-indicadorMedicion',['only' => ['getIndex','getCargarinfo'] ]);
+        $this->middleware('permissions:create-indicadorMedicion',['only' => ['postCrearindicador'] ]);
+        $this->middleware('permissions:edit-indicadorMedicion',['only' => ['getInformacioneditar','postGuardarindicador'] ]);
+        if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+    }
     public function getIndex(){
         return view("indicadoresAdministrador.index");
     }

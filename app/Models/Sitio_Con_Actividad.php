@@ -28,7 +28,7 @@ class Sitio_Con_Actividad extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function actividade()
+    public function actividad()
     {
         return $this->belongsTo('App\Models\Actividades', 'actividades_id');
     }
@@ -40,4 +40,5 @@ class Sitio_Con_Actividad extends Model
     {
         return $this->belongsTo('App\Models\Sitio', 'sitios_id');
     }
+    
 }

@@ -78,7 +78,8 @@ class PublicacionController extends Controller
     public function getListado() {
         
         $estados = Estado::get();
-         $publicaciones = Publicacion::with( ["tipopublicacion"=>function($qrr){$qrr->with(["idiomas" => function($qrrr){ $qrrr->where("idiomas_id",1); } ])  ;}, "estadoPublicacion" ])->get();
+         $publicaciones = Publicacion::with( ["tipopublicacion"=>function($qrr){$qrr->with(["idiomas" => function($qrrr){ $qrrr->where("idiomas_id",1); } ])  ;}, "estadoPublicacion" ])
+         ->orderBy('id','desc')->get();
          return ["Publicaciones"=>$publicaciones,"estados"=>$estados];
          
 	}
@@ -89,7 +90,7 @@ class PublicacionController extends Controller
          $publicaciones = Publicacion::with( ["tipopublicacion"=>function($qrr){$qrr->with(["idiomas" => function($qrrr){ $qrrr->where("idiomas_id",1); } ])  ;},
          "temas" =>function($qrr2){$qrr2->with(["idiomas" => function($qrrr2){ $qrrr2->where("idiomas_id",1); } ])  ;},
          "palabras"
-         ])->where("estado","=",true)->where("estados_id","=",1)->get();
+         ])->where("estado","=",true)->where("estados_id","=",1)->orderBy('id','desc')->get();
          return ["Publicaciones"=>$publicaciones];
          
 	}
@@ -238,9 +239,9 @@ class PublicacionController extends Controller
 	   \Storage::disk('Publicaciones')->put(str_replace(" ", "_", $nombrepubli),  \File::get($request->soporte_publicacion));
 	   $nombreportada=  $publicacion->id.$request->titulo.$request->tipoid."-"."Portada".date("Ymd-H:i:s").".".$request->portada->getClientOriginalExtension();
 	   \Storage::disk('Publicaciones')->put(str_replace(" ", "_", $nombreportada),  \File::get($request->portada));
-	   $publicacion->ruta =  "/public/"."Publicaciones".str_replace(" ", "_", $nombrepubli);
-	   $publicacion->autorizacion = "/public/"."Publicaciones/".str_replace(" ", "_", $nombrecarta); 
-	   $publicacion->portada = "/public/"."Publicaciones/".str_replace(" ", "_", $nombreportada);
+	   $publicacion->ruta =  "/Publicaciones/".str_replace(" ", "_", $nombrepubli);
+	   $publicacion->autorizacion = "/Publicaciones/".str_replace(" ", "_", $nombrecarta); 
+	   $publicacion->portada = "/Publicaciones/".str_replace(" ", "_", $nombreportada);
 	   $publicacion->titulo = $request->titulo;
 	   $publicacion->resumen = $request->resumen;
 	   $publicacion->descripcion = $request->descripcion;
@@ -334,21 +335,25 @@ class PublicacionController extends Controller
             return ["success"=>false,"errores"=>$validator->errors()];
         }
 	   $publicacion = Publicacion::where("id","=",$request->id)->first();
+	   
 	   if($request->soporte_carta != null){
-	   \File::delete(public_path() .  $publicacion->autorizacion);
-	   $nombrecarta =  $publicacion->id.$request->tipoid."-"."Carta".date("Ymd-H:i:s").".".$request->soporte_carta->getClientOriginalExtension();
-	   $publicacion->autorizacion = $nombrecarta;
+    	   \File::delete(public_path() .  $publicacion->autorizacion);
+    	   $nombrecarta =  $publicacion->id.$request->titulo.$request->tipoid."-"."Carta".date("Ymd-H:i:s").".".$request->soporte_carta->getClientOriginalExtension();
+    	   \Storage::disk('Publicaciones')->put(str_replace(" ", "_", $nombrecarta),  \File::get($request->soporte_carta));
+    	   $publicacion->autorizacion = "/Publicaciones/".str_replace(" ", "_", $nombrecarta);
 	   }
 	   if($request->soporte_publicacion!= null){
-	     \File::delete(public_path() .  $publicacion->ruta);
-	   $nombrepubli=  $publicacion->id.$request->tipoid."-"."Publicacion".date("Ymd-H:i:s").".".$request->soporte_publicacion->getClientOriginalExtension();
-	   $publicacion->ruta = $nombrepubli;
+	        \File::delete(public_path() .  $publicacion->ruta);
+	        $nombrepubli=  $publicacion->id.$request->titulo.$request->tipoid."-"."Publicacion".date("Ymd-H:i:s").".".$request->soporte_publicacion->getClientOriginalExtension();
+	        \Storage::disk('Publicaciones')->put(str_replace(" ", "_", $nombrepubli),  \File::get($request->soporte_publicacion));
+	        $publicacion->ruta =  "/Publicaciones/".str_replace(" ", "_", $nombrepubli);
 	   }
 	   
 	   if($request->portada!= null){
-      \File::delete(public_path() .  $publicacion->portada);
-	   $nombreportada=  $publicacion->id.$request->tipoid."-"."Portada".date("Ymd-H:i:s").".".$request->portada->getClientOriginalExtension();
-	   $publicacion->portada = $nombreportada;
+          \File::delete(public_path() .  $publicacion->portada);
+    	   $nombreportada=  $publicacion->id.$request->titulo.$request->tipoid."-"."Portada".date("Ymd-H:i:s").".".$request->portada->getClientOriginalExtension();
+	        \Storage::disk('Publicaciones')->put(str_replace(" ", "_", $nombreportada),  \File::get($request->portada));
+	        $publicacion->portada = "/Publicaciones/".str_replace(" ", "_", $nombreportada);
 	   }
 	   
 	   
