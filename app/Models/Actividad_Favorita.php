@@ -38,8 +38,8 @@ class Actividad_Favorita extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function actividade()
+    public function actividad()
     {
-        return $this->belongsTo('App\Actividade', 'actividades_id');
+        return $this->belongsTo('App\Models\Actividad', 'actividades_id');
     }
 }

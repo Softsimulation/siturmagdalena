@@ -19,9 +19,65 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Route;
 use Illuminate\Input;
 
+use App\Models\Actividades;
+use App\Models\Atracciones;
+use App\Models\Evento;
+
 class QueHacerController extends Controller
 {
     public function getIndex(Request $request){
+        
+        $lang = \Config::get('app.locale') == 'es' ? 1 : 2;
+        $result = null;
+        
+        $test = Actividades::with(['destino'])->get();
+        return $test[0];
+        
+        if($request->has('tipo') && $request->input('tipo') != ""){
+            switch($request->input('tipo')){
+                case 1:
+                    $actividades = Actividades::with(
+                        ['categoriaTurismoConActividades',
+                        'langContent' => function($langContent) use ($lang){
+                            $langContent->where('idiomas', $lang);
+                        }]
+                    )->where('estado',true)->paginate(9);
+                    
+                    $result = $actividades;
+                    break;
+                case 2:
+                    $atracciones = Atracciones::with(
+                        ['langContent' => function($langContent) use ($lang){
+                            $langContent->where('idiomas_id', $lang);
+                        }]
+                    )->where('estado',true)->paginate(9);
+                    
+                    $result = $atracciones;
+                    break;
+                case 3:
+                    $destinos = Destino::with(
+                        ['langContent' => function($langContent) use ($lang){
+                            $langContent->where('idiomas_id', $lang);
+                        }]
+                    )->where('estado',true)->orderBy('calificacion_volveria', 'desc')->paginate(9);
+                    $result = $destinos;
+                    break;
+                case 4:
+                    $eventos = Evento::with(
+                        ['langContent' => function($langContent) use ($lang){
+                            $langContent->where('idiomas_id', $lang);
+                        }]
+                    )->where('estado',true)->orderBy('fecha_in', 'asc')->paginate(9);
+                    $result = $eventos;
+                    break;
+            }
+            foreach($result as $r)
+            {
+                $r->tipo = $request->input('tipo');
+            }
+            //return $result;
+        }
+        
         $idIdioma = Idioma::where('culture', \Config::get('app.locale'))->pluck('id')->first();
         
         $destinos = Destino::with(['destinoConIdiomas' => function ($queryDestinoConIdiomas) use ($idIdioma){
@@ -57,20 +113,20 @@ class QueHacerController extends Controller
         }])->select('id')->where('estado', true)->get();
         
         
-        $queryBasic = collect(DB::select(DB::raw('SELECT * FROM public.listado_promocion(?, null, null)'), array($idIdioma)));
-        $count = count($queryBasic);
-        if ($request->has('page')){
-            $query = array_slice( $queryBasic->toArray(), ($request->page-1)*9, 9);
-            $paginator = new LengthAwarePaginator($query, $count, 9, $request->page);
-        }else{
-            $query = $queryBasic->take(9);
-            $paginator = new LengthAwarePaginator($query, $count, 9);
-        }
-        $paginator->setPath(url()->current());
+        // $queryBasic = collect(DB::select(DB::raw('SELECT * FROM public.listado_promocion(?, null, null)'), array($idIdioma)));
+        // $count = count($queryBasic);
+        // if ($request->has('page')){
+        //     $query = array_slice( $queryBasic->toArray(), ($request->page-1)*9, 9);
+        //     $paginator = new LengthAwarePaginator($query, $count, 9, $request->page);
+        // }else{
+        //     $query = $queryBasic->take(9);
+        //     $paginator = new LengthAwarePaginator($query, $count, 9);
+        // }
+        // $paginator->setPath(url()->current());
         
         //return [$paginator];
         return view('quehacer.Index', 
-        ['query' => $paginator, 
+        ['result' => $result, 
             'destinos' => $destinos, 
             'experiencias' => $experiencias,
             'categorias' => $categorias,
@@ -167,6 +223,7 @@ class QueHacerController extends Controller
      * */
     private function queHacerData ($search){
         $idIdioma = \Config::get('app.locale') == 'es' ? 1 : 2;
+        
         
         if ($search == null){
             $query = DB::select("(SELECT actividades.id AS id,  
