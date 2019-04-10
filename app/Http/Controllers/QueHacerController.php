@@ -30,8 +30,7 @@ class QueHacerController extends Controller
         $lang = \Config::get('app.locale') == 'es' ? 1 : 2;
         $result = null;
         
-        $test = Actividades::with(['destino'])->get();
-        return $test[0];
+        
         
         if($request->has('tipo') && $request->input('tipo') != ""){
             switch($request->input('tipo')){

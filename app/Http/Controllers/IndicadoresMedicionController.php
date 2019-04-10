@@ -105,7 +105,7 @@ class IndicadoresMedicionController extends Controller
         if($validator->fails()){
             return ["success"=>false,"errores"=>$validator->errors()];
         }
-        if (in_array($request->graficaPrincipal, $request->idsGraficas)) {
+        if (!in_array($request->graficaPrincipal, $request->idsGraficas)) {
             return ["success"=>false,"errores"=>[["Se debe seleccionar en el listado, la gráfica principal."]]];
         }
         $indicadorIdioma = Indicadores_mediciones_idioma::where('indicadores_medicion_id',$request->id)->where('idioma_id',$request->idioma_id)->first();
@@ -175,7 +175,7 @@ class IndicadoresMedicionController extends Controller
         if($validator->fails()){
             return ["success"=>false,"errores"=>$validator->errors()];
         }
-        if (in_array($request->graficaPrincipal, $request->idsGraficas)) {
+        if (!in_array($request->graficaPrincipal, $request->idsGraficas)) {
             return ["success"=>false,"errores"=>[["Se debe seleccionar en el listado, la gráfica principal."]]];
         }
         for($i=0;$i<sizeof($request->idsGraficas);$i++){
