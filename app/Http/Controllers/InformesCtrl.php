@@ -47,7 +47,7 @@ class InformesCtrl extends Controller
                "informes"=> Publicacione::with([ "idiomas"=>function($q){ $q->with('idioma'); }, 
                                                  "tipo"=>function($q){ $q->with([ "tipoDocumentoIdiomas"=>function($qq){ $qq->where("idioma_id",1); } ]); }, 
                                                  "categoria"=>function($q){ $q->with([ "categoriaDocumentoIdiomas"=>function($qq){ $qq->where("idioma_id",1); } ]); } 
-                                                ])->orderBy('id')->get(),
+                                                ])->orderBy('fecha_publicacion','desc')->get(),
                "tipos"=> Tipo_Documento::where("estado",true)->with([ "tipoDocumentoIdiomas"=>function($q){ $q->where("idioma_id",1); } ])->get(),
                "categorias"=> Categoria_Documento::where("estado",true)->with([ "categoriaDocumentoIdiomas"=>function($q){ $q->where("idioma_id",1); } ])->get(),
                "idiomas"=> Idioma::get()

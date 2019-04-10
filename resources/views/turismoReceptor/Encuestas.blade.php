@@ -110,6 +110,9 @@
                                         <li><a href="/turismoreceptor/seccionpercepcionviaje/@{{item.id}}">Percepcción del viaje</a></li>
                                         <li><a href="/turismoreceptor/seccionfuentesinformacion/@{{item.id}}">Fuentes de información</a></li>
                                       </ul>
+                                      <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Eliminar encuesta" ng-click="eliminarEncuesta(item)">
+                                        <span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar</span>
+                                      </button>
                                     </div>
                                     <a class="btn btn-xs btn-default" href="/turismoreceptor/editardatos/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                 @endif
