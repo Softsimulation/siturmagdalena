@@ -23,7 +23,10 @@ class IndicadoresMedicionController extends Controller
        
         $this->middleware('auth');
         
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        $this->middleware('permissions:list-indicadorMedicion|create-indicadorMedicion|edit-indicadorMedicion',['only' => ['getListado','getIndicadoresmedicion'] ]);
+        $this->middleware('permissions:create-indicadorMedicion',['only' => ['postCrearindicador'] ]);
+        $this->middleware('permissions:edit-indicadorMedicion',['only' => ['getInformacioneditar','postGuardarindicador'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -103,16 +106,16 @@ class IndicadoresMedicionController extends Controller
             return ["success"=>false,"errores"=>$validator->errors()];
         }
         if (in_array($request->graficaPrincipal, $request->idsGraficas)) {
-            return ["success"=>false,"errores"=>["Se debe seleccionar en el listado, la gráfica principal."]];
+            return ["success"=>false,"errores"=>[["Se debe seleccionar en el listado, la gráfica principal."]]];
         }
         $indicadorIdioma = Indicadores_mediciones_idioma::where('indicadores_medicion_id',$request->id)->where('idioma_id',$request->idioma_id)->first();
         if($request->idioma_id == 1){
             if(sizeof($request->idsGraficas) == 0){
-                return ["success"=>false,"errores"=>["Se debe seleccionar por lo menos un tipo de gráfica."]];
+                return ["success"=>false,"errores"=>[["Se debe seleccionar por lo menos un tipo de gráfica."]]];
             }
             for($i=0;$i<sizeof($request->idsGraficas);$i++){
                 if(Tipos_grafica::where('id',$request->idsGraficas[$i])->first() == null){
-                    return ["success"=>false,"errores"=>["Uno de los tipos de gráficas seleccionados no se encuentra en la base de datos."]];
+                    return ["success"=>false,"errores"=>[["Uno de los tipos de gráficas seleccionados no se encuentra en la base de datos."]]];
                 }
             }
         }else if($indicadorIdioma == null){
@@ -136,8 +139,8 @@ class IndicadoresMedicionController extends Controller
             $indicador->save();
             $indicador->graficas()->detach();
             for($i=0;$i<sizeof($request->idsGraficas);$i++){
-                if($request->idsGraficas == $request->graficaPrincipal){
-                    $indicador->graficas()->attach($request->idsGraficas[$i],["es_principal",1]);
+                if($request->idsGraficas[$i] == $request->graficaPrincipal){
+                    $indicador->graficas()->attach($request->idsGraficas[$i],["es_principal"=>1]);
                 }else{
                     $indicador->graficas()->attach($request->idsGraficas[$i]);
                 }
@@ -173,11 +176,11 @@ class IndicadoresMedicionController extends Controller
             return ["success"=>false,"errores"=>$validator->errors()];
         }
         if (in_array($request->graficaPrincipal, $request->idsGraficas)) {
-            return ["success"=>false,"errores"=>["Se debe seleccionar en el listado, la gráfica principal."]];
+            return ["success"=>false,"errores"=>[["Se debe seleccionar en el listado, la gráfica principal."]]];
         }
         for($i=0;$i<sizeof($request->idsGraficas);$i++){
             if(Tipos_grafica::where('id',$request->idsGraficas[$i])->first() == null){
-                return ["success"=>false,"errores"=>["Uno de los tipos de gráficas seleccionados no se encuentra en la base de datos."]];
+                return ["success"=>false,"errores"=>[["Uno de los tipos de gráficas seleccionados no se encuentra en la base de datos."]]];
             }
         }
         
@@ -192,8 +195,8 @@ class IndicadoresMedicionController extends Controller
         $indicador->created_at = Carbon::now();
         $indicador->save();
         for($i=0;$i<sizeof($request->idsGraficas);$i++){
-            if($request->idsGraficas == $request->graficaPrincipal){
-                $indicador->graficas()->attach($request->idsGraficas[$i],["es_principal",1]);
+            if($request->idsGraficas[$i] == $request->graficaPrincipal){
+                $indicador->graficas()->attach($request->idsGraficas[$i],["es_principal"=>1]);
             }else{
                 $indicador->graficas()->attach($request->idsGraficas[$i]);
             }
