@@ -78,13 +78,14 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         width: 100%;
         overflow: hidden;
     }
+    /*
     .carousel-inner>.item>img {
         min-height: 100%;
         min-width: 100%;
         height: auto;
         max-height: none;
         max-width: none;
-    }
+    }*/
     .tile .tile-img img{
         height: 100%;
         max-width: none;

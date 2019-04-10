@@ -106,4 +106,46 @@ app.controller('listadoEncuestas2Ctrl', ['$scope','receptorServi', function ($sc
     $scope.filtrarCampo = function (item) {
         return ($scope.campoSelected != "" && item[$scope.campoSelected].indexOf($scope.prop.search) > -1) || $scope.campoSelected == "";
     };
+    
+    $scope.eliminarEncuesta = function(encuesta){
+        const data = {'encuesta_id': encuesta.id};
+        const indexEncuesta = $scope.encuestas.indexOf(encuesta);
+        
+        
+        swal({
+            title: "Eliminar encuesta",
+            text: "¿Está seguro? Una vez eliminada la encuesta no podra volver a visualizarla.",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+            setTimeout(function () {
+                $("body").attr("class", "charging");
+                receptorServi.postEliminarencuesta(data).then(function(data){
+                    if(data.success){
+                        $scope.encuestas.splice(indexEncuesta,1);
+                        swal({
+                            title: "Encuesta eliminada",
+                            text: "Se ha eliminado la encuesta.",
+                            type: "success",
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        $scope.errores = null;
+                    }else{
+                        swal("Error", "Verifique la información y vuelva a intentarlo.", "error");
+                        $scope.errores = data.errores; 
+                    }
+                     $("body").attr("class", "cbp-spmenu-push");
+                }).catch(function(){
+                    $("body").attr("class", "cbp-spmenu-push");
+                    swal("Error","Error en la petición, recargue la pagina","error");
+                })
+            }, 2000);
+        });
+        
+    }
+    
 }])

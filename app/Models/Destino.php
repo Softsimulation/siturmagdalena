@@ -62,6 +62,11 @@ class Destino extends Model
     {
         return $this->hasMany('App\Models\Destino_Con_Idioma');
     }
+    
+    public function langContent()
+    {
+        return $this->destinoConIdiomas();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -69,6 +74,16 @@ class Destino extends Model
     public function multimediaDestinos()
     {
         return $this->hasMany('App\Models\Multimedia_Destino');
+    }
+    
+    public function multimedia()
+    {
+        return $this->multimediaDestinos();
+    }
+    
+    public function getPortadaAttribute()
+    {
+        return $this->multimedia()->where('portada',true)->first();
     }
 
     /**
