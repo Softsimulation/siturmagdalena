@@ -47,9 +47,10 @@ class PublicoNoticiaController extends Controller
         
         //->where(function($q)use($request){ if( isset($request->tipoNoticia) && $request->tipoNoticia != null ){$q->where('tipos_noticias.id',$request->tipoNoticia);}})
         //->where(function($q)use($request){ if( isset($request->buscar) && $request->buscar != null ){$q->where(strtolower('noticias_has_idiomas.titulo'),'like','%'.strtolower($request->buscar).'%');}})             
-        ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado",
+        ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado","noticias.created_at as fechaCreacion",
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
-        "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia","multimedias_noticias.ruta as portada", "multimedias_noticias.es_portada")->paginate(6);
+        "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia","multimedias_noticias.ruta as portada", "multimedias_noticias.es_portada")
+        ->orderBy('fechaCreacion','desc')->paginate(6);
         
         $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',1)->get();
         //return $noticias;
