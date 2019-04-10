@@ -43,9 +43,9 @@ class Sitio extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function sectore()
+    public function sector()
     {
-        return $this->belongsTo('App\Models\Sectore', 'sectores_id');
+        return $this->belongsTo('App\Models\Sector', 'sectores_id');
     }
 
     /**
@@ -101,7 +101,12 @@ class Sitio extends Model
      */
     public function sitiosConActividades()
     {
-        return $this->belongsToMany('App\Models\Actividad', 'sitios_con_actividades', 'sitios_id', 'actividades_id');
+        return $this->belongsToMany('App\Models\Actividades', 'sitios_con_actividades', 'sitios_id', 'actividades_id');
+    }
+    
+    public function actividades()
+    {
+        return $this->sitiosConActividades();
     }
 
     /**
