@@ -126,8 +126,9 @@
 
             </div>
         </div>
+        
         <div ng-repeat = "opcion3 in opcion.opciones_actividades_realizadas_internos">
-                    <div class="panel panel-success" ng-if="buscarSub(opcion3)">
+                    <div class="panel panel-success" ng-if="existeOpcion(opcion3.id) && opcion3.sub_opciones_actividades_realizadas_internos.length > 0">
                     <div class="panel-heading">
                         <!-- P4. ¿Qué parques naturales, Cascadas, ríos, pozos, balnearios, zoológicos y jardines botánicos visitó?-->
                         <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿ Qué @{{opcion3.nombre}}? </b></h3>
@@ -138,7 +139,7 @@
                             <div class="col-md-12">
                                 <div class="checkbox" ng-repeat="opcion4 in opcion3.sub_opciones_actividades_realizadas_internos">
                                     <label>
-                                        <input type="checkbox" name="opcion4" checklist-model="encuesta.SubOpcionesActividades" checklist-value="opcion4.id"> @{{opcion2.nombre}}
+                                        <input type="checkbox" name="opcion4" checklist-model="encuesta.SubOpcionesActividades" checklist-value="opcion4"> @{{opcion4.nombre}}
                                          
                                    
                                     </label>

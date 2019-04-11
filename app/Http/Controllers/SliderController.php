@@ -50,7 +50,7 @@ class SliderController extends Controller
 	public function getAjustar($id) {
 	    if ($id == null){
             return response('Bad request.', 400);
-        }elseif(Actividad::find($id) == null){
+        }elseif(Slider::find($id) == null){
             return response('Not found.', 404);
         }
 	    $slider = Slider::where('id',$id)->first();
@@ -59,7 +59,7 @@ class SliderController extends Controller
 	public function getObtenerslider($id){
 	    if ($id == null){
             return response('Bad request.', 400);
-        }elseif(Actividad::find($id) == null){
+        }elseif(Slider::find($id) == null){
             return response('Not found.', 404);
         }
 	    $slider = Slider::where('id',$id)->first();

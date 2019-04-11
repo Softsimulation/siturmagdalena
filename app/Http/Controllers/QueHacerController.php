@@ -29,7 +29,7 @@ class QueHacerController extends Controller
         
         $lang = \Config::get('app.locale') == 'es' ? 1 : 2;
         $result = null;
-        
+
         if($request->has('tipo') && $request->input('tipo') != ""){
             switch($request->input('tipo')){
                 case 1:
