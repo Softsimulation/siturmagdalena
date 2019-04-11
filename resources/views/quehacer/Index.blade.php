@@ -542,7 +542,7 @@ $countItems = false;
                 <div class="tile-body">
                     
                     <div class="tile-caption">
-                        <h3 class="m-0"><a href="#">{{$r->langContent->first()->nombre}}</a></h3>
+                        <h3 class="m-0"><a href="{{getItemType($r->tipo)->path}}{{$r->id}}">{{$r->langContent->first()->nombre}}</a></h3>
                         @if(!isset($_GET['tipo']))
                         <span class="label {{$colorTipo[$r->tipo - 1]}}">{{getItemType($r->tipo)->name}}</span>
                         @endif

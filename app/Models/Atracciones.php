@@ -51,7 +51,7 @@ class Atracciones extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id','id');
     }
     
     public function multimedia()
@@ -86,7 +86,7 @@ class Atracciones extends Model
     
     public function langContent()
     {
-        return $this->sitio->sitiosConIdiomas();
+         return $this->hasMany('App\Models\Sitio_Con_Idioma', 'sitios_id','sitios_id');
     }
 
     /**

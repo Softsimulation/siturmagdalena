@@ -85,7 +85,11 @@ class Sitio extends Model
      */
     public function sitiosConIdiomas()
     {
-        return $this->hasMany('App\Models\Sitio_Con_Idioma', 'sitios_id');
+        return $this->hasMany('App\Models\Sitio_Con_Idioma', 'sitios_id','id');
+    }
+    public function langContent()
+    {
+        return $this->hasMany('App\Models\Sitio_Con_Idioma', 'sitios_id','id');
     }
 
     /**
