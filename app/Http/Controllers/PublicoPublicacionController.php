@@ -27,7 +27,7 @@ class PublicoPublicacionController extends Controller
         $where = [ [ 'estados_id', 3 ] ];
         
         if( isset($request->tipoPublicacion) ){ array_push($where, ['tipos_publicaciones_obras_id',$request->tipoPublicacion]); }
-        if( isset($request->buscar) ){ array_push($where, [strtolower('titulo'),'like','%',trim(strtolower($request->buscar))]); }
+        if( isset($request->buscar) ){ array_push($where, [strtolower('titulo'),'like','%'.trim(strtolower($request->buscar)).'%']); }
         
         return view('publicaciones.ListadoPublicoPublicacion', array(
                "publicaciones"=> Publicacion::
