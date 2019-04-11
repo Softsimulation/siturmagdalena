@@ -81,6 +81,7 @@ class IndicadoresMedicionController extends Controller
         //return $request->all();
         $validator = \Validator::make($request->all(), [
             'descripcion' => 'required',
+            'formato' => 'required_if:idioma_id,==,1',
             'id' => 'required|exists:indicadores_mediciones,id',
             'graficaPrincipal' => 'required|exists:tipos_graficas,id',
             'eje_x' => 'required',
@@ -90,6 +91,7 @@ class IndicadoresMedicionController extends Controller
             
         ],[
             'descripcion.required' => 'La descripción es requerida.',
+            'formato.required_if' => 'El formato es requerido.',
             'nombre.required' => 'El nombre es requerido.',
             'idsGraficas.required' => 'Se debe seleccionar por lo menos un tipo de gráfica.',
             'graficaPrincipal.required' => 'Se debe seleccionar una gráfica principal.',
@@ -155,6 +157,7 @@ class IndicadoresMedicionController extends Controller
         //return $request->all();
         $validator = \Validator::make($request->all(), [
             'descripcion' => 'required',
+            'formato' => 'required',
             'idsGraficas' => 'required',
             'graficaPrincipal' => 'required|exists:tipos_graficas,id',
             'eje_x' => 'required',
@@ -162,6 +165,7 @@ class IndicadoresMedicionController extends Controller
             'nombre' =>'required',
             
         ],[
+            'formato.required' => 'El formato es requerido.',
             'descripcion.required' => 'La descripción es requerida.',
             'nombre.required' => 'El nombre es requerido.',
             'idsGraficas.required' => 'Se debe seleccionar por lo menos un tipo de gráfica.',

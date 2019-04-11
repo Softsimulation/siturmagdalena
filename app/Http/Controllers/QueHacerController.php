@@ -29,9 +29,7 @@ class QueHacerController extends Controller
         
         $lang = \Config::get('app.locale') == 'es' ? 1 : 2;
         $result = null;
-        
-        
-        
+
         if($request->has('tipo') && $request->input('tipo') != ""){
             switch($request->input('tipo')){
                 case 1:
@@ -50,7 +48,7 @@ class QueHacerController extends Controller
                             $langContent->where('idiomas_id', $lang);
                         }]
                     )->where('estado',true)->paginate(9);
-                    
+                    //return $atracciones;
                     $result = $atracciones;
                     break;
                 case 3:
