@@ -29,8 +29,8 @@ class IndicadorAdministradorController extends Controller
         
         //$this->middleware('role:Admin');
         $this->middleware('permissions:calcular-indicadorMedicion|recalcular-indicadorMedicion|list-indicadorMedicion',['only' => ['getIndex','getCargarinfo'] ]);
-        $this->middleware('permissions:create-indicadorMedicion',['only' => ['postCrearindicador'] ]);
-        $this->middleware('permissions:edit-indicadorMedicion',['only' => ['getInformacioneditar','postGuardarindicador'] ]);
+        $this->middleware('permissions:calcular-indicadorMedicion',['only' => ['postCalcularindicador','calcularInterno','calcularEmisor','calcularReceptor'] ]);
+        $this->middleware('permissions:recalcular-indicadorMedicion',['only' => ['postRecalcularindicador'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
