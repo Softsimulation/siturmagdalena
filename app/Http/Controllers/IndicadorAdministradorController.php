@@ -236,6 +236,27 @@ class IndicadorAdministradorController extends Controller
                 case 13:
                     $importar = DB::select("SELECT *from etl_gasto_medio_interno (?,?)",array($idTemporada,$idIndicador));
                     break;
+                case 51:
+                    $importar = DB::select("SELECT *from etl_motivos_no_viaje_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 52:
+                    $importar = DB::select("SELECT *from etl_caracteristica_persona_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 53:
+                    $importar = DB::select("SELECT *from etl_promedios_personas_hogar_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 57:
+                    $importar = DB::select("SELECT *from etl_destinos_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 58:
+                    $importar = DB::select("SELECT *from etl_fuentes_antes_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 59:
+                    $importar = DB::select("SELECT *from etl_fuentes_despues_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 60:
+                    $importar = DB::select("SELECT *from etl_redes_sociales_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
             }
             
             $indicador->estado_indicador_id = 2;
