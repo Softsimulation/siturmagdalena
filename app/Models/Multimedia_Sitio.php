@@ -36,6 +36,6 @@ class Multimedia_Sitio extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Modelss\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
     }
 }

@@ -51,8 +51,22 @@ class Atracciones extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id','id');
     }
+    
+    public function multimedia()
+    {
+        return $this->sitio->multimediaSitios();
+    }
+    public function getPortadaAttribute()
+    {
+        $portada= $this->multimedia()->where('portada', true)->first();
+        if($portada != null){
+            return $portada;
+        }
+        return null;
+    }
+    
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -68,6 +82,11 @@ class Atracciones extends Model
     public function atraccionesConIdiomas()
     {
         return $this->hasMany('App\Models\Atraccion_Con_Idioma', 'atracciones_id');
+    }
+    
+    public function langContent()
+    {
+         return $this->hasMany('App\Models\Sitio_Con_Idioma', 'sitios_id','sitios_id');
     }
 
     /**
@@ -91,7 +110,17 @@ class Atracciones extends Model
      */
     public function aspNetUsers()
     {
-        return $this->belongsToMany('App\AspNetUser', 'atracciones_favoritas', 'atracciones_id', 'usuario_id');
+        return $this->belongsToMany('App\Models\AspNetUser', 'atracciones_favoritas', 'atracciones_id', 'usuario_id');
+    }
+    
+    public function esFavorito()
+    {
+        return $this->aspNetUsers();
+    }
+    
+    public function getEsfavoritoAttribute()
+    {
+        return count($this->esFavorito()->get());
     }
 
     /**

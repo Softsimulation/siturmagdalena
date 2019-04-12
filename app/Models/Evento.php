@@ -57,6 +57,11 @@ class Evento extends Model
     {
         return $this->hasMany('App\Models\Evento_Con_Idioma', 'eventos_id');
     }
+    
+    public function langContent()
+    {
+        return $this->eventosConIdiomas();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -72,6 +77,16 @@ class Evento extends Model
     public function multimediaEventos()
     {
         return $this->hasMany('App\Models\Multimedia_Evento', 'eventos_id');
+    }
+    
+    public function multimedia()
+    {
+        return $this->multimediaEventos();
+    }
+    
+    public function getPortadaAttribute()
+    {
+        return $this->multimedia()->where('portada',true)->first();
     }
 
     /**

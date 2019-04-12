@@ -52,13 +52,13 @@ $tituloPagina = ($tipoItem) ? getItemType($tipoItem)->title : "Qué hacer";
 
 $countItems = false;
 
-for($i = 0; $i < count($query); $i++){
-    if($tipoItem && $query[$i]->tipo == $tipoItem){
-        $countItems = true;
-        break;
-    }
-}
-$countItems = ($tipoItem) ? $countItems : count($query) > 0;
+// for($i = 0; $i < count($query); $i++){
+//     if($tipoItem && $query[$i]->tipo == $tipoItem){
+//         $countItems = true;
+//         break;
+//     }
+// }
+// $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 ?>
 @extends('layout._publicLayout')
 
@@ -384,7 +384,9 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             <h2 class="title-section">{{$tituloPagina}}</h2>
             
             <div id="opciones">
+                @if(count($result) > 0)
                 <button type="button" id="btnFiltros" class="btn btn-default" title="Mostrar filtros" onclick="toggleFilter();"><span class="mdi mdi-filter"></span> <span class="d-none d-sm-inline-block sr-only">Mostrar filtros</span></button>
+                @endif
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="mdi mdi-view-sequential" aria-hidden="true"></span><span class="sr-only">Vista de lista</span></button>
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="mdi mdi-view-grid" aria-hidden="true"></span><span class="sr-only">Vista de mosaico</span></button>
                 <!--<form id="formSearch" method="POST" action="{{URL::action('QueHacerController@postSearch')}}" class="form-inline">-->
@@ -409,6 +411,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
     
     <div class="container">
         <br/>
+        @if(count($result) > 0)
         <div class="filtros">
             <h4>Filtros</h4>
             <button id="btnClose" class="btn btn-xs btn-link" title="Cerrar filtros" onclick="toggleFilter();">&times;</button>
@@ -523,72 +526,66 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
                 <button onclick="clearFilters()" type="button" class="btn btn-danger">Limpiar</button>
             </div>
         </div>
+        
         <div id="listado" class="tiles">
             
-            <?php $hasTipo = 0 ?>
-            @foreach($query as $entidad)
-            @if(!$tipoItem || ($tipoItem && $entidad->tipo == $tipoItem))
-            <?php $hasTipo = $hasTipo + 1 ?>
+            @foreach($result as $r)
+            @if(count($r->langContent) > 0)
             <div class="tile tile-overlap">
-                <div class="tile-img">
-                    @if($entidad->portada != "")
-                    <img src="{{ $entidad->portada }}" alt="Imagen de presentación de {{ $entidad->nombre }}"/>
+                <div class="tile-img @if(!$r->portada) img-error @endif">
+                    @if($r->portada)
+                    <img src="{{$r->portada['ruta']}}" alt="Imagen de portada de {{$r->langContent->first()->nombre}}"/>
+                    @else
+                    <img src="/img/brand/72.png" alt="Imagen para {{$r->langContent->first()->nombre}} no disponible"/>
                     @endif
                 </div>
                 <div class="tile-body">
+                    
                     <div class="tile-caption">
-                        <h3><a href="{{URL::action(getItemType($entidad->tipo)->controller.'@getVer', ['id' => $entidad->id])}}">{{ $entidad->nombre }}</a></h3>
+                        <h3 class="m-0"><a href="{{getItemType($r->tipo)->path}}{{$r->id}}">{{$r->langContent->first()->nombre}}</a></h3>
                         @if(!isset($_GET['tipo']))
-                        <span class="label {{$colorTipo[$entidad->tipo - 1]}}">{{getItemType($entidad->tipo)->name}}</span>
+                        <span class="label {{$colorTipo[$r->tipo - 1]}}">{{getItemType($r->tipo)->name}}</span>
                         @endif
-                        @if($entidad->tipo == 4)
-                        <p class="label tile-date">Del {{date('d/m/Y', strtotime($entidad->fecha_inicio))}} al {{date('d/m/Y', strtotime($entidad->fecha_fin))}}</p>
+                        @if($r->tipo == 4)
+                        <p class="label tile-date">Del {{date('d/m/Y', strtotime($r->fecha_inicio))}} al {{date('d/m/Y', strtotime($r->fecha_fin))}}</p>
                         @endif
                     </div>
-                    <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+                    <!--<p>{{$r->langContent->first()->descripcion}}</p>-->
                     <div class="tile-buttons">
                         <div class="inline-buttons">
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 0.0) ? (($entidad->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">1</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 1.0) ? (($entidad->calificacion_legusto <= 1.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">2</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 2.0) ? (($entidad->calificacion_legusto <= 2.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">3</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 3.0) ? (($entidad->calificacion_legusto <= 3.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">4</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 4.0) ? (($entidad->calificacion_legusto <= 4.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">5</span></button>
+                            @if(Auth::check() && isset($r->esfavorito))
+                            @if($r->esfavorito)
+                            <button type="button" class="btn-favorito" title="Añadir a favoritos"><span class="ionicons-inline ion-android-favorite"></span></button>
+                            @else
+                             <button type="button" class="btn-favorito" title="Quitar de favoritos"><span class="ionicons-inline ion-android-favorite-outline"></span></button> 
+                            @endif
+                            
+                            @endif
+                            <button type="button" title="{{$r->calificacion_legusto}}"><span class="{{ ($r->calificacion_legusto > 0.0) ? (($r->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">1</span></button>
+                            <button type="button" title="{{$r->calificacion_legusto}}"><span class="{{ ($r->calificacion_legusto > 1.0) ? (($r->calificacion_legusto <= 1.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">2</span></button>
+                            <button type="button" title="{{$r->calificacion_legusto}}"><span class="{{ ($r->calificacion_legusto > 2.0) ? (($r->calificacion_legusto <= 2.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">3</span></button>
+                            <button type="button" title="{{$r->calificacion_legusto}}"><span class="{{ ($r->calificacion_legusto > 3.0) ? (($r->calificacion_legusto <= 3.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">4</span></button>
+                            <button type="button" title="{{$r->calificacion_legusto}}"><span class="{{ ($r->calificacion_legusto > 4.0) ? (($r->calificacion_legusto <= 4.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">5</span></button>
                             
                         </div>
                         
                         
                     </div>
                 </div>
+                
             </div>
             @endif
             @endforeach
-            <!--<div class="tile tile-overlap">
-                <div class="tile-img">
-                    <img src="http://www.valledupar.com/sistema-noticias/data/upimages/valledupar_poporos2.jpg" alt=""/>
-                </div>
-                <div class="tile-body">
-                    <div class="tile-caption">
-                        <h3><a href="#">Parque de la Leyenda Vallenata “Consuelo Araujo Noguera”</a></h3>    
-                    </div>
-                    <div class="tile-buttons">
-                        <div class="inline-buttons">
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">1</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">2</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">3</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">4</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">5</span></button>
-                        </div>
-                        <button type="button" title="Añadir a favorito"><span class="mdi mdi-heart-outline" aria-hidden="true"></span><span class="sr-only">Añadir a favorito</span></button>
-                        
-                    </div>
-                </div>
-            </div> -->
+            
             
         </div>
-        @if(!$hasTipo)
-            <div class="alert alert-info">
-                <p>No hay registro que mostrar</p>
-            </div>
+        <div class="text-center">
+            {{ $result->appends($_GET)->links() }}
+        </div>
+        @else
+        <div class="alert alert-info">
+            No hay elementos para mostrar actualmente.
+        </div>
         @endif
     </div>
     <div class="carga"></div>

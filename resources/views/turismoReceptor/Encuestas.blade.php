@@ -28,6 +28,18 @@
     @ENDIF
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
 </div>
+<div class="flex-list">
+    <p> Fecha inicial
+        <adm-dtp name="fecha_inicial" id="fecha_inicial" ng-model='fecha_inicial'  maxdate="'@{{fecha_final}}'"
+                                             options="optionFecha" ng-required="true"></adm-dtp>
+    </p>
+    <p> Fecha final
+        <adm-dtp name="fecha_final" id="fecha_final" ng-model='fecha_final' mindate="'@{{fecha_inicial}}'"
+                                             options="optionFecha" ng-required="true"></adm-dtp>
+    </p>
+    <button type="button" class="btn btn-info" ng-click="buscarEncuestasPorRango()">Buscar</button>
+    <button type="button" class="btn btn-info" ng-click="refrescar()">Refrescar</button>
+</div>
 <div class="text-center" ng-if="(encuestas | filter:search).length > 0 && (search != undefined)">
     <p>Hay @{{(encuestas | filter:search).length}} registro(s) que coinciden con su búsqueda</p>
 </div>
@@ -40,7 +52,7 @@
 <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.id.length > 0 || search.idgrupo.length > 0 || search.lugaraplicacion.length > 0 || search.fechaaplicacion.length > 0 || search.fechallegada.length > 0 || search.username.length > 0 || search.estado.length > 0 || search.ultima.length > 0)">
     Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
 </div>
-      
+    
         <div class="row">
             <div class="col-xs-12 table-overflow">
                 <table class="table table-striped">
@@ -98,6 +110,9 @@
                                         <li><a href="/turismoreceptor/seccionpercepcionviaje/@{{item.id}}">Percepcción del viaje</a></li>
                                         <li><a href="/turismoreceptor/seccionfuentesinformacion/@{{item.id}}">Fuentes de información</a></li>
                                       </ul>
+                                      <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Eliminar encuesta" ng-click="eliminarEncuesta(item)">
+                                        <span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar</span>
+                                      </button>
                                     </div>
                                     <a class="btn btn-xs btn-default" href="/turismoreceptor/editardatos/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                 @endif
@@ -122,6 +137,7 @@
 @endsection
 @section('javascript')
 <script src="{{asset('/js/dir-pagination.js')}}"></script>
+<script src="{{asset('/js/plugins/ADM-dateTimePicker.min.js')}}"></script>
 <script src="{{asset('/js/encuestas/turismoReceptor/listadoEncuestas.js')}}"></script>
 <script src="{{asset('/js/encuestas/turismoReceptor/services/receptorServices.js')}}"></script>
 @endsection

@@ -144,7 +144,7 @@ angular.module('interno.Actividades', [])
                 for (var k = 0; k < obj.opciones_actividades_realizadas_internos.length; k++) {
                     var obj2 = obj.opciones_actividades_realizadas_internos[k];
              
-                    if(obj2.sub_opciones_actividades_realizadas_internos.length > 0){
+                    if(obj2.sub_opciones_actividades_realizadas_internos.length > 0 && $scope.existeOpcion(obj2.id)){
                         
                         if($scope.requeridoSubOpciones(obj2.sub_opciones_actividades_realizadas_internos)){
                             return true

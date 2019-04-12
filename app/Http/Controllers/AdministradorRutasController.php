@@ -7,6 +7,7 @@ use App\Models\Ruta;
 use App\Models\Ruta_Con_Idioma;
 use App\Models\Ruta_Con_Atraccion;
 use App\Models\Idioma;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 use Illuminate\Http\Request;

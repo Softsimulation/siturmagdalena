@@ -37,6 +37,7 @@ class SliderController extends Controller
         $this->middleware('permissions:edit-slider',['only' => ['postInfoeditar','postAgregaridiomaslider','postEditarslider'] ]);
         $this->middleware('permissions:estado-slider',['only' => ['postDesactivarslider','postActivarslider'] ]);
         $this->middleware('permissions:prioridad-slider',['only' => ['postBajarprioridad','postSubirprioridad'] ]);
+        $this->middleware('permissions:ajustar-slider',['only' => ['getAjustar','getObtenerslider','postAjustarimagen'] ]);
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
@@ -45,6 +46,55 @@ class SliderController extends Controller
      
     public function getListadosliders() {
         return view('sliders.ListadoSliders');
+	}
+	public function getAjustar($id) {
+	    if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Slider::find($id) == null){
+            return response('Not found.', 404);
+        }
+	    $slider = Slider::where('id',$id)->first();
+        return view('sliders.AjustarImagen',array('slider' => $slider));
+	}
+	public function getObtenerslider($id){
+	    if ($id == null){
+            return response('Bad request.', 400);
+        }elseif(Slider::find($id) == null){
+            return response('Not found.', 404);
+        }
+	    $slider = Slider::where('id',$id)->first();
+	    return ["slider"=>$slider];
+	}
+	public function postAjustarimagen(Request $request) {
+        //return $request->all();
+        
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:sliders,id',
+            
+        ],[
+            'id.required' => 'La imagen no se encuentra registrada en el sistema.',
+            'id.exists' => 'La imagen no se encuentra registrada en el sistema.',
+            ]
+        );
+	    if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+        
+        $slider = Slider::where('id',$request->id)->first();
+        
+        $image = $request->imagen;  // your base64 encoded
+        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        $formato = base64_decode($image);
+        //return "si";
+        \File::delete(public_path() . $slider->ruta);
+            $date = Carbon::now(); 
+            $nombrex = "Slider"."-".date("Ymd-H:i:s").".png";
+           \Storage::disk('Sliders')->put($nombrex,  $formato);
+            $slider->ruta = "/Sliders/".$nombrex;
+            $slider->save();
+            
+            return ["success"=>true];
 	}
 	public function getSliders() {
 	    /*Slider_Idioma::where('id','>',1)->delete();
