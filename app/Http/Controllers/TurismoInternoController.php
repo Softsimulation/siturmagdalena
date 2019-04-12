@@ -360,9 +360,10 @@ class TurismoInternoController extends Controller
             })->select('actividad_realizada_id','nombre');
         },"opcionesActividadesRealizadasInternos" =>  function($q){ $q->with(["subOpcionesActividadesRealizadasInternos"]); }])->get();
         
-    
+ 
         
         $viaje = Viaje::where("id","=",$id)->first();
+
         $encuesta = collect();
         $datosactividad = [];
         $datosopciones =  [];
@@ -389,6 +390,29 @@ class TurismoInternoController extends Controller
                          $data2["otro"] = $objeto->pivot->otro;
                          array_push($datosopciones,$data2);
                      }
+                     
+                     
+                if(count($data2->subOpcionesActividadesRealizadasInternos)>0){
+              
+                 $sw2 = 0;
+                  foreach($data2->subOpcionesActividadesRealizadasInternos as $data3){
+                  
+                      if(sizeof($viaje->subOpcionesActividadesRealizadasInternos()->where('id',$data3->id)->get())){
+                           $sw2 = 1;
+                         array_push($datossub,$data3);
+                         
+                      
+                  }
+                  }
+                 if($sw2 == 1){
+
+                      array_push($datosopciones,$data2);
+                     
+                 }
+             }
+                     
+                     
+                     
                       
                   }
                  
@@ -447,7 +471,7 @@ class TurismoInternoController extends Controller
 		
 		$viaje = Viaje::find($request->Id);
 		
-
+    
 		if(collect($request->ActividadesRelizadas)->where("id",23)->count() > 0){
 		    if( count($request->ActividadesRelizadas) > 1 ){
 		        return ["success" => false, "errores" => [["Si selecciona la opción ninguna no puede seleccionar otras actividades."]] ];    
@@ -465,6 +489,20 @@ class TurismoInternoController extends Controller
 	            }
 		    
 		}
+		
+		
+		foreach($request->OpcionesActividades as $actividad){
+		    $opciones = Sub_Opcion_Actividad_Realizada_Interno::where("opciones_actividades_realizada_interno_id",$actividad["id"])->get();
+		    
+	            if(sizeof($opciones) > 0 ){
+	                  if(collect($request->SubOpcionesActividades)->where("opciones_actividades_realizada_interno_id",$actividad["id"])->count() == 0){
+    		           
+    		             return ["success" => false, "errores" => [["Si selecciona la opción ".$actividad["nombre"]." debe elegir alguna opcíon de tercer nivel"]],"opcion"=>$request->SubOpcionesActividades,"sd"=> $actividad]; 
+	                }
+	            }
+		    
+		}
+		
 		
 		$sw = 0;
 	    $viaje->actividadesRealizadasInternos()->detach();
@@ -512,6 +550,7 @@ class TurismoInternoController extends Controller
 
 		    
 		}
+		
 		}
 		
 		$viaje->save();

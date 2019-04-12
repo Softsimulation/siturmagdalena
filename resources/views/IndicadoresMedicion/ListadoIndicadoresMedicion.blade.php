@@ -43,8 +43,10 @@
 
 @section('content')
 <div class="flex-list">
-    <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearIndicadorModal()" >Crear indicador
-    </a> 
+    @if(Auth::user()->contienePermiso('create-indicadorMedicion'))
+        <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearIndicadorModal()" >Crear indicador
+        </a>
+    @endif
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
          
 </div>
@@ -86,8 +88,10 @@
                                 <td>@{{indicador.categoria}}</td>
                                 <td>@{{indicador.estadoIndicador}}</td>
                                 <td>
-                                    <a href="" ng-repeat="idioma in indicador.tieneIdiomas" class="btn btn-default" ng-click="editarIndicadorModal(indicador,idioma.id)" >@{{idioma.culture}} </a>
-                                    <button type="button" ng-click="modalIdioma(indicador)" class="btn btn-default" ng-if="idiomas.length != indicador.tieneIdiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                                    @if(Auth::user()->contienePermiso('edit-indicadorMedicion'))
+                                        <a href="" ng-repeat="idioma in indicador.tieneIdiomas" class="btn btn-default" ng-click="editarIndicadorModal(indicador,idioma.id)" >@{{idioma.culture}} </a>
+                                        <button type="button" ng-click="modalIdioma(indicador)" class="btn btn-default" ng-if="idiomas.length != indicador.tieneIdiomas.length"> <span class="glyphicon glyphicon-plus"></span><span class="sr-only">Agregar idioma</span></button>
+                                    @endif
                                 </td>
                             </tr>
 

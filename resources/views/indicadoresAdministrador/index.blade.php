@@ -12,7 +12,9 @@
 
    <div class="blank-page widget-shadow scroll" id="style-2 div1">
        <div class="flex-list">
-           <button  type="button" ng-click="abrirModal()" class="btn btn-lg btn-success">Añadir indicador</button>
+           @if(Auth::user()->contienePermiso('calcular-indicadorMedicion'))
+               <button  type="button" ng-click="abrirModal()" class="btn btn-lg btn-success">Añadir indicador</button>
+            @endif
             <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>   
         </div>
         <div class="text-center" ng-if="(indicadoresMedicion | filter:search).length > 0 && (indicadoresMedicion != undefined)">
@@ -41,7 +43,9 @@
                             <th>Estado</th>
                             <th>Fecha Carga</th>
                             <th>Fecha Finalización</th>
-                            <th style="width: 130px;"></th>
+                            @if(Auth::user()->contienePermiso('recalcular-indicadorMedicion'))
+                                <th style="width: 130px;"></th>
+                            @endif
                         </tr>
                         <tr ng-show="mostrarFiltro == true">
                             <td><input type="text" ng-model="search.indicador" name="indicador" id="indicador" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
@@ -50,7 +54,9 @@
                             <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.fecha_carga" name="fecha_carga" id="fecha_carga" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.fecha_finalizacion" name="fecha_finalizacion" id="fecha_finalizacion" class="form-control input-sm" maxlength="150" autocomplete="off"></td>
-                            <td></td>
+                            @if(Auth::user()->contienePermiso('recalcular-indicadorMedicion'))
+                                <td></td>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -62,11 +68,13 @@
                             <td>@{{item.estado}}</td>
                             <td>@{{item.fecha_carga |date: "dd/MM/yyyy HH:mm:ss"}}</td>
                             <td>@{{item.fecha_finalizacion |date: "dd/MM/yyyy HH:mm:ss"}}</td>
-                            <td style="width: 130px;">
-                                <button class="btn btn-default btn-xs" ng-click="recalcular(item.id)" title="recalcular">
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                </button>                            
-                            </td>
+                            @if(Auth::user()->contienePermiso('recalcular-indicadorMedicion'))
+                                <td style="width: 130px;">
+                                    <button class="btn btn-default btn-xs" ng-click="recalcular(item.id)" title="recalcular">
+                                        <span class="glyphicon glyphicon-refresh"></span>
+                                    </button>                            
+                                </td>
+                            @endif
                         </tr>
                     </tbody>
                 </table>
