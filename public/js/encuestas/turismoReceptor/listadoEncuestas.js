@@ -52,6 +52,10 @@ app.controller('listadoEncuestas2Ctrl', ['$scope','receptorServi', function ($sc
     })
     
     $scope.buscarEncuestasPorRango = function(){
+        if($scope.fecha_inicial == undefined || $scope.fecha_final == undefined){
+            swal("Error", "Debe seleccionar el rango de fechas.", "info");
+            return;
+        }
         if($scope.fecha_inicial.length > 0 && $scope.fecha_final.length > 0){
             $("body").attr("class", "charging");
             receptorServi.encuestasPorRango($scope.fecha_inicial, $scope.fecha_final).then(function (data) {
