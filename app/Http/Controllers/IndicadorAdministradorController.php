@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Anio;
 use App\Models\Mes_Indicador;
 use App\Models\Indicadores_medicion;
@@ -22,20 +20,6 @@ use App\Http\Requests;
 class IndicadorAdministradorController extends Controller
 {
     //
-    public function __construct()
-    {
-       
-        $this->middleware('auth');
-        
-        //$this->middleware('role:Admin');
-        $this->middleware('permissions:calcular-indicadorMedicion|recalcular-indicadorMedicion|list-indicadorMedicion',['only' => ['getIndex','getCargarinfo'] ]);
-        $this->middleware('permissions:calcular-indicadorMedicion',['only' => ['postCalcularindicador','calcularInterno','calcularEmisor','calcularReceptor'] ]);
-        $this->middleware('permissions:recalcular-indicadorMedicion',['only' => ['postRecalcularindicador'] ]);
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
-        }
-        
-    }
     public function getIndex(){
         return view("indicadoresAdministrador.index");
     }
@@ -273,6 +257,25 @@ class IndicadorAdministradorController extends Controller
                 case 60:
                     $importar = DB::select("SELECT *from etl_redes_sociales_interno (?,?)",array($idTemporada,$idIndicador));
                     break;
+                case 61:
+                    $importar = DB::select("SELECT *from etl_experiencias_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 62:
+                    $importar = DB::select("SELECT *from etl_transporte_dentro_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 63:
+                    $importar = DB::select("SELECT *from etl_transporte_salir_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 64:
+                    $importar = DB::select("SELECT *from etl_costo_paquete_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 65:
+                    $importar = DB::select("SELECT *from etl_financiadores_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 66:
+                    $importar = DB::select("SELECT *from etl_actividades_realizadas_interno (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                
             }
             
             $indicador->estado_indicador_id = 2;
@@ -316,6 +319,46 @@ class IndicadorAdministradorController extends Controller
                 case 19:
                     $importar = DB::select("SELECT *from etl_gasto_medio_emisor (?,?)",array($idTemporada,$idIndicador));
                     break;
+                case 67:
+                    $importar = DB::select("SELECT *from etl_motivos_no_viaje_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 68:
+                    $importar = DB::select("SELECT *from etl_caracteristica_persona_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 69:
+                    $importar = DB::select("SELECT *from etl_promedios_personas_hogar_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 73:
+                    $importar = DB::select("SELECT *from etl_destinos_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 74:
+                    $importar = DB::select("SELECT *from etl_fuentes_antes_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 75:
+                    $importar = DB::select("SELECT *from etl_fuentes_despues_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 76:
+                    $importar = DB::select("SELECT *from etl_redes_sociales_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 77:
+                    $importar = DB::select("SELECT *from etl_experiencias_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 78:
+                    $importar = DB::select("SELECT *from etl_transporte_dentro_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 79:
+                    $importar = DB::select("SELECT *from etl_transporte_salir_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 80:
+                    $importar = DB::select("SELECT *from etl_costo_paquete_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 81:
+                    $importar = DB::select("SELECT *from etl_financiadores_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                case 82:
+                    $importar = DB::select("SELECT *from etl_actividades_realizadas_emisor (?,?)",array($idTemporada,$idIndicador));
+                    break;
+                
             }
             
             $indicador->estado_indicador_id = 2;
