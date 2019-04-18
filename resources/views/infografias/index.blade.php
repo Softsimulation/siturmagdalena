@@ -39,7 +39,7 @@
                             <label class="control-label" for="inputNombre"><span class="asterisk">*</span>Mes</label>
                             <select name="mes" class="form-control" ng-model="infografia.mes" id="inputNombre" required>
                                 <option value="" disabled>--Seleccione--</option>
-                                <option ng-repeat="mes in meses" value="@{{mes.nombre}}">@{{mes.nombre}}</option>
+                                <option ng-repeat="mes in meses" value="@{{mes.id}}">@{{mes.nombre}}</option>
                             </select>
                         </div>
                     </div>
