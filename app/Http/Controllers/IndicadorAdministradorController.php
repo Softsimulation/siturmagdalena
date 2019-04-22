@@ -148,6 +148,24 @@ class IndicadorAdministradorController extends Controller
                 $d_tiempo->month = $mes->name;
                 $d_tiempo->anios = $anio->anio;
                 $d_tiempo->month = $mes->name;
+                $d_tiempo->peso = $request->mes;
+                if($request->mes <=3){
+                    $d_tiempo->trimestre = 'Enero-Marzo';
+                    $d_tiempo->trimestre_en = 'January-March';
+                }
+                if($request->mes <=6){
+                    $d_tiempo->trimestre = 'Abril-Junio';
+                    $d_tiempo->trimestre_en = 'April-June';
+                }
+                if($request->mes <=9){
+                    $d_tiempo->trimestre = 'Julio-Septiembre';
+                    $d_tiempo->trimestre_en = 'July-September';
+                }
+                if($request->mes <=12){
+                    $d_tiempo->trimestre = 'Octubre-Diciembre';
+                    $d_tiempo->trimestre_en = 'October-December';
+                }
+                
                 $d_tiempo->user_create = "Admin";
                 $d_tiempo->user_update = "Admin";
                 $d_tiempo->estado = true;
@@ -156,10 +174,21 @@ class IndicadorAdministradorController extends Controller
             }
             
         
-            $fecha_inicio = $anio->anio."-".$mes->id."-".$mes->dia_inicio;
-            $fecha_final = $anio->anio."-".$mes->id."-".$mes->dia_final;
-            $respuesta = $this->calcularReceptor($request->indicador_id,$d_tiempo->id,$fecha_inicio,$fecha_final,$indicador->id);
-            
+             switch($request->tipo){
+                case 1:
+                    $fecha_inicio = $anio->anio."-".$mes->id."-".$mes->dia_inicio;
+                    $fecha_final = $anio->anio."-".$mes->id."-".$mes->dia_final;
+                    $respuesta = $this->calcularReceptor($request->indicador_id,$d_tiempo->id,$fecha_inicio,$fecha_final,$indicador->id);
+                    break;
+                case 4:
+                    $idMes = Mes_Anio::where('mes_id',$request->mes)->where('anio_id',$request->anio)->first();
+                    $respuesta = $this->calcularOferta($request->indicador_id,$d_tiempo->id,$idMes,$indicador->id);
+                    break;
+                case 5:
+                    $idMes = Mes_Anio::where('mes_id',$request->mes)->where('anio_id',$request->anio)->first();
+                    $respuesta = $this->calcularEmpleo($request->indicador_id,$d_tiempo->id,$idMes,$indicador->id);
+                    break;
+            }
             
         }else{
             $tiempoTemporada = Temporada::find($request->temporada);
@@ -451,6 +480,102 @@ class IndicadorAdministradorController extends Controller
                     $importar = DB::select("SELECT *from etl_costo_paquete_receptor (?,?,?)",array($fecha_inicio,$fecha_final,$dTiempo));
                     break;
 
+            }
+            
+            
+            $indicador->estado_indicador_id = 2;
+            $indicador->fecha_finalizacion=date('Y-m-d H:i:s');
+            $indicador->save();
+            return ["success"=>true];
+        }catch(Exception $ex){
+        
+            $indicador->estado_indicador_id = 3;
+            $indicador->save();
+             return ["success"=>false,"errores"=> [ [$ex->getMessage()] ] ];
+        }
+        
+    }
+    
+    
+    public function calcularOferta($indicadorMedicion, $dTiempo,$Idmes,$idIndicador){
+        
+        $importar = DB::select("SELECT *from importar_oferta_empleo()");
+        $indicador = Indicador::find($idIndicador);
+
+        try{
+            switch($indicadorMedicion){
+                case 21:
+                    $importar = DB::select("SELECT *from etl_agencia_viaje_operadoras(?,?)",array($Idmes,$dTiempo));            
+                    break;
+                case 25:
+                   $importar = DB::select("SELECT *from etl_viajes_emisores_oferta(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 26:
+                    $importar = DB::select("SELECT *from etl_viajes_interno_oferta(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 23:
+                    $importar = DB::select("SELECT *from etl_tasa_platos_comida_oferta(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 24:
+                    $importar = DB::select("SELECT *from etl_tasa_unidades_comida_oferta(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 6:
+                    $importar = DB::select("SELECT *from etl_duracion_media_oferta(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 22:
+                   $importar = DB::select("SELECT *from etl_ocupacion_media_oferta(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 20:
+                   $importar = DB::select("SELECT *from etl_numero_establecimientos_oferta(?,?)",array($Idmes,$dTiempo));
+                    break;
+                
+
+            }
+            
+            
+            $indicador->estado_indicador_id = 2;
+            $indicador->fecha_finalizacion=date('Y-m-d H:i:s');
+            $indicador->save();
+            return ["success"=>true];
+        }catch(Exception $ex){
+        
+            $indicador->estado_indicador_id = 3;
+            $indicador->save();
+             return ["success"=>false,"errores"=> [ [$ex->getMessage()] ] ];
+        }
+        
+    }
+    
+    
+     public function calcularEmpleo($indicadorMedicion, $dTiempo,$Idmes,$idIndicador){
+        
+        $importar = DB::select("SELECT *from importar_oferta_empleo()");
+        $indicador = Indicador::find($idIndicador);
+
+        try{
+            switch($indicadorMedicion){
+                case 29:
+                    $importar = DB::select("SELECT *from etl_dominio_ingles_empleo(?,?)",array($Idmes,$dTiempo));            
+                    break;
+                case 28:
+                   $importar = DB::select("SELECT *from etl_total_personas_empleo(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 33:
+                    $importar = DB::select("SELECT *from etl_numero_vacantes_empleo(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 27:
+                    $importar = DB::select("SELECT *from etl_vinculacion_laboral_empleo(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 32:
+                    $importar = DB::select("SELECT *from etl_renumeracion_promedio_empleo(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 30:
+                    $importar = DB::select("SELECT *from etl_numero_empleados_empleo(?,?)",array($Idmes,$dTiempo));
+                    break;
+                case 31:
+                   $importar = DB::select("SELECT *from etl_numero_empleados_tc_empleo(?,?)",array($Idmes,$dTiempo));
+                    break;
+              
             }
             
             

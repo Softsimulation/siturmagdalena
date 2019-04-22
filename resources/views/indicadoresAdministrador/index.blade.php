@@ -61,6 +61,7 @@
                     </thead>
                     <tbody>
                         <tr dir-paginate="item in indicadoresMedicion |filter:search | itemsPerPage: 10">
+                            <td>@{{item.tipo}}</td>
                             <td>@{{item.indicador}}</td>
                             <td>@{{item.temporada}}</td>
                             <td>@{{item.mes}}</td>
