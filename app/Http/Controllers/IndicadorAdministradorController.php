@@ -148,6 +148,24 @@ class IndicadorAdministradorController extends Controller
                 $d_tiempo->month = $mes->name;
                 $d_tiempo->anios = $anio->anio;
                 $d_tiempo->month = $mes->name;
+                $d_tiempo->peso = $request->mes;
+                if($request->mes <=3){
+                    $d_tiempo->trimestre = 'Enero-Marzo';
+                    $d_tiempo->trimestre_en = 'January-March';
+                }
+                if($request->mes <=6){
+                    $d_tiempo->trimestre = 'Abril-Junio';
+                    $d_tiempo->trimestre_en = 'April-June';
+                }
+                if($request->mes <=9){
+                    $d_tiempo->trimestre = 'Julio-Septiembre';
+                    $d_tiempo->trimestre_en = 'July-September';
+                }
+                if($request->mes <=12){
+                    $d_tiempo->trimestre = 'Octubre-Diciembre';
+                    $d_tiempo->trimestre_en = 'October-December';
+                }
+                
                 $d_tiempo->user_create = "Admin";
                 $d_tiempo->user_update = "Admin";
                 $d_tiempo->estado = true;
