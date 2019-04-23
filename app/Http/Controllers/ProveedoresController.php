@@ -57,11 +57,11 @@ class ProveedoresController extends Controller
         }])->select('id', 'razon_social', 'categoria_proveedores_id')->paginate(9);
         //return ['query' => $proveedores];
         
-        $p = Proveedores_rnt::with(['proveedor' => function($q){
-            $q->with('multimediaProveedores');
-        }])->get();
+        // $p = Proveedores_rnt::with(['proveedor' => function($q){
+        //     $q->with('multimediaProveedores');
+        // }])->get();
         
-        return $p;
+        // return $p;
 
         return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $request->tipo]);
 	}
