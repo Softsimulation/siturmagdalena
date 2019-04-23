@@ -81,9 +81,30 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         }
         #opciones{
             text-align:right;
+            /*background-color: white;*/
+            padding: 4px .5rem;
+            margin-top: 1rem;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position:relative;
+            z-index: 2;
+            /*box-shadow: 0px -1px 5px -2px rgba(0,0,0,.3);*/
         }
-        #opciones button, #opciones form{
+        #opciones>button, #opciones form{
             display:inline-block;
+            border: 0;
+            margin: 0 2px;
+        }
+        #opciones button {
+            box-shadow: 0px 1px 3px 0px rgba(0,0,0,.3);
+            background-color: white;
+            border-radius: 50%;
+        }
+        #opciones button:hover{
+            box-shadow: 0px 4px 12px 0px rgba(0,0,0,.2);
         }
         .input-group .form-control{
             font-size: 1rem;
@@ -152,7 +173,85 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             font-weight: 700;
             color: #004a87;
         }
-        
+        .filtros {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            background: white;
+            padding: .5rem;
+            height: 100%;
+            width: 270px;
+            box-shadow: 0px 4px 12px 0px rgba(0,0,0,.35);
+            overflow: auto;
+            display:none;
+        }
+        .filtros .panel-default>.panel-heading+.panel-collapse>.panel-body{
+            max-height: 350px;
+            overflow: auto;
+        }
+        .filtros .panel {
+            border: 0;
+        }
+        .filtros .panel-group .panel+.panel {
+            margin: 0;
+            border-top: 1px solid #ddd;
+        }
+        .filtros .panel-default>.panel-heading {
+            background-color: white;
+            padding: 0;
+        }
+        .filtros .panel-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .filtros .panel-title>a {
+            padding: .5rem 0;
+            display: block;
+        }
+        .filtros .panel-default>.panel-heading .panel-title>a[aria-expanded=true], .filtros .panel-default>.panel-heading .panel-title>a{
+            position:relative;
+        }
+        .filtros .panel-default>.panel-heading .panel-title>a[aria-expanded=true]:before {
+            content: "-";
+        }
+        .filtros .panel-default>.panel-heading .panel-title>a:before {
+            content: "+";
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            font-size: 2rem;
+            align-items: center;
+            padding: 0 1rem;
+            font-family: Open sans,sans-serif;
+            font-weight: 700;
+            color: #d3d3d3;
+        }
+        .filtros ::-webkit-scrollbar {
+            width: 8px;
+        }
+         
+        .filtros ::-webkit-scrollbar-track {
+            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+            background: #eee;
+            border-radius: 10px;
+        }
+         
+        .filtros ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); */
+            background: rgba(0,0,0,0.15); 
+        }
+        .filtros ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.35);
+        }
+        .filtros #btnClose{
+            position:absolute;
+            top: 1rem;
+            right: 1rem;
+            border: 0;
+        }
     </style>
     @if(isset($params))
     <style>
@@ -209,6 +308,9 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
             border-radius: 10px;
             display: inline-block;
         }
+        .w-100{
+            width: 100%;
+        }
     </style>
     @endif
 @endsection
@@ -234,26 +336,43 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         
         <h2 class="title-section">{{$tituloPagina}}</h2>
         <div id="opciones">
-            <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaLista')}}</span></button>
-            <button type="button" class="btn btn-default" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaMosaico')}}</span></button>
-            <form class="form-inline" action="/proveedor/index" method="get">
-                <div class="form-group">
-                    <label class="sr-only" for="searchMain">{{trans('resources.header.campoDeBusqueda')}}</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="searchMain" name="buscar" placeholder="{{trans('resources.header.queDeseaBuscar')}}" maxlength="255">
-                        <div class="input-group-addon"><button type="submit" class="btn btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.buscar')}}</span></button></div>
-                    </div>
-                    <input type="hidden" name="tipo" value="{{isset($_GET['tipo']) ? $_GET['tipo'] : ''}}" />
-                </div>
+             @if($proveedores != null && count($proveedores) > 0)
+             <button type="button" id="btnFiltros" class="btn btn-default" title="Mostrar filtros" onclick="toggleFilter();"><span class="mdi mdi-filter"></span> <span class="d-none d-sm-inline-block sr-only">Mostrar filtros</span></button>
+             @endif
+            <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="mdi mdi-view-sequential" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaLista')}}</span></button>
+            <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','')" title="Vista de mosaico"><span class="mdi mdi-view-grid" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.vistaMosaico')}}</span></button>
+            <!--<form class="form-inline" action="/proveedor/index" method="get">-->
+            <!--    <div class="form-group">-->
+            <!--        <label class="sr-only" for="searchMain">{{trans('resources.header.campoDeBusqueda')}}</label>-->
+            <!--        <div class="input-group">-->
+            <!--            <input type="text" class="form-control" id="searchMain" name="buscar" placeholder="{{trans('resources.header.queDeseaBuscar')}}" maxlength="255">-->
+            <!--            <div class="input-group-addon"><button type="submit" class="btn btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.buscar')}}</span></button></div>-->
+            <!--        </div>-->
+            <!--        <input type="hidden" name="tipo" value="{{isset($_GET['tipo']) ? $_GET['tipo'] : ''}}" />-->
+            <!--    </div>-->
                 
-            </form>
+            <!--</form>-->
             <!--<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-filter" aria-hidden="true" title="Filtrar resultados" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter"></span><span class="sr-only">Filtrar resultados</span></button>-->
         </div>
     </div>
 </div>
 <div class="container">
-    
-    
+    @if($proveedores != null && count($proveedores) > 0)
+        <div class="filtros">
+            <h4>Filtros</h4>
+            <form class="form-inline" action="/proveedor/index" method="get">
+                <div class="form-group w-100">
+                    <label class="sr-only" for="searchMain">{{trans('resources.header.campoDeBusqueda')}}</label>
+                    <div class="input-group w-100">
+                        <input type="text" class="form-control" id="searchMain" name="buscar" placeholder="{{trans('resources.header.queDeseaBuscar')}}" maxlength="255" required>
+                        <div class="input-group-addon"><button type="submit" class="btn btn-block btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span class="sr-only">{{trans('resources.listado.buscar')}}</span></button></div>
+                    </div>
+                    <input type="hidden" name="tipo" value="{{isset($_GET['tipo']) ? $_GET['tipo'] : ''}}" />
+                </div>
+                
+            </form>
+        </div>
+    @endif
     
     <hr/>
     @if($proveedores != null && count($proveedores) > 0)
@@ -318,6 +437,15 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     });
 </script>
 <script>
+function toggleFilter(){
+    $('.filtros').toggle("fast","linear");
+}
+window.addEventListener('click', function(e){
+	
+	if (!document.getElementsByClassName('filtros')[0].contains(e.target) && !document.getElementById('btnFiltros').contains(e.target)){
+      	$('.filtros').fadeOut("fast","linear");
+    }
+})
     function changeViewList(obj, idList, view){
         var element, name, arr;
         element = document.getElementById(idList);

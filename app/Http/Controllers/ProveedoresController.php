@@ -48,7 +48,7 @@ class ProveedoresController extends Controller
          
         $proveedores = Proveedores_rnt::with(['proveedor' => function ($queryProveedor) use ($idioma){
             $queryProveedor->with(['multimediaProveedores' => function ($queryMultimediaProveedores){
-                $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
+                $queryMultimediaProveedores->where('tipo', false)->where('portada', true)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
             }])->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id');
         }, 'categoria' => function ($queryCategoria) use ($idioma){
             $queryCategoria->with(['categoriaProveedoresConIdiomas' => function ($queryCategoriaProveedoresConIdiomas) use ($idioma){
@@ -56,6 +56,12 @@ class ProveedoresController extends Controller
             }])->select('id');
         }])->select('id', 'razon_social', 'categoria_proveedores_id')->paginate(9);
         //return ['query' => $proveedores];
+        
+        // $p = Proveedores_rnt::with(['proveedor' => function($q){
+        //     $q->with('multimediaProveedores');
+        // }])->get();
+        
+        // return $p;
 
         return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $request->tipo]);
 	}

@@ -284,6 +284,71 @@ class IndicadoresCtrl extends Controller
                       $periodos = DB::select("SELECT * from tiempo_gasto_medio_interno_emisor(?,?) order by id DESC", array($cultura,true) );
                       $data = $this->GastoMedioInternoEmisor($periodos[0], $cultura, true);
                       break;
+            case 51: 
+                      $periodos = DB::select("SELECT * from tiempo_no_motivos_viaje_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("no_motivos_viaje_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 52: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("piramide_edad_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 53: 
+                      $periodos = DB::select("SELECT * from tiempo_promedio_personas_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("promedio_personas_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 54: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("nivel_educacion_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 55: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("estados_civiles_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 56: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("ocupaciones_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 57: 
+                      $periodos = DB::select("SELECT * from tiempo_destino_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("destinos_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            
+            case 58: 
+                      $periodos = DB::select("SELECT * from tiempo_fuente_antes_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("fuente_antes_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 59: 
+                      $periodos = DB::select("SELECT * from tiempo_fuente_despues_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("fuente_despues_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 60: 
+                      $periodos = DB::select("SELECT * from tiempo_redes_sociales_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("redes_sociales_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 61: 
+                      $periodos = DB::select("SELECT * from tiempo_experiencia_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("experiencia_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 62: 
+                      $periodos = DB::select("SELECT * from tiempo_transporte_dentro_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("transporte_dentro_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 63: 
+                      $periodos = DB::select("SELECT * from tiempo_transporte_salir_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("transporte_salir_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 64: 
+                      $periodos = DB::select("SELECT * from tiempo_costo_paquete_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("costo_paquete_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 65: 
+                      $periodos = DB::select("SELECT * from tiempo_financiadores_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("financiadores_interno_emisor", $periodos[0], $cultura, true);
+                      break;
+            case 66: 
+                      $periodos = DB::select("SELECT * from tiempo_actividades_interno_emisor(?,?) order by id DESC", array($cultura,true) );
+                      $data = $this->getDataIndicadorInternoEmisor("actividades_interno_emisor", $periodos[0], $cultura, true);
+                      break;
                       
             ////////////////////////////////EMISOR/////////////////////////////////////////
             case 14: 
@@ -310,77 +375,141 @@ class IndicadoresCtrl extends Controller
                      $periodos = DB::select("SELECT * from tiempo_gasto_medio_interno_emisor(?,?) order by id DESC", array($cultura,false) );
                      $data = $this->GastoMedioInternoEmisor($periodos[0], $cultura, false);
                      break;          
-                      
+            
+            case 67: 
+                      $periodos = DB::select("SELECT * from tiempo_no_motivos_viaje_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("no_motivos_viaje_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 68: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("piramide_edad_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 69: 
+                      $periodos = DB::select("SELECT * from tiempo_promedio_personas_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("promedio_personas_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 70: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("nivel_educacion_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 71: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("estados_civiles_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 72: 
+                      $periodos = DB::select("SELECT * from tiempo_piramide_edad_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("ocupaciones_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 73: 
+                      $periodos = DB::select("SELECT * from tiempo_destino_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("destinos_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 74: 
+                      $periodos = DB::select("SELECT * from tiempo_fuente_antes_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("fuente_antes_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 75: 
+                      $periodos = DB::select("SELECT * from tiempo_fuente_despues_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("fuente_despues_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 76: 
+                      $periodos = DB::select("SELECT * from tiempo_redes_sociales_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("redes_sociales_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 77: 
+                      $periodos = DB::select("SELECT * from tiempo_experiencia_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("experiencia_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 78: 
+                      $periodos = DB::select("SELECT * from tiempo_transporte_dentro_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("transporte_dentro_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 79: 
+                      $periodos = DB::select("SELECT * from tiempo_transporte_salir_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("transporte_salir_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 80: 
+                      $periodos = DB::select("SELECT * from tiempo_costo_paquete_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("costo_paquete_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 81: 
+                      $periodos = DB::select("SELECT * from tiempo_financiadores_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("financiadores_interno_emisor", $periodos[0], $cultura, false);
+                      break;
+            case 82: 
+                      $periodos = DB::select("SELECT * from tiempo_actividades_interno_emisor(?,?) order by id DESC", array($cultura,false) );
+                      $data = $this->getDataIndicadorInternoEmisor("actividades_interno_emisor", $periodos[0], $cultura, false);
+                      break;          
         
             ////////////////////////////////OFERTA/////////////////////////////////////////          
             case 20: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_numero_establecimiento", $periodos[0], $cultura);
+                     $periodos = DB::select("SELECT * from tiempo_numero_establecimientos_oferta(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("numero_establecimientos_oferta", $periodos[0], $cultura);
                      break; 
                      
             case 21: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_agencia_viaje_operadoras", $periodos[0], $cultura);  
+                     $periodos = DB::select("SELECT * from tiempo_agencia_viaje_operadoras_oferta(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioMesDB("agencia_viaje_operadoras_oferta", $periodos[0], $cultura);  
                      break;
                      
             case 22: 
-                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB_Meses("estadistica_tasa_ocupacion_oferta", $periodos[0], $cultura);  
+                     $periodos = DB::select("SELECT * from tiempo_duracion_personas_oferta(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("duracion_personas_oferta", $periodos[0], $cultura);  
                      break;
             
             case 23: 
-                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB_Meses("estadistica_platos_comida", $periodos[0], $cultura);  
+                     $periodos = DB::select("SELECT * from tiempo_tasa_platos_comida_oferta(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("tasa_platos_comida_oferta", $periodos[0], $cultura); 
                      break;
             
             case 24: 
-                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB_Meses("estadistica_unidades_comida", $periodos[0], $cultura);  
+                     $periodos = DB::select("SELECT * from tiempo_tasa_unidades_comida_oferta(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("tasa_unidades_comida_oferta", $periodos[0], $cultura);  
                      break;
             
             case 25: 
-                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB_Meses("estadistica_agencia_viaje_emisor", $periodos[0], $cultura);  
+                     $periodos = DB::select("SELECT * from tiempo_viajes_emisores_oferta(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("viajes_emisores_oferta", $periodos[0], $cultura);  
                      break;
             
             case 26: 
-                     $periodos = DB::select("SELECT id, year from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB_Meses("estadistica_agencia_viaje_interno", $periodos[0], $cultura);  
+                     $periodos = DB::select("SELECT * from tiempo_viajes_internos_oferta(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("viajes_internos_oferta", $periodos[0], $cultura); 
                      break;
             
             ////////////////////////////////EMPLEO/////////////////////////////////////////          
             case 27: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_vinculacion_laboral", $periodos[0], $cultura);
-                     break; 
+                     $periodos = DB::select("SELECT * from tiempo_vinculacion_laboral_empleo(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("vinculacion_laboral_empleo", $periodos[0], $cultura); 
+                 break; 
                      
            case 28: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_total_personas", $periodos[0], $cultura);
+                     $periodos = DB::select("SELECT * from tiempo_numero_personas_empleo(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("numero_personas_empleo", $periodos[0], $cultura); 
                      break; 
                      
             case 29: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_dominio_ingles", $periodos[0], $cultura);
+                     $periodos = DB::select("SELECT * from tiempo_dominio_ingles_empleo(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("dominio_ingles_empleo", $periodos[0], $cultura); 
                      break; 
             
             case 30: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC");  
-                     $data = $this->getDataIndicadorDB("estadistica_numero_empleados", $periodos[0], $cultura);
+                     $periodos = DB::select("SELECT * from tiempo_numero_empleados_empleo(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("numero_empleados_empleo", $periodos[0], $cultura); 
                      break; 
                      
             case 31: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_numero_empleados_tc", $periodos[0], $cultura);
+                     $periodos = DB::select("SELECT * from tiempo_numero_empleados_tc_empleo(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("numero_empleados_tc_empleo", $periodos[0], $cultura); 
                      break; 
             case 32: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores where mes_id%3=0 order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_remuneracion_promedio", $periodos[0], $cultura);
+                     $periodos = DB::select("SELECT * from tiempo_remuneracion_promedio_empleo(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("remuneracion_promedio_empleo", $periodos[0], $cultura); 
                      break; 
             
             case 33: 
-                     $periodos = DB::select("SELECT *from tiempo_indicadores order by year DESC, mes_id DESC"); 
-                     $data = $this->getDataIndicadorDB("estadistica_vacantes", $periodos[0], $cultura);
+                     $periodos = DB::select("SELECT * from tiempo_numero_vacantes_empleo(?) order by id DESC", array($cultura) );
+                     $data = $this->getDataIndicadorPorAnioDB("numero_vacantes_empleo", $periodos[0], $cultura); 
                      break; 
                 
             default: break;
@@ -582,6 +711,8 @@ class IndicadoresCtrl extends Controller
             case 13:
                     $metodo = 'vista_gasto_medio_total_interno_datos';
                     break;
+            
+          
                     
             ////////////////////EMISOR//////////////////////
             case 14:
@@ -619,6 +750,24 @@ class IndicadoresCtrl extends Controller
             "data"=>   $this->redondearArray($data->lists('cantidad')->toArray())
         ];
     }
+    
+    private function getDataIndicadorPorAnioMesDB($procedimiento, $request, $idioma){ 
+        $data = new Collection( DB::select("SELECT *from ".$procedimiento."(?,?,?)", array($request->year,$idioma, $request->mes)) );
+        return [
+            "labels"=> $data->lists('tipo')->toArray(),
+            "data"=>   $this->redondearArray($data->lists('cantidad')->toArray())
+        ];
+    }
+    
+    
+    private function getDataIndicadorPorAnioDB($procedimiento, $request, $idioma){ 
+        $data = new Collection( DB::select("SELECT *from ".$procedimiento."(?,?)", array($request->year,$idioma)) );
+        return [
+            "labels"=> $data->lists('tipo')->toArray(),
+            "data"=>   $this->redondearArray($data->lists('cantidad')->toArray())
+        ];
+    }
+    
     
     private function getDataIndicadorDB_Meses($procedimiento, $request, $idioma){
        
