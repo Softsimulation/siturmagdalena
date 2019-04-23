@@ -1,7 +1,7 @@
 
 @extends('layout._encuestaDinamicaLayout')
 
-@section('Title','@{{seccion.encuesta.idiomas[0].nombre}}')
+@section('Title','Encuesta')
 
 @section('TitleSection','@{{seccion.encuesta.idiomas[0].nombre}}')
 @section('Control','ng-controller="EncuestaCtrl"')

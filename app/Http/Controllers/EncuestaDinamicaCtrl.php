@@ -751,58 +751,60 @@ class EncuestaDinamicaCtrl extends Controller
         if($encuesta){
             foreach($request->preguntas as $pregunta){
                 
-                if( $pregunta["tipo_campos_id"]==1 || $pregunta["tipo_campos_id"]==2 || $pregunta["tipo_campos_id"]==4 || $pregunta["tipo_campos_id"]==12){
-                    Respuesta_pregunta::updateOrCreate(
-                                                        [ "encuestado_id"=> $encuesta->id , "preguntas_id"=> $pregunta["id"] ], 
-                                                        [ "estado"=>true, "respuesta"=>$pregunta["respuesta"] ]
-                                                      );
-                }
+                if($pregunta["respuesta"]){
                 
-                else if( $pregunta["tipo_campos_id"]==8 || $pregunta["tipo_campos_id"]==9 ){
-                    foreach($pregunta["sub_preguntas"] as $subPregunta){
-                        //$encuesta->opcionesRespuestasSubPreguntas()->where("sub_preguntas_id", $subPregunta["id"])->detach();
+                    if( $pregunta["tipo_campos_id"]==1 || $pregunta["tipo_campos_id"]==2 || $pregunta["tipo_campos_id"]==4 || $pregunta["tipo_campos_id"]==12){
+                        Respuesta_pregunta::updateOrCreate(
+                                                            [ "encuestado_id"=> $encuesta->id , "preguntas_id"=> $pregunta["id"] ], 
+                                                            [ "estado"=>true, "respuesta"=>$pregunta["respuesta"] ]
+                                                          );
+                    }
+                    
+                    else if( $pregunta["tipo_campos_id"]==8 || $pregunta["tipo_campos_id"]==9 ){
+                        foreach($pregunta["sub_preguntas"] as $subPregunta){
+                            //$encuesta->opcionesRespuestasSubPreguntas()->where("sub_preguntas_id", $subPregunta["id"])->detach();
+                            
+                            foreach(Opciones_sub_preguntas_has_sub_pregunta::where("sub_preguntas_id",$subPregunta["id"])->get() as $item){
+                                $item->opcionesRespuestas()->wherePivot('encuestas_usuarios_id', $encuesta->id)->detach();
+                            }
+                            
+                            $encuesta->opcionesRespuestasSubPreguntas()->attach( $subPregunta["respuesta"] );
+                        }
+                    }
+                    
+                    else if( $pregunta["tipo_campos_id"]==10 || $pregunta["tipo_campos_id"]==11 ){
                         
-                        foreach(Opciones_sub_preguntas_has_sub_pregunta::where("sub_preguntas_id",$subPregunta["id"])->get() as $item){
-                            $item->opcionesRespuestas()->wherePivot('encuestas_usuarios_id', $encuesta->id)->detach();
+                        foreach($pregunta["sub_preguntas"] as $subPregunta){
+                            
+                            foreach(Opciones_sub_preguntas_has_sub_pregunta::where("sub_preguntas_id",$subPregunta["id"])->get() as $item){
+                                $item->opcionesRespuestas()->wherePivot('encuestas_usuarios_id', $encuesta->id)->detach();
+                            }
+                           
+                            foreach($subPregunta["opciones"] as $item){  
+                                $encuesta->opcionesRespuestasSubPreguntas()->attach( $item["id"], [ "respuesta"=> $item["respuesta"] ] );
+                            }
+                            
+                        }
+                    }
+                    
+                    else{
+                        //$encuesta->opcionesRespuestas()->where("preguntas_id", $pregunta["id"])->detach();
+                        
+                        $idOtro = null;
+                        
+                        foreach(Opciones_pregunta::where("preguntas_id",$pregunta["id"])->get() as $item){
+                            $item->opcionesRespuestas()->wherePivot('encuestado_id', $encuesta->id)->detach();
+                            $idOtro = $item->es_otro==true ? $item->id : -1;
                         }
                         
-                        $encuesta->opcionesRespuestasSubPreguntas()->attach( $subPregunta["respuesta"] );
-                    }
-                }
-                
-                else if( $pregunta["tipo_campos_id"]==10 || $pregunta["tipo_campos_id"]==11 ){
-                    
-                    foreach($pregunta["sub_preguntas"] as $subPregunta){
+                        $encuesta->opcionesRespuestas()->attach( $pregunta["respuesta"] );
                         
-                        foreach(Opciones_sub_preguntas_has_sub_pregunta::where("sub_preguntas_id",$subPregunta["id"])->get() as $item){
-                            $item->opcionesRespuestas()->wherePivot('encuestas_usuarios_id', $encuesta->id)->detach();
-                        }
-                       
-                        foreach($subPregunta["opciones"] as $item){  
-                            $encuesta->opcionesRespuestasSubPreguntas()->attach( $item["id"], [ "respuesta"=> $item["respuesta"] ] );
+                        if( ($pregunta["tipo_campos_id"]==3 || $pregunta["tipo_campos_id"]==7) && $idOtro!=-1 ){
+                            $opcionOtro = Opciones_preguntas_encuestado::where([ ['encuestado_id', $encuesta->id],['opciones_preguntas_id',$idOtro] ])->update(['otro'=> $pregunta["otro"]]);
                         }
                         
                     }
                 }
-                
-                else{
-                    //$encuesta->opcionesRespuestas()->where("preguntas_id", $pregunta["id"])->detach();
-                    
-                    $idOtro = null;
-                    
-                    foreach(Opciones_pregunta::where("preguntas_id",$pregunta["id"])->get() as $item){
-                        $item->opcionesRespuestas()->wherePivot('encuestado_id', $encuesta->id)->detach();
-                        $idOtro = $item->es_otro==true ? $item->id : -1;
-                    }
-                    
-                    $encuesta->opcionesRespuestas()->attach( $pregunta["respuesta"] );
-                    
-                    if( ($pregunta["tipo_campos_id"]==3 || $pregunta["tipo_campos_id"]==7) && $idOtro!=-1 ){
-                        $opcionOtro = Opciones_preguntas_encuestado::where([ ['encuestado_id', $encuesta->id],['opciones_preguntas_id',$idOtro] ])->update(['otro'=> $pregunta["otro"]]);
-                    }
-                    
-                }
-                
             }
             
             $secciones = Secciones_encuesta::where("encuestas_id", $encuesta->encuestas_id )->lists('id')->toArray();
