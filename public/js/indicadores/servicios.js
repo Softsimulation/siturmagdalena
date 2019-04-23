@@ -48,7 +48,16 @@
             
             http.get("/indicadores/datapivotable/"+indicador)
                 .then(function(data){
-                    if(data){
+                    
+                    if( !data ){
+                        $("#content-main .nav-tabs a:last").css("display", 'none');
+                    }
+                    else if( data.length==0 ){
+                        $("#content-main .nav-tabs a:last").css("display", 'none');
+                    }
+                    else{
+                        
+                        $("#content-main .nav-tabs a:last").css("display", 'block');
                         
                         $("#tablaDinamica").pivotUI(data, {
                             onRefresh: function (config) { config.rows = []; config.cols = []; },
@@ -57,7 +66,8 @@
                             renderers: $.extend( $.pivotUtilities.renderers, $.pivotUtilities.c3_renderers, $.pivotUtilities.d3_renderers ),
                             rendererName: "Tabla"
                         });
-                    }    
+                    }
+                    
                 });
             
         }

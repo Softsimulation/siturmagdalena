@@ -386,7 +386,7 @@
                                     <div class="col-xs-12 col-md-6">
                                         <div class="form-group" >
                                             <label class="control-label">El campo es requerido?</label><br>
-                                            <p class="form-control-static">@{{ detallePregunta.pregunta.esRequerido ? 'Si' : 'No' }}</p>
+                                            <p class="form-control-static">@{{ detallePregunta.es_requerido ? 'Si' : 'No' }}</p>
                                         </div>
                                     </div>
                                   
