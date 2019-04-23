@@ -40,21 +40,22 @@ class InfografiasController extends Controller
         if($validator->fails()){
             return ["success"=>false,"errores"=>$validator->errors()];
         }
-        
+        $mes=Mes::find($request->mes);
         $datos=array();
-        $datos['origeninternacional']=\DB::select("SELECT *from origeninternacional(?,?) limit 4", array($request->anio,$request->mes));
-        $datos['origennacional']=\DB::select("SELECT *from origennacional(?,?) limit 4", array($request->anio,$request->mes));
-        $datos['tipoalojamiento']=\DB::select("SELECT *from tipoalojamientoutilizado(?,?) limit 3", array($request->anio,$request->mes));
-        $datos['tipotransporte']=\DB::select("SELECT *from tipotransporteutilizado(?,?) limit 3", array($request->anio,$request->mes));
-        $datos['sexo']=\DB::select("SELECT *from sexos(?,?)", array($request->anio,$request->mes));
-        $datos['rangoedad']=\DB::select("SELECT *from rangoedad(?,?)", array($request->anio,$request->mes));
-        $datos['duracionpromedio']=\DB::select("SELECT *from duracionpromedioviaje(?,?)", array($request->anio,$request->mes));
-        $datos['destinoprincipalviaje']=\DB::select("SELECT *from destinoprincipal(?,?) limit 4", array($request->anio,$request->mes));
-        $datos['tamaniogrupo']=\DB::select("SELECT *from tamaniogrupo(?,?) limit 1", array($request->anio,$request->mes));
-        $datos['promediotiporubro']=\DB::select("SELECT *from promediotiporubro(?,?) limit 4", array($request->anio,$request->mes));
-        $datos['motivoviaje']=\DB::select("SELECT *from motivoviaje(?,?) limit 2", array($request->anio,$request->mes));
-        $datos['motivopersonalviaje']=\DB::select("SELECT *from motivoviajepersonal(?,?) limit 2", array($request->anio,$request->mes));
-        $datos['motivoviajeprofesional']=\DB::select("SELECT *from motivoviajeprofesional(?,?) limit 2", array($request->anio,$request->mes));
+        $datos['origeninternacional']=\DB::select("SELECT tipo as nombre,cantidad as numero,id_tipo as id from extranjeros_visitantes_receptor(?,?,?) limit 4", array($request->anio,"es",$mes->nombre));
+        $datos['origennacional']=\DB::select("SELECT * from origennacional(?,?) limit 4", array($request->anio,$mes->nombre));
+        $datos['tipoalojamiento']=\DB::select("SELECT tipo as nombre,cantidad as numero,id_tipo as id from tipo_alojamiento_receptor(?,?,?)limit 3", array($request->anio,"es",$mes->nombre));
+        $datos['tipotransporte']=\DB::select("SELECT tipo as nombre,cantidad as numero,id_tipo as id from medio_transporte_receptor(?,?,?) limit 3", array($request->anio,"es",$mes->nombre));
+        $datos['sexo']=\DB::select("SELECT *from sexos(?,?)", array($request->anio,$mes->id));
+        $datos['rangoedad']=\DB::select("SELECT *from rangoedad(?,?)", array($request->anio,$mes->id));
+        $datos['duracionpromedio']=\DB::select("SELECT *from duracionpromedioviaje(?,?)", array($request->anio,$mes->id));
+        $datos['destinoprincipalviaje']=\DB::select("SELECT tipo as nombre, cantidad as numero, id as id from municipios_interno_receptor(?,?,?) limit 4", array($request->anio,"es",$mes->nombre));
+        $datos['tamaniogrupo']=\DB::select("SELECT cantidad::integer as nombre,cantidad::integer as numero from tamanio_grupo_receptor(?,?) where mes='".$mes->nombre."' limit 1", array($request->anio,"es"));
+        $datos['promediotiporubro']=\DB::select("select rubro as nombre,Round(gastototal::numeric,0) as numero, id_tipo as id from gasto_medio_rubro_receptor(?,?) where mes='".$mes->nombre."' order by gastototal desc  limit 4", array($request->anio,"es"));
+        $datos['motivoviaje']=\DB::select("SELECT *from motivoviaje(?,?)limit 2", array($request->anio,$mes->nombre));
+        $datos['motivopersonalviaje']=\DB::select("SELECT *from motivoviajepersonal(?,?) limit 2",array($request->anio,$mes->id));
+        $datos['motivoviajeprofesional']=\DB::select("SELECT *from motivoviajeprofesional(?,?) order by nombre desc limit 2", array($request->anio,$mes->id));
+        
         return ["success"=>true,'datos'=>$datos];
     }
 }

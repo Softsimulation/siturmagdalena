@@ -906,7 +906,7 @@
   <path
      id="duracion-noche-4mas-bar-data"
      style="fill:none;stroke:#808080;stroke-width:0.21600001;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;fill:dimgrey;"
-     d="m 517.05288,@{{240.8415 + (70.8661 - calcBar(getItemByName('duracionpromedio','+4 Noche').numero))}} v @{{calcBar(getItemByName('duracionpromedio','+4 Noche').numero)}} h 25.5118 v -@{{calcBar(getItemByName('duracionpromedio','+4 Noche').numero)}} z"
+     d="m 517.05288,@{{240.8415 + (70.8661 - calcBar(getItemByName('duracionpromedio','4+ Noche').numero))}} v @{{calcBar(getItemByName('duracionpromedio','4+ Noche').numero)}} h 25.5118 v -@{{calcBar(getItemByName('duracionpromedio','4+ Noche').numero)}} z"
      inkscape:connector-curvature="0"
      inkscape:label="#duracionNoche4masBarData" />
   <text
@@ -2277,7 +2277,7 @@ QUE ES TURISMO RECEPTOR<tspan
       <tspan
          font-size="17.0000"
          id="tspan24577-31-8"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8px;font-family:Candara;-inkscape-font-specification:'Candara, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.01px;writing-mode:lr-tb;text-anchor:start;fill:#3c3756">00,00%</tspan>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8px;font-family:Candara;-inkscape-font-specification:'Candara, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.01px;writing-mode:lr-tb;text-anchor:start;fill:#3c3756">@{{getItemByName('duracionpromedio','4+ Noche').numero | number:2}} %</tspan>
     </text>
     <g
        id="destino-principal-1"

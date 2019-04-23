@@ -41,7 +41,7 @@ class PublicoInformeController extends Controller
                     ->select("publicaciones.id","publicaciones.autores", "publicaciones.volumen", "publicaciones.portada", "publicaciones.ruta", "publicaciones.fecha_creacion", 
                         "publicaciones.fecha_publicacion", "tipo_documento_idioma.nombre as tipoInforme", "categoria_documento_idioma.nombre as categoriaInforme",
                         "publicaciones_idioma.palabrasclaves as palabrasClaves", "publicaciones_idioma.nombre as tituloInforme", "publicaciones_idioma.descripcion")
-                    ->orderBy('id')->paginate(9),
+                    ->orderBy('fecha_publicacion','desc')->paginate(9),
                    
                    /*with([ "idiomas"=>function($q){ $q->with(['idioma'=>function($s){$s->where('id',1);}]); }, 
                                                  "tipo"=>function($q){ $q->with([ "tipoDocumentoIdiomas"=>function($qq){ $qq->where("idioma_id",1); } ]); }, 

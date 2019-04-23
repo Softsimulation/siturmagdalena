@@ -52,7 +52,7 @@ class NoticiaController extends Controller
         ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado",
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
         "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia")->get();
-        
+        return $noticias;
         $tiposNoticias = Tipo_noticia_Idioma::where('idiomas_id',$idiomaId)->get();
         
         return view('noticias.ListadoNoticiasPublico',array('noticias' => $noticias,"tiposNoticias"=>$tiposNoticias));
@@ -112,7 +112,8 @@ class NoticiaController extends Controller
         ->where('noticias_has_idiomas.idiomas_id',1)->where('tipos_noticias_has_idiomas.idiomas_id',1)
         ->select("noticias.id as idNoticia","noticias.enlace_fuente","noticias.es_interno","noticias.estado",
         "noticias_has_idiomas.titulo as tituloNoticia","noticias_has_idiomas.resumen","noticias_has_idiomas.texto",
-        "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia")->get();
+        "tipos_noticias.id as idTipoNoticia","tipos_noticias_has_idiomas.nombre as nombreTipoNoticia","noticias.created_at as fechaCreacion")
+        ->orderBy('fechaCreacion','desc')->get();
         
         foreach($noticias as $not){
             $not["idiomas"] = Noticia::with(['idiomas'])->where('id',$not->idNoticia)->get(); 

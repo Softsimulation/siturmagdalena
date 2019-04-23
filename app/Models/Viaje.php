@@ -87,7 +87,7 @@ class Viaje extends Model
 
     public function subOpcionesActividadesRealizadasInternos()
     {
-        return $this->belongsToMany('App\Models\Sub_Opcion_Actividad_Realizada_Interno', 'sub_opciones_actividades_realizadas_viajero', 'viaje_id','sub_opciones_actividades_realizadas_interno_id')->withPivot('otro');
+        return $this->belongsToMany('App\Models\Sub_Opcion_Actividad_Realizada_Interno', 'sub_opciones_actividades_realizadas_viajero', 'viaje_id','sub_opciones_actividades_realizada_interno_id');
     }
 
     /**

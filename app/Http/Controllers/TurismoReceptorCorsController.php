@@ -823,7 +823,8 @@ class TurismoReceptorCorsController extends Controller
     }
     
     public function getEncuestasrango($fecha_inicial, $fecha_final){
-        $encuestas = \DB::select('select * from encuestas_turismo_receptor(?,?)',array($fecha_inicial,$fecha_final));
+        
+        $encuestas = \DB::select('select * from encuestas_turismo_receptor(?,?,?)',array($fecha_inicial,$fecha_final,$this->user->id));
         
         return ["encuestas" => $encuestas];
     }
@@ -1542,4 +1543,20 @@ class TurismoReceptorCorsController extends Controller
         return ["success" => true, 'sw' => $sw];
     }
     
+    public function postEliminarencuesta(Request $request){
+        $validator = \Validator::make($request->all(), [
+			'encuesta_id' => 'required|exists:visitantes,id',
+    	],[
+    	    'encuesta_id.required' => 'Debe seleccionar el visitante a realizar la encuesta.',
+       		'encuesta_id.exists' => 'El visitante seleccionado no se encuentra seleccionado en el sistema.',
+    	]);
+    	
+    	if($validator->fails()){
+    		return ["success"=>false,"errores"=>$validator->errors()];
+		}
+		
+        $resultado = \DB::select('select eliminarEncuestaReceptor(?) as result',array($request['encuesta_id']))[0]->result;
+        
+        return ["success" => $resultado ];
+    }
 }

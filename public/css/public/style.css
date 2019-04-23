@@ -572,8 +572,18 @@ footer{
     padding: 2px 3px;
 }
 .inline-buttons{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items:center;
+    width: 100%;
+    /*display:inline-block;*/
+    /*vertical-align: top;*/
+}
+.tiles.tile-list .inline-buttons{
     display:inline-block;
     vertical-align: top;
+
 }
 .tile.inline-tile, #events .tile.inline-tile .tile-img{
     display: -moz-box;
