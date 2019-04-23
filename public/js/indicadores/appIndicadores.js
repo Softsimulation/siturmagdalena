@@ -213,6 +213,7 @@
                     $scope.formato = data.indicador.formato;
                     
                     $scope.inicializarDataGrafica(data.data);
+                    $('#content-main .nav-tabs a:first').tab('show');
                 });
                 
             indicadoresServi.getDataPivoTable(id);

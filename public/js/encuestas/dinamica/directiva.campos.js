@@ -60,7 +60,7 @@
 
                             case 3: 
                                    campo = '<div class="radio" ng-repeat="op in pregunta.opciones" >' +
-                                                '<label> <input type="radio" name="itemOP{{op.id}}" ng-model="pregunta.respuesta" ng-value="op.id" ng-required="!pregunta.respuesta"> {{op.idiomas[0].nombre}} </label>' +
+                                                '<label> <input type="radio" name="itemOP{{op.id}}" ng-model="pregunta.respuesta" ng-value="op.id" ng-required="{{pregunta.es_requerido}}" > {{op.idiomas[0].nombre}} </label>' +
                                                 '<input type="text" class="form-control" ng-if="op.es_otro && pregunta.respuesta==op.id" name="itemOT{{op.id}}" ng-model="pregunta.otro" maxlength="250" ng-required="{{pregunta.es_requerido}}" placeholder="Solo texto" />'+
                                            '</div>';  
                                 break;

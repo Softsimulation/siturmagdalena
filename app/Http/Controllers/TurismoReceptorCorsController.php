@@ -823,7 +823,8 @@ class TurismoReceptorCorsController extends Controller
     }
     
     public function getEncuestasrango($fecha_inicial, $fecha_final){
-        $encuestas = \DB::select('select * from encuestas_turismo_receptor(?,?,?)',array($fecha_inicial,$fecha_final, $this->user->id));
+        
+        $encuestas = \DB::select('select * from encuestas_turismo_receptor(?,?,?)',array($fecha_inicial,$fecha_final,$this->user->id));
         
         return ["encuestas" => $encuestas];
     }
