@@ -25,4 +25,8 @@ class Mes_Anio extends Model
     {
         return $this->belongsTo('App\Models\Anio', 'anio_id');
     }
+    public function factoresExpansion()
+    {
+        return $this->hasMany('App\Models\Factor_Expansion_Oferta_Empleo');
+    }
 }

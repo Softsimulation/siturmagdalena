@@ -39,6 +39,6 @@ class Tipo_Proveedor_Con_Idioma extends Model
      */
     public function tipoProveedore()
     {
-        return $this->belongsTo('App\TipoProveedore', 'tipo_proveedores_id');
+        return $this->belongsTo('App\Models\Tipo_Proveedor', 'tipo_proveedores_id');
     }
 }

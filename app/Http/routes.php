@@ -93,6 +93,7 @@ Route::controller('/periodoSostenibilidadHogares','PeriodoSostenibilidadHogarCon
 
 Route::controller('/DashBoard','DashBoardController');
 Route::controller('/indicadoresMedicion','IndicadoresMedicionController');
+Route::controller('/factoresExpansion','FactorExpansionController');
 
 Route::group(['prefix' => 'publicaciones','middleware'=>'auth'], function () {
     
