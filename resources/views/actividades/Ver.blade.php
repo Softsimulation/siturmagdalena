@@ -146,7 +146,7 @@ function parse_yturl($url)
                 </div>--}}
                 <div class="col-xs-12 col-md-8">
                     
-                    <p style="white-space: pre-line;">{{$actividad->actividadesConIdiomas[0]->descripcion}}</p>
+                    <p style="white-space: pre-line;">{!! $actividad->actividadesConIdiomas[0]->descripcion !!}</p>
                 </div>
                 <div class="col-xs-12 col-md-4">
                     <ul class="list">

@@ -11,6 +11,7 @@ use App\Models\Tiempo_Indicador;
 use App\Models\Indicador;
 use App\Models\D_Tiempo;
 use App\Models\Temporada;
+use App\Models\Mes_Anio;
 
 use DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -64,11 +65,26 @@ class IndicadorAdministradorController extends Controller
         
             $d_tiempo = D_Tiempo::where("anios",$anio->anio)->where("meses",$mes->nombre)->first();
         
-            $fecha_inicio = $anio->anio."-".$mes->id."-".$mes->dia_inicio;
-            $fecha_final = $anio->anio."-".$mes->id."-".$mes->dia_final;
-            $importar = DB::select("SELECT *from eliminar_datos_receptor (?,?)",array($indicador->indicador_medicion_id,$d_tiempo->id));
-            $respuesta = $this->calcularReceptor($indicador->indicador_medicion_id,$d_tiempo->id,$fecha_inicio,$fecha_final,$indicador->id);
-            
+          
+            switch($indicadorMedicion->tipo_medicion_indicador_id){
+                case 1:
+                    $fecha_inicio = $anio->anio."-".$mes->id."-".$mes->dia_inicio;
+                    $fecha_final = $anio->anio."-".$mes->id."-".$mes->dia_final;
+                    $importar = DB::select("SELECT *from eliminar_datos_receptor (?,?)",array($indicador->indicador_medicion_id,$d_tiempo->id));
+                    $respuesta = $this->calcularReceptor($indicador->indicador_medicion_id,$d_tiempo->id,$fecha_inicio,$fecha_final,$indicador->id);
+
+                    break;
+                case 4:
+                    $importar = DB::select("SELECT *from eliminar_datos_oferta (?,?)",array($indicador->indicador_medicion_id,$d_tiempo->id));
+                    $idMes = Mes_Anio::where('mes_id',$tiempo->mes_indicador_id)->where('anio_id',$tiempo['años_id'])->first();
+                    $respuesta = $this->calcularOferta($indicador->indicador_medicion_id,$d_tiempo->id,$idMes->id,$indicador->id);
+                    break;
+                case 5:
+                      $importar = DB::select("SELECT *from eliminar_datos_empleo (?,?)",array($indicador->indicador_medicion_id,$d_tiempo->id));
+                    $idMes = Mes_Anio::where('mes_id',$tiempo->mes_indicador_id)->where('anio_id',$tiempo['años_id'])->first();
+                    $respuesta = $this->calcularEmpleo($indicador->indicador_medicion_id,$d_tiempo->id,$idMes->id,$indicador->id);
+                    break;
+            }
             
         }else{
             if($indicadorMedicion->tipo_medicion_indicador_id == 2){
@@ -182,11 +198,15 @@ class IndicadorAdministradorController extends Controller
                     break;
                 case 4:
                     $idMes = Mes_Anio::where('mes_id',$request->mes)->where('anio_id',$request->anio)->first();
-                    $respuesta = $this->calcularOferta($request->indicador_id,$d_tiempo->id,$idMes,$indicador->id);
+                    if($idMes != null){
+                        $respuesta = $this->calcularOferta($request->indicador_id,$d_tiempo->id,$idMes->id,$indicador->id);
+                    }
                     break;
                 case 5:
                     $idMes = Mes_Anio::where('mes_id',$request->mes)->where('anio_id',$request->anio)->first();
-                    $respuesta = $this->calcularEmpleo($request->indicador_id,$d_tiempo->id,$idMes,$indicador->id);
+                    if($idMes != null){
+                        $respuesta = $this->calcularEmpleo($request->indicador_id,$d_tiempo->id,$idMes->id,$indicador->id);
+                    }
                     break;
             }
             
