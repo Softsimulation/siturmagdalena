@@ -55,4 +55,8 @@ class Tipo_Proveedor extends Model
     {
         return $this->hasMany('App\TipoCaracteristica', 'tipo_proveedor_id');
     }
+    public function factoresExpansion()
+    {
+        return $this->hasMany('App\Models\Factor_Expansion_Oferta_Empleo');
+    }
 }

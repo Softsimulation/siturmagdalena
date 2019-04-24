@@ -48,7 +48,9 @@
                             @endif
                         </tr>
                         <tr ng-show="mostrarFiltro == true">
+                            <td><input type="text" ng-model="search.tipo" name="tipo" id="tipo" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.indicador" name="indicador" id="indicador" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
+                            <td><input type="text" ng-model="search.temporada" name="temporada" id="temporada" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.mes" name="mes" id="mes" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.anio" name="anio" id="anio" class="form-control input-sm" id="inputSearch" maxlength="150" autocomplete="off"></td>
                             <td><input type="text" ng-model="search.estado" name="estado" id="estado" class="form-control input-sm" maxlength="150" autocomplete="off"></td>

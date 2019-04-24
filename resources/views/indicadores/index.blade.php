@@ -209,6 +209,18 @@
                             </div>
                             @endif
                             
+                            @if( isset($tipoExperiencia) )
+                            <div class="col-xs-12 col-md-4" ng-if="indicadorSelect==61 || indicadorSelect==77">
+                                <div class="input-group" ng-init="filtro.tipoExperiencia='{{$tipoExperiencia[0]['key']}}' " >
+                                    <label class="input-group-addon colorInd">Tipo experiencia </label>
+                                    <select class="form-control" ng-model="filtro.tipoExperiencia" id="experiencia" ng-change="filtrarDatos()" >
+                                        <option value="{{$tipoExperiencia[0]['key']}}" >{{$tipoExperiencia[0]['nombre']}}</option>
+                                        <option value="{{$tipoExperiencia[1]['key']}}" >{{$tipoExperiencia[1]['nombre']}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            @endif
+                            
                             <div class="col-xs-12 col-md-3" ng-if="indicadorSelect==5">
                                 <div class="input-group" >
                                     <label class="input-group-addon colorInd">Gasto promedio </label>

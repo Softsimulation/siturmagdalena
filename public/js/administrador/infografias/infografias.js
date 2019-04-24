@@ -31,6 +31,7 @@ var pp=angular.module('admin.infografias', ['infografiasservice'])
             swal("Error","Hay errores en el formulario, selecciona los dos campos","error");
             return;
         }
+        $scope.datoinfografia = [];
         
         $scope.errores=null
         $("body").attr("class", "cbp-spmenu-push charging");
@@ -109,7 +110,9 @@ var pp=angular.module('admin.infografias', ['infografiasservice'])
       text.each(function() {
         var text = d3.select(this),
             textTemp = text.text().indexOf("(") > -1 ? text.text().split('(')[0] : text.text(),
-            words = textTemp.split(/\s+/).reverse(),
+            shortWord = (textTemp.length > 37) ? textTemp.substring(0,35) + "..." : textTemp,
+            slashWord = ((shortWord.indexOf('/') != -1 && shortWord.charAt(shortWord.indexOf('/') - 1) != " ") ? (shortWord.length > 15 ? shortWord.substring(0,13) + "..." : shortWord) : shortWord),
+            words = slashWord.split(/\s+/).reverse(),
             word,
             line = [],
             lineNumber = 0,
