@@ -75,13 +75,14 @@ class IndicadorAdministradorController extends Controller
 
                     break;
                 case 4:
-                    
-                    //$idMes = Mes_Anio::where('mes_id',$tiempo->mes_indicador_id)->where('anio_id',$tiempo['años_id'])->first();
-                   // $respuesta = $this->calcularOferta($indicador->indicador_medicion_id,$d_tiempo->id,$idMes->id,$indicador->id);
+                    $importar = DB::select("SELECT *from eliminar_datos_oferta (?,?)",array($indicador->indicador_medicion_id,$d_tiempo->id));
+                    $idMes = Mes_Anio::where('mes_id',$tiempo->mes_indicador_id)->where('anio_id',$tiempo['años_id'])->first();
+                    $respuesta = $this->calcularOferta($indicador->indicador_medicion_id,$d_tiempo->id,$idMes->id,$indicador->id);
                     break;
                 case 5:
-                    //$idMes = Mes_Anio::where('mes_id',$tiempo->mes_indicador_id)->where('anio_id',$tiempo['años_id'])->first();
-                    //$respuesta = $this->calcularEmpleo($indicador->indicador_medicion_id,$d_tiempo->id,$idMes->id,$indicador->id);
+                      $importar = DB::select("SELECT *from eliminar_datos_empleo (?,?)",array($indicador->indicador_medicion_id,$d_tiempo->id));
+                    $idMes = Mes_Anio::where('mes_id',$tiempo->mes_indicador_id)->where('anio_id',$tiempo['años_id'])->first();
+                    $respuesta = $this->calcularEmpleo($indicador->indicador_medicion_id,$d_tiempo->id,$idMes->id,$indicador->id);
                     break;
             }
             
