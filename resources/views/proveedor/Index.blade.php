@@ -418,7 +418,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     @endfor
     </div>
     <div class="text-center">
-       
+       {{ $proveedores->appends($_GET)->links() }}
     </div>
     @else
     <div class="alert alert-info">

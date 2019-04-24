@@ -62,6 +62,8 @@ class ProveedoresController extends Controller
         // }])->get();
         
         // return $p;
+        
+        //return $proveedores;
 
         return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $request->tipo]);
 	}
@@ -81,11 +83,11 @@ class ProveedoresController extends Controller
         },'proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
                 $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');
-            }])->select('id', 'razon_social');
+            }])->select('id', 'razon_social','longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email');
         }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas) use ($idioma){
             $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario')->where('idiomas_id', $idioma);
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
-            $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
+            $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta', 'portada', 'tipo');
         }, 'actividadesProveedores' => function ($queryActividadesProveedores) use ($idioma){
             $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas) use ($idioma){
                 $queryActividadesConIdiomas->where('idiomas', $idioma)->select('actividades_id', 'idiomas', 'nombre');
@@ -109,6 +111,14 @@ class ProveedoresController extends Controller
         }else {
             $video_promocional = null;
         }
+        
+        if(count($proveedor->proveedoresConIdiomas) > 0){
+            $proveedor->proveedoresConIdiomas = $proveedor->proveedoresConIdiomas->first();
+            $proveedor->proveedorRnt = $proveedor->proveedorRnt->first();
+        }
+        
+        //return $proveedor;
+        
         
         //return ['proveedor' => $proveedor, 'video_promocional' => $video_promocional];
         return view('proveedor.Ver', ['proveedor' => $proveedor, 'video_promocional' => $video_promocional]);
