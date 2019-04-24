@@ -94,7 +94,7 @@ class SostenibilidadPstController extends Controller
 			'cargo' => 'required|max:255',
 			'establecimiento' => 'required',
 			'establecimiento.id' => 'exists:proveedores_rnt,id',
-			'digitador_id' => 'required|exists:users,id',
+			'digitador_id' => 'required|exists:digitadores,id',
 			'periodo' => 'required|exists:periodos_sostenibilidad_pst,id',
     	],[
        		'fechaAplicacion.required' => 'La fecha de apliación es requerida.',
@@ -180,7 +180,7 @@ class SostenibilidadPstController extends Controller
 			'cargo' => 'required|max:255',
 			'establecimiento' => 'required',
 			'establecimiento.id' => 'exists:proveedores_rnt,id',
-			'digitador_id' => 'required|exists:users,id',
+			'digitador_id' => 'required|exists:digitadores,id',
 			'periodo_sostenibilidad_id' => 'required|exists:periodos_sostenibilidad_pst,id',
     	],[
        		'fechaAplicacion.required' => 'La fecha de apliación es requerida.',
