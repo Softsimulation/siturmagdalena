@@ -41,8 +41,11 @@ app.controller('listadoFactoresOfertaCtrl', function($scope, factorExpansionServ
             $scope.factores[i]["tamanioEmpresa_id"] = $scope.factores[i].d_tamanio_empresa_id;
             $scope.factores[i]["tipoProveedor_id"] = $scope.factores[i].tipo_proveedor_id;
             $scope.factores[i].cantidad = parseFloat($scope.factores[i].cantidad);
+            $scope.factores[i]["es_general"] = $scope.factores[i].proveedor_rnt_id == null ? 0 : 1;
+            $scope.factores[i]["es_oferta"] = $scope.factores[i].es_oferta == false ? 0 : 1;
         }
         $scope.meses = dato.meses;
+        $scope.proveedoresRnt = dato.proveedores;
         $scope.municipios = dato.municipios;
         $scope.tamaniosEmpresa = dato.tamaniosEmpresa;
         $scope.tiposProveedores = dato.tiposProveedores;
