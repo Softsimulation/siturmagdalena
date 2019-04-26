@@ -79,7 +79,7 @@ class SostenibilidadPstController extends Controller
     }
     
     public function getCargarproveedoresrnt(){
-        $proveedores = Proveedores_rnt::all();
+        $proveedores = Proveedores_rnt::where('estado', 1)->get();
         $encuestadores = Digitador::with([ 'user'])->get();
         $periodos = Periodo_Sostenibilidad_Pst::where('fecha_final','>=', date('Y-m-d') )->where('estado', true)->get();
         
@@ -290,8 +290,8 @@ class SostenibilidadPstController extends Controller
     		
     		foreach($tiposRiesgos as $item){
     			$riesgo = Riesgo_Encuesta_Pst_Sostenibilidad::where('encuesta_pst_sostenibilidad_id',$encuesta->id)->where('tipo_riesgo_id', $item['id'])->first();
-    			$item['califcacion'] = $riesgo->criterios_calificacion_id;
-    			$item['otroRiesgo'] = $riesgo->otro;
+    			$item['califcacion'] = isset($riesgo->criterios_calificacion_id) ? $riesgo->criterios_calificacion_id : 4;
+    			$item['otroRiesgo'] = isset($riesgo->otro) ? $riesgo->otro : null;
     		}
     		$objeto['tiposRiesgos'] = $tiposRiesgos;
     		
@@ -899,11 +899,11 @@ class SostenibilidadPstController extends Controller
 			return ["success" => false, "errores" => [["El campo otro en la pregunta 27 es requerido."]] ];
 		}
 		
-		if(count($request->aspectosSeleccion) != 2){
-			return ["success" => false, "errores" => [["En la pregunta 24.2 solo debe seleccionar dos opciones."]] ];
+		if(count($request->aspectosSeleccion) > 2){
+			return ["success" => false, "errores" => [["En la pregunta 24.2 solo puede seleccionar hasta dos opciones."]] ];
 		}
-		if(count($request->beneficiosEconomicos) != 3){
-			return ["success" => false, "errores" => [["En la pregunta 27 solo debe seleccionar tres opciones."]] ];
+		if(count($request->beneficiosEconomicos) > 3){
+			return ["success" => false, "errores" => [["En la pregunta 27 solo puede seleccionar hasta tres opciones."]] ];
 		}
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
