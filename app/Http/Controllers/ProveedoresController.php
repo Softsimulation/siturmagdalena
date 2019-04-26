@@ -48,7 +48,7 @@ class ProveedoresController extends Controller
          
         $proveedores = Proveedores_rnt::with(['proveedor' => function ($queryProveedor) use ($idioma){
             $queryProveedor->with(['multimediaProveedores' => function ($queryMultimediaProveedores){
-                $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
+                $queryMultimediaProveedores->where('tipo', false)->where('portada', true)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
             }])->select('id', 'valor_min', 'valor_max', 'calificacion_legusto', 'proveedor_rnt_id');
         }, 'categoria' => function ($queryCategoria) use ($idioma){
             $queryCategoria->with(['categoriaProveedoresConIdiomas' => function ($queryCategoriaProveedoresConIdiomas) use ($idioma){
@@ -56,6 +56,14 @@ class ProveedoresController extends Controller
             }])->select('id');
         }])->select('id', 'razon_social', 'categoria_proveedores_id')->paginate(9);
         //return ['query' => $proveedores];
+        
+        // $p = Proveedores_rnt::with(['proveedor' => function($q){
+        //     $q->with('multimediaProveedores');
+        // }])->get();
+        
+        // return $p;
+        
+        //return $proveedores;
 
         return view('proveedor.Index', ['proveedores' => $proveedores, 'params'=> $request->tipo]);
 	}
@@ -75,11 +83,11 @@ class ProveedoresController extends Controller
         },'proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
             $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
                 $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');
-            }])->select('id', 'razon_social');
+            }])->select('id', 'razon_social','longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email');
         }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas) use ($idioma){
             $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario')->where('idiomas_id', $idioma);
         }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
-            $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta');
+            $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta', 'portada', 'tipo');
         }, 'actividadesProveedores' => function ($queryActividadesProveedores) use ($idioma){
             $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas) use ($idioma){
                 $queryActividadesConIdiomas->where('idiomas', $idioma)->select('actividades_id', 'idiomas', 'nombre');
@@ -103,6 +111,14 @@ class ProveedoresController extends Controller
         }else {
             $video_promocional = null;
         }
+        
+        if(count($proveedor->proveedoresConIdiomas) > 0){
+            $proveedor->proveedoresConIdiomas = $proveedor->proveedoresConIdiomas->first();
+            $proveedor->proveedorRnt = $proveedor->proveedorRnt->first();
+        }
+        
+        //return $proveedor;
+        
         
         //return ['proveedor' => $proveedor, 'video_promocional' => $video_promocional];
         return view('proveedor.Ver', ['proveedor' => $proveedor, 'video_promocional' => $video_promocional]);

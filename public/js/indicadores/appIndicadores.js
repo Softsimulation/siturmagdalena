@@ -201,18 +201,20 @@
                     $scope.periodos = data.periodos;
                     $scope.indicador = data.indicador;
                     
-                    $scope.yearSelect = data.periodos[0];
-                    $scope.mesSelect = data.periodos[0];
-                    $scope.filtro.year = $scope.yearSelect.year;
-                    $scope.filtro.id = $scope.yearSelect.id;
-                    
-                    if($scope.yearSelect.mes){ $scope.filtro.mes = $scope.yearSelect.mes; }
+                    if( data.periodos.length>0 ){
+                        $scope.yearSelect = data.periodos[0];
+                        $scope.mesSelect = data.periodos[0];
+                        $scope.filtro.year = $scope.yearSelect.year;
+                        $scope.filtro.id = $scope.yearSelect.id;
+                        if($scope.yearSelect.mes){ $scope.filtro.mes = $scope.yearSelect.mes; }
+                    }
                     
                     $scope.label_x = data.indicador.idiomas[0].eje_x;
                     $scope.label_y = data.indicador.idiomas[0].eje_y;
                     $scope.formato = data.indicador.formato;
                     
                     $scope.inicializarDataGrafica(data.data);
+                    $('#content-main .nav-tabs a:first').tab('show');
                 });
                 
             indicadoresServi.getDataPivoTable(id);
@@ -339,9 +341,5 @@
 		});
         
     }]);
-    
-    
-    
-
     
 }());

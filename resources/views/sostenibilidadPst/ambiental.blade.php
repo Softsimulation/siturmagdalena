@@ -54,7 +54,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.11 ¿Cuáles  áreas  protegidas promociona en @{{proveedor.razon_social}}?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.11 ¿Cuáles áreas protegidas promociona el departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Respuesta abierta</b></div>
             <div class="panel-body">
@@ -73,7 +73,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading p3">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.12 ¿Qué  nivel  de  conocimiento  tienen  los  empleados  sobre  las  especies  de  flora  y  fauna  características  de @{{proveedor.razon_social}}? </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.12 ¿Qué  nivel  de  conocimiento  tienen  los  empleados  sobre  las  especies  de  flora  y  fauna  características  del departamento del Magdalena? </b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -103,7 +103,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading p3">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P. 12.1 ¿Sabe si @{{proveedor.razon_social}} tiene una guía que caracterice la flora, fauna y especies en vía de extinción para la conservación de los mismos? </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P. 12.1 ¿Sabe si el departamento del Magdalena tiene una guía que caracterice la flora, fauna y especies en vía de extinción para la conservación de los mismos? </b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
@@ -131,7 +131,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.13 ¿La empresa adelanta o ha participado en alguna de las siguientes actividades para conservar el medio ambiente en @{{proveedor.razon_social}}? </b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.13 ¿La empresa adelanta o ha participado en alguna de las siguientes actividades para conservar el medio ambiente en el departamento del Magdalena? </b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta de selección múltiple</b></div>
             <div class="panel-body">
@@ -177,7 +177,7 @@
         
         <div class="panel panel-success">
             <div class="panel-heading p3">
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.15 De los siguientes riesgos o problemáticas ambientales en función del turismo sostenible, ¿Cuáles  cree  que  representan  un riesgo alto, medio o bajo en @{{proveedor.razon_social}}?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> P.15 De los siguientes riesgos o problemáticas ambientales en función del turismo sostenible, ¿Cuáles  cree  que  representan  un riesgo alto, medio o bajo en el departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única para la calificación</b></div>
             <div class="panel-body">
