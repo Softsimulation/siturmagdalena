@@ -79,7 +79,7 @@ class SostenibilidadPstController extends Controller
     }
     
     public function getCargarproveedoresrnt(){
-        $proveedores = Proveedores_rnt::all();
+        $proveedores = Proveedores_rnt::where('estado', 1)->get();
         $encuestadores = Digitador::with([ 'user'])->get();
         $periodos = Periodo_Sostenibilidad_Pst::where('fecha_final','>=', date('Y-m-d') )->where('estado', true)->get();
         
