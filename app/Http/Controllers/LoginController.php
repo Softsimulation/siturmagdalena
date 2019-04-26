@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function getLogin(){
+        if(Auth::user() != null){
+            return redirect()->intended('DashBoard/index');
+        }
         return view('Login');
     }
     public function postAutenticacion(Request $request){
