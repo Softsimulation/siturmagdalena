@@ -443,7 +443,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="checkbox" ng-repeat="it in accionesEnergia">
+                        <div class="checkbox" ng-repeat="it in accionesEnergia| orderBy: 'peso'">
                             <label>
                                 <input type="checkbox" name="accionesEnergia" checklist-model="encuesta.accionesEnergia"  checklist-value="it.id" > @{{it.nombre}}
                             </label>
