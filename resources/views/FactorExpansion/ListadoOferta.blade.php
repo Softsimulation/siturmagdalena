@@ -43,8 +43,10 @@
 
 @section('content')
 <div class="flex-list">
+    @if(Auth::user()->contienePermiso('create-factorExpansion'))
         <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearFactorModal()" >Crear Factor de expansión
         </a>
+    @endif
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
          
 </div>
@@ -60,7 +62,6 @@
 <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.cantidad.length > 0 || search.d_tamanio_empresa.nombre.length > 0 || search.d_municipio_interno.nombre.length > 0 || search.mes.length > 0 || search.tipoProveedor.length > 0)">
     Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
 </div>   
-<p class="text-muted text-center">Seleccione indicadores para ver más opciones</p>
         <div class="row">
             <div class="col-xs-12" style="overflow: auto;">
                 <div>
@@ -92,7 +93,9 @@
                                 <td>@{{factor.d_tamanio_empresa.nombre}}</td>
                                 <td>@{{factor.cantidad}}</td>
                                 <td>
+                                    @if(Auth::user()->contienePermiso('edit-factorExpansion'))
                                         <a href="" ng-click="editarFactorModal(factor)" class="btn btn-xs btn-default" title="Editar factor"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    @endif
                                 </td>
                             </tr>
 

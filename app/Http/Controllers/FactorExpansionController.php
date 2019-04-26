@@ -25,7 +25,12 @@ class FactorExpansionController extends Controller
        
         $this->middleware('auth');
         
-        $this->middleware('role:Admin');
+        //$this->middleware('role:Admin');
+        
+        $this->middleware('permissions:list-factorExpansion|create-factorExpansion|edit-factorExpansion',['only' => ['getListado','getFactoresoferta'] ]);
+        $this->middleware('permissions:create-factorExpansion',['only' => ['postCrearfactor'] ]);
+        $this->middleware('permissions:edit-noticia',['only' => ['postEditarfactor'] ]);
+        
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
