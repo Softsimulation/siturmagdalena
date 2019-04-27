@@ -62,7 +62,6 @@
 <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.cantidad.length > 0 || search.d_tamanio_empresa.nombre.length > 0 || search.d_municipio_interno.nombre.length > 0 || search.mes.length > 0 || search.tipoProveedor.length > 0)">
     Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
 </div>   
-<p class="text-muted text-center">Seleccione indicadores para ver más opciones</p>
         <div class="row">
             <div class="col-xs-12" style="overflow: auto;">
                 <div>
