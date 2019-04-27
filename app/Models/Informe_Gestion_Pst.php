@@ -37,7 +37,7 @@ class Informe_Gestion_Pst extends Model
     /**
      * @var array
      */
-    protected $fillable = ['periodos_informe_id', 'mide_residuos','encuestas_pst_sosteniblidad_id'];
+    protected $fillable = ['periodos_informe_id', 'mide_residuos','encuestas_pst_sosteniblidad_id','otro_periodo_informe'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
