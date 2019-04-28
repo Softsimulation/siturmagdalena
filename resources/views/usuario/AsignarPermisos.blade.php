@@ -521,6 +521,22 @@
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'calcular-indicadorMedicion'"></td>
                           <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'recalcular-indicadorMedicion'"></td>
                         </tr>
+                        <tr>
+                          <td rowspan="2'"></td>
+                        </tr>
+                        <tr>
+                          <td>Factor de expansión</td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'create-factorExpansion'"></td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'edit-factorExpansion'"></td>
+                          <td class="text-center"><input type="checkbox" checklist-model="permisos" checklist-value="'list-factorExpansion'"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                        </tr>
                       </tbody>
                     </table>
                 </div>

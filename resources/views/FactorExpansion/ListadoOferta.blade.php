@@ -43,8 +43,10 @@
 
 @section('content')
 <div class="flex-list">
+    @if(Auth::user()->contienePermiso('create-factorExpansion'))
         <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearFactorModal()" >Crear Factor de expansión
         </a>
+    @endif
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
          
 </div>
@@ -60,7 +62,6 @@
 <div class="alert alert-info" role="alert"  ng-show="mostrarFiltro == false && (search.cantidad.length > 0 || search.d_tamanio_empresa.nombre.length > 0 || search.d_municipio_interno.nombre.length > 0 || search.mes.length > 0 || search.tipoProveedor.length > 0)">
     Actualmente se encuentra algunos de los filtros en uso, para reiniciar el listado de las encuestas haga clic <span><a href="#" ng-click="search = ''">aquí</a></span>
 </div>   
-<p class="text-muted text-center">Seleccione indicadores para ver más opciones</p>
         <div class="row">
             <div class="col-xs-12" style="overflow: auto;">
                 <div>
@@ -92,7 +93,9 @@
                                 <td>@{{factor.d_tamanio_empresa.nombre}}</td>
                                 <td>@{{factor.cantidad}}</td>
                                 <td>
+                                    @if(Auth::user()->contienePermiso('edit-factorExpansion'))
                                         <a href="" ng-click="editarFactorModal(factor)" class="btn btn-xs btn-default" title="Editar factor"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    @endif
                                 </td>
                             </tr>
 
@@ -186,6 +189,52 @@
                                     <span ng-show="crearFactorForm.tamanioEmpresaFactorCrear.$error.required" class="color_errores">* El campo es obligatorio.</span>
                                 </span>
                               
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="generalFactorCrear"><span class="asterisk">*</span>¿Qué tipo de factor aplicar?</label>
+                                <br>
+                                <input type="radio" name="generalFactorCrear" id="generalFactorCrear" ng-model="crearFactor.es_general" value="0" required>General
+                                <input type="radio" name="generalFactorCrear" id="generalFactorCrear" ng-model="crearFactor.es_general" value="1" required>Específico
+                                <span class="messages" ng-show="crearFactorForm.$submitted || crearFactorForm.generalFactorCrear.$touched">
+                                    <br>
+                                    <span ng-show="crearFactorForm.generalFactorCrear.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="crearFactor.es_general == 1">
+                            <div class="col-xs-12">
+                                <label for="proveedorRntFactorCrear"><span class="asterisk">*</span>Proveedor RNT</label>
+                                <ui-select ng-model="crearFactor.proveedor_rnt_id" id="proveedorRntFactorCrear" name="proveedorRntFactorCrear" ng-required="crearFactor.es_general == 1">
+                                    <ui-select-match placeholder="Seleccionar un proveedor rnt">
+                                        <span ng-bind="$select.selected.nombre"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="proveedor.id as proveedor in (proveedoresRnt| filter: $select.search)">
+                                        <span ng-bind="proveedor.nombre" title="@{{proveedor.nombre}}"></span>
+                                        <br />
+                                        <small>
+                                            RNT: @{{proveedor.rnt}}
+                                        </small>
+                                    </ui-select-choices>
+                                </ui-select>
+                                
+                                <span class="messages" ng-show="crearFactorForm.$submitted || crearFactorForm.proveedorRntFactorCrear.$touched">
+                                    <span ng-show="crearFactorForm.proveedorRntFactorCrear.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                              
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="ofertaFactorCrear"><span class="asterisk">*</span>¿A que sección pertenece este factor?</label>
+                                <br>
+                                <input type="radio" name="ofertaFactorCrear" id="ofertaFactorCrear" ng-model="crearFactor.es_oferta" value="1" required>Oferta
+                                <input type="radio" name="ofertaFactorCrear" id="ofertaFactorCrear" ng-model="crearFactor.es_oferta" value="0" required>Empleo
+                                <span class="messages" ng-show="crearFactorForm.$submitted || crearFactorForm.ofertaFactorCrear.$touched">
+                                    <br>
+                                    <span ng-show="crearFactorForm.ofertaFactorCrear.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -288,6 +337,52 @@
                                     <span ng-show="editarFactorForm.tamanioEmpresaFactorEditar.$error.required" class="color_errores">* El campo es obligatorio.</span>
                                 </span>
                               
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="generalFactorEditar"><span class="asterisk">*</span>¿Qué tipo de factor aplicar?</label>
+                                <br>
+                                <input type="radio" name="generalFactorEditar" id="generalFactorEditar" ng-model="editarFactor.es_general" value="0" required>General
+                                <input type="radio" name="generalFactorEditar" id="generalFactorEditar" ng-model="editarFactor.es_general" value="1" required>Específico
+                                <span class="messages" ng-show="editarFactorForm.$submitted || editarFactorForm.generalFactorEditar.$touched">
+                                    <br>
+                                    <span ng-show="editarFactorForm.generalFactorEditar.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="editarFactor.es_general == 1">
+                            <div class="col-xs-12">
+                                <label for="proveedorRntFactorEditar"><span class="asterisk">*</span>Proveedor RNT</label>
+                                <ui-select ng-model="editarFactor.proveedor_rnt_id" id="proveedorRntFactorEditar" name="proveedorRntFactorEditar" ng-required="editarFactor.es_general == 1">
+                                    <ui-select-match placeholder="Seleccionar un proveedor rnt">
+                                        <span ng-bind="$select.selected.nombre"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="proveedor.id as proveedor in (proveedoresRnt| filter: $select.search)">
+                                        <span ng-bind="proveedor.nombre" title="@{{proveedor.nombre}}"></span>
+                                        <br />
+                                        <small>
+                                            RNT: @{{proveedor.rnt}}
+                                        </small>
+                                    </ui-select-choices>
+                                </ui-select>
+                                
+                                <span class="messages" ng-show="editarFactorForm.$submitted || editarFactorForm.proveedorRntFactorEditar.$touched">
+                                    <span ng-show="editarFactorForm.proveedorRntFactorEditar.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
+                              
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="ofertaFactorEditar"><span class="asterisk">*</span>¿A que sección pertenece este factor?</label>
+                                <br>
+                                <input type="radio" name="ofertaFactorEditar" id="ofertaFactorEditar" ng-model="editarFactor.es_oferta" value="1" required>Oferta
+                                <input type="radio" name="ofertaFactorEditar" id="ofertaFactorEditar" ng-model="editarFactor.es_oferta" value="0" required>Empleo
+                                <span class="messages" ng-show="editarFactorForm.$submitted || editarFactorForm.ofertaFactorEditar.$touched">
+                                    <br>
+                                    <span ng-show="editarFactorForm.ofertaFactorEditar.$error.required" class="color_errores">* El campo es obligatorio.</span>
+                                </span>
                             </div>
                         </div>
                         <div class="row">

@@ -79,7 +79,7 @@ class SostenibilidadPstController extends Controller
     }
     
     public function getCargarproveedoresrnt(){
-        $proveedores = Proveedores_rnt::all();
+        $proveedores = Proveedores_rnt::where('estado', 1)->get();
         $encuestadores = Digitador::with([ 'user'])->get();
         $periodos = Periodo_Sostenibilidad_Pst::where('fecha_final','>=', date('Y-m-d') )->where('estado', true)->get();
         
@@ -94,7 +94,7 @@ class SostenibilidadPstController extends Controller
 			'cargo' => 'required|max:255',
 			'establecimiento' => 'required',
 			'establecimiento.id' => 'exists:proveedores_rnt,id',
-			'digitador_id' => 'required|exists:users,id',
+			'digitador_id' => 'required|exists:digitadores,id',
 			'periodo' => 'required|exists:periodos_sostenibilidad_pst,id',
     	],[
        		'fechaAplicacion.required' => 'La fecha de apliación es requerida.',
@@ -180,7 +180,7 @@ class SostenibilidadPstController extends Controller
 			'cargo' => 'required|max:255',
 			'establecimiento' => 'required',
 			'establecimiento.id' => 'exists:proveedores_rnt,id',
-			'digitador_id' => 'required|exists:users,id',
+			'digitador_id' => 'required|exists:digitadores,id',
 			'periodo_sostenibilidad_id' => 'required|exists:periodos_sostenibilidad_pst,id',
     	],[
        		'fechaAplicacion.required' => 'La fecha de apliación es requerida.',
@@ -290,8 +290,8 @@ class SostenibilidadPstController extends Controller
     		
     		foreach($tiposRiesgos as $item){
     			$riesgo = Riesgo_Encuesta_Pst_Sostenibilidad::where('encuesta_pst_sostenibilidad_id',$encuesta->id)->where('tipo_riesgo_id', $item['id'])->first();
-    			$item['califcacion'] = $riesgo->criterios_calificacion_id;
-    			$item['otroRiesgo'] = $riesgo->otro;
+    			$item['califcacion'] = isset($riesgo->criterios_calificacion_id) ? $riesgo->criterios_calificacion_id : 4;
+    			$item['otroRiesgo'] = isset($riesgo->otro) ? $riesgo->otro : null;
     		}
     		$objeto['tiposRiesgos'] = $tiposRiesgos;
     		
@@ -558,6 +558,7 @@ class SostenibilidadPstController extends Controller
     		$objeto['otroMitigacion'] = in_array(9,$objeto['planesMitigacion']) ? $encuesta->planesMitigacionPsts->where('id',9)->first()->pivot->otro : null;
     		$objeto['tiene_informe_gestion'] = $encuesta->componenteAmbientalPst->tiene_informe_gestion;
     		$objeto['periodos_informe_id'] = $objeto['tiene_informe_gestion'] == 1 ? $encuesta->informesGestionPst->periodos_informe_id : null;
+    		$objeto['otro_periodo_informe'] = $objeto['tiene_informe_gestion'] == 1 ? $encuesta->informesGestionPst->otro_periodo_informe : null;
     		$objeto['mide_residuos'] = $objeto['tiene_informe_gestion'] == 1 ? $encuesta->informesGestionPst->mide_residuos : null;
     		$objeto['actividadesResiduos'] = $encuesta->actividadesResiduosPsts->pluck('id')->toArray();
     		$objeto['otroActividadRes'] = in_array(8,$objeto['actividadesResiduos']) ? $encuesta->actividadesResiduosPsts->where('id',8)->first()->pivot->otro : null;
@@ -631,6 +632,7 @@ class SostenibilidadPstController extends Controller
 			'tiene_manual' => 'required_if:energias_renovables,1',
 			'tiposEnergia' => 'required_if:energias_renovables,1',
 			'tiposEnergia.*' => 'exists:tipos_energias_renovables,id',
+			'otro_periodo_informe' => 'max:100'
     	],[
        		
     	]);
@@ -659,6 +661,14 @@ class SostenibilidadPstController extends Controller
 		}
 		if(in_array(9,$request->planesMitigacion) && !isset($request->otroMitigacion) ){
 			return ["success" => false, "errores" => [["El campo otro en la pregunta 16 es requerido."]] ];
+		}
+		
+		if($request->tiene_informe_gestion == 1){
+			if($request->periodos_informe_id == 6){
+				if(!isset($request->otro_periodo_informe)){
+					return ["success" => false, "errores" => [["El campo otro en la pregunta 17.1 es requerido."]] ];
+				}
+			}
 		}
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
@@ -732,6 +742,7 @@ class SostenibilidadPstController extends Controller
 			Informe_Gestion_Pst::create([
 				'encuestas_pst_sosteniblidad_id' => $encuesta->id,
 				'periodos_informe_id' => $request->periodos_informe_id,
+				'otro_periodo_informe' => $request->periodos_informe_id == 6 ? $request->otro_periodo_informe : null,
 				'mide_residuos' => $request->mide_residuos == 1 ? 1 : 0
 			]);
 		}
@@ -899,11 +910,11 @@ class SostenibilidadPstController extends Controller
 			return ["success" => false, "errores" => [["El campo otro en la pregunta 27 es requerido."]] ];
 		}
 		
-		if(count($request->aspectosSeleccion) != 2){
-			return ["success" => false, "errores" => [["En la pregunta 24.2 solo debe seleccionar dos opciones."]] ];
+		if(count($request->aspectosSeleccion) > 2){
+			return ["success" => false, "errores" => [["En la pregunta 24.2 solo puede seleccionar hasta dos opciones."]] ];
 		}
-		if(count($request->beneficiosEconomicos) != 3){
-			return ["success" => false, "errores" => [["En la pregunta 27 solo debe seleccionar tres opciones."]] ];
+		if(count($request->beneficiosEconomicos) > 3){
+			return ["success" => false, "errores" => [["En la pregunta 27 solo puede seleccionar hasta tres opciones."]] ];
 		}
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
