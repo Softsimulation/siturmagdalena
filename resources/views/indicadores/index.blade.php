@@ -195,6 +195,14 @@
                                 </div>
                             </div>
                             
+                            <div class="col-xs-12 col-md-4" ng-show="yearSelect.trimestre" >
+                                <div class="input-group">
+                                    <label class="input-group-addon">Trimestre</label>
+                                    <select class="form-control" id="SelectTrimestre" ng-model="filtro.id" ng-change="filtro.id=SelectTrimestre.id;filtro.trimestre=SelectTrimestre.trimestre;filtrarDatos()" ng-options="t.id as t.trimestre for t in periodos | filter:{ 'year': yearSelect.year }" ng-requerid="yearSelect.trimestre"  >
+                                    </select>
+                                </div>
+                            </div>
+                            
                             @if( isset($aspectos) )
                             <div class="col-xs-12 col-md-3" ng-if="indicadorSelect==44">
                                 <div class="input-group" >
