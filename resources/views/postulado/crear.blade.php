@@ -72,16 +72,15 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
-        p {
-            font-size: .9em;
-        }
         .row {
             margin: 1em 0 0;
+        }
+        label {
+            font-weight: 500;
         }
     </style>
     
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
-    <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/styleLoading.css')}}" rel='stylesheet' type='text/css' />
@@ -97,95 +96,102 @@
 
 @section('content')
 <div class="main-page" ng-app="postuladoApp" ng-controller="crearPostuladoCtrl">
+    <div class="container">
+        @if(isset($id))
+            <input type="hidden" ng-model="id" ng-init="id={{ Session::get('vacante')}}" />
+        @endif
     
-    @if(isset($id))
-        <input type="hidden" ng-model="id" ng-init="id={{ Session::get('vacante')}}" />
-    @endif
-
-    
-    
-    <h1 class="title1">Registro de postulado</h1><br />
-    <div class="row">
-        <div class="alert alert-danger" ng-if="errores != null">
-            <h3>Corriga los siguientes errores:</h3>
-            <div ng-repeat="error in errores">
-                -@{{error[0]}}
-            </div>
-        </div>    
-    </div>
-    <div class="alert alert-info" role="alert" style="text-align: center;">Debe llenar los datos de configuración</div>
-    
-    @if( Auth::check() )
-        <div class="alert alert-info" role="alert" style="text-align: center;">Si el usuario ya se encuentra registrado en el sistema se recomienda que utilice el correo con el cual inicia sesión.</div>
-    @endif
-    
-    
-    <div class="blank-page widget-shadow scroll">
+        
+        
+        <h1 class="title1 text-center">Registro de usuario</h1>
+        <div class="row">
+            <div class="alert alert-danger" ng-if="errores != null">
+                <h3>Corriga los siguientes errores:</h3>
+                <div ng-repeat="error in errores">
+                    -@{{error[0]}}
+                </div>
+            </div>    
+        </div>
+        <p class="text-center">Puede iniciar sesión mediante las siguientes redes sociales</p>
+        <div class="text-center mb-3">
+            <a class="btn btn-primary" href="/registrar/autenticacion/facebook">
+                Facebook
+            </a>
+            <a class="btn btn-danger" href="/registrar/autenticacion/google">
+                Google
+            </a>
+        </div>
+        <p class="text-center">O puede registrarse a través del siguiente formulario</p>
+        <!--<div class="alert alert-info" role="alert" style="text-align: center;">Debe llenar los datos de configuración</div>-->
+        
+        @if( Auth::check() )
+            <div class="alert alert-info" role="alert" style="text-align: center;">Si el usuario ya se encuentra registrado en el sistema se recomienda que utilice el correo con el cual inicia sesión.</div>
+        @endif
+        
         <form role="form" name="crearForm" novalidate>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <div role="textbox" class="form-control" style="background-color: rgba(255,216,0,.5)"><strong>Todos los campos son obligatorios</strong> </div>
+            <fieldset>
+                <legend>Formuario de registro de usuario</legend>
+                <div class="alert alert-info">
+                    Todos los campos del formulario son obligatorios
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{'error': (crearForm.$submitted || crearForm.nombres.$touched) && crearForm.nombres.$error.required }">
+                            <label class="control-label" for="nombres">Nombres</label>
+                            <input type="text" class="form-control" name="nombres" id="nombres" placeholder="Ingrese el o los nombres del usuario. Máx. 255 caracteres" maxlength="255" ng-model="usuario.nombres" required />
+                            <span class="text-error" ng-show="(crearForm.$submitted || crearForm.nombres.$touched) && crearForm.nombres.$error.required">El campo es requerido</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{'error': (crearForm.$submitted || crearForm.apellidos.$touched) && crearForm.apellidos.$error.required }">
+                            <label class="control-label" for="apellidos">Apellidos</label>
+                            <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Ingrese el o los apellidos del usuario. Máx. 255 caracteres" maxlength="255" ng-model="usuario.apellidos" required />
+                            <span class="text-error" ng-show="(crearForm.$submitted || crearForm.apellidos.$touched) && crearForm.apellidos.$error.required">El campo es requerido</span>
+                        </div>
+                    </div>
+                </div>    
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{ 'error':(((crearForm.$submitted || crearForm.email.$touched) && crearForm.email.$error.required))}">
+                            <label class="control-label" for="email">Correo electrónico</label>
+                            <input class="form-control" type="email" name="email" id="email"  placeholder="Ej: micorreo@dominio.com. Máx. 255 caracteres" maxlength="255" ng-model="usuario.email" required />
+                            <span class="text-error" ng-show="(crearForm.$submitted || crearForm.email.$touched) && crearForm.email.$error.required">Campo requerido</span>
+                            <span class="text-error" ng-show="(crearForm.$submitted || crearForm.email.$touched) && crearForm.email.$error.email">El campo no es de tipo correo</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-class="{ 'error':(((crearForm.$submitted || crearForm.fecha_nacimiento.$touched) && crearForm.fecha_nacimiento.$error.required))}">
+                        <div class="form-group" >
+                            <label for="fecha_nacimiento" class="control-label">Fecha de nacimiento</label>
+                            <adm-dtp name="fecha_nacimiento" id="fecha_nacimiento" ng-model='usuario.fecha_nacimiento' maxdate="@{{fechaActual}}"options="optionFecha" placeholder="Ingrese fecha de nacimiento" ng-required="true"></adm-dtp>
+                            <span class="text-error" ng-show="(crearForm.$submitted || crearForm.fecha_nacimiento.$touched) && crearForm.fecha_nacimiento.$error.required">Campo requerido</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{'error': (crearForm.$submitted || crearForm.profesion.$touched) && crearForm.profesion.$error.required }">
+                            <label class="control-label" for="profesion">Profesión</label>
+                            <input type="text" class="form-control" name="profesion" id="profesion" placeholder="Ingrese la profesión. Máx. 255 caracteres" maxlength="255" ng-model="usuario.profesion" ng-required="id !== undefined" />
+                            <span class="text-error" ng-show="(crearForm.$submitted || crearForm.profesion.$touched) && crearForm.profesion.$error.required">El campo es requerido</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
             
-            <div class="row">
-                <div class="col-sm-12 col-md-6">
-                    <div class="form-group" ng-class="{'error': (crearForm.$submitted || crearForm.nombres.$touched) && crearForm.nombres.$error.required }">
-                        <label class="control-label" for="nombres">Nombres</label>
-                        <input type="text" class="form-control" name="nombres" id="nombres" placeholder="Ingrese el o los nombres del usuario. Máx. 255 caracteres" maxlength="255" ng-model="usuario.nombres" required />
-                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.nombres.$touched) && crearForm.nombres.$error.required">El campo es requerido</span>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <div class="form-group" ng-class="{'error': (crearForm.$submitted || crearForm.apellidos.$touched) && crearForm.apellidos.$error.required }">
-                        <label class="control-label" for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Ingrese el o los apellidos del usuario. Máx. 255 caracteres" maxlength="255" ng-model="usuario.apellidos" required />
-                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.apellidos.$touched) && crearForm.apellidos.$error.required">El campo es requerido</span>
-                    </div>
-                </div>
-            </div>
             
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{ 'error':(((crearForm.$submitted || crearForm.email.$touched) && crearForm.email.$error.required))}">
-                        <label class="control-label" for="email">Correo electrónico</label>
-                        <input class="form-control" type="email" name="email" id="email"  placeholder="Ej: micorreo@dominio.com. Máx. 255 caracteres" maxlength="255" ng-model="usuario.email" required />
-                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.email.$touched) && crearForm.email.$error.required">Campo requerido</span>
-                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.email.$touched) && crearForm.email.$error.email">El campo no es de tipo correo</span>
-                    </div>
-                </div>
-                <div class="col-md-4" ng-class="{ 'error':(((crearForm.$submitted || crearForm.fecha_nacimiento.$touched) && crearForm.fecha_nacimiento.$error.required))}">
-                    <div class="form-group" >
-                        <label for="fecha_nacimiento" class="control-label">Fecha de nacimiento</label>
-                        <adm-dtp name="fecha_nacimiento" id="fecha_nacimiento" ng-model='usuario.fecha_nacimiento' maxdate="@{{fechaActual}}"options="optionFecha" placeholder="Ingrese fecha de nacimiento" ng-required="true"></adm-dtp>
-                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.fecha_nacimiento.$touched) && crearForm.fecha_nacimiento.$error.required">Campo requerido</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{'error': (crearForm.$submitted || crearForm.profesion.$touched) && crearForm.profesion.$error.required }">
-                        <label class="control-label" for="profesion">Profesión</label>
-                        <input type="text" class="form-control" name="profesion" id="profesion" placeholder="Ingrese la profesión. Máx. 255 caracteres" maxlength="255" ng-model="usuario.profesion" ng-required="id !== undefined" />
-                        <span class="text-error" ng-show="(crearForm.$submitted || crearForm.profesion.$touched) && crearForm.profesion.$error.required">El campo es requerido</span>
-                    </div>
-                </div>
-            </div>
+            
+            
+            
             
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="sexo" class="control-label">Sexo</label>
-                        <div class="radio radio-primary">
-                            <label>
-                                <input type="radio"  value="1" name="sexo" required ng-model="usuario.sexo">
-                                Masculino
+                        <div id="sexo">
+                            <label class="radio-inline">
+                              <input type="radio" name="sexo" ng-model="usuario.sexo" id="sexo-1" value="1"> Masculino
                             </label>
-                        </div>
-                        <div class="radio radio-primary">
-                            <label>
-                                <input type="radio"  value="0" name="sexo" required ng-model="usuario.sexo">
-                                Femenino
+                            <label class="radio-inline">
+                              <input type="radio" name="sexo" ng-model="usuario.sexo" id="sexo-2" value="0"> Femenino
                             </label>
                         </div>
                         <span class="text-error" ng-show="(crearForm.$submitted || crearForm.sexo.$touched) && crearForm.sexo.$error.required">El campo es requerido</span>
@@ -241,24 +247,16 @@
             
             <div class="row" style="text-align: center;">
                 <div class="col-xs-12">
-<<<<<<< HEAD
-                       <a class="btn btn-primary" href="/registrar/autenticacion/facebook">
-                            Facebook
-                        </a>
-                        <a class="btn btn-primary" href="/registrar/autenticacion/google">
-                            Google
-                        </a>
-=======
                     <button type="submit" class="btn btn-success" ng-click="guardarUsuario()" >Guardar</button>    
->>>>>>> 24f1e1ca8b8fdbc4d9adc1bb2361f26cadd63c04
                 </div>
             </div>
         </form>
-    </div>
     <div class='carga'>
 
     </div>
 
+    
+    </div>
     
 </div>
 @endsection

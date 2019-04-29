@@ -558,6 +558,7 @@ class SostenibilidadPstController extends Controller
     		$objeto['otroMitigacion'] = in_array(9,$objeto['planesMitigacion']) ? $encuesta->planesMitigacionPsts->where('id',9)->first()->pivot->otro : null;
     		$objeto['tiene_informe_gestion'] = $encuesta->componenteAmbientalPst->tiene_informe_gestion;
     		$objeto['periodos_informe_id'] = $objeto['tiene_informe_gestion'] == 1 ? $encuesta->informesGestionPst->periodos_informe_id : null;
+    		$objeto['otro_periodo_informe'] = $objeto['tiene_informe_gestion'] == 1 ? $encuesta->informesGestionPst->otro_periodo_informe : null;
     		$objeto['mide_residuos'] = $objeto['tiene_informe_gestion'] == 1 ? $encuesta->informesGestionPst->mide_residuos : null;
     		$objeto['actividadesResiduos'] = $encuesta->actividadesResiduosPsts->pluck('id')->toArray();
     		$objeto['otroActividadRes'] = in_array(8,$objeto['actividadesResiduos']) ? $encuesta->actividadesResiduosPsts->where('id',8)->first()->pivot->otro : null;
@@ -631,6 +632,7 @@ class SostenibilidadPstController extends Controller
 			'tiene_manual' => 'required_if:energias_renovables,1',
 			'tiposEnergia' => 'required_if:energias_renovables,1',
 			'tiposEnergia.*' => 'exists:tipos_energias_renovables,id',
+			'otro_periodo_informe' => 'max:100'
     	],[
        		
     	]);
@@ -659,6 +661,14 @@ class SostenibilidadPstController extends Controller
 		}
 		if(in_array(9,$request->planesMitigacion) && !isset($request->otroMitigacion) ){
 			return ["success" => false, "errores" => [["El campo otro en la pregunta 16 es requerido."]] ];
+		}
+		
+		if($request->tiene_informe_gestion == 1){
+			if($request->periodos_informe_id == 6){
+				if(!isset($request->otro_periodo_informe)){
+					return ["success" => false, "errores" => [["El campo otro en la pregunta 17.1 es requerido."]] ];
+				}
+			}
 		}
 		
 		$encuesta = Encuesta_Pst_Sostenibilidad::find($request->pst_id);
@@ -732,6 +742,7 @@ class SostenibilidadPstController extends Controller
 			Informe_Gestion_Pst::create([
 				'encuestas_pst_sosteniblidad_id' => $encuesta->id,
 				'periodos_informe_id' => $request->periodos_informe_id,
+				'otro_periodo_informe' => $request->periodos_informe_id == 6 ? $request->otro_periodo_informe : null,
 				'mide_residuos' => $request->mide_residuos == 1 ? 1 : 0
 			]);
 		}

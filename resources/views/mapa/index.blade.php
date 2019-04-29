@@ -38,9 +38,9 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" style="padding: 0; background-color: transparent;" role="tab" id="headingOne">
                                     <div class="st-filter-title-pane" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                        <div class="row">
+                                        <div class="row no-gutters">
                                             <div class="col-xs-9"><span class="ion-funnel"></span> <strong> Atracciones</strong></div>
-                                            <div class="col-xs-3"><span class="glyphicon glyphicon glyphicon-menu-down"></span></div>
+                                            <div class="col-xs-3 text-right"><span class="glyphicon glyphicon glyphicon-menu-down"></span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                     <button class="st-btn-clean-radio" ng-click="filtro.tipoAtraciones=[]" ng-class="{true:'selected',false:'unselected'}[filtro.tipoAtraciones.length==0]" ng-show="filtro.tipoAtraciones.length>0">
                                         <i style="font-size: 1.1em;" class="ion-android-cancel"></i>  Limpiar Filtro
                                     </button>
-                                    <div class="panel-body" style="max-height: 100%; color: black;padding: 0; max-height: 400px; overflow-y: auto;">
+                                    <div class="panel-body" style="max-height: 100%; color: black;padding: 0; max-height: 400px; overflow-y: auto;padding: 0 .5rem;">
                                         
                                         <div class="checkbox" ng-repeat="tipo in tipoAtracciones|filter:buscarFiltroAtracciones" >
                                            <label>  
@@ -65,14 +65,14 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" style="padding: 0; background-color: transparent;" role="tab" id="headingTwo">
                                     <div class="st-filter-title-pane" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <div class="row">
+                                        <div class="row no-gutters">
                                             <div class="col-xs-9"><span class="ion-funnel"></span> <strong>Proveedores</strong></div>
-                                            <div class="col-xs-3"><span class="glyphicon glyphicon glyphicon-menu-down"></span></div>
+                                            <div class="col-xs-3 text-right"><span class="glyphicon glyphicon glyphicon-menu-down"></span></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body" style="max-height: 100%; color: black;padding: 0; max-height: 400px;overflow-y: auto;">
+                                    <div class="panel-body" style="max-height: 100%; color: black;padding: 0; max-height: 400px;overflow-y: auto;padding: 0 .5rem;">
                                         <div class="checkbox" ng-repeat="tipo in tipoProveedores" >
                                            <label>  
                                                   <input type="checkbox" checklist-model="filtro.tipoProveedor" checklist-value="tipo.id" checklist-change="changeIcons()" > 
