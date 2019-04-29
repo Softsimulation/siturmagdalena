@@ -171,7 +171,6 @@
         $scope.options = optionsGraficas;
         $scope.colores = coloresGraficas;
         
-        
         $scope.filtrarDatos = function(){
             
             if (!$scope.form.$valid) { return; }
@@ -204,9 +203,11 @@
                     if( data.periodos.length>0 ){
                         $scope.yearSelect = data.periodos[0];
                         $scope.mesSelect = data.periodos[0];
+                        $scope.SelectTrimestre = data.periodos[0];
                         $scope.filtro.year = $scope.yearSelect.year;
                         $scope.filtro.id = $scope.yearSelect.id;
                         if($scope.yearSelect.mes){ $scope.filtro.mes = $scope.yearSelect.mes; }
+                        if($scope.yearSelect.trimestre){ $scope.filtro.trimestre = $scope.yearSelect.trimestre; }
                     }
                     
                     $scope.label_x = data.indicador.idiomas[0].eje_x;
@@ -256,20 +257,27 @@
             $scope.dataExtra = data.dataExtra;
             
             if($scope.filtro.indicador==5){
-                $scope.tituloIndicadorGrafica = $scope.indicador.idiomas[0].nombre + " ("+ $("#SelectTipoGasto option:selected" ).text() +"/"+$scope.filtro.year+")";
+                $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ $("#SelectTipoGasto option:selected" ).text() +"/"+$scope.filtro.year+")";
             } 
             else if($scope.yearSelect.temporada){
                 for(var i=0; i<$scope.periodos.length; i++){
                     if($scope.periodos[i].id==$scope.yearSelect.id){
-                        $scope.tituloIndicadorGrafica = $scope.indicador.idiomas[0].nombre + " ("+ $scope.periodos[i].temporada +"/"+$scope.filtro.year+")";
+                        $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ $scope.periodos[i].temporada +"/"+$scope.filtro.year+")";
+                        break;
+                    }
+                }
+            }
+            else if($scope.yearSelect.trimestre){
+                for(var i=0; i<$scope.periodos.length; i++){
+                    if($scope.periodos[i].id==$scope.yearSelect.id){
+                        $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ $scope.periodos[i].trimestre +"/"+$scope.filtro.year+")";
                         break;
                     }
                 }
             }
             else{
-                $scope.tituloIndicadorGrafica = $scope.indicador.idiomas[0].nombre + " ("+ ( $scope.filtro.mes? $scope.filtro.mes+"/" : "") + $scope.filtro.year+")";
+                $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ ( $scope.filtro.mes? $scope.filtro.mes+"/" : "") + $scope.filtro.year+")";
             }
-            $scope.options.title.text = $scope.tituloIndicadorGrafica;
             
             for(var i=0; i<$scope.indicador.graficas.length; i++){
                 if($scope.indicador.graficas[i].pivot.es_principal){
@@ -285,6 +293,8 @@
             $scope.filtro.year = $scope.yearSelect.year;
             $scope.filtro.id =   $scope.yearSelect.id;
             $scope.filtro.mes = $scope.mesSelect.mes;
+            $scope.filtro.trimestre = $scope.mesSelect.trimestre;
+            $scope.filtro.temporada = $scope.mesSelect.temporada;
             $scope.filtrarDatos();
         }
         
