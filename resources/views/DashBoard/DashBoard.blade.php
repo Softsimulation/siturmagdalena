@@ -46,10 +46,227 @@
             z-index: 1000;
             display: block;
         }
+        .panel-title{
+            font-weight: 500;
+            margin: 0;
+        }
+        .m-0{
+            margin: 0;
+        }
+        .list-group-flush:first-child .list-group-item:first-child {
+            border-top: 0;
+        }
+        .list-group-flush .list-group-item {
+            border-right: 0;
+            border-left: 0;
+            border-radius: 0;
+        }
+        .list-group-flush:last-child .list-group-item:last-child {
+            margin-bottom: 0;
+            border-bottom: 0;
+        }
+        .panel-body {
+            padding: .5rem;
+        }
+        
     </style>
 @endsection
 
 @section('content')
+
+<div class="row">
+    @if(Auth::user()->contienePermiso('list-actividad|list-atraccion|list-destino|list-evento|list-proveedor|list-ruta|list-informe|list-publicaciones|list-slider|acerca-departamento|requisitos-viaje'))
+    <div class="col-xs-12 col-md-4" >
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Promoción</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+            @if(Auth::user()->contienePermiso('list-actividad'))
+                <li class="list-group-item"><a href="/administradoractividades">Listado de actividades</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-atraccion'))
+                <li class="list-group-item"><a href="/administradoratracciones">Listado de atracciones</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-destino'))
+                <li class="list-group-item"><a href="/administradordestinos">Listado de destinos</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-evento'))
+                <li class="list-group-item"><a href="/administradoreventos">Listado de eventos</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-proveedor'))
+                <li class="list-group-item"><a href="/administradorproveedores">Listado de proveedores</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-ruta'))
+                <li class="list-group-item"><a href="/administradorrutas">Listado de rutas turísticas</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-informe'))
+                <li class="list-group-item"><a href="/informes/configuracion">Listado de informes</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-publicaciones'))
+                <li class="list-group-item"><a href="/publicaciones/listadoadmin">Listado de biblioteca digital</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-noticia'))
+                <li class="list-group-item"><a href="/noticias/listadonoticias">Listado de noticias</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-slider'))
+                <li class="list-group-item"><a href="/sliders/listadosliders">Galería de imágenes</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('acerca-departamento'))
+                <li class="list-group-item"><a href="/InformacionDepartamento/configuracionacercade">Acerca del departamento</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('requisitos-viaje'))
+                <li class="list-group-item"><a href="/InformacionDepartamento/configuracionrequisitos">Requisitos de viajes</a></li>
+            @endif
+            </ul>
+          </div>
+        </div>
+    </div>
+    @endif
+    <div class="col-sm-12 col-md-4">
+        @if(Auth::user()->contienePermiso('list-grupoViaje|list-encuestaReceptor'))
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Turísmo receptor</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+            @if(Auth::user()->contienePermiso('list-grupoViaje'))
+                <li class="list-group-item"><a href="/grupoviaje/listadogrupos">Grupos de viajes</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-encuestaReceptor'))
+                <li class="list-group-item"><a href="/InformacionDepartamento/configuracionrequisitos">Listado encuestas</a></li>
+            @endif
+            </ul>
+          </div>
+        </div>
+        @endif
+        @if(Auth::user()->contienePermiso('list-temporada|create-encuestaInterno|edit-encuestaInterno'))
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Turísmo interno y emisor</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+            @if(Auth::user()->contienePermiso('list-temporada|create-encuestaInterno|edit-encuestaInterno'))
+                <li class="list-group-item"><a href="/temporada">Temporadas turísmo interno</a></li>
+            @endif
+            </ul>
+          </div>
+        </div>
+        @endif
+        @if(Auth::user()->contienePermiso('list-encuestaOfertaEmpleo|list-proveedoresOferta|list-proveedoresRNTOferta|import-RNT'))
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Oferta y empleo</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+            @if(Auth::user()->contienePermiso('list-encuestaOfertaEmpleo'))
+                <li class="list-group-item"><a href="/ofertaempleo/encuestasoferta">Listado encuestas</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-proveedoresOferta'))
+                <li class="list-group-item"><a href="/ofertaempleo/listadoproveedores">Listado proveedores</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-proveedoresRNTOferta'))
+                <li class="list-group-item"><a href="/ofertaempleo/listadoproveedoresrnt">Activar proveedor RNT</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('import-RNT'))
+                <li class="list-group-item"><a href="/importarRnt">Importar RNT</a></li>
+            @endif
+            </ul>
+          </div>
+        </div>
+        @endif
+        @role('Admin')
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Administrador</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+                <li class="list-group-item"><a href="/usuario/listadousuarios">Listado de usuarios</a></li>
+                <li class="list-group-item"><a href="/bolsaEmpleo/vacantes">Bolsa de empleo</a></li>
+            </ul>
+          </div>
+        </div>
+        @endif
+    </div>
+    <div class="col-sm-12 col-md-4">
+        @if(Auth::user()->contienePermiso('list-encuestaSostenibilidadHogares|list-encuestaSostenibilidadPST'))
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Sotenibilidad</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+            @if(Auth::user()->contienePermiso('list-encuestaSostenibilidadHogares'))
+                <li class="list-group-item"><a href="/sostenibilidadhogares/encuestas">Encuestas sostenibilidad</a></li>
+            @endif
+            @if(Auth::user()->contienePermiso('list-encuestaSostenibilidadPST'))
+                <li class="list-group-item"><a href="/sostenibilidadpst/encuestas">Encuestas sostenibilidad PST</a></li>
+            @endif
+            </ul>
+          </div>
+        </div>
+        @endif
+        
+        @if(Auth::user()->contienePermiso('list-noticia|list-estadisticaSecundaria|list-indicadorMedicion|list-indicadorMedicion|calcular-indicadorMedicion|recalcular-indicadorMedicion'))
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Encuestas e indicadores</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+                @if(Auth::user()->contienePermiso('list-noticia'))
+                    <li class="list-group-item"><a href="/encuesta/listado">Encuestas dinámicas</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('list-estadisticaSecundaria'))
+                    <li class="list-group-item"><a href="/EstadisticasSecundarias/configuracion">Listado de estadísticas secundarias</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('list-indicadorMedicion'))
+                    <li class="list-group-item"><a href="/indicadoresMedicion/listado">Listado de indicadores</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('list-indicadorMedicion|calcular-indicadorMedicion|recalcular-indicadorMedicion'))
+                    <li class="list-group-item"><a href="/calcularindicadores">Listado de indicadores calculados</a></li>
+                @endif
+            </ul>
+          </div>
+        </div>
+        @endif
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Configuración</h3>
+             <p class="text-muted m-0">Permisos</p>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group list-group-flush m-0">
+                @if(Auth::user()->contienePermiso('export-medicionReceptor|export-medicionOferta|export-medicionInternoEmisor|export-sostenibilidadHogar|export-sostenibilidadPST'))
+                    <li class="list-group-item"><a href="/exportacion">Exportaciones</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('list-pais'))
+                    <li class="list-group-item"><a href="/administrarpaises">Listado de paises</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('list-departamento'))
+                    <li class="list-group-item"><a href="/administrardepartamentos">Listado de departamentos</a></li>
+                @endif
+                @if(Auth::user()->contienePermiso('list-municipio'))
+                    <li class="list-group-item"><a href="/administrarmunicipios">Listado de municipios</a></li>
+                @endif
+            </ul>
+          </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-xs-12">
         <ul>
