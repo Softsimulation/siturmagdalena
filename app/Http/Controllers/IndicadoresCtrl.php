@@ -477,8 +477,8 @@ class IndicadoresCtrl extends Controller
                      $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioMesDB("agencia_viaje_operadoras_oferta", $periodos[0], $cultura); break;
                      
             case 22: 
-                     $periodos = DB::select("SELECT * from tiempo_duracion_personas_oferta(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("duracion_personas_oferta", $periodos[0], $cultura); break;
+                     $periodos = DB::select("SELECT * from tiempo_ocupacion_media_oferta(?) order by id DESC", array($cultura) );
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("ocupacion_media_oferta", $periodos[0], $cultura); break;
             
             case 23: 
                      $periodos = DB::select("SELECT * from tiempo_tasa_platos_comida_oferta(?) order by id DESC", array($cultura) );
@@ -627,7 +627,7 @@ class IndicadoresCtrl extends Controller
             ////////////////////////////////OFERTA/////////////////////////////////////////
             case 20: $data = $this->getDataIndicadorPorAnioDB("numero_establecimientos_oferta", $request, $idioma); break;                      
             case 21: $data = $this->getDataIndicadorPorAnioMesDB("agencia_viaje_operadoras_oferta", $request, $idioma); break;                     
-            case 22: $data = $this->getDataIndicadorPorAnioDB("duracion_personas_oferta", $request, $idioma); break;            
+            case 22: $data = $this->getDataIndicadorPorAnioDB("ocupacion_media_oferta", $request, $idioma); break;            
             case 23: $data = $this->getDataIndicadorPorAnioDB("tasa_platos_comida_oferta", $request, $idioma); break;            
             case 24: $data = $this->getDataIndicadorPorAnioDB("tasa_unidades_comida_oferta", $request, $idioma); break;            
             case 25: $data = $this->getDataIndicadorPorAnioDB("viajes_emisores_oferta", $request, $idioma); break;
