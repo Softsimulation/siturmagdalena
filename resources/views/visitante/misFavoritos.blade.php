@@ -30,9 +30,6 @@
         /* The image used */
         background-image: url("/res/bg.jpg");
     
-        /* Set a specific height */
-        min-height: 280px; 
-    
         /* Create the parallax scrolling effect */
         background-attachment: fixed;
         background-position: center;
@@ -54,43 +51,10 @@
     .row{
         margin: 0;
     }
-    .d-flex{
-        display: flex;
-    }
-    .flex-wrap{
-        flex-wrap: wrap;
-    }
-    .align-items-center{
-        align-items: center;
-    }
-    .justify-content-center{
-        justify-content: center;
-    }
-    .list-group-flush .list-group-item:first-child {
-        border-top: 0;
-    }
     
-    .list-group-flush .list-group-item {
-        border-right: 0;
-        border-left: 0;
-        border-radius: 0;
-    }
-    .list-group-flush .list-group-item:last-child {
-        margin-bottom: 0;
-        border-bottom: 0;
-    }
-    .m-0{
-      margin: 0!important;  
-    }
-    .p-1{
-        padding: .25rem;
-    }
-    .p-2{
-        padding: 0.5rem;
-    }
     </style>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-
+    <link href="{{asset('/css/public/b4.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/object-table-style.css')}}" rel='stylesheet' type='text/css' />
@@ -152,11 +116,28 @@
                                 <img ng-src="@{{fav.Imagen}}" alt="Imagen de @{{fav.Nombre}}" width="50">
                                 <p class="m-0 p-2" style="flex: 1 1 auto;">@{{fav.Nombre}}</p>
                                 <div style="min-width: 56px;">
-                                    <span class="badge" ng-click="quitarFavoritos(fav)"><i class="ion-android-favorite-outline" title="Quitar de favoritos"></i></span>
-                                    <span class="badge" ng-if="fav.Tipo== 4"><a href="/eventos/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
-                                    <span class="badge" ng-if="fav.Tipo== 2"><a href="/actividades/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
-                                    <span class="badge" ng-if="fav.Tipo== 1"><a href="/atracciones/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
-                                    <span class="badge" ng-if="fav.Tipo== 3"><a href="/proveedor/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
+                                    <button type="button" class="btn btn-xs btn-link" ng-click="quitarFavoritos(fav)" title="Quitar de favoritos">
+                                        <span class="ion-android-favorite-outline text-danger" aria-hidden="true"></span>
+                                        <span class="sr-only">Quitar de favoritos</span>
+                                    </button>
+                                    
+                                    <a href="/eventos/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 4">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    <a href="/actividades/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 2">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    <a href="/atracciones/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 1">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    <a href="/proveedor/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 3">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    
                                 </div>
                             </div>
                             
@@ -167,7 +148,7 @@
                     <div class="row">
                         <div class="col-xs-12" style="text-align: center; padding-top: 2em; padding-bottom: 2em;" ng-if="favoritos.length == 0">
                             <!--Aún no tiene favoritos seleccionados-->
-                            <h2><strong>Aún no tiene favoritos seleccionados</strong></h2>
+                            <h2 class="h2 font-weight-normal">Aún no tiene favoritos seleccionados</h2>
                             <!--Te invitamos a navegar por nuestro portal y conocer todas las actividades, atracciones, eventos y proveedores de servicios turísticos dispuestos para ti-->
                             <p>Te invitamos a navegar por nuestro portal y conocer todas las actividades, atracciones, eventos y proveedores de servicios turísticos dispuestos para tir</p>
                         </div>
@@ -183,17 +164,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 d-flex align-items-center">
                     <br />
                     <div ng-if="planificadores.length == 0 && favoritos.length > 0" style="text-align: center; padding-top: 2em; padding-bottom: 2em;">
                         <!--¿Aún no has hecho tu primer planificador?-->
-                        <h2><strong>¿Aún no has hecho tu primer planificador?</strong></h2>
+                        <p class="h2 font-weight-normal">¿Aún no has hecho tu primer planificador?</p>
                         <!--Presiona en el botón Agregar planificador y empieza-->
                         <p>Presiona en el botón Agregar planificador y empieza</p>
                     </div>
                     <div ng-if="favoritos.length ==  0 && planificadores.length == 0" style="text-align: center; padding-top: 2em; padding-bottom: 2em;">
                         <!--Para crear un planificador debe tener favoritos seleccionados-->
-                        <h2><strong>Para crear un planificador debe tener favoritos seleccionados</strong></h2>
+                        <p class="h2 font-weight-normal">Para crear un planificador debe tener favoritos seleccionados</p>
                     </div>
                     
                     <div id="planificadores" class="panel panel-default" ng-repeat="planificador in planificadores | orderBy: '-Fecha_inicio'" ng-show="planificadores.length > 0">
@@ -279,13 +260,13 @@
             
             <br />
             <div class="row" ng-show="listaPlanificadores.length > 0">
-                <h2 class="col-xs-12">Planificadores anteriores</h2>
+                <h3 class="col-xs-12 font-weight-normal">Planificadores anteriores</h3>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-test" dir-paginate="planificador in listaPlanificadores | orderBy: 'Fecha_inicio'|itemsPerPage:6" pagination-id="plan" ng-show="listaPlanificadores.length > 0">
                     <div id="listaplanificadores" class="panel panel-default">
                         <div class="panel-heading heading-planificador">
                             <div class="row">
                                 <div class="col-xs-9">
-                                    @{{planificador.Nombre}} (@{{planificador.Fecha_inicio | date:'dd-MM-yyyy'}} - @{{planificador.Fecha_fin | date:'dd-MM-yyyy'}})
+                                    @{{planificador.Nombre}} <small>(@{{planificador.Fecha_inicio | date:'dd-MM-yyyy'}} - @{{planificador.Fecha_fin | date:'dd-MM-yyyy'}})</small>
                                 </div>
                                 <div class="col-xs-3 text-right">
                                     <a href="/visitante/editarplanificador/@{{planificador.Id}}" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="bottom"  title="Editar planificador"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="sr-only">Editar planificar</span></a>
@@ -315,27 +296,52 @@
                                     <div class="panel-heading heading-dias" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion-old-@{{planificador.Id}}" href="#collapse-old-@{{$index}}_@{{planificador.Id}}" aria-expanded="false" aria-controls="collapseTwo" style="cursor: pointer;" ng-if="!$first">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <h4 class="panel-title">
+                                                <p class="panel-title font-weight-normal">
 
                                                     Día @{{$index + 1}} <small>(@{{dia.Items.length}} items)</small>
 
-                                                </h4>
+                                                </p>
                                             </div>
                                             
                                         </div>
 
                                     </div>
                                     <div id="collapse-old-@{{$index}}_@{{planificador.Id}}" ng-class="{true:'panel-collapse collapse in',false:'panel-collapse collapse'}[$first]"  role="tabpanel" aria-labelledby="heading@{{$index}}">
-                                        <div class="panel-body">
-                                            <ul class="list-group">
+                                        <div class="panel-body p-1">
+                                            <ul class="list-group list-group-flush">
                                                 <li class="list-group-item" ng-repeat="item in dia.Items|orderBy:'Orden'">
-                                                    <span class="badge" ng-if="item.Tipo==4"><a href="/eventos/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
-                                                    <span class="badge" ng-if="item.Tipo==2"><a href="/actividades/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
-                                                    <span class="badge" ng-if="item.Tipo==1"><a href="/atracciones/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
-                                                    <span class="badge" ng-if="item.Tipo==3"><a href="/proveedor/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
+                                                    <div class="d-flex align-items-center">
+                                                        <img ng-src="@{{item.Imagen}}" alt="Imagen de @{{item.Nombre}}" width="50">
+                                                        <p class="m-0 p-2" style="flex: 1 1 auto;">@{{item.Nombre}}</p>
+                                                        <div style="min-width: 56px;">
+                                                            <a href="/eventos/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 4">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            <a href="/actividades/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 2">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            <a href="/atracciones/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 1">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            <a href="/proveedor/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 3">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    
+                                                    <!--<span class="badge" ng-if="item.Tipo==4"><a href="/eventos/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
+                                                    <!--<span class="badge" ng-if="item.Tipo==2"><a href="/actividades/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
+                                                    <!--<span class="badge" ng-if="item.Tipo==1"><a href="/atracciones/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
+                                                    <!--<span class="badge" ng-if="item.Tipo==3"><a href="/proveedor/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
                                                     <!--<span class="badge" ng-click="deleteItem($index,dia.Items)" title="@Resource.LabelFavRemoverItem"><i class="glyphicon glyphicon-remove"></i></span>-->
                                                     <!--<span class="badge" ng-show="!$first" ng-click="ordenarItem($index,dia.Items)" title="@Resource.LabelFavOrdenarItem"><i class="glyphicon glyphicon-chevron-up"></i></span>-->
-                                                    <img ng-src="@{{item.Imagen}}" alt="" width="50"> @{{item.Nombre}}
+                                                    <!--<img ng-src="@{{item.Imagen}}" alt="" width="50"> @{{item.Nombre}}-->
                                                 </li>
                                             </ul>
                                             
@@ -515,7 +521,7 @@
             </div>
             
     @else
-        <div class="row" style="padding: 0;">
+        <div class="text-center" style="padding: 0;">
             <div class="jumbotron" style="text-align: center;font-size: 4em; padding-top: 2em; padding-bottom: 2em;">
                 <span class="glyphicon glyphicon-lock" style="font-size: 2.5em;"></span>
                 <!--Para acceder a esta funcionalidad debe iniciar sesión-->
