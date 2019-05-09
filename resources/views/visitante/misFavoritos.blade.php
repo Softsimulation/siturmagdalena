@@ -10,6 +10,15 @@
         box-shadow: 0px 2px 2px 0px rgba(0,0,0,.35);
         background-color: white;
         border-radius: 6px;
+        position: relative;
+        margin-top: -30%;
+        z-index: 2;
+    }
+    .bg-img{
+        position:sticky;
+        top: 0;
+        left: 0;
+        z-index: 0;
     }
     
     .ADMdtp-box footer {
@@ -70,6 +79,9 @@
 
 
 @section('content')
+<div class="bg-img">
+    <img src="/img/bg_planificador.jpg" style="width: 100%;" class="img-responsive">
+</div>
 <div class="main-page container" ng-app="visitanteApp" ng-controller="misFavoritosCtrl">
     <div class="header-bg-fixed">
         <h2>Mis favoritos</h2>
