@@ -4,12 +4,13 @@
 
 @section('estilos')
     <style>
-    header{
-        position: static;
-        background-color: black;
-        margin: 0;
+    .main-page{
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0px 2px 2px 0px rgba(0,0,0,.35);
+        background-color: white;
+        border-radius: 6px;
     }
-    
     
     .ADMdtp-box footer {
        /*height: 1.7em;*/
@@ -29,9 +30,6 @@
         /* The image used */
         background-image: url("/res/bg.jpg");
     
-        /* Set a specific height */
-        min-height: 280px; 
-    
         /* Create the parallax scrolling effect */
         background-attachment: fixed;
         background-position: center;
@@ -39,11 +37,8 @@
         background-size: cover;
     }
     .header-bg-fixed{
-        display:flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        justify-content: center;
-        padding: 2% 4%;
+        text-align: center;
+        padding: 1rem;
     }
     .header-bg-fixed h2{
         text-transform: uppercase;
@@ -53,8 +48,13 @@
         margin-top: 0;
         color: #18337e;
     }
-    </style>
+    .row{
+        margin: 0;
+    }
     
+    </style>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link href="{{asset('/css/public/b4.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/ADM-dateTimePicker.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/sweetalert.min.css')}}" rel='stylesheet' type='text/css' />
     <link href="{{asset('/css/object-table-style.css')}}" rel='stylesheet' type='text/css' />
@@ -70,51 +70,25 @@
 
 
 @section('content')
-<div class="main-page" ng-app="visitanteApp" ng-controller="misFavoritosCtrl">
-    <div class="header-bg-fixed parallax">
+<div class="main-page container" ng-app="visitanteApp" ng-controller="misFavoritosCtrl">
+    <div class="header-bg-fixed">
         <h2>Mis favoritos</h2>
-        <p>Guarda como favorito los destinos, atracciones y actividades y demás elementos que SITUR Atlántico te ofrece y planifica los viajes que realices al departamento.</p>
+        <p>Planifica tu viaje y guarda marca como favorito los lugares que más te gusten.</p>
     </div>
     
-    <div class="container">
-        <div class="row" ng-if="intrucciones.ver">
-            <div class="col-xs-12 col-md-6">
-                <!--Para guardar tus favoritos-->
-                <h3>Para guardar tus favoritos</h3>
-                <ul class="text-muted">
-                    <!--Navegue en el portal a través de las diferentes atracciones, actividades, proveedores de servicio turístico y eventos publicados.-->
-                    <li>Navegue en el portal a través de las diferentes atracciones, actividades, proveedores de servicio turístico y eventos publicados.</li>
-                    <!--Presione en el botón Guardar como favorito indicado con el icono de un corazón.-->
-                    <li>Presione en el botón Guardar como favorito indicado con el icono de un corazón.</li>
-                    <!--Podrá listar sus favoritos en la opción Planifica tu viaje ubicado en la barra de navegación-->
-                    <li>Podrá listar sus favoritos en la opción Planifica tu viaje ubicado en la barra de navegación</li>
-                </ul>
-                <!--<img src="/Content/image/instruccion_planificador_1.png" style="width: 100%; margin: 1em;" />-->
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <!--Para crear un planificador-->
-                <h3>Para crear un planificador</h3>
-                <ul class="text-muted">
-                    <!--Presione el botón Crear planificador e ingrese la información solicitada.-->
-                    <li>Presione el botón Crear planificador e ingrese la información solicitada.</li>
-                    <!--Agregue los días en los que realizará alguna actividad.-->
-                    <li>Agregue los días en los que realizará alguna actividad.</li>
-                    <!--Arrastre sus favoritos y sueltelos en los días agregados. Podrá organizar los elementos arrastrados en los días.-->
-                    <li>Arrastre sus favoritos y sueltelos en los días agregados. Podrá organizar los elementos arrastrados en los días.</li>
-                    <!--Cuando termine guarde los cambios para no perder la información. Luego podrá imprimir o compartir su planificador.-->
-                    <li>Cuando termine guarde los cambios para no perder la información. Luego podrá imprimir o compartir su planificador.</li>
-                </ul>
-                <!--<img src="/Content/image/instruccion_planificador_2.png" style="width: 100%; margin: 1em;" />-->
-            </div>
-        </div>
-    </div>
+    <!--<div class="container">-->
+    <!--    <div ng-if="intrucciones.ver">-->
+            
+            
+    <!--    </div>-->
+    <!--</div>-->
     
     
-    <div style="text-align: center;border-top: 1px solid lightgray;">
-        <button type="button" class="btn btn-default" style="border-top-left-radius: 0; border-top-right-radius: 0;margin-bottom: 1em;border-top: 0;" ng-click="intrucciones.ver = !intrucciones.ver">
-            <span ng-if="!intrucciones.ver">Mostrar instrucciones</span><span ng-if="intrucciones.ver">Ocultar instrucciones</span>
-        </button>
-    </div>
+    <!--<div style="text-align: center;border-top: 1px solid lightgray;">-->
+    <!--    <button type="button" class="btn btn-default" style="border-top-left-radius: 0; border-top-right-radius: 0;margin-bottom: 1em;border-top: 0;" ng-click="intrucciones.ver = !intrucciones.ver">-->
+    <!--        <span ng-if="!intrucciones.ver">Mostrar instrucciones</span><span ng-if="intrucciones.ver">Ocultar instrucciones</span>-->
+    <!--    </button>-->
+    <!--</div>-->
     
     <div class="alert alert-danger" ng-if="errores != null">
         <h4><b>Corrige los errores:</b></h4>
@@ -125,31 +99,56 @@
     </div>
     
     @if (Auth::check())
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12" style="text-align: center;">
-                    <button type="button" class="btn btn-lg btn-primary btn-orange" ng-click="abrirAgregarPlanificador()" ng-disabled="planificadores.length > 0 || favoritos.length == 0"><span class="glyphicon glyphicon-plus"></span> Agregar planificador</button>
-                </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-lg btn-success text-uppercase font-wight-bold" ng-click="abrirAgregarPlanificador()" ng-disabled="planificadores.length > 0 || favoritos.length == 0"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar planificador</button>
+                <br>
+                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalAyuda">¿Necesitas ayuda? Has clic aquí para saber cómo navegar en esta página</button>
             </div>
             
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="title-fav"><h3><span class="glyphicon glyphicon-heart"></span> Mis favoritos</h3></div>
+                    <div class="title-fav" ng-if="favoritos.length > 0"><h3 class="font-weight-normal">Mis favoritos</h3></div>
                     
-                    <ul class="list-group" ng-if="favoritos.length > 0">
+                    <ul class="list-group list-group-flush" ng-if="favoritos.length > 0">
                         <li class="list-group-item" dir-paginate="fav in favoritos|itemsPerPage:10" pagination-id="fav" id="fav-@{{fav.Id}}" ng-drag="true" ng-drag-data="fav" ng-drag-success="onDragComplete($data,$event, fav.Id)" draggable="false" title="Arrastre y suelte en un día de un planificador">
-                            <span class="badge" ng-click="quitarFavoritos(fav)"><i class="ion-android-favorite-outline" title="Quitar de favoritos"></i></span>
-                            <span class="badge" ng-if="fav.Tipo== 4"><a href="/eventos/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
-                            <span class="badge" ng-if="fav.Tipo== 2"><a href="/actividades/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
-                            <span class="badge" ng-if="fav.Tipo== 1"><a href="/atracciones/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
-                            <span class="badge" ng-if="fav.Tipo== 3"><a href="/proveedor/ver/@{{fav.Id}}" target="_blank" title="Ver detalle favorito"><i class="ion-android-open"></i></a></span>
-                            <img ng-src="@{{fav.Imagen}}" alt="" width="50"> @{{fav.Nombre}}
+                            <div class="d-flex align-items-center">
+                                <span class="fas fa-grip-lines-vertical text-muted p-1" aria-hidden="true"></span>
+                                <img ng-src="@{{fav.Imagen}}" alt="Imagen de @{{fav.Nombre}}" width="50">
+                                <p class="m-0 p-2" style="flex: 1 1 auto;">@{{fav.Nombre}}</p>
+                                <div style="min-width: 56px;">
+                                    <button type="button" class="btn btn-xs btn-link" ng-click="quitarFavoritos(fav)" title="Quitar de favoritos">
+                                        <span class="ion-android-favorite-outline text-danger" aria-hidden="true"></span>
+                                        <span class="sr-only">Quitar de favoritos</span>
+                                    </button>
+                                    
+                                    <a href="/eventos/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 4">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    <a href="/actividades/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 2">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    <a href="/atracciones/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 1">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    <a href="/proveedor/ver/@{{fav.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="fav.Tipo== 3">
+                                        <span class="ion-android-open" aria-hidden="true"></span>
+                                        <span class="sr-only">Ver detalle favorito</span>
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                            
+                            
+                             
                         </li>
                     </ul>
                     <div class="row">
                         <div class="col-xs-12" style="text-align: center; padding-top: 2em; padding-bottom: 2em;" ng-if="favoritos.length == 0">
                             <!--Aún no tiene favoritos seleccionados-->
-                            <h2><strong>Aún no tiene favoritos seleccionados</strong></h2>
+                            <h2 class="h2 font-weight-normal">Aún no tiene favoritos seleccionados</h2>
                             <!--Te invitamos a navegar por nuestro portal y conocer todas las actividades, atracciones, eventos y proveedores de servicios turísticos dispuestos para ti-->
                             <p>Te invitamos a navegar por nuestro portal y conocer todas las actividades, atracciones, eventos y proveedores de servicios turísticos dispuestos para tir</p>
                         </div>
@@ -165,17 +164,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 d-flex align-items-center">
                     <br />
                     <div ng-if="planificadores.length == 0 && favoritos.length > 0" style="text-align: center; padding-top: 2em; padding-bottom: 2em;">
                         <!--¿Aún no has hecho tu primer planificador?-->
-                        <h2><strong>¿Aún no has hecho tu primer planificador?</strong></h2>
+                        <p class="h2 font-weight-normal">¿Aún no has hecho tu primer planificador?</p>
                         <!--Presiona en el botón Agregar planificador y empieza-->
                         <p>Presiona en el botón Agregar planificador y empieza</p>
                     </div>
                     <div ng-if="favoritos.length ==  0 && planificadores.length == 0" style="text-align: center; padding-top: 2em; padding-bottom: 2em;">
                         <!--Para crear un planificador debe tener favoritos seleccionados-->
-                        <h2><strong>Para crear un planificador debe tener favoritos seleccionados</strong></h2>
+                        <p class="h2 font-weight-normal">Para crear un planificador debe tener favoritos seleccionados</p>
                     </div>
                     
                     <div id="planificadores" class="panel panel-default" ng-repeat="planificador in planificadores | orderBy: '-Fecha_inicio'" ng-show="planificadores.length > 0">
@@ -261,17 +260,17 @@
             
             <br />
             <div class="row" ng-show="listaPlanificadores.length > 0">
-                <h2 class="col-xs-12">Planificadores anteriores</h2>
+                <h3 class="col-xs-12 font-weight-normal">Planificadores anteriores</h3>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-test" dir-paginate="planificador in listaPlanificadores | orderBy: 'Fecha_inicio'|itemsPerPage:6" pagination-id="plan" ng-show="listaPlanificadores.length > 0">
                     <div id="listaplanificadores" class="panel panel-default">
                         <div class="panel-heading heading-planificador">
                             <div class="row">
-                                <div class="col-xs-8">
-                                    @{{planificador.Nombre}} (@{{planificador.Fecha_inicio | date:'dd-MM-yyyy'}} - @{{planificador.Fecha_fin | date:'dd-MM-yyyy'}})
+                                <div class="col-xs-9">
+                                    @{{planificador.Nombre}} <small>(@{{planificador.Fecha_inicio | date:'dd-MM-yyyy'}} - @{{planificador.Fecha_fin | date:'dd-MM-yyyy'}})</small>
                                 </div>
-                                <div class="col-xs-3" style="text-align: right;">
-                                    <a href="/visitante/editarplanificador/@{{planificador.Id}}"><span class="glyphicon glyphicon-pencil" style="margin-right: 1em; cursor: pointer;" data-toggle="tooltip" data-placement="bottom"  title="Editar planificador"></span></a>
-                                    <span class="glyphicon glyphicon-remove" ng-click="eliminarPlanificador(planificador)" style="margin-right: 1em; cursor: pointer;" data-toggle="tooltip" data-placement="bottom"  title="Eliminar planificador"></span>
+                                <div class="col-xs-3 text-right">
+                                    <a href="/visitante/editarplanificador/@{{planificador.Id}}" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="bottom"  title="Editar planificador"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="sr-only">Editar planificar</span></a>
+                                    <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="bottom"  title="Eliminar planificador" ng-click="eliminarPlanificador(planificador)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Eliminar planificar</span></button> 
                                 </div>
                             </div>
 
@@ -297,27 +296,52 @@
                                     <div class="panel-heading heading-dias" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion-old-@{{planificador.Id}}" href="#collapse-old-@{{$index}}_@{{planificador.Id}}" aria-expanded="false" aria-controls="collapseTwo" style="cursor: pointer;" ng-if="!$first">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <h4 class="panel-title">
+                                                <p class="panel-title font-weight-normal">
 
                                                     Día @{{$index + 1}} <small>(@{{dia.Items.length}} items)</small>
 
-                                                </h4>
+                                                </p>
                                             </div>
                                             
                                         </div>
 
                                     </div>
                                     <div id="collapse-old-@{{$index}}_@{{planificador.Id}}" ng-class="{true:'panel-collapse collapse in',false:'panel-collapse collapse'}[$first]"  role="tabpanel" aria-labelledby="heading@{{$index}}">
-                                        <div class="panel-body">
-                                            <ul class="list-group">
+                                        <div class="panel-body p-1">
+                                            <ul class="list-group list-group-flush">
                                                 <li class="list-group-item" ng-repeat="item in dia.Items|orderBy:'Orden'">
-                                                    <span class="badge" ng-if="item.Tipo==4"><a href="/eventos/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
-                                                    <span class="badge" ng-if="item.Tipo==2"><a href="/actividades/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
-                                                    <span class="badge" ng-if="item.Tipo==1"><a href="/atracciones/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
-                                                    <span class="badge" ng-if="item.Tipo==3"><a href="/proveedor/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>
+                                                    <div class="d-flex align-items-center">
+                                                        <img ng-src="@{{item.Imagen}}" alt="Imagen de @{{item.Nombre}}" width="50">
+                                                        <p class="m-0 p-2" style="flex: 1 1 auto;">@{{item.Nombre}}</p>
+                                                        <div style="min-width: 56px;">
+                                                            <a href="/eventos/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 4">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            <a href="/actividades/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 2">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            <a href="/atracciones/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 1">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            <a href="/proveedor/ver/@{{item.Id}}" class="btn btn-xs btn-link" target="_blank" title="Ver detalle favorito" ng-if="item.Tipo== 3">
+                                                                <span class="ion-android-open" aria-hidden="true"></span>
+                                                                <span class="sr-only">Ver detalle favorito</span>
+                                                            </a>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    
+                                                    <!--<span class="badge" ng-if="item.Tipo==4"><a href="/eventos/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
+                                                    <!--<span class="badge" ng-if="item.Tipo==2"><a href="/actividades/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
+                                                    <!--<span class="badge" ng-if="item.Tipo==1"><a href="/atracciones/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
+                                                    <!--<span class="badge" ng-if="item.Tipo==3"><a href="/proveedor/ver/@{{item.Id}}" target="_blank" title="Ver detalle"><i class="ion-android-open"></i></a></span>-->
                                                     <!--<span class="badge" ng-click="deleteItem($index,dia.Items)" title="@Resource.LabelFavRemoverItem"><i class="glyphicon glyphicon-remove"></i></span>-->
                                                     <!--<span class="badge" ng-show="!$first" ng-click="ordenarItem($index,dia.Items)" title="@Resource.LabelFavOrdenarItem"><i class="glyphicon glyphicon-chevron-up"></i></span>-->
-                                                    <img ng-src="@{{item.Imagen}}" alt="" width="50"> @{{item.Nombre}}
+                                                    <!--<img ng-src="@{{item.Imagen}}" alt="" width="50"> @{{item.Nombre}}-->
                                                 </li>
                                             </ul>
                                             
@@ -443,9 +467,61 @@
             	</div>
             </div>
             
-        </div>
+            <!-- Modal ayuda -->
+            <div class="modal fade" id="modalAyuda" tabindex="-1" role="dialog" aria-labelledby="modalAyudaLabel">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalAyudaLabel">¿Qué hacer en esta página?</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <img src="/img/instruccion_planificador_1.png" alt="" class="img-responsive" role="presentation" aria-hidden="true">
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <p><strong>Para guardar tus favoritos</strong></p>
+                            <ol class="text-secondary">
+                                <!--Navegue en el portal a través de las diferentes atracciones, actividades, proveedores de servicio turístico y eventos publicados.-->
+                                <li>Navegue en el portal a través de las diferentes lugares, atracciones, actividades y demás cosas que tenemos para ti.</li>
+                                <!--Presione en el botón Guardar como favorito indicado con el icono de un corazón.-->
+                                <li>Presione en el botón Guardar como favorito indicado con el icono de un corazón.</li>
+                                <!--Podrá listar sus favoritos en la opción Planifica tu viaje ubicado en la barra de navegación-->
+                                <li>Podrá listar sus favoritos en la opción Planifica tu viaje ubicado en la barra de navegación</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <p><strong>Para crear un planificador</strong></p>
+                            <ol class="text-secondary">
+                                <!--Presione el botón Crear planificador e ingrese la información solicitada.-->
+                                <li>Presione el botón Crear planificador e ingrese la información solicitada.</li>
+                                <!--Agregue los días en los que realizará alguna actividad.-->
+                                <li>Agregue los días en los que realizará alguna actividad.</li>
+                                <!--Arrastre sus favoritos y sueltelos en los días agregados. Podrá organizar los elementos arrastrados en los días.-->
+                                <li>Arrastre sus favoritos y sueltelos en los días agregados. Podrá organizar los elementos arrastrados en los días.</li>
+                                <!--Cuando termine guarde los cambios para no perder la información. Luego podrá imprimir o compartir su planificador.-->
+                                <li>Cuando termine guarde los cambios para no perder la información. Luego podrá imprimir o compartir su planificador.</li>
+                            </ol>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <img src="/img/instruccion_planificador_2.png" alt="" class="img-responsive" role="presentation" aria-hidden="true">
+                        </div>
+                        
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
     @else
-        <div class="row" style="padding: 0;">
+        <div class="text-center" style="padding: 0;">
             <div class="jumbotron" style="text-align: center;font-size: 4em; padding-top: 2em; padding-bottom: 2em;">
                 <span class="glyphicon glyphicon-lock" style="font-size: 2.5em;"></span>
                 <!--Para acceder a esta funcionalidad debe iniciar sesión-->
