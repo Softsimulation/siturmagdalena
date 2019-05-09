@@ -144,6 +144,24 @@ var pp=angular.module('admin.temporadas', ['adminservice','angularUtils.directiv
 }])
 
 .controller('verTemporadaCtrl', ['$scope','adminService', function ($scope,adminService) {
+    
+    $scope.historialEncuesta = function(encuesta){
+
+        $("body").attr("class", "charging");
+        adminService.getHistorialencuesta(encuesta.id).then(function (data) {
+       
+            $scope.historial_encuestas = data;
+            
+            $("body").attr("class", "cbp-spmenu-push");
+             $('#modalHistorial').modal('show');
+            
+        }).catch(function () {
+            $('#processing').removeClass('process-in');
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+              
+    }
+
 
     $scope.$watch('id', function () {
         $("body").attr("class", "cbp-spmenu-push charging");

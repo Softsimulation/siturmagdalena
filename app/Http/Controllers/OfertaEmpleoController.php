@@ -101,6 +101,7 @@ class OfertaEmpleoController extends Controller
         $this->middleware('permissions:list-encuestaOfertaEmpleo',['only' => ['getEncuestasrealizadas','getEncuestaspendientes','getEncuesta','getEncuestas','getEncuestasrealizadastotales',
         'getEncuestasoferta'] ]);
         
+        //$this->middleware('role:Admin');
         
         
         
@@ -108,6 +109,12 @@ class OfertaEmpleoController extends Controller
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }
         
+    }
+    
+   public function getHistorialencuesta($id){
+        $historial = Historial_Encuesta_Oferta::with(['user','estadosEncuesta'])->where("encuesta_id",$id)->Orderby("fecha_cambio",'desc')->get();
+        
+        return $historial;
     }
     
     
@@ -132,7 +139,6 @@ class OfertaEmpleoController extends Controller
     
     }
     
-    
     public function getExcelproveedoresrnt(){ 
 
             $proveedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
@@ -153,8 +159,6 @@ class OfertaEmpleoController extends Controller
             })->export('xls');
     
     }
-    
-    
     
     public function dia($dias, $mesdia){
          $mesid = Mes_Anio::find($mesdia);
@@ -188,8 +192,6 @@ class OfertaEmpleoController extends Controller
          return ["success" => true];
     }
     
-    
-    
     public function getEncuestasoferta(){
         
         return view('ofertaEmpleo.ListadoEncuestastotal');
@@ -204,8 +206,7 @@ class OfertaEmpleoController extends Controller
 
     }
     
-    
-        public function postGuardarproveedorrnt(Request $request)
+    public function postGuardarproveedorrnt(Request $request)
     {
         $validator = \Validator::make($request->all(),[
         
@@ -255,7 +256,6 @@ class OfertaEmpleoController extends Controller
        return ["success"=>true,"proveedor" => $provedores];
             
     }
-    
     
     public function getCrearencuesta(){
         return view('ofertaEmpleo.Crearencuesta');
@@ -581,6 +581,7 @@ class OfertaEmpleoController extends Controller
     public function getCaracterizaciontransporte($id){
         return view('ofertaEmpleo.CaracterizacionTransporte',array('id' => $id));
     }
+    
     public function getOfertatransporte($id){
         return view('ofertaEmpleo.OfertaTransporte',array('id' => $id));
     }
@@ -609,7 +610,7 @@ class OfertaEmpleoController extends Controller
     }
     
     public function getCargardatosempleo($id = null)  {
-        $empleo = collect();
+        $encuesta = Encuesta::find($id);
   
         $empleo = collect();
         $empleo["Empleo"] = Empleo::where("encuestas_id",$id)->get();
@@ -618,9 +619,35 @@ class OfertaEmpleoController extends Controller
             $empleo["VacanteOperativo"] = $vac->operativo;
             $empleo["VacanteAdministrativo"] = $vac->administrativo;
             $empleo["VacanteGerencial"]  = $vac->gerencial;
+            $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$id)->first();
+        }else{
+            
+                $ultimaEncuesta =  Encuesta::join("empleos","encuestas.id","=","empleos.encuestas_id")->where("sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id)->orderby("encuestas.id", "DES")->first();
+          
+                if($ultimaEncuesta == null ){
+                    
+                      $idBuscar = $id;
+                 
+                }else{
+                     $idBuscar = $ultimaEncuesta->encuesta_id;
+                     if($ultimaEncuesta->tipo_cargo_id == null){
+                       $idBuscar = $id;
+                    }
+                }
+                
+       
+                $vac = Vacante::where("encuestas_id",$idBuscar)->first(); 
+                $empleo["Empleo"] = Empleo::where("encuestas_id",$idBuscar)->get(); 
+               if($vac != null){
+                    $empleo["VacanteOperativo"] = $vac->operativo;
+                    $empleo["VacanteAdministrativo"] = $vac->administrativo;
+                    $empleo["VacanteGerencial"]  = $vac->gerencial;
+
+               }
+               $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$idBuscar)->first();
         }
         
-        $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$id)->first();
+   
         
         $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
           $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
@@ -795,7 +822,7 @@ class OfertaEmpleoController extends Controller
     
     public function getCargardatosdmplmensual($id = null)  
     {
-        $empleo = collect();
+         $encuesta = Encuesta::find($id);
   
         $empleo = collect();
         $empleo["Empleo"] = Empleo::where("encuestas_id",$id)->get(); 
@@ -804,18 +831,50 @@ class OfertaEmpleoController extends Controller
             $empleo["VacanteOperativo"] = $vac->operativo;
             $empleo["VacanteAdministrativo"] = $vac->administrativo;
             $empleo["VacanteGerencial"]  = $vac->gerencial;
+            $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$id)->first();
+            $empleo["ingles"] = Dominiosingles::where("encuestas_id",$id)->get();
+            $empleo["Vinculacion"] = Empleado_Vinculacion::where("encuestas_id",$id)->get();
+            $empleo["Edad"] = Edad_Empleado::where("encuestas_id",$id)->get();
+            $empleo["Educacion"] = Educacion_Empleado::where("encuestas_id",$id)->get();
+            $empleo["Sexo"]  =  Sexo_Empleado::where("encuestas_id",$id)->get();
+            $empleo["Remuneracion"]  =  Remuneracion_Promedio::where("encuesta_id",$id)->get();
+        }else{
+                $ultimaEncuesta =  Encuesta::join("empleos","encuestas.id","=","empleos.encuestas_id")->
+                join("meses_de_anio","encuestas.meses_anio_id","=","meses_de_anio.id")->where("sitios_para_encuestas_id",$encuesta->sitios_para_encuestas_id)
+                ->whereRaw('mes_id % 3 = 0')->orderby("encuestas.id", "DES")->first();
+            
+                if($ultimaEncuesta == null ){
+                    
+                      $idBuscar = $id;
+                 
+                }else{
+                     $idBuscar = $ultimaEncuesta->encuestas_id;
+                     if($ultimaEncuesta->tipo_cargo_id == null){
+                        
+                       $idBuscar = $id;
+                    }
+                }
+          
+                $vac = Vacante::where("encuestas_id",$idBuscar)->first(); 
+                $empleo["Empleo"] = Empleo::where("encuestas_id",$idBuscar)->get(); 
+               if($vac != null){
+                $empleo["VacanteOperativo"] = $vac->operativo;
+                $empleo["VacanteAdministrativo"] = $vac->administrativo;
+                $empleo["VacanteGerencial"]  = $vac->gerencial;
+               }
+                $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$idBuscar)->first();
+                $empleo["ingles"] = Dominiosingles::where("encuestas_id",$idBuscar)->get();
+                $empleo["Vinculacion"] = Empleado_Vinculacion::where("encuestas_id",$idBuscar)->get();
+                $empleo["Edad"] = Edad_Empleado::where("encuestas_id",$idBuscar)->get();
+                $empleo["Educacion"] = Educacion_Empleado::where("encuestas_id",$idBuscar)->get();
+                $empleo["Sexo"]  =  Sexo_Empleado::where("encuestas_id",$idBuscar)->get();
+                $empleo["Remuneracion"]  =  Remuneracion_Promedio::where("encuesta_id",$idBuscar)->get();
         }
-        $empleo["Razon"] = Razon_Vacante::where("encuesta_id",$id)->first();
-        $empleo["ingles"] = Dominiosingles::where("encuestas_id",$id)->get();
-        $empleo["Vinculacion"] = Empleado_Vinculacion::where("encuestas_id",$id)->get();
-        $empleo["Edad"] = Edad_Empleado::where("encuestas_id",$id)->get();
-        $empleo["Educacion"] = Educacion_Empleado::where("encuestas_id",$id)->get();
-        $empleo["Sexo"]  =  Sexo_Empleado::where("encuestas_id",$id)->get();
-        $empleo["Remuneracion"]  =  Remuneracion_Promedio::where("encuesta_id",$id)->get();
         
-        $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
+        
+         $tipo_cargo = Tipo_Cargo::select("id as Id","nombre as Nombre")->get();
          $data =  new Collection(DB::select("SELECT *from listado_encuestas_proveedores_oferta where id =".$id));
-          $retorno = [
+         $retorno = [
                 'empleo' => $empleo,
                 'tipo_cargo' => $tipo_cargo,
                  'url' => "",
