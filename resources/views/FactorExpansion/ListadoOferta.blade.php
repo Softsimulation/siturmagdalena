@@ -44,8 +44,10 @@
 @section('content')
 <div class="flex-list">
     
-        <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearFactorModal()" >Crear Factor de expansión
-        </a>
+        @if(Auth::user()->contienePermiso('create-factorExpansion'))
+            <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearFactorModal()" >Crear Factor de expansión
+            </a>
+        @endif
     
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
          
@@ -94,7 +96,9 @@
                                 <td>@{{factor.cantidad}}</td>
                                 <td>
                                     
-                                        <a href="" ng-click="editarFactorModal(factor)" class="btn btn-xs btn-default" title="Editar factor"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        @if(Auth::user()->contienePermiso('edit-factorExpansion'))
+                                            <a href="" ng-click="editarFactorModal(factor)" class="btn btn-xs btn-default" title="Editar factor"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        @endif
                                     
                                 </td>
                             </tr>
