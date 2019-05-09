@@ -86,6 +86,12 @@ class SostenibilidadPstController extends Controller
         return ['proveedores' => $proveedores, 'encuestadores' => $encuestadores, 'periodos' => $periodos];
     }
     
+      public function getHistorialencuesta($id){
+        $historial = Historial_Encuesta_Pst_Sostenibilidad::with('estadosEncuesta')->where("encuesta_pst_sostenibilidad_id",$id)->Orderby("fecha_cambio",'desc')->get();
+        
+        return $historial;
+    }
+    
     public function postGuardarconfiguracion(Request $request){
         $validator = \Validator::make($request->all(), [
 			'fechaAplicacion' => 'required',

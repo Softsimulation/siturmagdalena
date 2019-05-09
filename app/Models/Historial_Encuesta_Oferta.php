@@ -35,9 +35,9 @@ class Historial_Encuesta_Oferta extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function aspNetUser()
+    public function user()
     {
-        return $this->belongsTo('App\Models\AspNetUser', 'user_id', '"Id"');
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     /**
@@ -51,8 +51,9 @@ class Historial_Encuesta_Oferta extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function estadosEncuestum()
+   public function estadosEncuesta()
     {
-        return $this->belongsTo('App\Models\EstadosEncuestum', 'estado_encuesta_id');
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_encuesta_id');
     }
+
 }
