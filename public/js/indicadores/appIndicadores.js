@@ -138,25 +138,21 @@
 							// Draw the text in black, with the specified font
 							ctx.fillStyle = 'rgb(0, 0, 0)';
 
-							var fontSize = 12;
-							var fontStyle = 'normal';
-							var fontFamily = 'Helvetica Neue';
-							ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+							ctx.font = Chart.helpers.fontString(12, 'normal', 'Helvetica Neue');
 
 							// Just naively convert to string for now
-							var dataString = dataset.data[index].toString();
+							var dataString = dataset.data[index] +"";
 
 							// Make sure alignment settings are correct
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'middle';
                             
-                            var validar_tipo_grafica = ($scope.graficaSelect.codigo=="pie" || $scope.graficaSelect.codigo=="doughnut" || $scope.graficaSelect.codigo=="polarArea" || $scope.graficaSelect.codigo=="radar");
                             dataString = element.hidden ? "" : dataString +' '+ ( $scope.graficaSelect.codigo !='pie' ? ($scope.formato?$scope.formato:'') : '%' );
                             
-							var padding = 5;
 							var position = element.tooltipPosition();
-							var y = position.y  +  ( !validar_tipo_grafica ?  12 : 0) - (fontSize / 2) - padding
-							ctx.fillText(dataString, position.x , y );
+							var y = position.y  +  ($scope.graficaSelect.codigo=="bar" || $scope.graficaSelect.codigo=="line" ? -5 : 0 );
+            				var x = position.x + ($scope.graficaSelect.codigo=="horizontalBar" ? 18 : 0 );
+							ctx.fillText(dataString, x , y );
 						});
 					}
 				});
@@ -170,7 +166,6 @@
         
         $scope.options = optionsGraficas;
         $scope.colores = coloresGraficas;
-        
         
         $scope.filtrarDatos = function(){
             
@@ -204,9 +199,11 @@
                     if( data.periodos.length>0 ){
                         $scope.yearSelect = data.periodos[0];
                         $scope.mesSelect = data.periodos[0];
+                        $scope.SelectTrimestre = data.periodos[0];
                         $scope.filtro.year = $scope.yearSelect.year;
                         $scope.filtro.id = $scope.yearSelect.id;
                         if($scope.yearSelect.mes){ $scope.filtro.mes = $scope.yearSelect.mes; }
+                        if($scope.yearSelect.trimestre){ $scope.filtro.trimestre = $scope.yearSelect.trimestre; }
                     }
                     
                     $scope.label_x = data.indicador.idiomas[0].eje_x;
@@ -256,20 +253,27 @@
             $scope.dataExtra = data.dataExtra;
             
             if($scope.filtro.indicador==5){
-                $scope.tituloIndicadorGrafica = $scope.indicador.idiomas[0].nombre + " ("+ $("#SelectTipoGasto option:selected" ).text() +"/"+$scope.filtro.year+")";
+                $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ $("#SelectTipoGasto option:selected" ).text() +"/"+$scope.filtro.year+")";
             } 
             else if($scope.yearSelect.temporada){
                 for(var i=0; i<$scope.periodos.length; i++){
                     if($scope.periodos[i].id==$scope.yearSelect.id){
-                        $scope.tituloIndicadorGrafica = $scope.indicador.idiomas[0].nombre + " ("+ $scope.periodos[i].temporada +"/"+$scope.filtro.year+")";
+                        $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ $scope.periodos[i].temporada +"/"+$scope.filtro.year+")";
+                        break;
+                    }
+                }
+            }
+            else if($scope.yearSelect.trimestre){
+                for(var i=0; i<$scope.periodos.length; i++){
+                    if($scope.periodos[i].id==$scope.yearSelect.id){
+                        $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ $scope.periodos[i].trimestre +"/"+$scope.filtro.year+")";
                         break;
                     }
                 }
             }
             else{
-                $scope.tituloIndicadorGrafica = $scope.indicador.idiomas[0].nombre + " ("+ ( $scope.filtro.mes? $scope.filtro.mes+"/" : "") + $scope.filtro.year+")";
+                $scope.options.title.text = $scope.indicador.idiomas[0].nombre + " ("+ ( $scope.filtro.mes? $scope.filtro.mes+"/" : "") + $scope.filtro.year+")";
             }
-            $scope.options.title.text = $scope.tituloIndicadorGrafica;
             
             for(var i=0; i<$scope.indicador.graficas.length; i++){
                 if($scope.indicador.graficas[i].pivot.es_principal){
@@ -285,6 +289,8 @@
             $scope.filtro.year = $scope.yearSelect.year;
             $scope.filtro.id =   $scope.yearSelect.id;
             $scope.filtro.mes = $scope.mesSelect.mes;
+            $scope.filtro.trimestre = $scope.mesSelect.trimestre;
+            $scope.filtro.temporada = $scope.mesSelect.temporada;
             $scope.filtrarDatos();
         }
         
@@ -304,6 +310,7 @@
             return  "rgba("+r1+","+r2+","+r3+", 0.5)";
         }
         
+        
         Chart.plugins.register({
 			afterDatasetsDraw: function(chart) {
 				var ctx = chart.ctx;
@@ -315,25 +322,21 @@
 							// Draw the text in black, with the specified font
 							ctx.fillStyle = 'rgb(0, 0, 0)';
 
-							var fontSize = 12;
-							var fontStyle = 'normal';
-							var fontFamily = 'Helvetica Neue';
-							ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+							ctx.font = Chart.helpers.fontString(12, 'normal', 'Helvetica Neue');
 
 							// Just naively convert to string for now
-							var dataString = dataset.data[index].toString();
+							var dataString = dataset.data[index] +"";
 
 							// Make sure alignment settings are correct
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'middle';
                             
-                            var validar_tipo_grafica = ($scope.graficaSelect.codigo=="pie" || $scope.graficaSelect.codigo=="doughnut" || $scope.graficaSelect.codigo=="polarArea" || $scope.graficaSelect.codigo=="radar");
                             dataString = element.hidden ? "" : dataString +' '+ ( $scope.graficaSelect.codigo !='pie' ? ($scope.formato?$scope.formato:'') : '%' );
                             
-							var padding = 5;
 							var position = element.tooltipPosition();
-							var y = position.y  +  ( !validar_tipo_grafica ?  12 : 0) - (fontSize / 2) - padding
-							ctx.fillText(dataString, position.x , y );
+							var y = position.y  +  ($scope.graficaSelect.codigo=="bar" || $scope.graficaSelect.codigo=="line" ? -5 : 0 );
+            				var x = position.x + ($scope.graficaSelect.codigo=="horizontalBar" ? 18 : 0 );
+							ctx.fillText(dataString, x , y );
 						});
 					}
 				});

@@ -90,6 +90,9 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
         height: 100%;
         max-width: none;
     }
+    .carousel-inner>.item {
+        height: 320px;
+    }
     @media only screen and (min-width: 768px) {
         .carousel-inner>.item {
             height: 450px;

@@ -284,10 +284,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <span ng-if="encuesta.periodos_informe_id == 6"><input type="text" name="otro_periodo_informe" style="display: inline-block;" class="form-control" id="otro_periodo_informe" placeholder="Escriba su otra opción" ng-model="encuesta.otro_periodo_informe" ng-required="encuesta.periodos_informe_id == 6"/></span>
                     </div>
                 </div>
                 <span ng-show="datosForm.$submitted || datosForm.periodos_informe_id.$touched">
                     <span class="label label-danger" ng-show="datosForm.periodos_informe_id.$error.required">*El campo es requerido.</span>
+                    <span class="label label-danger" ng-show="datosForm.otro_periodo_informe.$error.required">*El campo otro es requerido.</span>
                 </span>
             </div>
         </div>

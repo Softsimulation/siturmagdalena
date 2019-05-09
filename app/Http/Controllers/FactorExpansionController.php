@@ -25,11 +25,11 @@ class FactorExpansionController extends Controller
        
         $this->middleware('auth');
         
-        //$this->middleware('role:Admin');
+        $this->middleware('role:Admin');
         
-        $this->middleware('permissions:list-factorExpansion|create-factorExpansion|edit-factorExpansion',['only' => ['getListado','getFactoresoferta'] ]);
+        /*$this->middleware('permissions:list-factorExpansion|create-factorExpansion|edit-factorExpansion',['only' => ['getListado','getFactoresoferta'] ]);
         $this->middleware('permissions:create-factorExpansion',['only' => ['postCrearfactor'] ]);
-        $this->middleware('permissions:edit-noticia',['only' => ['postEditarfactor'] ]);
+        $this->middleware('permissions:edit-noticia',['only' => ['postEditarfactor'] ]);*/
         
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
@@ -50,7 +50,7 @@ class FactorExpansionController extends Controller
         $proveedores = new Collection(DB::select("SELECT *from listado_proveedores_rnt"));
         $mesesAnio = Mes_Anio::with(['anio','mes'])->orderBy('anio_id','desc')->orderBy('mes_id','asc')->get();
         $tiposProveedores = Tipo_Proveedor_Con_Idioma::with(['tipoProveedore'=>function($q){$q->where('estado',1);}])->where('idiomas_id',1)->get();
-        $tamaniosEmpresa = D_Tamanio_Empresa::where('estado',1)->get();
+        $tamaniosEmpresa = D_Tamanio_Empresa::where('estado',1)->where('id','<>',-1)->get();
         $municipios = D_Municipios_Interno::where('estado',1)->get();
         return ["factores"=>$factores,"proveedores"=>$proveedores,"meses"=>$mesesAnio,"tiposProveedores"=>$tiposProveedores,"tamaniosEmpresa"=>$tamaniosEmpresa,"municipios"=>$municipios];
     }
@@ -92,7 +92,8 @@ class FactorExpansionController extends Controller
         $busqueda = Factor_Expansion_Oferta_Empleo::where('mes_anio_id',$request->mes_id)
         ->where('d_tamanio_empresa_id',$request->tamanioEmpresa_id)
         ->where('tipo_proveedor_id',$request->tipoProveedor_id)
-        ->where('d_municipio_interno_id',$request->municipio_id)->first();
+        ->where('d_municipio_interno_id',$request->municipio_id)
+        ->where('proveedor_rnt_id',$request->proveedor_rnt_id)->first();
         if($busqueda != null){
             return ["success"=>false,"errores"=>[["Ya el factor de expansión existe en el sistema."]]];
         }
@@ -155,6 +156,7 @@ class FactorExpansionController extends Controller
         ->where('d_tamanio_empresa_id',$request->tamanioEmpresa_id)
         ->where('tipo_proveedor_id',$request->tipoProveedor_id)
         ->where('d_municipio_interno_id',$request->municipio_id)
+        ->where('proveedor_rnt_id',$request->proveedor_rnt_id)
         ->where('id','<>',$request->id)->first();
         if($busqueda != null){
             return ["success"=>false,"errores"=>[["Los datos que quiere asignar ya se encuentran registrados en otro factor."]]];
