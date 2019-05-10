@@ -19,6 +19,24 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
 
 .controller('listadoecuesta', ['$scope', 'proveedorServi',function ($scope, proveedorServi) {
    
+      $scope.historialEncuesta = function(encuesta){
+
+        $("body").attr("class", "charging");
+        proveedorServi.getHistorialencuesta(encuesta.id).then(function (data) {
+       
+            $scope.historial_encuestas = data;
+            
+            $("body").attr("class", "cbp-spmenu-push");
+             $('#modalHistorial').modal('show');
+            
+        }).catch(function () {
+            $('#processing').removeClass('process-in');
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+              
+    }
+   
+   
     $scope.$watch('id', function () {
         $("body").attr("class", "cbp-spmenu-push charging");
         
@@ -204,6 +222,24 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
             swal("Error", "No se realizo la solicitud, reinicie la página");
         })
     
+        
+    $scope.historialEncuesta = function(encuesta){
+
+        $("body").attr("class", "charging");
+        proveedorServi.getHistorialencuesta(encuesta.id).then(function (data) {
+       
+            $scope.historial_encuestas = data;
+            
+            $("body").attr("class", "cbp-spmenu-push");
+             $('#modalHistorial').modal('show');
+            
+        }).catch(function () {
+            $('#processing').removeClass('process-in');
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+              
+    }
+        
         
       $scope.caracterizacionEmpleo = function(obj){
              

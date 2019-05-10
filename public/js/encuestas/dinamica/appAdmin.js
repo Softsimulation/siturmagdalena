@@ -594,9 +594,7 @@
         
         $scope.OpenModalCambiarEstado = function(encuesta){
            
-            $scope.CambiarEstado = angular.copy(encuesta);
-            $scope.CambiarEstado.estados_encuestas_id = $scope.CambiarEstado.estados_encuestas_id+"";
-            $scope.CambiarEstado.estadoVaidar = $scope.CambiarEstado.estados_encuestas_id; 
+            $scope.CambiarEstado = angular.copy(encuesta);;
             $scope.errores = null;
             $scope.formEncuestaE.$setPristine();
             $scope.formEncuestaE.$setUntouched();
@@ -730,7 +728,7 @@
         
         $scope.openModalCopiar = function(item){
             
-            if(item.tipos_encuestas_dinamica_id==1 || item.estados_encuestas_id==4){
+            if(item.tipos_encuestas_dinamica_id==1){
                 $scope.link = $scope.host +  "/llenarEncuestaAdHoc/" +item.id;
             }
             else if(item.tipos_encuestas_dinamica_id==2){
@@ -747,7 +745,7 @@
             document.execCommand("copy");
         }  
         
-        $scope.exportarData = function(id, nombre){
+        $scope.exportarData = function(id){
             
             $("body").attr("class", "cbp-spmenu-push charging");
             
@@ -755,11 +753,11 @@
                 .then(function(response){ 
                     var link = document.createElement("a");
                     link.href = window.URL.createObjectURL(response);
-                    link.download = nombre;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
                     $("body").attr("class", "cbp-spmenu-push");
+                    zona.es_generada = true;
                 });
             
         }

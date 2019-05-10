@@ -43,8 +43,10 @@ class Historial_Encuesta_Hogar_Sostenibilidad extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function estadosEncuestum()
+        public function estadosEncuesta()
     {
-        return $this->belongsTo('App\EstadosEncuestum', 'estado_encuesta_id');
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_encuesta_id');
     }
+
+
 }

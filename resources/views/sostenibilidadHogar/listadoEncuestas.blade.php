@@ -69,6 +69,9 @@
                                 @if(Auth::user()->contienePermiso('edit-encuestaSostenibilidadHogares'))
                                     <a href="/sostenibilidadhogares/editar/@{{item.id}}" title="Editar encuesta" ng-if="item.EstadoId != 7 && item.EstadoId != 8" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                 @endif
+                                <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Historial encuesta" ng-click="historialEncuesta(item)">
+                                        <span class="glyphicon glyphicon-list-alt"></span><span class="sr-only">Historial</span>
+                               </button>
                             </td>
                         </tr>
                     </tbody>
@@ -86,6 +89,69 @@
     <div class='carga'>
 
     </div>
+    <div class="modal fade" id="modalHistorial" tabindex="-1" role="dialog" aria-labelledby="modalHistorial">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"> Historial encuestas </h4>
+            </div>
+    
+                <div class="modal-body">
+
+      
+	     <div class="row">
+            <div class="col-xs-12 table-overflow">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        
+                            <th>Nombre</th>
+                            <th>fecha cambio</th>
+                            <th>Estado </th>
+                            <th>Mensaje</th>
+        
+                        </tr>
+                
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="item in historial_encuestas |itemsPerPage:10 as results" pagination-id="paginacion_encuestas_historial" >
+                               
+                   
+                            <td>@{{item.user_create}}</td>
+                            <td>@{{item.estados_encuesta.nombre}}</td>
+                            <td>@{{item.fecha_cambio | date:'dd-MM-yyyy'}}</td>
+                            <td>@{{item.observacion }}</td>
+                          
+                        </tr>    
+                    </tbody>
+                    
+                </table>
+                
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <dir-pagination-controls pagination-id="paginacion_encuestas_historial"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
+        </div>
+
+
+
+
+                </div>
+
+                <div class="modal-footer text-right">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                   
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('javascript')

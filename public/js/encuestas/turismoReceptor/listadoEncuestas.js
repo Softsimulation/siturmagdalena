@@ -152,4 +152,25 @@ app.controller('listadoEncuestas2Ctrl', ['$scope','receptorServi', function ($sc
         
     }
     
+    
+    $scope.historialEncuesta = function(encuesta){
+
+        $("body").attr("class", "charging");
+        receptorServi.getHistorialencuesta(encuesta.id).then(function (data) {
+       
+            $scope.historial_encuestas = data;
+            
+            $("body").attr("class", "cbp-spmenu-push");
+             $('#modalHistorial').modal('show');
+            
+        }).catch(function () {
+            $('#processing').removeClass('process-in');
+            swal("Error", "Error en la carga, por favor recarga la página.", "error");
+        })
+              
+    }
+    
+    
+    
+    
 }])

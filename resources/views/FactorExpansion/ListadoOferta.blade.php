@@ -43,10 +43,12 @@
 
 @section('content')
 <div class="flex-list">
-    @if(Auth::user()->contienePermiso('create-factorExpansion'))
-        <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearFactorModal()" >Crear Factor de expansión
-        </a>
-    @endif
+    
+        @if(Auth::user()->contienePermiso('create-factorExpansion'))
+            <a href="" role="button" class="btn btn-lg btn-success" ng-click="crearFactorModal()" >Crear Factor de expansión
+            </a>
+        @endif
+    
     <button type="button" ng-click="mostrarFiltro=!mostrarFiltro" class="btn btn-lg btn-default" title="filtrar registros"><span class="glyphicon glyphicon-filter"></span><span class="sr-only">Filtros</span></button>
          
 </div>
@@ -93,9 +95,11 @@
                                 <td>@{{factor.d_tamanio_empresa.nombre}}</td>
                                 <td>@{{factor.cantidad}}</td>
                                 <td>
-                                    @if(Auth::user()->contienePermiso('edit-factorExpansion'))
-                                        <a href="" ng-click="editarFactorModal(factor)" class="btn btn-xs btn-default" title="Editar factor"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    @endif
+                                    
+                                        @if(Auth::user()->contienePermiso('edit-factorExpansion'))
+                                            <a href="" ng-click="editarFactorModal(factor)" class="btn btn-xs btn-default" title="Editar factor"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        @endif
+                                    
                                 </td>
                             </tr>
 
@@ -140,6 +144,12 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <label for="municipioFactorCrear"><span class="asterisk">*</span>Municipio</label>
+                                <select class="form-control" name="municipioFactorCrear" id="municipioFactorCrear" ng-model="crearFactor.municipio_id" required>
+                                    <option value="">Seleccione un tipo</option>
+                                    <option value="4747">Santa Marta</option>
+                                    <option value="-1">Resto del Magdalena</option>
+                                </select>
+                                <!--
                                 <ui-select ng-model="crearFactor.municipio_id" id="municipioFactorCrear" name="municipioFactorCrear" required>
                                     <ui-select-match placeholder="Seleccionar un municipio">
                                         <span ng-bind="$select.selected.nombre"></span>
@@ -147,7 +157,7 @@
                                     <ui-select-choices repeat="municipio.id as municipio in (municipios| filter: $select.search)">
                                         <span ng-bind="municipio.nombre" title="@{{municipio.nombre}}"></span>
                                     </ui-select-choices>
-                                </ui-select>
+                                </ui-select>-->
                                 
                                 <span class="messages" ng-show="crearFactorForm.$submitted || crearFactorForm.municipioFactorCrear.$touched">
                                     <span ng-show="crearFactorForm.municipioFactorCrear.$error.required" class="color_errores">* El campo es obligatorio.</span>
@@ -288,6 +298,12 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <label for="municipioFactorEditar"><span class="asterisk">*</span>Municipio</label>
+                                <select class="form-control" name="municipioFactorEditar" id="municipioFactorEditar" ng-model="editarFactor.municipio_id" required>
+                                    <option value="">Seleccione un tipo</option>
+                                    <option value="4747">Santa Marta</option>
+                                    <option value="-1">Resto del Magdalena</option>
+                                </select>
+                                <!--
                                 <ui-select ng-model="editarFactor.municipio_id" id="municipioFactorEditar" name="municipioFactorEditar" required>
                                     <ui-select-match placeholder="Seleccionar un municipio">
                                         <span ng-bind="$select.selected.nombre"></span>
@@ -295,7 +311,7 @@
                                     <ui-select-choices repeat="municipio.id as municipio in (municipios| filter: $select.search)">
                                         <span ng-bind="municipio.nombre" title="@{{municipio.nombre}}"></span>
                                     </ui-select-choices>
-                                </ui-select>
+                                </ui-select>-->
                                 
                                 <span class="messages" ng-show="editarFactorForm.$submitted || editarFactorForm.municipioFactorEditar.$touched">
                                     <span ng-show="editarFactorForm.municipioFactorEditar.$error.required" class="color_errores">* El campo es obligatorio.</span>
