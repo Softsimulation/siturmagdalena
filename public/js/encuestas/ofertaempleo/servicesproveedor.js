@@ -83,6 +83,18 @@ app.factory("proveedorServi", ["$http", "$q", function ($http, $q) {
             return promise;
         },
         
+        getHistorialencuesta: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/ofertaempleo/historialencuesta/'+id).success(function (data) {
+             defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+        
         
     }
 }]);

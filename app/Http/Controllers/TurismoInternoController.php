@@ -116,6 +116,19 @@ class TurismoInternoController extends Controller
         
         
     }
+    
+    
+   public function getHistorialencuesta($id){
+        
+        $principal = Viaje::where("personas_id","=",$id)->where("es_principal","=",true)->pluck('id');   
+        
+        $historial = Historial_Encuesta_Interno::with(['digitadore' => function($q){ $q->with('user'); },'estadosEncuestum'])->where("viajes_id",$principal)->Orderby("fecha_cambio",'desc')->get();
+        
+        return $historial;
+    }
+    
+    
+    
     public function getDatoshogar(){
         
         $municipios=Municipio::where('departamento_id',1411)->get();

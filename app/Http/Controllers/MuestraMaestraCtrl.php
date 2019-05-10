@@ -36,7 +36,7 @@ class MuestraMaestraCtrl extends Controller
         
         $this->middleware('auth', ['except' => ['getDetalles','getDatacongiguracion']] );
         //$this->middleware('role:Admin|Estadistico', ['except' => ['getDetalles','getDatacongiguracion']] );
-        
+        /*
         $this->middleware('permissions:list-periodosMuestra|create-periodosMuestra|read-periodosMuestra|edit-periodosMuestra|
         excel-muestra|KML-muestra|
         agregar-zona|edit-zona|delete-zona',
@@ -54,7 +54,7 @@ class MuestraMaestraCtrl extends Controller
         $this->middleware('permissions:llenarInfo-zona|excel-infoZona',['only' => ['postGuardarinfozona','getLlenarinfozona','getExcelinfozona'] ]);
         $this->middleware('permissions:create-proveedorMuestra|edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal'] ]);
         $this->middleware('permissions:edit-proveedorMuestra',['only' => ['postGuardarproveedorinformal','postEditarubicacionproveedor'] ]);
-        
+        */
         if(Auth::user() != null){
             $this->user = User::where('id',Auth::user()->id)->first(); 
         }

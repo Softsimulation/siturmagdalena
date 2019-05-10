@@ -200,6 +200,9 @@
                                         @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
                                             <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
                                         @endif
+                                        <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Historial encuesta" ng-click="historialEncuesta(item.persona)">
+                                            <span class="glyphicon glyphicon-list-alt"></span><span class="sr-only">Historial</span>
+                                      </button>
                                     </td>
                                 </tr>
 
@@ -229,6 +232,70 @@
     <div class='carga'>
 
     </div>
+    
+    <div class="modal fade" id="modalHistorial" tabindex="-1" role="dialog" aria-labelledby="modalHistorial">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"> Historial encuestas </h4>
+            </div>
+    
+                <div class="modal-body">
+
+      
+	     <div class="row">
+            <div class="col-xs-12 table-overflow">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Codigo digitador</th>
+                            <th>Nombre</th>
+                            <th>fecha cambio</th>
+                            <th>Estado </th>
+                            <th>Mensaje</th>
+        
+                        </tr>
+                
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="item in historial_encuestas |itemsPerPage:10 as results" pagination-id="paginacion_encuestas_historial" >
+                               
+                            <td>@{{item.digitadore.codigo}}</td>
+                            <td>@{{item.digitadore.user.nombre}}</td>
+                            <td>@{{item.estados_encuestum.nombre}}</td>
+                            <td>@{{item.fecha_cambio | date:'dd-MM-yyyy'}}</td>
+                            <td>@{{item.mensaje }}</td>
+                          
+                        </tr>    
+                    </tbody>
+                    
+                </table>
+                
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <dir-pagination-controls pagination-id="paginacion_encuestas_historial"  max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
+        </div>
+
+
+
+
+                </div>
+
+                <div class="modal-footer text-right">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                   
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
 
 </div>
 @endsection
