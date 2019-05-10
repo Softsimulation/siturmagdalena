@@ -145,6 +145,12 @@ class TurismoReceptorController extends Controller
         return $result;
     }
     
+    public function getHistorialencuesta($id){
+        $historial = Historial_Encuesta::with(['digitadore' => function($q){ $q->with('user'); },'estadosEncuesta'])->where("visitante_id",$id)->Orderby("fecha_cambio",'desc')->get();
+        
+        return $historial;
+    }
+    
     public function postGuardardatos(Request $request){
         $validator = \Validator::make($request->all(), [
 			'Grupo' => 'required|exists:grupos_viaje,id',
@@ -718,7 +724,7 @@ class TurismoReceptorController extends Controller
     
     public function getEncuestas(){
         
-        $encuestas = Visitante_estado::all();
+        $encuestas = Visitante_estado::where("id",42560)->get();
         
         return $encuestas;
     }

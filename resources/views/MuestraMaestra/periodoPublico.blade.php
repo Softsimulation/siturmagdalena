@@ -416,6 +416,7 @@
                     </div>
                   </div>
                   
+                  <!--
                   <div class="panel panel-default" ng-show="estados.length > 0">
                     <div class="panel-heading" role="tab" id="headingThree">
                       <h4 class="panel-title">
@@ -435,7 +436,7 @@
                       </div>
                     </div>
                   </div>
-                  
+                  -->
                   <div class="panel panel-default" ng-show="sectoresZonas.length > 0">
                     <div class="panel-heading" role="tab" id="headingFour">
                       <h4 class="panel-title">
