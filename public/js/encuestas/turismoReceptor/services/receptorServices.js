@@ -82,6 +82,19 @@ app.factory("receptorServi", ["$http", "$q", function ($http, $q) {
             return promise;
         },
        
+           getHistorialencuesta: function (id) {
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get('/turismoreceptor/historialencuesta/'+id).success(function (data) {
+             defered.resolve(data);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+            return promise;
+        },
+       
+       
         getDatosTransporte: function (id) {
             var defered = $q.defer();
             var promise = defered.promise;

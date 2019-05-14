@@ -21,7 +21,7 @@ angular.module('visitanteApp', ["visitanteService","ADM-dateTimePicker","ui.sele
     $scope.planificadores = [];
     $scope.listaPlanificadores = [];
     $scope.favoritos = [];
-    $scope.intrucciones = { ver: true };
+    $scope.intrucciones = { ver: false };
     var hoy = new Date();
     var dia = hoy.getDate() > 10 ? hoy.getDate() : '0' + hoy.getDate();
     var mes = (hoy.getMonth() + 1) > 10 ? hoy.getMonth() + 1 : '0' + (hoy.getMonth() + 1);

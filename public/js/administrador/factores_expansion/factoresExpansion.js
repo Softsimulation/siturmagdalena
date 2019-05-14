@@ -37,7 +37,7 @@ app.controller('listadoFactoresOfertaCtrl', function($scope, factorExpansionServ
             $scope.factores[i]["mes"] = $scope.factores[i].mes_anio.mes.nombre+" "+$scope.factores[i].mes_anio.anio.anio;
             $scope.factores[i]["tipoProveedor"] = $scope.factores[i].tipo_proveedor.tipo_proveedores_con_idiomas[0].nombre;
             $scope.factores[i]["mes_id"] = $scope.factores[i].mes_anio_id;
-            $scope.factores[i]["municipio_id"] = $scope.factores[i].d_municipio_interno_id;
+            $scope.factores[i]["municipio_id"] = $scope.factores[i].d_municipio_interno_id+"";
             $scope.factores[i]["tamanioEmpresa_id"] = $scope.factores[i].d_tamanio_empresa_id;
             $scope.factores[i]["tipoProveedor_id"] = $scope.factores[i].tipo_proveedor_id;
             $scope.factores[i].cantidad = parseFloat($scope.factores[i].cantidad);

@@ -50,22 +50,33 @@
 
 .st-filter-pane {
     position: absolute;
-    top: 10px;
-    left: 1%;
+    top: 58px;
+    left: 10px;
     width: 250px;
     background-color: rgba(255,255,255,.75);
     z-index:2;
-    box-shadow: 0px 0px 5px rgba(0,0,0,.5);
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
 }
 .st-filter-title-pane {
     width: 100%;
-    padding: 2%;
-    padding-top:4%;
-    padding-bottom:4%;
+    padding: .5rem 1rem;
+    /*padding-top:4%;*/
+    /*padding-bottom:4%;*/
     background-color: rgba(255,255,255,.75);
     border-bottom: 0.5px solid lightgrey;
     cursor: pointer;
 
+}
+#accordion.panel-group .panel+.panel {
+    margin-top: 0;
+}
+.no-gutters{
+    margin-left: 0;
+    margin-right: 0;
+}
+.st-filter-title-pane strong {
+    font-weight: 500;
 }
 .st-item-radio {
     position: relative;

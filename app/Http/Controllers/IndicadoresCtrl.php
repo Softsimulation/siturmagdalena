@@ -477,8 +477,8 @@ class IndicadoresCtrl extends Controller
                      $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioMesDB("agencia_viaje_operadoras_oferta", $periodos[0], $cultura); break;
                      
             case 22: 
-                     $periodos = DB::select("SELECT * from tiempo_duracion_personas_oferta(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("duracion_personas_oferta", $periodos[0], $cultura); break;
+                     $periodos = DB::select("SELECT * from tiempo_ocupacion_media_oferta(?) order by id DESC", array($cultura) );
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("ocupacion_media_oferta", $periodos[0], $cultura); break;
             
             case 23: 
                      $periodos = DB::select("SELECT * from tiempo_tasa_platos_comida_oferta(?) order by id DESC", array($cultura) );
@@ -497,33 +497,33 @@ class IndicadoresCtrl extends Controller
                      $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("viajes_internos_oferta", $periodos[0], $cultura); break;
             
             ////////////////////////////////EMPLEO/////////////////////////////////////////          
-            case 27: 
+           case 27: 
                      $periodos = DB::select("SELECT * from tiempo_vinculacion_laboral_empleo(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("vinculacion_laboral_empleo", $periodos[0], $cultura); 
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioTrimestreDB("vinculacion_laboral_empleo", $periodos[0], $cultura); 
                  break; 
                      
            case 28: 
                      $periodos = DB::select("SELECT * from tiempo_numero_personas_empleo(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("numero_personas_empleo", $periodos[0], $cultura); break; 
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioTrimestreDB("numero_personas_empleo", $periodos[0], $cultura); break; 
                      
             case 29: 
                      $periodos = DB::select("SELECT * from tiempo_dominio_ingles_empleo(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("dominio_ingles_empleo", $periodos[0], $cultura); break; 
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioTrimestreDB("dominio_ingles_empleo", $periodos[0], $cultura); break; 
             
             case 30: 
                      $periodos = DB::select("SELECT * from tiempo_numero_empleados_empleo(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("numero_empleados_empleo", $periodos[0], $cultura); break; 
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioMesDB("numero_empleados_empleo", $periodos[0], $cultura); break; 
                      
             case 31: 
                      $periodos = DB::select("SELECT * from tiempo_numero_empleados_tc_empleo(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("numero_empleados_tc_empleo", $periodos[0], $cultura); break; 
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioMesDB("numero_empleados_tc_empleo", $periodos[0], $cultura); break; 
             case 32: 
-                     $periodos = DB::select("SELECT * from tiempo_remuneracion_promedio_empleo(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("remuneracion_promedio_empleo", $periodos[0], $cultura); break; 
+                     $periodos = DB::select("SELECT * from tiempo_remuneracion_promedio_empleo(?) order by id DESC", array($cultura) ); 
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioTrimestreDB("remuneracion_promedio_empleo", $periodos[0], $cultura); break; 
             
             case 33: 
                      $periodos = DB::select("SELECT * from tiempo_numero_vacantes_empleo(?) order by id DESC", array($cultura) );
-                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioDB("numero_vacantes_empleo", $periodos[0], $cultura); break; 
+                     $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioMesDB("numero_vacantes_empleo", $periodos[0], $cultura); break; 
                 
             default: break;
             
@@ -600,12 +600,12 @@ class IndicadoresCtrl extends Controller
                      
             
             ////////////////////////////////EMISOR/////////////////////////////////////////
-            case 8:  $data = $this->getDataIndicadorInternoEmisor("motivo_viaje_interno_emisor", $request, $idioma, false); break;  
-            case 9:  $data = $this->getDataIndicadorInternoEmisor("tipo_alojamiento_interno_emisor", $request, $idioma, false); break;
-            case 10: $data = $this->getDataIndicadorInternoEmisor("tamanio_grupo_interno_emisor", $request, $idioma, false); break;
-            case 11: $data = $this->getDataIndicadorInternoEmisor("medio_transporte_interno_emisor", $request, $idioma, false); break;
-            case 12: $data = $this->getDataIndicadorInternoEmisor("duracion_media_interno_emisor", $request, $idioma, false); break;
-            case 13: $data = $this->GastoMedioInternoEmisor($request, $idioma, false); break;
+            case 14: $data = $this->getDataIndicadorInternoEmisor("motivo_viaje_interno_emisor", $request, $idioma, false); break;  
+            case 15: $data = $this->getDataIndicadorInternoEmisor("tipo_alojamiento_interno_emisor", $request, $idioma, false); break;
+            case 16: $data = $this->getDataIndicadorInternoEmisor("tamanio_grupo_interno_emisor", $request, $idioma, false); break;
+            case 17: $data = $this->getDataIndicadorInternoEmisor("medio_transporte_interno_emisor", $request, $idioma, false); break;
+            case 18: $data = $this->getDataIndicadorInternoEmisor("duracion_media_interno_emisor", $request, $idioma, false); break;
+            case 19: $data = $this->GastoMedioInternoEmisor($request, $idioma, false); break;
             
             case 67: $data = $this->getDataIndicadorInternoEmisor("no_motivos_viaje_interno_emisor", $request, $idioma, false); break;
             case 68: $data = $this->getDataIndicadorInternoEmisor("piramide_edad_interno_emisor", $request, $idioma, false); break;
@@ -627,20 +627,20 @@ class IndicadoresCtrl extends Controller
             ////////////////////////////////OFERTA/////////////////////////////////////////
             case 20: $data = $this->getDataIndicadorPorAnioDB("numero_establecimientos_oferta", $request, $idioma); break;                      
             case 21: $data = $this->getDataIndicadorPorAnioMesDB("agencia_viaje_operadoras_oferta", $request, $idioma); break;                     
-            case 22: $data = $this->getDataIndicadorPorAnioDB("duracion_personas_oferta", $request, $idioma); break;            
+            case 22: $data = $this->getDataIndicadorPorAnioDB("ocupacion_media_oferta", $request, $idioma); break;            
             case 23: $data = $this->getDataIndicadorPorAnioDB("tasa_platos_comida_oferta", $request, $idioma); break;            
             case 24: $data = $this->getDataIndicadorPorAnioDB("tasa_unidades_comida_oferta", $request, $idioma); break;            
             case 25: $data = $this->getDataIndicadorPorAnioDB("viajes_emisores_oferta", $request, $idioma); break;
             case 26: $data = $this->getDataIndicadorPorAnioDB("viajes_internos_oferta", $request, $idioma); break;
             
             ////////////////////////////////EMPLEO/////////////////////////////////////////
-            case 27: $data = $this->getDataIndicadorPorAnioDB("vinculacion_laboral_empleo", $request, $idioma); break; 
-            case 28: $data = $this->getDataIndicadorPorAnioDB("numero_personas_empleo", $request, $idioma); break; 
-            case 29: $data = $this->getDataIndicadorPorAnioDB("dominio_ingles_empleo", $request, $idioma); break; 
-            case 30: $data = $this->getDataIndicadorPorAnioDB("numero_empleados_empleo", $request, $idioma); break;
-            case 31: $data = $this->getDataIndicadorPorAnioDB("numero_empleados_tc_empleo", $request, $idioma); break; 
-            case 32: $data = $this->getDataIndicadorPorAnioDB("remuneracion_promedio_empleo", $request, $idioma); break; 
-            case 33: $data = $this->getDataIndicadorPorAnioDB("numero_vacantes_empleo", $request, $idioma); break; 
+            case 27: $data = $this->getDataIndicadorPorAnioTrimestreDB("vinculacion_laboral_empleo", $request, $idioma); break; 
+            case 28: $data = $this->getDataIndicadorPorAnioTrimestreDB("numero_personas_empleo", $request, $idioma); break; 
+            case 29: $data = $this->getDataIndicadorPorAnioTrimestreDB("dominio_ingles_empleo", $request, $idioma); break; 
+            case 30: $data = $this->getDataIndicadorPorAnioMesDB("numero_empleados_empleo", $request, $idioma); break;
+            case 31: $data = $this->getDataIndicadorPorAnioMesDB("numero_empleados_tc_empleo", $request, $idioma); break; 
+            case 32: $data = $this->getDataIndicadorPorAnioTrimestreDB("remuneracion_promedio_empleo", $request, $idioma); break; 
+            case 33: $data = $this->getDataIndicadorPorAnioMesDB("numero_vacantes_empleo", $request, $idioma); break; 
             
             default: break;
         }
@@ -810,6 +810,13 @@ class IndicadoresCtrl extends Controller
         ];
     }
     
+    private function getDataIndicadorPorAnioTrimestreDB($procedimiento, $request, $idioma){ 
+        $data = new Collection( DB::select("SELECT *from ".$procedimiento."(?,?,?)", array($request->year,$idioma, $request->trimestre)) );
+        return [
+            "labels"=> $data->lists('tipo')->toArray(),
+            "data"=>   $this->redondearArray($data->lists('cantidad')->toArray())
+        ];
+    }
     
     ////////////////////////////RECEPTOR/////////////////////////////
     private function getDataReceptor($procedimiento,$request,$idioma){

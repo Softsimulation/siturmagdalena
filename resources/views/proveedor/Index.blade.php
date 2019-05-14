@@ -385,16 +385,26 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     @endif
         <div class="tile">
             
-            <div class="tile-img">
+            
                 @if(count($proveedores[$i]->proveedor) > 0)
                     @if ($proveedores[$i]->proveedor[0]->multimediaProveedores != null && count($proveedores[$i]->proveedor[0]->multimediaProveedores) > 0)
-                        <img src="{{$proveedores[$i]->proveedor[0]->multimediaProveedores[0]->ruta}}" alt="Imagen de presentación de {{$proveedores[$i]->razon_social}}"/>
+                        <div class="tile-img">
+                            <img src="{{$proveedores[$i]->proveedor[0]->multimediaProveedores[0]->ruta}}" alt="Imagen de presentación de {{$proveedores[$i]->razon_social}}"/>
+                        
+                    @else
+                    <div class="tile-img img-error">
+                        <img src="/img/hotel.png" alt="" role="presentation" style="height: 96px;">
+                    </div>
                     @endif
+                @else
+                    <div class="tile-img img-error">
+                        <img src="/img/hotel.png" alt="" role="presentation" style="height: 96px;">
+                    </div>
                 @endif
                 <!--<div class="text-overlap">-->
                 <!--    <span class="label label-{{$colorTipo[1]}}">{{getItemType(5)->name}}</span>-->
                 <!--</div>-->
-            </div>
+            
             
             <div class="tile-body">
                 
