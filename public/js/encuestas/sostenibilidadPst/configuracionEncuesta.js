@@ -78,6 +78,11 @@ angular.module('sostenibilidadPst.configuracion', [])
         
     }
     
+    $scope.clearEstablecimiento= function (){
+        $scope.encuesta.nombre_contacto = null;
+        $scope.encuesta.cargo = null;
+    }
+    
 }])
 
 
@@ -162,6 +167,11 @@ angular.module('sostenibilidadPst.configuracion', [])
             swal("Error", "No se realizo la solicitud, reinicie la página", "error");
         })
         
+    }
+    
+    $scope.clearEstablecimiento= function (){
+        $scope.encuesta.nombre_contacto = null;
+        $scope.encuesta.cargo = null;
     }
     
 }])
