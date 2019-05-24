@@ -22,10 +22,12 @@ use Illuminate\Input;
 use App\Models\Actividades;
 use App\Models\Atracciones;
 use App\Models\Evento;
+use App\Models\Ruta;
 
 class QueHacerController extends Controller
 {
     public function getIndex(Request $request){
+        
         
         $lang = \Config::get('app.locale') == 'es' ? 1 : 2;
         $result = null;
@@ -33,22 +35,75 @@ class QueHacerController extends Controller
         if($request->has('tipo') && $request->input('tipo') != ""){
             switch($request->input('tipo')){
                 case 1:
-                    $actividades = Actividades::with(
-                        ['categoriaTurismoConActividades',
+                    $q = Actividades::with(
+                        ['categoriaTurismo', 'perfilesUsuarios',
                         'langContent' => function($langContent) use ($lang){
                             $langContent->where('idiomas', $lang);
+                        }, 'sitio' => function($sitiosConActividades){
+                            $sitiosConActividades->with(['sector' => function($sector){
+                                $sector->with('destino');
+                            }]);
                         }]
-                    )->where('estado',true)->paginate(9);
+                    )->where('estado',true);
+                    
+                    if(isset($request->destinos) && $request->destinos != null){
+                        $q->whereHas('sitio.sector.destino',function($s) use ($request){
+                            foreach($request->destinos as $destinoId){
+                                
+                                $s->orWhere('id', $destinoId);
+                                
+                            }
+                        });
+                    }
+                    if(isset($request->categorias) && $request->categorias != null){
+                        $q->whereHas('categoriaTurismo',function($s) use ($request){
+                            foreach($request->categorias as $categoriaId){
+                                
+                                $s->orWhere('categoria_turismo_id', $categoriaId);
+                                
+                            }
+                        });
+                    }
+                    if(isset($request->experiencias) && $request->experiencias != null){
+                        $q->whereHas('categoriaTurismo.categoriaTurismo',function($s) use ($request){
+                            foreach($request->experiencias as $experienciaId){
+                                
+                                $s->orWhere('tipo_turismo_id', $experienciaId);
+                                
+                            }
+                        });
+                    }
+                    if(isset($request->perfiles) && $request->perfiles != null){
+                        $q->whereHas('perfilesUsuarios',function($s) use ($request){
+                            foreach($request->perfiles as $perfilId){
+                                
+                                $s->orWhere('perfiles_usuarios_id', $perfilId);
+                                
+                            }
+                        });
+                    }
+                    
+                    $actividades = $q->paginate(9);
+                    
+                    $actividades->valor_min = $actividades->sortBy('valor_min')->first()->valor_min;
+                    $actividades->valor_max = $actividades->sortByDesc('valor_max')->first()->valor_max;
+                    //return $actividades->valor_max;
                     
                     $result = $actividades;
                     break;
                 case 2:
                     $atracciones = Atracciones::with(
-                        ['langContent' => function($langContent) use ($lang){
+                        ['categoriaTurismo', 'perfilesUsuarios',
+                        'langContent' => function($langContent) use ($lang){
                             $langContent->where('idiomas_id', $lang);
+                        }, 'sitio' => function($sitio){
+                            $sitio->with(['sector' => function($sector){
+                                $sector->with('destino');
+                            }]);
                         }]
                     )->where('estado',true)->paginate(9);
                     //return $atracciones;
+                    
                     $result = $atracciones;
                     break;
                 case 3:
@@ -61,16 +116,31 @@ class QueHacerController extends Controller
                     break;
                 case 4:
                     $eventos = Evento::with(
-                        ['langContent' => function($langContent) use ($lang){
+                        ['categoriaTurismo', 'perfilesUsuarios',
+                        'langContent' => function($langContent) use ($lang){
                             $langContent->where('idiomas_id', $lang);
+                        }, 'sitio' => function($sitio){
+                            $sitio->with(['sector' => function($sector){
+                                $sector->with('destino');
+                            }]);
                         }]
                     )->where('estado',true)->orderBy('fecha_in', 'asc')->paginate(9);
                     $result = $eventos;
                     break;
+                case 5:
+                    $rutas = Ruta::with(
+                        ['langContent' => function($langContent) use ($lang){
+                            $langContent->where('idioma_id', $lang);
+                        }]
+                    )->where('estado',true)->paginate(9);
+                    $result = $rutas;
+                    break;
             }
-            foreach($result as $r)
-            {
-                $r->tipo = $request->input('tipo');
+            if(!is_null($result)){
+                foreach($result as $r)
+                {
+                    $r->tipo = $request->input('tipo');
+                }
             }
             //return $result;
         }
