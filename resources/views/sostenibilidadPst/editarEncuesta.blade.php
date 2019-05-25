@@ -120,10 +120,10 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
-                            <ui-select id="establecimiento"  name="establecimiento" ng-model="encuesta.establecimiento"  ng-required="true">
-                                <ui-select-match placeholder="Seleccione establecimiento">@{{$select.selected.numero_rnt}} - @{{$select.selected.razon_social}}</ui-select-match>
+                            <ui-select id="establecimiento" ng-change="clearEstablecimiento()"  name="establecimiento" ng-model="encuesta.establecimiento"  ng-required="true">
+                                <ui-select-match placeholder="Seleccione establecimiento">@{{$select.selected.numero_rnt != null ? $select.selected.numero_rnt + ' - ' : '' }}@{{$select.selected.razon_social}}</ui-select-match>
                                 <ui-select-choices repeat="item as item in proveedores | filter:$select.search">
-                                    @{{item.numero_rnt}} - @{{item.razon_social}}
+                                    @{{item.numero_rnt != null ? item.numero_rnt + ' - ' : '' }}@{{item.razon_social}}
                                 </ui-select-choices>
                             </ui-select>
                             <span ng-show="datosForm.$submitted || datosForm.establecimiento.$touched">

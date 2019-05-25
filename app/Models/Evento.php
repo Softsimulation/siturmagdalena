@@ -49,6 +49,11 @@ class Evento extends Model
     {
         return $this->belongsToMany('App\Models\Categoria_Turismo', 'categoria_turismo_con_eventos', 'eventos_id', 'categoria_turismo_id');
     }
+    public function categoriaTurismo()
+    {
+        return $this->categoriaTurismoConEventos();
+    }
+    
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -96,6 +101,10 @@ class Evento extends Model
     {
         return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_eventos', 'eventos_id', 'perfiles_usuarios_id');
     }
+    public function perfilesUsuarios()
+    {
+        return $this->perfilesUsuariosConEventos();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -111,5 +120,10 @@ class Evento extends Model
     public function sitiosConEventos()
     {
         return $this->belongsToMany('App\Models\Sitio', 'sitios_con_eventos', 'eventos_id', 'sitios_id');
+    }
+    
+    public function sitio()
+    {
+        return $this->sitiosConEventos();
     }
 }

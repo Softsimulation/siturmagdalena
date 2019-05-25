@@ -70,12 +70,17 @@ $countItems = false;
 <meta property="og:image" content="{{asset('/img/brand/128.png')}}" />
 <meta property="og:description" content="{{$tituloPagina}}"/>
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="/css/ui-range-slider.css">
 @endsection
 
 @section ('estilos')
+
     <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
     <link href="//cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="{{asset('/css/slider/ion.rangeSlider.min.css')}}" rel="stylesheet">
+    
+    <!--<link rel="stylesheet" href="/css/jquery-mobile-rangeslider/jquery.mobile.custom.structure.css">-->
+    <!--<link rel="stylesheet" href="/css/jquery-mobile-rangeslider/jquery.mobile.custom.theme.css">-->
     <style>
         .carga {
             display: none;
@@ -412,120 +417,143 @@ $countItems = false;
     <div class="container">
         <br/>
         @if(count($result) > 0)
-        <div class="filtros">
-            <h4>Filtros</h4>
-            <button id="btnClose" class="btn btn-xs btn-link" title="Cerrar filtros" onclick="toggleFilter();">&times;</button>
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                  <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#destinos_panel" aria-expanded="true" aria-controls="destinos_panel">
-                      Destinos
-                    </a>
-                  </h4>
-                </div>
-                <div id="destinos_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                  <div class="panel-body">
-                    @foreach($destinos as $destino)
-                        <label>
-                          <input onchange="change(this, destinos, {{$destino->id}})" type="checkbox"> {{$destino->destinoConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
+        <form class="" action="/quehacer/index" method="GET">
+            @if(isset($_GET['tipo']) && $_GET['tipo'] != null)
+            <input type="hidden" name="tipo" value="{{$_GET['tipo']}}">
+            @endif
+            <div class="filtros">
+                <h4>Filtros</h4>
+                <button id="btnClose" class="btn btn-xs btn-link" title="Cerrar filtros" onclick="toggleFilter();">&times;</button>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#destinos_panel" aria-expanded="true" aria-controls="destinos_panel">
+                          Destinos
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="destinos_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body">
+                        @foreach($destinos as $destino)
+                            <!--<label>-->
+                            <!--  <input onchange="change(this, destinos, {{$destino->id}})" type="checkbox"> {{$destino->destinoConIdiomas[0]->nombre}}-->
+                            <!--</label>-->
+                            <!--<br>-->
+                            <div class="checkbox">
+                                <label>
+                                  <input name="destinos[]" value="{{$destino->id}}" @if(isset($_GET['destinos']) && $_GET['destinos'] != null && array_search($destino->id,$_GET['destinos']) > -1) checked @endif type="checkbox"> {{$destino->destinoConIdiomas->first()->nombre}}
+                                </label>
+                            </div>
+                        @endforeach
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#experiencias" aria-expanded="false" aria-controls="experiencias">
+                          Experiencias
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="experiencias" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="panel-body">
+                        @foreach($experiencias as $experiencia)
+                            <!--<label>-->
+                            <!--  <input type="radio" onclick="exp = {{$experiencia->id}}" name="experiencia" value="{{$experiencia->id}}"> {{$experiencia->tipoTurismoConIdiomas[0]->nombre}}-->
+                            <!--</label>-->
+                            <!--<br>-->
+                            <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" value="{{$experiencia->id}}" name="experiencias[]" @if(isset($_GET['experiencias']) && $_GET['experiencias'] != null && array_search($experiencia->id,$_GET['experiencias']) > -1) checked @endif> {{$experiencia->tipoTurismoConIdiomas->first()->nombre}}
+                                </label>
+                                
+                            </div>
+                        @endforeach
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#categorias_turismo" aria-expanded="false" aria-controls="categorias_turismo">
+                          Categorías de turísmo
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="categorias_turismo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                      <div class="panel-body">
+                        @foreach($categorias as $categoria)
+                            <!--<label>-->
+                            <!--  <input onchange="change(this, categorias, {{$categoria->id}})" type="checkbox"> {{$categoria->categoriaTurismoConIdiomas[0]->nombre}}-->
+                            <!--</label>-->
+                            <!--<br>-->
+                            <div class="checkbox">
+                                <label>
+                                  <input value="{{$categoria->id}}" name="categorias[]" type="checkbox" @if(isset($_GET['categorias']) && $_GET['categorias'] != null && array_search($categoria->id,$_GET['categorias']) > -1) checked @endif> {{$categoria->categoriaTurismoConIdiomas->first()->nombre}}
+                                </label>
+                            </div>
+                        @endforeach
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles_panel" aria-expanded="false" aria-controls="perfiles_panel">
+                          Perfiles de turista
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="perfiles_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="panel-body">
+                        @foreach($perfiles as $perfil)
+                            <!--<label>-->
+                            <!--  <input onchange="change(this, perfiles, {{$perfil->id}})" type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}-->
+                            <!--</label>-->
+                            <!--<br>-->
+                            <div class="checkbox">
+                                <label>
+                                  <input value="{{$perfil->id}}" name="perfiles[]" type="checkbox" @if(isset($_GET['perfiles']) && $_GET['perfiles'] != null && array_search($perfil->id,$_GET['perfiles']) > -1) checked @endif> {{$perfil->perfilesUsuariosConIdiomas->first()->nombre}}
+                                </label>
+                            </div>
+                        @endforeach
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                  <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#experiencias" aria-expanded="false" aria-controls="experiencias">
-                      Experiencias
-                    </a>
-                  </h4>
+                
+                @if((isset($result->valor_min) && isset($result->valor_max)) && ($result->valor_max > 0))
+                <div id="range-slider" data-role="rangeslider">
+                  <label for="range-1a">Rango de precios:</label>
+                  <input name="valor-min" id="range-1a" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_min}}" type="range" />
+                  <label for="range-1b">Rango de precios:</label>
+                  <input name="valor-max" id="range-1b" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_max}}" type="range" />
                 </div>
-                <div id="experiencias" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                  <div class="panel-body">
-                    @foreach($experiencias as $experiencia)
-                        <label>
-                          <input type="radio" onclick="exp = {{$experiencia->id}}" name="experiencia" value="{{$experiencia->id}}"> {{$experiencia->tipoTurismoConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
-                  </div>
+                @endif
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Enviar</button>
+                    <a class="btn btn-default" href="/quehacer/index">Limpiar</a>
                 </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingThree">
-                  <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#categorias_turismo" aria-expanded="false" aria-controls="categorias_turismo">
-                      Categorías de turismo
-                    </a>
-                  </h4>
-                </div>
-                <div id="categorias_turismo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                  <div class="panel-body">
-                    @foreach($categorias as $categoria)
-                        <label>
-                          <input onchange="change(this, categorias, {{$categoria->id}})" type="checkbox"> {{$categoria->categoriaTurismoConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
-                  </div>
-                </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                  <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles_panel" aria-expanded="false" aria-controls="perfiles_panel">
-                      Perfiles de turista
-                    </a>
-                  </h4>
-                </div>
-                <div id="perfiles_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                  <div class="panel-body">
-                    @foreach($perfiles as $perfil)
-                        <label>
-                          <input onchange="change(this, perfiles, {{$perfil->id}})" type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}
-                        </label>
-                        <br>
-                    @endforeach
-                  </div>
-                </div>
-              </div>
-              <!--<div class="panel panel-default">-->
-              <!--  <div class="panel-heading" role="tab" id="headingTwo">-->
-              <!--    <h4 class="panel-title">-->
-              <!--      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles" aria-expanded="false" aria-controls="perfiles">-->
-              <!--        Tipos de atracción-->
-              <!--      </a>-->
-              <!--    </h4>-->
-              <!--  </div>-->
-              <!--  <div id="perfiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">-->
-              <!--    <div class="panel-body">-->
-              <!--      @foreach($perfiles as $perfil)-->
-              <!--          <label>-->
-              <!--            <input type="checkbox"> {{$perfil->perfilesUsuariosConIdiomas[0]->nombre}}-->
-              <!--          </label>-->
-              <!--          <br>-->
-              <!--      @endforeach-->
-              <!--    </div>-->
-              <!--  </div>-->
-              <!--</div>-->
+                
+                
+                <!--<div class="row">-->
+                <!--    <div class="col-xs-12">-->
+                <!--        <p>Rango de precios</p>-->
+                <!--    </div>-->
+                <!--    <div class="col-xs-12">-->
+                <!--        <input id="demo" type="text" class="js-range-slider" name="my_range" value="" />-->
+                <!--    </div>-->
+                <!--</div>-->
+                <!--<br>-->
+                <!--<div class="btn-group" role="group" aria-label="...">-->
+                <!--    <button onclick="formSubmit()" type="button" class="btn btn-success">Filtrar</button>-->
+                <!--    <button onclick="clearFilters()" type="button" class="btn btn-danger">Limpiar</button>-->
+                <!--</div>-->
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <p>Rango de precios</p>
-                </div>
-                <div class="col-xs-12">
-                    <input id="demo" type="text" class="js-range-slider" name="my_range" value="" />
-                </div>
-            </div>
-            <br>
-            <div class="btn-group" role="group" aria-label="...">
-                <button onclick="formSubmit()" type="button" class="btn btn-success">Filtrar</button>
-                <button onclick="clearFilters()" type="button" class="btn btn-danger">Limpiar</button>
-            </div>
-        </div>
+        </form>
+        
         
         <div id="listado" class="tiles">
             
@@ -645,10 +673,11 @@ function toggleFilter(){
     $('.filtros').toggle("fast","linear");
 }
 window.addEventListener('click', function(e){
-	
-	if (!document.getElementsByClassName('filtros')[0].contains(e.target) && !document.getElementById('btnFiltros').contains(e.target)){
-      	$('.filtros').fadeOut("fast","linear");
-    }
+	if(document.getElementsByClassName('filtros') != undefined && document.getElementById('btnFiltros') != undefined){
+    	if (!document.getElementsByClassName('filtros')[0].contains(e.target) && !document.getElementById('btnFiltros').contains(e.target)){
+          	$('.filtros').fadeOut("fast","linear");
+        }
+	}
 })
 var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tipo') : 0 ;
     function changeViewList(obj, idList, view){
@@ -717,4 +746,13 @@ var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tip
 </script>
 <script src="{{asset('/js/plugins/slider/ion.rangeSlider.min.js')}}"></script>
 <script src="{{asset('/js/quehacer/script.js')}}"></script>
+<!--<script src="/css/jquery-mobile-rangeslider/jquery-mobile-custom.min.js"></script>-->
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script>
+$(document).ready(function(){
+    $( "#range-slider" ).rangeslider();
+   
+});
+    
+</script>
 @endsection
