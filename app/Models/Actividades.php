@@ -41,6 +41,10 @@ class Actividades extends Model
     {
         return $this->hasMany('App\Models\Categoria_Turismo_Con_Actividad', 'actividades_id');
     }
+    public function categoriaTurismo()
+    {
+        return $this->categoriaTurismoConActividades();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -74,7 +78,11 @@ class Actividades extends Model
      */
     public function perfilesUsuariosConActividades()
     {
-        return $this->hasMany('App\PerfilesUsuariosConActividade', 'actividades_id');
+        return $this->hasMany('App\Models\Perfil_Usuario_Con_Actividad', 'actividades_id');
+    }
+    public function perfilesUsuarios()
+    {
+        return $this->perfilesUsuariosConActividades();
     }
 
     /**
@@ -83,6 +91,11 @@ class Actividades extends Model
     public function sitiosConActividades()
     {
         return $this->belongsToMany('App\Models\Sitio', 'sitios_con_actividades', 'actividades_id', 'sitios_id');
+    }
+    
+    public function sitio()
+    {
+        return $this->sitiosConActividades();
     }
     
     

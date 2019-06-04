@@ -35,7 +35,7 @@ class Historial_Encuesta_Interno extends Model
      */
     public function digitadore()
     {
-        return $this->belongsTo('App\Digitadore', 'digitador_id');
+        return $this->belongsTo('App\Models\Digitador', 'digitador_id');
     }
 
     /**
@@ -43,7 +43,7 @@ class Historial_Encuesta_Interno extends Model
      */
     public function estadosEncuestum()
     {
-        return $this->belongsTo('App\EstadosEncuestum', 'estado_id');
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_id');
     }
 
     /**
@@ -51,6 +51,6 @@ class Historial_Encuesta_Interno extends Model
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }

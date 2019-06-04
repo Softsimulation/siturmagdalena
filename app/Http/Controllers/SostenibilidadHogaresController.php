@@ -67,6 +67,12 @@ class SostenibilidadHogaresController extends Controller
     	 return view('sostenibilidadHogar.crear', ['id' => $id]);
     }
     
+      public function getHistorialencuesta($id){
+        $historial = Historial_Encuesta_Hogar_Sostenibilidad::with('estadosEncuesta')->where("casas_sostenibilidad_id",$id)->Orderby("fecha_cambio",'desc')->get();
+        
+        return $historial;
+    }
+    
     public function getInfocrear(){
     	$estratos = Estrato::all();
         $barrios = Barrio::all();

@@ -30,6 +30,17 @@ class Ruta extends Model
     {
         return $this->hasMany('App\Models\Multimedia_Ruta', 'ruta_id');
     }
+    
+    public function multimedia()
+    {
+        return $this->multimediaRutas();
+    }
+    
+    public function getPortadaAttribute()
+    {
+        return $this->multimedia()->first();
+        
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -45,5 +56,9 @@ class Ruta extends Model
     public function rutasConIdiomas()
     {
         return $this->hasMany('App\Models\Ruta_Con_Idioma');
+    }
+    public function langContent()
+    {
+        return $this->rutasConIdiomas();
     }
 }
