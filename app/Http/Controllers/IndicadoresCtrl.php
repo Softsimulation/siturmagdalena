@@ -65,6 +65,13 @@ class IndicadoresCtrl extends Controller
         return View("indicadores.index", ["indicadores"=> $this->getDataIndicadoresMedicion(5) ] );
     }
     
+    public function getSostenibilidadhogares(){ 
+        return View("indicadores.index", ["indicadores"=> $this->getDataIndicadoresMedicion(6) ] );
+    }
+    
+    public function getSostenibilidadpst(){
+        return View("indicadores.index", ["indicadores"=> $this->getDataIndicadoresMedicion(7) ] );
+    }
     
     
     ///////////////////////ESTADISTICAS SECUNDARIAS//////////////////////////////////
@@ -173,6 +180,8 @@ class IndicadoresCtrl extends Controller
         $cultura = "es";
         $periodos = [];
         $data = [];
+        $data2 = [];
+        $data3 = [];
         
         switch($id){
             
@@ -524,7 +533,92 @@ class IndicadoresCtrl extends Controller
             case 33: 
                      $periodos = DB::select("SELECT * from tiempo_numero_vacantes_empleo(?) order by id DESC", array($cultura) );
                      $data = count($periodos)==0 ? [] : $this->getDataIndicadorPorAnioMesDB("numero_vacantes_empleo", $periodos[0], $cultura); break; 
+            
+            
+            ///////////////////SOSTENIBILIDAD HOGARES/////////////////////////////////////////////
+            case 85: $data = $this->getDataSostenibilidad('nivel_sastifacion_sostenibilidad_hogares'); break;
+            case 86: $data = $this->getDataSostenibilidad('segundas_viviendas_sostenibilidad_hogares'); break;
+            
+            case 87: 
+                $periodos = DB::select("SELECT * from tiempo_satisfechos_calidad_vida_hogares()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio("satisfechos_factores_calidad_vida_hogares", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("satisfechos_calidad_vida_hogares","anios");
+                break;
                 
+            case 88: 
+                $periodos = DB::select("SELECT * from tiempo_satisfechos_calidad_patrimonio_hogares()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio("satisfechos_factores_calidad_patrimonio_hogares", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("satisfechos_calidad_patrimonio_hogares","anios");
+                break;
+            
+            case 89: 
+                    $periodos = DB::select("SELECT * from tiempo_impacto_cultural_hogares()");
+                    $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio("impacto_cultural_hogares", $periodos[0], $cultura); 
+                    break; 
+                    
+            case 90: $data = $this->getDataSostenibilidad2Series('impacto_sociocultural_hogares'); break;
+            case 91: $data = $this->getDataSostenibilidad2Series('impacto_ambiental_hogares'); break;
+            case 92: $data = $this->getDataSostenibilidad2Series('impacto_economico_hogares'); break;
+            
+            ///////////////////////SOSTENIBILIDAD PST///////////////////////////////////
+            case 93: $data = $this->getDataSostenibilidad('porcentaje_insumos_destino_sost_pst'); break;
+            
+            case 94: 
+                $periodos = DB::select("SELECT * from tiempo_habitaciones_accesibles_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("habitaciones_accesibles_sost_pst", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("espacios_accesibles_sost_pst","anios");
+                break;
+                
+            case 95: 
+                $periodos = DB::select("SELECT * from tiempo_esquemas_accesibles_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("esquemas_accesibles_sost_pst", $periodos[0], $cultura); 
+                break;
+                
+            case 96: 
+                $periodos = DB::select("SELECT * from tiempo_cambios_climaticos_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("cambios_climaticos_sost_pst", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("cambios_climaticos_por_sost_pst","anios");
+                break;
+                
+            case 97: 
+                $data  = $this->getDataIndicadorNoFiltro("informe_gestion_sost_pst","anio");
+                $data2 = $this->getDataIndicadorNoFiltro("volumen_residuos_sost_pst","anio");
+                break;
+             
+            case 98: 
+                $periodos = DB::select("SELECT * from tiempo_acciones_residuos_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("acciones_residuos_sost_pst", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("acciones_residuos_por_sost_pst","anio");
+                $data3 = $this->getDataIndicadorNoFiltro("separacion_basuras_por_sost_pst","anio");
+                break;
+            
+            case 99: 
+                $periodos = DB::select("SELECT * from tiempo_acciones_gestion_agua_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("acciones_gestion_agua_sost_pst", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("acciones_gestion_agua_por_sost_pst","anio");
+                break;
+                
+            case 100: $data = $this->getDataIndicadorNoFiltro("acciones_agua_reciclada_sost_pst","anio"); break;
+             
+            case 101: 
+                $periodos = DB::select("SELECT * from tiempo_acciones_reducir_energia_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("acciones_reducir_energia_sost_pst", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("acciones_reducir_energia_por_sost_pst","anio");
+                break;  
+            
+            case 102: 
+                $periodos = DB::select("SELECT * from tiempo_energias_verdes_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("energias_verdes_sost_pst", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("energia_renovable_sost_pst","anio");
+                $data3 = $this->getDataIndicadorNoFiltro("informe_energia_sost_pst","anio");
+                break;
+                
+            case 103: 
+                $periodos = DB::select("SELECT * from tiempo_programas_biodiversidad_sost_pst()");
+                $data = count($periodos)==0 ? [] : $this->getDataSostenibilidadPorAnio1Serie("programas_biodiversidad_sost_pst", $periodos[0], $cultura); 
+                $data2 = $this->getDataIndicadorNoFiltro("programas_biodiversidad_por_sost_pst","anio");
+                break; 
+            
             default: break;
             
         }
@@ -536,10 +630,66 @@ class IndicadoresCtrl extends Controller
                                                                         "idiomas"=>function($q) use($idioma){ $q->where("idioma_id", $idioma)->select("id","indicadores_medicion_id","nombre", "descripcion","eje_x","eje_y"); }, 
                                                                         "graficas"=>function($q){ $q->select("id","nombre","icono","codigo"); }
                                                                     ])->first(),
-                            "data"=> $data
+                            "data"=> $data,
+                            "data2"=> $data2,
+                            "data3"=> $data3
                         ]);
             
     }
+    
+    private function getDataIndicadorNoFiltro($procedimeinto, $campo){
+        $dt3 = new Collection( DB::select("SELECT * from ".$procedimeinto."()" ));
+        return  [
+                    "labels"=> $dt3->lists($campo)->toArray(),
+                    "data"=>   [ $this->redondearArray($dt3->lists('positivo')->toArray()), $this->redondearArray($dt3->lists('negativo')->toArray()) ],
+                    "series"=> [ "Positivo", "Negativo" ]
+                ];
+    }
+    
+    private function getDataSostenibilidad($procedimeinto){
+        $datos = new Collection( DB::select("SELECT * from ".$procedimeinto."()"));
+        return  [
+                    "labels"=> $datos->lists('anios')->toArray(),
+                    "data"=>   $this->redondearArray($datos->lists('cantidad')->toArray())
+                ];
+    }
+    
+    private function getDataSostenibilidadPorAnio1Serie($procedimeinto, $request, $cultura){
+        $data = new Collection( DB::select("SELECT * from ".$procedimeinto."(?,?)", array($request->year, $cultura)));
+        return  [
+                    "labels"=> $data->lists('factor')->toArray(),
+                    "data"=>   $this->redondearArray($data->lists('cantidad')->toArray()),
+                ];
+    }
+    
+    private function getDataSostenibilidad2Series($procedimeinto){
+        $data = new Collection( DB::select("SELECT * from ".$procedimeinto."()"));
+        return  [
+                    "labels"=> $data->lists('anio')->toArray(),
+                    "data"=>   [ $this->redondearArray($data->lists('positivo')->toArray()), $this->redondearArray($data->lists('negativo')->toArray()) ],
+                    "series"=> [ "Positivo", "Negativo" ]
+                ];
+    }
+    
+    private function getDataSostenibilidadPorAnio($procedimeinto, $request, $cultura){
+        $data = new Collection( DB::select("SELECT * from ".$procedimeinto."(?,?)", array($request->year, $cultura)));
+        return  [
+                    "labels"=> $data->lists('factor')->toArray(),
+                    "data"=>   [ $this->redondearArray($data->lists('positivo')->toArray()), $this->redondearArray($data->lists('negativo')->toArray()) ],
+                    "series"=> [ "Positivo", "Negativo" ]
+                ];
+    }
+    
+    private function getDataSostenibilidad2Graficas($procedimeinto, $request, $cultura){
+        $data = new Collection( DB::select("SELECT * from ".$procedimeinto."(?,?)", array($request->year, $cultura)));
+        return  [
+                    "labels"=> $data->lists('factor')->toArray(),
+                    "data"=>   [ $this->redondearArray($data->lists('positivo')->toArray()), $this->redondearArray($data->lists('negativo')->toArray()) ],
+                    "series"=> [ "Positivo", "Negativo" ]
+                ];
+    }
+    
+    
     
     public function postFiltrardataindicador(Request $request){
         
@@ -641,6 +791,25 @@ class IndicadoresCtrl extends Controller
             case 31: $data = $this->getDataIndicadorPorAnioMesDB("numero_empleados_tc_empleo", $request, $idioma); break; 
             case 32: $data = $this->getDataIndicadorPorAnioTrimestreDB("remuneracion_promedio_empleo", $request, $idioma); break; 
             case 33: $data = $this->getDataIndicadorPorAnioMesDB("numero_vacantes_empleo", $request, $idioma); break; 
+            
+            
+            ///////////////////SOSTENIBILIDAD HOGARES/////////////////////////////////////////////
+            case 87: $data = $this->getDataSostenibilidadPorAnio("satisfechos_factores_calidad_vida_hogares", $request, $idioma); break;
+            case 88: $data = $this->getDataSostenibilidadPorAnio("satisfechos_factores_calidad_patrimonio_hogares", $request, $idioma); break;
+            case 89: $data = $this->getDataSostenibilidadPorAnio("impacto_cultural_hogares", $request, $idioma); break; 
+            case 90: $data = $this->getDataSostenibilidad2Series('impacto_sociocultural_hogares'); break;
+            
+            
+            ///////////////////////SOSTENIBILIDAD PST///////////////////////////////////
+            case 94:  $data = $this->getDataSostenibilidadPorAnio1Serie("habitaciones_accesibles_sost_pst", $request, $idioma); break;
+            case 95:  $data = $this->getDataSostenibilidadPorAnio1Serie("esquemas_accesibles_sost_pst", $request, $idioma); break;
+            case 96:  $data = $this->getDataSostenibilidadPorAnio1Serie("cambios_climaticos_sost_pst", $request, $idioma); break;
+            case 98:  $data = $this->getDataSostenibilidadPorAnio1Serie("acciones_residuos_sost_pst", $request, $idioma); break;
+            case 99:  $data = $this->getDataSostenibilidadPorAnio1Serie("acciones_gestion_agua_sost_pst", $request, $idioma); break;
+            case 101: $data = $this->getDataSostenibilidadPorAnio1Serie("acciones_reducir_energia_sost_pst", $request, $idioma); break;  
+            case 102: $data = $this->getDataSostenibilidadPorAnio1Serie("energias_verdes_sost_pst", $request, $cultura); break;
+            case 103: $data = $this->getDataSostenibilidadPorAnio1Serie("programas_biodiversidad_sost_pst", $request, $idioma); break; 
+            
             
             default: break;
         }
