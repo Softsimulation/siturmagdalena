@@ -62,7 +62,7 @@ $countItems = false;
 ?>
 @extends('layout._publicLayout')
 
-@section('Title', '¿Qué hacer en el departamento del Cesar?')
+@section('Title', '¿Qué hacer en el departamento del Magdalena?')
 
 
 @section('meta_og')
@@ -70,14 +70,14 @@ $countItems = false;
 <meta property="og:image" content="{{asset('/img/brand/128.png')}}" />
 <meta property="og:description" content="{{$tituloPagina}}"/>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="stylesheet" href="/css/ui-range-slider.css">
+<!--<link rel="stylesheet" href="/css/ui-range-slider.css">-->
 @endsection
 
 @section ('estilos')
 
     <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
     <link href="//cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="{{asset('/css/slider/ion.rangeSlider.min.css')}}" rel="stylesheet">
+    <!--<link href="{{asset('/css/slider/ion.rangeSlider.min.css')}}" rel="stylesheet">-->
     
     <!--<link rel="stylesheet" href="/css/jquery-mobile-rangeslider/jquery.mobile.custom.structure.css">-->
     <!--<link rel="stylesheet" href="/css/jquery-mobile-rangeslider/jquery.mobile.custom.theme.css">-->
@@ -389,7 +389,7 @@ $countItems = false;
             <h2 class="title-section">{{$tituloPagina}}</h2>
             
             <div id="opciones">
-                @if(count($result) > 0)
+                @if(count($result) > 0 && (isset($_GET['tipo']) && $_GET['tipo'] != 3))
                 <button type="button" id="btnFiltros" class="btn btn-default" title="Mostrar filtros" onclick="toggleFilter();"><span class="mdi mdi-filter"></span> <span class="d-none d-sm-inline-block sr-only">Mostrar filtros</span></button>
                 @endif
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="mdi mdi-view-sequential" aria-hidden="true"></span><span class="sr-only">Vista de lista</span></button>
@@ -416,13 +416,13 @@ $countItems = false;
     
     <div class="container">
         <br/>
-        @if(count($result) > 0)
+        @if(count($result) > 0 && (isset($_GET['tipo']) && $_GET['tipo'] != 3))
         <form class="" action="/quehacer/index" method="GET">
             @if(isset($_GET['tipo']) && $_GET['tipo'] != null)
             <input type="hidden" name="tipo" value="{{$_GET['tipo']}}">
             @endif
             <div class="filtros">
-                <h4>Filtros</h4>
+                <h4>Aquí podrás encontrar lo que deseas buscar</h4>
                 <button id="btnClose" class="btn btn-xs btn-link" title="Cerrar filtros" onclick="toggleFilter();">&times;</button>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                   <div class="panel panel-default">
@@ -499,14 +499,14 @@ $countItems = false;
                     </div>
                   </div>
                   <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
+                    <div class="panel-heading" role="tab" id="headingFour">
                       <h4 class="panel-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles_panel" aria-expanded="false" aria-controls="perfiles_panel">
                           Perfiles de turista
                         </a>
                       </h4>
                     </div>
-                    <div id="perfiles_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div id="perfiles_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                       <div class="panel-body">
                         @foreach($perfiles as $perfil)
                             <!--<label>-->
@@ -522,16 +522,60 @@ $countItems = false;
                       </div>
                     </div>
                   </div>
+                  @if((isset($result->valor_min) && isset($result->valor_max)) && ($result->valor_max > 0))
+                  <!--<div class="panel panel-default">-->
+                  <!--  <div class="panel-heading" role="tab" id="headingFive">-->
+                  <!--    <h4 class="panel-title">-->
+                  <!--      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#precios" aria-expanded="false" aria-controls="precios">-->
+                  <!--        Rango de precios-->
+                  <!--      </a>-->
+                  <!--    </h4>-->
+                  <!--  </div>-->
+                  <!--  <div id="precios" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">-->
+                  <!--    <div class="panel-body">-->
+                  <!--      <div class="radio">-->
+                  <!--        <label>-->
+                  <!--          <input type="radio" name="rangos" id="optionsRadios1" value="1" checked>-->
+                  <!--          $0 - $100.000 (0)-->
+                            
+                  <!--        </label>-->
+                  <!--      </div>-->
+                  <!--      <div class="radio">-->
+                  <!--        <label>-->
+                  <!--          <input type="radio" name="rangos" id="optionsRadios2" value="2">-->
+                  <!--          $100.000 - $500.000 (0)-->
+                            
+                  <!--        </label>-->
+                  <!--      </div>-->
+                  <!--      <div class="radio">-->
+                  <!--        <label>-->
+                  <!--          <input type="radio" name="rangos" id="optionsRadios3" value="3">-->
+                  <!--          $500.000 - $1.000.000 (0)-->
+                            
+                  <!--        </label>-->
+                  <!--      </div>-->
+                  <!--      <div class="radio">-->
+                  <!--        <label>-->
+                  <!--          <input type="radio" name="rangos" id="optionsRadios4" value="4">-->
+                  <!--          más de $1.000.000 (0)-->
+                            
+                  <!--        </label>-->
+                  <!--      </div>-->
+                  <!--    </div>-->
+                  <!--  </div>-->
+                  <!--</div>-->
+                  @endif
                 </div>
                 
-                @if((isset($result->valor_min) && isset($result->valor_max)) && ($result->valor_max > 0))
-                <div id="range-slider" data-role="rangeslider">
-                  <label for="range-1a">Rango de precios:</label>
-                  <input name="valor-min" id="range-1a" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_min}}" type="range" />
-                  <label for="range-1b">Rango de precios:</label>
-                  <input name="valor-max" id="range-1b" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_max}}" type="range" />
-                </div>
-                @endif
+                
+                
+                <!--<div id="range-slider" data-role="rangeslider">-->
+                <!--  <label for="range-1a">Rango de precios:</label>-->
+                <!--  <input name="valor-min" id="range-1a" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_min}}" type="range" />-->
+                <!--  <label for="range-1b">Rango de precios:</label>-->
+                <!--  <input name="valor-max" id="range-1b" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_max}}" type="range" />-->
+                <!--</div>-->
+                
                 <div class="text-center">
                     <button type="submit" class="btn btn-success">Enviar</button>
                     <a class="btn btn-default" href="/quehacer/index">Limpiar</a>
@@ -693,62 +737,15 @@ var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tip
         },350);
         
     }
-    $.ajaxSetup({
-    headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    var url = '{{URL::action("QueHacerController@postFiltrar")}}';
-    var resetUrl = '{{URL::action("QueHacerController@getReset")}}';
     
-    $('#formSearch').submit(function(){
-        $.ajax({
-          type: "POST",
-          url: '{{URL::action("QueHacerController@postSearch")}}',
-          data: {
-              'search': $('#searchMain').val()
-          },
-          success: function (data){
-              if (!data.success){
-                  alert('No hay resultados para su búsqueda');
-              }
-              var html = '';
-              for(var i = 0; i < data.query.length; i++){
-                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
-                    html += '<div class="tile tile-overlap">'
-                                +'<div class="tile-img">';
-                        if(data.query[i].portada != ""){
-                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
-                        }
-                    html +=     +'</div>'
-                                    +'<div class="tile-body">'
-                                        +'<div class="tile-caption">'
-                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
-                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
-                                        +'</div>'
-                                        +'<div class="tile-buttons">'
-                                            +'<div class="inline-buttons">';
-                    //Acá falta las fechas en los eventos
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
-              }
-              }
-              $('#listado').html(html);
-          },
-          dataType: 'json'
-        });
-        return false;
-    });
-        
 </script>
-<script src="{{asset('/js/plugins/slider/ion.rangeSlider.min.js')}}"></script>
-<script src="{{asset('/js/quehacer/script.js')}}"></script>
+<!--<script src="{{asset('/js/plugins/slider/ion.rangeSlider.min.js')}}"></script>-->
+<!--<script src="http://code.jquery.com/jquery-migrate-3.0.0.js"></script>-->
+<!--<script src="{{asset('/js/quehacer/script.js')}}"></script>-->
 <!--<script src="/css/jquery-mobile-rangeslider/jquery-mobile-custom.min.js"></script>-->
-<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
 <script>
+// $.getScript('/js/plugins/slider/ion.rangeSlider.min.js');
 $(document).ready(function(){
     $( "#range-slider" ).rangeslider();
    
