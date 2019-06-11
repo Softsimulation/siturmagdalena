@@ -140,3 +140,56 @@ function clearFilters(){
       dataType: 'json'
     });
 }
+
+
+
+$.ajaxSetup({
+    headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var url = '{{URL::action("QueHacerController@postFiltrar")}}';
+    var resetUrl = '{{URL::action("QueHacerController@getReset")}}';
+    
+    $('#formSearch').submit(function(){
+        $.ajax({
+          type: "POST",
+          url: '{{URL::action("QueHacerController@postSearch")}}',
+          data: {
+              'search': $('#searchMain').val()
+          },
+          success: function (data){
+              if (!data.success){
+                  alert('No hay resultados para su búsqueda');
+              }
+              var html = '';
+              for(var i = 0; i < data.query.length; i++){
+                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
+                    html += '<div class="tile tile-overlap">'
+                                +'<div class="tile-img">';
+                        if(data.query[i].portada != ""){
+                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
+                        }
+                    html +=     +'</div>'
+                                    +'<div class="tile-body">'
+                                        +'<div class="tile-caption">'
+                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
+                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
+                                        +'</div>'
+                                        +'<div class="tile-buttons">'
+                                            +'<div class="inline-buttons">';
+                    //Acá falta las fechas en los eventos
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
+                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
+              }
+              }
+              $('#listado').html(html);
+          },
+          dataType: 'json'
+        });
+        return false;
+    });
+        
