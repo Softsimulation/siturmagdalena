@@ -86,17 +86,17 @@ class QueHacerController extends Controller
                     
                     $actividades = $q->paginate(9);
                     
-                    $actividades['valor_min'] = (!is_null($actividades->sortBy('valor_min')->first())) ? $actividades->sortBy('valor_min')->first()->valor_min : 0;
-                    $actividades['valor_max'] = (!is_null($actividades->sortByDesc('valor_max')->first())) ?  $actividades->sortByDesc('valor_max')->first()->valor_max : 0;
+                    // $actividades['valor_min'] = (!is_null($actividades->sortBy('valor_min')->first())) ? $actividades->sortBy('valor_min')->first()->valor_min : 0;
+                    // $actividades['valor_max'] = (!is_null($actividades->sortByDesc('valor_max')->first())) ?  $actividades->sortByDesc('valor_max')->first()->valor_max : 0;
                     
-                    $actividades['rango_0_100'] = $tempList->where('valor_max', '<=', 100000)->get()->count();
-                    $actividades['rango_100_500'] = $tempList->where('valor_min', '>', 100000)->where('valor_max', '<=', 500000)->get()->count();
-                    $actividades['rango_500_1000'] = $tempList->where('valor_min', '>', 500000)->where('valor_max', '<=', 1000000)->get()->count(); 
-                    $actividades['rango_1000'] = $tempList->where('valor_min', '>', 1000000)->get()->count(); 
+                    // $actividades['rango_0_100'] = $tempList->where('valor_max', '<=', 100000)->get()->count();
+                    // $actividades['rango_100_500'] = $tempList->where('valor_min', '>', 100000)->where('valor_max', '<=', 500000)->get()->count();
+                    // $actividades['rango_500_1000'] = $tempList->where('valor_min', '>', 500000)->where('valor_max', '<=', 1000000)->get()->count(); 
+                    // $actividades['rango_1000'] = $tempList->where('valor_min', '>', 1000000)->get()->count(); 
                     
-                    $actividades['test'] = "prueba";
+                    // $actividades['test'] = "prueba";
                     
-                    return $actividades;
+                    //return $actividades;
                     
                     //return $actividades->valor_max;
                     
@@ -133,7 +133,7 @@ class QueHacerController extends Controller
                         });
                     }
                     if(isset($request->experiencias) && $request->experiencias != null){
-                        $q->whereHas('categoriaTurismo.categoriaTurismo',function($s) use ($request){
+                        $q->whereHas('categoriaTurismo',function($s) use ($request){
                             foreach($request->experiencias as $experienciaId){
                                 
                                 $s->orWhere('tipo_turismo_id', $experienciaId);
@@ -262,6 +262,7 @@ class QueHacerController extends Controller
             'tiposEvento' => $tipoEvento,
             'tiposProveedor' => $tipoProveedor,
             'categoriasProveedor' => $categoriaProveedor,
+            'request' => $request->all(),
             'success' => true]);
     }
     

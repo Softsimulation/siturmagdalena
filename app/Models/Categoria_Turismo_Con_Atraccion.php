@@ -28,9 +28,9 @@ class Categoria_Turismo_Con_Atraccion extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function atraccione()
+    public function atraccion()
     {
-        return $this->belongsTo('App\Models\Atraccione', 'atracciones_id');
+        return $this->belongsTo('App\Models\Atracciones', 'atracciones_id');
     }
 
     /**
@@ -38,6 +38,6 @@ class Categoria_Turismo_Con_Atraccion extends Model
      */
     public function categoriaTurismo()
     {
-        return $this->belongsTo('App\Models\Categoria_Turismo');
+        return $this->belongsTo('App\Models\Categoria_Turismo', 'categoria_turismo_id');
     }
 }
