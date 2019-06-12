@@ -315,6 +315,11 @@ $countItems = false;
             right: 1rem;
             border: 0;
         }
+        .filtros-badge .label{
+            font-weight: 500;
+            margin-right: .25rem;
+            margin-bottom: .5rem;
+        }
     </style>
     @if(isset($_GET['tipo']))
     <style>
@@ -389,7 +394,7 @@ $countItems = false;
             <h2 class="title-section">{{$tituloPagina}}</h2>
             
             <div id="opciones">
-                @if(count($result) > 0 && (isset($_GET['tipo']) && $_GET['tipo'] != 3))
+                @if(isset($_GET['tipo']) && $_GET['tipo'] != 3)
                 <button type="button" id="btnFiltros" class="btn btn-default" title="Mostrar filtros" onclick="toggleFilter();"><span class="mdi mdi-filter"></span> <span class="d-none d-sm-inline-block sr-only">Mostrar filtros</span></button>
                 @endif
                 <button type="button" class="btn btn-default d-none d-sm-inline-block" onclick="changeViewList(this,'listado','tile-list')" title="Vista de lista"><span class="mdi mdi-view-sequential" aria-hidden="true"></span><span class="sr-only">Vista de lista</span></button>
@@ -416,7 +421,7 @@ $countItems = false;
     
     <div class="container">
         <br/>
-        @if(count($result) > 0 && (isset($_GET['tipo']) && $_GET['tipo'] != 3))
+        @if(isset($_GET['tipo']) && $_GET['tipo'] != 3)
         <form class="" action="/quehacer/index" method="GET">
             @if(isset($_GET['tipo']) && $_GET['tipo'] != null)
             <input type="hidden" name="tipo" value="{{$_GET['tipo']}}">
@@ -502,7 +507,7 @@ $countItems = false;
                     <div class="panel-heading" role="tab" id="headingFour">
                       <h4 class="panel-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#perfiles_panel" aria-expanded="false" aria-controls="perfiles_panel">
-                          Perfiles de turista
+                          Perfiles de turísta
                         </a>
                       </h4>
                     </div>
@@ -522,7 +527,7 @@ $countItems = false;
                       </div>
                     </div>
                   </div>
-                  @if((isset($result->valor_min) && isset($result->valor_max)) && ($result->valor_max > 0))
+                  {{-- @if((isset($result->valor_min) && isset($result->valor_max)) && ($result->valor_max > 0))
                   <!--<div class="panel panel-default">-->
                   <!--  <div class="panel-heading" role="tab" id="headingFive">-->
                   <!--    <h4 class="panel-title">-->
@@ -564,17 +569,17 @@ $countItems = false;
                   <!--    </div>-->
                   <!--  </div>-->
                   <!--</div>-->
-                  @endif
+                  @endif --}}
                 </div>
                 
                 
-                
+                {{--
                 <!--<div id="range-slider" data-role="rangeslider">-->
                 <!--  <label for="range-1a">Rango de precios:</label>-->
                 <!--  <input name="valor-min" id="range-1a" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_min}}" type="range" />-->
                 <!--  <label for="range-1b">Rango de precios:</label>-->
                 <!--  <input name="valor-max" id="range-1b" min="{{$result->valor_min}}" max="{{$result->valor_max}}" value="{{$result->valor_max}}" type="range" />-->
-                <!--</div>-->
+                <!--</div>--> --}}
                 
                 <div class="text-center">
                     <button type="submit" class="btn btn-success">Enviar</button>
@@ -597,8 +602,28 @@ $countItems = false;
                 <!--</div>-->
             </div>
         </form>
-        
-        
+        @endif
+        @if(count($request) > 1)
+        <div class="filtros-badge text-center mb-3">
+            Filtros aplicados:
+            @if(isset($request['destinos']))
+            <span class="label label-info">Destino</span>
+            @endif
+            @if(isset($request['experiencias']))
+            <span class="label label-info">Experiencias</span>
+            @endif
+            @if(isset($request['categorias']))
+            <span class="label label-info">Categoría de turismo</span>
+            @endif
+            @if(isset($request['perfiles']))
+            <span class="label label-info">Perfil del turista</span>
+            @endif
+            @if(isset($request['tipo']))
+            <a href="/quehacer/index?tipo={{$request['tipo']}}"><span class="label label-default">Quitar filtros <storng>x</strong></span></a>
+            @endif
+        </div>
+        @endif
+        @if(count($result) > 0)
         <div id="listado" class="tiles">
             
             @foreach($result as $r)
