@@ -38,9 +38,9 @@ function parse_yturl($url)
 @endsection
 
 @section('meta_og')
-<meta property="og:title" content="Conoce {{$proveedor->proveedorRnt->razon_social}} en el departamento del Magdalena" />
+<meta property="og:title" content="Conoce {{$proveedor->razon_social}} en el departamento del Magdalena" />
 <meta property="og:image" content="{{asset('/res/img/brand/128.png')}}" />
-<meta property="og:description" content="{{$proveedor->proveedorRnt->razon_social}}"/>
+<meta property="og:description" content="{{$proveedor->razon_social}}"/>
 @endsection
 
 @section('Title','Proveedores')
@@ -48,11 +48,12 @@ function parse_yturl($url)
 @section('TitleSection','Proveedores')
 
 @section('content')
-@if(count($proveedor->multimediaProveedores) > 0)
+@if(count($proveedor->proveedor) > 0)
+    @if(count($proveedor->proveedor->multimediaProveedores) > 0)    
     <div id="carousel-main-page" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
-        @for($i = 0; $i < count($proveedor->multimediaProveedores); $i++)
+        @for($i = 0; $i < count($proveedor->proveedor->multimediaProveedores); $i++)
             <li data-target="#carousel-main-page" data-slide-to="{{$i}}" {{  $i === 0 ? 'class=active' : '' }}></li>
         @endfor
       </ol>
@@ -61,31 +62,32 @@ function parse_yturl($url)
         
       
       <div class="carousel-inner">
-        @for($i = 0; $i < count($proveedor->multimediaProveedores); $i++)
+        @for($i = 0; $i < count($proveedor->proveedor->multimediaProveedores); $i++)
         <div class="item {{  $i === 0 ? 'active' : '' }}">
-          <img src="{{$proveedor->multimediaProveedores[$i]->ruta}}" alt="Imagen de presentación de {{$proveedor->proveedorRnt->razon_social}}">
+          <img src="{{$proveedor->proveedor->multimediaProveedores->first()->ruta}}" alt="Imagen de presentación de {{$proveedor->razon_social}}">
           
         </div>
         @endfor
         
       </div>
       <div class="carousel-caption">
-          <h2>{{$proveedor->proveedorRnt->razon_social}}
+          <h2>{{$proveedor->razon_social}}
               <small class="btn-block">
-	              <span class="{{ ($proveedor->calificacion_legusto > 0.0) ? (($proveedor->calificacion_legusto <= 0.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
-	              <span class="{{ ($proveedor->calificacion_legusto > 1.0) ? (($proveedor->calificacion_legusto <= 1.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
-	              <span class="{{ ($proveedor->calificacion_legusto > 2.0) ? (($proveedor->calificacion_legusto <= 2.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
-	              <span class="{{ ($proveedor->calificacion_legusto > 3.0) ? (($proveedor->calificacion_legusto <= 3.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
-	              <span class="{{ ($proveedor->calificacion_legusto > 4.0) ? (($proveedor->calificacion_legusto <= 5.0) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+	              <span class="{{ ($proveedor->proveedor->calificacion_legusto > 0.0) ? (($proveedor->proveedor->calificacion_legusto <= 0.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+	              <span class="{{ ($proveedor->proveedor->calificacion_legusto > 1.0) ? (($proveedor->proveedor->calificacion_legusto <= 1.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+	              <span class="{{ ($proveedor->proveedor->calificacion_legusto > 2.0) ? (($proveedor->proveedor->calificacion_legusto <= 2.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+	              <span class="{{ ($proveedor->proveedor->calificacion_legusto > 3.0) ? (($proveedor->proveedor->calificacion_legusto <= 3.9) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
+	              <span class="{{ ($proveedor->proveedor->calificacion_legusto > 4.0) ? (($proveedor->proveedor->calificacion_legusto <= 5.0) ? 'mdi mdi-star-half' : 'mdi mdi-star') : 'mdi mdi-star-outline'}}" aria-hidden="true"></span>
 	              <span class="sr-only">Posee una calificación de {{$proveedor->calificacion_legusto}}</span>
 	            
 	          </small>
+	          
           </h2>
           <div class="text-center">
             @if(Auth::check())
                 <form role="form" action="/proveedor/favorito" method="post">
                     {{ csrf_field() }}
-                    <input type="hidden" name="actividad_id" value="{{$proveedor->id}}" />
+                    <input type="hidden" name="actividad_id" value="{{$proveedor->proveedor->id}}" />
                     <button type="submit" class="btn btn-lg btn-circled btn-favorite m-0">
                       <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
                     </button>    
@@ -107,11 +109,11 @@ function parse_yturl($url)
       </a>
     </div>
     @else
-    
     <div id="title-with-image" class="text-center p-3">
         <img src="/img/hotel.png" alt="" role="presentation">
-        <h2 class="mt-0" style="color: #004A87">{{$proveedor->proveedorRnt->razon_social}}</h2>
+        <h2 class="mt-0" style="color: #004A87">{{$proveedor->razon_social}}</h2>
         <div class="text-center">
+        {{--
         @if(Auth::check())
             <form role="form" action="/proveedor/favorito" method="post">
                 {{ csrf_field() }}
@@ -125,6 +127,31 @@ function parse_yturl($url)
               <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
             </a>
         @endif
+        --}}
+      </div>
+    </div>
+    @endif
+    @else
+    
+    <div id="title-with-image" class="text-center p-3">
+        <img src="/img/hotel.png" alt="" role="presentation">
+        <h2 class="mt-0" style="color: #004A87">{{$proveedor->razon_social}}</h2>
+        <div class="text-center">
+        {{--
+        @if(Auth::check())
+            <form role="form" action="/proveedor/favorito" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" name="actividad_id" value="{{$proveedor->id}}" />
+                <button type="submit" class="btn btn-lg btn-circled btn-favorite m-0">
+                  <span class="ion-android-favorite" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
+                </button>    
+            </form>
+        @else
+            <a role="button" class="btn btn-lg btn-circled m-0" title="Marcar como favorito" href="/login/login">
+              <span class="ion-android-favorite-outline" aria-hidden="true"></span><span class="sr-only">Marcar como favorito</span>
+            </a>
+        @endif
+        --}}
       </div>
     </div>
     
@@ -133,7 +160,7 @@ function parse_yturl($url)
     <div id="menu-page">
         <div class="container">
             <ul id="menu-page-list" class="justify-content-center">
-                @if(count($proveedor->proveedorRnt->idiomas) > 0)
+                @if(count($proveedor->idiomas) > 0)
                 <li>
                     <a href="#informacionGeneral" class="toSection">
 						<i class="ionicons ion-information-circled" aria-hidden="true"></i>
@@ -156,20 +183,22 @@ function parse_yturl($url)
             </ul>
         </div>
     </div>
-    <section id="informacionGeneral" class="section @if(count($proveedor->proveedorRnt->idiomas) > 0) active @endif">
-        @if(count($proveedor->multimediaProveedores) > 0)
-        <h3 class="title-section">{{$proveedor->proveedorRnt->razon_social}}</h3>
+    <section id="informacionGeneral" class="section @if(count($proveedor->idiomas) > 0) active @endif">
+        @if(count($proveedor->proveedor) > 0)
+            @if(count($proveedor->proveedor->multimediaProveedores) > 0)
+            <h3 class="title-section">{{$proveedor->razon_social}}</h3>
+            @endif
         @endif
         @if($video_promocional != null)
         <iframe src="https://www.youtube.com/embed/{{print(parse_yturl($video_promocional))}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 350px;margin-bottom: 1rem;"></iframe>
         @endif
-        @if(count($proveedor->proveedorRnt->idiomas) > 0)
+        @if(count($proveedor->idiomas) > 0)
         <div class="container">
-            <div style="white-space: pre-line;">{!! $proveedor->proveedorRnt->idiomas->first()->descripcion !!}</div>
+            <div style="white-space: pre-line;">{!! $proveedor->idiomas->first()->descripcion !!}</div>
         </div>
         @endif
     </section>
-    <section id="caracteristicas" class="section @if(count($proveedor->proveedorRnt->idiomas) == 0) active @endif">
+    <section id="caracteristicas" class="section @if(count($proveedor->idiomas) == 0) active @endif">
         <div class="container">
             <h3 class="title-section">Ubicación</h3>
             <div class="row">
@@ -179,16 +208,16 @@ function parse_yturl($url)
                 <div class="col-md-4">
                     <p class="text-muted">Más información</p>
                     <ul class="list-group">
-                      @if($proveedor->proveedorRnt->direccion)
+                      @if($proveedor->direccion)
                       <li class="list-group-item">
                           <label class="d-block">Dirección</label>
-                          {{$proveedor->proveedorRnt->direccion}}
+                          {{$proveedor->direccion}}
                       </li>
                       @endif
-                      @if($proveedor->proveedorRnt->email)
+                      @if($proveedor->email)
                       <li class="list-group-item">
                           <label class="d-block">Correo electrónico</label>
-                          <a href="mailto:{{$proveedor->proveedorRnt->email}}" title="{{$proveedor->proveedorRnt->email}}" target="_blank">Ver email</a>
+                          <a href="mailto:{{$proveedor->email}}" title="{{$proveedor->email}}" target="_blank">Ver email</a>
                       </li>
                       @endif
                     </ul>
@@ -218,7 +247,7 @@ function parse_yturl($url)
 <script>
     // Initialize and add the map
     function initMap() {
-        var lat = parseFloat("<?php print($proveedor->proveedorRnt->latitud); ?>"), long = parseFloat("<?php print($proveedor->proveedorRnt->longitud); ?>");
+        var lat = parseFloat("<?php print($proveedor->latitud); ?>"), long = parseFloat("<?php print($proveedor->longitud); ?>");
       // The location of Uluru
       var uluru = {lat: lat, lng: long};
       // The map, centered at Uluru
