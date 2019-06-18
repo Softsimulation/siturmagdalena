@@ -3,8 +3,7 @@
 @section('estilos')
 <link rel="stylesheet" href="{{asset('/css/public/print.css')}}" media="print"/>
 <style>
-    #contenidoNoticia h1, #contenidoNoticia h2, #contenidoNoticia h3, #contenidoNoticia h4, #contenidoNoticia h5, #contenidoNoticia h6,
-    #contenidoNoticia strong{
+    #contenidoNoticia h1, #contenidoNoticia h2, #contenidoNoticia h3, #contenidoNoticia h4, #contenidoNoticia h5, #contenidoNoticia h6{
         font-weight: 500;
     }
     header{

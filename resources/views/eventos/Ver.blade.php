@@ -10,8 +10,10 @@ function parse_yturl($url)
 @extends('layout._publicLayout')
 
 @section ('estilos')
-    <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
+<link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
     <style>
+        
+        
         .section{
             display: none;
         }
@@ -24,7 +26,7 @@ function parse_yturl($url)
         }
     </style>
 @endsection
-@extends('layout._publicLayout')
+
 
 @section('Title',$evento->eventosConIdiomas[0]->nombre)
 
@@ -140,7 +142,7 @@ function parse_yturl($url)
                 @endif
                 <div class="col-xs-12 col-md-8">
                     
-                    <p style="white-space: pre-line;">{{$evento->eventosConIdiomas[0]->descripcion}}</p>
+                    <div>{!! $evento->eventosConIdiomas[0]->descripcion !!}</div>
                 </div>
                 <div class="col-xs-12 col-md-4">
                     <ul class="list">
@@ -180,64 +182,4 @@ function parse_yturl($url)
                         </li>
                         @if($evento->telefon != null)
                         <li>
-                            <div class="row align-items-center">
-                                <div class="col-xs-2">
-                                    <span class="ionicons ion-android-call" aria-hidden="true"></span> <span class="sr-only">Teléfono</span>
-                                </div>
-                                <div class="col-xs-10">
-                                    <div class="form-group">
-                                        <label>Teléfono</label>
-                                        <p class="form-control-static">{{$evento->telefono}}</p>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </li>
-                        @endif
-                        @if($evento->web != null)
-                        <li>
-                            <div class="row align-items-center">
-                                <div class="col-xs-2">
-                                    <span class="ionicons ion-android-globe" aria-hidden="true"></span> <span class="sr-only">Sitio web</span>
-                                </div>
-                                <div class="col-xs-10">
-                                    <div class="form-group">
-                                        <label>Sitio web</label>
-                                        <p class="form-control-static">
-                                            <a href="{{$evento->web}}" target="_blank" rel="noopener noreferrer">Clic para ir al sitio web</a>
-                                        </p>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </li>
-                        @endif
-                        
-                    </ul>    
-                </div>
-            </div>
-            
-        </div>
-        @if(count($evento->sitiosConEventos))
-        <div class="container">
-            <h2 class="title-section">{{$evento->eventosConIdiomas[0]->nombre}}
-               
-            </h2>
-            <div class="tiles">
-                @foreach ($evento->sitiosConEventos as $sitio)
-                <div class="tile">
-                    <div class="tile-body">
-                        <div class="tile-caption">
-                            <h3>{{$sitio->sitiosConIdiomas[0]->nombre}}</h3>
-                        </div>
-                    </div>
                     
-                </div>
-                @endforeach
-            </div>
-        </div>
-        @endif
-    </section>
-
-
-@endsection

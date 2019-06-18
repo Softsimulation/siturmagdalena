@@ -266,7 +266,7 @@ $fav = Layout::favoritos();
                                         <a role="menuitem" href="/quehacer/index?tipo=3"><span class="mdi mdi-map-marker hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.destinos')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/quehacer/index?tipo=5"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.rutasTuristicas')}}</a>
+                                        <a role="menuitem" href="#"><span class="mdi mdi-map-marker-distance hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuQueHacer.rutasTuristicas')}}</a>
                                     </li> 
                                 </ul>
                             </li>
@@ -361,10 +361,10 @@ $fav = Layout::favoritos();
                                         <a role="menuitem" href="/indicadores/receptor"><span class="mdi stats-mini stats-receptor hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoReceptor')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/emisor"><span class="mdi stats-mini stats-interno hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoEmisor')}}</a>
+                                        <a role="menuitem" href="/indicadores/interno "><span class="mdi stats-mini stats-interno hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoInterno')}}</a>
                                     </li>
                                     <li role="none">
-                                        <a role="menuitem" href="/indicadores/interno"><span class="mdi stats-mini stats-emisor hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoInterno')}}</a>
+                                        <a role="menuitem" href="/indicadores/emisor"><span class="mdi stats-mini stats-emisor hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.turismoEmisor')}}</a>
                                     </li>
                                     <li role="none">
                                         <a role="menuitem" href="/indicadores/oferta"><span class="mdi stats-mini stats-oferta hidden-xs hidden-sm" aria-hidden="true"></span>{{trans('resources.estadisticas.ofertaTuristica')}}</a>
