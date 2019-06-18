@@ -7,7 +7,7 @@ use App\Models\Encuesta;
 use App\Models\Sitio_Para_Encuesta;
 use Illuminate\Database\Eloquent\Collection;
 use DB;
-class OfertaEmpleo
+class OfertaEmpleoPst
 {
     /**
      * Handle an incoming request.
@@ -19,7 +19,7 @@ class OfertaEmpleo
     public function handle($request, Closure $next)
     {
         
-        if(strlen(strstr($request->path(),'ofertaempleo/encuesta'))>0){
+        if(strlen(strstr($request->path(),'ofertaempleopst/encuesta'))>0){
             $sitio = Sitio_Para_Encuesta::find($request->one);
             if($sitio != null){
                  return $next($request);
@@ -32,8 +32,8 @@ class OfertaEmpleo
             
         }    
 
-    
-     if(strlen(strstr($request->path(),'ofertaempleo/actividadcomercial'))>0){
+     
+     if(strlen(strstr($request->path(),'ofertaempleopst/actividadcomercial'))>0){
             $sitio = Sitio_Para_Encuesta::find($request->three);
             if($sitio != null){
                  return $next($request);
@@ -57,7 +57,7 @@ class OfertaEmpleo
     
     
     
-    if(strlen(strstr($request->path(),'ofertaempleo/agenciaviajes'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/agenciaviajes'))>0){
             
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 15){
                          return $next($request);
@@ -68,7 +68,7 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/ofertaagenciaviajes'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/ofertaagenciaviajes'))>0){
            if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
@@ -86,7 +86,7 @@ class OfertaEmpleo
             
     }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalquilervehiculo'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/caracterizacionalquilervehiculo'))>0){
           
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 21){
                          return $next($request);
@@ -96,7 +96,7 @@ class OfertaEmpleo
             }
             
         }
-        if(strlen(strstr($request->path(),'ofertaempleo/ofertalquilervehiculo'))>0){
+        if(strlen(strstr($request->path(),'ofertaempleopst/ofertalquilervehiculo'))>0){
             if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
@@ -115,7 +115,7 @@ class OfertaEmpleo
      
      
      
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionagenciasoperadoras'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/caracterizacionagenciasoperadoras'))>0){
            
             if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 14){
                          return $next($request);
@@ -126,7 +126,7 @@ class OfertaEmpleo
             
         }
      
-    if(strlen(strstr($request->path(),'ofertaempleo/ocupacionagenciasoperadoras'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/ocupacionagenciasoperadoras'))>0){
         if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
@@ -143,9 +143,9 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizaciontransporte'))>0){   
+    if(strlen(strstr($request->path(),'ofertaempleopst/caracterizaciontransporte'))>0){   
 
-            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 22 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 27 ){
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 22){
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
@@ -154,7 +154,7 @@ class OfertaEmpleo
             
         }
      
-    if(strlen(strstr($request->path(),'ofertaempleo/ofertatransporte'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/ofertatransporte'))>0){
               if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
@@ -163,7 +163,7 @@ class OfertaEmpleo
              if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/empleo/'.$request->one);
             }           
-            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 22 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 27){
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 22){
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
@@ -172,8 +172,8 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacionalimentos'))>0){        
-            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 29){
+    if(strlen(strstr($request->path(),'ofertaempleopst/caracterizacionalimentos'))>0){        
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11 ){
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
@@ -182,7 +182,7 @@ class OfertaEmpleo
             
         }
      
-    if(strlen(strstr($request->path(),'ofertaempleo/capacidadalimentos'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/capacidadalimentos'))>0){
               if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
@@ -191,7 +191,7 @@ class OfertaEmpleo
              if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/empleo/'.$request->one);
             }                 
-            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11  || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 29){
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->id == 12 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 11){
                          return $next($request);
             }else{
                 \Session::flash('mensaje','No puede acceder a dicha ruta no concuerdan el tipo de proveedor');
@@ -200,12 +200,12 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/alojamientomensual'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/alojamientomensual'))>0){
               if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
             }           
-            if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 35 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 36 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 37 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 38 ){
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1){
                       if($data[0]->mes_id%3 == 0){
                         return redirect('/ofertaempleo/caracterizacion/'.$request->one);
                       }
@@ -218,9 +218,9 @@ class OfertaEmpleo
             
         }
     
-    if(strlen(strstr($request->path(),'ofertaempleo/caracterizacion'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/caracterizacion'))>0){
             
-            if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 35 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 36 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 37 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 38){
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1){
           
              
                          return $next($request);
@@ -232,12 +232,12 @@ class OfertaEmpleo
         }
      
      
-    if(strlen(strstr($request->path(),'ofertaempleo/oferta'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/oferta'))>0){
              if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
             }            
-            if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 35 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 36 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 37 || $encuesta->sitiosParaEncuesta->proveedor->categoria->id == 38){
+            if($encuesta->sitiosParaEncuesta->proveedor->categoria->tipoProveedore->id == 1 ){
                   if($data[0]->mes_id%3 != 0){
                         return redirect('/ofertaempleo/alojamientomensual/'.$request->one);
                       }
@@ -249,7 +249,7 @@ class OfertaEmpleo
             
         }
         
-    if(strlen(strstr($request->path(),'ofertaempleo/empleomensual'))>0){
+    if(strlen(strstr($request->path(),'ofertaempleopst/empleomensual'))>0){
                if($encuesta->actividad_comercial == false  ){
                 return redirect('/ofertaempleo/encuestas/'.$encuesta->sitios_para_encuestas_id);
                 
