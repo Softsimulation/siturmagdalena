@@ -54,7 +54,9 @@ class ProveedoresController extends Controller
             $queryCategoria->with(['categoriaProveedoresConIdiomas' => function ($queryCategoriaProveedoresConIdiomas) use ($idioma){
                 $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idioma);
             }])->select('id');
-        }])->select('id', 'razon_social', 'categoria_proveedores_id')->paginate(9);
+        }])->whereHas('categoria',function($q) use ($request){
+            $q->where('tipo_proveedores_id', $request->tipo);
+        })->whereRaw('lower(razon_social) like lower(?)', ["%{$request->buscar}%"])->select('id', 'razon_social', 'categoria_proveedores_id')->paginate(9);
         //return ['query' => $proveedores];
         
         // $p = Proveedores_rnt::with(['proveedor' => function($q){
@@ -72,35 +74,64 @@ class ProveedoresController extends Controller
     public function getVer($id){
         if ($id == null){
             return response('Bad request.', 400);
-        }elseif(Proveedor::find($id) == null){
+        }elseif(Proveedores_rnt::find($id) == null){
             return response('Not found.', 404);
         }
         
         $idioma = \Config::get('app.locale') == 'es' ? 1 : 2;
         
-        $proveedor = Proveedor::with(['comentariosProveedores'=> function ($queryComentario){
-            $queryComentario->orderBy('fecha', 'DESC')->with(['user']);
-        },'proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
-            $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
-                $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');
-            }])->select('id', 'razon_social','longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email');
-        }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas) use ($idioma){
-            $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario')->where('idiomas_id', $idioma);
-        }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
-            $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta', 'portada', 'tipo');
-        }, 'actividadesProveedores' => function ($queryActividadesProveedores) use ($idioma){
-            $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas) use ($idioma){
-                $queryActividadesConIdiomas->where('idiomas', $idioma)->select('actividades_id', 'idiomas', 'nombre');
-            }])->select('actividades.id');
-        }, 'perfilesUsuariosConProveedores' => function($queryPerfilesUsuariosConProveedores) use ($idioma){
-            $queryPerfilesUsuariosConProveedores->with(['perfilesUsuariosConIdiomas' => function ($queryPerfilesUsuariosConIdiomas) use ($idioma){
-                $queryPerfilesUsuariosConIdiomas->where('idiomas_id', $idioma)->select('idiomas_id', 'perfiles_usuarios_id', 'nombre');
-            }])->select('perfiles_usuarios.id');
-        }, 'categoriaTurismoConProveedores' => function($queryCategoriaTurismoConProveedores) use ($idioma){
-            $queryCategoriaTurismoConProveedores->with(['categoriaTurismoConIdiomas' => function($queryCategoriaTurismoConIdiomas) use ($idioma){
-                $queryCategoriaTurismoConIdiomas->where('idiomas_id')->select('categoria_turismo_id', 'idiomas_id', 'nombre');
-            }])->select('categoria_turismo.id');
-        }])->select('id', 'proveedor_rnt_id',  'telefono', 'sitio_web', 'valor_min', 'valor_max', 'calificacion_legusto')->where('id', $id)->first();
+        $proveedor = Proveedores_rnt::with(['proveedor'=>function($proveedor) use ($idioma){
+            $proveedor->with(['comentariosProveedores'=> function ($queryComentario) use ($idioma){
+                $queryComentario->orderBy('fecha', 'DESC')->with(['user']);
+            },'proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
+                $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
+                    $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');
+                }])->select('id', 'razon_social','longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email');
+            }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas) use ($idioma){
+                $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario')->where('idiomas_id', $idioma);
+            }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
+                $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta', 'portada', 'tipo');
+            }, 'actividadesProveedores' => function ($queryActividadesProveedores) use ($idioma){
+                $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas) use ($idioma){
+                    $queryActividadesConIdiomas->where('idiomas', $idioma)->select('actividades_id', 'idiomas', 'nombre');
+                }])->select('actividades.id');
+            }, 'perfilesUsuariosConProveedores' => function($queryPerfilesUsuariosConProveedores) use ($idioma){
+                $queryPerfilesUsuariosConProveedores->with(['perfilesUsuariosConIdiomas' => function ($queryPerfilesUsuariosConIdiomas) use ($idioma){
+                    $queryPerfilesUsuariosConIdiomas->where('idiomas_id', $idioma)->select('idiomas_id', 'perfiles_usuarios_id', 'nombre');
+                }])->select('perfiles_usuarios.id');
+            }, 'categoriaTurismoConProveedores' => function($queryCategoriaTurismoConProveedores) use ($idioma){
+                $queryCategoriaTurismoConProveedores->with(['categoriaTurismoConIdiomas' => function($queryCategoriaTurismoConIdiomas) use ($idioma){
+                    $queryCategoriaTurismoConIdiomas->where('idiomas_id')->select('categoria_turismo_id', 'idiomas_id', 'nombre');
+                }])->select('categoria_turismo.id');
+            }]);            
+        }])->where('id', $id)->first();
+        //return $proveedor;
+        
+        $proveedor->proveedor = $proveedor->proveedor->first();
+        
+        // $proveedor = Proveedor::with(['comentariosProveedores'=> function ($queryComentario){
+        //     $queryComentario->orderBy('fecha', 'DESC')->with(['user']);
+        // },'proveedorRnt' => function ($queryProveedorRnt) use ($idioma){
+        //     $queryProveedorRnt->with(['idiomas' => function ($queyProveedor_rnt_idioma) use ($idioma){
+        //         $queyProveedor_rnt_idioma->where('idioma_id', $idioma)->select('proveedor_rnt_id', 'idioma_id', 'descripcion')->orderBy('idioma_id');
+        //     }])->select('id', 'razon_social','longitud', 'latitud', 'direccion', 'numero_rnt', 'telefono', 'celular', 'email');
+        // }, 'proveedoresConIdiomas' => function ($queryProveedoresConIdiomas) use ($idioma){
+        //     $queryProveedoresConIdiomas->select('idiomas_id', 'proveedores_id', 'horario')->where('idiomas_id', $idioma);
+        // }, 'multimediaProveedores' => function ($queryMultimediaProveedores){
+        //     $queryMultimediaProveedores->where('tipo', false)->orderBy('portada', 'desc')->select('proveedor_id', 'ruta', 'portada', 'tipo');
+        // }, 'actividadesProveedores' => function ($queryActividadesProveedores) use ($idioma){
+        //     $queryActividadesProveedores->with(['actividadesConIdiomas' => function ($queryActividadesConIdiomas) use ($idioma){
+        //         $queryActividadesConIdiomas->where('idiomas', $idioma)->select('actividades_id', 'idiomas', 'nombre');
+        //     }])->select('actividades.id');
+        // }, 'perfilesUsuariosConProveedores' => function($queryPerfilesUsuariosConProveedores) use ($idioma){
+        //     $queryPerfilesUsuariosConProveedores->with(['perfilesUsuariosConIdiomas' => function ($queryPerfilesUsuariosConIdiomas) use ($idioma){
+        //         $queryPerfilesUsuariosConIdiomas->where('idiomas_id', $idioma)->select('idiomas_id', 'perfiles_usuarios_id', 'nombre');
+        //     }])->select('perfiles_usuarios.id');
+        // }, 'categoriaTurismoConProveedores' => function($queryCategoriaTurismoConProveedores) use ($idioma){
+        //     $queryCategoriaTurismoConProveedores->with(['categoriaTurismoConIdiomas' => function($queryCategoriaTurismoConIdiomas) use ($idioma){
+        //         $queryCategoriaTurismoConIdiomas->where('idiomas_id')->select('categoria_turismo_id', 'idiomas_id', 'nombre');
+        //     }])->select('categoria_turismo.id');
+        // }])->select('id', 'proveedor_rnt_id',  'telefono', 'sitio_web', 'valor_min', 'valor_max', 'calificacion_legusto')->where('id', $id)->first();
         
         $video_promocional = Proveedor::with(['multimediaProveedores' => function ($queryMultimediaProveedores){
             $queryMultimediaProveedores->where('tipo', true)->select('proveedor_id', 'ruta');

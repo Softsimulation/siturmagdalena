@@ -134,4 +134,60 @@ class AtraccionesController extends Controller
         }
     }
     
+    
+   public function postGuardarcomentario(Request $request){
+	   
+	   return $request;
+	   
+	   $validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:atracciones,id',
+            'calificacionFueFacilLlegar' => 'required|numeric|min:1|max:5',
+            'calificacionLeGusto' => 'required|numeric|min:1|max:5',
+            'calificacionRegresaria' => 'required|numeric|min:1|max:5',
+            'calificacionRecomendaria' => 'required|numeric|min:1|max:5',
+            'comentario' => 'required|string',
+        ],[
+            'comentario.string' => 'El comentario  debe ser de tipo string.',
+            'id.exists' => 'No se encontro la actividad',
+            'calificacionFueFacilLlegar.min' => 'la calificacion fue facil llegar debe ser mínimo de 1.',
+            'calificacionFueFacilLlegar.max' => 'la calificacion fue facil llegar debe ser maximo de 5.',
+            'calificacionRegresaria.min' => 'la calificacion regresaria debe ser mínimo de 1.',
+            'calificacionRegresaria.max' => 'la calificacion regresaria debe ser maximo de 5.',
+            'calificacionRecomendaria.min' => 'la calificacion recomendaria debe ser mínimo de 1.',
+            'calificacionRecomendaria.max' => 'la calificacion recomendaria debe ser maximo de 5.',
+            ]
+        );
+        
+        if($validator->fails()){
+           return redirect('atracciones/ver/'.$request->id)->with('error','No se pudo guardar el comentario');
+            
+        }
+        
+        
+        if($this->user == null){
+            return redirect('atracciones/ver/'.$request->id)->with('error','No se pudo guardar el comentario');
+            
+        }
+        
+        
+        $comentario = new Comentario_Atraccion();
+        $comentario->atraccion_id = $request->id;
+        $comentario->user_id = $this->user->id;
+        $comentario->comentario = $request->comentario;
+        $comentario->llegar = $request->calificacionFueFacilLlegar;
+        $comentario->recomendar = $request->calificacionRecomendaria;
+        $comentario->volveria = $request->calificacionRegresaria;
+        $comentario->le_gusto = $request->calificacionLeGusto;
+        $comentario->fecha = date("Y/m/d-H:i:s");
+        
+        
+        $atraccion = Atracciones::where('id',$request->id)->first();
+        $atraccion->calificacion_legusto = Comentario_Atraccion::where('atraccion_id',$request->id)->avg('le_gusto');
+        $atraccion->calificacion_llegar = Comentario_Atraccion::where('atraccion_id',$request->id)->avg('llegar'); 
+        $atraccion->calificacion_recomendar = Comentario_Atraccion::where('atraccion_id',$request->id)->avg('recomendar'); 
+        $atraccion->calificacion_volveria = Comentario_Atraccion::where('atraccion_id',$request->id)->avg('volveria'); 
+        $atraccion->save();
+        $comentario->save();
+        return redirect('atracciones/ver/'.$request->id)->with('success','Comentario guardado correctamente');
+    }
 }

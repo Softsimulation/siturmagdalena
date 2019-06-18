@@ -38,6 +38,6 @@ class Categoria_Turismo_Con_Actividad extends Model
      */
     public function categoriaTurismo()
     {
-        return $this->belongsTo('App\CategoriaTurismo');
+        return $this->belongsTo('App\Models\Categoria_Turismo', 'categoria_turismo_id');
     }
 }

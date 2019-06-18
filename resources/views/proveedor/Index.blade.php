@@ -318,9 +318,9 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
 @section('TitleSection','Actividades')
 
 @section('meta_og')
-<meta property="og:title" content="que hacer" />
+<meta property="og:title" content="Proveedores de servicios turísticos" />
 <meta property="og:image" content="{{asset('/res/img/brand/128.png')}}" />
-<meta property="og:description" content="¿Qué hacer?"/>
+<meta property="og:description" content="Conoce los proveedores de servicios turísticos en el Magdalena"/>
 @endsection
 
 @section ('estilos')

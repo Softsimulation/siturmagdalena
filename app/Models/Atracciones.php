@@ -130,6 +130,10 @@ class Atracciones extends Model
     {
         return $this->belongsToMany('App\Models\Categoria_Turismo', 'categoria_turismo_con_atracciones', 'atracciones_id', 'categoria_turismo_id');
     }
+    public function categoriaTurismo()
+    {
+        return $this->categoriaTurismoConAtracciones();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -145,6 +149,10 @@ class Atracciones extends Model
     public function perfilesUsuariosConAtracciones()
     {
         return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_atracciones', 'atracciones_id', 'perfiles_usuarios_id');
+    }
+    public function perfilesUsuarios()
+    {
+        return $this->perfilesUsuariosConAtracciones();
     }
 
     /**

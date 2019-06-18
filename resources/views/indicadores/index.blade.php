@@ -27,10 +27,7 @@
         color: #fff!important;
         font-weight: 700!important;
     }
-    .menu-descarga{
-        position: absolute;
-        right: 80px;
-    }
+  
     .menu-descarga, .menu-descarga .dropdown{
             float: right;
     }
@@ -42,11 +39,11 @@
     .menu-descarga .dropdown button .material-icons{
         margin-right: .5rem;
     }
-    #descargarTABLA{
+    #descargarTABLA, #descargarTABLA2{
         float: right;
         color: black;
     }
-    #descargarTABLA i{
+    #descargarTABLA i, #descargarTABLA2 i{
         font-size:2em;
     }
     .panel-body{
@@ -149,11 +146,13 @@
   </ul>
 </div>
 
-<br>
-
 <div ng-if="indicador == undefined" class="text-center">
     <img src="/img/spinner-200px.gif" alt="" role="presentation" style="display:inline-block; margin: 0 auto;">    
 </div>
+
+<a class="item-footer" style="position: fixed; z-index: 1000; left: 0;" href="http://www.citur.gov.co/" target="_blank"  >
+    <img src="/Content/image/presentacion_CITUR-01.png" width="65">
+</a>
 
 <div class="card" ng-init="indicadorSelect={{$indicadores[0]['id']}}" ng-show="indicador != undefined">
     
@@ -167,11 +166,220 @@
     <div class="tab-content">
       <div id="tab1" class="tab-pane fade in active">
             
+            <div class="panel panel-default" ng-show="data3.length>0" >
+                <div class="panel-heading">
+                    <div class="row filtros" >
+                       
+                        <div class="col-xs-12 col-sm-10 col-md-10" >
+                            <div class="input-group" id="selectGrafica3" >
+                                <label class="input-group-addon">Gráfica </label>
+                                <div class="btn-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default btn-select">
+                                       <img src="@{{graficaSelect3.icono}}" class="icono" ></img> @{{graficaSelect3.nombre || " "}}
+                                    </button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret "></span>
+                                    </button>
+                                    <ul class="dropdown-menu menuTipoGrafica" role="menu">
+                                        <li ng-repeat="item in indicador.graficas" ng-click="changeTipoGrafica3(item)"  >
+                                            <a> <img src="@{{item.icono}}" class="icono" ></img> @{{item.nombre}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> 
+                        
+                    </div> 
+                </div>
+                <div class="panel-body">
+                    
+                    <div class="row" >
+                        <div class="col-md-12" >
+                            <div class="menu-descarga" >
+                            
+                                <div class="dropdown">
+                                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                      <i class="material-icons">cloud_download</i> Descargar
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href id="descargarPNG3" >Descargar gráfica : PNG</a></li>
+                                   <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
+                                    <li><a href id="descargarPDF3" >Descargar gráfica : PDF</a></li>
+                                    <li><a href id="descargarGraficaTabla3" >Descargar gráfica y tabla de datos : PDF</a></li>
+                                  </ul>
+                                </div>
+                                
+                            </div>
+                            
+                            <canvas id="base3" class="chart-base" chart-type="graficaSelect3.codigo" fill="black" style="background: white;"
+                              chart-data="data3" chart-labels="labels3" chart-series="series3" chart-options="options3" chart-colors="colores" chart-dataset-override="override3" >
+                            </canvas>
+                        </div>
+                        <div class="col-md-12" >
+                            <hr>
+                            <div class="panel-heading">
+                                <i class="material-icons">table_chart</i> <span id="tituloIndicadorGrafica3" > @{{tituloIndicadorGrafica3}} </span>
+                                <a href id="descargarTABLA2" >
+                                     <img src="/Content/graficas/excel.png" class="icono" ></img>
+                                </a>
+                            </div>
+                            
+                            <div id="TablaDatos3" class="table-responsive" >
+                                <table class="table table-striped" ng-if="!series2" >
+                                    <thead>
+                                      <tr>
+                                        <th>@{{indicador.idiomas[0].eje_x}} </th>
+                                        <th>Cantidad</th>
+                                        <th ng-if="dataExtra" >Media</th>
+                                        <th ng-if="dataExtra" >Mediana</th>
+                                        <th ng-if="dataExtra" >Moda</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr  ng-repeat="label in labels3" >
+                                        <td>@{{label}}</td>
+                                        <td>@{{data3[0][$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.media[$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.mediana[$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.moda[$index]}}</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            
+                                <table class="table table-striped" ng-if="series3" >
+                                    <thead>
+                                      <tr>
+                                        <th></th>
+                                        <th ng-repeat="item in labels3" >@{{item}}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat="datos in data3 track by $index" >
+                                        <td>@{{series3[$index]}}</td>
+                                        <td ng-repeat="d in datos track by $index">@{{d}}</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="panel panel-default" ng-show="data2.length>0" >
+                <div class="panel-heading">
+                    <div class="row filtros" >
+                       
+                        <div class="col-xs-12 col-sm-10 col-md-10" >
+                            <div class="input-group" id="selectGrafica2" >
+                                <label class="input-group-addon">Gráfica </label>
+                                <div class="btn-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default btn-select">
+                                       <img src="@{{graficaSelect2.icono}}" class="icono" ></img> @{{graficaSelect2.nombre || " "}}
+                                    </button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret "></span>
+                                    </button>
+                                    <ul class="dropdown-menu menuTipoGrafica" role="menu">
+                                        <li ng-repeat="item in indicador.graficas" ng-click="changeTipoGrafica2(item)"  >
+                                            <a> <img src="@{{item.icono}}" class="icono" ></img> @{{item.nombre}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> 
+                        
+                    </div> 
+                </div>
+                <div class="panel-body">
+                    
+                    <div class="row" >
+                        <div class="col-md-12" >
+                            <div class="menu-descarga" >
+                            
+                                <div class="dropdown">
+                                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                      <i class="material-icons">cloud_download</i> Descargar
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href id="descargarPNG2" >Descargar gráfica : PNG</a></li>
+                                   <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
+                                    <li><a href id="descargarPDF2" >Descargar gráfica : PDF</a></li>
+                                    <li><a href id="descargarGraficaTabla2" >Descargar gráfica y tabla de datos : PDF</a></li>
+                                  </ul>
+                                </div>
+                                
+                            </div>
+                            
+                            <canvas id="base2" class="chart-base" chart-type="graficaSelect2.codigo" fill="black" style="background: white;"
+                              chart-data="data2" chart-labels="labels2" chart-series="series2" chart-options="options2" chart-colors="colores" chart-dataset-override="override2" >
+                            </canvas>
+                        </div>
+                        <div class="col-md-12" >
+                            <hr>
+                            <div class="panel-heading">
+                                <i class="material-icons">table_chart</i> <span id="tituloIndicadorGrafica2" > @{{tituloIndicadorGrafica2}} </span>
+                                <a href id="descargarTABLA2" >
+                                     <img src="/Content/graficas/excel.png" class="icono" ></img>
+                                </a>
+                            </div>
+                            
+                            <div id="TablaDatos2" class="table-responsive" >
+                                <table class="table table-striped" ng-if="!series2" >
+                                    <thead>
+                                      <tr>
+                                        <th>@{{indicador.idiomas[0].eje_x}} </th>
+                                        <th>Cantidad</th>
+                                        <th ng-if="dataExtra" >Media</th>
+                                        <th ng-if="dataExtra" >Mediana</th>
+                                        <th ng-if="dataExtra" >Moda</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr  ng-repeat="label in labels2" >
+                                        <td>@{{label}}</td>
+                                        <td>@{{data2[0][$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.media[$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.mediana[$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.moda[$index]}}</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            
+                            
+                                <table class="table table-striped" ng-if="series2" >
+                                    <thead>
+                                      <tr>
+                                        <th></th>
+                                        <th ng-repeat="item in labels2" >@{{item}}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat="datos in data2 track by $index" >
+                                        <td>@{{series2[$index]}}</td>
+                                        <td ng-repeat="d in datos track by $index">@{{d}}</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
+            </div>
+            
+            
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <form name="form" >
                         <div class="row filtros" >
-                            <div class="col-xs-12 col-md-3" >
+                            <div class="col-xs-12 col-md-3" ng-show="yearSelect" >
                                 <div class="input-group">
                                     <label class="input-group-addon">Período </label>
                                     <select class="form-control" ng-model="yearSelect" ng-change="changePeriodo()" ng-options="y as y.year for y in periodos | unique: 'year'" requerid >
@@ -263,84 +471,88 @@
                 </div>
                 <div class="panel-body">
                     
-                    <div class="menu-descarga" >
+                    <div class="row" >
+                        <div class="col-md-12" >
                             
-                        <div class="dropdown">
-                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                              <i class="material-icons">cloud_download</i> Descargar
-                          </button>
-                          <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href id="descargarPNG" >Descargar gráfica : PNG</a></li>
-                           <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
-                            <li><a href id="descargarPDF" >Descargar gráfica : PDF</a></li>
-                            <li><a href id="descargarGraficaTabla" >Descargar gráfica y tabla de datos : PDF</a></li>
-                          </ul>
+                            <div class="menu-descarga" >
+                            
+                                <div class="dropdown">
+                                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                      <i class="material-icons">cloud_download</i> Descargar
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href id="descargarPNG" >Descargar gráfica : PNG</a></li>
+                                   <!-- <li><a href id="descargarJPG" >Download JPG image</a></li> -->
+                                    <li><a href id="descargarPDF" >Descargar gráfica : PDF</a></li>
+                                    <li><a href id="descargarGraficaTabla" >Descargar gráfica y tabla de datos : PDF</a></li>
+                                  </ul>
+                                </div>
+                                
+                            </div>
+                            
+                            <canvas id="base" class="chart-base" chart-type="graficaSelect.codigo" fill="black" style="background: white;"
+                              chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colores" chart-dataset-override="override" >
+                            </canvas>
+                        </div>
+                        
+                        <div class="col-md-12" >
+                            <hr>
+                            <div class="panel-heading">
+                                <i class="material-icons">table_chart</i> <span id="tituloIndicadorGrafica" > @{{tituloIndicadorGrafica}} </span>
+                                <a href id="descargarTABLA" >
+                                     <img src="/Content/graficas/excel.png" class="icono" ></img>
+                                </a>
+                            </div>
+                            <div id="TablaDatos" class="table-responsive" >
+                                <table class="table table-striped" ng-if="!series" >
+                                    <thead>
+                                      <tr>
+                                        <th>@{{indicador.idiomas[0].eje_x}} </th>
+                                        <th>Cantidad</th>
+                                        <th ng-if="dataExtra" >Media</th>
+                                        <th ng-if="dataExtra" >Mediana</th>
+                                        <th ng-if="dataExtra" >Moda</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr  ng-repeat="label in labels" >
+                                        <td>@{{label}}</td>
+                                        <td>@{{data[0][$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.media[$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.mediana[$index]}}</td>
+                                        <td ng-if="dataExtra" >@{{dataExtra.moda[$index]}}</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <table class="table table-striped" ng-if="series" >
+                                    <thead>
+                                      <tr>
+                                        <th></th>
+                                        <th ng-repeat="item in labels" >@{{item}}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat="datos in data track by $index" >
+                                        <td>@{{series[$index]}}</td>
+                                        <td ng-repeat="d in datos track by $index">@{{d}}</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         
                     </div>
                     
-                    <canvas id="base" class="chart-base" chart-type="graficaSelect.codigo" fill="black" style="background: white;"
-                      chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colores" chart-dataset-override="override" >
-                    </canvas>
                     
-                    <a class="item-footer" style="float:right;margin-right: 10px;" href="http://www.citur.gov.co/" target="_blank"  >
-                        <img src="/Content/image/presentacion_CITUR-01.png" width="65">
-                    </a>
                     
                 </div>
             </div>
            
            <p>
-               Descripción: @{{indicador.idiomas[0].descripcion}}
+               <b>Descripción</b>: @{{indicador.idiomas[0].descripcion}}
            </p>
            
-            <div class="panel panel-default" ng-show="data.length>0" >
-                    <div class="panel-heading">
-                        <i class="material-icons">table_chart</i> <span id="tituloIndicadorGrafica" > @{{tituloIndicadorGrafica}} </span>
-                        <a href id="descargarTABLA" >
-                             <img src="/Content/graficas/excel.png" class="icono" ></img>
-                        </a>
-                    </div>
-                    <div class="panel-body" id="customers" style="overflow-x: auto;width: 100%;margin-right: 0;" >
-                        
-                        <table class="table table-striped" ng-if="!series" >
-                            <thead>
-                              <tr>
-                                <th>@{{indicador.idiomas[0].eje_x}} </th>
-                                <th>Cantidad</th>
-                                <th ng-if="dataExtra" >Media</th>
-                                <th ng-if="dataExtra" >Mediana</th>
-                                <th ng-if="dataExtra" >Moda</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr  ng-repeat="label in labels" >
-                                <td>@{{label}}</td>
-                                <td>@{{data[0][$index]}}</td>
-                                <td ng-if="dataExtra" >@{{dataExtra.media[$index]}}</td>
-                                <td ng-if="dataExtra" >@{{dataExtra.mediana[$index]}}</td>
-                                <td ng-if="dataExtra" >@{{dataExtra.moda[$index]}}</td>
-                              </tr>
-                            </tbody>
-                        </table>
-                        
-                        <table class="table table-striped" ng-if="series" >
-                            <thead>
-                              <tr>
-                                <th></th>
-                                <th ng-repeat="item in labels" >@{{item}}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr ng-repeat="datos in data track by $index" >
-                                <td>@{{series[$index]}}</td>
-                                <td ng-repeat="d in datos track by $index">@{{d}}</td>
-                              </tr>
-                            </tbody>
-                        </table>
-                        
-                    </div>
-                </div>
     
       </div>
       <div id="tab2" class="tab-pane fade">
@@ -383,59 +595,60 @@
     
     
     <script>
-    
-        $("#descargarPNG").on("click", function(){
-            var canvas = document.getElementById("base");
-            descargar( canvas.toDataURL() );
-        });
         
-        $("#descargarJPG").on("click", function(){
-            var canvas = document.getElementById("base");
-            descargar( canvas.toDataURL() );
-        });
+        $("#descargarPNG3").on("click", function(){ descargar( "base3", $("#tituloIndicadorGrafica3").html() ); });
         
-        $("#descargarPDF").on("click", function(){
-            var canvas = document.getElementById("base");
-            var imgData = canvas.toDataURL();
-            var pdf = new jsPDF('l', 'pt', 'letter');
-            pdf.addImage(imgData, 'JPEG', 0, 20, 800,400);
-            pdf.save( $("#tituloIndicadorGrafica").html() +".pdf");
-        });
+        $("#descargarPDF3").on("click", function(){ descargarPDF( "base3" , $("#tituloIndicadorGrafica3").html() ); });
         
-        function descargar(img){
+        $("#descargarGraficaTabla3").on("click", function(){ descargarGraficaDatosPDF( "TablaDatos3", "base3" , $("#tituloIndicadorGrafica3").html() ); });
+        
+        $("#descargarTABLA3").on("click", function(){ descargarTabla( "TablaDatos3" , $("#tituloIndicadorGrafica3").html() ); });
+        
+        ///////////////////////////////////////////
+        
+        $("#descargarPNG2").on("click", function(){ descargar( "base2", $("#tituloIndicadorGrafica2").html() ); });
+        
+        $("#descargarPDF2").on("click", function(){ descargarPDF( "base2" , $("#tituloIndicadorGrafica2").html() ); });
+        
+        $("#descargarGraficaTabla2").on("click", function(){ descargarGraficaDatosPDF( "TablaDatos2", "base2" , $("#tituloIndicadorGrafica2").html() ); });
+        
+        $("#descargarTABLA2").on("click", function(){ descargarTabla( "TablaDatos2" , $("#tituloIndicadorGrafica2").html() ); });
+        
+        ///////////////////////////////////////
+        
+        $("#descargarPNG").on("click", function(){ descargar( "base", $("#tituloIndicadorGrafica").html() ); });
+        
+        $("#descargarPDF").on("click", function(){ descargarPDF( "base" , $("#tituloIndicadorGrafica").html() ); });
+        
+        $("#descargarGraficaTabla").on("click", function(){ descargarGraficaDatosPDF( "TablaDatos", "base" , $("#tituloIndicadorGrafica").html() ); });
+        
+        $("#descargarTABLA").on("click", function(){ descargarTabla( "TablaDatos" , $("#tituloIndicadorGrafica").html() ); });
+        
+        /////////////////////////////////////////
+        
+        function descargar(id, titulo){
+            
+            var canvas = document.getElementById(id);
+            
             var link = document.createElement("a");
-            link.download = $("#tituloIndicadorGrafica").html();
-            link.href = img;
+            link.download = titulo;
+            link.href = canvas.toDataURL();
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
         
+        function descargarPDF(id, titulo){
+            var canvas = document.getElementById(id);
+            var pdf = new jsPDF('l', 'pt', 'letter');
+            pdf.addImage(canvas.toDataURL(), 'JPEG', 0, 20, 800,400);
+            pdf.save( titulo +".pdf");
+        }
         
-        $("#descargarTABLA").on("click", function(){ 
-            
-            var htmls = "";
-            var uri = 'data:application/vnd.ms-excel;base64,';
-            var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'; 
-            var base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) };
-            var format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }); };
-
-            htmls = $("#customers").html()
-
-            var ctx = { worksheet : 'Worksheet', table : htmls };
-
-            var link = document.createElement("a");
-            link.download = $("#tituloIndicadorGrafica").html();
-            link.href = uri + base64(format(template, ctx));
-            link.click();
-        });
-        
-        $("#descargarGraficaTabla").on("click", function(){ 
-            
+        function descargarGraficaDatosPDF(idTabla, idGrafica , titulo){
             var pdf = new jsPDF('l', 'pt', 'letter');
             
-            
-            var canvas = document.getElementById("base");
+            var canvas = document.getElementById(idGrafica);
             var imgData = canvas.toDataURL();
              
             var margins = { top: 50, bottom: 20, left: 20, width: 522 };
@@ -443,18 +656,37 @@
             pdf.addImage(imgData, 'JPEG', 0, 20, 800,400);
             
             pdf.addPage();
-            pdf.text(20, 20, $("#tituloIndicadorGrafica").html() );
+            pdf.text(20, 20, titulo );
             
-            pdf.fromHTML( $('#customers')[0], margins.left,  margins.top, 
+            pdf.fromHTML( $('#'+idTabla )[0], margins.left,  margins.top, 
                 { 
                     'width': margins.width, // max width of content on PDF
                     'elementHandlers': { '#bypassme': function (element, renderer) { return true; } }
                 },
-                function (dispose) { pdf.save( $("#tituloIndicadorGrafica").html() +'.pdf'); },
+                function (dispose) { pdf.save( titulo +'.pdf'); },
                 margins
             );
-            
-        });
+        }
+        
+        function descargarTabla(id, titulo){
+            var htmls = "";
+            var uri = 'data:application/vnd.ms-excel;base64,';
+            var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'; 
+            var base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) };
+            var format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }); };
+
+            htmls = $("#"+id).html()
+
+            var ctx = { worksheet : 'Worksheet', table : htmls };
+
+            var link = document.createElement("a");
+            link.download = titulo;
+            link.href = uri + base64(format(template, ctx));
+            link.click();
+        }
+        
+        /////////////////////////////////////////
+        
         
         
         $("#descargarPivotTable").on("click", function(){ 
