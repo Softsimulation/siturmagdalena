@@ -62,7 +62,7 @@ $countItems = false;
 ?>
 @extends('layout._publicLayout')
 
-@section('Title', '¿Qué hacer en el departamento del Cesar?')
+@section('Title', '¿Qué hacer en el departamento del Magdalena?')
 
 
 @section('meta_og')
@@ -85,8 +85,8 @@ $countItems = false;
             left: 0;
             height: 100%;
             width: 100%;
-            background: rgba(0, 0, 0, 0.57) url(http://situr-jader-jeffrj.c9users.io/Content/Cargando.gif) 50% 50% no-repeat;
-            background-image: url(http://situr-jader-jeffrj.c9users.io/Content/Cargando.gif);
+            background: rgba(0, 0, 0, 0.57) url(../../Content/Cargando.gif) 50% 50% no-repeat;
+            background-image: url(../../Content/Cargando.gif);
             background-position-x: 50%;
             background-position-y: 50%;
             background-size: initial;

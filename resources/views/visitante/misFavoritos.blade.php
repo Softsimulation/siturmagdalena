@@ -12,7 +12,7 @@
         border-radius: 6px;
         position: relative;
         margin-top: -30%;
-        z-index: 2;
+        /*z-index: 2;*/
     }
     .bg-img{
         position:sticky;
@@ -556,6 +556,8 @@
 
     </div>
 </div>
+
+
 @endsection
 
 @section('javascript')
