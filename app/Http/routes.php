@@ -53,6 +53,9 @@ Route::controller('/administradorrutas', 'AdministradorRutasController');
 Route::controller('/administrardepartamentos', 'AdministrarDepartamentosController');
 Route::controller('/ofertaempleo','OfertaEmpleoController');
 
+
+Route::controller('/ofertaempleopst','OfertaEmpleoPstController');
+
 Route::get('/actividades', 'TurismoReceptorController@actividades');
 
 Route::controller('/administrarpaises', 'AdministrarPaisesController');

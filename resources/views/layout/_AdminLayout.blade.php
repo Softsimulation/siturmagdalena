@@ -170,6 +170,7 @@
                                 
                                 <li role="none"><a role="menuitem" href="{{asset('grupoviaje/listadogrupos')}}">Grupos de viaje</a></li>
         					    <li role="none"><a role="menuitem" href="{{asset('turismoreceptor/listadoencuestas')}}">Listado de encuestas</a></li>
+        					    <li role="none"><a role="menuitem" href="{{asset('controlSostenibilidadReceptor/registros')}}">Control de sostenibilidad</a></li>
         					</ul>
                         </li>
                         <li>

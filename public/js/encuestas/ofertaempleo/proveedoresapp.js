@@ -246,6 +246,9 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
               if(obj.tipo_id == 1){
                      window.location.href = "/ofertaempleo/caracterizacion/"+obj.id;
               }else{
+                   if(obj.categoria_id == 35 || obj.categoria_id == 36 || obj.categoria_id == 37 || obj.categoria_id == 38){
+                     window.location.href = "/ofertaempleo/caracterizacion/"+obj.id;
+                    }
                   
                     if(obj.categoria_id == 15 || obj.categoria_id == 13){
                          window.location.href = "/ofertaempleo/agenciaviajes/"+obj.id;
@@ -256,15 +259,13 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
                      if(obj.categoria_id == 21){
                          window.location.href = "/ofertaempleo/caracterizacionalquilervehiculo/"+obj.id;
                     }
-                     if(obj.categoria_id == 22 || obj.categoria_id == 28){
+                     if(obj.categoria_id == 22 || obj.categoria_id == 27){
                          window.location.href = "/ofertaempleo/caracterizaciontransporte/"+obj.id;
                     }
-                     if(obj.categoria_id == 12){
+                     if(obj.categoria_id == 12 || obj.categoria_id == 11 || obj.categoria_id == 29){
                          window.location.href = "/ofertaempleo/caracterizacionalimentos/"+obj.id;
                     }
-                   if(obj.categoria_id == 11 || obj.categoria_id == 16 || obj.categoria_id == 27 ){
-                         window.location.href = "/ofertaempleo/caracterizacionalimentos/"+obj.id;
-                    }
+              
               }
       }
       
@@ -273,6 +274,9 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
               if(obj.tipo_id == 1){
                      window.location.href = "/ofertaempleo/oferta/"+obj.id;
               }else{
+                   if(obj.categoria_id == 35 || obj.categoria_id == 36 || obj.categoria_id == 37 || obj.categoria_id == 38){
+                     window.location.href = "/ofertaempleo/caracterizacion/"+obj.id;
+                    }
                   
                     if(obj.categoria_id == 15 || obj.categoria_id == 13){
                          window.location.href = "/ofertaempleo/ofertaagenciaviajes/"+obj.id;
@@ -283,15 +287,13 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
                      if(obj.categoria_id == 21){
                          window.location.href = "/ofertaempleo/ofertalquilervehiculo/"+obj.id;
                     }
-                     if(obj.categoria_id == 22 || obj.categoria_id == 28){
+                     if(obj.categoria_id == 22 || obj.categoria_id == 27){
                          window.location.href = "/ofertaempleo/ofertatransporte/"+obj.id;
                     }
-                     if(obj.categoria_id == 12){
+                     if(obj.categoria_id == 12 || obj.categoria_id == 11 || obj.categoria_id == 29){
                          window.location.href = "/ofertaempleo/capacidadalimentos/"+obj.id;
                     }
-                   if(obj.categoria_id == 11){
-                         window.location.href = "/ofertaempleo/capacidadalimentos/"+obj.id;
-                    }
+                 
               }
       }
    
