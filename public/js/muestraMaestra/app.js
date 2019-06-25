@@ -149,45 +149,49 @@
             $("#modalAddZona").modal("hide");
         }
     
+        
         $scope.getIcono = function( p ){
+            
             if(p){
-                var ruta = "/Content/IconsMap/";
+                var ruta = null;
                 
                 switch ( p.categoria_rnt_id ) {
-                    case 1: ruta  += "alojamientos/"; break;
-                    case 2: ruta  += "establecimiento_gastronomia/"; break;
-                    case 3: ruta  += "agencias_viajes/"; break;
+                    case 1: ruta  = "/Content/IconsMap/alojamientos/"; break;
+                    case 2: ruta  = "/Content/IconsMap/establecimiento_gastronomia/"; break;
+                    case 3: ruta  = "/Content/IconsMap/agencias_viajes/"; break;
                     //case 4: ruta  += "esparcimiento/"; break;
-                    case 5: ruta  += "empresa_transporte/"; break;
-                    case 6: ruta  += "arrendadores_vehiculos/"; break;
-                    case 7: ruta  += "concesionarios_servicios/"; break;
-                    case 8: ruta  += "empresa_tiempo/"; break;
-                    case 9: ruta  += "empresas_captadoras/"; break;
-                    case 10: ruta += "guia_turismo/"; break;
-                    case 11: ruta += "oficina_turistica/"; break;
-                    case 12: ruta += "operadores_profesionales/"; break;
-                    case 13: ruta += "parques_tematicos/"; break;
-                    case 14: ruta += "usuarios_operadores/"; break;
-                    default: return null;
+                    case 5: ruta  = "/Content/IconsMap/empresa_transporte/"; break;
+                    case 6: ruta  = "/Content/IconsMap/arrendadores_vehiculos/"; break;
+                    case 7: ruta  = "/Content/IconsMap/concesionarios_servicios/"; break;
+                    case 8: ruta  = "/Content/IconsMap/empresa_tiempo/"; break;
+                    case 9: ruta  = "/Content/IconsMap/empresas_captadoras/"; break;
+                    case 10: ruta = "/Content/IconsMap/guia_turismo/"; break;
+                    case 11: ruta = "/Content/IconsMap/oficina_turistica/"; break;
+                    case 12: ruta = "/Content/IconsMap/operadores_profesionales/"; break;
+                    case 13: ruta = "/Content/IconsMap/parques_tematicos/"; break;
+                    case 14: ruta = "/Content/IconsMap/usuarios_operadores/"; break;
+                    default: break;
                 }
                 
-                if(p.rnt){
-                    switch ( p.estado_rnt_id ) {
-                        case 1: ruta += "activo.png";     break;  // Activo
-                        case 2: ruta += "cancelado.png";  break;  // Nnulado
-                        case 3: ruta += "cancelado.png";  break;  // Cancelado
-                        case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
-                        case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
-                        case 6: ruta += "cancelado.png";  break;  // Suspendido
-                        default: return null;
+                if(ruta){
+                    if(p.rnt){
+                        switch ( p.estado_rnt_id ) {
+                            case 1: ruta += "activo.png";     break;  // Activo
+                            case 2: ruta += "cancelado.png";  break;  // Nnulado
+                            case 3: ruta += "cancelado.png";  break;  // Cancelado
+                            case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
+                            case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
+                            case 6: ruta += "cancelado.png";  break;  // Suspendido
+                            default: break;
+                        }
                     }
+                    else{ ruta += "informal.png";  }
                 }
-                else{ ruta += "informal.png";  }
                 
-                return  ruta;
+                return  null;
             }
         }
-        
+    
         $scope.getCoordenadas = function(coordenadas){
             var array = [];
             for(var j=0; j<coordenadas.length; j++){
@@ -303,11 +307,13 @@
         
         $scope.crearMarker = function(pro){
             
+            var icon = $scope.getIcono(pro);
+            
             var marker = new google.maps.Marker(
                             {
                                 position: new google.maps.LatLng(pro.latitud, pro.longitud),
                                 dataProveedor: pro,
-                                icon: { url: $scope.getIcono(pro), scaledSize: new google.maps.Size(20, 20), labelOrigin: new google.maps.Point(12, -10) }
+                                icon: icon ? { url: icon, scaledSize: new google.maps.Size(20, 20), labelOrigin: new google.maps.Point(12, -10) } : null
                             });
             
             marker.addListener('click',  $scope.showInfoMapa );
@@ -840,27 +846,27 @@
         $scope.getIcono = function( p ){
             
             if(p){
-                var ruta = "";
+                var ruta = null;
                 
                 switch ( p.categoria_rnt_id ) {
-                    case 1: ruta  += "/Content/IconsMap/alojamientos/"; break;
-                    case 2: ruta  += "/Content/IconsMap/establecimiento_gastronomia/"; break;
-                    case 3: ruta  += "/Content/IconsMap/agencias_viajes/"; break;
+                    case 1: ruta  = "/Content/IconsMap/alojamientos/"; break;
+                    case 2: ruta  = "/Content/IconsMap/establecimiento_gastronomia/"; break;
+                    case 3: ruta  = "/Content/IconsMap/agencias_viajes/"; break;
                     //case 4: ruta  += "esparcimiento/"; break;
-                    case 5: ruta  += "/Content/IconsMap/empresa_transporte/"; break;
-                    case 6: ruta  += "/Content/IconsMap/arrendadores_vehiculos/"; break;
-                    case 7: ruta  += "/Content/IconsMap/concesionarios_servicios/"; break;
-                    case 8: ruta  += "/Content/IconsMap/empresa_tiempo/"; break;
-                    case 9: ruta  += "/Content/IconsMap/empresas_captadoras/"; break;
-                    case 10: ruta += "/Content/IconsMap/guia_turismo/"; break;
-                    case 11: ruta += "/Content/IconsMap/oficina_turistica/"; break;
-                    case 12: ruta += "/Content/IconsMap/operadores_profesionales/"; break;
-                    case 13: ruta += "/Content/IconsMap/parques_tematicos/"; break;
-                    case 14: ruta += "/Content/IconsMap/usuarios_operadores/"; break;
+                    case 5: ruta  = "/Content/IconsMap/empresa_transporte/"; break;
+                    case 6: ruta  = "/Content/IconsMap/arrendadores_vehiculos/"; break;
+                    case 7: ruta  = "/Content/IconsMap/concesionarios_servicios/"; break;
+                    case 8: ruta  = "/Content/IconsMap/empresa_tiempo/"; break;
+                    case 9: ruta  = "/Content/IconsMap/empresas_captadoras/"; break;
+                    case 10: ruta = "/Content/IconsMap/guia_turismo/"; break;
+                    case 11: ruta = "/Content/IconsMap/oficina_turistica/"; break;
+                    case 12: ruta = "/Content/IconsMap/operadores_profesionales/"; break;
+                    case 13: ruta = "/Content/IconsMap/parques_tematicos/"; break;
+                    case 14: ruta = "/Content/IconsMap/usuarios_operadores/"; break;
                     default: break;
                 }
                 
-                if(ruta != ""){
+                if(ruta){
                     if(p.rnt){
                         switch ( p.estado_rnt_id ) {
                             case 1: ruta += "activo.png";     break;  // Activo
@@ -869,13 +875,13 @@
                             case 4: ruta += "cancelado.png";  break;  // Cancelado por traslado
                             case 5: ruta += "pendiente.png";  break;  // Pendiente actualización
                             case 6: ruta += "cancelado.png";  break;  // Suspendido
-                            default: return null;
+                            default: break;
                         }
                     }
                     else{ ruta += "informal.png";  }
                 }
                 
-                return  ruta;
+                return  null;
             }
         }
         
