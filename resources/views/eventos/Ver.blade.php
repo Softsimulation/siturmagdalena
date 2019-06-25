@@ -7,7 +7,7 @@ function parse_yturl($url)
     return (isset($matches[1])) ? $matches[1] : false;
 }
 ?>
-@extends('layout._publicLayout')
+
 
 @section ('estilos')
     <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
@@ -60,7 +60,7 @@ function parse_yturl($url)
           <h2>{{$evento->eventosConIdiomas[0]->nombre}}
               @if($evento->eventosConIdiomas[0]->edicion)
               <small class="btn-block">
-	              Ed. {{$evento->eventosConIdiomas[0]->edicion}} del {{date("j/m/y", strtotime($evento->fecha_in))}} al {{date("j/m/y", strtotime($evento->fecha_fin))}}
+	              Ed. {{$evento->eventosConIdiomas[0]->edicion}} del {{date("d/m/y", strtotime($evento->fecha_in))}} al {{date("d/m/y", strtotime($evento->fecha_fin))}}
 	            
 	          </small>
 	          @endif
@@ -120,7 +120,7 @@ function parse_yturl($url)
                 <h2>{{$evento->eventosConIdiomas[0]->nombre}}
                   @if($evento->eventosConIdiomas[0]->edicion)
                   <small class="btn-block">
-    	              Ed. {{$evento->eventosConIdiomas[0]->edicion}} del {{date("j/m/y", strtotime($evento->fecha_in))}} al {{date("j/m/y", strtotime($evento->fecha_fin))}}
+    	              Ed. {{$evento->eventosConIdiomas[0]->edicion}} del {{date("d/m/y", strtotime($evento->fecha_in))}} al {{date("d/m/y", strtotime($evento->fecha_fin))}}
     	            
     	          </small>
     	          @endif
@@ -140,7 +140,7 @@ function parse_yturl($url)
                 @endif
                 <div class="col-xs-12 col-md-8">
                     
-                    <p style="white-space: pre-line;">{{$evento->eventosConIdiomas[0]->descripcion}}</p>
+                    <div class="mb-3">{!! $evento->eventosConIdiomas[0]->descripcion !!}</div>
                 </div>
                 <div class="col-xs-12 col-md-4">
                     <ul class="list">
@@ -153,7 +153,7 @@ function parse_yturl($url)
                                     <div class="form-group">
                                         <label>Horario</label>
                                         <p class="form-control-static">
-                                            Del {{date("j/m/y", strtotime($evento->fecha_in))}} al {{date("j/m/y", strtotime($evento->fecha_fin))}}
+                                            Del {{date("d/m/y", strtotime($evento->fecha_in))}} al {{date("d/m/y", strtotime($evento->fecha_fin))}}
                                         </p>
                                     </div>
                                     
@@ -169,9 +169,15 @@ function parse_yturl($url)
                                 <div class="col-xs-10">
                                     <div class="form-group">
                                         <label>Valor estimado</label>
+                                        @if($evento->valor_min == 0 && $evento->valor_max == 0)
+                                        <p class="form-control-static">
+                                            Sin costo
+                                        </p>
+                                        @else
                                         <p class="form-control-static">
                                             Desde ${{number_format($evento->valor_min)}} hasta ${{number_format($evento->valor_max)}}
                                         </p>
+                                        @endif
                                     </div>
                                     
                                 </div>
@@ -220,7 +226,7 @@ function parse_yturl($url)
         </div>
         @if(count($evento->sitiosConEventos))
         <div class="container">
-            <h2 class="title-section">{{$evento->eventosConIdiomas[0]->nombre}}
+            <h2 class="title-section text-uppercase">Sitios que visitar
                
             </h2>
             <div class="tiles">
