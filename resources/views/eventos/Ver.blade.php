@@ -10,8 +10,10 @@ function parse_yturl($url)
 
 
 @section ('estilos')
-    <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
+<link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
     <style>
+        
+        
         .section{
             display: none;
         }
@@ -24,7 +26,7 @@ function parse_yturl($url)
         }
     </style>
 @endsection
-@extends('layout._publicLayout')
+
 
 @section('Title',$evento->eventosConIdiomas[0]->nombre)
 
@@ -139,8 +141,9 @@ function parse_yturl($url)
                     <div class="alert alert-info" role="alert" style="text-align: center;">{{Session::get('message')}}</div>
                 @endif
                 <div class="col-xs-12 col-md-8">
-                    
+
                     <div class="mb-3">{!! $evento->eventosConIdiomas[0]->descripcion !!}</div>
+
                 </div>
                 <div class="col-xs-12 col-md-4">
                     <ul class="list">
@@ -186,6 +189,7 @@ function parse_yturl($url)
                         </li>
                         @if($evento->telefon != null)
                         <li>
+
                             <div class="row align-items-center">
                                 <div class="col-xs-2">
                                     <span class="ionicons ion-android-call" aria-hidden="true"></span> <span class="sr-only">Teléfono</span>
@@ -246,4 +250,3 @@ function parse_yturl($url)
     </section>
 
 
-@endsection
