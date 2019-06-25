@@ -145,7 +145,7 @@
                 </div>
                 <div class="tile-body">
                     <div class="tile-caption">
-                        <h3><a href="/promocionPublicacion/ver/{{$publicacion->id}}">{{$publicacion->titulo}}</a></h3>
+                        <h3><a href="{{$publicacion->ruta}}">{{$publicacion->titulo}}</a></h3>
                     </div>
                 
                     

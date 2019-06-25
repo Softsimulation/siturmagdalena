@@ -418,13 +418,13 @@ class ImportacionRntController extends Controller
 		]);
 		
 		//crear usuario para proveedor
-    	$user = User::where('email',strtolower($registro["correo"]))->first(); 
+    	$user = User::where('email',strtolower($request["correo"]))->first(); 
     	if(!$user){
     		$user = new User();
-    		$user->username = $registro["nombre_comercial"];
-	        $user->nombre = $registro["nombre_comercial"];
-	        $user->password = strtolower($registro["correo"]);
-	        $user->email = strtolower($registro["correo"]);
+    		$user->username = $request["nombre_comercial"];
+	        $user->nombre = $request["nombre_comercial"];
+	        $user->password = strtolower($request["correo"]);
+	        $user->email = strtolower($request["correo"]);
 	        $user->estado = 1;
 	        $user->save();
     	}
@@ -553,13 +553,13 @@ class ImportacionRntController extends Controller
 		]);
 		
 		//crear usuario para proveedor
-    	$user = User::where('email',strtolower($registro["correo"]))->first(); 
+    	$user = User::where('email',strtolower($request["correo"]))->first(); 
     	if(!$user){
     		$user = new User();
-    		$user->username = $registro["nombre_comercial"];
-	        $user->nombre = $registro["nombre_comercial"];
-	        $user->password = strtolower($registro["correo"]);
-	        $user->email = strtolower($registro["correo"]);
+    		$user->username = $request["nombre_comercial"];
+	        $user->nombre = $request["nombre_comercial"];
+	        $user->password = strtolower($request["correo"]);
+	        $user->email = strtolower($request["correo"]);
 	        $user->estado = 1;
 	        $user->save();
     	}

@@ -9,6 +9,8 @@ use DB;
 use App\Models\Destino;
 use App\Models\Municipio;
 use App\Models\Proveedores_rnt;
+use App\Models\Atracciones;
+use App\Models\Actividades;
 
 class DestinosController extends Controller
 {
@@ -20,19 +22,57 @@ class DestinosController extends Controller
             return response('Not found.', 404);
         }
         
+        $idioma = \Config::get('app.locale') == 'es' ? 1 : 2;
+        
         $destino = Destino::where('id', $id)->with(['tipoDestino' => function ($queryTipoDestino){
             $queryTipoDestino->with(['tipoDestinoConIdiomas' => function($queryTipoDestinoConIdiomas){
                 $queryTipoDestinoConIdiomas->orderBy('idiomas_id')->select('idiomas_id', 'tipo_destino_id', 'nombre');
             }])->select('id');
         }, 'destinoConIdiomas' => function($queryDestinoConIdiomas){
-            $queryDestinoConIdiomas->orderBy('idiomas_id')->select('destino_id', 'idiomas_id', 'nombre', 'descripcion');
+            $queryDestinoConIdiomas->orderBy('idiomas_id')->select('destino_id', 'idiomas_id', 'nombre', 'descripcion','informacion_practica', 'reglas', 'como_llegar');
         }, 'multimediaDestinos' => function ($queryMultimediaDestinos){
             $queryMultimediaDestinos->where('tipo', false)->orderBy('portada', 'desc')->select('destino_id', 'ruta');
         }, 'sectores' => function($querySectores){
             $querySectores->with(['sectoresConIdiomas' => function($querySectoresConIdiomas){
                 $querySectoresConIdiomas->select('idiomas_id', 'sectores_id', 'nombre');
+            },'sitios' => function($sitios){
+                $sitios->with(['atracciones' => function($actividades){
+                    $actividades->with(['multimedia' => function($multimedia){
+                        $multimedia->where('portada',true);
+                    },'langContent']);
+                },'actividades' => function($actividades){
+                    $actividades->with(['multimedia' => function($multimedia){
+                        $multimedia->where('portada',true);
+                    },'langContent']);
+                }]);
             }])->select('id', 'destino_id', 'es_urbano');
         }])->select('id', 'tipo_destino_id', 'latitud', 'longitud', 'calificacion_legusto', 'calificacion_llegar', 'calificacion_recomendar', 'calificacion_volveria')->first();
+        
+        $atracciones = Atracciones::with(['sitio' => function($sitio) {
+            $sitio->with(['sector' => function($sector){
+                $sector->with('destino');
+            }]);
+        },'multimedia' => function($multimedia){
+            $multimedia->where('portada', true);
+        },'langContent' => function($langContent) use ($idioma){
+            $langContent->where('idiomas_id', $idioma);
+        }])->wherehas('sitio.sector.destino', function($q) use ($destino){
+            $q->where('id', $destino->id);
+        })->take(6)->get();
+        
+        
+        $actividades = Actividades::with(['sitiosConActividades' => function($sitiosConActividades) {
+            $sitiosConActividades->with(['sector' => function($sector){
+                    $sector->with('destino');
+                }]);
+        },'multimedia' => function($multimedia){
+            $multimedia->where('portada', true);
+        }, 'langContent' => function($langContent) use ($idioma){
+            $langContent->where('idiomas', $idioma);
+        }])->wherehas('sitiosConActividades.sector.destino', function($q) use ($destino){
+            $q->where('id', $destino->id);
+        })->take(6)->get();
+        
         
         $idMunicipio = Municipio::where('nombre', $destino->destinoConIdiomas[0]->nombre)->pluck('id')->first();
         
@@ -58,6 +98,6 @@ class DestinosController extends Controller
         
         //return ['proveedores' => $proveedores];
         //return ['destino' => $destino, 'video_promocional' => $video_promocional];
-        return view('destinos.Ver', ['destino' => $destino, 'video_promocional' => $video_promocional, 'pst' => $pst, 'proveedores' => $proveedores]);
+        return view('destinos.Ver', ['destino' => $destino, 'video_promocional' => $video_promocional, 'pst' => $pst, 'proveedores' => $proveedores, 'atracciones' => $atracciones, 'actividades' => $actividades]);
     }
 }

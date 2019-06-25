@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests;
 use Carbon\Carbon;
 use App\Models\Empleo;
-
 use App\Models\Encuesta;
 use App\Models\Vacante;
 use App\Models\Empleado_Vinculacion;
@@ -42,11 +41,9 @@ use App\Models\Capacidad_Alimento;
 use App\Models\Actividad_Deportiva;
 use App\Models\Tour;
 use App\Models\Proveedores_rnt;
-use DB;
 use App\Models\Agencia_Operadora;
 use App\Models\Otra_Actividad;
 use App\Models\Otro_Tour;
-
 use App\Models\Prestamo_Servicio;
 use App\Models\Alquiler_Vehiculo;
 use App\Models\Transporte;
@@ -63,15 +60,20 @@ use App\Models\Mes_Anio;
 use App\Models\Sitio_Para_Encuesta;
 use App\Models\Medio_Actualizacion;
 use App\Models\Proveedores_rnt_idioma;
-
 use Excel;
+use DB;
 
 class OfertaEmpleoController extends Controller
 {
     //
-    
-        public function __construct()
-    {
+    public function __construct(){
+        
+         if(Auth::user() != null){
+            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }
+        
+        $this->sitio = $this->user->roles();
+        if( sizeof($this->user->roles()->where("name","AdminPst")->get()) == 0 ){
         
         $this->middleware('oferta', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
                                     'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
@@ -103,20 +105,30 @@ class OfertaEmpleoController extends Controller
         
         //$this->middleware('role:Admin');
         
-        
-        
-        if(Auth::user() != null){
-            $this->user = User::where('id',Auth::user()->id)->first(); 
+        }else{
+            
+              
+            $this->middleware('role:Admin' , ['only' => ['getEncuestas','getHistorialencuesta','getExcelproveedoresrnt','getExcelproveedores',
+                                                              'getEncuestasrealizadastotales','postGuardarproveedorrnt','getActivar','getEncuesta',
+                                                              'getListadoproveedoresrnt','getListadornt','getListadoproveedores', 'getListado']]);
+                                            
+                        
+            $this->middleware('ofertaPst', ['only' => ['getEncuesta','getActividadcomercial','getAgenciaviajes','getOfertaagenciaviajes','getCaracterizacionalimentos',
+                                        'getCapacidadalimentos','getOfertatransporte','getCaracterizaciontransporte','getCaracterizacion','getOferta',
+                                        'getCaracterizacionagenciasoperadoras','getAlojamientomensual','getOcupacionagenciasoperadoras','getCaracterizacionalquilervehiculo','getCaracterizacion','getCaracterizacion','getEmpleomensual','getNumeroempleados']]);
+                                        
+            
         }
+        
+      
         
     }
     
-   public function getHistorialencuesta($id){
+    public function getHistorialencuesta($id){
         $historial = Historial_Encuesta_Oferta::with(['user','estadosEncuesta'])->where("encuesta_id",$id)->Orderby("fecha_cambio",'desc')->get();
         
         return $historial;
     }
-    
     
     public function getExcelproveedores(){ 
 
@@ -206,8 +218,7 @@ class OfertaEmpleoController extends Controller
 
     }
     
-    public function postGuardarproveedorrnt(Request $request)
-    {
+    public function postGuardarproveedorrnt(Request $request){
         $validator = \Validator::make($request->all(),[
         
             'id' => 'required|exists:proveedores_rnt,id',
@@ -270,8 +281,7 @@ class OfertaEmpleoController extends Controller
       return ["success" => true, "establecimiento"=> $establecimiento];
     }
     
-     public function postGuardaractivar(Request $request)
-    {
+    public function postGuardaractivar(Request $request){
     
         
         $validator = \Validator::make($request->all(),[
@@ -339,8 +349,7 @@ class OfertaEmpleoController extends Controller
      $categorias = Categoria_Proveedor_Con_Idioma::where("idiomas_id",1)->select("categoria_proveedores_id AS id","nombre")->get();
       return ["success" => true, "proveedores"=> $provedores,"categorias"=>$categorias];
     }
-    
-    
+   
     public function getListadoproveedores(){
         return view('ofertaEmpleo.ListadoProveedores');
     }
@@ -356,6 +365,18 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.ListadoEncuestas',['id'=>$one]);
     }
     
+    public function getEncuestasproveedor(){
+        $sitio = $this->user->proveedoresPst()->first();
+        $one = Sitio_Para_Encuesta::where("proveedor_rnt_id",$sitio->id)->first();
+        return view('ofertaEmpleo.ListadoEncuestas',['id'=>$one->id]);
+    }
+    
+    public function getEncuestasinrealizar(){
+        $sitio = $this->user->proveedoresPst()->first();
+        $one = Sitio_Para_Encuesta::where("proveedor_rnt_id",$sitio->id)->first();
+        return view('ofertaEmpleo.Encuesta',["Id"=>$one->id]);
+    }
+    
     public function getEncuestasrealizadas($id){
  
           $data =  new Collection(DB::select("SELECT *from listado_encuesta_oferta where sitio_para_encuesta =".$id));
@@ -363,8 +384,8 @@ class OfertaEmpleoController extends Controller
           $ruta = null;
           $ruta2 =null;
           $tipo = Sitio_Para_Encuesta::where("id",$id)->first();
-         
-          if($tipo->proveedor->categoria->tipoProveedore->id == 1){
+        
+          if($tipo->proveedor->categoria->tipoProveedore->id == 1 || $tipo->proveedor->categoria->id == 35 || $tipo->proveedor->categoria->id == 36 | $tipo->proveedor->categoria->id == 37 || $tipo->proveedor->categoria->id == 38){
               $ruta = "/ofertaempleo/caracterizacion";
               $ruta2 = "/ofertaempleo/oferta";
               }else{
@@ -381,18 +402,15 @@ class OfertaEmpleoController extends Controller
                          $ruta = "/ofertaempleo/caracterizacionalquilervehiculo";
                          $ruta2 = "/ofertaempleo/ofertalquilervehiculo";
                     }
-                     if($tipo->proveedor->categoria->id == 22){
+                     if($tipo->proveedor->categoria->id == 22 ||$tipo->proveedor->categoria->id == 27 ){
                          $ruta = "/ofertaempleo/caracterizaciontransporte";
                          $ruta2 = "/ofertaempleo/ofertatransporte";
                     }
-                     if($tipo->proveedor->categoria->id == 12){
+                     if($tipo->proveedor->categoria->id == 12  || $tipo->proveedor->categoria->id == 11 || $tipo->proveedor->categoria->id == 29){
                          $ruta = "/ofertaempleo/caracterizacionalimentos";
                          $ruta2 = "/ofertaempleo/capacidadalimentos";
                     }
-                   if($tipo->proveedor->categoria->id == 11){
-                         $ruta = "/ofertaempleo/caracterizacionalimentos";
-                         $ruta2 = "/ofertaempleo/capacidadalimentos";
-                    }
+                
               }
          
         return ["success"=>true, "encuestas"=>$data, 'ruta'=>$ruta, 'ruta2' => $ruta2];
@@ -408,8 +426,7 @@ class OfertaEmpleoController extends Controller
              return view('ofertaEmpleo.ActividadComercial',array("Id"=>$mes,"Anio"=>$anio,'Sitio'=>$id));
     }
     
-    public function postGuardaractividadcomercial(Request $request)
-    {
+    public function postGuardaractividadcomercial(Request $request){
         $validator = \Validator::make($request->all(),[
         
             'Sitio' => 'required|exists:sitios_para_encuestas,id',
@@ -480,7 +497,7 @@ class OfertaEmpleoController extends Controller
 
        $tipo = Sitio_Para_Encuesta::where("id",$encuesta->sitios_para_encuestas_id)->first();
          
-          if($tipo->proveedor->categoria->tipoProveedore->id == 1){
+          if($tipo->proveedor->categoria->tipoProveedore->id == 1   || $tipo->proveedor->categoria->id == 35 || $tipo->proveedor->categoria->id == 36 | $tipo->proveedor->categoria->id == 37 || $tipo->proveedor->categoria->id == 38){
               $ruta = "/ofertaempleo/caracterizacion";
               }else{
                   
@@ -494,15 +511,13 @@ class OfertaEmpleoController extends Controller
                      if($tipo->proveedor->categoria->id == 21){
                          $ruta = "/ofertaempleo/caracterizacionalquilervehiculo";
                     }
-                     if($tipo->proveedor->categoria->id == 22){
+                     if($tipo->proveedor->categoria->id == 22 || $tipo->proveedor->categoria->id == 27){
                          $ruta = "/ofertaempleo/caracterizaciontransporte";
                     }
-                     if($tipo->proveedor->categoria->id == 12){
+                     if($tipo->proveedor->categoria->id == 12 || $tipo->proveedor->categoria->id == 11 || $tipo->proveedor->categoria->id == 29){
                          $ruta = "/ofertaempleo/caracterizacionalimentos";
                     }
-                   if($tipo->proveedor->categoria->id == 11){
-                         $ruta = "/ofertaempleo/caracterizacionalimentos";
-                    }
+                
               }
          
            if($ruta != null){
@@ -563,7 +578,7 @@ class OfertaEmpleoController extends Controller
 
     }
     
-    //Lucho
+     //Lucho
     public function getAgenciaviajes($id){
         return view('ofertaEmpleo.AgenciaViajes',array('id' => $id));
     }
@@ -575,9 +590,11 @@ class OfertaEmpleoController extends Controller
     public function getCaracterizacionalimentos($id){
         return view('ofertaEmpleo.CaracterizacionAlimentos',array('id' => $id));
     }
+  
     public function getCapacidadalimentos($id){
         return view('ofertaEmpleo.CapacidadAlimentos',array('id' => $id));
     }
+   
     public function getCaracterizaciontransporte($id){
         return view('ofertaEmpleo.CaracterizacionTransporte',array('id' => $id));
     }
@@ -788,7 +805,7 @@ class OfertaEmpleoController extends Controller
         $encuesta = Encuesta::find($one);
         $tipo = Sitio_Para_Encuesta::where("id",$encuesta->sitios_para_encuestas_id)->first();
          
-          if($tipo->proveedor->categoria->tipoProveedore->id == 1){
+          if($tipo->proveedor->categoria->tipoProveedore->id == 1 || $tipo->proveedor->categoria->id == 35 || $tipo->proveedor->categoria->id == 36 | $tipo->proveedor->categoria->id == 37 || $tipo->proveedor->categoria->id == 38){
               $ruta = "/ofertaempleo/caracterizacion";
               }else{
                   
@@ -801,15 +818,13 @@ class OfertaEmpleoController extends Controller
                      if($tipo->proveedor->categoria->id == 21){
                          $ruta = "/ofertaempleo/caracterizacionalquilervehiculo";
                     }
-                     if($tipo->proveedor->categoria->id == 22){
+                     if($tipo->proveedor->categoria->id == 22 || $tipo->proveedor->categoria->id == 22){
                          $ruta = "/ofertaempleo/caracterizaciontransporte";
                     }
-                     if($tipo->proveedor->categoria->id == 12){
+                     if($tipo->proveedor->categoria->id == 12 || $tipo->proveedor->categoria->id == 11 || $tipo->proveedor->categoria->id == 29){
                          $ruta = "/ofertaempleo/caracterizacionalimentos";
                     }
-                   if($tipo->proveedor->categoria->id == 11){
-                         $ruta = "/ofertaempleo/caracterizacionalimentos";
-                    }
+             
               }
         
         return view('ofertaEmpleo.EmpleoMensual',array('id'=>$id,'ruta'=>$ruta));
@@ -820,8 +835,7 @@ class OfertaEmpleoController extends Controller
         return view('ofertaEmpleo.NumeroEmpleados',compact('id'));
     }
     
-    public function getCargardatosdmplmensual($id = null)  
-    {
+    public function getCargardatosdmplmensual($id = null){
          $encuesta = Encuesta::find($id);
   
         $empleo = collect();
@@ -890,8 +904,7 @@ class OfertaEmpleoController extends Controller
        
     }
     
-    public function getCargardatosemplcaract($id = null)
-    {
+    public function getCargardatosemplcaract($id = null){
             $empleo = collect();
     
             $empleo["Hubo_capacitacion"] = Capacitacion_Empleo::where("encuesta_id",$id)->pluck("hubo_capacitacion")->first();
@@ -1708,8 +1721,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return ["agencia" => $agenciaRetornar, "proveedor" => $data[0]];
     }
     
-    public function postGuardarcaracterizacion(Request $request)
-    {
+    public function postGuardarcaracterizacion(Request $request){
         //return $request->all();
         $validator = \Validator::make($request->all(),[
         
@@ -1827,6 +1839,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
         return ["success"=>true, "oferta"=>$oferta, "redireccion"=>$redireccion,"sitio"=>$agencia->sitios_para_encuestas_id];
     }
+    
     public function getDatosofertaagencia(){
         //var destinos = (from destino in conexion.opciones_personas_destinos select new { id = destino.id, nombre = destino.nombre }).ToList();
         $destinos = Opcion_Persona_Destino::all();
@@ -1835,8 +1848,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return $destinos;
     }
     
-    public function getOfertaagencia($id)
-    {
+    public function getOfertaagencia($id){
        /* $agencia = Persona_Destino_Con_Viaje_Turismo::with(['viajesTurismo'=>function($q) use($id){
            $q->where('encuestas_id',$id);
        }])->get();*/
@@ -1850,8 +1862,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return ["agencia" => $agencia, "proveedor"=>$data[0]];
     }
     
-    public function postGuardarofertaagenciaviajes(Request $request)
-    {
+    public function postGuardarofertaagenciaviajes(Request $request){
             //return $request->all();
             $validator = \Validator::make($request->all(),[
         
@@ -2001,9 +2012,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             return ["success"=>true,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
         
-        
-    public function getInfocaracterizacionalimentos($id)
-    {
+    public function getInfocaracterizacionalimentos($id){
         $actividades_servicios = Actividad_Servicio::all();
         $especialidades = Especialidad::all();
         
@@ -2047,8 +2056,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return ["actividades_servicios"=>$actividades_servicios, "especialidades"=>$especialidades, "provision"=>$provision,"encuesta"=>$encuestaRteornar, "proveedor" => $data[0]];
     }
     
-    public function postGuardarcaralimentos(Request $request)
-    {
+    public function postGuardarcaralimentos(Request $request) {
         $validator = \Validator::make($request->all(),[
         
             'id' => 'required|exists:encuestas,id',
@@ -2137,8 +2145,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             
     }
     
-    public function getInfocapalimentos($id)
-    {
+    public function getInfocapalimentos($id){
         $provision = Provision_Alimento::with('capacidadAlimento')->where('encuestas_id',$id)->first();
         $encuesta = Encuesta::where('id',$id)->first();
         //return $provision;
@@ -2459,11 +2466,11 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return view('ofertaEmpleo.caracterizacionAlquilerVehiculo',['id'=>$id]);
     }
     
-   public function getOfertalquilervehiculo($id){
+    public function getOfertalquilervehiculo($id){
         return view('ofertaEmpleo.ofertaAlquilerVehiculo',['id'=>$id]);
     }
     
-   public function getCargarofertaalquilervehiculos($id){
+    public function getCargarofertaalquilervehiculos($id){
         $encuesta = Encuesta::find($id);
         $alquilerCargar = null;
         
@@ -2491,7 +2498,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return ["alquiler" => $alquilerCargar, "proveedor" => $data[0]];
     }
     
-   public function getCargarcaracterizacionalquilervehiculos($id){
+    public function getCargarcaracterizacionalquilervehiculos($id){
         $encuesta = Encuesta::find($id);
 
         $alquilerCargar = null;
@@ -2522,7 +2529,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return ["alquiler" => $alquilerCargar, 'proveedor' => $data[0]];
     }
     
-   public function postGuardarcaracterizacionalquilervehiculo(Request $request){
+    public function postGuardarcaracterizacionalquilervehiculo(Request $request){
         $validator = \Validator::make($request->all(), [
 			'id' => 'required|exists:encuestas,id',
 			'VehiculosAlquiler' => 'required|min:0',
@@ -2612,7 +2619,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
             return ["success"=>true,"oferta"=>$oferta,"ruta"=>"/ofertaempleo/encuestas/" . $encuesta->sitios_para_encuestas_id];
     }
 
-   public function postGuardarofertaalquilervehiculo(Request $request){
+    public function postGuardarofertaalquilervehiculo(Request $request){
         $validator = \Validator::make($request->all(), [
 			'id' => 'required|exists:encuestas,id',
 
@@ -3054,7 +3061,6 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 
     }
     
-    
     public function postGuardaralojamientomensual(Request $request){
     
         $validate = \ Validator::make($request->all(),
@@ -3161,9 +3167,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 
     }
     
-
-    public function postGuardarofertaalimentos(Request $request)
-    {
+    public function postGuardarofertaalimentos(Request $request){
         //return $request->all();
         $validator = \Validator::make($request->all(),[
         
@@ -3328,8 +3332,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 
     }
     
-    public function getInfocaracterizaciontransporte($id)
-    {
+    public function getInfocaracterizaciontransporte($id){
         $encuesta = Encuesta::where('id',$id)->first();
         if($encuesta->caracterizacion){
             $transporte = Transporte::with('tipoTransporteOferta')->where('encuestas_id',$id)->get();
@@ -3347,8 +3350,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         return ["transporte"=>$transporte,"encuesta"=>$encuestaRetornar, "proveedor" => $data[0]];
     }
     
-    public function postGuardarcaracterizaciontransporte(Request $request)
-    {
+    public function postGuardarcaracterizaciontransporte(Request $request) {
         //return $request->all();
         $validator = \Validator::make($request->all(),[
         
@@ -3690,9 +3692,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         
     }
     
-    
-    public function getProveedoresactivos()
-    {
+    public function getProveedoresactivos(){
         $proveedores = Proveedor::with(['proveedoresConIdiomas'=>function($q){
             $q->where('idiomas_id',1);
         },'sitio'=>function($r){
@@ -3700,8 +3700,7 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
         }])->get();
     }
     
-    public function getInfoProveedor($id, $bandera)
-    {
+    public function getInfoProveedor($id, $bandera){
             $mes = "";
             $proveedor = "";
 
