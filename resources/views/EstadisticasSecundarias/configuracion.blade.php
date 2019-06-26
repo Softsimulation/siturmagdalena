@@ -238,6 +238,21 @@
                     </div>
                 </div>
                 
+                
+                 <br>
+                
+                <div class="row" >
+                    <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.fuente.$touched) && formCrear.fuente.$error.required}" >
+                      <label for="fuente" >Fuente:</label>
+                      <input type="text" class="form-control" id="fuente" name="fuente" ng-model="indicadorCrearEditar.fuente" placeholder="Fuentes de los datos" >
+                    </div>
+                    <div class="col-md-6 form-group" ng-class="{'error' : (formCrear.$submitted || formCrear.origen_fuente.$touched) && formCrear.origen_fuente.$error.required}" >
+                      <label for="origin_fuente">URL fuente:</label>
+                      <input type="text" class="form-control" id="origen_fuente" name="origen_fuente" ng-model="indicadorCrearEditar.origen_fuente" placeholder="URL fuente" >
+                    </div>
+                </div>
+                
+                
                 <hr>
                 
                 <div class="row" >

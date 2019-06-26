@@ -86,7 +86,7 @@ class IndicadoresCtrl extends Controller
         
         $estadistica = null;
         if($idioma == 1){
-            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")->select("id","nombre" ,"label_x" ,"label_y", "descripcion_es as descripcion" )->first();
+            $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")->select("id","nombre" ,"label_x" ,"label_y", "descripcion_es as descripcion", "fuente", "origen_fuente" )->first();
         }
         else{
             $estadistica = Estadisitica_Secundaria::where("id",$id)->with("graficas")-select("id","name as nombre" ,"label_x_en as label_x" ,"label_y_en as label_y", "descripcion_en as descripcion" )->first();
@@ -99,16 +99,16 @@ class IndicadoresCtrl extends Controller
                 $years = Rotulos_estadistica::join("series_estadistica_rotulos","rotulos_estadisticas.id","=","rotulo_estadistica_id")
                                             ->join("anios","anios.id","=","anio_id")
                                             ->where("estadisticas_secundaria_id",$estadistica->id)
-                                            ->distinct()->get([ "anios.id","anios.anio" ]);
+                                            ->distinct()->orderBy('anios.anio' , 'DESC')->get([ "anios.id","anios.anio" ]);
             }
             else{
                 $years = Series_estadistica::join("valor_series_tiempo","series_estadisticas.id","=","series_estadistica_id")
                                            ->join("anios","anios.id","=","anio_id")
                                            ->where("estadisticas_secundaria_id",$estadistica->id)
-                                           ->distinct()->get([ "anios.id","anios.anio" ]);
+                                           ->distinct()->orderBy('anios.anio', 'DESC')->get([ "anios.id","anios.anio" ]);
             }
             
-            return [ "periodos"=> $years, "indicador"=>$estadistica ,"data"=> count($years)>0 ? $this->getFiltrardatasecundaria($id,$years[0]->id) : []  ];
+            return [ "periodos"=> $years, "indicador"=>$estadistica ,"data"=> count($years)>0 ? $this->getFiltrardatasecundaria($id, $years[ 0 ]->id) : []  ];
         }
         
     }
@@ -150,8 +150,14 @@ class IndicadoresCtrl extends Controller
                         array_push($dt,$dato); 
                     }
                     
-                    array_push($datos,$dt); 
-                    $labels = $strMes = $idioma==1? $meses->lists('nombre')->toArray() : $meses->lists('name')->toArray();
+                    array_push($datos,$dt);
+                    
+                    $lbs = $strMes = $idioma==1? $meses->lists('nombre')->toArray() : $meses->lists('name')->toArray();
+                    
+                    if( count($lbs) > count($labels) ){
+                        $labels = $lbs;
+                    }
+                    
                 }
                 
             }
