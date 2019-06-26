@@ -8,6 +8,7 @@ function parse_yturl($url)
 }
 ?>
 
+@extends('layout._publicLayout')
 
 @section ('estilos')
 <link href="{{asset('/css/public/pages.css')}}" rel="stylesheet">
@@ -248,5 +249,5 @@ function parse_yturl($url)
         </div>
         @endif
     </section>
-
+@endsection
 

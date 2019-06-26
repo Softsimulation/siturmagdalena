@@ -214,16 +214,17 @@ function parse_yturl($url)
             <div id="listado" class="tiles">
             @foreach ($atracciones as $atraccion)
                 <div class="tile">
-                    <div class="tile-img @if(count($atraccion->multimedia) == 0) img-error @endif">
-                        @if(count($atraccion->multimedia) > 0)
+                    <div class="tile-img @if(is_null($atraccion->portada)) img-error @endif">
                         
-                            <img src="{{$atraccion->multimedia->first()->ruta}}" alt="{{$atraccion->multimedia->first()->text_alternativo}}">
+                    @if(!is_null($atraccion->portada))
                         
-                        @else
-                            <img src="/img/brand/72.png" alt="Imagen para {{$atraccion->langContent->first()->nombre}} no disponible"/>
+                        <img src="{{$atraccion->portada->ruta}}" alt="{{$atraccion->portada->text_alternativo}}">
                     
-                        @endif
-                        </div>
+                    @else
+                        <img src="/img/brand/72.png" alt="Imagen para {{$atraccion->langContent->first()->nombre}} no disponible"/>
+                
+                    @endif
+                    </div>
                     <div class="tile-body">
                         
                         <div class="tile-caption">

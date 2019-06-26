@@ -466,12 +466,16 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
                 <div class="tiles mb-3">
                     @foreach($atracciones as $atraccion)
                     <div class="tile tile-overlap">
-                        <div class="tile-img">
-                            @if(count($atraccion->multimedia) > 0)
-                                <img src="{{ $atraccion->multimedia->first()->ruta }}" alt="Imagen de presentación de {{ $atraccion->multimedia->first()->text_alternativo }}"/>
-                            @else
-                                <img src="/img/brand/72.png" alt="Imagen para {{$atraccion->langContent->first()->nombre}} no disponible"/>
-                            @endif
+                        <div class="tile-img @if(is_null($atraccion->portada)) img-error @endif">
+                        
+                        @if(!is_null($atraccion->portada))
+                            
+                            <img src="{{$atraccion->portada->ruta}}" alt="{{$atraccion->portada->text_alternativo}}">
+                        
+                        @else
+                            <img src="/img/brand/72.png" alt="Imagen para {{$atraccion->langContent->first()->nombre}} no disponible"/>
+                    
+                        @endif
                         </div>
                         <div class="tile-body">
                             <div class="tile-caption">
