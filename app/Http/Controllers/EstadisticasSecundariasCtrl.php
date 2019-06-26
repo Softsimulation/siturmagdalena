@@ -51,7 +51,7 @@ class EstadisticasSecundariasCtrl extends Controller
     public function getDataconfiguracion(){ 
         return
             [
-                "meses"=> Mes_Indicador::get(),
+                "meses"=> Mes_Indicador::orderBy("mes_indicador.id")->get(),
                 "anios"=> Anio::get(),
                 "data"=> $this->getDataEstadisticas(),
                 "graficas"=> Tipos_grafica::get()
@@ -111,6 +111,8 @@ class EstadisticasSecundariasCtrl extends Controller
                       "label_x" => "required|max:150",
                       "label_y" => "required|max:150",
                       "descripcion_es" => "required|max:500",
+                      "fuente" => "max:1000",
+                      "origen_fuente" => "max:1000",
                       "descripcion_en" => "required|max:500",
                       "graficas.*.id" => "required|exists:tipos_graficas,id",
                       "series" => "required|array|min:1",
@@ -137,8 +139,8 @@ class EstadisticasSecundariasCtrl extends Controller
         $indicador->name   = $request->name;
         $indicador->descripcion_es = $request->descripcion_es;
         $indicador->descripcion_en   = $request->descripcion_en;
-
-        $indicador->user_update = $this->user->username;
+        $indicador->fuente   = $request->fuente;
+        $indicador->origen_fuente   = $request->origen_fuente;
 
         $indicador->label_x   = $request->label_x;
         $indicador->label_x_en   = $request->label_x_en;
