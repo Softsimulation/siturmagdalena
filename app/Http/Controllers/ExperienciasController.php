@@ -15,6 +15,8 @@ use App\Models\Tipo_Evento;
 use App\Models\Tipo_Proveedor;
 use App\Models\Categoria_Proveedor;
 use App\Models\Idioma;
+use App\Models\Atracciones;
+use App\Models\Actividades;
 
 class ExperienciasController extends Controller
 {
@@ -27,29 +29,89 @@ class ExperienciasController extends Controller
         
         $idIdioma = Idioma::where('culture', \Config::get('app.locale'))->pluck('id')->first();
         
-        $destinos = Destino::with(['destinoConIdiomas' => function ($queryDestinoConIdiomas) use ($idIdioma){
-            $queryDestinoConIdiomas->select('nombre', 'destino_id')->where('idiomas_id', $idIdioma);
-        }])->select('id')->where('estado', true)->get();
+        $atracciones = Atracciones::with(['multimedia' => function($multimedia){
+            $multimedia->where('portada',true)->select('id','ruta','texto_alternativo','sitios_id','portada','estado');
+        },'langContent' => function($langContent) use ($idIdioma){
+            $langContent->where('idiomas_id',$idIdioma)->select('id','sitios_id','nombre','idiomas_id');
+        },'categoriaTurismo'])->whereHas('categoriaTurismo',function($s) use ($id){
+            $s->where('tipo_turismo_id', $id);
+        })->select('id','sitios_id','calificacion_legusto','estado')->take(6)->get();
+        
+        $actividades = Actividades::with(['multimedia' => function($multimedia){
+            $multimedia->where('portada',true)->select('id','ruta','texto_alternativo','actividades_id','portada','estado');
+        },'langContent' => function($langContent) use ($idIdioma){
+            $langContent->where('idiomas',$idIdioma)->select('id','actividades_id','nombre','idiomas');
+        },'categoriaTurismo'])->whereHas('categoriaTurismo.categoriaTurismo',function($s) use ($id){
+            $s->where('tipo_turismo_id', $id);
+        })->select('id','calificacion_legusto','estado')->take(6)->get();
+        
+        $destinos = Destino::with(['multimedia' => function($multimedia){
+            $multimedia->where('portada', true)->select('id','ruta','texto_alternativo','destino_id','portada','estado');
+        },'langContent' => function($langContent) use ($idIdioma){
+           $langContent->where('idiomas_id',$idIdioma)->select('id','destino_id','nombre','idiomas_id');
+        },'sectores'=>function($sectores){
+            $sectores->with(['sitiosParaExperiencias' => function($sitiosParaExperiencias){
+                $sitiosParaExperiencias->with(['atracciones' => function($atracciones){
+                    $atracciones->with('categoriaTurismo')->select('id','sitios_id');
+                }, 'actividades' => function($actividades){
+                    $actividades->with('categoriaTurismo');
+                }])->select('id','sectores_id','tipo_sitios_id');
+            }])->select('id','destino_id');
+        }])->whereHas('sectores.sitiosParaExperiencias.atracciones.categoriaTurismo', function($q) use ($id){
+            $q->where('tipo_turismo_id', $id);
+        })->orWhereHas('sectores.sitiosParaExperiencias.actividades.categoriaTurismo.categoriaTurismo', function($q) use ($id){
+            $q->where('tipo_turismo_id', $id);
+        })->select('id','tipo_destino_id','calificacion_legusto')->take(6)->get();
+        
+        //return count($destinos);
+        
+        // $destinos = Destino::with(['destinoConIdiomas' => function ($queryDestinoConIdiomas) use ($idIdioma){
+        //     $queryDestinoConIdiomas->select('nombre', 'destino_id')->where('idiomas_id', $idIdioma);
+        // }])->select('id')->where('estado', true)->get();
         
         $experiencia = Tipo_Turismo::with(['tipoTurismoConIdiomas' => function ($queryTipoTurismoConIdiomas) use ($idIdioma){
             $queryTipoTurismoConIdiomas->select('nombre', 'tipo_turismo_id')->where('idiomas_id', $idIdioma);
         }])->select('id')->where('estado', true)->where('id', $id)->first();
+        $bg_path = '';
+        if(!is_null($experiencia)){
+            
+            switch($experiencia->id){
+                case 1:
+                    $bg_path = 'bg_sol_y_playa.png';
+                    break;
+                case 2:
+                    $bg_path = 'bg_cultural.png';
+                    break;
+                case 3:
+                    $bg_path = 'bg_naturaleza.png';
+                    break;
+                case 4:
+                    $bg_path = 'bg_nautico.png';
+                    break;
+                case 5:
+                    $bg_path = 'bg_religioso.png';
+                    break;
+                    $bg_path = 'bg_sol_y_playa.png';
+                default:
+            }
+        }
         
-        $categorias = Categoria_Turismo::with(['categoriaTurismoConIdiomas' => function ($queryCategoriaTurismoConIdiomas) use ($idIdioma){
-            $queryCategoriaTurismoConIdiomas->select('categoria_turismo_id', 'nombre')->where('idiomas_id', $idIdioma);
-        }])->select('id')->where('estado', true)->get();
         
-        $perfiles = Perfil_Usuario::with(['perfilesUsuariosConIdiomas' => function($queryPerfilesUsuariosConIdiomas) use ($idIdioma){
-            $queryPerfilesUsuariosConIdiomas->select('perfiles_usuarios_id', 'nombre')->where('idiomas_id', $idIdioma);
-        }])->select('id')->where('estado', true)->get();
+        // $categorias = Categoria_Turismo::with(['categoriaTurismoConIdiomas' => function ($queryCategoriaTurismoConIdiomas) use ($idIdioma){
+        //     $queryCategoriaTurismoConIdiomas->select('categoria_turismo_id', 'nombre')->where('idiomas_id', $idIdioma);
+        // }])->select('id')->where('estado', true)->get();
         
-        $tipoAtraccion = Tipo_Atraccion::with(['tipoAtraccionesConIdiomas' => function ($queryTipoAtraccionesConIdiomas) use ($idIdioma){
-            $queryTipoAtraccionesConIdiomas->select('tipo_atracciones_id', 'nombre')->where('idiomas_id', $idIdioma);
-        }])->select('id')->where('estado', true)->get();
+        // $perfiles = Perfil_Usuario::with(['perfilesUsuariosConIdiomas' => function($queryPerfilesUsuariosConIdiomas) use ($idIdioma){
+        //     $queryPerfilesUsuariosConIdiomas->select('perfiles_usuarios_id', 'nombre')->where('idiomas_id', $idIdioma);
+        // }])->select('id')->where('estado', true)->get();
         
-        $tipoEvento = Tipo_Evento::with(['tipoEventosConIdiomas' => function ($queryTipoEventosConIdiomas) use ($idIdioma){
-            $queryTipoEventosConIdiomas->select('tipo_evento_id', 'nombre')->where('idiomas_id', $idIdioma);
-        }])->select('id')->where('estado', true)->get();
+        // $tipoAtraccion = Tipo_Atraccion::with(['tipoAtraccionesConIdiomas' => function ($queryTipoAtraccionesConIdiomas) use ($idIdioma){
+        //     $queryTipoAtraccionesConIdiomas->select('tipo_atracciones_id', 'nombre')->where('idiomas_id', $idIdioma);
+        // }])->select('id')->where('estado', true)->get();
+        
+        // $tipoEvento = Tipo_Evento::with(['tipoEventosConIdiomas' => function ($queryTipoEventosConIdiomas) use ($idIdioma){
+        //     $queryTipoEventosConIdiomas->select('tipo_evento_id', 'nombre')->where('idiomas_id', $idIdioma);
+        // }])->select('id')->where('estado', true)->get();
         
         // $tipoProveedor = Tipo_Proveedor::with(['tipoProveedoresConIdiomas' => function ($queryTipoProveedoresConIdiomas) use ($idIdioma){
         //     $queryTipoProveedoresConIdiomas->select('tipo_proveedores_id', 'nombre')->where('idiomas_id', $idIdioma);
@@ -67,10 +129,13 @@ class ExperienciasController extends Controller
         ['query' => $query, 
             'destinos' => $destinos, 
             'experiencia' => $experiencia,
-            'categorias' => $categorias,
-            'perfiles' => $perfiles,
-            'tiposAtraccion' => $tipoAtraccion,
-            'tiposEvento' => $tipoEvento,
+            'bg_path' => $bg_path,
+            'atracciones' => $atracciones,
+            'actividades' => $actividades,
+            // 'categorias' => $categorias,
+            // 'perfiles' => $perfiles,
+            // 'tiposAtraccion' => $tipoAtraccion,
+            // 'tiposEvento' => $tipoEvento,
             // 'tiposProveedor' => $tipoProveedor,
             // 'categoriasProveedor' => $categoriaProveedor,
             'success' => true]);

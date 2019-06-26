@@ -644,7 +644,7 @@ $countItems = false;
                         <span class="label {{$colorTipo[$r->tipo - 1]}}">{{getItemType($r->tipo)->name}}</span>
                         @endif
                         @if($r->tipo == 4)
-                        <p class="label tile-date">Del {{date('d/m/Y', strtotime($r->fecha_inicio))}} al {{date('d/m/Y', strtotime($r->fecha_fin))}}</p>
+                        <p class="label tile-date">Del {{date('d/m/Y', strtotime($r->fecha_in))}} al {{date('d/m/Y', strtotime($r->fecha_fin))}}</p>
                         @endif
                     </div>
                     <!--<p>{{$r->langContent->first()->descripcion}}</p>-->

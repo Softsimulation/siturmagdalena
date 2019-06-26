@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-$paraTenerEnCuentaContieneAlgo = count($destino->sectores) > 0;
+$paraTenerEnCuentaContieneAlgo = count($atracciones) > 0 || count($actividades) > 0;
 function parse_yturl($url) 
 {
     $pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=|/watch\?.+&v=))([\w-]{11})(?:.+)?$#x';
@@ -209,7 +209,7 @@ function parse_yturl($url)
             <!--  </div>-->
             
             <!--</div>-->
-            
+            @if(count($atracciones) > 0)
             <h3 class="title-section">Atracciones que puedes visitar</h3>
             <div id="listado" class="tiles">
             @foreach ($atracciones as $atraccion)
@@ -241,6 +241,9 @@ function parse_yturl($url)
             <div class="text-center mb-3">
                 <a class="btn btn-success text-uppercase font-weight-bold" href="/quehacer/index?tipo=2&destinos[]={{$destino->id}}">Ver todas las atracciones de {{$destino->destinoConIdiomas->first()->nombre}}</a>    
             </div>
+            <br>
+            @endif
+            @if(count($actividades) > 0)
             <h3 class="title-section">Actividades que puedes realizar</h3>
             <div id="listado" class="tiles">
             @foreach ($actividades as $actividad)
@@ -272,7 +275,7 @@ function parse_yturl($url)
             <div class="text-center">
                 <a class="btn btn-success text-uppercase font-weight-bold" href="/quehacer/index?tipo=1&destinos[]={{$destino->id}}">Ver todas las actividades de {{$destino->destinoConIdiomas->first()->nombre}}</a>    
             </div>
-            
+            @endif
             
             <!--<h3 class="title-section">Sectores</h3>-->
             <!--<div class="tiles">-->
