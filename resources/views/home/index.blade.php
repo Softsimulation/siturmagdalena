@@ -270,6 +270,8 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     </ul>
 </div>
 
+
+
 @if(count($sugeridos))
     <div class="title-custom-section">
         <div class="container">
@@ -307,6 +309,10 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
     </div>
     
     @endif
+    
+    
+    
+    
     @if(count($noticias) > 0)
         <section id="noticias">
             <div class="title-custom-section">

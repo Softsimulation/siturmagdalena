@@ -134,7 +134,7 @@ Route::group(['middleware' => 'cors'], function(){
 
 
 Route::controller('/visitante', 'VisitanteController');
-
+Route::get('/Departamento/sugeridos','InformacionDepartamentoCtrl@LugaresSugeridos');
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/lang/{lang}', function ($lang) {
@@ -148,6 +148,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/promocionPublicacion','PublicoPublicacionController');
     Route::get('/PlanificaTuViaje','InformacionDepartamentoCtrl@PlanificaTuViaje');
     Route::get('/Departamento/AcercaDe','InformacionDepartamentoCtrl@AcercaDe');
+    
     Route::get('/Departamento/Requisitos','InformacionDepartamentoCtrl@Requisitos');
     Route::get('/Mapa', 'MapaCtrl@getIndex');
     
