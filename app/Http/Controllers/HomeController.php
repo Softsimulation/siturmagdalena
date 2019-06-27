@@ -77,6 +77,7 @@ class HomeController extends Controller
 	    return Actividad::where('estado', true)->count();
         
 	}
+	
 	public function getCountPublicaciones(){
 	    return Publicacion::where('estado', true)->count();
         

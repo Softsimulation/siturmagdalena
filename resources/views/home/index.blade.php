@@ -285,7 +285,7 @@ $colorTipo = ['primary','success','danger', 'info', 'warning'];
                 <div class="tile-img">
                     <img src="{{$sugerido->portada}}" alt="" role="presentation">
                     <div class="text-overlap">
-                       <!-- <span class="label label-{{$colorTipo[$sugerido->tipo - 1]}}">{{getItemType($sugerido->tipo)->name}}</span>-->
+                        <span class="label label-{{$colorTipo[$sugerido->tipo - 1]}}">{{getItemType($sugerido->tipo)->name}}</span>
                         <h3>
                             <a href="{{getItemType($sugerido->tipo)->path}}{{$sugerido->id}}">{{$sugerido->nombre}}</a>
                             @if($sugerido->tipo == 4)
