@@ -62,7 +62,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 ?>
 @extends('layout._publicLayout')
 
-@section('Title', '¿Qué hacer en el departamento del Cesar?')
+@section('Title', '¿Qué hacer en el departamento del Magdalena?')
 
 
 @section('meta_og')
@@ -200,12 +200,12 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
         }
         @media only screen and (min-width: 768px) {
             .tiles{
-                grid-template-columns: repeat(2, 50%);
+                grid-template-columns: repeat(2,  calc(50% - .5rem));
             }
         }
         @media only screen and (min-width: 1024px) {
             .tiles{
-                grid-template-columns: repeat(3, 33.33%);
+                grid-template-columns: repeat(3, calc(33.33% - .5rem));
             }
         }
         label{
@@ -291,10 +291,10 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             border: 0;
         }
     </style>
-    @if(isset($_GET['tipo']))
+    @if(isset($bg_path))
     <style>
         .header-list{
-            background-image: url(../../img/headers/<?php echo getItemType($_GET['tipo'])->headerImg ?>);
+            background-image: url(/img/headers/{{$bg_path}});
             background-size: cover;
             min-height: 200px;
             background-position: bottom;
@@ -306,7 +306,7 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
         .header-list:after{
             content: "";
             position:absolute;
-            bottom: 0;
+            bottom: -1px;
             left: 0;
             width: 100%;
             min-height: 70px;
@@ -346,6 +346,41 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
             border-radius: 10px;
             display: inline-block;
         }
+        .nav-tabs {
+            text-align: center;
+            border-bottom: 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 1rem;
+            padding-bottom: .5rem;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            width: 100%;
+            background: white;
+        }
+        
+        .nav-tabs>li {
+            float: none;
+            display: inline-block;
+        }
+        .nav-tabs>li>a {
+            border-radius: 4px;
+            box-shadow: 0px 1px 3px rgba(0,0,0,.35);
+            background: white;
+            border: 0;
+        }
+        .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+            background: dodgerblue;
+            color: white;
+            border: 0;
+        }
+        .mb-1{
+            margin-bottom: .25rem;
+        }
+        .mb-2{
+            margin-bottom: .5rem;
+        }
     </style>
     @endif
 @endsection
@@ -368,72 +403,194 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
     </div>
     
     <div class="container">
-        <br/>
-        <div id="listado" class="tiles">
-            
-            <?php $hasTipo = 0 ?>
-            @foreach($query as $entidad)
-            @if(!$tipoItem || ($tipoItem && $entidad->tipo == $tipoItem))
-            <?php $hasTipo = $hasTipo + 1 ?>
-            <div class="tile tile-overlap">
-                <div class="tile-img">
-                    @if($entidad->portada != "")
-                    <img src="{{ $entidad->portada }}" alt="Imagen de presentación de {{ $entidad->nombre }}"/>
-                    @endif
-                </div>
-                <div class="tile-body">
-                    <div class="tile-caption">
-                        <h3><a href="{{URL::action(getItemType($entidad->tipo)->controller.'@getVer', ['id' => $entidad->id])}}">{{ $entidad->nombre }}</a></h3>
-                        <span class="label {{$colorTipo[$entidad->tipo - 1]}}">{{getItemType($entidad->tipo)->name}}</span>
-                        @if($entidad->tipo == 4)
-                        <p class="label tile-date">Del {{date('d/m/Y', strtotime($entidad->fecha_inicio))}} al {{date('d/m/Y', strtotime($entidad->fecha_fin))}}</p>
-                        @endif
-                    </div>
-                    <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
-                    <div class="tile-buttons">
-                        <div class="inline-buttons">
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 0.0) ? (($entidad->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">1</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 1.0) ? (($entidad->calificacion_legusto <= 1.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">2</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 2.0) ? (($entidad->calificacion_legusto <= 2.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">3</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 3.0) ? (($entidad->calificacion_legusto <= 3.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">4</span></button>
-                            <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 4.0) ? (($entidad->calificacion_legusto <= 4.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">5</span></button>
-                            
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-            </div>
+        <div>
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#destinos" aria-controls="destinos" role="tab" data-toggle="tab" class="text-center mb-2">
+                    <span class="mdi mdi-map-marker btn-block" aria-hidden="true"></span>
+                    Destinos
+                </a>
+            </li>
+            @if(count($atracciones) > 0)
+            <li role="presentation">
+                <a href="#atracciones" aria-controls="atracciones" role="tab" data-toggle="tab" class="text-center mb-2">
+                    <span class="mdi mdi-beach btn-block" aria-hidden="true"></span>
+                    Atracciones
+                </a>
+            </li>
             @endif
-            @endforeach
-            <!--<div class="tile tile-overlap">
-                <div class="tile-img">
-                    <img src="http://www.valledupar.com/sistema-noticias/data/upimages/valledupar_poporos2.jpg" alt=""/>
-                </div>
-                <div class="tile-body">
-                    <div class="tile-caption">
-                        <h3><a href="#">Parque de la Leyenda Vallenata “Consuelo Araujo Noguera”</a></h3>    
-                    </div>
-                    <div class="tile-buttons">
-                        <div class="inline-buttons">
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">1</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">2</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">3</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">4</span></button>
-                            <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">5</span></button>
+            @if(count($actividades) > 0)
+            <li role="presentation">
+                <a href="#actividades" aria-controls="actividades" role="tab" data-toggle="tab" class="text-center mb-2">
+                    <span class="mdi mdi-run btn-block" aria-hidden="true"></span>
+                    Actividades
+                </a>
+            </li>
+            @endif
+          </ul>
+        
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="destinos">
+                @if(count($destinos) > 0)
+                <h3 class="text-center text-uppercase text-muted">Destinos para conocer</h3>
+                <div class="tiles mb-3">
+                    @foreach($destinos as $destino)
+                    <div class="tile tile-overlap">
+                        <div class="tile-img">
+                            @if(count($destino->multimedia) > 0)
+                                <img src="{{ $destino->multimedia->first()->ruta }}" alt="Imagen de presentación de {{ $destino->multimedia->first()->text_alternativo }}"/>
+                            @else
+                                <img src="/img/brand/72.png" alt="Imagen para {{$destino->langContent->first()->nombre}} no disponible"/>
+                            @endif
                         </div>
-                        <button type="button" title="Añadir a favorito"><span class="mdi mdi-heart-outline" aria-hidden="true"></span><span class="sr-only">Añadir a favorito</span></button>
-                        
+                        <div class="tile-body">
+                            <div class="tile-caption">
+                                <h4><a href="/destinos/ver/{{$destino->id}}">{{$destino->langContent->first()->nombre}}</a></h4>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
-            </div> -->
-            
-        </div>
-        @if(!$hasTipo)
-            <div class="alert alert-info">
-                <p>No hay registro que mostrar</p>
+                <div class="text-center">
+                    <a class="btn btn-success text-uppercase" href="/quehacer/index?tipo=3">Ver más destinos de {{$experiencia->tipoTurismoConIdiomas->first()->nombre}}</a>
+                </div>
+                <br>
+                @endif
             </div>
-        @endif
+            <div role="tabpanel" class="tab-pane fade" id="atracciones">
+                @if(count($atracciones) > 0)
+                <h3 class="text-center text-uppercase text-muted">Atracciones que puedes visitar</h3>
+                <div class="tiles mb-3">
+                    @foreach($atracciones as $atraccion)
+                    <div class="tile tile-overlap">
+                        <div class="tile-img @if(is_null($atraccion->portada)) img-error @endif">
+                        
+                        @if(!is_null($atraccion->portada))
+                            
+                            <img src="{{$atraccion->portada->ruta}}" alt="{{$atraccion->portada->text_alternativo}}">
+                        
+                        @else
+                            <img src="/img/brand/72.png" alt="Imagen para {{$atraccion->langContent->first()->nombre}} no disponible"/>
+                    
+                        @endif
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-caption">
+                                <h4><a href="/atracciones/ver/{{$atraccion->id}}">{{$atraccion->langContent->first()->nombre}}</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="text-center">
+                    <a class="btn btn-success text-uppercase" href="/quehacer/index?tipo=2&experiencias%5B%5D={{$experiencia->id}}">Ver más atracciones de {{$experiencia->tipoTurismoConIdiomas->first()->nombre}}</a>
+                </div>
+                @endif
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="actividades">
+                @if(count($actividades) > 0)
+                <h3 class="text-center text-uppercase text-muted">Actividades que puedes realizar</h3>
+                <div class="tiles mb-3">
+                    @foreach($actividades as $actividad)
+                    <div class="tile tile-overlap">
+                        <div class="tile-img">
+                            @if(count($actividad->multimedia) > 0)
+                                <img src="{{ $actividad->multimedia->first()->ruta }}" alt="Imagen de presentación de {{ $actividad->multimedia->first()->text_alternativo }}"/>
+                            @else
+                                <img src="/img/brand/72.png" alt="Imagen para {{$actividad->langContent->first()->nombre}} no disponible"/>
+                            @endif
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-caption">
+                                <h4><a href="/actividades/ver/{{$actividad->id}}">{{$actividad->langContent->first()->nombre}}</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="text-center">
+                    <a class="btn btn-success text-uppercase" href="/quehacer/index?tipo=1&experiencias%5B%5D={{$experiencia->id}}">Ver más actividades de {{$experiencia->tipoTurismoConIdiomas->first()->nombre}}</a>
+                </div>
+                @endif
+            </div>
+          </div>
+        
+        </div>
+        
+        
+        
+        
+        
+        
+        <br/>
+        <!--<div id="listado" class="tiles">-->
+            
+        <!--    <?php $hasTipo = 0 ?>-->
+        <!--    @foreach($query as $entidad)-->
+        <!--    @if(!$tipoItem || ($tipoItem && $entidad->tipo == $tipoItem))-->
+        <!--    <?php $hasTipo = $hasTipo + 1 ?>-->
+        <!--    <div class="tile tile-overlap">-->
+        <!--        <div class="tile-img">-->
+        <!--            @if($entidad->portada != "")-->
+        <!--            <img src="{{ $entidad->portada }}" alt="Imagen de presentación de {{ $entidad->nombre }}"/>-->
+        <!--            @endif-->
+        <!--        </div>-->
+        <!--        <div class="tile-body">-->
+        <!--            <div class="tile-caption">-->
+        <!--                <h3><a href="{{URL::action(getItemType($entidad->tipo)->controller.'@getVer', ['id' => $entidad->id])}}">{{ $entidad->nombre }}</a></h3>-->
+        <!--                <span class="label {{$colorTipo[$entidad->tipo - 1]}}">{{getItemType($entidad->tipo)->name}}</span>-->
+        <!--                @if($entidad->tipo == 4)-->
+        <!--                <p class="label tile-date">Del {{date('d/m/Y', strtotime($entidad->fecha_inicio))}} al {{date('d/m/Y', strtotime($entidad->fecha_fin))}}</p>-->
+        <!--                @endif-->
+        <!--            </div>-->
+                    <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+        <!--            <div class="tile-buttons">-->
+        <!--                <div class="inline-buttons">-->
+        <!--                    <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 0.0) ? (($entidad->calificacion_legusto <= 0.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">1</span></button>-->
+        <!--                    <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 1.0) ? (($entidad->calificacion_legusto <= 1.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">2</span></button>-->
+        <!--                    <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 2.0) ? (($entidad->calificacion_legusto <= 2.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">3</span></button>-->
+        <!--                    <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 3.0) ? (($entidad->calificacion_legusto <= 3.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">4</span></button>-->
+        <!--                    <button type="button" title="{{$entidad->calificacion_legusto}}"><span class="{{ ($entidad->calificacion_legusto > 4.0) ? (($entidad->calificacion_legusto <= 4.9) ? 'ionicons-inline ion-android-star-half' : 'ionicons-inline ion-android-star') : 'ionicons-inline ion-android-star-outline'}}" aria-hidden="true"></span><span class="sr-only">5</span></button>-->
+                            
+        <!--                </div>-->
+                        
+                        
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--    @endif-->
+        <!--    @endforeach-->
+            <!--<div class="tile tile-overlap">
+        <!--        <div class="tile-img">-->
+        <!--            <img src="http://www.valledupar.com/sistema-noticias/data/upimages/valledupar_poporos2.jpg" alt=""/>-->
+        <!--        </div>-->
+        <!--        <div class="tile-body">-->
+        <!--            <div class="tile-caption">-->
+        <!--                <h3><a href="#">Parque de la Leyenda Vallenata “Consuelo Araujo Noguera”</a></h3>    -->
+        <!--            </div>-->
+        <!--            <div class="tile-buttons">-->
+        <!--                <div class="inline-buttons">-->
+        <!--                    <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">1</span></button>-->
+        <!--                    <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">2</span></button>-->
+        <!--                    <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">3</span></button>-->
+        <!--                    <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">4</span></button>-->
+        <!--                    <button type="button"><span class="mdi mdi-star-outline" aria-hidden="true"></span><span class="sr-only">5</span></button>-->
+        <!--                </div>-->
+        <!--                <button type="button" title="Añadir a favorito"><span class="mdi mdi-heart-outline" aria-hidden="true"></span><span class="sr-only">Añadir a favorito</span></button>-->
+                        
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div> -->-->
+            
+        <!--</div>-->
+        <!--@if(!$hasTipo)-->
+        <!--    <div class="alert alert-info">-->
+        <!--        <p>No hay registro que mostrar</p>-->
+        <!--    </div>-->
+        <!--@endif-->
     </div>
 
 @endsection
@@ -442,179 +599,6 @@ $countItems = ($tipoItem) ? $countItems : count($query) > 0;
 <!--<script src="{{asset('/js/public/vibrant.js')}}"></script>-->
 <!--<script src="{{asset('/js/public/setProminentColorImg.js')}}"></script>-->
 
-<script>
 
-var colorTipo = ['bg-primary','bg-success','bg-danger', 'bg-info', 'bg-warning'];
-
-function getItemType(type){
-    switch(type){
-        case(1):
-            title = "Actividades";
-            name = "Actividad";
-            path = "/actividades/ver/";
-            controller = 'ActividadesController';
-            break;
-        case(2):
-            title = "Atracciones";
-            name = "Atracción";
-            path = "/atracciones/ver/";
-            controller = 'AtraccionesController';
-            break;
-        case(3):
-            title = "Destinos";
-            name = "Destino";
-            path = "/destinos/ver/";
-            controller = 'DestinosController';
-            break;
-        case(4):
-            title = "Eventos";
-            name = "Evento";
-            path = "/eventos/ver/";
-            controller = 'EventosController';
-            break; 
-        case(5):
-            title = "Rutas Turísticas";
-            name = "Rutas Turísticas";
-            path = "/rutas/ver/";
-            controller = 'RutasTuristicasController';
-            break;
-    }
-    return {'name':name, 'path':path, 'title' : title, 'controller' : controller};
-}
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-    results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-function toggleFilter(){
-    $('.filtros').toggle("fast","linear");
-}
-window.addEventListener('click', function(e){
-	
-	if (!document.getElementsByClassName('filtros')[0].contains(e.target) && !document.getElementById('btnFiltros').contains(e.target)){
-      	$('.filtros').fadeOut("fast","linear");
-    }
-})
-var tipoItem = getParameterByName('tipo') != undefined ? getParameterByName('tipo') : 0 ;
-    function changeViewList(obj, idList, view){
-        var element, name, arr;
-        $('#'+idList).fadeOut("slow");
-        element = document.getElementById(idList);
-        
-        
-        setTimeout(function(){
-            name = view;
-            element.className = "tiles " + name;
-            $('#'+idList).fadeIn("slow");
-        },350);
-        
-    }
-        
-    $.ajaxSetup({
-    headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    
-    $('#formSearch').submit(function(){
-        $.ajax({
-          type: "POST",
-          url: '{{URL::action("QueHacerController@postSearch")}}',
-          data: {
-              'search': $('#searchMain').val()
-          },
-          success: function (data){
-              if (!data.success){
-                  alert('No hay resultados para su búsqueda');
-              }
-              var html = '';
-              for(var i = 0; i < data.query.length; i++){
-                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
-                    html += '<div class="tile tile-overlap">'
-                                +'<div class="tile-img">';
-                        if(data.query[i].portada != ""){
-                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
-                        }
-                    html +=     +'</div>'
-                                    +'<div class="tile-body">'
-                                        +'<div class="tile-caption">'
-                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
-                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
-                                        +'</div>'
-                                        +'<div class="tile-buttons">'
-                                            +'<div class="inline-buttons">';
-                    //Acá falta las fechas en los eventos
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
-              }
-              }
-              $('#listado').html(html);
-          },
-          dataType: 'json'
-        });
-        return false;
-    });
-        
-</script>
 <script src="{{asset('/js/experiencias/script.js')}}"></script>
 
-<script>
-    function formSubmit(){
-    var sw = false;
-    if (destinos.length == 0 && categorias.length == 0 && perfiles.length == 0 && exp == undefined){
-        sw = true;
-    }
-    if (sw){
-        alert('No se ha seleccionado algún filtro');
-        return;
-    }
-    
-    $.ajax({
-          type: "POST",
-          url: '{{URL::action("QueHacerController@postFiltrar")}}',
-          data: {
-              'experiencia': exp,
-              'destinos': destinos,
-              'categorias': categorias,
-              'perfiles': perfiles,
-              'valor_inicial': $('#valor_inicial').val(),
-              'valor_final': $('#valor_final').val()
-          },
-          success: function (data){
-              if (!data.success){
-                  alert('No hay resultados para su búsqueda');
-              }
-              var html = '';
-              for(var i = 0; i < data.query.length; i++){
-                if(!tipoItem || (tipoItem && data.query[i].tipo == tipoItem)){
-                    html += '<div class="tile tile-overlap">'
-                                +'<div class="tile-img">';
-                        if(data.query[i].portada != ""){
-                            html += '<img src="'+data.query[i].portada +'" alt="Imagen de presentación de '+ data.query[i].nombre +'"/>';
-                        }
-                    html +=     +'</div>'
-                                    +'<div class="tile-body">'
-                                        +'<div class="tile-caption">'
-                                            +'<h3><a href="'+getItemType(data.query[i].tipo).path+data.query[i].id +'">'+ data.query[i].nombre +'</a></h3>'
-                                            +'<span class="label '+colorTipo[data.query[i].tipo - 1]+'">'+getItemType(data.query[i].tipo).name+'</span>'
-                                        +'</div>'
-                                        +'<div class="tile-buttons">'
-                                            +'<div class="inline-buttons">';
-                    //Acá falta las fechas en los eventos
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 0.0) ? ((data.query[i].calificacion_legusto <= 0.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 1.0) ? ((data.query[i].calificacion_legusto <= 1.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';            
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 2.0) ? ((data.query[i].calificacion_legusto <= 2.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>';
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 3.0) ? ((data.query[i].calificacion_legusto <= 3.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button>'; 
-                    html += '<button type="button" title="'+data.query[i].calificacion_legusto+'"><span class="'+ ((data.query[i].calificacion_legusto > 4.0) ? ((data.query[i].calificacion_legusto <= 4.9) ? "ionicons-inline ion-android-star-half" : "ionicons-inline ion-android-star") : "ionicons-inline ion-android-star-outline")+'" aria-hidden="true"></span><span class="sr-only">1</span></button></div></div></div></div></div>';
-              }
-              }
-              $('#listado').html(html);
-          },
-          dataType: 'json'
-        });
-}
-</script>
