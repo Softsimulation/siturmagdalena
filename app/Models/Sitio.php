@@ -61,7 +61,7 @@ class Sitio extends Model
      */
     public function atracciones()
     {
-        return $this->hasMany('App\Models\Atraccione', 'sitios_id');
+        return $this->hasMany('App\Models\Atracciones', 'sitios_id');
     }
 
     /**

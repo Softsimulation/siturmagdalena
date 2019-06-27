@@ -346,13 +346,13 @@ $fav = Layout::favoritos();
                                     <li role="none">
                                         <a role="menuitem" href="/proveedor/index?tipo=3"><span class="mdi mdi-airplane hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.agenciasDeViaje')}}</a>
                                     </li>
-                                   <li role="none">
+                                    <li role="none">
                                         <a role="menuitem" href="/proveedor/index?tipo=5"><span class="mdi mdi-bus hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.transporteEspecializado')}}</a>
                                     </li>
-                                        <li role="none">
-                                        <a role="menuitem" href="/proveedor/index?tipo=4"><span class="mdi mdi-soccer-field hidden-xs hidden-sm" aria-hidden="true"></span> Otros tipos de prestadores</a>
+                                    <li role="none">
+                                        <a role="menuitem" href="/proveedor/index?tipo=4"><span class="mdi mdi-soccer-field hidden-xs hidden-sm" aria-hidden="true"></span> {{trans('resources.menu.menuServicios.establecimientosDeEsparcimiento')}}</a>
                                     </li>
-                                   
+                                    
                                 </ul>
                             </li>
                             <!--<li>-->

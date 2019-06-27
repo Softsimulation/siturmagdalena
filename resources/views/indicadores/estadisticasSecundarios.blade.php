@@ -176,7 +176,10 @@
     </div>
     
     <p ng-if="indicador.descripcion" >
-       Descripción: @{{indicador.descripcion}}
+       <b>Descripción:</b> @{{indicador.descripcion}}
+       <br>
+       <b ng-if="indicador.fuente" >Fuente:</b> 
+       <a href="@{{indicador.origen_fuente}}" ng-if="indicador.origen_fuente"  target="_blank" >@{{indicador.fuente}}</a>
     </p>
     
     <div class="panel panel-default" ng-show="data.length>0" >

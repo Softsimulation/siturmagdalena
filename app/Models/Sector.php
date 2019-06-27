@@ -46,6 +46,11 @@ class Sector extends Model
     {
         return $this->hasMany('App\Models\Sitio', 'sectores_id');
     }
+    
+    public function sitiosParaExperiencias()
+    {
+        return $this->hasMany('App\Models\Sitio', 'id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

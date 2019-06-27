@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-$paraTenerEnCuentaContieneAlgo = count($destino->sectores) > 0;
+$paraTenerEnCuentaContieneAlgo = count($atracciones) > 0 || count($actividades) > 0;
 function parse_yturl($url) 
 {
     $pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=|/watch\?.+&v=))([\w-]{11})(?:.+)?$#x';
@@ -23,6 +23,10 @@ function parse_yturl($url)
             width: auto;
             padding: .5rem;
         }
+        .justify-content-center{
+            justify-content: center;
+        }
+        
     </style>
 @endsection
 
@@ -145,9 +149,29 @@ function parse_yturl($url)
                 </div>
                 <div class="col-xs-12 col-md-12">
                     
-                    <p style="white-space: pre-line;">{{$destino->destinoConIdiomas[0]->descripcion}}</p>
+                    <div class="mb-3">{!!$destino->destinoConIdiomas->first()->descripcion!!}</div>
                 </div>
                 
+            </div>
+            <div class="row justify-content-center">
+                @if($destino->destinoConIdiomas->first()->informacion_practica)
+                <div class="col-xs-12 col-md-4">
+                    <h4>Información práctica</h4>
+                    <p style="white-space: pre-line;">{{$destino->destinoConIdiomas->first()->informacion_practica}}</p>
+                </div>
+                @endif
+                @if($destino->destinoConIdiomas->first()->reglas)
+                <div class="col-xs-12 col-md-4">
+                    <h4>Reglas</h4>
+                    <p style="white-space: pre-line;">{{$destino->destinoConIdiomas->first()->reglas}}</p>
+                </div>
+                @endif
+                @if($destino->destinoConIdiomas->first()->como_llegar)
+                <div class="col-xs-12 col-md-4">
+                    <h4>Cómo llegar</h4>
+                    <p style="white-space: pre-line;">{{$destino->destinoConIdiomas->first()->como_llegar}}</p>
+                </div>
+                @endif
             </div>
             
         </div>
@@ -166,14 +190,111 @@ function parse_yturl($url)
     @if($paraTenerEnCuentaContieneAlgo)
     <section id="paraTenerEnCuenta" class="section">
         <div class="container">
-            <h3 class="title-section">Sectores</h3>
-            <div class="tiles">
-                @foreach ($destino->sectores as $sector)
+            
+            <!--<div>-->
+
+              <!-- Nav tabs -->
+            <!--  <ul class="nav nav-tabs" role="tablist">-->
+            <!--    <li role="presentation" class="active"><a href="#atracciones" aria-controls="atracciones" role="tab" data-toggle="tab">-->
+            <!--        <span class="ion-android-walk btn-block"></span>-->
+            <!--        Atracciones que puedes visitar-->
+            <!--    </a></li>-->
+            <!--    <li role="presentation"><a href="#actividades" aria-controls="actividades" role="tab" data-toggle="tab">Actividades que puedes realizar</a></li>-->
+            <!--  </ul>-->
+            
+              <!-- Tab panes -->
+            <!--  <div class="tab-content">-->
+            <!--    <div role="tabpanel" class="tab-pane active" id="atracciones">bbb</div>-->
+            <!--    <div role="tabpanel" class="tab-pane" id="actividades">aaa</div>-->
+            <!--  </div>-->
+            
+            <!--</div>-->
+            @if(count($atracciones) > 0)
+            <h3 class="title-section">Atracciones que puedes visitar</h3>
+            <div id="listado" class="tiles">
+            @foreach ($atracciones as $atraccion)
                 <div class="tile">
-                    {{$sector->sectoresConIdiomas[0]->nombre}}
+                    <div class="tile-img @if(is_null($atraccion->portada)) img-error @endif">
+                        
+                    @if(!is_null($atraccion->portada))
+                        
+                        <img src="{{$atraccion->portada->ruta}}" alt="{{$atraccion->portada->text_alternativo}}">
+                    
+                    @else
+                        <img src="/img/brand/72.png" alt="Imagen para {{$atraccion->langContent->first()->nombre}} no disponible"/>
+                
+                    @endif
+                    </div>
+                    <div class="tile-body">
+                        
+                        <div class="tile-caption">
+                            <p class="font-weight-bold"><a href="/atracciones/ver/{{$atraccion->id}}">{{$atraccion->langContent->first()->nombre}}</a></p>
+                        </div>
+                        
+                    </div>
+                    <div class="tile-buttons text-right">
+                            <a class="btn btn-xs btn-success" href="/atracciones/ver/{{$atraccion->id}}" role="button">Ver más <span class="sr-only">acerca de {{$atraccion->langContent->first()->nombre}}</span></a>
+                        </div>
                 </div>
-                @endforeach
+                
+            @endforeach    
             </div>
+            <div class="text-center mb-3">
+                <a class="btn btn-success text-uppercase font-weight-bold" href="/quehacer/index?tipo=2&destinos[]={{$destino->id}}">Ver todas las atracciones de {{$destino->destinoConIdiomas->first()->nombre}}</a>    
+            </div>
+            <br>
+            @endif
+            @if(count($actividades) > 0)
+            <h3 class="title-section">Actividades que puedes realizar</h3>
+            <div id="listado" class="tiles">
+            @foreach ($actividades as $actividad)
+                <div class="tile">
+                    <div class="tile-img @if(count($actividad->multimedia) == 0) img-error @endif">
+                        @if(count($actividad->multimedia) > 0)
+                        
+                            <img src="{{$actividad->multimedia->first()->ruta}}" alt="{{$actividad->multimedia->first()->text_alternativo}}">
+                        
+                        @else
+                            <img src="/img/brand/72.png" alt="Imagen para {{$actividad->langContent->first()->nombre}} no disponible"/>
+                    
+                        @endif
+                        </div>
+                    <div class="tile-body">
+                        
+                        <div class="tile-caption">
+                            <p class="font-weight-bold"><a href="/actividades/ver/{{$actividad->id}}">{{$actividad->langContent->first()->nombre}}</a></p>
+                        </div>
+                        
+                    </div>
+                    <div class="tile-buttons text-right">
+                            <a class="btn btn-xs btn-success" href="/actividades/ver/{{$actividad->id}}" role="button">Ver más <span class="sr-only">acerca de {{$actividad->langContent->first()->nombre}}</span></a>
+                        </div>
+                </div>
+                
+            @endforeach    
+            </div>
+            <div class="text-center">
+                <a class="btn btn-success text-uppercase font-weight-bold" href="/quehacer/index?tipo=1&destinos[]={{$destino->id}}">Ver todas las actividades de {{$destino->destinoConIdiomas->first()->nombre}}</a>    
+            </div>
+            @endif
+            
+            <!--<h3 class="title-section">Sectores</h3>-->
+            <!--<div class="tiles">-->
+            <!--    @foreach ($destino->sectores as $sector)-->
+                    
+            <!--    <div class="tile">-->
+            <!--        <div class="tile-body">-->
+            <!--            <div class="tile-img">-->
+            <!--                {{$sector->multimedia}}-->
+            <!--            </div>-->
+            <!--            <div class="tile-caption">-->
+            <!--                <h4>{{$sector->sectoresConIdiomas->first()->nombre}}</h4>-->
+            <!--            </div>    -->
+            <!--        </div>-->
+                    
+            <!--    </div>-->
+            <!--    @endforeach-->
+            <!--</div>-->
         </div>
     </section>
     @endif

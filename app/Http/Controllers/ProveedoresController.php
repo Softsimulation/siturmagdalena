@@ -55,7 +55,10 @@ class ProveedoresController extends Controller
                 $queryCategoriaProveedoresConIdiomas->select('categoria_proveedores_id', 'nombre')->where('idiomas_id', $idioma);
             }])->select('id');
         }])->whereHas('categoria',function($q) use ($request){
-            $q->where('tipo_proveedores_id', $request->tipo);
+            if($request->tipo != 4){
+                $q->where('tipo_proveedores_id', $request->tipo);    
+            }
+            
         })->whereRaw('lower(razon_social) like lower(?)', ["%{$request->buscar}%"])->select('id', 'razon_social', 'categoria_proveedores_id')->paginate(9);
         //return ['query' => $proveedores];
         
