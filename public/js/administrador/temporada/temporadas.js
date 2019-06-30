@@ -162,6 +162,78 @@ var pp=angular.module('admin.temporadas', ['adminservice','angularUtils.directiv
               
     }
 
+     $scope.Eliminar = function (id) {
+        
+
+            swal({
+                  title: "¿Desea eliminar la encuesta seleccionada?",
+                  text: "¿Esta seguro?",
+                  type: "warning",
+                  showCancelButton: true,
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true,
+                },
+                function(){
+                    setTimeout(function () {
+                        var indice=buscar($scope.temporada.Personas,id);
+                        adminService.Eliminarviaje({ id: $scope.temporada.Personas[indice].persona.id})
+                            .then(function (data) {
+
+                                if (data.success) {
+
+                                    $scope.temporada.Personas.splice(indice, 1);
+                                    swal("Realizado", "Encuesta eliminada exitosamente","success");
+
+                                } else {
+                                    swal("Error",data.error, "error")
+                                }
+
+                            })
+                            .catch(function () {
+                                swal("Error", "No se realizo la solicitud, reinicie la pagina","error")
+                            })
+                    
+                      }, 500);
+                    });       
+
+    }
+
+    $scope.Eliminarhogar = function (id) {
+        
+
+            swal({
+                  title: "¿Desea eliminar el hogar seleccionada?",
+                  text: "¿Esta seguro?",
+                  type: "warning",
+                  showCancelButton: true,
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true,
+                },
+                function(){
+                    setTimeout(function () {
+                        var indice=buscar2($scope.temporada.Hogares,id);
+                        adminService.Eliminarhogar({ id: id})
+                            .then(function (data) {
+
+                                if (data.success) {
+
+                                    $scope.temporada.Hogares.splice(indice, 1);
+                                    swal("Realizado", "Encuesta eliminada exitosamente","success");
+
+                                } else {
+                                    swal("Error",data.error, "error")
+                                }
+
+                            })
+                            .catch(function () {
+                                swal("Error", "No se realizo la solicitud, reinicie la pagina","error")
+                            })
+                    
+                      }, 500);
+                    });       
+
+    }
+
 
     $scope.$watch('id', function () {
         $("body").attr("class", "cbp-spmenu-push charging");
@@ -175,6 +247,28 @@ var pp=angular.module('admin.temporadas', ['adminservice','angularUtils.directiv
                 swal("Error", "Error en la carga, por favor recarga la pagina", "error");
             });
     });
+
+    function buscar(array,id){
+
+        for(let i=0;i<array.length;i++){
+            if(array[i].persona.id==id){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    function buscar2(array,id){
+
+        for(let i=0;i<array.length;i++){
+            if(array[i].id==id){
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     
 }])
