@@ -116,6 +116,9 @@
                                     <td>
                                         @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
                                             <a href="/turismointerno/editarhogar/@{{item.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                            <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Eliminar hogar" ng-click="Eliminarhogar(item.id)">
+                                            <span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar hogar</span>
+                                            </button>
                                         @endif
                                     </td>
                                 </tr>
@@ -199,6 +202,9 @@
                                     <td>
                                         @if(Auth::user()->contienePermiso('edit-encuestaInterno|create-encuestaInterno'))
                                             <a href="/turismointerno/viajesrealizados/@{{item.persona.id}}" class="btn btn-xs btn-default" title="Editar registro"><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Editar</span></a>
+                                            <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Eliminar encuesta" ng-click="Eliminar(item.persona.id)">
+                                            <span class="glyphicon glyphicon-trash"></span><span class="sr-only">Eliminar</span>
+                                            </button>
                                         @endif
                                         <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Historial encuesta" ng-click="historialEncuesta(item.persona)">
                                             <span class="glyphicon glyphicon-list-alt"></span><span class="sr-only">Historial</span>
