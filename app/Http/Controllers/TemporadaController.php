@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Temporada;
 use App\Models\Hogar;
+use App\Models\Edificacion;
 use App\Models\Persona;
 use App\Models\Viaje;
 
@@ -191,6 +192,24 @@ class TemporadaController extends Controller
         $temporada->save();
         
         return ['success'=>true,'estado'=>$temporada->estado];
+        
+    }
+
+    public function postEliminarhogar(Request $request){
+        
+        $hogar=Hogar::find($request->id);
+        if($hogar==null){
+            return ['success'=>false, "error"=>"El hogar seleccionado no existe"];
+        }
+        if($hogar->personas->count()>0){
+            return ['success'=>false, "error"=>"El hogar tiene aun personas asociadas"];
+        }
+
+        $edificacion=Edificacion::find($hogar->edificaciones_id);
+        $hogar->delete();
+        $edificacion->delete();
+              
+        return ["success"=>true];
         
     }
     
