@@ -102,13 +102,13 @@
                                     </a>
                                 </li>
                             @endif
-                            @if(Auth::user()->contienePermiso('descargarDatos-encuestaADHOC'))
+                        
                                 <li>
                                     <a href="javascript:void(0)" ng-click="exportarData(encuesta.id, (encuesta.idiomas|filter:{ 'idiomas_id':1 })[0].nombre)" >
                                         Descargar datos
                                     </a>
                                 </li>
-                            @endif
+                           
                             @if(Auth::user()->contienePermiso('duplicar-encuestaADHOC'))
                                 <li>
                                     <a href="javascript:void(0)" ng-click="duplicarEncuesta(encuesta)" >
