@@ -216,6 +216,7 @@
                                         <li>
                                             <a href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular') && item.actividad == 1 ) && ((item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4) && item.actividad==1)">Encuesta empleo de capacitaciones <span ng-show="item.capacitacion" class="ion-checkmark-round text-success" title="Realizada"></span><span ng-show="!item.capacitacion" class="ion-help text-muted" title="No realizada"></span></a>
                                         </li>
+                                     
                                       </ul>
                                     </div>
                                 @endif
@@ -231,9 +232,21 @@
                                 <!--<div ng-if="((item.estado!='Cerrada' || item.estado!='Cerrada Calculada' || item.estado!='Cerrada sin calcular')&& item.actividad == 1 )">-->
                                 <!--    <a  href="/ofertaempleo/empleadoscaracterizacion/@{{item.id}}" class="btn btn-default btn-sm" title="Editar encuesta empleo capacitaciones" ng-if="(item.estado_id != 7 || item.estado_id != 8 || item.estado_id != 4)&& item.actividad==1"><span class="glyphicon glyphicon-lock"></span></a><p ng-show="item.capacitacion == true">Realizó</p><p ng-show="item.capacitacion != true">No realizó</p>  -->
                                 <!--</div>-->
-                                 <button  id="dLabel" type="button" class="btn btn-xs btn-default" title="Historial encuesta" ng-click="historialEncuesta(item)">
-                                    <span class="glyphicon glyphicon-list-alt"></span><span class="sr-only">Historial</span>
-                                  </button>
+                                  </br>
+                                  <div>
+                                    <button   class="btn btn-default btn-sm" title="Historial encuesta" ng-click="historialEncuesta(item)">
+                                        <span class="glyphicon glyphicon-list-alt"></span><span class="sr-only">Historial</span>
+                                   </button>
+                                   <p >Historial</p> 
+                                    </div>
+                 
+                                   <div>
+                                    <button ng-click="elimarEncuesta(item)" title="Cambiar estado de visualización" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>                               
+                                            <span class="sr-only">Elminar encuesta</span>
+                                    </button>
+                                    <p >Eliminar</p>  
+                                   </div>
                                 
                             </td>
                             
