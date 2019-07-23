@@ -817,8 +817,7 @@ class IndicadoresCtrl extends Controller
             case 64: $data = $this->getDataIndicadorInternoEmisor("costo_paquete_interno_emisor", $request, $idioma, true); break;
             case 65: $data = $this->getDataIndicadorInternoEmisor("financiadores_interno_emisor", $request, $idioma, true); break;
             case 66: $data = $this->getDataIndicadorInternoEmisor("actividades_interno_emisor", $request, $idioma, true); break;
-                     
-            
+                   
             ////////////////////////////////EMISOR/////////////////////////////////////////
             case 14: $data = $this->getDataIndicadorInternoEmisor("motivo_viaje_interno_emisor", $request, $idioma, false); break;  
             case 15: $data = $this->getDataIndicadorInternoEmisor("tipo_alojamiento_interno_emisor", $request, $idioma, false); break;
@@ -853,18 +852,18 @@ class IndicadoresCtrl extends Controller
             case 25: $data = $this->getDataIndicadorPorAnioDB("viajes_emisores_oferta", $request, $idioma); break;
             case 26: $data = $this->getDataIndicadorPorAnioDB("viajes_internos_oferta", $request, $idioma); break;
             
-            case 104: $this->getDataIndicadorPorAnioDB("tarifa_promedio_oferta", $request, $idioma); break;            
-            case 105: $this->getDataIndicadorPorAnioDB("revpar_oferta", $request, $idioma); break;
-            case 107: $this->getDataIndicadorPorAnioMesDB("especialidades_restaurantes_oferta", $request, $idioma); break;
-            case 108: $this->getDataIndicadorPorAnioMesDB("tarifa_especialidades_restaurantes_oferta", $request, $idioma); break;
-            case 109: $this->getDataIndicadorPorAnioMesDB("servicios_agencia_oferta", $request, $idioma); break;
-            case 110: $this->getDataIndicadorPorAnioMesDB("tour_ofrecidos_oferta", $request, $idioma); break;
-            case 111: $this->getDataIndicadorPorAnioMesDB("deportes_ofrecidos_oferta", $request, $idioma); break;
-            case 112: $this->getDataIndicadorPorAnioDB("tasa_transporte_oferta", $request, $idioma); break;
-            case 114: $this->getDataIndicadorPorAnioDB("tarifa_transporte_oferta", $request, $idioma); break;
-            case 115: $this->getDataIndicadorPorAnioDB("tarifa_alquiler_oferta", $request, $idioma); break;
-            case 116: $this->getDataIndicadorPorAnioDB("tasa_alquiler_oferta", $request, $idioma); break;
-            case 117: $this->getDataIndicadorPorAnioMesDB("actividad_comercial_oferta", $request, $idioma); break;            
+            case 104: $data = $this->getDataIndicadorPorAnioDB("tarifa_promedio_oferta", $request, $idioma); break;            
+            case 105: $data = $this->getDataIndicadorPorAnioDB("revpar_oferta", $request, $idioma); break;
+            case 107: $data = $this->getDataIndicadorPorAnioMesDB("especialidades_restaurantes_oferta", $request, $idioma); break;
+            case 108: $data = $this->getDataIndicadorPorAnioMesDB("tarifa_especialidades_restaurantes_oferta", $request, $idioma); break;
+            case 109: $data = $this->getDataIndicadorPorAnioMesDB("servicios_agencia_oferta", $request, $idioma); break;
+            case 110: $data = $this->getDataIndicadorPorAnioMesDB("tour_ofrecidos_oferta", $request, $idioma); break;
+            case 111: $data = $this->getDataIndicadorPorAnioMesDB("deportes_ofrecidos_oferta", $request, $idioma); break;
+            case 112: $data = $this->getDataIndicadorPorAnioDB("tasa_transporte_oferta", $request, $idioma); break;
+            case 114: $data = $this->getDataIndicadorPorAnioDB("tarifa_transporte_oferta", $request, $idioma); break;
+            case 115: $data = $this->getDataIndicadorPorAnioDB("tarifa_alquiler_oferta", $request, $idioma); break;
+            case 116: $data = $this->getDataIndicadorPorAnioDB("tasa_alquiler_oferta", $request, $idioma); break;
+            case 117: $data = $this->getDataIndicadorPorAnioMesDB("actividad_comercial_oferta", $request, $idioma); break;            
 
             ////////////////////////////////EMPLEO/////////////////////////////////////////
             case 27: $data = $this->getDataIndicadorPorAnioTrimestreDB("vinculacion_laboral_empleo", $request, $idioma); break; 
@@ -875,18 +874,16 @@ class IndicadoresCtrl extends Controller
             case 32: $data = $this->getDataIndicadorPorAnioTrimestreDB("remuneracion_promedio_empleo", $request, $idioma); break; 
             case 33: $data = $this->getDataIndicadorPorAnioMesDB("numero_vacantes_empleo", $request, $idioma); break; 
             
-            case 118: $this->getDataIndicadorPorAnioMesDB("edad_empleados_empleo", $request, $idioma); break;            
-            case 119: $this->getDataIndicadorPorAnioMesDB("razon_vacantes_empleo", $request, $idioma); break;            
-            case 120: $this->getDataIndicadorPorAnioMesDB("nivel_educativo_empleo", $request, $idioma); break;
-            
-            
+            case 118: $data = $this->getDataIndicadorPorAnioMesDB("edad_empleados_empleo", $request, $idioma); break;            
+            case 119: $data = $this->getDataIndicadorPorAnioMesDB("razon_vacantes_empleo", $request, $idioma); break;            
+            case 120: $data = $this->getDataIndicadorPorAnioMesDB("nivel_educativo_empleo", $request, $idioma); break;
+                        
             ///////////////////SOSTENIBILIDAD HOGARES/////////////////////////////////////////////
             case 87: $data = $this->getDataSostenibilidadPorAnio("satisfechos_factores_calidad_vida_hogares", $request, $idioma); break;
             case 88: $data = $this->getDataSostenibilidadPorAnio("satisfechos_factores_calidad_patrimonio_hogares", $request, $idioma); break;
             case 89: $data = $this->getDataSostenibilidadPorAnio("impacto_cultural_hogares", $request, $idioma); break; 
             case 90: $data = $this->getDataSostenibilidad2Series('impacto_sociocultural_hogares'); break;
-            
-            
+                        
             ///////////////////////SOSTENIBILIDAD PST///////////////////////////////////
             case 94:  $data = $this->getDataSostenibilidadPorAnio1Serie("habitaciones_accesibles_sost_pst", $request, $idioma); break;
             case 95:  $data = $this->getDataSostenibilidadPorAnio1Serie("esquemas_accesibles_sost_pst", $request, $idioma); break;
