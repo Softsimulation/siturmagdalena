@@ -280,7 +280,7 @@
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="linea in data.lineas | filter:{tipo_nivel:true}">
                             <label>
-                                <input type="checkbox" name="linea" checklist-model="empleo.lineasadmin"  ng-disabled = "nivel1(linea.id)"  checklist-value="linea.id"> @{{linea.nombre}}
+                                <input type="checkbox" name="linea" checklist-model="empleo.lineasadmin"  ng-disabled = "nivel1(linea.id)"   checklist-value="linea.id"> @{{linea.nombre}}
                                  
                                   
                             </label>
@@ -300,7 +300,7 @@
                     <div class="col-md-12">
                         <div class="checkbox" ng-repeat="linea in data.lineas | filter:{tipo_nivel:false}">
                             <label>
-                                <input type="checkbox" name="lineaop" ng-disabled = "nivel2(linea.id)" checklist-model="empleo.lineasopvt"checklist-value="linea.id"> @{{linea.nombre}}
+                                <input type="checkbox" name="lineaop" ng-disabled = "nivel2(linea.id)" checklist-model="empleo.lineasopvt"checklist-value="linea.id"> @{{linea.nombre}} 
                                  
                                   
                             </label>

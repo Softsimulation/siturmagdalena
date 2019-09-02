@@ -31,21 +31,7 @@
         
         getDataPivoTable: function(indicador){
             
-            
-            if(indicador==1 || indicador==2 || indicador==4 || indicador==4 || indicador==5){
-                
-                var floatFormat = $.pivotUtilities.numberFormat({ digitsAfterDecimal: 2 });
-                
-                var aggregators = {
-                                    "Noches":   function () { return $.pivotUtilities.aggregatorTemplates.average()(["cantidad"]) },
-                                    "COP":      function () { return $.pivotUtilities.aggregatorTemplates.average()(["cantidad"]) },
-                                    "%":        function () { return $.pivotUtilities.aggregatorTemplates.sum(floatFormat)(["cantidad"]) },
-                                    "Personas": function () { return $.pivotUtilities.aggregatorTemplates.average()(["cantidad"]) },
-                                    "Nights":   function () { return $.pivotUtilities.aggregatorTemplates.average()(["cantidad"]) },
-                                    "People":   function () { return $.pivotUtilities.aggregatorTemplates.average()(["cantidad"]) }
-                                 };
-            }
-            
+			
             http.get("/indicadores/datapivotable/"+indicador)
                 .then(function(data){
                     
@@ -59,6 +45,41 @@
                         
                         $("#content-main .nav-tabs a:last").css("display", 'block');
                         
+						var aggregators = {};
+            
+            
+						var promedioSitur = $.pivotUtilities.aggregatorTemplates.promedioSitur;
+						var promedioDia = $.pivotUtilities.aggregatorTemplates.promedioDia;
+						var porcentaje = $.pivotUtilities.aggregatorTemplates.fractionOf;
+						var sum = $.pivotUtilities.aggregatorTemplates.sum;				
+						var floatFormat = $.pivotUtilities.numberFormat({ digitsAfterDecimal: 2 });
+                
+						/* var aggregators = {
+										"Noches": function () { return promedioSitur()(["cantidad"]) },
+										"COP": function () { return promedioSitur()(["cantidad"]); },
+										"%": function () { return porcentaje(sum(), "total", null)(["cantidad"]) },
+										"COP por día": function () { return promedioDia()(["Cantidad_Dia"]); },
+							}; */										
+					
+						if(indicador==1){
+							aggregators = { "%": function () { return porcentaje(sum(), "total", null)(["cantidad"]) } };
+						}
+						else if(indicador==2){
+							aggregators = { "%": function () { return porcentaje(sum(), "total", null)(["cantidad"]) } };
+						}
+						else if(indicador==3){
+							aggregators = { "%": function () { return porcentaje(sum(), "total", null)(["cantidad"]) } };
+						}
+						else if(indicador==4){
+							aggregators = { "COP": function () { return promedioSitur()(["cantidad"]); } };
+						}
+						else if(indicador==5){
+							aggregators = { "COP": function () { return promedioSitur()(["cantidad"]); } };
+						}
+						else if(indicador==6){
+							aggregators = { "Noches": function () { return promedioSitur()(["cantidad"]) } };
+						}
+												
                         $("#tablaDinamica").pivotUI(data, {
                             onRefresh: function (config) { config.rows = []; config.cols = []; },
                             aggregators: aggregators,

@@ -60,7 +60,7 @@ angular.module('eventos.editar', [])
                 
                 var portada = null;
                 if (data.portadaIMG != null){
-                    $http.get("../.." + data.portadaIMG.ruta, {responseType: "blob"}).success((response) => {
+                    $http.get(data.portadaIMG.ruta, {responseType: "blob"}).success((response) => {
                         portada = response;
                         $scope.previewportadaIMG.push(portada);
                         $scope.portadaIMGText.push(data.portadaIMG.texto_alternativo);
@@ -68,7 +68,7 @@ angular.module('eventos.editar', [])
                 }
                 var imagenes = [];
                 for (var i = 0; i < data.imagenes.length; i++){
-                    $http.get("../.." + data.imagenes[i].ruta, {responseType: "blob"}).success((response) => {
+                    $http.get(ata.imagenes[i].ruta, {responseType: "blob"}).success((response) => {
                         imagenes.push(response);
                     });
                     $scope.previewImagenesText.push(data.imagenes[i].texto_alternativo);
