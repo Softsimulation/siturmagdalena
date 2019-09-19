@@ -70,9 +70,9 @@
 
                 <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Habitaciones (@{{alojamiento.habitaciones[0].total}} en total) </b>
-                    <span style="float: right;" ng-if="mideOcupacion==1" >Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].habitaciones_ocupadas / (alojamiento.habitaciones[0].total*numero_dias))*100) | number:2 }} % </span>
-                    <span style="float: right;" ng-if="mideOcupacion==0" >Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].habitaciones_ocupadas / (alojamiento.habitaciones[0].total_camas*numero_dias))*100) | number:2 }} % </span>
-                </h3>
+                       <span style="float: right;" ng-show="alojamiento.habitaciones[0].tiene_camas == false ">Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].habitaciones_ocupadas / (alojamiento.habitaciones[0].total*numero_dias))*100) | number:2 }} % </span>
+                     <strong ng-show="alojamiento.habitaciones[0].tiene_camas == true ">Habitaciones Camas (@{{alojamiento.habitaciones[0].total_camas}} en total) </strong> </b>
+                    <span style="float: right;" ng-if="alojamiento.habitaciones[0].tiene_camas == true ">Tasa de ocupación: @{{ ((alojamiento.habitaciones[0].total_camas_ocupadas / (alojamiento.habitaciones[0].total_camas*numero_dias))*100) | number:2 }} % </span>                </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
             <div class="panel-body">
@@ -148,9 +148,10 @@
         <div class="panel panel-success" ng-if="servicios.apartamento">
             <div class="panel-heading">
 
+     
                 <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Apartamentos (@{{alojamiento.apartamentos[0].total}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupación</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.apartamentos[0].capacidad_ocupada / (alojamiento.apartamentos[0].total*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -203,9 +204,9 @@
         <div class="panel panel-success" ng-if="servicios.casa">
             <div class="panel-heading">
 
-                <h3 class="panel-title">
+                   <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Casas (@{{alojamiento.casas[0].total}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupación</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.casas[0].capacidad_ocupadas / (alojamiento.casas[0].total*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -258,9 +259,9 @@
         <div class="panel panel-success" ng-if="servicios.cabana">
             <div class="panel-heading">
 
-                <h3 class="panel-title">
+                    <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Cabañas (@{{alojamiento.cabanas[0].total}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupación</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.cabanas[0].capacidad_ocupada / (alojamiento.cabanas[0].total*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>
@@ -314,9 +315,9 @@
         <div class="panel panel-success" ng-if="servicios.camping"> 
             <div class="panel-heading">
 
-                <h3 class="panel-title">
+                      <h3 class="panel-title">
                     <b><span class="asterik glyphicon glyphicon-asterisk"></span>Camping (@{{alojamiento.campings[0].area}} en total)</b>
-                    <span style="float: right;" >Tasa de ocupación</span>
+                    <span style="float: right;" >Tasa de ocupación: @{{ ((alojamiento.campings[0].capacidad_ocupada / (alojamiento.campings[0].area*numero_dias))*100) | number:2 }} %</span>
                 </h3>
             </div>
             <div class="panel-footer"><b>Complete la tabla</b></div>

@@ -36,6 +36,39 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
               
     }
    
+
+
+   $scope.elimarEncuesta = function (obj) {
+        swal({
+            title: "Eliminar encuesta ",
+            text: "¿Está seguro que desea eliminar la encuesta ?",
+            type: "warning",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+             $("body").attr("class", "charging");
+            proveedorServi.eliminarEncuesta(obj).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push")
+                if (data.success) {
+                    $scope.encuestas.splice($scope.encuestas.indexOf(obj),1)
+                    swal("Exito", "Se realizó la operación exitosamente", "success");
+                } else {
+                    swal("Error", "Se ha manipulado la información, intente de nuevo", "error");
+                }
+            }).catch(function () {
+                swal("Error", "Error en la petición, intente de nuevo", "error");
+            })
+
+        })
+
+
+    }
+
+
    
     $scope.$watch('id', function () {
         $("body").attr("class", "cbp-spmenu-push charging");
@@ -239,6 +272,37 @@ angular.module('proveedoresoferta', ["checklist-model","proveedorServices",'angu
         })
               
     }
+        
+   $scope.elimarEncuesta = function (obj) {
+        swal({
+            title: "Eliminar encuesta ",
+            text: "¿Está seguro que desea eliminar la encuesta ?",
+            type: "warning",
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },
+        function () {
+             $("body").attr("class", "charging");
+            proveedorServi.eliminarEncuesta(obj).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push")
+                if (data.success) {
+                    $scope.encuestas.splice($scope.encuestas.indexOf(obj),1)
+                    swal("Exito", "Se realizó la operación exitosamente", "success");
+                } else {
+                    swal("Error", "Se ha manipulado la información, intente de nuevo", "error");
+                }
+            }).catch(function () {
+                swal("Error", "Error en la petición, intente de nuevo", "error");
+            })
+
+        })
+
+
+    }
+
         
         
       $scope.caracterizacionEmpleo = function(obj){

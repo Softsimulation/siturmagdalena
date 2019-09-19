@@ -94,7 +94,18 @@ app.factory("proveedorServi", ["$http", "$q", function ($http, $q) {
             })
             return promise;
         },
-        
+             eliminarEncuesta: function (model) {
+                var defered = $q.defer();
+                var promise = defered.promise;
+    
+                $http.post('/ofertaempleo/eliminarencuesta',model)
+                .success(function (data) {
+                    defered.resolve(data);
+                }).error(function (err) {
+                    defered.reject(err);
+                })
+                return promise;
+            },
         
     }
 }]);
