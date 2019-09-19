@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,18 +22,22 @@ class Historial_Encuesta_Oferta extends Model
      * @var string
      */
     protected $table = 'historial_encuesta_oferta';
+     public $timestamps = false;
+     
 
     /**
      * @var array
      */
     protected $fillable = ['user_id', 'encuesta_id', 'estado_encuesta_id', 'fecha_cambio'];
 
+
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function aspNetUser()
+    public function user()
     {
-        return $this->belongsTo('App\AspNetUser', 'user_id', '"Id"');
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     /**
@@ -41,14 +45,15 @@ class Historial_Encuesta_Oferta extends Model
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta');
+        return $this->belongsTo('App\Models\Encuesta');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function estadosEncuestum()
+   public function estadosEncuesta()
     {
-        return $this->belongsTo('App\EstadosEncuestum', 'estado_encuesta_id');
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_encuesta_id');
     }
+
 }

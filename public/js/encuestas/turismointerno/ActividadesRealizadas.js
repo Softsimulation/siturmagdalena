@@ -1,265 +1,163 @@
-﻿angular.module('interno.Actividades', [])
-.controller('estancia', function ($scope, $http) {
+angular.module('interno.Actividades', [])
+.controller('estancia', ['$scope', '$filter','serviInterno',function ($scope, $filter,serviInterno,)  {
 
 
     $scope.encuesta = {}
     $scope.MensajeAlojamiento = false
 
 
-
-    $scope.$watch('id', function () {
-        $("body").attr("class", "cbp-spmenu-push charging")
-        $http.get("/EncuestaInterno/GetActividadesRealizadas/" + $scope.id)
-           .success(function (data) {
-               $("body").attr("class", "cbp-spmenu-push")
-               if (data.success) {
-                   $scope.Datos = data.Enlaces;
-                   $scope.encuesta = data.encuesta;
-                   $scope.encuesta.Id = $scope.id;
-                  
-
-
-               } else {
-                   swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-               }
-           }).error(function () {
-               $("body").attr("class", "cbp-spmenu-push")
-               swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-
-           })
+  $scope.$watch('id', function () {
+        if($scope.id != null){
+            
+            $("body").attr("class", "cbp-spmenu-push charging");
+            serviInterno.getDatosEstancia($scope.id).then(function (data) {
+                       $scope.Datos = data.Enlaces;
+                       $scope.encuesta = data.encuesta;
+                       $scope.encuesta.Id = $scope.id;
+                       $("body").attr("class", "cbp-spmenu-push");
+                      
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
+        }
+        
     })
+    
 
-
-
-
-
-    $scope.cambioActividadesRealizadas = function () {
-        $scope.sw = $scope.encuesta.ActividadesRelizadas.indexOf(23)
-
-        if ($scope.sw >= 0) {
-            $scope.encuesta.ActividadesRelizadas = [23];
+    $scope.cambioActividadesRealizadas = function (obj) {
+        
+         for (var i = 0; i < $scope.encuesta.ActividadesRelizadas.length; i++) {
+            if($scope.encuesta.ActividadesRelizadas[i].id == 18){
+                 obj = $scope.encuesta.ActividadesRelizadas[i];
+                 $scope.encuesta.ActividadesRelizadas = [];
+                 $scope.encuesta.ActividadesRelizadas.push(obj);
+                $scope.encuesta.OpcionesActividades = [];
+                $scope.encuesta.SubOpcionesActividades = [];
+            }
+            
         }
+        
+          for (var i = 0; i < obj.opciones_actividades_realizadas_internos.length; i++) {
+                $scope.LimpiarOpcion(obj.opciones_actividades_realizadas_internos[i].id)
+            }
+        
+    
     }
-
-
-
-
-    $scope.quitar = function (es) {
-        if (es.Municipio == $scope.encuesta.Principal) {
-
-            $scope.encuesta.Principal = 0;
-        }
-
-        $scope.encuesta.Estancias.splice($scope.encuesta.Estancias.indexOf(es), 1)
-
-    }
-
-
-    $scope.existe = function (num) {
-
-        if ($scope.encuesta.ActividadesRelizadas != null) {
-            $scope.sw = $scope.encuesta.ActividadesRelizadas.indexOf(num)
-            if ($scope.sw >= 0) {
-                return true;
-            } else {
-
-                if (num == 1) {
-                    $scope.encuesta.AtraccionesP = [];
-                }
-
-                if (num == 2) {
-                    $scope.encuesta.TipoAtraccionesN = [];
-                    $scope.encuesta.AtraccionesN = [];
-
-                }
-
-                if (num == 3) {
-                    $scope.encuesta.TipoAtraccionesM = [];
-                    $scope.encuesta.AtraccionesM = [];
-                }
-
-                if (num == 8) {
-                    $scope.encuesta.ActividadesH = [];
-
-                }
-
-                if (num == 10) {
-                    $scope.encuesta.ActividadesD = [];
-
-                }
-
-
+    
+    
+    $scope.requeridoOpciones = function(obj){
+        
+       for (var i = 0; i < obj.length; i++) {
+            if($scope.existeOpcion(obj[i].id)){
+                
                 return false;
             }
-        } else {
-            return false;
         }
-
+        return true;
     }
-
-
-    $scope.existetipon = function (num) {
-
-        if ($scope.encuesta.TipoAtraccionesN != null) {
-            $scope.sw = $scope.encuesta.TipoAtraccionesN.indexOf(num)
-            if ($scope.sw >= 0) {
+    
+    
+    $scope.LimpiarOpcion = function(obj){
+        
+       for (var i = 0; i < $scope.encuesta.OpcionesActividades.length; i++) {
+            if($scope.encuesta.OpcionesActividades[i].id == obj){
+                
+                $scope.encuesta.OpcionesActividades.splice(i,1)
+            }
+        }
+  
+    }
+    
+    
+      $scope.existeOpcion = function(obj){
+        
+       for (var i = 0; i < $scope.encuesta.OpcionesActividades.length; i++) {
+            if($scope.encuesta.OpcionesActividades[i].id == obj){
+                
                 return true;
-            } else {
-                if (num == 94) {
-                    $scope.encuesta.AtraccionesN = []
-                }
-
-                if (num == 67) {
-                    $scope.encuesta.AtraccionesR = []
-                }
-
-
-
+            }
+        }
+        return false;
+    }
+    
+    $scope.existeActividad= function(obj){
+        
+       for (var i = 0; i < $scope.encuesta.ActividadesRelizadas.length; i++) {
+            if($scope.encuesta.ActividadesRelizadas[i].id == obj){
+                
+                return true;
+            }
+        }
+        return false;
+    }
+    
+     $scope.Opcion = function(obj){
+        
+       for (var i = 0; i < $scope.encuesta.OpcionesActividades.length; i++) {
+            if($scope.encuesta.OpcionesActividades[i].id == obj){
+                
+                return $scope.encuesta.OpcionesActividades[i];
+            }
+        }
+        return false;
+    }
+    
+        
+    $scope.Actividad= function(obj){
+        
+       for (var i = 0; i < $scope.encuesta.ActividadesRelizadas.length; i++) {
+            if($scope.encuesta.ActividadesRelizadas[i].id == obj){
+                
+                return $scope.encuesta.ActividadesRelizadas[i];
+            }
+        }
+        return false;
+    }
+    
+    
+     $scope.requeridoSubOpciones = function(obj){
+        
+       for (var i = 0; i < obj.length; i++) {
+            if($scope.encuesta.SubOpcionesActividades.indexOf(obj[i])  > -1){
+                
                 return false;
             }
-        } else {
-            return false;
         }
-
+        return true;
     }
-
-
-
-    $scope.existetipom = function (num) {
-
-        if ($scope.encuesta.TipoAtraccionesM != null) {
-            $scope.sw = $scope.encuesta.TipoAtraccionesM.indexOf(num)
-            if ($scope.sw >= 0) {
-                return true;
-            } else {
-                if (num == 117) {
-                    $scope.encuesta.AtraccionesM = []
-                }
-
-              
-
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
-
-
-
-
-
-
-    $scope.Validar = function () {
-
-        if ($scope.encuesta.ActividadesRelizadas == null) {
+    
+   
+    
+    
+    
+       $scope.Validar = function(){
+        if($scope.encuesta.ActividadesRelizadas.length == 0){
             return true
-        } else {
-
-
-            if ($scope.encuesta.ActividadesRelizadas.length == 0) {
-                return true
-            } else {
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(1) >= 0) {
-                    if ($scope.encuesta.AtraccionesP.length == 0) {
-                        return true
-
-                    }
+        }
+       for (var i = 0; i < $scope.encuesta.ActividadesRelizadas.length; i++) {
+           var obj = $scope.encuesta.ActividadesRelizadas[i];
+            if(obj.opciones_actividades_realizadas_internos.length > 0){
+                  if($scope.requeridoOpciones(obj.opciones_actividades_realizadas_internos )){
+                    return true
                 }
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(2) >= 0) {
-
-
-                    if ($scope.encuesta.TipoAtraccionesN.length == 0) {
-                        return true
-
-                    } else {
-
-
-                        if ($scope.encuesta.TipoAtraccionesN.indexOf(94) >= 0) {
-
-                            if ($scope.encuesta.AtraccionesN.length == 0) {
-                                return true
-
-                            }
-
+                for (var k = 0; k < obj.opciones_actividades_realizadas_internos.length; k++) {
+                    var obj2 = obj.opciones_actividades_realizadas_internos[k];
+             
+                    if(obj2.sub_opciones_actividades_realizadas_internos.length > 0 && $scope.existeOpcion(obj2.id)){
+                        
+                        if($scope.requeridoSubOpciones(obj2.sub_opciones_actividades_realizadas_internos)){
+                            return true
                         }
-
-
-
-                        if ($scope.encuesta.TipoAtraccionesN.indexOf(67) >= 0) {
-
-                            if ($scope.encuesta.AtraccionesR.length == 0) {
-                                return true
-
-                            }
-
-                        }
-
-
-
                     }
-
-
-                }
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(3) >= 0) {
-
-
-                    if ($scope.encuesta.TipoAtraccionesM.length == 0) {
-                        return true
-
-                    } else {
-
-
-                        if ($scope.encuesta.TipoAtraccionesM.indexOf(117) >= 0) {
-
-                            if ($scope.encuesta.AtraccionesM.length == 0) {
-                                return true
-
-                            }
-
-                        }
-
-                    }
-
-
-                }
-
-
-
-
-
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(8) >= 0) {
-                    if ($scope.encuesta.ActividadesH.length == 0) {
-                        return true
-
-                    }
-                }
-
-                if ($scope.encuesta.ActividadesRelizadas.indexOf(10) >= 0) {
-                    if ($scope.encuesta.ActividadesD.length == 0) {
-                        return true
-
-                    }
-                }
-
+            }
+                
             }
         }
-
-        return false
-
+        return false;
     }
-
-
-
-
-
+    
+    
 
     $scope.guardar = function () {
 
@@ -273,38 +171,32 @@
         $scope.errores = null
         $("body").attr("class", "cbp-spmenu-push charging");
 
-        $http.post('/EncuestaInterno/CreateActividades', $scope.encuesta)
-                       .success(function (data) {
-                           if (data.success == true) {
-                               swal({
-                                   title: "Realizado",
-                                   text: "Se ha guardado satisfactoriamente la sección.",
-                                   type: "success",
-                                   timer: 1000,
-                                   showConfirmButton: false
-                               });
-                               setTimeout(function () {
-                                   window.location.href = "/EncuestaInterno/Transporte/" + $scope.id;
-                                   
-                             
 
-
-
-
-                               }, 1000);
-
-
-                           } else {
-                               swal("Error", "Por favor corrija los errores", "error")
-                               $scope.errores = data.errores;
-                           }
-                       }).error(function () {
-                           $("body").attr("class", "cbp-spmenu-push")
-                           swal("Error", "Error en la carga, por favor recarga la pagina", "error")
-                       })
+       serviInterno.guardarSeccionEstancia($scope.encuesta).then(function (data) {
+                $("body").attr("class", "cbp-spmenu-push");
+                if (data.success == true) {
+                    swal({
+                        title: "Realizado",
+                        text: "Se ha guardado satisfactoriamente la sección.",
+                        type: "success",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function () {
+                        window.location.href = "/turismointerno/transporte/" + $scope.id;
+                    }, 1000);
+    
+    
+                } else {
+                    swal("Error", "Por favor corrija los errores", "error");
+                    $scope.errores = data.errores;
+                }
+            }).catch(function () {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "No se realizo la solicitud, reinicie la página");
+            })
     }
 
 
 
-})
-
+}])

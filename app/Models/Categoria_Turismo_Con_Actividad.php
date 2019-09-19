@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,9 +28,9 @@ class Categoria_Turismo_Con_Actividad extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function actividade()
+    public function actividad()
     {
-        return $this->belongsTo('App\Actividade', 'actividades_id');
+        return $this->belongsTo('App\Models\Actividades', 'actividades_id');
     }
 
     /**
@@ -38,6 +38,6 @@ class Categoria_Turismo_Con_Actividad extends Model
      */
     public function categoriaTurismo()
     {
-        return $this->belongsTo('App\CategoriaTurismo');
+        return $this->belongsTo('App\Models\Categoria_Turismo', 'categoria_turismo_id');
     }
 }

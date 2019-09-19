@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,11 +32,11 @@ class Perfil_Usuario extends Model
     protected $fillable = ['user_create', 'user_update', 'estado', 'created_at', 'updated_at'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function perfilesUsuariosConProveedores()
     {
-        return $this->hasMany('App\PerfilesUsuariosConProveedore', 'perfiles_usuarios_id');
+        return $this->belongsToMany('App\Models\Proveedor', 'perfiles_usuarios_con_proveedores', 'perfiles_usuarios_id', 'proveedores_id');
     }
 
     /**
@@ -44,7 +44,7 @@ class Perfil_Usuario extends Model
      */
     public function perfilesUsuariosConEventos()
     {
-        return $this->hasMany('App\PerfilesUsuariosConEvento', 'perfiles_usuarios_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_eventos', 'perfiles_usuarios_id', 'eventos_id');
     }
 
     /**
@@ -52,15 +52,15 @@ class Perfil_Usuario extends Model
      */
     public function perfilesUsuariosConIdiomas()
     {
-        return $this->hasMany('App\PerfilesUsuariosConIdioma', 'perfiles_usuarios_id');
+        return $this->hasMany('App\Models\Perfil_Usuario_Con_Idioma', 'perfiles_usuarios_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function perfilesUsuariosConAtracciones()
     {
-        return $this->hasMany('App\PerfilesUsuariosConAtraccione', 'perfiles_usuarios_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_atracciones', 'perfiles_usuarios_id', 'atracciones_id');
     }
 
     /**
@@ -68,6 +68,6 @@ class Perfil_Usuario extends Model
      */
     public function perfilesUsuariosConActividades()
     {
-        return $this->hasMany('App\PerfilesUsuariosConActividade', 'perfiles_usuarios_id');
+       return $this->belongsToMany('App\Models\Perfil_Usuario_Con_Actividad', 'perfiles_usuarios_con_actividades', 'perfiles_usuarios_id', 'actividades_id');
     }
 }

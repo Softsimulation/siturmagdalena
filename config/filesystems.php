@@ -42,7 +42,16 @@ return [
     */
 
     'disks' => [
-
+        'Noticias' => [
+            'driver' => 'local',
+            'root' => public_path().'/Noticias',
+            'visibility' => 'public',
+        ],
+        'Sliders' => [
+            'driver' => 'local',
+            'root' => public_path().'/Sliders',
+            'visibility' => 'public',
+        ],
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
@@ -53,7 +62,65 @@ return [
             'root' => storage_path('app/public'),
             'visibility' => 'public',
         ],
+        'multimedia-informacion-departamento' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/informacion-departamento',
+            'visibility' => 'public',
+        ],
+        'multimedia-informes' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/informes',
+            'visibility' => 'public',
+        ],
+        
+        
+        'multimedia-atraccion' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/atracciones',
+            'visibility' => 'public',
+        ],
+        
+        'multimedia-actividad' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/actividades',
+            'visibility' => 'public',
+        ],
+        
+        'multimedia-destino' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/destinos',
+            'visibility' => 'public',
+        ],
+        
+        'multimedia-evento' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/eventos',
+            'visibility' => 'public',
+        ],
 
+        'multimedia-ruta' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/rutas',
+            'visibility' => 'public',
+        ],
+        
+        'multimedia-proveedor' => [
+            'driver' => 'local',
+            'root' => public_path().'/multimedia/proveedores',
+            'visibility' => 'public',
+        ],
+        'Publicaciones' => [
+           'driver' => 'local',
+           'root' => public_path().'/Publicaciones',
+           'visibility' => 'public',
+       ],
+        
+        'HojasDeVida' => [
+           'driver' => 'local',
+           'root' => public_path().'/HojasDeVida',
+           'visibility' => 'public',
+       ],
+        
         's3' => [
             'driver' => 's3',
             'key' => 'your-key',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,7 +38,7 @@ class Categoria_Turismo extends Model
      */
     public function tipoTurismo()
     {
-        return $this->belongsTo('App\TipoTurismo');
+        return $this->belongsTo('App\Models\Tipo_Turismo', 'tipo_turismo_id');
     }
 
     /**
@@ -46,7 +46,7 @@ class Categoria_Turismo extends Model
      */
     public function categoriaTurismoConIdiomas()
     {
-        return $this->hasMany('App\CategoriaTurismoConIdioma');
+        return $this->hasMany('App\Models\Categoria_Turismo_Con_Idioma', 'categoria_turismo_id');
     }
 
     /**
@@ -54,15 +54,15 @@ class Categoria_Turismo extends Model
      */
     public function categoriaTurismoConEventos()
     {
-        return $this->hasMany('App\CategoriaTurismoConEvento');
+        return $this->belongsToMany('App\Models\Categoria_Turismo_Con_Evento', 'categoria_turismo_con_eventos', 'categoria_turismo_id', 'eventos_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categoriaTurismoConProveedores()
     {
-        return $this->hasMany('App\CategoriaTurismoConProveedore');
+        return $this->belongsToMany('App\Models\Proveedor', 'categoria_turismo_con_proveedores', 'categoria_turismo_id', 'proveedores_id');
     }
 
     /**
@@ -70,14 +70,14 @@ class Categoria_Turismo extends Model
      */
     public function categoriaTurismoConActividades()
     {
-        return $this->hasMany('App\CategoriaTurismoConActividade');
+        return $this->belongsToMany('App\Models\Categoria_Turismo_Con_Actividad', 'categoria_turismo_con_actividades', 'categoria_turismo_id', 'actividades_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categoriaTurismoConAtracciones()
     {
-        return $this->hasMany('App\CategoriaTurismoConAtraccione');
+        return $this->belongsToMany('App\Models\Atracciones', 'categoria_turismo_con_atracciones', 'categoria_turismo_id', 'atracciones_id');
     }
 }

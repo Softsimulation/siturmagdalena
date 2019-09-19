@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +16,8 @@ class Viaje_Turismo_Otro extends Model
      * 
      * @var string
      */
+     public $timestamps = false;
+     public $incrementing = false;
     protected $table = 'viajes_turismos_otro';
 
     /**
@@ -30,7 +32,7 @@ class Viaje_Turismo_Otro extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    //protected $incrementing = false;
 
     /**
      * @var array
@@ -42,6 +44,6 @@ class Viaje_Turismo_Otro extends Model
      */
     public function viajesTurismo()
     {
-        return $this->belongsTo('App\ViajesTurismo');
+        return $this->belongsTo('App\Models\Viaje_Turismo');
     }
 }

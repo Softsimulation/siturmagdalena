@@ -5,7 +5,7 @@
 @section('estilos')
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
     </style>
     <style>
@@ -41,8 +41,8 @@
 
 @section('content')
     
-
 <div class="container">
+    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>Errores:</b></label>
         <br />
@@ -57,14 +57,14 @@
                 <!-- P1. Grupo de Viaje-->
                 <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>Grupo de Viaje</b></h3>
             </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
+            <div class="panel-footer"><b>Presione aquí para desplegar los grupos de viaje</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <select name="grupo" class="form-control" ng-model="encuesta.Grupo" ng-required="true">
+                        <select name="grupo" class="form-control" ng-model="encuesta.Grupo" ng-options="item for item in grupos" ng-required="true">
                             <!--P1Select1. Presione aquí para seleccionar un grupo-->
                             <option value="" disabled>Presione aquí para seleccionar algún grupo</option>
-                            <option ng-repeat="item in grupos" value="@{{item}}">@{{item}}</option>
+                            <!--<option ng-repeat="item in grupos" value="@{{item}}">@{{item}}</option>-->
                         </select>
                         <span ng-show="DatosForm.$submitted || DatosForm.grupo.$touched">
                             <!--P1Alert1. El campo grupo de Viaje es requerido.-->
@@ -86,7 +86,7 @@
                         <select class="form-control" name="encuestador" ng-model="encuesta.Encuestador" ng-required="true">
                             <!--P2Select1. Presione aquí para seleccionar un encuestador-->
                             <option value="" disabled>Presione aquí para seleccionar un encuestador</option>
-                            <option ng-repeat="item in encuestadores" value="@{{item.id}}">@{{item.asp_net_user.UserName}}</option>
+                            <option ng-repeat="item in encuestadores" value="@{{item.id}}">@{{item.user.nombre}}</option>
                         </select>
                         <span class="text-danger" ng-show="DatosForm.$submitted || DatosForm.encuestador.$touched">
                             <!--P2Alert1. El campo encuestador es requerido.-->
@@ -146,7 +146,7 @@
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-8 col-md-8">
                         <div class="form-group">
                             <!--P4P1. Nombre del Encuestado-->
                             <label for="inputNombreEncuestado" class="col-xs-12 control-label">Nombre del Encuestado</label>
@@ -160,7 +160,18 @@
                                 </span>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label for="ocupacion_persona_id" class="col-xs-12 control-label">Ocupación</label>
+                            <div class="col-xs-12">
+                                <select class="form-control" id="ocupacion_persona_id" ng-model="encuesta.ocupacion_persona_id" name="ocupacion_persona_id" required>
+                                    <option value="" disabled>Seleccione ocupación</option>
+                                    <option ng-repeat="item in ocupaciones" value="@{{item.id}}">@{{item.nombre}}</option>
+                                </select>
+                                <span class="label label-danger" ng-show="(DatosForm.$submitted || DatosForm.ocupacion_persona_id.$touched)  && DatosForm.ocupacion_persona_id.$error.required">*El campo es requerido</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -169,10 +180,8 @@
 
                             <div class="col-xs-12">
                                 <!--P4P3Input1. Ingrese su email-->
-                                <input type="email" class="form-control" name="email" placeholder="Ingrese su email" ng-model="encuesta.Email" ng-required="true" />
+                                <input type="email" class="form-control" name="email" placeholder="Ingrese su email" ng-model="encuesta.Email" />
                                 <span ng-show="DatosForm.$submitted || DatosForm.email.$touched">
-                                    <!--P4P2Alert1. El campo email es requerido-->
-                                    <span class="label label-danger" ng-show="DatosForm.email.$error.required">*El campo email es requerido</span>
                                     <!--P4P2Alert2. El campo email no es un email válido-->
                                     <span class="label label-danger" ng-show="DatosForm.email.$error.email">*El campo email no es un email válido</span>
                                 </span>
@@ -241,7 +250,7 @@
 
                             <div class="col-xs-12">
                                 <!--P4P5Input1. Ingrese su teléfono celular-->
-                                <input type="text" class="form-control" id="inputCelular" name="celular" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
+                                <input type="text" class="form-control" id="inputCelular" name="celular"  placeholder="Ingrese su teléfono celular" ng-model="encuesta.Celular" />
                                 <span ng-show="DatosForm.$submitted || DatosForm.celular.$touched">
                                     <span class="label label-danger" ng-show="DatosForm.celular.$error.pattern">*El celular no tiene un formato válido</span>
                                 </span>
@@ -361,7 +370,7 @@
         <div class="panel panel-success" ng-if="pais_residencia != 47">
             <div class="panel-heading p1">
                 <!-- P5. ¿Cual fue su destino principal en colombia?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cual fue su destino principal en colombia?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue su destino principal en Colombia?</b></h3>
             </div>
             <div class="panel-footer"><b>Complete la siguiente información</b></div>
             <div class="panel-body">
@@ -409,13 +418,13 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <!-- P6. ¿Cuál fué el motivo principal para venir al departamento del Magdalena?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fué el motivo principal para venir al departamento del Magdalena?</b></h3>
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Cuál fue el motivo principal para venir al departamento del Magdalena?</b></h3>
             </div>
             <div class="panel-footer"><b>Pregunta con selección única</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in motivos">
+                        <div class="radio" ng-repeat="item in motivos | orderBy: 'peso'">
                             <label>
                                 <input type="radio" ng-change="cambiomotivo()" name="motivo" ng-model="encuesta.Motivo" value="@{{item.id}}" ng-required="true">@{{item.motivos_viaje_con_idiomas[0].nombre}} <input type="text" class="form-control" name="otro" ng-model="encuesta.Otro" ng-change="otro()" ng-if="item.id == 18" />
                             </label>
@@ -468,57 +477,57 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-success">
-            <div class="panel-heading">
+        <!--<div class="panel panel-success">-->
+        <!--    <div class="panel-heading">-->
                 <!-- P7. ¿Quien va a diligenciar la encuesta?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quien va a diligenciar la encuesta?</b></h3>
-            </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <select class="form-control" name="actor" ng-model="encuesta.Actor" ng-required="true">
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span> ¿Quién va a diligenciar la encuesta?</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <select class="form-control" name="actor" ng-model="encuesta.Actor" ng-required="true">-->
                             <!--P7Op1. Selecciona una persona-->
-                            <option value="" disabled>Selecciona una persona</option>
+        <!--                    <option value="" disabled>Selecciona una persona</option>-->
                             <!--P7Op2. Visitante-->
-                            <option value="true">Visitante</option>
+        <!--                    <option value="true">Visitante</option>-->
                             <!--P7Op3. Encuestador-->
-                            <option value="false">Encuestador</option>
-                        </select>
-                        <span ng-show="DatosForm.$submitted || DatosForm.actor.$touched">
+        <!--                    <option value="false">Encuestador</option>-->
+        <!--                </select>-->
+        <!--                <span ng-show="DatosForm.$submitted || DatosForm.actor.$touched">-->
                             <!--P7Alert1. Encuestador-->
-                            <span class="label label-danger" ng-show="DatosForm.actor.$error.required">*El campo diligenciar encuesta es requerido</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-success" ng-if="encuesta.Actor=='true'">
-            <div class="panel-heading">
+        <!--                    <span class="label label-danger" ng-show="DatosForm.actor.$error.required">*El campo diligenciar encuesta es requerido</span>-->
+        <!--                </span>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="panel panel-success" ng-if="encuesta.Actor=='true'">-->
+        <!--    <div class="panel-heading">-->
                 <!-- P7. ¿Quien va a diligenciar la encuesta?-->
-                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿En que idioma se va a diligenciar la encuesta?</b></h3>
-            </div>
-            <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <select class="form-control" name="idioma" ng-model="encuesta.Idioma" ng-required="encuesta.Actor">
+        <!--        <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿En que idioma se va a diligenciar la encuesta?</b></h3>-->
+        <!--    </div>-->
+        <!--    <div class="panel-footer"><b>Presione aquí para desplegar las opciones</b></div>-->
+        <!--    <div class="panel-body">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-md-12">-->
+        <!--                <select class="form-control" name="idioma" ng-model="encuesta.Idioma" ng-required="encuesta.Actor">-->
                             <!--P7Op1. Selecciona una opción-->
-                            <option value="" disabled>Seleccione una opcion</option>
+        <!--                    <option value="" disabled>Seleccione una opcion</option>-->
                             <!--P7Op2. Español-->
-                            <option value="false">Español</option>
+        <!--                    <option value="false">Español</option>-->
                             <!--P7Op3. Inglés-->
-                            <option value="true">Inglés</option>
+        <!--                    <option value="true">Inglés</option>-->
 
-                        </select>
-                        <span ng-show="DatosForm.$submitted || DatosForm.idioma.$touched">
+        <!--                </select>-->
+        <!--                <span ng-show="DatosForm.$submitted || DatosForm.idioma.$touched">-->
                             <!--P7Alert1. Encuestador-->
-                            <span class="label label-danger" ng-show="DatosForm.actor.idioma.required">*El campo es requerido</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--                    <span class="label label-danger" ng-show="DatosForm.actor.idioma.required">*El campo es requerido</span>-->
+        <!--                </span>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
         <div class="row" style="text-align:center">
             <input type="submit" class="btn btn-raised btn-success" ng-click="guardar()" value="Siguiente" />
         </div>

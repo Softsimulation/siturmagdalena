@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,7 +21,10 @@ class Viaje_Turismo extends Model
      * 
      * @var string
      */
+     public $timestamps = false;
+     //public $incrementing = false;
     protected $table = 'viajes_turismos';
+    
 
     /**
      * @var array
@@ -41,15 +44,15 @@ class Viaje_Turismo extends Model
      */
     public function personasDestinoConViajesTurismos()
     {
-        return $this->hasMany('App\PersonasDestinoConViajesTurismo', 'viajes_turismos_id');
+        return $this->hasMany('App\Models\Persona_Destino_Con_Viaje_Turismo', 'viajes_turismos_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function planesSantamartum()
+    public function planesSantamarta()
     {
-        return $this->hasOne('App\PlanesSantamartum', 'viajes_turismos_id');
+        return $this->hasOne('App\Models\Plan_Santamarta', 'viajes_turismos_id');
     }
 
     /**
@@ -57,7 +60,7 @@ class Viaje_Turismo extends Model
      */
     public function serviciosAgencias()
     {
-        return $this->belongsToMany('App\ServiciosAgencia', 'servicios_agencias_has_viaje_turismo', 'viaje_turismo_id', 'servicios_agencias_id');
+        return $this->belongsToMany('App\Models\Servicio_Agencia', 'servicios_agencias_has_viaje_turismo', 'viaje_turismo_id', 'servicios_agencias_id');
     }
 
     /**
@@ -65,6 +68,6 @@ class Viaje_Turismo extends Model
      */
     public function viajesTurismosOtro()
     {
-        return $this->hasOne('App\ViajesTurismosOtro', 'viajes_turismo_id');
+        return $this->hasOne('App\Models\Viaje_Turismo_Otro', 'viajes_turismo_id');
     }
 }

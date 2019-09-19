@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +28,6 @@ class Servicio_Agencia extends Model
      */
     public function viajesTurismos()
     {
-        return $this->belongsToMany('App\ViajesTurismo', 'servicios_agencias_has_viaje_turismo', 'servicios_agencias_id', 'viaje_turismo_id');
+        return $this->belongsToMany('App\Models\ViajesTurismo', 'servicios_agencias_has_viaje_turismo', 'servicios_agencias_id', 'viaje_turismo_id');
     }
 }

@@ -1,14 +1,16 @@
-﻿@{
-    ViewBag.Title = "Transporte utilizado - Encuesta interno y emisor :: SITUR Magdalena";
-    Layout = "~/Views/Shared/_encuestaInternoLayout.cshtml";
 
-}
-@section estilos{
+@extends('layout._encuestaInternoLayout')
+
+@section('Title','Transporte utilizado - Encuesta interno y emisor :: SITUR Atlántico')
+
+
+@section('estilos')
     <style>
         .title-section {
-            background-color: #4caf50 !important;
+            background-color: #16469e !important;
         }
-
+    </style>
+    <style>
         .carga {
             display: none;
             position: fixed;
@@ -40,23 +42,19 @@
             padding: .16em .5em;
         }
     </style>
-}
-@{
-    ViewBag.TitleSection = "Transporte utilizado";
-
-}
-@{
-    ViewBag.Progreso = "60%";
-    ViewBag.NumSeccion = "60%";
-}
-
-<div class="main-page" ng-controller="transporte">
-    <input type="hidden" ng-model="id" ng-init="id=@ViewBag.id" />
+@endsection
+@section('TitleSection','Transporte utilizado')
+@section('Progreso','60%')
+@section('NumSeccion','60%')
+@section('Control','ng-controller="transporte"')
+@section('contenido')
+<div class="main-page">
+    <input type="hidden" ng-model="id" ng-init="id={{$id}}" />
     <div class="alert alert-danger" ng-if="errores != null">
         <label><b>@Resource.EncuestaMsgError:</b></label>
         <br />
-        <div ng-repeat="error in errores" ng-if="error.errores.length>0">
-            -{{error.errores[0].ErrorMessage}}
+        <div ng-repeat="error in errores" ng-if="error.length>0">
+            -@{{error[0]}}
         </div>
     </div>
     <form role="form" name="transForm" novalidate>
@@ -70,11 +68,11 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="radio" ng-repeat="item in transportes" ng-if="item.Id != 10">
+                        <div class="radio" ng-repeat="item in transportes" ng-if="item.id != 10">
                             <label>
-                                <input type="radio" name="mover" ng-value="item.Id" ng-model="transporte.Mover" ng-required="true"> {{item.Nombre}}
+                                <input type="radio" name="mover" ng-value="item.id" ng-model="transporte.Mover" ng-required="true"> @{{item.nombre}}
                             </label>
-                            <i ng-if="item.Id==6" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="left" title="@Resource.AyudaTipoTransporte"
+                            <i ng-if="item.id==6" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="left" title="@Resource.AyudaTipoTransporte"
                                style="text-align:right;">
                             </i>
                         </div>
@@ -100,10 +98,81 @@
                 </div>
             </div>
         </div>
+        
+        <div ng-if="transporte.Mover == 5" class="panel panel-success">
+            <div class="panel-heading">
+                <!-- Nombre de la empresa de transporte-->
+                <h3 class="panel-title"><b> ¿El alquiler de vehículo se realizó?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta abierta</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="alquilado" ng-value="true" ng-model="transporte.alquilado" ng-required="transporte.Mover == 5"> En el Magdalena
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="alquilado" ng-value="false" ng-model="transporte.alquilado" ng-required="transporte.Mover == 5"> Fuera del Magdalena
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="transForm.$submitted || transForm.despla.$touched">
+                    <span class="label label-danger" ng-show="transForm.despla.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <!-- ¿Qué tipo de transporte utilizó para recorrer-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Tipo de transporte más utilizado para desplazarse durante su estancia en el destino visitado?</b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta de selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in transporte_interno">
+                            <label>
+                                <input type="radio" name="despla" ng-value="item.id" ng-model="transporte.Desplazarse" ng-required="true"> @{{item.nombre}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="transForm.$submitted || transForm.despla.$touched">
+                    <span class="label label-danger" ng-show="transForm.despla.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <!-- ¿Qué tipo de transporte utilizó para recorrer-->
+                <h3 class="panel-title"><b><span class="asterik glyphicon glyphicon-asterisk"></span>¿Tipo de transporte para salir del destino visitado? </b></h3>
+            </div>
+            <div class="panel-footer"><b>Pregunta de selección única</b></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio" ng-repeat="item in transporte_interno">
+                            <label>
+                                <input type="radio" name="salir" ng-value="item.id" ng-model="transporte.Salir" ng-required="true"> @{{item.nombre}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <span ng-show="transForm.$submitted || transForm.salir.$touched">
+                    <span class="label label-danger" ng-show="transForm.salir.$error.required">* El campo es requerido.</span>
+                </span>
+            </div>
+        </div>
 
         <div class="row" style="text-align:center">
-            <a href="/EncuestaInterno/PasoTransporte/{{id}}" class="btn btn-raised btn-default">@Resource.EncuestaBtnAnterior</a>
-            <input type="submit" class="btn btn-raised btn-success" value="@Resource.EncuestaBtnSiguiente" ng-click="guardar()">
+             <a href="/turismointerno/actividadesrealizadas/{{$id}}" class="btn btn-raised btn-default">{{trans('resources.EncuestaBtnAnterior')}}</a>
+            <input type="submit" class="btn btn-raised btn-success" value="{{trans('resources.EncuestaBtnSiguiente')}}" ng-click="guardar()">
         </div>
         <br />
     </form>
@@ -112,3 +181,4 @@
 
     </div>
 </div>
+@endsection

@@ -39,7 +39,11 @@ class Actividades extends Model
      */
     public function categoriaTurismoConActividades()
     {
-        return $this->hasMany('App\CategoriaTurismoConActividade', 'actividades_id');
+        return $this->hasMany('App\Models\Categoria_Turismo_Con_Actividad', 'actividades_id');
+    }
+    public function categoriaTurismo()
+    {
+        return $this->categoriaTurismoConActividades();
     }
 
     /**
@@ -55,7 +59,18 @@ class Actividades extends Model
      */
     public function multimediasActividades()
     {
-        return $this->hasMany('App\MultimediasActividade', 'actividades_id');
+        return $this->hasMany('App\Models\Multimedia_Actividad', 'actividades_id');
+    }
+    
+    public function multimedia()
+    {
+        return $this->multimediasActividades();
+    }
+    
+    public function getPortadaAttribute()
+    {
+        return $this->multimedia()->where('portada',true)->first();
+        
     }
 
     /**
@@ -63,15 +78,30 @@ class Actividades extends Model
      */
     public function perfilesUsuariosConActividades()
     {
-        return $this->hasMany('App\PerfilesUsuariosConActividade', 'actividades_id');
+        return $this->hasMany('App\Models\Perfil_Usuario_Con_Actividad', 'actividades_id');
+    }
+    public function perfilesUsuarios()
+    {
+        return $this->perfilesUsuariosConActividades();
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function sitiosConActividades()
     {
-        return $this->hasMany('App\SitiosConActividade', 'actividades_id');
+        return $this->belongsToMany('App\Models\Sitio', 'sitios_con_actividades', 'actividades_id', 'sitios_id');
+    }
+    
+    public function sitio()
+    {
+        return $this->sitiosConActividades();
+    }
+    
+    
+    public function destino()
+    {
+        return $this->sitiosConActividades();
     }
 
     /**
@@ -81,13 +111,28 @@ class Actividades extends Model
     {
         return $this->hasMany('App\Models\Actividad_Con_Idioma', 'actividades_id');
     }
+    
+    public function langContent()
+    {
+        return $this->actividadesConIdiomas();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function aspNetUsers()
     {
-        return $this->belongsToMany('App\AspNetUser', 'actividades_favoritas', 'actividades_id', 'usuario_id');
+        return $this->belongsToMany('App\Models\AspNetUser', 'actividades_favoritas', 'actividades_id', 'usuario_id');
+    }
+    
+    public function esFavorito()
+    {
+        return $this->aspNetUsers();
+    }
+    
+    public function getEsfavoritoAttribute()
+    {
+        return count($this->esFavorito()->get());
     }
 
     /**
@@ -104,5 +149,13 @@ class Actividades extends Model
     public function planificadorActividades()
     {
         return $this->hasMany('App\PlanificadorActividade', 'actividades_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function actividadesProveedores()
+    {
+        return $this->belongsToMany('App\Models\Actividades', 'actividades_proveedores', 'actividad_id', 'proveedor_id');
     }
 }

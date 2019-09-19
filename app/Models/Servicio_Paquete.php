@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +33,7 @@ class Servicio_Paquete extends Model
      */
     public function visitantePaqueteTuristicos()
     {
-        return $this->belongsToMany('App\VisitantePaqueteTuristico', 'servicios_incluidos_paquete', null, 'visitante_id');
+        return $this->belongsToMany('App\Models\Visitante_Paquete_Turistico', 'servicios_incluidos_paquete', 'servicios_paquete_id', 'visitante_id');
     }
 
     /**
@@ -41,6 +41,6 @@ class Servicio_Paquete extends Model
      */
     public function serviciosPaqueteConIdiomas()
     {
-        return $this->hasMany('App\ServiciosPaqueteConIdioma');
+        return $this->hasMany('App\Models\ServiciosPaqueteConIdioma');
     }
 }

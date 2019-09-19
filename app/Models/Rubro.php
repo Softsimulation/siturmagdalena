@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +26,7 @@ class Rubro extends Model
      */
     public function gastosVisitantes()
     {
-        return $this->hasMany('App\GastosVisitante', 'rubros_id');
+        return $this->hasMany('App\Models\Gasto_Visitante', 'rubros_id');
     }
 
     /**
@@ -34,6 +34,6 @@ class Rubro extends Model
      */
     public function rubrosConIdiomas()
     {
-        return $this->hasMany('App\RubrosConIdioma', 'rubros_id');
+        return $this->hasMany('App\Models\Rubro_Con_Idioma', 'rubros_id');
     }
 }

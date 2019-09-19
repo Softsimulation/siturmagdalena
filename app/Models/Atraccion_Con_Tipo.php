@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,7 @@ class Atraccion_Con_Tipo extends Model
      */
     public function atraccione()
     {
-        return $this->belongsTo('App\Atraccione', 'atracciones_id');
+        return $this->belongsTo('App\Models\Atracciones', 'atracciones_id');
     }
 
     /**
@@ -38,6 +38,6 @@ class Atraccion_Con_Tipo extends Model
      */
     public function tipoAtraccione()
     {
-        return $this->belongsTo('App\TipoAtraccione', 'tipo_atracciones_id');
+        return $this->belongsTo('App\Models\Tipo_Atraccion', 'tipo_atracciones_id');
     }
 }

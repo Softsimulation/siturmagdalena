@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,7 +46,7 @@ class Actividad extends Model
      */
     public function categoriaTurismoConActividades()
     {
-        return $this->hasMany('App\CategoriaTurismoConActividade', 'actividades_id');
+        return $this->belongsToMany('App\Models\Categoria_Turismo', 'categoria_turismo_con_actividades', 'actividades_id', 'categoria_turismo_id');
     }
 
     /**
@@ -54,7 +54,7 @@ class Actividad extends Model
      */
     public function comentariosActividads()
     {
-        return $this->hasMany('App\ComentariosActividad', 'actividad_id');
+        return $this->hasMany('App\Models\Comentario_Actividad', 'actividad_id');
     }
 
     /**
@@ -62,7 +62,7 @@ class Actividad extends Model
      */
     public function multimediasActividades()
     {
-        return $this->hasMany('App\MultimediasActividade', 'actividades_id');
+        return $this->hasMany('App\Models\Multimedia_Actividad', 'actividades_id');
     }
 
     /**
@@ -70,7 +70,7 @@ class Actividad extends Model
      */
     public function perfilesUsuariosConActividades()
     {
-        return $this->hasMany('App\PerfilesUsuariosConActividade', 'actividades_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_actividades', 'actividades_id', 'perfiles_usuarios_id');
     }
 
     /**
@@ -78,7 +78,7 @@ class Actividad extends Model
      */
     public function sitiosConActividades()
     {
-        return $this->hasMany('App\SitiosConActividade', 'actividades_id');
+        return $this->belongsToMany('App\Models\Sitio', 'sitios_con_actividades', 'actividades_id', 'sitios_id');
     }
 
     /**
@@ -86,7 +86,7 @@ class Actividad extends Model
      */
     public function actividadesConIdiomas()
     {
-        return $this->hasMany('App\ActividadesConIdioma', 'actividades_id');
+        return $this->hasMany('App\Models\Actividad_Con_Idioma', 'actividades_id');
     }
 
     /**

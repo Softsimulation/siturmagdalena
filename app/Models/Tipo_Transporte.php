@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,7 @@ class Tipo_Transporte extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array
@@ -42,15 +42,15 @@ class Tipo_Transporte extends Model
      */
     public function visitantes()
     {
-        return $this->hasMany('App\Visitante', 'transporte_interno');
+        return $this->hasMany('App\Models\Visitante', 'transporte_interno');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function visitantes()
+    public function visitantesllegada()
     {
-        return $this->hasMany('App\Visitante', 'transporte_llegada');
+        return $this->hasMany('App\models\Visitante', 'transporte_llegada');
     }
 
     /**
@@ -58,7 +58,7 @@ class Tipo_Transporte extends Model
      */
     public function tiposTransporteConIdiomas()
     {
-        return $this->hasMany('App\TiposTransporteConIdioma');
+        return $this->hasMany('App\Models\Tipo_Transporte_Con_Idioma','tipos_transporte_id','id');
     }
 
     /**
@@ -66,6 +66,6 @@ class Tipo_Transporte extends Model
      */
     public function viajes()
     {
-        return $this->hasMany('App\Viaje', 'tipo_transporte_id');
+        return $this->hasMany('App\Models\Viaje', 'tipo_transporte_id');
     }
 }

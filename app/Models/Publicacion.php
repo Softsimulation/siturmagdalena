@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,39 +25,36 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Publicacion extends Model
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
-    protected $table = 'publicaciones';
-
-    /**
-     * @var array
-     */
-    protected $fillable = ['categoria_doucmento_id', 'tipo_documento_id', 'autores', 'volumen', 'portada', 'ruta', 'fecha_creacion', 'fecha_publicacion', 'updated_at', 'user_create', 'user_update', 'estado', 'created_at'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function categoriaDocumento()
-    {
-        return $this->belongsTo('App\CategoriaDocumento', 'categoria_doucmento_id');
+    
+    protected $table = 'publicaciones_obras';
+    public $timestamps = false;
+    
+    
+    public function temas(){
+        return $this->belongsToMany('App\Models\Tema', 'publicaciones_obras_has_temas', 'publicaciones_obras_id', 'temas_id');
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function tipoDocumento()
-    {
-        return $this->belongsTo('App\TipoDocumento');
+    
+    public function personas(){
+         return $this->belongsToMany('App\Models\Autor', 'autores_has_publicaciones_obras', 'publicaciones_obras_id', 'autores_id');
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function publicacionesIdiomas()
-    {
-        return $this->hasMany('App\PublicacionesIdioma', 'publicaciones_id');
+        
+    public function palabras(){
+         return $this->belongsToMany('App\Models\Palabra', 'publicaciones_obras_has_palabras', 'publicaciones_obras_id', 'palabras_id');
     }
+    
+      public function tipopublicacion(){
+        return $this->hasOne(TipoPublicacion::class,'id','tipos_publicaciones_obras_id'); 
+    }
+    
+     public function estadoPublicacion(){
+        return $this->hasOne(Estado::class,'id','estados_id'); 
+    }
+    
+    public function getNombreEs(){
+
+        return $this->idiomas()->where('idiomas_id',1);
+    }
+    
+
+  
 }

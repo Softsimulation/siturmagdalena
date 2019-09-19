@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,7 @@ class Fuente_Informacion_Durante_Viaje_Con_Idioma extends Model
      */
     public function fuentesInformacionDuranteViaje()
     {
-        return $this->belongsTo('App\FuentesInformacionDuranteViaje', 'fuente_informacion_durante_viaje_id');
+        return $this->belongsTo('App\Models\Fuente_Informacion_Durante_Viaje', 'fuente_informacion_durante_viaje_id');
     }
 
     /**
@@ -39,6 +39,6 @@ class Fuente_Informacion_Durante_Viaje_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }

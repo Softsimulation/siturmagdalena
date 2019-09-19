@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,7 +34,7 @@ class Financiador_Viaje extends Model
      */
     public function viajes()
     {
-        return $this->belongsToMany('App\Viaje', 'viajes_financiadores', 'financiadores_id');
+        return $this->belongsToMany('App\Models\Viaje', 'viajes_financiadores', 'financiadores_id');
     }
 
     /**
@@ -42,7 +42,7 @@ class Financiador_Viaje extends Model
      */
     public function visitantes()
     {
-        return $this->belongsToMany('App\Visitante', 'visitante_gastos_pagados', 'financiadores_viajes_id');
+        return $this->belongsToMany('App\Models\Visitante', 'visitante_gastos_pagados', 'financiadores_viajes_id');
     }
 
     /**
@@ -50,6 +50,6 @@ class Financiador_Viaje extends Model
      */
     public function financiadoresViajesConIdiomas()
     {
-        return $this->hasMany('App\FinanciadoresViajesConIdioma');
+        return $this->hasMany('App\Models\Financiador_Viaje_Con_Idioma', 'financiadores_viaje_id');
     }
 }

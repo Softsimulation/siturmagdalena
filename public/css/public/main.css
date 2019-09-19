@@ -1,0 +1,182 @@
+#stats-links ul, #elementosSitur{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: wrap;
+    flex-flow: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+}
+#stats-links ul li{
+    width: 33.33%;
+    background-color: white;
+}
+#stats-links ul li a {
+    display: block;
+    padding: 4px .5rem;
+    text-align: center;
+    color: dimgrey;
+    line-height: 1;
+}
+#stats-links ul li a .stats{
+    margin: 0 auto;
+}
+#tituloSitur>a, #tituloSitur .title{
+    background-color: dodgerblue;
+    color: white;
+}
+#tituloSitur {
+    margin-top: 0;
+}
+#tituloSitur>a{
+    padding: 2px .5rem;
+    display: inline-block;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+#tituloSitur h2{
+    margin: 2% 0;
+}
+#elementosSitur li{
+    width: 100%;
+}
+#elementosSitur li a{
+    display: block;
+    padding: .5rem;
+}
+#elementosSitur li a .big-number{
+    display:block;
+    margin: 0 auto;
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+#elementosSitur li a:hover{
+    text-decoration: none;
+    background-color: #eee;
+}
+
+#infoMunicipio .infoMunicipio-text{
+    font-size: 85%;
+    font-weight: 500;
+}
+#infoMunicipio-PST, #infoMunicipio-camas, #infoMunicipio-empleos, #infoMunicipio-habitaciones{
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+
+@media only screen and (min-width: 768px) {
+    #stats-links ul li{
+        width: 25%;
+    }
+    #elementosSitur li{
+        width: 50%;
+    }
+}
+@media only screen and (min-width: 992px) {
+    #stats-links{
+        position: absolute;
+        top: calc(72px + 2%);
+        left: 0;
+        max-width: 120px;
+        z-index: 5;
+        
+    }
+    #stats-links ul{
+        display: inline-block;
+        
+    }
+    #stats-links ul li{
+        width: 100%;
+        background-color: rgba(255,255,255,.85);
+        position:relative;
+    }
+    #stats-links ul li:first-child, #stats-links ul li:first-child a {
+        border-top-right-radius: 20px;
+    }
+    #stats-links ul li:last-child, #stats-links ul li:last-child a {
+        border-bottom-right-radius: 20px;
+    }
+    #stats-links ul li:before{
+        content: "";
+        position:absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        border: 3px solid #ddd;
+    }
+    #stats-links ul li:first-child:before{
+        height: 80%;
+        top: auto;
+        bottom: 0;
+    }
+    #stats-links ul li:last-child:before{
+        height: 80%;
+    }
+    #stats-links ul li a:hover{
+        color: white;
+        text-decoration: none;
+        box-shadow: 0px 8px 15px rgba(0,0,0,.3);
+        -webkit-box-shadow: 0px 8px 15px rgba(0,0,0,.3);
+        -moz-box-shadow: 0px 8px 15px rgba(0,0,0,.3);
+        position: relative;
+        z-index: 4;
+    }
+    #stats-links ul li a:hover .stats{
+    	filter: invert(100%);
+    }
+    #stats-links ul li:nth-child(1):before, #stats-links ul li:nth-child(1) a:hover{
+        border-color: #1b5f9d;
+        background-color: #1b5f9d;
+    }
+    #stats-links ul li:nth-child(2):before,  #stats-links ul li:nth-child(2) a:hover{
+        border-color: #cc3029;
+        background-color: #cc3029;
+    }
+    #stats-links ul li:nth-child(3):before,  #stats-links ul li:nth-child(3) a:hover{
+        border-color: #f8aa29;
+        background-color: #f8aa29;
+    }
+    #stats-links ul li:nth-child(4):before,  #stats-links ul li:nth-child(4) a:hover{
+        border-color: #a4c636;
+        background-color: #a4c636;
+    }
+    #stats-links ul li:nth-child(5):before,  #stats-links ul li:nth-child(5) a:hover{
+        border-color: #009541;
+        background-color: #009541;
+    }
+    #stats-links ul li:nth-child(6):before,  #stats-links ul li:nth-child(6) a:hover{
+        border-color: #613f2f;
+        background-color: #613f2f;
+    }
+    #stats-links ul li:nth-child(7):before,  #stats-links ul li:nth-child(7) a:hover{
+        border-color: #009ed6;
+        background-color: #009ed6;
+    }
+    #tituloSitur {
+        margin-top: calc(-1rem - 11px);
+        position: relative;
+        z-index: 2;
+    }
+    #elementosSitur li{
+        width: 25%;
+    }
+}
+@media only screen and (min-width: 1400px) {
+    #stats-links ul li a{
+        padding: 6px .5rem;
+    }
+}
+@media only screen and (min-width: 1600px) {
+    #stats-links{
+        top: calc(100px + 4%);
+    }
+    #stats-links ul li a{
+        padding: .5rem;
+    }
+}

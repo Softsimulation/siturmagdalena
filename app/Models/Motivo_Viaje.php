@@ -50,6 +50,6 @@ class Motivo_Viaje extends Model
      */
     public function viajes()
     {
-        return $this->hasMany('App\Viaje', 'motivo_viaje_id');
+        return $this->hasMany('App\Models\Viaje', 'motivo_viaje_id');
     }
 }

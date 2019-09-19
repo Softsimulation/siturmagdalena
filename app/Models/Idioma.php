@@ -107,7 +107,7 @@ class Idioma extends Model
      */
     public function destinoConIdiomas()
     {
-        return $this->hasMany('App\DestinoConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\Destino_Con_Idioma', 'idiomas_id');
     }
 
     /**
@@ -203,7 +203,7 @@ class Idioma extends Model
      */
     public function sitiosConIdiomas()
     {
-        return $this->hasMany('App\SitiosConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\Sitio_Con_Idioma', 'idiomas_id');
     }
 
     /**
@@ -211,7 +211,7 @@ class Idioma extends Model
      */
     public function serviciosPaqueteConIdiomas()
     {
-        return $this->hasMany('App\ServiciosPaqueteConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\ServiciosPaqueteConIdioma', 'idiomas_id');
     }
 
     /**
@@ -307,7 +307,7 @@ class Idioma extends Model
      */
     public function divisasConIdiomas()
     {
-        return $this->hasMany('App\DivisasConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\DivisasConIdioma', 'idiomas_id');
     }
 
     /**
@@ -339,7 +339,7 @@ class Idioma extends Model
      */
     public function opcionesLugaresConIdiomas()
     {
-        return $this->hasMany('App\OpcionesLugaresConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\OpcionesLugaresConIdioma', 'idiomas_id');
     }
 
     /**
@@ -347,7 +347,7 @@ class Idioma extends Model
      */
     public function financiadoresViajesConIdiomas()
     {
-        return $this->hasMany('App\FinanciadoresViajesConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\FinanciadoresViajesConIdioma', 'idiomas_id');
     }
 
     /**
@@ -371,7 +371,7 @@ class Idioma extends Model
      */
     public function sectoresConIdiomas()
     {
-        return $this->hasMany('App\SectoresConIdioma', 'idiomas_id');
+        return $this->hasMany('App\Models\Sector_Con_Idioma', 'idiomas_id');
     }
 
     /**
@@ -388,5 +388,21 @@ class Idioma extends Model
     public function tiposViajeConIdiomas()
     {
         return $this->hasMany('App\TiposViajeConIdioma', 'idiomas_id');
+    }
+    public function noticias()
+    {
+        return $this->belongsToMany('App\Models\Noticia', 'noticias_has_idiomas', 'noticias_id', 'idiomas_id');
+    }
+    public function tiposNoticias()
+    {
+        return $this->belongsToMany('App\Models\Tipo_noticia', 'tipos_noticias_has_idiomas', 'tipos_noticias_id', 'idiomas_id');
+    }
+    public function sliders()
+    {
+        return $this->belongsToMany('App\Models\Slider', 'sliders_idiomas', 'slider_id', 'idioma_id');
+    }
+    public function indicadoresMedicion()
+    {
+        return $this->belongsToMany('App\Models\Indicadores_medicion', 'indicadores_mediciones_idioma', 'indicadores_medicion_id', 'idioma_id');
     }
 }

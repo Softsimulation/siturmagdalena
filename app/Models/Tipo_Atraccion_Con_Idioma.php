@@ -39,6 +39,6 @@ class Tipo_Atraccion_Con_Idioma extends Model
      */
     public function tipoAtraccione()
     {
-        return $this->belongsTo('App\TipoAtraccione', 'tipo_atracciones_id');
+        return $this->belongsTo('App\Models\Tipo_Atraccion', 'tipo_atracciones_id');
     }
 }

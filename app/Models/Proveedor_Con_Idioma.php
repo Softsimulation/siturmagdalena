@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +14,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Proveedor_Con_Idioma extends Model
 {
+    /**
+     * The timestamps.
+     * 
+     * @var bool
+     */   
+    public $timestamps = false;
     /**
      * The table associated with the model.
      * 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,6 +33,6 @@ class Frecuencia_Viaje extends Model
      */
     public function viajes()
     {
-        return $this->hasMany('App\Viaje', 'frecuencia_id');
+        return $this->hasMany('App\Models\Viaje', 'frecuencia_id');
     }
 }

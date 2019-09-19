@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,26 +31,25 @@ class Sitio_Para_Encuesta extends Model
      * @var string
      */
     protected $table = 'sitios_para_encuestas';
-
+    public $timestamps = false;
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'sitios_id', 'ano_fundacion', 'nombre_contacto', 'cargo_contacto', 'telefono_fijo', 'extension', 'celular', 'email', 'camara_comercio', 'registro_turismo', 'es_verificado'];
+    protected $fillable = ['user_id', 'proveedor_rnt_id', 'ano_fundacion', 'nombre_contacto', 'cargo_contacto', 'telefono_fijo', 'extension', 'celular', 'email', 'camara_comercio', 'registro_turismo', 'es_verificado'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function aspNetUser()
     {
-        return $this->belongsTo('App\AspNetUser', 'user_id', '"Id"');
+        return $this->belongsTo('App\Models\AspNetUser', 'user_id', '"Id"');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function sitio()
-    {
-        return $this->belongsTo('App\Sitio', 'sitios_id');
+    public function proveedor(){
+        return $this->hasOne('App\Models\Proveedores_rnt', 'id', 'proveedor_rnt_id'); 
     }
 
     /**
@@ -58,7 +57,7 @@ class Sitio_Para_Encuesta extends Model
      */
     public function envioCorreosOfertas()
     {
-        return $this->hasMany('App\EnvioCorreosOfertum');
+        return $this->hasMany('App\Models\EnvioCorreosOfertum');
     }
 
     /**
@@ -66,6 +65,6 @@ class Sitio_Para_Encuesta extends Model
      */
     public function encuestas()
     {
-        return $this->hasMany('App\Encuesta', 'sitios_para_encuestas_id');
+        return $this->hasMany('App\Models\Encuesta', 'sitios_para_encuestas_id');
     }
 }

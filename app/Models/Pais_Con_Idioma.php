@@ -15,6 +15,12 @@ use Illuminate\Database\Eloquent\Model;
 class Pais_Con_Idioma extends Model
 {
     /**
+     * The timestamps.
+     * 
+     * @var bool
+     */   
+    public $timestamps = false;
+    /**
      * The table associated with the model.
      * 
      * @var string
@@ -39,6 +45,6 @@ class Pais_Con_Idioma extends Model
      */
     public function paise()
     {
-        return $this->belongsTo('App\Paise', 'pais_id');
+        return $this->belongsTo('App\Models\Paise', 'pais_id');
     }
 }

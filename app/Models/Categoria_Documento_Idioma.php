@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,7 @@ class Categoria_Documento_Idioma extends Model
      */
     public function categoriaDocumento()
     {
-        return $this->belongsTo('App\CategoriaDocumento');
+        return $this->belongsTo('App\Models\Categoria_Documento');
     }
 
     /**

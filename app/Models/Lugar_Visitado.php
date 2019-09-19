@@ -32,7 +32,7 @@ class Lugar_Visitado extends Model
      */
     public function tipoAtraccione()
     {
-        return $this->belongsTo('App\TipoAtraccione', 'tipo_atraccion_id');
+        return $this->belongsTo('App\Models\TipoAtraccione', 'tipo_atraccion_id');
     }
 
     /**
@@ -40,6 +40,6 @@ class Lugar_Visitado extends Model
      */
     public function visitante()
     {
-        return $this->belongsTo('App\Visitante');
+        return $this->belongsTo('App\Models\Visitante');
     }
 }

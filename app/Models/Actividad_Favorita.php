@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,10 @@ class Actividad_Favorita extends Model
     /**
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['usuario_id','actividades_id'];
+
+    public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -35,8 +38,8 @@ class Actividad_Favorita extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function actividade()
+    public function actividad()
     {
-        return $this->belongsTo('App\Actividade', 'actividades_id');
+        return $this->belongsTo('App\Models\Actividad', 'actividades_id');
     }
 }

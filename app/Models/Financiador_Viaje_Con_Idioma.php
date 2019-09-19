@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,7 @@ class Financiador_Viaje_Con_Idioma extends Model
      */
     public function financiadoresViaje()
     {
-        return $this->belongsTo('App\FinanciadoresViaje');
+        return $this->belongsTo('App\Models\FinanciadoresViaje');
     }
 
     /**
@@ -39,6 +39,6 @@ class Financiador_Viaje_Con_Idioma extends Model
      */
     public function idioma()
     {
-        return $this->belongsTo('App\Idioma', 'idiomas_id');
+        return $this->belongsTo('App\Models\Idioma', 'idiomas_id');
     }
 }

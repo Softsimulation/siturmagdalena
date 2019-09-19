@@ -45,7 +45,7 @@ class Grupo_Viaje extends Model
      */
     public function digitadore()
     {
-        return $this->belongsTo('App\Digitadore', 'digitador_id');
+        return $this->belongsTo('App\Models\Digitador', 'digitador_id');
     }
 
     /**
@@ -53,7 +53,7 @@ class Grupo_Viaje extends Model
      */
     public function lugaresAplicacionEncuestum()
     {
-        return $this->belongsTo('App\LugaresAplicacionEncuestum', 'lugar_aplicacion_id');
+        return $this->belongsTo('App\Models\Lugar_Aplicacion_Encuesta', 'lugar_aplicacion_id');
     }
 
     /**
@@ -61,7 +61,7 @@ class Grupo_Viaje extends Model
      */
     public function tiposViaje()
     {
-        return $this->belongsTo('App\TiposViaje', 'tipo_viaje_id');
+        return $this->belongsTo('App\Models\Tipo_Viaje', 'tipo_viaje_id');
     }
 
     /**

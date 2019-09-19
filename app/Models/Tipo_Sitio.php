@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +33,7 @@ class Tipo_Sitio extends Model
      */
     public function sitios()
     {
-        return $this->hasMany('App\Sitio', 'tipo_sitios_id');
+        return $this->hasMany('App\Models\Sitio', 'tipo_sitios_id');
     }
 
     /**
@@ -41,6 +41,6 @@ class Tipo_Sitio extends Model
      */
     public function tipoSitiosConIdiomas()
     {
-        return $this->hasMany('App\TipoSitiosConIdioma', 'tipo_sitios_id');
+        return $this->hasMany('App\Models\Tipo_Sitio_Con_Idioma', 'tipo_sitios_id');
     }
 }

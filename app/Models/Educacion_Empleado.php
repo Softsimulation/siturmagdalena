@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,12 +26,12 @@ class Educacion_Empleado extends Model
      * @var array
      */
     protected $fillable = ['encuestas_id', 'posgrado', 'universitario', 'tecnologo', 'bachiller'];
-
+    public $timestamps = false;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
     }
 }

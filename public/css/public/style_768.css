@@ -1,0 +1,125 @@
+/*Cinta de opciones*/
+#toolbar-main{
+    justify-content: flex-end;
+    background-color: #eee;
+}
+
+
+/*Tiles*/
+.tiles.tile-list .tile {
+    padding: .5rem;
+    align-items: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+.tiles.tile-list .tile:hover {
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 2px 14px -2px rgba(0,0,0,.3);
+}
+.tiles.tile-list .tile .tile-body {
+    width: calc(100% - 120px);
+    padding: 0 .5rem;
+    display: inline-block;
+}
+.tiles.tile-list .tile .tile-img {
+    width: 120px;
+    height: 100px;
+    display: inline-block;
+}
+
+.tiles .tile:not(.inline-tile){
+    width: calc(50% - 1rem);
+}
+
+.tiles .tile:not(.inline-tile).two-places{
+    width: calc(100% - 1rem);
+}
+
+.tiles.tile-list .tile .tile-img, .tiles.tile-list .tile .tile-body {
+    
+    float: left;
+}
+
+.tiles.tile-list .tile .tile:after, .tiles.tile-list .tile .tile:before {
+    display: table;
+    content: " ";
+}
+.tiles.tile-list .tile .tile:after {
+    clear: both;
+}
+.tiles.tile-list .tile {
+    width: 100%;
+}
+
+.tile.tile-overlap{
+    position: relative;
+    min-height: 280px;
+}
+.tile.tile-overlap .tile-img{
+   height: 280px;
+}
+
+/*.tile.tile-overlap .tile-img img{*/
+/*    min-width: 100%;*/
+/*    min-height: 100%;*/
+/*    max-width: 150%;*/
+/*}*/
+.tile.tile-overlap .tile-body{
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color:rgba(0,0,0,.35);
+    color:white;
+    padding: .5rem;
+    z-index: 2;
+    background: rgba(248,80,50,0.05);
+    background: -moz-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(248,80,50,0.05)), color-stop(100%, rgba(0,0,0,0.8)));
+    background: -webkit-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
+    background: -o-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
+    background: -ms-linear-gradient(top, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
+    background: linear-gradient(to bottom, rgba(248,80,50,0.05) 0%, rgba(0,0,0,0.8) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#000000', GradientType=0 );
+    overflow: auto;
+}
+.tile.tile-overlap .tile-body a{
+    color: white;
+}
+.tile.tile-overlap .tile-body h3{
+    text-shadow: 0px 1px 2px rgba(0,0,0,.65);
+    text-transform: uppercase;
+}
+.tile.tile-overlap .tile-buttons button{
+    color:white;
+}
+.tile.tile-overlap .tile-buttons button:hover{
+    background-color: rgba(255,255,255,.1);
+}
+.tiles.tile-list .tile.tile-overlap .tile-body{
+    position:static;
+    width: calc(100% - 120px);
+    background: white;
+    
+}
+.tiles.tile-list .tile.tile-overlap .tile-body h3{
+    text-shadow: none;
+}
+.tiles.tile-list .tile.tile-overlap .tile-body a{
+    color: #1c4185;    
+}
+.tiles.tile-list .tile.tile-overlap .tile-buttons button{
+    color: #ddd;
+}
+.tiles.tile-list .tile.tile-overlap:hover .tile-buttons button{
+    color: #333;
+}
+
+.tiles.tile-list .tile.tile-overlap{
+    min-height: 50px;
+}
+.carousel-inner>.item>img{
+    max-height: none;
+    max-width: 100%;
+}

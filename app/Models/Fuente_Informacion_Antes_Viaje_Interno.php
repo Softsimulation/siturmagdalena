@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +18,8 @@ class Fuente_Informacion_Antes_Viaje_Interno extends Model
      * @var string
      */
     protected $table = 'fuentes_informacion_antes_viajes_interno';
+    protected $primaryKey = 'viajes_id';
+    public $timestamps=false;
 
     /**
      * @var array

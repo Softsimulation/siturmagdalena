@@ -1,6 +1,6 @@
 angular.module('receptor.enteran', [])
 
-.controller('enteran-crear', ['$scope', '$http',function ($scope,$http) {
+.controller('enteran-crear', ['$scope', 'receptorServi',function ($scope,receptorServi) {
     $scope.enteran = {
         'FuentesDurante': [],
         'FuentesAntes': [],
@@ -9,16 +9,18 @@ angular.module('receptor.enteran', [])
     $scope.control = {};
     $scope.errores = null;
     $scope.err = null;
-
+    
     $scope.$watch('id', function () {
-        $("body").attr("class", "cbp-spmenu-push charging")
-        $http.get('/EncuestaReceptor/cargarDatosFuentes/'+ $scope.id)
-            .success(function (data) {
+        $("body").attr("class", "cbp-spmenu-push charging");
+        
+        receptorServi.getDatosSeccionInformacion($scope.id).then(function (data) {
+            if(data.success){
                 $("body").attr("class", "cbp-spmenu-push");
                 $scope.fuentesAntes = data.fuentesAntes;
                 $scope.fuentesDurante = data.fuentesDurante;
                 $scope.redes = data.redes;
                 $scope.enteran.Id = $scope.id;
+                $scope.controlSostenibilidad = data.controlSostenibilidad;
 
                 if (data.invitacion_correo != null) {
                     $scope.enteran.FuentesAntes = data.fuentes_antes;
@@ -30,11 +32,20 @@ angular.module('receptor.enteran', [])
                     $scope.enteran.Invitacion = data.invitacion;
                     $scope.enteran.NombreFacebook = data.facebook;
                     $scope.enteran.NombreTwitter = data.twitter;
+                    $scope.enteran.facilidad = data.facilidad;
+                    $scope.enteran.conoce_marca = data.conoce_marca;
+                    $scope.enteran.acepta_autorizacion = data.acepta_autorizacion;
+                    $scope.enteran.acepta_tratamiento = data.acepta_tratamiento;
+                    $scope.enteran.otroRed = data.otroRed;
                 }
-            }).error(function () {
+            }else{
                 $("body").attr("class", "cbp-spmenu-push");
-                swal("Error", "Error en la carga, por favor recarga la página", "error");
-            })
+                swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+            }
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
+        })
     })
 
     $scope.validar = function (sw, id) {
@@ -78,11 +89,18 @@ angular.module('receptor.enteran', [])
                     $scope.enteran.FuentesAntes.push(14);
                 }
             } 
-        } else {
+        } else if(sw == 1) {
             var i = $scope.enteran.FuentesDurante.indexOf(14);
             if ($scope.enteran.OtroFuenteDurante != null && $scope.enteran.OtroFuenteDurante != '') {
                 if (i == -1) {
                     $scope.enteran.FuentesDurante.push(14);
+                }
+            } 
+        } else if(sw == 2) {
+            var i = $scope.enteran.Redes.indexOf(12);
+            if ($scope.enteran.otroRed != null && $scope.enteran.otroRed != '') {
+                if (i == -1) {
+                    $scope.enteran.Redes.push(12);
                 }
             } 
         }
@@ -91,6 +109,7 @@ angular.module('receptor.enteran', [])
     $scope.guardar = function () {
 
         if (!$scope.inForm.$valid) {
+            swal("Error", "Formulario incompleto corrige los errores.", "error");
             return;
         }
 
@@ -107,49 +126,47 @@ angular.module('receptor.enteran', [])
         }
 
         $("body").attr("class", "cbp-spmenu-push charging");
-        $http.post('/EncuestaReceptor/guardarSeccionG', $scope.enteran)
-            .success(function (data) {
+        
+        receptorServi.guardarSeccionInformacion($scope.enteran).then(function (data) {
+            if (data.success) {
                 $("body").attr("class", "cbp-spmenu-push");
-                if (data.success == true) {
-                    if (data.success) {
-                        var msj;
-                        if (data.sw == 0) {
-                            msj = "guardado";
-                        } else {
-                            msj = "editado";
-                        }
-                        swal({
-                            title: "Realizado",
-                            text: "Se ha " + msj + " satisfactoriamente la sección.",
-                            type: "success",
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-
-                        if(data.rol == "Encuestador"){
-                            setTimeout(function () {
-                                window.location.href = "/EncuestaReceptor/EncuestasSitur";
-                            }, 1000);
-
-                        }else {
-                        setTimeout(function () {
-                            window.location.href = "/EncuestaReceptor/Encuestas";
-                        }, 1000);
-                                
-                               }
-                    
-                    } else {
-                        swal("Error", "Por favor corrija los errores", "error");
-                        $scope.errores = data.errores;
-                    }
+                var msj;
+                if (data.sw == 0) {
+                    msj = "guardado";
                 } else {
-                    $("body").attr("class", "cbp-spmenu-push");
-                    $scope.errores = data.errores;
-                    swal("Error", "Error en la carga, por favor recarga la pagina", "error");
+                    msj = "editado";
                 }
-
+                swal({
+                    title: "Realizado",
+                    text: "Se ha " + msj + " satisfactoriamente la sección.",
+                    type: "success",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                
+                setTimeout(function () {
+                    window.location.href = "/turismoreceptor/listadoencuestas";
+                }, 1000);
+                
+                if(data.rol == "Encuestador"){
+                    setTimeout(function () {
+                        //window.location.href = "/EncuestaReceptor/EncuestasSitur";
+                    }, 1000);
+    
+                }else {
+                    setTimeout(function () {
+                        //window.location.href = "/EncuestaReceptor/Encuestas";
+                    }, 1000);
+                }
+            } else {
+                $("body").attr("class", "cbp-spmenu-push");
+                swal("Error", "Por favor corrija los errores", "error");
+                $scope.errores = data.errores;
+            }
+        }).catch(function () {
+            $("body").attr("class", "cbp-spmenu-push");
+            swal("Error", "No se realizo la solicitud, reinicie la página");
         })
-
     }
 
 }])
@@ -184,6 +201,10 @@ angular.module('receptor.enteran', [])
                     $scope.enteran.Invitacion = data.invitacion;
                     $scope.enteran.NombreFacebook = data.facebook;
                     $scope.enteran.NombreTwitter = data.twitter;
+                    $scope.enteran.facilidad = data.facilidad;
+                    $scope.enteran.conoce_marca = data.conoce_marca;
+                    $scope.enteran.acepta_autorizacion = data.acepta_autorizacion;
+                    $scope.enteran.acepta_tratamiento = data.acepta_tratamiento;
                 }
             }).error(function () {
                 $("body").attr("class", "cbp-spmenu-push");

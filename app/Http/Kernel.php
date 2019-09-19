@@ -24,6 +24,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            \App\Http\Middleware\LangMiddleware::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
@@ -49,5 +50,16 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
+        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
+        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
+        'oferta' => \App\Http\Middleware\OfertaEmpleo::class,
+        'ofertaPst' => \App\Http\Middleware\OfertaEmpleoPst::class,
+        'receptor' => \App\Http\Middleware\TurismoReceptor::class,
+        'interno' => \App\Http\Middleware\TurismoInterno::class,
+        'permissions' => \App\Http\Middleware\Permissions::class, 
+        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        'web' => \App\Http\Middleware\LangMiddleware::class
     ];
 }

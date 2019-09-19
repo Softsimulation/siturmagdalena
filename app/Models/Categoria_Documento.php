@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +33,7 @@ class Categoria_Documento extends Model
      */
     public function publicaciones()
     {
-        return $this->hasMany('App\Publicacione', 'categoria_doucmento_id');
+        return $this->hasMany('App\Models\Publicacion', 'categoria_doucmento_id');
     }
 
     /**
@@ -41,6 +41,6 @@ class Categoria_Documento extends Model
      */
     public function categoriaDocumentoIdiomas()
     {
-        return $this->hasMany('App\CategoriaDocumentoIdioma');
+        return $this->hasMany('App\Models\Categoria_Documento_Idioma', 'categoria_documento_id');
     }
 }

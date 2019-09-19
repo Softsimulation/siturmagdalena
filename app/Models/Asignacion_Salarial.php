@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,13 +27,14 @@ class Asignacion_Salarial extends Model
      * @var array
      */
     protected $fillable = ['unsalario', 'unoatres', 'tresacinco', 'masdecinco'];
-
+    public $timestamps = false;
+    protected $primaryKey = 'encuestas_id';
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
     }
 
     /**
@@ -41,6 +42,6 @@ class Asignacion_Salarial extends Model
      */
     public function tiposCargo()
     {
-        return $this->belongsTo('App\TiposCargo', 'tipos_cargos_id');
+        return $this->belongsTo('App\Models\TiposCargo', 'tipos_cargos_id');
     }
 }

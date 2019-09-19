@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +23,7 @@ class Historial_Encuesta_Interno extends Model
      * @var string
      */
     protected $table = 'historial_encuesta_interno';
+    public $timestamps=false;
 
     /**
      * @var array
@@ -34,7 +35,7 @@ class Historial_Encuesta_Interno extends Model
      */
     public function digitadore()
     {
-        return $this->belongsTo('App\Digitadore', 'digitador_id');
+        return $this->belongsTo('App\Models\Digitador', 'digitador_id');
     }
 
     /**
@@ -42,7 +43,7 @@ class Historial_Encuesta_Interno extends Model
      */
     public function estadosEncuestum()
     {
-        return $this->belongsTo('App\EstadosEncuestum', 'estado_id');
+        return $this->belongsTo('App\Models\Estados_Encuesta', 'estado_id');
     }
 
     /**
@@ -50,6 +51,6 @@ class Historial_Encuesta_Interno extends Model
      */
     public function viaje()
     {
-        return $this->belongsTo('App\Viaje', 'viajes_id');
+        return $this->belongsTo('App\Models\Viaje', 'viajes_id');
     }
 }

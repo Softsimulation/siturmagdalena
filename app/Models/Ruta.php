@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,15 +28,26 @@ class Ruta extends Model
      */
     public function multimediaRutas()
     {
-        return $this->hasMany('App\MultimediaRuta');
+        return $this->hasMany('App\Models\Multimedia_Ruta', 'ruta_id');
+    }
+    
+    public function multimedia()
+    {
+        return $this->multimediaRutas();
+    }
+    
+    public function getPortadaAttribute()
+    {
+        return $this->multimedia()->first();
+        
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function rutasConAtracciones()
     {
-        return $this->hasMany('App\RutasConAtraccione');
+        return $this->belongsToMany('App\Models\Atracciones', 'rutas_con_atracciones', 'ruta_id', 'atraccion_id');
     }
 
     /**
@@ -44,6 +55,10 @@ class Ruta extends Model
      */
     public function rutasConIdiomas()
     {
-        return $this->hasMany('App\RutasConIdioma');
+        return $this->hasMany('App\Models\Ruta_Con_Idioma');
+    }
+    public function langContent()
+    {
+        return $this->rutasConIdiomas();
     }
 }

@@ -15,6 +15,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Sitio_Con_Idioma extends Model
 {
+    
+    /**
+     * The timestamps.
+     * 
+     * @var bool
+     */   
+    public $timestamps = false;
     /**
      * The table associated with the model.
      * 
@@ -40,6 +47,6 @@ class Sitio_Con_Idioma extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
     }
 }

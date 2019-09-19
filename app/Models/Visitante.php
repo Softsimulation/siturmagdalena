@@ -80,14 +80,14 @@ class Visitante extends Model
     /**
      * @var array
      */
-    protected $fillable = ['encuestador_creada', 'digitada', 'grupo_viaje_id', 'motivo_viaje', 'municipio_residencia', 'destino_principal', 'opciones_lugares_id', 'pais_nacimiento', 'transporte_interno', 'transporte_llegada', 'nombre', 'edad', 'sexo', 'email', 'telefono', 'celular', 'fecha_llegada', 'fecha_salida', 'ultima_sesion', 'tamaño_grupo_visitante', 'invitacion_correo', 'token', 'es_ingles', 'es_verificado', 'facilidad'];
+    protected $fillable = ['id','encuestador_creada', 'digitada', 'grupo_viaje_id', 'motivo_viaje', 'municipio_residencia', 'destino_principal', 'opciones_lugares_id', 'pais_nacimiento', 'transporte_interno', 'transporte_llegada', 'nombre', 'edad', 'sexo', 'email', 'telefono', 'celular', 'fecha_llegada', 'fecha_salida', 'ultima_sesion', 'tamaño_grupo_visitante', 'invitacion_correo', 'token', 'es_ingles', 'es_verificado', 'facilidad','acepta_autorizacion','acepta_tratamiento','conoce_marca','atraccion_favorita','ocupacion_persona_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function digitadore()
     {
-        return $this->belongsTo('App\Models\Digitadore', 'encuestador_creada');
+        return $this->belongsTo('App\Models\Digitador', 'encuestador_creada');
     }
 
     /**
@@ -95,7 +95,7 @@ class Visitante extends Model
      */
     public function digitadoreDigitada()
     {
-        return $this->belongsTo('App\Models\Digitadore', 'digitada');
+        return $this->belongsTo('App\Models\Digitador', 'digitada');
     }
 
     /**
@@ -103,7 +103,7 @@ class Visitante extends Model
      */
     public function gruposViaje()
     {
-        return $this->belongsTo('App\GruposViaje', 'grupo_viaje_id');
+        return $this->belongsTo('App\Models\Grupo_Viaje', 'grupo_viaje_id');
     }
 
     /**
@@ -119,7 +119,7 @@ class Visitante extends Model
      */
     public function municipioResidencia()
     {
-        return $this->belongsTo('App\Municipio', 'municipio_residencia');
+        return $this->belongsTo('App\Models\Municipio', 'municipio_residencia');
     }
 
     /**
@@ -127,7 +127,7 @@ class Visitante extends Model
      */
     public function municipioPrincipal()
     {
-        return $this->belongsTo('App\Municipio', 'destino_principal');
+        return $this->belongsTo('App\Models\Municipio', 'destino_principal');
     }
 
     /**
@@ -167,7 +167,7 @@ class Visitante extends Model
      */
     public function actividadesHechasVisitantes()
     {
-        return $this->hasMany('App\ActividadesHechasVisitante');
+        return $this->hasMany('App\Models\Actividad_Hecha_Visitante');
     }
 
     /**
@@ -175,7 +175,7 @@ class Visitante extends Model
      */
     public function actividadesRealizadasPorVisitantes()
     {
-        return $this->hasMany('App\ActividadesRealizadasPorVisitante');
+        return $this->hasMany('App\Models\Actividad_Realizada_Por_Visitante');
     }
 
     /**
@@ -191,7 +191,7 @@ class Visitante extends Model
      */
     public function atraccionesVisitadas()
     {
-        return $this->hasMany('App\AtraccionesVisitada');
+        return $this->hasMany('App\Models\Atraccion_Visitada');
     }
 
     /**
@@ -199,7 +199,7 @@ class Visitante extends Model
      */
     public function calificacions()
     {
-        return $this->hasMany('App\Calificacion');
+        return $this->hasMany('App\Models\Calificacion');
     }
 
     /**
@@ -207,7 +207,7 @@ class Visitante extends Model
      */
     public function elementosRepresentativos()
     {
-        return $this->belongsToMany('App\ElementosRepresentativo', 'elementos_representativos_favoritos', null, 'elementos_representativos_id');
+        return $this->belongsToMany('App\Models\Elemento_Representativo', 'elementos_representativos_favoritos', 'visitante_id', 'elementos_representativos_id');
     }
 
     /**
@@ -223,7 +223,7 @@ class Visitante extends Model
      */
     public function gastosVisitantes()
     {
-        return $this->hasMany('App\GastosVisitante');
+        return $this->hasMany('App\Models\Gasto_Visitante');
     }
 
     /**
@@ -231,7 +231,7 @@ class Visitante extends Model
      */
     public function tiposAcompañantesVisitantes()
     {
-        return $this->belongsToMany('App\TiposAcompañantesVisitante', 'grupo_viaje_acompañantes', null, 'tipo_id');
+        return $this->belongsToMany('App\Models\Tipo_Acompaniante_Visitante', 'grupo_viaje_acompañantes', 'visitante_id', 'tipo_id');
     }
 
     /**
@@ -247,7 +247,7 @@ class Visitante extends Model
      */
     public function fuentesInformacionAntesViajes()
     {
-        return $this->belongsToMany('App\FuentesInformacionAntesViaje', 'informacion_visitante_antes_viaje', null, 'fuentes_informacion_antes_viaje');
+        return $this->belongsToMany('App\Models\Fuente_Informacion_Antes_Viaje', 'informacion_visitante_antes_viaje', 'visitante_id', 'fuentes_informacion_antes_viaje');
     }
 
     /**
@@ -255,7 +255,7 @@ class Visitante extends Model
      */
     public function fuentesInformacionDuranteViajes()
     {
-        return $this->belongsToMany('App\FuentesInformacionDuranteViaje', 'informacion_visitante_durante_viaje', null, 'fuente_informacion_durante_viaje_id');
+        return $this->belongsToMany('App\Models\Fuente_Informacion_Durante_Viaje', 'informacion_visitante_durante_viaje', 'visitante_id', 'fuente_informacion_durante_viaje_id');
     }
 
     /**
@@ -263,7 +263,7 @@ class Visitante extends Model
      */
     public function lugaresVisitados()
     {
-        return $this->hasMany('App\LugaresVisitado');
+        return $this->hasMany('App\Models\Lugar_Visitado');
     }
 
     /**
@@ -271,7 +271,7 @@ class Visitante extends Model
      */
     public function municipiosVisitadosMagdalenas()
     {
-        return $this->hasMany('App\MunicipiosVisitadosMagdalena');
+        return $this->hasMany('App\Models\Municipio_Visitado_Magdalena');
     }
 
     /**
@@ -279,7 +279,7 @@ class Visitante extends Model
      */
     public function otrasFuenteInformacionAntesViaje()
     {
-        return $this->hasOne('App\OtrasFuenteInformacionAntesViaje', 'visitante_id');
+        return $this->hasOne('App\Models\Otra_Fuente_Informacion_Antes_Viaje', 'visitante_id');
     }
 
     /**
@@ -287,7 +287,7 @@ class Visitante extends Model
      */
     public function otrasFuenteInformacionDuranteViaje()
     {
-        return $this->hasOne('App\OtrasFuenteInformacionDuranteViaje', 'visitante_id');
+        return $this->hasOne('App\Models\Otra_Fuente_Informacion_Durante_Viaje', 'visitante_id');
     }
 
     /**
@@ -295,7 +295,7 @@ class Visitante extends Model
      */
     public function otrosAcompañantesViaje()
     {
-        return $this->hasOne('App\OtrosAcompañantesViaje', 'visitante_id');
+        return $this->hasOne('App\Models\Otro_Acompaniante_Viaje', 'visitante_id');
     }
 
     /**
@@ -303,7 +303,7 @@ class Visitante extends Model
      */
     public function otrosElementosRepresentativo()
     {
-        return $this->hasOne('App\OtrosElementosRepresentativo', 'visitante_id');
+        return $this->hasOne('App\Models\Otro_Elemento_Representativo', 'visitante_id');
     }
 
     /**
@@ -327,7 +327,7 @@ class Visitante extends Model
      */
     public function otrosTurista()
     {
-        return $this->hasOne('App\OtrosTurista', 'visitante_id');
+        return $this->hasOne('App\Models\Otro_Turista', 'visitante_id');
     }
 
     /**
@@ -335,7 +335,7 @@ class Visitante extends Model
      */
     public function redesSociales()
     {
-        return $this->belongsToMany('App\RedesSociale', 'redes_sociales_visitante', null, 'redes_sociales_id');
+        return $this->belongsToMany('App\Models\Redes_Sociales', 'redes_sociales_visitante', 'visitante_id', 'redes_sociales_id')->withPivot('otro');
     }
 
     /**
@@ -343,7 +343,7 @@ class Visitante extends Model
      */
     public function valoracionGeneral()
     {
-        return $this->hasOne('App\ValoracionGeneral', 'visitante_id');
+        return $this->hasOne('App\Models\Valoracion_General', 'visitante_id');
     }
 
     /**
@@ -351,7 +351,7 @@ class Visitante extends Model
      */
     public function visitanteTransporteTerrestre()
     {
-        return $this->hasOne('App\VisitanteTransporteTerrestre', 'visitante_id');
+        return $this->hasOne('App\Models\Visitante_Transporte_Terrestre', 'visitante_id');
     }
 
     /**
@@ -359,7 +359,7 @@ class Visitante extends Model
      */
     public function visitanteCompartirRede()
     {
-        return $this->hasOne('App\VisitanteCompartirRede', 'visitante_id');
+        return $this->hasOne('App\Models\Visitante_Compartir_Redes', 'visitante_id');
     }
 
     /**
@@ -367,7 +367,12 @@ class Visitante extends Model
      */
     public function opcionesLugares()
     {
-        return $this->belongsToMany('App\OpcionesLugare', 'visitante_alquila_vehiculo', null, 'opciones_lugares_id');
+        return $this->belongsToMany('App\Models\Opcion_Lugar', 'visitante_alquila_vehiculo', 'visitante_id', 'opciones_lugares_id');
+    }
+    
+    public function opcionesLugaresG()
+    {
+        return $this->belongsToMany('App\Models\Opcion_Lugar', 'opciones_gasto_visitantes', 'visitante_id', 'opciones_lugare_id');
     }
 
     /**
@@ -377,13 +382,18 @@ class Visitante extends Model
     {
         return $this->hasOne('App\VisitantePaqueteTuristico', 'visitante_id');
     }
+    
+    public function sostenibilidadVisitantes()
+    {
+        return $this->hasOne('App\Models\Sostenibilidad_Visitante', 'visitante_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function financiadoresViajes()
     {
-        return $this->belongsToMany('App\FinanciadoresViaje', 'visitante_gastos_pagados', null, 'financiadores_viajes_id');
+        return $this->belongsToMany('App\Models\Financiador_Viaje', 'visitante_gastos_pagados', 'visitante_id', 'financiadores_viajes_id');
     }
 
     /**
@@ -401,4 +411,15 @@ class Visitante extends Model
     {
         return $this->belongsToMany('App\Models\Tipo_Atencion_Salud', 'visitantes_salud', 'visitante_id', 'tipo_atencion_salud');
     }
+    
+    public function opcionesActividadesRealizadas()
+    {
+        return $this->belongsToMany('App\Models\Opcion_Actividad_Realizada', 'opciones_actividades_realizadas_por_visitantes', 'visitante_id', 'opciones_activades_realizada_id');
+    }
+    
+    public function subOpcionesActividadesRealizadas()
+    {
+        return $this->belongsToMany('App\Models\Sub_Opciones_Actividades_Realizadas', 'sub_opciones_actividades_realizadas_por_visitantes', 'visitante_id', 'sub_opciones_actividades_realizada_id');
+    }
+    
 }

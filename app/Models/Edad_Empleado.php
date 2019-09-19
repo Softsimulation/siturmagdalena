@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,8 @@ class Edad_Empleado extends Model
      * @var string
      */
     protected $table = 'edad_empleados';
-
+ public $timestamps = false;
+     
     /**
      * @var array
      */
@@ -33,6 +34,6 @@ class Edad_Empleado extends Model
      */
     public function encuesta()
     {
-        return $this->belongsTo('App\Encuesta', 'encuestas_id');
+        return $this->belongsTo('App\Models\Encuesta', 'encuestas_id');
     }
 }

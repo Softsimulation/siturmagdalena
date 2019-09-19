@@ -34,7 +34,7 @@ class Pais extends Model
      */
     public function departamentos()
     {
-        return $this->hasMany('App\Departamento', 'pais_id');
+        return $this->hasMany('App\Models\Departamento', 'pais_id');
     }
 
     /**
@@ -50,6 +50,6 @@ class Pais extends Model
      */
     public function visitantes()
     {
-        return $this->hasMany('App\Visitante', 'pais_nacimiento');
+        return $this->hasMany('App\Models\Visitante', 'pais_nacimiento');
     }
 }

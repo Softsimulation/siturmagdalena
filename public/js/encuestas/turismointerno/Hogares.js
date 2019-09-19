@@ -4,6 +4,20 @@ angular.module('interno.hogares', [])
     $scope.encuesta = {}
     $scope.encuesta.integrantes = []
     $scope.integrante = {}
+    
+    $scope.optionFecha = {
+        calType: 'gregorian',
+        format: 'YYYY-MM-DD hh:mm',
+        zIndex: 1060,
+        autoClose: true,
+        default: null,
+        gregorianDic: {
+            title: 'Fecha',
+            monthsNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            daysNames: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            todayBtn: "Hoy"
+        }
+    };
 
     $http.get('/turismointerno/datoshogar')
         .success(function (data) {
@@ -12,6 +26,8 @@ angular.module('interno.hogares', [])
             $scope.niveles = data.niveles
             $scope.motivos = data.motivos
             $scope.estratos=data.estratos
+            $scope.estados=data.estados
+            $scope.ocupaciones=data.ocupaciones
 
         })
         .error(function () {
@@ -104,7 +120,17 @@ angular.module('interno.hogares', [])
                     $("body").attr("class", "");
                     if (data.success) {                      
                         
-                        window.location = "/turismointerno/editarhogar/"+data.id;
+                         swal({
+                                title: "Realizado",
+                                text: "Se ha guardado el hogar exitosamente",
+                                type: "success",
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                            
+                    setTimeout(function () {
+                         window.location = "/turismointerno/editarhogar/"+data.id;
+                    }, 1000);
                         
                     } else {
                         swal("Error", "Hay errores en el formulario corrigelos", "error")
@@ -143,20 +169,18 @@ angular.module('interno.hogares', [])
                 $scope.niveles = data.datos.niveles
                 $scope.motivos = data.datos.motivos
                 $scope.estratos = data.datos.estratos
+                $scope.ocupaciones=data.datos.ocupaciones
                 $scope.barrios = data.barrios
                 $scope.municipio = String(data.encuesta.edificacione.barrio.municipio_id)
-                var hora_fecha=data.encuesta.fecha_realizacion.split(" ");
-                var fecha = hora_fecha[0].split("-")
-                var hora = hora_fecha[1].split(":")               
+                $scope.estados=data.datos.estados
                 $scope.encuesta = data.encuesta;
-                $scope.encuesta.Fecha_aplicacion = new Date(fecha[0], (fecha[1]-1), fecha[2])
-                $scope.encuesta.Hora_aplicacion = new Date(fecha[0], fecha[1], fecha[2], hora[0], hora[1], hora[2])
+                $scope.encuesta.Fecha_aplicacion = data.encuesta.fecha_realizacion
                 $scope.encuesta.Barrio=String(data.encuesta.edificacione.barrio_id)
                 $scope.encuesta.Estrato=String(data.encuesta.edificacione.estrato_id)
                 $scope.encuesta.Direccion=data.encuesta.edificacione.direccion
                 $scope.encuesta.Telefono=data.encuesta.telefono
                 $scope.encuesta.Nombre_Entrevistado=data.encuesta.edificacione.nombre_entrevistado
-                $scope.encuesta.Celular_Entrevistado=data.encuesta.edificacione.celular_entrevistado
+                $scope.encuesta.Celular_Entrevistado=data.encuesta.edificacione.telefono_entrevistado
                 $scope.encuesta.Email_Entrevistado=data.encuesta.edificacione.email_entrevistado
                
                 $scope.encuesta.integrantes= cambiar($scope.encuesta.personas)
@@ -208,7 +232,7 @@ angular.module('interno.hogares', [])
 
     $scope.changebarrio = function () {
         $scope.encuesta.Barrio=""
-        $http.post('/EncuestaInterno/getBarrios', { 'idmunicipio': $scope.municipio })
+        $http.post('/turismointerno/barrios', { 'id': $scope.municipio })
         .success(function (data) {
 
             $scope.barrios = data.barrios
@@ -235,7 +259,7 @@ angular.module('interno.hogares', [])
                 function(){
                     setTimeout(function () {
 
-                        $http.post('/EncuestaInterno/EliminarPersona', { Id: $scope.encuesta.integrantes[indice].Id})
+                        $http.post('/turismointerno/eliminarpersona', { id: $scope.encuesta.integrantes[indice].id})
                             .success(function (data) {
 
                                 if (data.success) {
@@ -292,15 +316,25 @@ angular.module('interno.hogares', [])
     }
 
     $scope.enviar = function () {
-        
+        $scope.encuesta.id=$scope.id;
         if ($scope.DatosForm.$valid) {
             $("body").attr("class", "charging");
-            $http.post('/EncuestaInterno/GuardarEdicionHogar', $scope.encuesta)
+            $http.post('/turismointerno/guardareditarhogar', $scope.encuesta)
                 .success(function (data) {
                     $("body").attr("class", "");
                     if (data.success) {
 
-                        window.location = "/EncuestaInterno/EditarHogar/" + data.id;
+                         swal({
+                                title: "Realizado",
+                                text: "Se ha guardado el hogar exitosamente",
+                                type: "success",
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                            
+                    setTimeout(function () {
+                         window.location = "/turismointerno/editarhogar/"+data.id;
+                    }, 1000);
 
                     } else {
                         swal("Error", "Hay errores en el formulario corrigelos", "error")
@@ -334,6 +368,11 @@ angular.module('interno.hogares', [])
             array[i].Viaje=(array[i].es_viajero)?"1":"0";
             array[i].Nivel_Educacion=String(array[i].nivel_educacion);
             array[i].jefe_hogar=String(array[i].jefe_hogar);
+            
+            array[i].Civil=String(array[i].estado_civil_id);
+            array[i].Ocupacion=String(array[i].ocupacion_id);
+            array[i].Vive=(array[i].es_residente)?"1":"0";
+            
             if(array[i].motivo_no_viajes.length>0){
                 array[i].Motivo=String(array[i].motivo_no_viajes[0].motivo_no_viaje_id);
              }

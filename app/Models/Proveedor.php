@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,7 +48,7 @@ class Proveedor extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
     }
 
     /**
@@ -56,15 +56,15 @@ class Proveedor extends Model
      */
     public function categoriaProveedore()
     {
-        return $this->belongsTo('App\CategoriaProveedore', 'categoria_proveedores_id');
+        return $this->belongsTo('App\Models\Categoria_Proveedor', 'categoria_proveedores_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categoriaTurismoConProveedores()
     {
-        return $this->hasMany('App\CategoriaTurismoConProveedore', 'proveedores_id');
+        return $this->belongsToMany('App\Models\Categoria_Turismo', 'categoria_turismo_con_proveedores', 'proveedores_id', 'categoria_turismo_id');
     }
 
     /**
@@ -72,15 +72,15 @@ class Proveedor extends Model
      */
     public function comentariosProveedores()
     {
-        return $this->hasMany('App\ComentariosProveedore', 'proveedores_id');
+        return $this->hasMany('App\Models\Comentario_Proveedor', 'proveedores_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function perfilesUsuariosConProveedores()
     {
-        return $this->hasMany('App\PerfilesUsuariosConProveedore', 'proveedores_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_proveedores', 'proveedores_id', 'perfiles_usuarios_id');
     }
 
     /**
@@ -88,7 +88,7 @@ class Proveedor extends Model
      */
     public function planificadorProveedores()
     {
-        return $this->hasMany('App\PlanificadorProveedore', 'proveedor_id');
+        return $this->hasMany('App\Models\PlanificadorProveedore', 'proveedor_id');
     }
 
     /**
@@ -96,7 +96,7 @@ class Proveedor extends Model
      */
     public function proveedoresConIdiomas()
     {
-        return $this->hasMany('App\ProveedoresConIdioma', 'proveedores_id');
+        return $this->hasMany('App\Models\Proveedor_Con_Idioma', 'proveedores_id');
     }
 
     /**
@@ -104,7 +104,7 @@ class Proveedor extends Model
      */
     public function aspNetUsers()
     {
-        return $this->belongsToMany('App\AspNetUser', 'proveedores_favoritos', 'proveedores_id', 'usuario_id');
+        return $this->belongsToMany('App\Models\AspNetUser', 'proveedores_favoritos', 'proveedores_id', 'usuario_id');
     }
 
     /**
@@ -112,6 +112,30 @@ class Proveedor extends Model
      */
     public function proveedoresCaracteristicas()
     {
-        return $this->hasMany('App\ProveedoresCaracteristica', 'proveedores_id');
+        return $this->hasMany('App\Models\ProveedoresCaracteristica', 'proveedores_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function multimediaProveedores()
+    {
+        return $this->hasMany('App\Models\Multimedia_Proveedor', 'proveedor_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function actividadesProveedores()
+    {
+        return $this->belongsToMany('App\Models\Actividades', 'actividades_proveedores', 'proveedor_id', 'actividad_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function proveedorRnt()
+    {
+        return $this->belongsTo('App\Models\Proveedores_rnt', 'proveedor_rnt_id');
     }
 }

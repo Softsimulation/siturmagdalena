@@ -35,6 +35,13 @@ use Illuminate\Database\Eloquent\Model;
 class Atracciones extends Model
 {
     /**
+     * Indicates if the IDs are auto-incrementing.
+     * 
+     * @var bool
+     */
+    public $incrementing = true;
+    
+    /**
      * @var array
      */
     protected $fillable = ['sitios_id', 'telefono', 'sitio_web', 'valor_min', 'valor_max', 'calificacion_legusto', 'calificacion_llegar', 'calificacion_recomendar', 'calificacion_volveria', 'estado', 'created_at', 'updated_at', 'user_create', 'user_update'];
@@ -44,15 +51,29 @@ class Atracciones extends Model
      */
     public function sitio()
     {
-        return $this->belongsTo('App\Models\Sitio', 'sitios_id');
+        return $this->belongsTo('App\Models\Sitio', 'sitios_id','id');
     }
+    
+    public function multimedia()
+    {
+        return $this->sitio->multimediaSitios();
+    }
+    public function getPortadaAttribute()
+    {
+        $portada= $this->multimedia()->where('portada', true)->first();
+        if($portada != null){
+            return $portada;
+        }
+        return null;
+    }
+    
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function atraccionesConTipos()
     {
-        return $this->hasMany('App\AtraccionesConTipo', 'atracciones_id');
+        return $this->belongsToMany('App\Models\Tipo_Atraccion', 'atracciones_con_tipo', 'atracciones_id', 'tipo_atracciones_id');
     }
 
     /**
@@ -60,7 +81,12 @@ class Atracciones extends Model
      */
     public function atraccionesConIdiomas()
     {
-        return $this->hasMany('App\AtraccionesConIdioma', 'atracciones_id');
+        return $this->hasMany('App\Models\Atraccion_Con_Idioma', 'atracciones_id');
+    }
+    
+    public function langContent()
+    {
+         return $this->hasMany('App\Models\Sitio_Con_Idioma', 'sitios_id','sitios_id');
     }
 
     /**
@@ -84,15 +110,29 @@ class Atracciones extends Model
      */
     public function aspNetUsers()
     {
-        return $this->belongsToMany('App\AspNetUser', 'atracciones_favoritas', 'atracciones_id', 'usuario_id');
+        return $this->belongsToMany('App\Models\AspNetUser', 'atracciones_favoritas', 'atracciones_id', 'usuario_id');
+    }
+    
+    public function esFavorito()
+    {
+        return $this->aspNetUsers();
+    }
+    
+    public function getEsfavoritoAttribute()
+    {
+        return count($this->esFavorito()->get());
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categoriaTurismoConAtracciones()
     {
-        return $this->hasMany('App\CategoriaTurismoConAtraccione', 'atracciones_id');
+        return $this->belongsToMany('App\Models\Categoria_Turismo', 'categoria_turismo_con_atracciones', 'atracciones_id', 'categoria_turismo_id');
+    }
+    public function categoriaTurismo()
+    {
+        return $this->categoriaTurismoConAtracciones();
     }
 
     /**
@@ -108,7 +148,11 @@ class Atracciones extends Model
      */
     public function perfilesUsuariosConAtracciones()
     {
-        return $this->hasMany('App\PerfilesUsuariosConAtraccione', 'atracciones_id');
+        return $this->belongsToMany('App\Models\Perfil_Usuario', 'perfiles_usuarios_con_atracciones', 'atracciones_id', 'perfiles_usuarios_id');
+    }
+    public function perfilesUsuarios()
+    {
+        return $this->perfilesUsuariosConAtracciones();
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +18,9 @@ class Visitante_Compartir_Redes extends Model
      * @var string
      */
     protected $table = 'visitante_compartir_redes';
-
+    
+    public $timestamps = false;
+    
     /**
      * The primary key for the model.
      * 
@@ -31,7 +33,7 @@ class Visitante_Compartir_Redes extends Model
      * 
      * @var bool
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 
     /**
      * @var array

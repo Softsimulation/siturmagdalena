@@ -28,7 +28,7 @@ class Departamento extends Model
      */
     public function paise()
     {
-        return $this->belongsTo('App\Models\Paise', 'pais_id');
+        return $this->belongsTo('App\Models\Pais','pais_id');
     }
 
     /**
@@ -36,6 +36,6 @@ class Departamento extends Model
      */
     public function municipios()
     {
-        return $this->hasMany('App\Municipio');
+        return $this->hasMany('App\Models\Municipio');
     }
 }

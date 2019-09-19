@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,13 +35,13 @@ class Encuesta extends Model
      * @var array
      */
     protected $fillable = ['sitios_para_encuestas_id', 'meses_años_id', 'actividad_comercial', 'numero_dias'];
-
+    public $timestamps = false;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mesesDeAño()
+    public function mesesDeAnio()
     {
-        return $this->belongsTo('App\MesesDeAño', '"meses_años_id"');
+        return $this->belongsTo('App\Models\Mes_Anio', '"meses_años_id"');
     }
 
     /**
@@ -49,7 +49,7 @@ class Encuesta extends Model
      */
     public function sitiosParaEncuesta()
     {
-        return $this->belongsTo('App\SitiosParaEncuesta', 'sitios_para_encuestas_id');
+        return $this->belongsTo('App\Models\Sitio_Para_Encuesta', 'sitios_para_encuestas_id');
     }
 
     /**
@@ -57,7 +57,7 @@ class Encuesta extends Model
      */
     public function alquilerVehiculos()
     {
-        return $this->hasMany('App\AlquilerVehiculo', 'encuestas_id');
+        return $this->hasMany('App\Models\Alquiler_Vehiculo', 'encuestas_id');
     }
 
     /**
@@ -73,7 +73,7 @@ class Encuesta extends Model
      */
     public function agenciasOperadoras()
     {
-        return $this->hasMany('App\AgenciasOperadora', 'encuestas_id');
+        return $this->hasMany('App\Models\Agencia_Operadora', 'encuestas_id');
     }
 
     /**
@@ -129,7 +129,7 @@ class Encuesta extends Model
      */
     public function provisionesAlimentos()
     {
-        return $this->hasMany('App\ProvisionesAlimento', 'encuestas_id');
+        return $this->hasMany('App\Models\Provision_Alimento', 'encuestas_id');
     }
 
     /**
@@ -161,7 +161,7 @@ class Encuesta extends Model
      */
     public function viajesTurismos()
     {
-        return $this->hasMany('App\ViajesTurismo', 'encuestas_id');
+        return $this->hasMany('App\Models\Viaje_Turismo', 'encuestas_id');
     }
 
     /**
