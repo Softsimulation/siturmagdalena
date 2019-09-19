@@ -37,7 +37,7 @@
         <link href="{{asset('/css/public/style_992.css')}}" rel="stylesheet" media="(min-width: 992px)">
         <link href="{{asset('/css/public/style_1200.css')}}" rel="stylesheet" media="(min-width: 1200px)">
         <link href="{{asset('/css/public/style_1600.css')}}" rel="stylesheet" media="(min-width: 1600px)">
-        <script src="{{secure_asset('/js/plugins/angular.min.js')}}"></script>
+        <script src="{{asset('/js/plugins/angular.min.js')}}"></script>
         @yield('estilos')
         <style>
             .weather{
@@ -102,7 +102,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="{{asset('/js/public/script-main.js')}}"></script>
         
-        <script src="{{secure_asset('/js/sweetalert.min.js')}}" async></script>
+        <script src="{{asset('/js/sweetalert.min.js')}}" async></script>
         
         
         <script type="text/javascript" defer>

@@ -8,6 +8,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 
 Route::controller('/InformacionDepartamento','InformacionDepartamentoCtrl');
+Route::controller('/modelospredictivos','ModelosPredictivosController');
 
 Route::controller('/registrar','RegistrarController');
 

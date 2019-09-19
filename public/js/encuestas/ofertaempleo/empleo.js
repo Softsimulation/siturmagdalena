@@ -464,10 +464,36 @@ $scope.$watch('id', function () {
     
     
     $scope.nivel1 = function(obj){
+
+
+
+    if($scope.empleo.lineasadmin.indexOf(33) >= 0){
+
+
+          if(obj == 33){
+
+              return false;
+          }else{
+
+
+            if($scope.empleo.lineasadmin.indexOf(obj) >= 0){
+                   $scope.empleo.lineasadmin.splice($scope.empleo.lineasadmin.indexOf(obj),1)
+               }
+            return true;
+          }
+      
+
+    }
+
+
        if($scope.empleo.lineasadmin.indexOf(obj) >= 0){
+
+
            return false;
        }else{
            
+
+
            if( $scope.empleo.lineasadmin.length ==3){
                return true;
            }else{
@@ -479,6 +505,28 @@ $scope.$watch('id', function () {
     
     
    $scope.nivel2 = function(obj){
+
+
+    if($scope.empleo.lineasopvt.indexOf(34) >= 0){
+
+
+          if(obj == 34){
+
+              return false;
+          }else{
+
+
+            if($scope.empleo.lineasopvt.indexOf(obj) >= 0){
+                   $scope.empleo.lineasopvt.splice($scope.empleo.lineasopvt.indexOf(obj),1)
+               }
+            return true;
+          }
+      
+
+    }
+
+
+
        if($scope.empleo.lineasopvt.indexOf(obj) >= 0){
            return false;
        }else{
@@ -493,19 +541,7 @@ $scope.$watch('id', function () {
     }
     
     
-       $scope.nivel2 = function(obj){
-       if($scope.empleo.lineasopvt.indexOf(obj) >= 0){
-           return false;
-       }else{
-           
-           if( $scope.empleo.lineasopvt.length ==3){
-               return true;
-           }else{
-               return false;
-           }
-       }
-        
-    }
+ 
     
     
    $scope.mediovalue = function(obj){

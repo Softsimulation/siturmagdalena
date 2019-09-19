@@ -204,6 +204,10 @@ class OfertaEmpleoController extends Controller
          return ["success" => true];
     }
     
+
+
+
+
     public function getEncuestasoferta(){
         
         return view('ofertaEmpleo.ListadoEncuestastotal');
@@ -217,6 +221,27 @@ class OfertaEmpleoController extends Controller
         return ["success"=>true, "encuestas"=>$data];
 
     }
+
+
+        public function postEliminarencuesta(Request $request) {
+        $validator = \Validator::make($request->all(),[
+        
+            'id' => 'required|exists:encuestas,id',
+            
+        ],[
+            'id.required' => 'Tuvo primero que haber creado una encuesta.',
+            'id.exists' => 'Tuvo primero que haber creado una encuesta.',
+            ]
+        );
+        if($validator->fails()){
+            return ["success"=>false,"errores"=>$validator->errors()];
+        }
+       
+              $resultado = \DB::select('select elimnar_encuesta_oferta(?) as result',array($request['id']))[0]->result;
+            return ["success"=>$resultado];
+            
+    }
+
     
     public function postGuardarproveedorrnt(Request $request){
         $validator = \Validator::make($request->all(),[
@@ -1422,6 +1447,19 @@ $vacRazon = Razon_Vacante::where("encuesta_id",$request->Encuesta)->first();
 	             return ["success" => false, "errores" => [["No se encontro el valor del otro tipos."]] ];    
 	             
 	         }
+
+
+            if(in_array(34, $request->lineasopvt) && sizeof($request->lineasopvt) > 1){
+
+                    return ["success" => false, "errores" => [["Se escogio la opción ninguno no debe escoger nada más."]] ];   
+            }
+
+
+            if(in_array(33, $request->lineasadmin) && sizeof($request->lineasadmin) > 1){
+
+                    return ["success" => false, "errores" => [["Se escogio la opción ninguno no debe escoger nada más."]] ];   
+            }
+
 	 
               $capacitacion = Capacitacion_Empleo::where("encuesta_id", $request->Encuesta)->first();
 
